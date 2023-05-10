@@ -4,7 +4,270 @@
 	}
 	dbmax = 0
 	dbsum = 0
-//*db_item_SLIME_FUKAGURUMI
+//*db_item_WHITE_DARK_ORB
+	if ( 1 > objlv ) {
+		goto *db_item_AWAKE_DESTONE
+	}
+	if ( fltselect != 1 ) {
+		goto *db_item_AWAKE_DESTONE
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_ITEM_TOOL ) {
+			goto *db_item_AWAKE_DESTONE
+		}
+	}
+	if ( flttypeminor != FILTER_NOTHING ) {
+		if ( flttypeminor != FILTER_NONE ) {
+			goto *db_item_AWAKE_DESTONE
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_item(ITEM_ID_WHITE_DARK_ORB), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_item_AWAKE_DESTONE
+		}
+	}
+	dbsum += 50000 / (1000 + abs(objlv - 1) * 10) + 1
+	dblist(0, dbmax) = ITEM_ID_WHITE_DARK_ORB, dbsum
+	dbmax++
+
+*db_item_AWAKE_DESTONE
+	if ( 1 > objlv ) {
+		goto *db_item_MANA_DESTONE
+	}
+	if ( fltselect != 1 ) {
+		goto *db_item_MANA_DESTONE
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_ITEM_TOOL ) {
+			goto *db_item_MANA_DESTONE
+		}
+	}
+	if ( flttypeminor != FILTER_NOTHING ) {
+		if ( flttypeminor != FILTER_NONE ) {
+			goto *db_item_MANA_DESTONE
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_item(ITEM_ID_AWAKE_DESTONE), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_item_MANA_DESTONE
+		}
+	}
+	dbsum += 50000 / (1000 + abs(objlv - 1) * 10) + 1
+	dblist(0, dbmax) = ITEM_ID_AWAKE_DESTONE, dbsum
+	dbmax++
+
+*db_item_MANA_DESTONE
+	if ( 1 > objlv ) {
+		goto *db_item_FIGHTING_DESTONE
+	}
+	if ( fltselect != 1 ) {
+		goto *db_item_FIGHTING_DESTONE
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_ITEM_TOOL ) {
+			goto *db_item_FIGHTING_DESTONE
+		}
+	}
+	if ( flttypeminor != FILTER_NOTHING ) {
+		if ( flttypeminor != FILTER_NONE ) {
+			goto *db_item_FIGHTING_DESTONE
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_item(ITEM_ID_MANA_DESTONE), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_item_FIGHTING_DESTONE
+		}
+	}
+	dbsum += 50000 / (1000 + abs(objlv - 1) * 10) + 1
+	dblist(0, dbmax) = ITEM_ID_MANA_DESTONE, dbsum
+	dbmax++
+
+*db_item_FIGHTING_DESTONE
+	if ( 1 > objlv ) {
+		goto *db_item_RES_UPPER
+	}
+	if ( fltselect != 1 ) {
+		goto *db_item_RES_UPPER
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_ITEM_TOOL ) {
+			goto *db_item_RES_UPPER
+		}
+	}
+	if ( flttypeminor != FILTER_NOTHING ) {
+		if ( flttypeminor != FILTER_NONE ) {
+			goto *db_item_RES_UPPER
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_item(ITEM_ID_FIGHTING_DESTONE), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_item_RES_UPPER
+		}
+	}
+	dbsum += 50000 / (1000 + abs(objlv - 1) * 10) + 1
+	dblist(0, dbmax) = ITEM_ID_FIGHTING_DESTONE, dbsum
+	dbmax++
+
+*db_item_RES_UPPER
+	if ( 1 > objlv ) {
+		goto *db_item_DV_FIXER
+	}
+	if ( fltselect != 1 ) {
+		goto *db_item_DV_FIXER
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_ITEM_TOOL ) {
+			goto *db_item_DV_FIXER
+		}
+	}
+	if ( flttypeminor != FILTER_NOTHING ) {
+		if ( flttypeminor != FILTER_NONE ) {
+			goto *db_item_DV_FIXER
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_item(ITEM_ID_RES_UPPER), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_item_DV_FIXER
+		}
+	}
+	dbsum += 1000000 / (1000 + abs(objlv - 1) * 0) + 1
+	dblist(0, dbmax) = ITEM_ID_RES_UPPER, dbsum
+	dbmax++
+
+*db_item_DV_FIXER
+	if ( 1 > objlv ) {
+		goto *db_item_PV_FIXER
+	}
+	if ( fltselect != 1 ) {
+		goto *db_item_PV_FIXER
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_ITEM_TOOL ) {
+			goto *db_item_PV_FIXER
+		}
+	}
+	if ( flttypeminor != FILTER_NOTHING ) {
+		if ( flttypeminor != FILTER_NONE ) {
+			goto *db_item_PV_FIXER
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_item(ITEM_ID_DV_FIXER), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_item_PV_FIXER
+		}
+	}
+	dbsum += 1000000 / (1000 + abs(objlv - 1) * 0) + 1
+	dblist(0, dbmax) = ITEM_ID_DV_FIXER, dbsum
+	dbmax++
+
+*db_item_PV_FIXER
+	if ( 1 > objlv ) {
+		goto *db_item_X_FRAME
+	}
+	if ( fltselect != 1 ) {
+		goto *db_item_X_FRAME
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_ITEM_TOOL ) {
+			goto *db_item_X_FRAME
+		}
+	}
+	if ( flttypeminor != FILTER_NOTHING ) {
+		if ( flttypeminor != FILTER_NONE ) {
+			goto *db_item_X_FRAME
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_item(ITEM_ID_PV_FIXER), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_item_X_FRAME
+		}
+	}
+	dbsum += 1000000 / (1000 + abs(objlv - 1) * 0) + 1
+	dblist(0, dbmax) = ITEM_ID_PV_FIXER, dbsum
+	dbmax++
+
+*db_item_X_FRAME
+	if ( 1 > objlv ) {
+		goto *db_item_SLIME_FUKAGURUMI
+	}
+	if ( fltselect != 3 ) {
+		goto *db_item_SLIME_FUKAGURUMI
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_ITEM_TOOL ) {
+			goto *db_item_SLIME_FUKAGURUMI
+		}
+	}
+	if ( flttypeminor != FILTER_NOTHING ) {
+		if ( flttypeminor != FILTER_NONE ) {
+			goto *db_item_SLIME_FUKAGURUMI
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_item(ITEM_ID_X_FRAME), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_item_SLIME_FUKAGURUMI
+		}
+	}
+	dbsum += 1000000 / (1000 + abs(objlv - 1) * 10) + 1
+	dblist(0, dbmax) = ITEM_ID_X_FRAME, dbsum
+	dbmax++
+*db_item_SLIME_FUKAGURUMI
 	if ( 1 > objlv ) {
 		goto *db_item_SLIME_MOLD
 	}
@@ -40596,6 +40859,527 @@
 	return
 
 *db_item_set
+	if ( dbid == ITEM_ID_WHITE_DARK_ORB ) {
+		if ( dbmode == DBMODE_SET_STATS | dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_VALUE, ci) = 3000
+			inv(INV_ITEM_WEIGHT, ci) = 100
+		}
+		if ( dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_ID, ci) = ITEM_ID_WHITE_DARK_ORB
+			inv(INV_ITEM_PIC, ci) = xy2pic(7, 35)
+			reftype = FILTER_ITEM_TOOL
+			reftypeminor = FILTER_NOTHING
+			inv(INV_ITEM_NUM, ci) = 1
+			fixeditemenc = 0
+			inv(INV_ITEM_EFFECT, ci) = EFFECT_WHITE_DARK_ORB
+			inv(INV_ITEM_IDENTIFY_LEVEL, ci) = 0
+			return
+		}
+		if ( dbmode == DBMODE_REF ) {
+			ichargelevel = 0
+			infilterref = ""
+			reftype = FILTER_ITEM_TOOL
+			return
+		}
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_TYPE ) {
+				return FILTER_ITEM_TOOL
+			}
+			if ( dbspec == DBSPEC_TYPE_MINOR ) {
+				return FILTER_NONE
+			}
+			if ( dbspec == DBSPEC_VALUE_ORG ) {
+				return 3000
+			}
+			if ( dbspec == DBSPEC_PARAM3_ORG ) {
+				return
+			}
+			if ( dbspec == DBSPEC_CAN_USE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_PCC ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_OBJ_LEVEL ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_RARE_LEVEL ) {
+				return 50
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_DESC ) {
+			if ( jp ) {
+				description(0) = "魔神の力を秘めているという白の石。分類上は魔石の一種だが、製法は大きく異なる。深淵魔力を消費して、簡易的な魔法の罠を使用者の現在地に仕掛ける。特殊な素養があれば遠隔起動できるという情報もあるが、現在のところ立証されていない。罠の強度は魔道具と罠の知識さらには階層の深さに依存する。\n#〜イルヴァ幻想辞典〜"
+				description(1) = ""
+				description(2) = ""
+				description(3) = "罠を設置する石だ。何度でも使用することができる。\n#〜鑑定報告書：＜魔道具＞カテゴリ〜"
+			}
+			else {
+				description(0) = ""
+				description(1) = ""
+				description(3) = ""
+			}
+			return
+		}
+		return 0
+	}
+	if ( dbid == ITEM_ID_AWAKE_DESTONE ) {
+		if ( dbmode == DBMODE_SET_STATS | dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_VALUE, ci) = 3000
+			inv(INV_ITEM_WEIGHT, ci) = 100
+		}
+		if ( dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_ID, ci) = ITEM_ID_AWAKE_DESTONE
+			inv(INV_ITEM_PIC, ci) = xy2pic(11, 37)
+			reftype = FILTER_ITEM_TOOL
+			reftypeminor = FILTER_NOTHING
+			inv(INV_ITEM_NUM, ci) = 1
+			fixeditemenc = 0
+			inv(INV_ITEM_EFFECT, ci) = EFFECT_AWAKE_DESTONE
+			inv(INV_ITEM_IDENTIFY_LEVEL, ci) = 0
+			return
+		}
+		if ( dbmode == DBMODE_REF ) {
+			ichargelevel = 0
+			infilterref = ""
+			reftype = FILTER_ITEM_TOOL
+			return
+		}
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_TYPE ) {
+				return FILTER_ITEM_TOOL
+			}
+			if ( dbspec == DBSPEC_TYPE_MINOR ) {
+				return FILTER_NONE
+			}
+			if ( dbspec == DBSPEC_VALUE_ORG ) {
+				return 3000
+			}
+			if ( dbspec == DBSPEC_PARAM3_ORG ) {
+				return
+			}
+			if ( dbspec == DBSPEC_CAN_USE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_PCC ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_OBJ_LEVEL ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_RARE_LEVEL ) {
+				return 50
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_DESC ) {
+			if ( jp ) {
+				description(0) = "様々な条件が重なったことにより半具現化した、強者の経験。使うと電流が走ったかのような圧倒的ひらめきを得る。\n#〜イルヴァ幻想辞典〜"
+				description(1) = ""
+				description(2) = ""
+				description(3) = "ＡＰを得られる石だ。使用することができる（使い捨て）。\n#〜鑑定報告書：＜器具＞カテゴリ〜"
+			}
+			else {
+				description(0) = ""
+				description(1) = ""
+				description(3) = ""
+			}
+			return
+		}
+		return 0
+	}
+	if ( dbid == ITEM_ID_MANA_DESTONE ) {
+		if ( dbmode == DBMODE_SET_STATS | dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_VALUE, ci) = 9000
+			inv(INV_ITEM_WEIGHT, ci) = 100
+		}
+		if ( dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_ID, ci) = ITEM_ID_MANA_DESTONE
+			inv(INV_ITEM_PIC, ci) = xy2pic(10, 37)
+			reftype = FILTER_ITEM_TOOL
+			reftypeminor = FILTER_NOTHING
+			inv(INV_ITEM_NUM, ci) = 1
+			fixeditemenc = 0
+			inv(INV_ITEM_EFFECT, ci) = EFFECT_MANA_DESTONE
+			inv(INV_ITEM_IDENTIFY_LEVEL, ci) = 0
+			return
+		}
+		if ( dbmode == DBMODE_REF ) {
+			ichargelevel = 0
+			infilterref = ""
+			reftype = FILTER_ITEM_TOOL
+			return
+		}
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_TYPE ) {
+				return FILTER_ITEM_TOOL
+			}
+			if ( dbspec == DBSPEC_TYPE_MINOR ) {
+				return FILTER_NONE
+			}
+			if ( dbspec == DBSPEC_VALUE_ORG ) {
+				return 9000
+			}
+			if ( dbspec == DBSPEC_PARAM3_ORG ) {
+				return
+			}
+			if ( dbspec == DBSPEC_CAN_USE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_PCC ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_OBJ_LEVEL ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_RARE_LEVEL ) {
+				return 50
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_DESC ) {
+			if ( jp ) {
+				description(0) = "マナの反動によって細胞内の魔導体が凝集したもの。起きていることは実質細胞破壊なので、生成過程はめちゃくちゃ痛い。使うと魔導体が少し修復され魔力のめぐりが改善される。\n#〜イルヴァ幻想辞典〜"
+				description(1) = ""
+				description(2) = ""
+				description(3) = "魔力とＭＰを得られる石だ。使用することができる（使い捨て）。\n#〜鑑定報告書：＜器具＞カテゴリ〜"
+			}
+			else {
+				description(0) = ""
+				description(1) = ""
+				description(3) = ""
+			}
+			return
+		}
+		return 0
+	}
+	if ( dbid == ITEM_ID_FIGHTING_DESTONE ) {
+		if ( dbmode == DBMODE_SET_STATS | dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_VALUE, ci) = 4500
+			inv(INV_ITEM_WEIGHT, ci) = 100
+		}
+		if ( dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_ID, ci) = ITEM_ID_FIGHTING_DESTONE
+			inv(INV_ITEM_PIC, ci) = xy2pic(9, 37)
+			reftype = FILTER_ITEM_TOOL
+			reftypeminor = FILTER_NOTHING
+			inv(INV_ITEM_NUM, ci) = 1
+			fixeditemenc = 0
+			inv(INV_ITEM_EFFECT, ci) = EFFECT_FIGHTING_DESTONE
+			inv(INV_ITEM_IDENTIFY_LEVEL, ci) = 0
+			return
+		}
+		if ( dbmode == DBMODE_REF ) {
+			ichargelevel = 0
+			infilterref = ""
+			reftype = FILTER_ITEM_TOOL
+			return
+		}
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_TYPE ) {
+				return FILTER_ITEM_TOOL
+			}
+			if ( dbspec == DBSPEC_TYPE_MINOR ) {
+				return FILTER_NONE
+			}
+			if ( dbspec == DBSPEC_VALUE_ORG ) {
+				return 4500
+			}
+			if ( dbspec == DBSPEC_PARAM3_ORG ) {
+				return
+			}
+			if ( dbspec == DBSPEC_CAN_USE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_PCC ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_OBJ_LEVEL ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_RARE_LEVEL ) {
+				return 50
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_DESC ) {
+			if ( jp ) {
+				description(0) = "急激に発散された闘志がエーテルと化合して固まったもの。エーテル分布と感情のゆらぎにより炎のような形状になるのだとか。やる気の塊みたいなものであり、使うと疲労が和らいでもう少し頑張れそうな気がしてくる。\n#〜イルヴァ幻想辞典〜"
+				description(1) = ""
+				description(2) = ""
+				description(3) = "耐久とスタミナを得られる石だ。使用することができる（使い捨て）。\n#〜鑑定報告書：＜器具＞カテゴリ〜"
+			}
+			else {
+				description(0) = ""
+				description(1) = ""
+				description(3) = ""
+			}
+			return
+		}
+		return 0
+	}
+	if ( dbid == ITEM_ID_RES_UPPER ) {
+		if ( dbmode == DBMODE_SET_STATS | dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_VALUE, ci) = 1500
+			inv(INV_ITEM_WEIGHT, ci) = 200
+		}
+		if ( dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_ID, ci) = ITEM_ID_RES_UPPER
+			inv(INV_ITEM_PIC, ci) = xy2pic(8, 36)
+			reftype = FILTER_ITEM_TOOL
+			reftypeminor = FILTER_NOTHING
+			inv(INV_ITEM_NUM, ci) = 1
+			fixeditemenc = 0
+			inv(INV_ITEM_EFFECT, ci) = EFFECT_RES_UPPER
+			inv(INV_ITEM_IDENTIFY_LEVEL, ci) = 0
+			return
+		}
+		if ( dbmode == DBMODE_REF ) {
+			ichargelevel = 0
+			infilterref = ""
+			reftype = FILTER_ITEM_TOOL
+			return
+		}
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_TYPE ) {
+				return FILTER_ITEM_TOOL
+			}
+			if ( dbspec == DBSPEC_TYPE_MINOR ) {
+				return FILTER_NONE
+			}
+			if ( dbspec == DBSPEC_VALUE_ORG ) {
+				return 1500
+			}
+			if ( dbspec == DBSPEC_PARAM3_ORG ) {
+				return
+			}
+			if ( dbspec == DBSPEC_CAN_USE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_PCC ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_OBJ_LEVEL ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_RARE_LEVEL ) {
+				return 1000
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_DESC ) {
+			if ( jp ) {
+				description(0) = "過酷な環境に適応するために開発された薬。身体の免疫力を活性化することで、装備に依存せず耐性を獲得するという。妖精の鱗粉から作られるというデマが流行った時期があり、鱗粉を奪われ翅がハゲてスカスカになる妖精が続出したがそれも昔のことである。\n#〜毒も薬も用法・用量〜"
+				description(1) = ""
+				description(2) = ""
+				description(3) = "各耐性を一定まで上げる道具だ。使用することができる（使い捨て）。\n#〜鑑定報告書：＜器具＞カテゴリ〜"
+			}
+			else {
+				description(0) = ""
+				description(1) = ""
+				description(3) = ""
+			}
+			return
+		}
+		return 0
+	}
+	if ( dbid == ITEM_ID_DV_FIXER ) {
+		if ( dbmode == DBMODE_SET_STATS | dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_VALUE, ci) = 1500
+			inv(INV_ITEM_WEIGHT, ci) = 200
+		}
+		if ( dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_ID, ci) = ITEM_ID_DV_FIXER
+			inv(INV_ITEM_PIC, ci) = xy2pic(9, 36)
+			reftype = FILTER_ITEM_TOOL
+			reftypeminor = FILTER_NOTHING
+			inv(INV_ITEM_NUM, ci) = 1
+			fixeditemenc = 0
+			inv(INV_ITEM_EFFECT, ci) = EFFECT_DV_FIXER
+			inv(INV_ITEM_IDENTIFY_LEVEL, ci) = 0
+			return
+		}
+		if ( dbmode == DBMODE_REF ) {
+			ichargelevel = 0
+			infilterref = ""
+			reftype = FILTER_ITEM_TOOL
+			return
+		}
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_TYPE ) {
+				return FILTER_ITEM_TOOL
+			}
+			if ( dbspec == DBSPEC_TYPE_MINOR ) {
+				return FILTER_NONE
+			}
+			if ( dbspec == DBSPEC_VALUE_ORG ) {
+				return 1500
+			}
+			if ( dbspec == DBSPEC_PARAM3_ORG ) {
+				return
+			}
+			if ( dbspec == DBSPEC_CAN_USE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_PCC ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_OBJ_LEVEL ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_RARE_LEVEL ) {
+				return 1000
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_DESC ) {
+			if ( jp ) {
+				description(0) = "反応速度を永続強化し、回避力を上げる薬。とは言っても貧弱な装備をしていてはあまり効果がない。良い装備で増幅した時にこそ真価を発揮する。\n#〜毒も薬も用法・用量〜"
+				description(1) = ""
+				description(2) = ""
+				description(3) = "ＤＶ補正を上げる道具だ。使用することができる（使い捨て）。\n#〜鑑定報告書：＜器具＞カテゴリ〜"
+			}
+			else {
+				description(0) = ""
+				description(1) = ""
+				description(3) = ""
+			}
+			return
+		}
+		return 0
+	}
+	if ( dbid == ITEM_ID_PV_FIXER ) {
+		if ( dbmode == DBMODE_SET_STATS | dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_VALUE, ci) = 1500
+			inv(INV_ITEM_WEIGHT, ci) = 200
+		}
+		if ( dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_ID, ci) = ITEM_ID_PV_FIXER
+			inv(INV_ITEM_PIC, ci) = xy2pic(9, 36)
+			reftype = FILTER_ITEM_TOOL
+			reftypeminor = FILTER_NOTHING
+			inv(INV_ITEM_NUM, ci) = 1
+			fixeditemenc = 0
+			inv(INV_ITEM_EFFECT, ci) = EFFECT_PV_FIXER
+			inv(INV_ITEM_IDENTIFY_LEVEL, ci) = 0
+			return
+		}
+		if ( dbmode == DBMODE_REF ) {
+			ichargelevel = 0
+			infilterref = ""
+			reftype = FILTER_ITEM_TOOL
+			return
+		}
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_TYPE ) {
+				return FILTER_ITEM_TOOL
+			}
+			if ( dbspec == DBSPEC_TYPE_MINOR ) {
+				return FILTER_NONE
+			}
+			if ( dbspec == DBSPEC_VALUE_ORG ) {
+				return 1500
+			}
+			if ( dbspec == DBSPEC_PARAM3_ORG ) {
+				return
+			}
+			if ( dbspec == DBSPEC_CAN_USE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_PCC ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_OBJ_LEVEL ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_RARE_LEVEL ) {
+				return 1000
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_DESC ) {
+			if ( jp ) {
+				description(0) = "表皮の強度を永続強化し、防御力を上げる薬。とは言っても貧弱な装備をしていてはあまり効果がない。良い装備で増幅した時にこそ真価を発揮する。\n#〜毒も薬も用法・用量〜"
+				description(1) = ""
+				description(2) = ""
+				description(3) = "ＰＶ補正を上げる道具だ。使用することができる（使い捨て）。\n#〜鑑定報告書：＜器具＞カテゴリ〜"
+			}
+			else {
+				description(0) = ""
+				description(1) = ""
+				description(3) = ""
+			}
+			return
+		}
+		return 0
+	}
+	if ( dbid == ITEM_ID_X_FRAME ) {
+		if ( dbmode == DBMODE_SET_STATS | dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_VALUE, ci) = 1000
+			inv(INV_ITEM_WEIGHT, ci) = 300
+		}
+		if ( dbmode == DBMODE_SET ) {
+			inv(INV_ITEM_ID, ci) = ITEM_ID_X_FRAME
+			inv(INV_ITEM_PIC, ci) = xy2pic(28, 37)
+			reftype = FILTER_ITEM_TOOL
+			reftypeminor = FILTER_NOTHING
+			inv(INV_ITEM_NUM, ci) = 1
+			fixeditemenc = 0
+			inv(INV_ITEM_EFFECT, ci) = EFFECT_X_FRAME
+			inv(INV_ITEM_IDENTIFY_LEVEL, ci) = 0
+			fixlv = FIX_QUALITY_UNIQUE
+			return
+		}
+		if ( dbmode == DBMODE_REF ) {
+			ichargelevel = 0
+			infilterref = ""
+			reftype = FILTER_ITEM_TOOL
+			return
+		}
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_TYPE ) {
+				return FILTER_ITEM_TOOL
+			}
+			if ( dbspec == DBSPEC_TYPE_MINOR ) {
+				return FILTER_NONE
+			}
+			if ( dbspec == DBSPEC_VALUE_ORG ) {
+				return 1000
+			}
+			if ( dbspec == DBSPEC_PARAM3_ORG ) {
+				return
+			}
+			if ( dbspec == DBSPEC_CAN_USE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_PCC ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_OBJ_LEVEL ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_RARE_LEVEL ) {
+				return 1000
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_DESC ) {
+			if ( jp ) {
+				description(0) = "分解・組立することで状況に応じて性能を変化するパーツ。Ｘ状の形態からさらに６形態に変形する。元々は大型機械兵器用の装備だったのだが、複雑すぎて実用性がないと判断されペーパープランに終わった。機構説明用のミニチュアモデルも作られていたが、まともに変形させることができたのは数名だけだった。\n#〜イルヴァ幻想辞典〜"
+				description(1) = "「性能も悪くないし変形にもロマンを感じたので、本当は予算をつけてやりたかった…」\n#〜機甲将軍『アインリッヒ』の言葉〜"
+				description(2) = "「こんな量産にも整備にも手間がかかって地味に重くてかさばる装備は性能が良くてもダメです」\n#〜特殊部隊長『ミーリス』の言葉〜"
+				description(3) = "ポーショマンを強化する道具だ。使用することができる（使い捨て）。\n#〜鑑定報告書：＜部品＞カテゴリ〜"
+			}
+			else {
+				description(0) = ""
+				description(1) = ""
+				description(3) = ""
+			}
+			return
+		}
+		return 0
+	}
 	if ( dbid == ITEM_ID_SLIME_FUKAGURUMI ) {
 		if ( dbmode == DBMODE_SET_STATS | dbmode == DBMODE_SET ) {
 			inv(INV_ITEM_VALUE, ci) = 100
@@ -40750,10 +41534,10 @@
 		}
 		if ( dbmode == DBMODE_REF_SPEC ) {
 			if ( dbspec == DBSPEC_TYPE ) {
-				return 59000
+				return FILTER_ITEM_TOOL
 			}
 			if ( dbspec == DBSPEC_TYPE_MINOR ) {
-				return 99999
+				return FILTER_NONE
 			}
 			if ( dbspec == DBSPEC_VALUE_ORG ) {
 				return 100
@@ -40818,7 +41602,7 @@
 				return 64000
 			}
 			if ( dbspec == DBSPEC_TYPE_MINOR ) {
-				return 99999
+				return FILTER_NONE
 			}
 			if ( dbspec == DBSPEC_VALUE_ORG ) {
 				return 12000
@@ -124690,6 +125474,22 @@
 	return -999
 
 *db_setFilterItem
+	filter_item(ITEM_ID_WHITE_DARK_ORB) = ""
+	rffilter_item(ITEM_ID_WHITE_DARK_ORB) = ""
+	filter_item(ITEM_ID_AWAKE_DESTONE) = ""
+	rffilter_item(ITEM_ID_AWAKE_DESTONE) = ""
+	filter_item(ITEM_ID_MANA_DESTONE) = ""
+	rffilter_item(ITEM_ID_MANA_DESTONE) = ""
+	filter_item(ITEM_ID_FIGHTING_DESTONE) = ""
+	rffilter_item(ITEM_ID_FIGHTING_DESTONE) = ""
+	filter_item(ITEM_ID_RES_UPPER) = ""
+	rffilter_item(ITEM_ID_RES_UPPER) = ""
+	filter_item(ITEM_ID_DV_FIXER) = ""
+	rffilter_item(ITEM_ID_DV_FIXER) = ""
+	filter_item(ITEM_ID_PV_FIXER) = ""
+	rffilter_item(ITEM_ID_PV_FIXER) = ""
+	filter_item(ITEM_ID_X_FRAME) = ""
+	rffilter_item(ITEM_ID_X_FRAME) = ""
 	filter_item(ITEM_ID_SLIME_FUKAGURUMI) = ""
 	rffilter_item(ITEM_ID_SLIME_FUKAGURUMI) = ""
 	filter_item(ITEM_ID_SLIME_MOLD) = ""
@@ -127257,6 +128057,115 @@
 	return
 
 *db_setItem
+	ilight(ITEM_ID_WHITE_DARK_ORB) = LIGHT_TYPE_ITEM
+	ialphanameref(ITEM_ID_WHITE_DARK_ORB) = ""
+	iorgweight(ITEM_ID_WHITE_DARK_ORB) = 100
+	if ( jp ) {
+		ioriginalnameref(ITEM_ID_WHITE_DARK_ORB) = "白魔神石"
+	}
+	else {
+		ioriginalnameref(ITEM_ID_WHITE_DARK_ORB) = "white dark orb "
+		ioriginalnameref2(ITEM_ID_WHITE_DARK_ORB) = ""
+	}
+	ipicref(ITEM_ID_WHITE_DARK_ORB) = xy2pic(7, 35)
+	iknownnameref(ITEM_ID_WHITE_DARK_ORB) = ioriginalnameref(ITEM_ID_WHITE_DARK_ORB)
+	icolref(ITEM_ID_WHITE_DARK_ORB) = COLOR_DEFAULT
+	ilight(ITEM_ID_AWAKE_DESTONE) = LIGHT_TYPE_ITEM
+	ialphanameref(ITEM_ID_AWAKE_DESTONE) = ""
+	iorgweight(ITEM_ID_AWAKE_DESTONE) = 100
+	if ( jp ) {
+		ioriginalnameref(ITEM_ID_AWAKE_DESTONE) = "覚醒の閃石"
+	}
+	else {
+		ioriginalnameref(ITEM_ID_AWAKE_DESTONE) = "awake destone"
+		ioriginalnameref2(ITEM_ID_AWAKE_DESTONE) = ""
+	}
+	ipicref(ITEM_ID_AWAKE_DESTONE) = xy2pic(11, 37)
+	iknownnameref(ITEM_ID_AWAKE_DESTONE) = ioriginalnameref(ITEM_ID_AWAKE_DESTONE)
+	icolref(ITEM_ID_AWAKE_DESTONE) = COLOR_DEFAULT
+	ilight(ITEM_ID_MANA_DESTONE) = LIGHT_TYPE_ITEM
+	ialphanameref(ITEM_ID_MANA_DESTONE) = ""
+	iorgweight(ITEM_ID_MANA_DESTONE) = 100
+	if ( jp ) {
+		ioriginalnameref(ITEM_ID_MANA_DESTONE) = "魔導結石"
+	}
+	else {
+		ioriginalnameref(ITEM_ID_MANA_DESTONE) = "mana destone"
+		ioriginalnameref2(ITEM_ID_MANA_DESTONE) = ""
+	}
+	ipicref(ITEM_ID_MANA_DESTONE) = xy2pic(10, 37)
+	iknownnameref(ITEM_ID_MANA_DESTONE) = ioriginalnameref(ITEM_ID_MANA_DESTONE)
+	icolref(ITEM_ID_MANA_DESTONE) = COLOR_DEFAULT
+	ilight(ITEM_ID_FIGHTING_DESTONE) = LIGHT_TYPE_ITEM
+	ialphanameref(ITEM_ID_FIGHTING_DESTONE) = ""
+	iorgweight(ITEM_ID_FIGHTING_DESTONE) = 100
+	if ( jp ) {
+		ioriginalnameref(ITEM_ID_FIGHTING_DESTONE) = "闘魂石"
+	}
+	else {
+		ioriginalnameref(ITEM_ID_FIGHTING_DESTONE) = "fighting destone"
+		ioriginalnameref2(ITEM_ID_FIGHTING_DESTONE) = ""
+	}
+	ipicref(ITEM_ID_FIGHTING_DESTONE) = xy2pic(9, 37)
+	iknownnameref(ITEM_ID_FIGHTING_DESTONE) = ioriginalnameref(ITEM_ID_FIGHTING_DESTONE)
+	icolref(ITEM_ID_FIGHTING_DESTONE) = COLOR_DEFAULT
+	ilight(ITEM_ID_RES_UPPER) = LIGHT_TYPE_NONE
+	ialphanameref(ITEM_ID_RES_UPPER) = ""
+	iorgweight(ITEM_ID_RES_UPPER) = 200
+	if ( jp ) {
+		ioriginalnameref(ITEM_ID_RES_UPPER) = "Resアッパー"
+	}
+	else {
+		ioriginalnameref(ITEM_ID_RES_UPPER) = "Res upper"
+		ioriginalnameref2(ITEM_ID_RES_UPPER) = ""
+	}
+	ipicref(ITEM_ID_RES_UPPER) = xy2pic(8, 36)
+	iknownnameref(ITEM_ID_RES_UPPER) = ioriginalnameref(ITEM_ID_RES_UPPER)
+	icolref(ITEM_ID_RES_UPPER) = COLOR_YELLOW
+	ilight(ITEM_ID_DV_FIXER) = LIGHT_TYPE_NONE
+	ialphanameref(ITEM_ID_DV_FIXER) = ""
+	iorgweight(ITEM_ID_DV_FIXER) = 200
+	if ( jp ) {
+		ioriginalnameref(ITEM_ID_DV_FIXER) = "DVフィクサー"
+	}
+	else {
+		ioriginalnameref(ITEM_ID_DV_FIXER) = "DV fixer"
+		ioriginalnameref2(ITEM_ID_DV_FIXER) = ""
+	}
+	ipicref(ITEM_ID_DV_FIXER) = xy2pic(9, 36)
+	iknownnameref(ITEM_ID_DV_FIXER) = ioriginalnameref(ITEM_ID_DV_FIXER)
+	icolref(ITEM_ID_DV_FIXER) = COLOR_BLUE
+	ilight(ITEM_ID_PV_FIXER) = LIGHT_TYPE_NONE
+	ialphanameref(ITEM_ID_PV_FIXER) = ""
+	iorgweight(ITEM_ID_PV_FIXER) = 200
+	if ( jp ) {
+		ioriginalnameref(ITEM_ID_PV_FIXER) = "PVフィクサー"
+	}
+	else {
+		ioriginalnameref(ITEM_ID_PV_FIXER) = "PV fixer"
+		ioriginalnameref2(ITEM_ID_PV_FIXER) = ""
+	}
+	ipicref(ITEM_ID_PV_FIXER) = xy2pic(9, 36)
+	iknownnameref(ITEM_ID_PV_FIXER) = ioriginalnameref(ITEM_ID_PV_FIXER)
+	icolref(ITEM_ID_PV_FIXER) = COLOR_BROWN
+	ilight(ITEM_ID_X_FRAME) = LIGHT_TYPE_NONE
+	ialphanameref(ITEM_ID_X_FRAME) = ""
+	iorgweight(ITEM_ID_X_FRAME) = 300
+	if ( jp ) {
+		ioriginalnameref(ITEM_ID_X_FRAME) = "Ｘフレーム"
+	}
+	else {
+		ioriginalnameref(ITEM_ID_X_FRAME) = "X-Frame"
+		ioriginalnameref2(ITEM_ID_X_FRAME) = ""
+	}
+	ipicref(ITEM_ID_X_FRAME) = xy2pic(28, 37)
+	if ( jp ) {
+		iknownnameref(ITEM_ID_X_FRAME) = "複雑な部品"
+	}
+	else {
+		iknownnameref(ITEM_ID_X_FRAME) = "intricate parts"
+	}
+	icolref(ITEM_ID_X_FRAME) = COLOR_DEFAULT
 	ilight(ITEM_ID_SLIME_FUKAGURUMI) = LIGHT_TYPE_NONE
 	ialphanameref(ITEM_ID_SLIME_FUKAGURUMI) = ""
 	iorgweight(ITEM_ID_SLIME_FUKAGURUMI) = 1000

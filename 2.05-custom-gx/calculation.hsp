@@ -223,6 +223,29 @@
 			locvar_calcitemvalue_value += inv(INV_ITEM_PARAM2, calcitemvalue_itemid) * 450
 		}
 	}
+	if ( inv(INV_ITEM_ID, calcitemvalue_itemid) == ITEM_ID_MEMORY_FRAGMENT ) {
+		if ( inv(INV_ITEM_PARAM2, calcitemvalue_itemid) > 0 ) {
+			locvar_calcitemvalue_value += inv(INV_ITEM_PARAM2, calcitemvalue_itemid) * 30
+		}
+	}
+	if ( inv(INV_ITEM_ID, calcitemvalue_itemid) == ITEM_ID_FIGHTING_DESTONE ) {
+		if ( inv(INV_ITEM_PARAM2, calcitemvalue_itemid) > 0 ) {
+			locvar_calcitemvalue_value += inv(INV_ITEM_PARAM2, calcitemvalue_itemid) * 30
+		}
+	}
+	if ( inv(INV_ITEM_ID, calcitemvalue_itemid) == ITEM_ID_MANA_DESTONE ) {
+		if ( inv(INV_ITEM_PARAM2, calcitemvalue_itemid) > 0 ) {
+			locvar_calcitemvalue_value += inv(INV_ITEM_PARAM2, calcitemvalue_itemid) * 60
+		}
+	}
+	if ( inv(INV_ITEM_ID, calcitemvalue_itemid) == ITEM_ID_DEVIL_FRAGMENT ) {
+		if ( inv(INV_ITEM_PARAM2, calcitemvalue_itemid) > 0 ) {
+			locvar_calcitemvalue_value *= limit(inv(INV_ITEM_PARAM2, calcitemvalue_itemid) + 1, 1, 30)
+		}
+	}
+	if ( inv(INV_ITEM_ID, calcitemvalue_itemid) == ITEM_ID_AWAKE_DESTONE ) {
+		locvar_calcitemvalue_value += (inv(INV_ITEM_PARAM2, calcitemvalue_itemid) + inv(INV_ITEM_PARAM3, calcitemvalue_itemid) + inv(INV_ITEM_AMUR_CAGE, calcitemvalue_itemid)) * 5
+	}
 	if ( inv(INV_ITEM_KNOWN, calcitemvalue_itemid) >= ITEM_KNOWN_FULL ) {
 		if ( inv(INV_ITEM_STATUS, calcitemvalue_itemid) == ITEM_STATUS_BLESSED ) {
 			locvar_calcitemvalue_value = locvar_calcitemvalue_value * 6 / 5
@@ -1067,6 +1090,12 @@
 	if ( cdata(CDATA_ID, r1) == CREATURE_ID_WANDERING_PENGUIN ) {
 		skillinit SKILL_NORMAL_SWIMMING, r1, 15
 	}
+	if ( cdata(CDATA_ID, r1) == CREATURE_ID_CHAOSHAPRINCESS_FSSSY ) {
+		skillinit SKILL_NORMAL_SWIMMING, r1, 10
+	}
+	if ( cdata(CDATA_ID, r1) == CREATURE_ID_ETHERIAN_PLUS ) {
+		skillinit SKILL_NORMAL_SWIMMING, r1, 5
+	}
 	if ( cdata(CDATA_ID, r1) == CREATURE_ID_NERES_THE_AMNESIAC ) {
 		skillinit SKILL_ATTR_STR, r1, 6
 	}
@@ -1449,6 +1478,9 @@
 	return 0
 
 *calcTrap
+	if ( cc == CHARA_PLAYER | cdata(CDATA_RELATION, cc) == RELATION_ALLY & feat(FEAT_CELL_SUB_FEATURE_ID) > CELL_SUB_FEATURE_TRAP_QUEST_PITFALL2 ) {
+		return 1
+	}
 	if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_MINE ) {
 		return 0
 	}
@@ -1646,7 +1678,7 @@
 		healmp r1, 1, FALSE
 	}
 	if ( cdata(CDATA_CONDITION_POISON, r1) > 0 ) {
-		dmghp r1, rnd(2 + sdata(SKILL_ATTR_CON, r1) / 10), DAMAGE_FROM_POISON
+		dmghp r1, cdata(CDATA_MAX_HP, r1) / 15 + 2, DAMAGE_FROM_POISON
 		healcon r1, CONDITION_POISON, 1
 		if ( cdata(CDATA_CONDITION_POISON, r1) > 0 ) {
 			cdata(CDATA_EMO_ICON, r1) = 8 + 100
@@ -1675,7 +1707,7 @@
 			cdata(CDATA_CONDITION_SUFFOCATION, r1) = 0
 		}
 		else {
-			dmghp r1, rnd(50 + sdata(SKILL_ATTR_CON, r1)) + 50, DAMAGE_FROM_SUFFOCATION
+			dmghp r1, cdata(CDATA_MAX_HP, r1) / 15 + 2, DAMAGE_FROM_SUFFOCATION
 			regen = 0
 		}
 	}

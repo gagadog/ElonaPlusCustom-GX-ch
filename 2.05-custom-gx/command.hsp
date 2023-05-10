@@ -48,6 +48,31 @@
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_KINGS_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_HAPPY_BED ) {
 			bedtxt += lang("とっても寝心地が良さそうだ！", "I think I'll be able to sleep very comfortably!")
 		}
+		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_BOMB_BARREL ) {
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
+				bedtxt += lang("「たる…」", "\"Barrel...\"")
+			}
+		}
+		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_POTION_NEKTAR ) {
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
+				bedtxt += lang("「たる〜」", "\"Barrel~\"")
+			}
+		}
+		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_SNOW_BARREL ) {
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
+				bedtxt += lang("「たるっ」", "\"Barrell.\"")
+			}
+		}
+		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_CARGO_BARREL ) {
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
+				bedtxt += lang("「たる！」", "\"Barrel!\"")
+			}
+	}
+		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_BARREL ) {
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
+				bedtxt += lang("「たーる」", "\"Barrel.\"")
+			}
+		}
 		return bedtxt
 	}
 	return lang("ここには" + rtval + "種類のアイテムがある。", "There are " + rtval + " items lying here.")
@@ -2558,6 +2583,8 @@
 	noteadd " - Quest - "
 	noteadd ""
 	gosub *quest_info
+	val = 0
+	gosub *daily_info
 	repeat gdata(GDATA_CLIENT)
 		if ( qdata(QDATA_STATUS, cnt) == QUEST_STATE_NONE ) {
 			continue
@@ -2840,10 +2867,16 @@
 				color 100, 100, 0
 			}
 			if ( s(1) == "QC" ) {
-				color 0, 100, 100
+				color 0, 100, 0
 			}
 			if ( s(1) == "QM" ) {
-				color 0, 100, 0
+				color 200, 0, 0
+			}
+			if ( s(1) == "QD" ) {
+				color 200, 100, 0
+			}
+			if ( s(1) == "QS" ) {
+				color 0, 100, 100
 			}
 			if ( s(1) == "RE" ) {
 				color 100, 0, 0
@@ -6106,6 +6139,12 @@
 			txt lang(cdatan(CDATAN_NAME, tc) + "はあなたが何を伝えようとしたのか、すごく気になっている…。", cdatan(CDATAN_NAME, tc) + " becomes very curious about what you were wanting to tell " + him(tc) + "...")
 			cdata(CDATA_EMO_ICON, tc) = 21 + 100 * 3
 		}
+		if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 5 ) {
+			snd SOUNDLIST_WRITE1
+			txtef COLOR_GREEN
+			txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+			cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+		}
 		cdata(CDATA_INTEREST, tc) -= 80
 		cdata(CDATA_INTEREST_RENEW, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 12
 		if ( rtval >= 1 & rtval <= 3 ) {
@@ -6153,7 +6192,7 @@
 					txt lang("このゲームモードでは遺伝子を残せない。", "You can't make a gene in this game mode.")
 					goto *turn_end
 				}
-				if ( gdata(GDATA_SLEEP) < 15 ) {
+				if ( gdata(GDATA_SLEEP) < 13 ) {
 					snd SOUNDLIST_FAIL1
 					txt lang("「まだ眠くない" + _yo(3) + "」", cdatan(CDATAN_NAME, tc) + " isn't sleepy yet.")
 					goto *turn_end
@@ -11665,8 +11704,35 @@
 						continue
 					}
 				}
+				if ( invctrl(1) == 28 ) {
+					if ( inv(INV_ITEM_ID, cnt) != ITEM_ID_CF_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_CRUSH_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_BATTLE_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_SUPER_POTIOMAN ) {
+						continue
+					}
+					if ( inv(INV_ITEM_AMUR_CAGE, cnt) == 0 ) {
+						continue
+					}
+				}
+				if ( invctrl(1) == 29 ) {
+					if ( inv(INV_ITEM_ID, cnt) != ITEM_ID_CF_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_CRUSH_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_BATTLE_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_SUPER_POTIOMAN ) {
+						continue
+					}
+					if ( inv(INV_ITEM_PARAM3, cnt) == 0 ) {
+						continue
+					}
+					if ( inv(INV_ITEM_AMUR_CAGE, cnt) != 0 ) {
+						continue
+					}
+				}
+				if ( invctrl(1) == 30 ) {
+					if ( inv(INV_ITEM_ID, cnt) != ITEM_ID_CF_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_CRUSH_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_BATTLE_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_SUPER_POTIOMAN ) {
+						continue
+					}
+					if ( inv(INV_ITEM_PARAM3, cnt) == 0 ) {
+						continue
+					}
+				}
 			}
-			if ( invctrl == 24 ) {
+			if ( invctrl == INVCTRL_PUT ) {
 				if ( invctrl(1) == 0 ) {
 					if ( gdata(GDATA_AREA) == AREA_LUMIEST | gdata(GDATA_AREA) == AREA_ARCBELC ) {
 						if ( inv(INV_ITEM_ID, cnt) != ITEM_ID_ANCIENT_BOOK | inv(INV_ITEM_PARAM2, cnt) == 0 ) {
@@ -12217,6 +12283,18 @@
 		pos wx + 37, wy + 69 + cnt * 19
 		gmode 2, chipi(CHIPI_WIDTH, p(1)), chipi(CHIPI_HEIGHT, p(1))
 		grotate 1, 0, 960, 0, chipi(CHIPI_WIDTH, p(1)) * inf_tiles / chipi(CHIPI_HEIGHT, p(1)), inf_tiles
+		if ( inv(INV_ITEM_ID, p) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, p) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, p) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, p) == ITEM_ID_SUPER_POTIOMAN ) {
+			if ( inv(INV_ITEM_SHOP_SAMPLE, p) > 0 ) {
+				pos wx + 37, wy + 69 + cnt * 19
+				gmode 2, chipi(CHIPI_WIDTH, p(1)), chipi(CHIPI_HEIGHT, p(1))
+				grotate BUFFER_ITEM, 1008 - (inv(INV_ITEM_SHOP_SAMPLE, p) - 50) * 48, 1776, 0, 48, 48
+			}
+			if ( inv(INV_ITEM_AMUR_CAGE, p) > 0 ) {
+				pos wx + 37, wy + 69 + cnt * 19
+				gmode 2, chipi(CHIPI_WIDTH, p(1)), chipi(CHIPI_HEIGHT, p(1))
+				grotate BUFFER_ITEM, 1344 - inv(INV_ITEM_AMUR_CAGE, p) * 48, 1776, 0, 48, 48
+			}
+		}
 		if ( inv(INV_ITEM_EQUIP, p) != 0 ) {
 			pos wx + 46, wy + 72 + cnt * 18 - 3
 			gcopy 3, 12, 348, 12, 12
@@ -13283,12 +13361,12 @@
 			if ( invctrl(1) == 0 ) {
 				snd SOUNDLIST_INV
 				if ( gdata(GDATA_AREA) == AREA_LUMIEST | gdata(GDATA_AREA) == AREA_ARCBELC ) {
-					gdata(GDATA_FLAG_GUILD_MAGE_NORMA) -= (inv(INV_ITEM_PARAM1, ci) + 1) * inv(INV_ITEM_NUM, ci)
+					gdata(GDATA_FLAG_GUILD_MAGE_NORMA) -= (inv(INV_ITEM_PARAM1, ci) + 5) * inv(INV_ITEM_NUM, ci)
 					if ( gdata(GDATA_FLAG_GUILD_MAGE_NORMA) <= 0 ) {
 						gdata(GDATA_FLAG_GUILD_MAGE_NORMA) = 0
 					}
 					txtef COLOR_GREEN
-					txt lang(itemname(ci) + "を納入した", "You deliver " + itemname(ci) + ". ") + "(" + (inv(INV_ITEM_PARAM1, ci) + 1) * inv(INV_ITEM_NUM, ci) + " Guild Point)"
+					txt lang(itemname(ci) + "を納入した", "You deliver " + itemname(ci) + ". ") + "(" + (inv(INV_ITEM_PARAM1, ci) + 5) * inv(INV_ITEM_NUM, ci) + " Guild Point)"
 					if ( gdata(GDATA_FLAG_GUILD_MAGE_NORMA) == 0 ) {
 						snd SOUNDLIST_COMPLETE1
 						txtef COLOR_GREEN

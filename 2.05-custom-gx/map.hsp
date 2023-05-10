@@ -1151,6 +1151,22 @@
 			}
 		loop
 	}
+	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
+		if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 6 ) {
+			snd SOUNDLIST_WRITE1
+			txtef COLOR_GREEN
+			txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+			cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+		}
+	}
+	if ( gdata(GDATA_AREA) == AREA_WILDERNESS ) {
+		if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 7 ) {
+			snd SOUNDLIST_WRITE1
+			txtef COLOR_GREEN
+			txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+			cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+		}
+	}
 	if ( adata(ADATA_TYPE, gdata(GDATA_AREA)) != MAP_TYPE_WORLD & adata(ADATA_TYPE, gdata(GDATA_AREA)) != MAP_TYPE_LOCAL & gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
 		autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
 	}
@@ -6286,7 +6302,6 @@
 			else {
 				cell_featset 17, 2, tile_upstairs, CELL_FEATURE_UPSTAIRS, 12
 			}
-			txt lang("「…か…び…よ…」", cnvtalk("...dle.. fin..."))
 		}
 		if ( gdata(GDATA_LEVEL) == 22 ) {
 			map_initcustom "meiq122"
@@ -6313,7 +6328,6 @@
 			else {
 				cell_featset 6, 7, tile_upstairs, CELL_FEATURE_UPSTAIRS, 12
 			}
-			txt lang("「こ…び…だ…」", cnvtalk("...ittl.. fin..."))
 		}
 		if ( gdata(GDATA_LEVEL) == 26 ) {
 			map_initcustom "meiq162"
@@ -6385,7 +6399,6 @@
 			else {
 				cell_featset 11, 4, tile_upstairs, CELL_FEATURE_UPSTAIRS, 22
 			}
-			txt lang("「あお…だ…」", cnvtalk("Bl.. sta..."))
 			evadd EVENT_AMURDEAD_SUB_FIREWORKS
 		}
 		if ( gdata(GDATA_LEVEL) == 32 ) {
@@ -6413,7 +6426,6 @@
 			else {
 				cell_featset 23, 4, tile_upstairs, CELL_FEATURE_UPSTAIRS, 22
 			}
-			txt lang("「あお…だ…」", cnvtalk("Bl.. sta..."))
 			evadd EVENT_AMURDEAD_SUB_FIREWORKS
 		}
 		if ( gdata(GDATA_LEVEL) == 36 ) {
@@ -6486,7 +6498,6 @@
 			else {
 				cell_featset 17, 2, tile_upstairs, CELL_FEATURE_UPSTAIRS, 32
 			}
-			txt lang("「赤の階…だ…」", cnvtalk("Re..d sta..irs..."))
 		}
 		if ( gdata(GDATA_LEVEL) == 42 ) {
 			map_initcustom "meiq124"
@@ -6513,7 +6524,6 @@
 			else {
 				cell_featset 11, 4, tile_upstairs, CELL_FEATURE_UPSTAIRS, 32
 			}
-			txt lang("「くすりゆび…階だ…」", cnvtalk("Rin..g fin...ger st...airs..."))
 		}
 		if ( gdata(GDATA_LEVEL) == 46 ) {
 			map_initcustom "meiq164"
@@ -6585,7 +6595,6 @@
 			else {
 				cell_featset 23, 4, tile_upstairs, CELL_FEATURE_UPSTAIRS, 42
 			}
-			txt lang("「ひとさしゆびの階段だよ…」", cnvtalk("Index finger stairs..."))
 		}
 		if ( gdata(GDATA_LEVEL) == 52 ) {
 			map_initcustom "meiq125"
@@ -6612,7 +6621,6 @@
 			else {
 				cell_featset 6, 7, tile_upstairs, CELL_FEATURE_UPSTAIRS, 42
 			}
-			txt lang("「青の階段だよ…」", cnvtalk("Blue stairs..."))
 		}
 		if ( gdata(GDATA_LEVEL) == 56 ) {
 			map_initcustom "meiq165"
@@ -10096,6 +10104,47 @@
 					}
 				}
 			}
+		}
+	}
+	if ( gdata(GDATA_AREA) == AREA_AMUR_CAGE ) {
+		if ( gdata(GDATA_LEVEL) == 10 ) {
+			msgtemp += lang("ネヘルタード「時間がない…Shiftキーで走って…」", "Amurdad whispers, " + cnvtalk("There's no time to spare...so run by Shift key..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 11 ) {
+			msgtemp += lang("ネヘルタード「みぎの…どに……」", "Amurdad whispers, " + cnvtalk("...ig...t co....r..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 12 ) {
+			msgtemp += lang("ネヘルタード「ひ…りの…どに…」", "Amurdad whispers, " + cnvtalk("..ef.. c..r..er.."))
+		}
+		if ( gdata(GDATA_LEVEL) == 20 ) {
+			msgtemp += lang("ネヘルタード「何度も親指を目指して…」", "Amurdad whispers, " + cnvtalk("Go thumb stairs...again and again..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 21 ) {
+			msgtemp += lang("ネヘルタード「…か…びの…段…」", "Amurdad whispers, " + cnvtalk("...dle.. fin..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 22 ) {
+			msgtemp += lang("ネヘルタード「こ…びの……だ…」", "Amurdad whispers, " + cnvtalk("...ittl.. fin..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 31 ) {
+			msgtemp += lang("ネヘルタード「あお…階だ…」", "Amurdad whispers, " + cnvtalk("Bl.. sta..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 32 ) {
+			msgtemp += lang("ネヘルタード「あおの…いだ…」", "Amurdad whispers, " + cnvtalk("Bl.. sta..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 41 ) {
+			msgtemp += lang("ネヘルタード「赤の階…ん…」", "Amurdad whispers, " + cnvtalk("R..d st..irs..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 42 ) {
+			msgtemp += lang("ネヘルタード「くすりゆ…の階だ…」", "Amurdad whispers, " + cnvtalk("Ri..g fi...ger st...irs..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 51 ) {
+			msgtemp += lang("ネヘルタード「ひとさしゆびの階段だよ…」", "Amurdad whispers, " + cnvtalk("Index finger stairs..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 52 ) {
+			msgtemp += lang("ネヘルタード「青の階段だよ…」", "Amurdad whispers, " + cnvtalk("Blue stairs..."))
+		}
+		if ( gdata(GDATA_LEVEL) == 60 ) {
+			msgtemp += lang("ネヘルタード「まだ…こちら側の岸にいるはず…」", "Amurdad whispers, " + cnvtalk("There's the child...on the shore on this side..."))
 		}
 	}
 	if ( mdata(MDATA_TYPE) >= MAP_TYPE_DUNGEON_MIN ) {
@@ -13875,7 +13924,7 @@
 			}
 		}
 		mltype = 0
-		adata(ADATA_MAX_LEVEL, p) = adata(ADATA_MIN_LEVEL, p) + rnd(4) + 2
+		adata(ADATA_MAX_LEVEL, p) = adata(ADATA_MIN_LEVEL, p) + 2
 		adata(ADATA_CAN_SAVE, p) = 1
 		adata(ADATA_RESTORE_POS, p) = 0
 		adata(ADATA_BOSS, p) = 0
@@ -14529,8 +14578,8 @@
 	}
 	if ( gdata(GDATA_AREA) == AREA_VALM ) {
 		if ( gdata(GDATA_LEVEL) == 3 ) {
-			if ( gdata(GDATA_SLEEP) >= 15 ) {
-				gdata(GDATA_SLEEP) = 15 - 2
+			if ( gdata(GDATA_SLEEP) >= 13 ) {
+				gdata(GDATA_SLEEP) = 13 - 2
 			}
 			mdata(MDATA_TIMESCALE) = 5000000
 		}
@@ -14576,8 +14625,8 @@
 					cdata(CDATA_THIRST, CHARA_PLAYER) += 5000
 				}
 			}
-			if ( gdata(GDATA_SLEEP) >= 15 ) {
-				gdata(GDATA_SLEEP) = 15 - 2
+			if ( gdata(GDATA_SLEEP) >= 13 ) {
+				gdata(GDATA_SLEEP) = 13 - 2
 			}
 			mdata(MDATA_TIMESCALE) = 1000000
 		}

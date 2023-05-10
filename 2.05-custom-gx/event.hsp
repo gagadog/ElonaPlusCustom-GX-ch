@@ -3003,3 +3003,68 @@
 	}
 	return
 
+*daily_quest_reward
+	invfile = 4
+	file = "shoptmp.s2"
+	fmode = 4
+	gosub *game_ctrlFile
+	file = "shop" + 4 + ".s2"
+	existwrapper exedir + "tmp\\" + file
+	if ( strsize != (-1) ) {
+		fmode = 3
+		gosub *game_ctrlFile
+	}
+	else {
+		inv_getheader -1
+		repeat invrange, invhead
+			inv(INV_ITEM_NUM, cnt) = 0
+		loop
+	}
+	inv_getheader -1
+	p = -1
+	repeat invrange, invhead
+		if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+			p = cnt
+			break
+		}
+	loop
+	if ( p == (-1) ) {
+		item_compress -1
+	}
+	mode = MODELIST_SHOP
+	if ( cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) / 10 \ 7 == 2 ) {
+		dbid = 1271
+	}
+	if ( cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) / 10 \ 7 == 3 ) {
+		dbid = 1270
+	}
+	if ( cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) / 10 \ 7 == 4 ) {
+		dbid = 1269
+	}
+	if ( cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) / 10 \ 7 == 5 ) {
+		dbid = 1270
+	}
+	if ( cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) / 10 \ 7 == 6 ) {
+		dbid = 1269
+	}
+	if ( cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) / 10 \ 7 == 0 ) {
+		dbid = 1270
+	}
+	if ( cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) / 10 \ 7 == 1 ) {
+		dbid = 1269
+	}
+	flt
+	itemcreate -1, dbid, -1, -1, 0
+	inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+	snd SOUNDLIST_DING2
+	txtmore
+	txtef COLOR_SKY_BLUE
+	txt lang("デイリークエストの報酬アイテムが給料として振り込まれた。", "As a salary, dairy quest reward have been sent to your house.")
+	file = "shop" + invfile + ".s2"
+	fmode = 4
+	gosub *game_ctrlFile
+	file = "shoptmp.s2"
+	fmode = 3
+	gosub *game_ctrlFile
+	mode = MODELIST_MAIN
+	return

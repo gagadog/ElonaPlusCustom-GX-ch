@@ -2305,6 +2305,7 @@
 						if ( locvar_cell_draw_flooritem(locvar_cell_draw_cnt2) == 999 + RANGE_INV2 ) {
 							continue
 						}
+						locvar_cell_draw_fp = locvar_cell_draw_flooritem(locvar_cell_draw_cnt2)
 						locvar_cell_draw_p = inv(INV_ITEM_PIC, locvar_cell_draw_flooritem(locvar_cell_draw_cnt2))
 						locvar_cell_draw_i = inv(INV_ITEM_COL, locvar_cell_draw_flooritem(locvar_cell_draw_cnt2))
 
@@ -2339,6 +2340,16 @@
 							else {
 								gcopy 1, chipi(CHIPI_X, locvar_cell_draw_p) + (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) - (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) == chipi(CHIPI_ANIM, locvar_cell_draw_p)) * 2 * (chipi(CHIPI_ANIM, locvar_cell_draw_p) != 0)) * inf_tiles, chipi(CHIPI_Y, locvar_cell_draw_p), chipi(CHIPI_WIDTH, locvar_cell_draw_p), chipi(CHIPI_HEIGHT, locvar_cell_draw_p)
 							}
+							if ( inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_SUPER_POTIOMAN ) {
+								if ( inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) > 0 ) {
+									pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p) - locvar_cell_draw_stackh
+									gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
+								}
+								if ( inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) > 0 ) {
+									pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p) - locvar_cell_draw_stackh
+									gcopy BUFFER_ITEM, 1344 - inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) * 48, 1776, 48, 48
+								}
+							}
 						}
 						locvar_cell_draw_stackh += chipi(CHIPI_S, locvar_cell_draw_p)
 						if ( locvar_cell_draw_p == xy2pic(3, 16) | locvar_cell_draw_p == xy2pic(30, 33) | locvar_cell_draw_p == xy2pic(18, 36) ) {
@@ -2351,6 +2362,15 @@
 				else {
 					locvar_cell_draw_i = wpeek(map(locvar_cell_draw_x, locvar_cell_draw_y, 5), 2)
 					locvar_cell_draw_p = wpeek(map(locvar_cell_draw_x, locvar_cell_draw_y, 5), 0)
+					inv_getheader -1
+					repeat invrange, invhead
+						if ( inv(INV_ITEM_NUM, cnt) > 0 ) {
+							if ( inv(INV_ITEM_X, cnt) == locvar_cell_draw_x & inv(INV_ITEM_Y, cnt) == locvar_cell_draw_y ) {
+								rtval(1) = cnt
+							}
+						}
+					loop
+					locvar_cell_draw_fp = rtval(1)
 *skipitemDraw
                     preparePicItem locvar_cell_draw_p, locvar_cell_draw_i
 
@@ -2567,6 +2587,16 @@
 									color 0, 0, 0
 									pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
 									gcopy BUFFER_ITEM, 0, 960, chipi(CHIPI_WIDTH, locvar_cell_draw_p), chipi(CHIPI_HEIGHT, locvar_cell_draw_p)
+									if ( inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_SUPER_POTIOMAN ) {
+										if ( inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) > 0 ) {
+											pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
+											gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
+										}
+										if ( inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) > 0 ) {
+											pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
+											gcopy BUFFER_ITEM, 1344 - inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) * 48, 1776, 48, 48
+										}
+									}
 								}
 								else {
 									gmode 4, inf_tiles, inf_tiles, 140
@@ -2581,6 +2611,16 @@
 									else {
 										gcopy BUFFER_ITEM, chipi(CHIPI_X, locvar_cell_draw_p) + (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) - (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) == chipi(CHIPI_ANIM, locvar_cell_draw_p)) * 2 * (chipi(CHIPI_ANIM, locvar_cell_draw_p) != 0)) * inf_tiles, chipi(CHIPI_Y, locvar_cell_draw_p), chipi(CHIPI_WIDTH, locvar_cell_draw_p), chipi(CHIPI_HEIGHT, locvar_cell_draw_p) - 22
 									}
+									if ( inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_SUPER_POTIOMAN ) {
+										if ( inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) > 0 ) {
+											pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
+											gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
+										}
+										if ( inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) > 0 ) {
+											pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
+											gcopy BUFFER_ITEM, 1344 - inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) * 48, 1776, 48, 48
+										}
+									}
 								}
 							}
 							else {
@@ -2589,6 +2629,16 @@
 								}
 								else {
 									gcopy BUFFER_ITEM, chipi(CHIPI_X, locvar_cell_draw_p) + (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) - (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) == chipi(CHIPI_ANIM, locvar_cell_draw_p)) * 2 * (chipi(CHIPI_ANIM, locvar_cell_draw_p) != 0)) * inf_tiles, chipi(CHIPI_Y, locvar_cell_draw_p), chipi(CHIPI_WIDTH, locvar_cell_draw_p), chipi(CHIPI_HEIGHT, locvar_cell_draw_p)
+								}
+								if ( inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_SUPER_POTIOMAN ) {
+									if ( inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) > 0 ) {
+										pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
+										gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
+									}
+									if ( inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) > 0 ) {
+										pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
+										gcopy BUFFER_ITEM, 1344 - inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) * 48, 1776, 48, 48
+									}
 								}
 							}
 						}

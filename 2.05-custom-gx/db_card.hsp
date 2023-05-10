@@ -1,4 +1,121 @@
 *db_card
+	if ( dbid == CREATURE_ID_CHAOSHAPRINCESS_ZEHLS ) {
+		cardreftype = 10
+		cardrefskill = lang("出身地は異形の森の近く。身体のあちこちが先祖返りを起こしており、人里から追い出された。死こそが万人にとっての救いであると考えており、生気のない目で各地を放浪しながら殺戮を繰り返している。", "")
+		cardrefdomain = 6
+		cardrefrare = 20
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("混形姫<天屍>", "chaoshaprincess ZEHLS")
+		cardrefpic = xy2pic(6, 35) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1081 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_CHAOSHAPRINCESS_DIBWL ) {
+		cardreftype = 10
+		cardrefskill = lang("出身地は異形の森の近く。身体のあちこちが先祖返りを起こしており、人里から追い出された。胴長短足なのを気にしており、そこをイジられるとマジでキレる。舌はとても長く、かなり精密に動かせる。", "")
+		cardrefdomain = 6
+		cardrefrare = 30
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("混形姫<魔鱗>", "chaoshaprincess DIBWL")
+		cardrefpic = xy2pic(5, 35) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1080 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_CHAOSHAPRINCESS_VARGM ) {
+		cardreftype = 10
+		cardrefskill = lang("出身地は異形の森の近く。身体のあちこちが先祖返りを起こしており、人里から追い出された。生体組織が岩石やナノマシンに置き換わってしまったが、見た目によらず熱いハートを持っている。", "")
+		cardrefdomain = 6
+		cardrefrare = 40
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("混形姫<物機>", "chaoshaprincess VARGM")
+		cardrefpic = xy2pic(4, 35) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1079 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_ETHERIAN_PLUS ) {
+		cardreftype = 10
+		cardrefskill = lang("エーテリアンと化した後もエーテル病が進行し続け、こんなことになってしまった。人間の意識は欠片も残っていない。もはや、いかなる魔法や薬を用いても元には戻れない。死だけが救いである。", "")
+		cardrefdomain = 6
+		cardrefrare = 30
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("エーテリアンプラス", "etherian plus")
+		cardrefpic = xy2pic(5, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1078 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_CHAOSHAPRINCESS_CHRDH ) {
+		cardreftype = 10
+		cardrefskill = lang("出身地は異形の森の近く。身体のあちこちが先祖返りを起こしており、人里から追い出された。聴力と脚力と腕力と飛行能力に優れるが、もふもふ力が一番の自慢。本人は気づいていないが色々な獣臭さが混ざったような体臭がなかなかキツい。", "")
+		cardrefdomain = 6
+		cardrefrare = 50
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("混形姫<獣羽>", "chaoshaprincess CHRDH")
+		cardrefpic = xy2pic(3, 35) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1077 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_CHAOSHAPRINCESS_FSSSY ) {
+		cardreftype = 10
+		cardrefskill = lang("出身地は異形の森の近く。身体のあちこちが先祖返りを起こしており、人里から追い出された。興奮するとよくわからない粘性の液体が全身から分泌されるため悩んでいたが、最近になってこれが自分の汗なのだと気づいた。", "")
+		cardrefdomain = 6
+		cardrefrare = 60
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("混形姫<水粘>", "chaoshaprincess FSSSY")
+		cardrefpic = xy2pic(2, 35) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1076 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_CHAOSHAPRINCESS_FWBS ) {
+		cardreftype = 10
+		cardrefskill = lang("出身地は異形の森の近く。身体のあちこちが先祖返りを起こしており、人里から追い出された。好みのタイプはご飯をいっぱいくれる人。食事に熱中しすぎて周りが見えなくなる癖があり、ついつい食べすぎてお腹がぽっこりしがち。", "")
+		cardrefdomain = 6
+		cardrefrare = 70
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("混形姫<虫蟲>", "chaoshaprincess FWBS")
+		cardrefpic = xy2pic(1, 35) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1075 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_CHAOSHAPRINCESS_MEM ) {
+		cardreftype = 10
+		cardrefskill = lang("出身地は異形の森の近く。身体のあちこちが先祖返りを起こしており、人里から追い出された。自分は日陰者だと自覚しており、ジメジメしたところで静かにしていることを好む。だが本当は陽の当たるところで皆と賑やかに過ごすことを夢見ている。", "")
+		cardrefdomain = 6
+		cardrefrare = 80
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("混形姫<殖花>", "chaoshaprincess MEM")
+		cardrefpic = xy2pic(0, 35) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1074 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_ETHERIAN ) {
+		cardreftype = 10
+		cardrefskill = lang("元人間。エーテルに特に弱い体質だったらしいが、最初は顔の異形化だけで済んでいた。症状が悪化して全身がめちゃくちゃに変異してしまい、今では人格も理性も残っていない化け物。こうなる前に対処したいところだが治療法は確立されておらず、奇跡でも起きない限り悪化は止まらない。", "")
+		cardrefdomain = 6
+		cardrefrare = 50
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("エーテリアン", "etherian")
+		cardrefpic = xy2pic(4, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1073 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
 	if ( dbid == CREATURE_ID_SP_CHAMPION ) {
 		cardreftype = 10
 		cardrefskill = lang("鮫殴りセンターと真っ向から殴り合いをするために進化した、海の覇者。鼻先を殴られるのに弱いというデマを信じて殴り掛かって来た挑戦者に、強烈なカウンターを食らわせる。歯がすぐに生え変わるのでマウスピースはつけない主義。", "")

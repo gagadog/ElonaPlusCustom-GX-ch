@@ -857,7 +857,7 @@
 		mes _congravity
 		sy -= 20
 	}
-	if ( gdata(GDATA_SLEEP) >= 15 ) {
+	if ( gdata(GDATA_SLEEP) >= 13 ) {
 		if ( gdata(GDATA_SLEEP) >= 50 ) {
 			color 255, 0, 0
 			pos sx, sy
@@ -1123,11 +1123,6 @@
 		paraa = tlocx
 		parab = tlocy
 		parac = gdata(GDATA_FLAG_COLLECTED_WISHES)
-		if ( jp ) {
-			pos inf_clockw + 380, inf_clocky + 37
-			color 0, 0, 0
-			bmes "確認" + paraa + "、" + parab + "、" + parac + "。", 235, 235, 235
-		}
 	}
 	if ( gdata(GDATA_AREA) == AREA_AMUR_CAGE ) {
 		if ( gdata(GDATA_LEVEL) >= 10 ) {
@@ -2531,6 +2526,10 @@
 	}
 	if ( _switch_val == ANIMATION_LASER_BAZOOKA | _switch_sw ) {
 		_switch_sw = 0
+		_switch_sw++
+	}
+	if ( _switch_val == ANIMATION_HYPER_PLUG_BURST | _switch_sw ) {
+		_switch_sw = 0
 		if ( synccheck(cc, -1) == 0 ) {
 			goto *anime_SWEND1
 		}
@@ -2580,6 +2579,58 @@
 		if ( animeid == ANIMATION_POTION_PLUG_5 ) {
 			preparePicItem xy2pic(27, 36), potionc
 			snd SOUNDLIST_BOLT1
+		}
+		if ( animeid == ANIMATION_HYPER_PLUG_BURST ) {
+			gsel BUFFER_ITEM
+			color 0
+			boxf 0, 960, chipi(CHIPI_WIDTH, xy2pic(8, 37)), chipi(CHIPI_HEIGHT, xy2pic(8, 37)) + 960
+			if ( 1229 == 528 ) {
+				gmode 2
+				pos 0, 960
+				gcopy BUFFER_ITEM, 0, 768, inf_tiles, inf_tiles
+				pos 0, 1008
+				gzoom 22, 20, 5, chipc(CHIPC_X, potionc) + 8, chipc(CHIPC_Y, potionc) + 4 + (chipc(CHIPC_HEIGHT, potionc) > inf_tiles) * 8, chipc(CHIPC_WIDTH, potionc) - 16, chipc(CHIPC_HEIGHT, potionc) - 8 - (chipc(CHIPC_HEIGHT, potionc) > inf_tiles) * 10, 1
+				pos 6, 974
+				gcopy BUFFER_ITEM, 0, 1008, 22, 20
+				gsel selcur
+			}
+			else {
+				if ( 1229 == 1119 ) {
+					pos 0, 1055 - chipc(CHIPC_HEIGHT, potionc)
+					gcopy BUFFER_CHR, chipc(CHIPC_X, potionc), chipc(CHIPC_Y, potionc), chipc(CHIPC_WIDTH, potionc), chipc(CHIPC_HEIGHT, potionc)
+					gmode 2
+					gsel selcur
+				}
+				else {
+					if ( 1229 == 1206 ) {
+						pos 0, 1055 - chipc(CHIPC_HEIGHT, potionc)
+						gcopy BUFFER_CHR, chipc(CHIPC_X, potionc), chipc(CHIPC_Y, potionc), chipc(CHIPC_WIDTH, potionc), chipc(CHIPC_HEIGHT, potionc)
+						gfini chipi(CHIPI_WIDTH, xy2pic(8, 37)), chipi(CHIPI_HEIGHT, xy2pic(8, 37))
+						gfdec2 0, 0, 255
+						gsel selcur
+					}
+					else {
+						if ( 1229 == 531 ) {
+							pos 8, 1058 - chipc(CHIPC_HEIGHT, potionc)
+							gcopy BUFFER_CHR, chipc(CHIPC_X, potionc) + 8, chipc(CHIPC_Y, potionc) + 2, chipc(CHIPC_WIDTH, potionc) - 16, chipc(CHIPC_HEIGHT, potionc) - 8
+							gmode 4, , , 150
+							color 0, 0, 0
+							pos 0, 960 + (chipc(CHIPC_HEIGHT, potionc) == inf_tiles) * 48
+							gcopy BUFFER_ITEM, 144, 768 + (chipc(CHIPC_HEIGHT, potionc) > inf_tiles) * 48, inf_tiles, chipc(CHIPC_HEIGHT, potionc) + (chipc(CHIPC_HEIGHT, potionc) > inf_tiles) * 48 * 0
+							gmode 2
+							gsel selcur
+						}
+						else {
+							pos 0, 960
+							gcopy BUFFER_ITEM, chipi(CHIPI_X, xy2pic(8, 37)), chipi(CHIPI_Y, xy2pic(8, 37)), chipi(CHIPI_WIDTH, xy2pic(8, 37)), chipi(CHIPI_HEIGHT, xy2pic(8, 37))
+							gfini chipi(CHIPI_WIDTH, xy2pic(8, 37)), chipi(CHIPI_HEIGHT, xy2pic(8, 37))
+							gfdec2 c_col(0, potionc), c_col(1, potionc), c_col(2, potionc)
+							gsel selcur
+							snd SOUNDLIST_BOLT1
+						}
+					}
+				}
+			}
 		}
 		if ( animeid == ANIMATION_SHINING_THROW ) {
 			preparePicItem xy2pic(15, 36), COLOR_DEFAULT
@@ -6138,6 +6189,11 @@
 			tohit /= 2
 		}
 	}
+	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
+		if ( tohit > 0 ) {
+			tohit /= 2
+		}
+	}
 	if ( cdata(CDATA_CONDITION_BLIND, tc) != 0 ) {
 		if ( evade != 0 ) {
 			evade /= 2
@@ -7188,8 +7244,21 @@
 				rp3 = rp2 \ EXT_ENCHANTMENT
 				rp2 = rp2 / EXT_ENCHANTMENT
 				if ( rp2 == ENCHANT_ATTRIBUTE ) {
-					sdata(rp3, r1) += inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, rp) / 50 + 1
-					continue
+					if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_PURGE ) {
+						sdata(rp3, r1) += inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, rp) / 50 + 1
+						continue
+					}
+				}
+				if ( rp2 == ENCHANT_ATTRIBUTE ) {
+					if ( gdata(GDATA_FLAG_GAME_MODE) != 5 ) {
+						if ( sdata(rp3, r1) < sorg(rp3, r1) * 2 + 50 ) {
+							sdata(rp3, r1) = limit(sdata(rp3, r1) + (inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, rp) / 50 + 1), 1, sorg(rp3, r1) * 2 + 50)
+						}
+						else {
+							sdata(rp3, r1) = sorg(rp3, r1) * 2 + 50
+						}
+						continue
+					}
 				}
 				if ( rp2 == ENCHANT_RESISTANCE ) {
 					sdata(rp3, r1) += inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, rp) / 2
@@ -7387,6 +7456,19 @@
 			}
 			sdata(STARTING_SKILL_ATTR + cnt, r1) += cdata(STARTING_CDATA_ATTR + cnt, r1)
 		}
+		if ( r1 == 0 | cdata(CDATA_ALLIED, r1) == 100 ) {
+			if ( cdata(CDATA_HIRE_DATE, r1) != 0 ) {
+				if ( cdata(CDATA_HIRE_DATE, r1) > 10 ) {
+					cdata(CDATA_HIRE_DATE, r1) = 0
+				}
+				if ( cnt == 18 ) {
+					sdata(10 + cnt, r1) = sdata(10 + cnt, r1) * (10 - cdata(CDATA_HIRE_DATE, r1)) / 10
+				}
+				if ( cnt != 18 & cnt != 19 ) {
+					sdata(10 + cnt, r1) = sdata(10 + cnt, r1) / (cdata(CDATA_HIRE_DATE, r1) + 1)
+				}
+			}
+		}
 		if ( sdata(STARTING_SKILL_ATTR + cnt, r1) < 1 ) {
 			sdata(STARTING_SKILL_ATTR + cnt, r1) = 1
 		}
@@ -7415,9 +7497,14 @@
 		}
 	}
 	if ( cdata(CDATA_ATTACK_STYLE, r1) & STYLE_SHIELD ) {
-		if ( cdata(CDATA_PV, r1) > 0 ) {
-			if ( cdata(CDATA_SHIELD_STYLE_TYPE, r1) == SHIELD_STYLE_NORMAL ) {
-				cdata(CDATA_PV, r1) = cdata(CDATA_PV, r1) * (120 + int(sqrt(sdata(SKILL_NORMAL_SHIELD, r1))) * 2) / 100
+		if ( attacknum > 1 ) {
+			cdata(CDATA_ATTACK_STYLE, r1) += 4
+		}
+		if ( attacknum <= 1 ) {
+			if ( cdata(CDATA_PV, r1) > 0 ) {
+				if ( cdata(CDATA_SHIELD_STYLE_TYPE, r1) == 1 ) {
+					cdata(CDATA_PV, r1) = cdata(CDATA_PV, r1) * (120 + int(sqrt(sdata(SKILL_NORMAL_SHIELD, r1))) * 2) / 100
+				}
 			}
 		}
 	}

@@ -17,9 +17,9 @@
 #include "mock_defines.hsp"
 #endif
 
-#define global VARIANT_NAME "ElonaPlus Custom-GX 2.15R.1.0"
-#define global VARIANT_TITLE "Elona+ Custom-GX 2.15R.1.0"
-#define global VERSION_STRING "6.15"
+#define global VARIANT_NAME "ElonaPlus Custom-GX 2.17"
+#define global VARIANT_TITLE "Elona+ Custom-GX 2.17"
+#define global VERSION_STRING "6.17"
 #define global VERSION_NUMBER int(double(VERSION_STRING) * 1000)
 #define global NET_VERSION	200000
 
@@ -289,7 +289,8 @@
 		gdata(GDATA_FLAG_ENTHUMESIS_SPAWNED) = 100
 		gdata(GDATA_FLAG_SUB_MONOCHROME_DELIVERY_SERVICE) = 1
 		gdata(GDATA_FLAG_SUB_REGULUS_MAYROON) = 1
-		gdata(GDATA_FLAG_GUILD_MAGE) = 1
+		gdata(GDATA_FLAG_GUILD_MAGE) = 0
+		gdata(GDATA_FLAG_GUILD_THIEF) = 1
 		cdata(CDATA_GOLD, CHARA_PLAYER) = 13000000
 		gdata(STARTING_GDATA_FLAG + 359) = 100
 		cdata(CDATA_PLATINUM, CHARA_PLAYER) = 3000
@@ -324,6 +325,9 @@
 		itemcreate 0, ITEM_ID_COFFIN_OF_NECROMANCY, -1, -1, 0
 		inv(INV_ITEM_PARAM1, ci) = 9
 		flt
+		itemcreate CHARA_PLAYER, ITEM_ID_LOVE_POTION, -1, -1, 0
+		inv(INV_ITEM_NUM, ci) = 600
+		flt
 		itemcreate 0, ITEM_ID_TEA_LEAF, -1, -1, 0
 		inv(INV_ITEM_LEVEL, ci) = 7
 		inv(INV_ITEM_NUM, ci) = 60
@@ -339,9 +343,6 @@
 		flt
 		itemcreate 0, ITEM_ID_PANTY, -1, -1, 0
 		inv(INV_ITEM_NUM, ci) = 60
-		flt
-		itemcreate 0, ITEM_ID_JERKY, -1, -1, 0
-		inv(INV_ITEM_LEVEL, ci) = 10
 		flt
 		itemcreate 0, ITEM_ID_SURVIVABILITY_EXTENDER_Y, -1, -1, 0
 		inv(INV_ITEM_NUM, ci) = 30
@@ -373,14 +374,6 @@
 		flt
 		itemcreate 0, ITEM_ID_M202_SPECIAL, -1, -1, 0
 		inv(INV_ITEM_NUM, ci) = 30
-		flt
-		itemcreate 0, ITEM_ID_ESSENTIAL_OIL, -1, -1, 0
-		inv(INV_ITEM_NUM, ci) = 30
-		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_BLESSED
-		flt
-		itemcreate 0, ITEM_ID_GASOLINE, -1, -1, 0
-		inv(INV_ITEM_NUM, ci) = 20
-		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_BLESSED
 		flt
 		itemcreate 0, ITEM_ID_JUKE_BOX, -1, -1, 0
 		inv(INV_ITEM_NUM, ci) = 20
@@ -488,7 +481,7 @@
 		inv(INV_ITEM_NUM, ci) = 2
 		flt
 		itemcreate 0, ITEM_ID_ANCIENT_BOOK, -1, -1, 0
-		inv(INV_ITEM_NUM, ci) = 10
+		inv(INV_ITEM_NUM, ci) = 50
 		flt
 		itemcreate 0, ITEM_ID_SMALL_MEDAL, -1, -1, 0
 		inv(INV_ITEM_NUM, ci) = 100
@@ -1255,18 +1248,20 @@
 			gdata(GDATA_SLEEP)++
 		}
 		if ( TweakData(53, 2) == 0 & rnd(15) == 0 ) {
-			if ( TweakData(TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION, TWEAK_CATEGORY_GAMEPLAY) == TRUE | gdata(GDATA_FLAG_SLEEP_PREVENTION) <= 0 ) {
-				if ( mode == MODELIST_MAIN ) {
-					txt lang("仮眠をとった。", "You take a nap.")
-					gdata(GDATA_SLEEP) -= 3
-					if ( gdata(GDATA_SLEEP) < 0 ) {
-						gdata(GDATA_SLEEP) = 0
+			if ( gdata(GDATA_SLEEP) >= 13 ) {
+				if ( TweakData(TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION, TWEAK_CATEGORY_GAMEPLAY) == TRUE | gdata(GDATA_FLAG_SLEEP_PREVENTION) <= 0 ) {
+					if ( mode == MODELIST_MAIN ) {
+						txt lang("仮眠をとった。", "You take a nap.")
+						gdata(GDATA_SLEEP) -= 3
+						if ( gdata(GDATA_SLEEP) < 0 ) {
+							gdata(GDATA_SLEEP) = 0
+						}
 					}
 				}
-			}
-			else {
-				txt lang("眠気を我慢した。", "You endure your sleepiness.")
-				gdata(GDATA_FLAG_SLEEP_PREVENTION)--
+				else {
+					txt lang("眠気を我慢した。", "You endure your sleepiness.")
+					gdata(GDATA_FLAG_SLEEP_PREVENTION)--
+				}
 			}
 		}
 	}
@@ -1279,7 +1274,7 @@
 		txtef COLOR_YELLOW
 		txt lang("夜が明けた。", "Day breaks.")
 	}
-	if ( gdata(GDATA_SLEEP) >= 15 ) {
+	if ( gdata(GDATA_SLEEP) >= 13 ) {
 		if ( cfg_extrahelp ) {
 			if ( gdata(STARTING_GDATA_HELP + 9) == 0 ) {
 				if ( mode == MODELIST_MAIN ) {
@@ -1332,6 +1327,40 @@
 		}
 		txtef COLOR_YELLOW
 		txt lang("一日が終わり、日付が変わった。", "A day passes and a new day begins.")
+		if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) >= 1000 ) {
+			cdata(CDATA_MATERIAL4_COUNTER, CHARA_PLAYER)++
+		}
+		if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) >= 1000 ) {
+			cdata(CDATA_MATERIAL4_COUNTER, CHARA_PLAYER)++
+		}
+		snd SOUNDLIST_WRITE1
+		txtef COLOR_GREEN
+		txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+		repeat 10
+			randomize gdata(GDATA_DAY) + gdata(GDATA_MONTH) + gdata(GDATA_YEAR) + cnt
+			daily = rnd(8) + 1
+			if ( daily != cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 ) {
+				cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) = daily
+				break
+			}
+		loop
+		repeat 10
+			randomize gdata(GDATA_DAY) + gdata(GDATA_MONTH) * 2 + gdata(GDATA_YEAR) * 2 + cnt
+			dailyf = rnd(8) + 1
+			if ( dailyf != cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 ) {
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) = dailyf
+				break
+			}
+		loop
+		randomize
+		if ( cdata(CDATA_MATERIAL4_COUNTER, CHARA_PLAYER) >= cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) ) {
+			cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) += 10
+			gosub *daily_quest_reward
+		}
+		if ( cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) <= 0 | cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) >= 1010 ) {
+			cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) = 10
+			cdata(CDATA_MATERIAL4_COUNTER, CHARA_PLAYER) = 0
+		}
 		if ( TweakData(TWEAK_GAMEPLAY_DISABLE_STUDY_DAYS, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 			repeat 2
 				if ( gdata(GDATA_FLAG_STUDY_BONUS_KIND) == 0 ) {
@@ -2284,6 +2313,14 @@
 	gosub *calcCondition
 	if ( cc == CHARA_PLAYER ) {
 		chatturn = 10
+		if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 8 ) {
+			if ( cdata(CDATA_SP, CHARA_PLAYER) < 50 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+			}
+		}
 		if ( gdata(GDATA_SLEEP_GENE) != 0 ) {
 			if ( gdata(GDATA_SLEEP_GENE) < 10000 ) {
 				gdata(GDATA_SLEEP_GENE) += 10000
@@ -6093,6 +6130,18 @@
 		}
 		music = MUSICLIST_MCVICTORY
 		gosub *music_play
+		if ( gdata(GDATA_FLAG_SUB_GUILD_FIGHTER) == 1 | gdata(GDATA_FLAG_SUB_FIGHTER_1) == 1 ) {
+			if ( adata(ADATA_MIN_LEVEL, gdata(GDATA_AREA)) >= gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) ) {
+				if ( gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL) + 20 == adata(ADATA_TYPE, gdata(GDATA_AREA)) ) {
+					if ( gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) > 0 ) {
+						gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA)--
+						snd SOUNDLIST_WRITE1
+						txtef COLOR_GREEN
+						txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+					}
+				}
+			}
+		}
 		snd SOUNDLIST_COMPLETE1
 		nkane = limit(gdata(GDATA_LEVEL), 1, 400)
 		flt calcobjlv(), calcfixlv()

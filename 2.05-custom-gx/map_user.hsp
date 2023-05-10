@@ -626,10 +626,10 @@
 				continue
 			}
 			if ( chipm(CHIPM_ROLE, map(inv(INV_ITEM_X, cnt), inv(INV_ITEM_Y, cnt), 0)) == MAP_CHIP_ROLE_DISPLAY_SPACE ) {
-				inv(INV_ITEM_SHOP_SAMPLE, cnt) = 100
+				ibitmod ITEM_BIT_SHOP_SAMPLE, cnt, TRUE
 			}
 			else {
-				inv(INV_ITEM_SHOP_SAMPLE, cnt) = 0
+				ibitmod ITEM_BIT_SHOP_SAMPLE, cnt, FALSE
 			}
 		loop
 		goto *turn_end
@@ -1721,7 +1721,7 @@
 		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_ROD_WISHING ) {
 			continue
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, cnt) == 100 ) {
+		if ( ibit(ITEM_BIT_SHOP_SAMPLE, cnt) == TRUE ) {
 			continue
 		}
 		if ( area == gdata(GDATA_AREA) ) {

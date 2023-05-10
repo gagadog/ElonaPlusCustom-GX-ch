@@ -245,8 +245,8 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_ANATOMY) = SKILL_ATTR_LER, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
 	skillname(SKILL_NORMAL_ANATOMY) = lang("解剖学", "Anatomy")
-	skilldesc(SKILL_NORMAL_ANATOMY) = lang("死体を残しやすくする", "Gives you a better chance of finding body parts.")
-	skillencdesc(SKILL_NORMAL_ANATOMY) = lang("死体を残しやすくする", "grants you knowledge of anatomy.")
+	skilldesc(SKILL_NORMAL_ANATOMY) = lang("死体などを残しやすくする", "Gives you a better chance of finding body parts.")
+	skillencdesc(SKILL_NORMAL_ANATOMY) = lang("死体などを残しやすくする", "grants you knowledge of anatomy.")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_SENSE_QUALITY) = SKILL_ATTR_PER, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
 	skillname(SKILL_NORMAL_SENSE_QUALITY) = lang("分析", "Analysis")
@@ -1284,6 +1284,14 @@
 	skillname(SKILL_SPACT_INSTANT_SUTURE) = lang("神速縫合", "Instant Suture")
 	skilldesc(SKILL_SPACT_INSTANT_SUTURE) = lang("敵を束縛/味方は出血半減", "Bind enemy/Halved bleeding")
 
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_LIMIT_POWER) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 10, TARGET_TYPE_DIRECTION, 0
+	skillname(SKILL_SPACT_LIMIT_POWER) = lang("<能力の制限>", "<Limit Power>")
+	skilldesc(SKILL_SPACT_LIMIT_POWER) = lang("主能力を一時的に制限", "Temporarily limiter of main status")
+
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_LIMITER_VANISH) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 5, TARGET_TYPE_DIRECTION, 0
+	skillname(SKILL_SPACT_LIMITER_VANISH) = lang("<リミッター解除>", "<Limiter Vanish>")
+	skilldesc(SKILL_SPACT_LIMITER_VANISH) = lang("ゲージ50％以上時に制限解除と衝撃波", "Limiter lift and shock wave/gauge50")
+
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_FLASH_OF_SWIFTNESS) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 30, TARGET_TYPE_ENEMY, 0
 	skillname(SKILL_SPACT_FLASH_OF_SWIFTNESS) = lang("神速の一閃", "Flash of Swiftness")
 	skilldesc(SKILL_SPACT_FLASH_OF_SWIFTNESS) = lang("敵ゲージ半減/ゲージ100％消費", "Rapid Slash")
@@ -1351,6 +1359,10 @@
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_PIERCING_ZERO_SHOOT) = SKILL_ATTR_WIL, SKILL_TYPE_SP, 30, TARGET_TYPE_ENEMY + 10, 0
 	skillname(SKILL_SPACT_PIERCING_ZERO_SHOOT) = lang("零の間撃・突型", "Piercing Zero Shoot")
 	skilldesc(SKILL_SPACT_PIERCING_ZERO_SHOOT) = lang("近いほど貫通率上昇/ゲージ100％消費", "Incresed Penetration rate at close range/100% gauge used")
+
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_HYPER_PLUG_BURST) = SKILL_ATTR_PER, SKILL_TYPE_SP, 30, 2000 + 10, 0
+	skillname(SKILL_SPACT_HYPER_PLUG_BURST) = lang("爆栓連発", "Hyper Plug Burst")
+	skilldesc(SKILL_SPACT_HYPER_PLUG_BURST) = lang("ﾎﾟｰｼｮﾏﾝ充填/ゲージ100％消費", "charge the potioman")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_DIFFUSION_WAVE) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 30, TARGET_TYPE_ENEMY + 15, 0
 	skillname(SKILL_SPACT_DIFFUSION_WAVE) = lang("魔儀迦", "Diffusion Wave")
@@ -1462,7 +1474,7 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_KNOCKOUT) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_KNOCKOUT) = lang("ノックアウト攻撃", "Knockout")
-	skilldesc(SKILL_SPACT_KNOCKOUT) = lang("威力減通常近接攻撃で気絶を狙う", "Attack to stun")
+	skilldesc(SKILL_SPACT_KNOCKOUT) = lang("命中減通常近接攻撃で気絶を狙う", "Attack to stun")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_OVERRAY) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 10, TARGET_TYPE_ENEMY + 7, 0
 	skillname(SKILL_SPACT_OVERRAY) = lang("多重詠唱魔法", "Over-Ray")
@@ -1816,6 +1828,10 @@
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_HAZARD_RECIPE) = SKILL_ATTR_PER, SKILL_TYPE_SP, 15, TARGET_TYPE_SELF_ONLY, 0
 	skillname(SKILL_SPACT_HAZARD_RECIPE) = lang("ハザードレシピ", "Hazard Recipe")
 	skilldesc(SKILL_SPACT_HAZARD_RECIPE) = lang("食品を化学兵器に作り変える", "Reshape food to chemical weapon")
+
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_CUSTOM_CHANGE) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 5, TARGET_TYPE_SELF_ONLY, 0
+	skillname(SKILL_SPACT_CUSTOM_CHANGE) = lang("カスタムチェンジ", "Custom Change")
+	skilldesc(SKILL_SPACT_CUSTOM_CHANGE) = lang("パーツ構成を変えて性能を変化", "Change the performance by changing the parts")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_VENOTRATE) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 20, TARGET_TYPE_ENEMY + 10, 500
 	skillname(SKILL_SPACT_VENOTRATE) = lang("ヴェノトレイト", "Venotrate")

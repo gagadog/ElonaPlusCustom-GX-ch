@@ -743,7 +743,7 @@
 	}
 	if ( _switch_val == LOOT_TYPE_ANIMAL | _switch_sw ) {
 		_switch_sw = 0
-		if ( gdata(STARTING_GDATA_FLAG + 372) == 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
+		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) <= 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
 			if ( rnd(20) == 0 ) {
 				p = 0
 				flt calcobjlv(cdata(CDATA_LEVEL, tc)), calcfixlv(FIX_QUALITY_GOOD)
@@ -757,7 +757,7 @@
 	}
 	if ( _switch_val == LOOT_TYPE_INSECT | _switch_sw ) {
 		_switch_sw = 0
-		if ( gdata(STARTING_GDATA_FLAG + 372) == 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
+		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) <= 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
 			if ( rnd(20) == 0 ) {
 				p = 0
 				flt calcobjlv(cdata(CDATA_LEVEL, tc)), calcfixlv(FIX_QUALITY_GOOD)
@@ -922,7 +922,7 @@
 		goto *item_loot_SWEND2
 	}
 *item_loot_SWEND2
-	if ( gdata(STARTING_GDATA_FLAG + 372) == 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
+	if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) <= 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
 		if ( rnd(40) == 0 ) {
 			p = 0
 			flt calcobjlv(cdata(CDATA_LEVEL, tc)), calcfixlv(FIX_QUALITY_GOOD)
@@ -944,7 +944,7 @@
 			inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, rc)
 			cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
 		}
-		if ( gdata(STARTING_GDATA_FLAG + 372) == 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
+		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) <= 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
 			if ( rnd(175) == 0 | gdata(GDATA_FLAG_DUEL_TARGET) == (-2) | cdata(CDATA_QUALITY, rc) == FIX_QUALITY_UNIQUE | dbg_figure | cdata(CDATA_ID, rc) == CREATURE_ID_UNITDEAD_KING | cdata(CDATA_ID, rc) == CREATURE_ID_UNITDEAD_QUEEN | cdata(CDATA_ID, rc) == CREATURE_ID_UNITDEAD_JACK | cdata(CDATA_ID, rc) == CREATURE_ID_UNITDEAD_JOKER | cdata(CDATA_ID, rc) == CREATURE_ID_AILE_THE_ATTENDANT | (cdata(CDATA_QUALITY, rc) == FIX_QUALITY_MIRACLE & rnd(2) == 0) | (cdata(CDATA_QUALITY, rc) == FIX_QUALITY_GODLY & rnd(3) == 0) | (cdata(CDATA_GOD, CHARA_PLAYER) == GOD_YACATECT & rnd(35) == 0) ) {
 				flt
 				itemcreate -1, ITEM_ID_FIGURINE, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
@@ -978,7 +978,47 @@
 		inv(INV_ITEM_PROPERTY, ci) = PROP_SHOP
 	}
 	if ( rc >= MAX_CHARA_FOLLOWER ) {
-		if ( gdata(STARTING_GDATA_FLAG + 372) == 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
+		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) == 100 ) {
+			flt
+			itemcreate -1, ITEM_ID_CORPSE, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
+			inv(INV_ITEM_PIC, ci) = xy2pic(30, 33)
+			inv(INV_ITEM_PARAM2, ci) = 10
+			inv(INV_ITEM_PARAM3, ci) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 240
+			if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH & cbit(CHARA_BIT_LIVESTOCK, tc) == TRUE ) {
+				inv(INV_ITEM_LEVEL, ci) += limit(rnd((sdata(SKILL_NORMAL_ANATOMY, CHARA_PLAYER) + 1) / 20 + 2) + situ, 1, 10) + cdata(CDATA_BRUSH_LEVEL, rc)
+			}
+			else {
+				inv(INV_ITEM_LEVEL, ci) += cdata(CDATA_BRUSH_LEVEL, rc)
+				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_AMUR_CAGE ) {
+					inv(INV_ITEM_AMUR_CAGE, ci) = 1
+				}
+			}
+			remain_make ci, rc
+			inv(INV_ITEM_COL, ci) = cdata(CDATA_PIC, tc) \ 1000 + cdata(CDATA_CHARA_PIC, tc) * 1000
+			inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, rc)
+			cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
+		}
+		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) <= 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
+			if ( rollanatomye == 1 | dbg_corpse | (adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH & cbit(CHARA_BIT_LIVESTOCK, rc) == TRUE & cdata(CDATA_CONDITION_SICK, rc) == 0) ) {
+				flt
+				itemcreate -1, ITEM_ID_EGG, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
+				if ( stat ) {
+					inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, rc)
+					inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, rc) / 10 * 40, 20, 10000)
+					inv(INV_ITEM_VALUE, ci) = limit((cdata(CDATA_WEIGHT, rc) + 2400) / 4, 600, 3000)
+				}
+			}
+		}
+		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) <= 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
+			if ( rollanatomym == 1 | dbg_corpse | (adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH & cbit(CHARA_BIT_LIVESTOCK, rc) == TRUE & cdata(CDATA_CONDITION_SICK, rc) == 0) ) {
+				flt
+				itemcreate -1, ITEM_ID_BOTTLE_MILK, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
+				if ( stat ) {
+					inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, rc)
+				}
+			}
+		}
+		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) <= 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
 			if ( rollanatomy == 1 | cdata(CDATA_QUALITY, rc) >= FIX_QUALITY_MIRACLE | (adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH & cbit(CHARA_BIT_LIVESTOCK, rc) == 1 & cdata(CDATA_CONDITION_SICK, rc) == 0) ) {
 				situ = 0
 				ryou = 0
@@ -1098,8 +1138,36 @@
 			}
 		}
 	}
-	if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_YACATECT & rnd(6) == 0 ) {
-		if ( gdata(STARTING_GDATA_FLAG + 372) == 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
+	if ( rnd(10) == 0 ) {
+		if ( gdata(GDATA_FLAG_RARE_DROP) == 100 ) {
+			if ( rollsenseki == 1 ) {
+				if ( gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
+					if ( cdata(CDATA_INIT_ATTR, rc) + cdata(CDATA_INIT_LIFEMANA, rc) >= 1000 ) {
+						flt
+						itemcreate -1, ITEM_ID_AWAKE_DESTONE, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
+						inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_INIT_ATTR, rc)
+						inv(INV_ITEM_PARAM3, ci) = cdata(CDATA_INIT_LIFEMANA, rc)
+						inv(INV_ITEM_AMUR_CAGE, ci) = cdata(CDATA_INIT_SPEED, rc)
+						inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+					}
+				}
+			}
+			if ( gdata(GDATA_FLAG_TALKING_USED) == 100 ) {
+				flt
+				itemcreate -1, ITEM_ID_FIGHTING_DESTONE, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
+				inv(INV_ITEM_PARAM2, ci) = limit((cdata(CDATA_LEVEL, rc) / 10 + 1) * 10, 1, 999)
+				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			}
+			if ( rollovercast == 1 ) {
+				flt
+				itemcreate -1, ITEM_ID_MANA_DESTONE, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
+				inv(INV_ITEM_PARAM2, ci) = limit((cdata(CDATA_LEVEL, rc) / 10 + 1) * 10, 1, 999)
+				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			}
+		}
+	}
+	if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_YACATECT & rnd(6) == 0 | rollanatomyr == 1 ) {
+		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) <= 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
 			flt
 			flttypemajor = FILTER_REMAINS
 			itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
@@ -2943,6 +3011,14 @@
 			fdmax++
 		}
 		nutrition = 2000
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 1 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
 	}
 	if ( i == 8 ) {
 		if ( fdmax < MAX_SKILL_ATTR - STARTING_SKILL_ATTR ) {
@@ -2958,6 +3034,14 @@
 			fdmax++
 		}
 		nutrition = 2000
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 2 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
 	}
 	if ( i == 2 | inv(INV_ITEM_ID, ci) == ITEM_ID_DRIED_VEGETABLE ) {
 		if ( fdmax < MAX_SKILL_ATTR - STARTING_SKILL_ATTR ) {
@@ -2969,6 +3053,14 @@
 			fdmax++
 		}
 		nutrition = 2000
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 3 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
 	}
 	if ( i == 3 | inv(INV_ITEM_ID, ci) == ITEM_ID_DRIED_FRUIT ) {
 		if ( fdmax < MAX_SKILL_ATTR - STARTING_SKILL_ATTR ) {
@@ -2984,6 +3076,14 @@
 			fdmax++
 		}
 		nutrition = 1500
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 4 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
 	}
 	if ( i == 7 ) {
 		if ( fdmax < MAX_SKILL_ATTR - STARTING_SKILL_ATTR ) {
@@ -3003,6 +3103,14 @@
 			fdmax++
 		}
 		nutrition = 2800
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 5 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
 	}
 	if ( i == 4 ) {
 		if ( fdmax < MAX_SKILL_ATTR - STARTING_SKILL_ATTR ) {
@@ -3018,6 +3126,14 @@
 			fdmax++
 		}
 		nutrition = 1500
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 6 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
 	}
 	if ( i == 6 | inv(INV_ITEM_ID, ci) == ITEM_ID_DRIED_FISH ) {
 		if ( fdmax < MAX_SKILL_ATTR - STARTING_SKILL_ATTR ) {
@@ -3033,6 +3149,14 @@
 			fdmax++
 		}
 		nutrition = 3000
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 7 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
 	}
 	if ( i == 5 ) {
 		if ( fdmax < MAX_SKILL_ATTR - STARTING_SKILL_ATTR ) {
@@ -3044,6 +3168,74 @@
 			fdmax++
 		}
 		nutrition = 3500
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 8 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
+	}
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_B_JERKY | inv(INV_ITEM_ID, ci) == ITEM_ID_FORBIDDEN_MEAT ) {
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 1 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
+	}
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_JACK_LANTERN | inv(INV_ITEM_ID, ci) == ITEM_ID_MANDRAKE_SALAD | inv(INV_ITEM_ID, ci) == ITEM_ID_FRIED_POTATO | inv(INV_ITEM_ID, ci) == ITEM_ID_POP_CORN ) {
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 3 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
+	}
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_MAGIC_FRUIT | inv(INV_ITEM_ID, ci) == ITEM_ID_HAPPY_APPLE ) {
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 4 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
+	}
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_STICK_BREAD | inv(INV_ITEM_ID, ci) == ITEM_ID_PUFF_PUFF_BREAD ) {
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 5 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
+	}
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_GOLD_ACORN | inv(INV_ITEM_ID, ci) == ITEM_ID_CRIMBERRY ) {
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 6 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
+	}
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEAD_FISH ) {
+		if ( cc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 7 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) += 1000
+			}
+		}
 	}
 	if ( inv(INV_ITEM_LEVEL, ci) > 0 & inv(INV_ITEM_LEVEL, ci) <= 15 ) {
 		modgrowth cc, SKILL_ATTR_SPD, inv(INV_ITEM_LEVEL, ci) / 2 + 3

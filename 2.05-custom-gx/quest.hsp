@@ -744,12 +744,17 @@
 	}
 	if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_MINEFIELD ) {
 		flt
-		itemcreate -1, ITEM_ID_DEVIL_FRAGMENT, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(1 + qdata(QDATA_PARAM2, rq) / 5, 1, 30)
+		itemcreate -1, ITEM_ID_DEVIL_FRAGMENT, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+		inv(INV_ITEM_PARAM2, ci) = limit(1 + qdata(QDATA_PARAM2, rq) / 5, 1, 30)
 		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 		if ( qdata(QDATA_PARAM1, rq) * 125 / 100 <= qdata(QDATA_PARAM2, rq) | qdata(QDATA_VAR, rq) == 1 ) {
 			flt
 			itemcreate -1, ITEM_ID_BRONZE_COIN, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 1
 		}
+		repeat limit(1 + qdata(QDATA_PARAM1, rq) / 15, 1, 5)
+			flt calcobjlv(qdata(QDATA_PARAM2, rq))
+			itemcreate -1, ITEM_ID_ANCIENT_BOOK, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 1
+		loop
 	}
 	if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_HARVEST ) {
 		if ( qdata(QDATA_PARAM1, rq) * 125 / 100 < qdata(QDATA_PARAM2, rq) ) {

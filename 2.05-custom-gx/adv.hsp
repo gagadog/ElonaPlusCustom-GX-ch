@@ -166,6 +166,7 @@
 	cdata(CDATA_RELATION_ORG, rc) = 10
 	cdata(CDATA_ROLE, rc) = ROLE_NONE
 	cdata(CDATA_BRUSH_LEVEL, rc) = 0
+	cdata(CDATA_HIRE_DATE, rc) = 0
 	cbitmod CHARA_BIT_QUEST_TARGET, rc, 0
 	cbitmod CHARA_BIT_NO_TARGET, rc, 0
 	cbitmod CHARA_BIT_SANDBAG, rc, 0

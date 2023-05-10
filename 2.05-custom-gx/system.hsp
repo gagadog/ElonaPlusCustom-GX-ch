@@ -833,6 +833,26 @@
 			}
 		loop
 	}
+	if ( gdata(GDATA_VERSION) < 6160 ) {
+		cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) = 10
+		cdata(CDATA_MATERIAL4_COUNTER, CHARA_PLAYER) = 0
+		cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) = 1
+		cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) = 1
+		snd SOUNDLIST_WRITE1
+		txtef COLOR_GREEN
+		txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+		if ( gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) > 0 ) {
+			gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) = 15
+			gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL) = rnd(8)
+			gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) = 0
+		}
+		if ( gdata(GDATA_FLAG_GUILD_MAGE_NORMA) > 0 ) {
+			gdata(GDATA_FLAG_GUILD_MAGE_NORMA) = 0
+		}
+		if ( gdata(GDATA_FLAG_GUILD_THIEF_NORMA) > 0 ) {
+			gdata(GDATA_FLAG_GUILD_THIEF_NORMA) = 0
+		}
+	}
 	if ( gdata(GDATA_VERSION) != VERSION_NUMBER ) {
 		gdata(GDATA_WORLD_RENEW) = 1
 	}

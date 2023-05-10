@@ -244,6 +244,12 @@
 		}
 	}
 	kaiwaev = 0
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 3 ) {
+		snd SOUNDLIST_WRITE1
+		txtef COLOR_GREEN
+		txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+		cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_ALFRED_THE_CANGNAN_WIND & gdata(GDATA_AREA) == AREA_CHAOS_CRADLE & gdata(GDATA_LEVEL) == 173 & cdata(CDATA_ALLIED, tc) == 0 ) {
 		chatMore lang("誰…ですか…貴方…は？", "W-Who... who are you?")
 		chatMore lang("冒険者が…ここまで？私は…どれだけの時間…気絶…していた！？", "An adventurer... down here? Just how long have I been unconscious for...?!")
@@ -476,6 +482,12 @@
 			txtef COLOR_SKY_BLUE
 			txtmore
 			txt lang("「うぃっ！」", "*Hic*"), lang("「うまいぜ」", cnvtalk("Ah, good booze.")), lang("「らららー♪」", cnvtalk("La-la-la-la.")), lang("「ひっく」", cnvtalk("I'm going to heaven.")), lang("「ふぅ」", cnvtalk("Whew!")), lang("「たまらないわ」", cnvtalk("I'm revived!")), lang("「んまっ♪」", cnvtalk("Awesome."))
+			if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 1 ) {
+				snd SOUNDLIST_WRITE1
+				txtef COLOR_GREEN
+				txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+				cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+			}
 			dmgcon tc, CONDITION_DRUNK, 1000
 			dmgcon cc, CONDITION_DRUNK, 1000
 			modimp tc, 15
@@ -2856,7 +2868,7 @@
 			}
 		}
 		if ( gdata(GDATA_FLAG_SUB_MOTHER) == 1000 ) {
-			chatMore lang("…" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "さん、あなたに最後のお願いがあります。この短剣で、私の胸を貫いてください。うふふ、だって、この姿がばれてしまったら、せっかくできたパエルの友達が逃げてしまうじゃない。あの子が幸せになれるなら、私は…", "" + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", I have... I have one final request. Take this knife and... *weep* If Pael's friends saw me like this, they'd run in fear and treat her with fear and suspicion. As long as she can be happy, I...")
+			chatMore lang("…" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "さん、あなたに最後のお願いがあります。この短剣で、私の胸を貫いてください。うふふ、だって、この姿がばれてしま???たら、せっかくできたパエルの友達が逃げてしまうじゃない。あの子が幸せになれるなら、私は…", "" + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", I have... I have one final request. Take this knife and... *weep* If Pael's friends saw me like this, they'd run in fear and treat her with fear and suspicion. As long as she can be happy, I...")
 			buff = lang("こんなこと、あなたにだから頼めるのよ。どうか、この苦しみを終わらせてください…", "Please, I'm begging you. Please put me out of my misery...")
 			inv_find ITEM_ID_POTION_CURE_CORRUPTION, CHARA_PLAYER
 			if ( stat != (-1) ) {
@@ -4438,148 +4450,245 @@
 	if ( _switch_val == CREATURE_ID_REVLUS_THE_MAGE_GUILDMASTER | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_FLAG_GUILD_MAGE) == 1 ) {
-			if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
-				chatMore lang("新しく入った方ですか。頑張ってください。", "One of the new arrivals? Do your best."), strbye
-				goto *chat_end
+			chatList 2, lang("挨拶する", "Let's Talk.")
+			chatList 1, lang("投資したい", "Need someone to invest in your guild?")
+			chatList 0, lang("ギルドを脱退したい", "I want to leave your guild...")
+			buff = lang("…。", "...")
+			gosub *chat_select
+			if ( chatval == 0 ) {
+				chatList 11, lang("考え直す", "I will reconsider.")
+				chatList 10, lang("【ギルドを脱退する】", "It is decided.")
+				buff = lang("…そこまで言うだけの何かがあったのですね。いいでしょう、詳しくは訊きません。ですが、ここまでの頑張りを全て捨て去るほどのことなのでしょうか？よく考えてみてください。", "...Something happened to you? OK, I won't ask for details. But is it alright to throw away all the hard work so far? please reconsider.")
+				gosub *chat_select
+				if ( chatval == 11 ) {
+					chatMore lang("そうそう。一時の感情で行動すると大変ですよ。", "Of course. It is not very wise to act so rashly."), strbye
+				}
+				if ( chatval == 10 ) {
+					chatMore lang("…意志は固いようですね。わかりました。私があなたの脱退を認めます。", "...You seem to have a strong will. Understood, I shall accept your request of withdrawal."), strbye
+					snd SOUNDLIST_WRITE1
+					txtef COLOR_GREEN
+					txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+					txtef COLOR_RED
+					txt lang("魔術士ギルドを脱退した！", "You left the Mage Guild...")
+					gdata(GDATA_FLAG_GUILD_MAGE) = 0
+					gdata(GDATA_FLAG_GUILD_MAGE_NORMA) = 0
+					gdata(GDATA_FLAG_SUB_MAGE_1) = 0
+					if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) < 1000 ) {
+						gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 0
+					}
+					gdata(GDATA_FLAG_SUB_GUILD_MAGE) = 0
+				}
 			}
-			if ( gdata(GDATA_RANK_GUILD) > 4000 ) {
-				chatMore lang("最近活躍しているらしいですね。あなたには期待していますよ。", "It seems you've been quite active lately. I look forward to your progress."), strbye
-				goto *chat_end
+			if ( chatval == 1 ) {
+				chatMore lang("未実装！", "Under development!"), strbye
 			}
-			if ( gdata(GDATA_RANK_GUILD) > 600 ) {
-				chatMore lang("以前は他の２ギルドに押され気味でしたが…あなたが来てからこのギルドもかなり活気が戻りました。…ありがとうございます。", "Some time ago it felt like we were being suppressed by the other two guilds... but since your arrival we've gained momentum. ...You have my thanks."), strbye
-				goto *chat_end
+			if ( chatval == 2 ) {
+				if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
+					chatMore lang("新しく入った方ですか。頑張ってください。", "One of the new arrivals? Do your best."), strbye
+				}
+				if ( gdata(GDATA_RANK_GUILD) > 4000 ) {
+					chatMore lang("最近活躍しているらしいですね。あなたには期待していますよ。", "It seems you've been quite active lately. I look forward to your progress."), strbye
+				}
+				if ( gdata(GDATA_RANK_GUILD) > 600 ) {
+					chatMore lang("以前は他の２ギルドに押され気味でしたが…あなたが来てからこのギルドもかなり活気が戻りました。…ありがとうございます。", "Some time ago it felt like we were being suppressed by the other two guilds... but since your arrival we've gained momentum. ...You have my thanks."), strbye
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) < 1 ) {
+					chatMore lang("狡猾な盗賊ギルドと野蛮な戦士ギルドを制し、我々魔術士ギルドの力を世間に見せつけるのです！あなたにはどちらか片方のギルドのマスターを倒してきてほしいのです。もう片方は私が相手しましょう。", "By claiming rule over the dastardly Thieves guild and the savage Fighters guild our Mages guild will show the world our might! I want you to defeat the guild master of one of the guilds. I will take care of the other."), strbye
+					gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 1
+					txt_questupdate
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) == 1 ) {
+					chatMore lang("さて、私はどちらのギルドを攻めましょうかね…。", "Now then, which guild shall I combat?"), strbye
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) == 2 ) {
+					chatMore lang("素晴らしい！あなたならやってくれると信じていました！これは私からの特別報酬です。どうか受け取ってください。", "Wonderful! I believed you would succeed! This is a special reward from me. Please take it."), strbye
+					flt
+					itemcreate -1, ITEM_ID_BOOK_BOKONON, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+					flt
+					itemcreate -1, ITEM_ID_SMALL_MEDAL, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
+					flt
+					itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
+					txt_questcompleted
+					txtmore
+					txt_questitem
+					txt_questupdate
+					gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 1000
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) >= 3 ) {
+					chatMore lang("次のギルドマスターはあなたしかいない。私だけではなく皆もそう考えているようです。" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…これからもよろしく頼みますね。", "There is none other than you worthy of guild master. Not just me but everyone feels the same. " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "...From now on we leave things in your hands."), strbye
+					gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 1000
+				}
 			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) < 1 ) {
-				chatMore lang("狡猾な盗賊ギルドと野蛮な戦士ギルドを制し、我々魔術士ギルドの力を世間に見せつけるのです！あなたにはどちらか片方のギルドのマスターを倒してきてほしいのです。もう片方は私が相手しましょう。", "By claiming rule over the dastardly Thieves guild and the savage Fighters guild our Mages guild will show the world our might! I want you to defeat the guild master of one of the guilds. I will take care of the other."), strbye
-				gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 1
-				txt_questupdate
-				goto *chat_end
-			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) == 1 ) {
-				chatMore lang("さて、私はどちらのギルドを攻めましょうかね…。", "Now then, which guild shall I combat?"), strbye
-				goto *chat_end
-			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) == 2 ) {
-				chatMore lang("素晴らしい！あなたならやってくれると信じていました！これは私からの特別報酬です。どうか受け取ってください。", "Wonderful! I believed you would succeed! This is a special reward from me. Please take it."), strbye
-				flt
-				itemcreate -1, ITEM_ID_BOOK_BOKONON, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
-				flt
-				itemcreate -1, ITEM_ID_SMALL_MEDAL, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
-				flt
-				itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
-				txt_questcompleted
-				txtmore
-				txt_questitem
-				txt_questupdate
-				gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 1000
-				goto *chat_end
-			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) >= 3 ) {
-				chatMore lang("次のギルドマスターはあなたしかいない。私だけではなく皆もそう考えているようです。" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…これからもよろしく頼みますね。", "There is none other than you worthy of guild master. Not just me but everyone feels the same. " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "...From now on we leave things in your hands."), strbye
-				gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 1000
-				goto *chat_end
-			}
+			goto *chat_end
 		}
-		chatMore lang("どちらさまでしょう？見かけない顔ですね。", "Sorry... who are you?"), strbye
-		goto *chat_end
+		chatMore lang("部外者にいられると困ります。すぐに立ち去ってください。", "You shouldn't be here, leave at once, outsider."), strbye
 	}
 	if ( _switch_val == CREATURE_ID_FRAY_THE_FIGHTER_GUILDMASTER | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_FLAG_GUILD_FIGHTER) == 1 ) {
-			if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
-				chatMore lang("新人か。精進するように。", "A new recruit. Diligence is the way."), strbye
-				goto *chat_end
+			chatList 2, lang("挨拶する", "Let's Talk.")
+			chatList 1, lang("投資したい", "Need someone to invest in your guild?")
+			chatList 0, lang("ギルドを脱退したい", "I want to leave your guild...")
+			buff = lang("…。", "...")
+			gosub *chat_select
+			if ( chatval == 0 ) {
+				chatList 11, lang("考え直す", "I will reconsider.")
+				chatList 10, lang("【ギルドを脱退する】", "It is decided.")
+				buff = lang("…何！？もしかしてギルドマスターである私が弱いからか？くっ…いいだろう。去る者は追わない。だが、もしも気が変わったら戻ってこい。下っ端からのやり直しになるがな。", "...what! ? Is it because I'm weak as the guild master? Kuh... I don't mind. I don't chase those who leave But if you change your mind, come back. However, you will have to start over from the bottom.")
+				gosub *chat_select
+				if ( chatval == 11 ) {
+					chatMore lang("きっと戦いで疲れているのだろう。少し休むといい。", "You must be tired from all these fighting. You should rest for a while."), strbye
+				}
+				if ( chatval == 10 ) {
+					chatMore lang("…さらば、戦士よ！今までご苦労だった！", "...Farewell, Warrior! Thank you for your hard work!"), strbye
+					snd SOUNDLIST_WRITE1
+					txtef COLOR_GREEN
+					txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+					txtef COLOR_RED
+					txt lang("戦士ギルドを脱退した！", "You left the Fighter Guild...")
+					gdata(GDATA_FLAG_GUILD_FIGHTER) = 0
+					gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) = 0
+					gdata(GDATA_FLAG_SUB_FIGHTER_1) = 0
+					gdata(GDATA_FLAG_SUB_GUILD_FIGHTER) = 0
+					if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) < 1000 ) {
+						gdata(GDATA_FLAG_SUB_GUILD_WARS3) = 0
+					}
+				}
 			}
-			if ( gdata(GDATA_RANK_GUILD) > 4000 ) {
-				chatMore lang("最近活躍しているらしいじゃないか。君には期待しているよ。", "You've been quite active recently. I expect much from you."), strbye
-				goto *chat_end
+			if ( chatval == 1 ) {
+				chatMore lang("未実装！", "Under development!"), strbye
 			}
-			if ( gdata(GDATA_RANK_GUILD) > 600 ) {
-				chatMore lang("他の者たちも君に負けじと切磋琢磨している。いい傾向だ、君がわがギルドに加入してくれて本当によかった…。", "Others have refined themselves to surpass you. It's a magnificent trend. I honestly appreciate you choosing our guild..."), strbye
-				goto *chat_end
+			if ( chatval == 2 ) {
+				if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
+					chatMore lang("新人か。精進するように。", "A new recruit. Diligence is the way."), strbye
+					goto *chat_end
+				}
+				if ( gdata(GDATA_RANK_GUILD) > 4000 ) {
+					chatMore lang("最近活躍しているらしいじゃないか。君には期待しているよ。", "You've been quite active recently. I expect much from you."), strbye
+					goto *chat_end
+				}
+				if ( gdata(GDATA_RANK_GUILD) > 600 ) {
+					chatMore lang("他の者たちも君に負けじと切磋琢磨している。いい傾向だ、君がわがギルドに加入してくれて本当によかった…。", "Others have refined themselves to surpass you. It's a magnificent trend. I honestly appreciate you choosing our guild..."), strbye
+					goto *chat_end
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) < 1 ) {
+					chatMore lang("戦士の力を目にもの見せる時が来た！盗賊ギルドと魔術士ギルド、腑抜けた両ギルドのマスターを私と君で打倒するぞ！戦いやすい方のマスターを倒してきてくれ。もう片方は私が引き受けよう。", "The time has come to show the might of we warriors! We shall overthrow the cowardly guild masters both! Please defeat the lesser of the two masters. I shall deal with the other."), strbye
+					gdata(GDATA_FLAG_SUB_GUILD_WARS3) = 1
+					txt_questupdate
+					goto *chat_end
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) == 1 ) {
+					chatMore lang("うむ、明確な打倒目標があると素振りにも気合が入るな！", "Mm, having a serious opponent has my blood pumping!"), strbye
+					goto *chat_end
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) == 2 ) {
+					chatMore lang("勝ってきたか！君ならばやってくれると信じていたよ！これは私からの特別報酬だ。受け取ってほしいな。", "You have been victorious! I knew you would! This is a special reward from me. Please accept it."), strbye
+					flt
+					itemcreate -1, ITEM_ID_FLAME_EDGE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+					flt
+					itemcreate -1, ITEM_ID_SMALL_MEDAL, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
+					flt
+					itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
+					txt_questcompleted
+					txtmore
+					txt_questitem
+					txt_questupdate
+					gdata(GDATA_FLAG_SUB_GUILD_WARS3) = 1000
+					goto *chat_end
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) >= 3 ) {
+					chatMore lang("次のギルドマスターは君しかいない。私だけではなく皆もそう考えているはずだ。" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "、これからもよろしく頼むぞ。", "There is no other than you for the next guild master. Not just me but everyone believes so. " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", we are looking forward to working with you."), strbye
+					gdata(GDATA_FLAG_SUB_GUILD_WARS3) = 1000
+					goto *chat_end
+				}
 			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) < 1 ) {
-				chatMore lang("戦士の力を目にもの見せる時が来た！盗賊ギルドと魔術士ギルド、腑抜けた両ギルドのマスターを私と君で打倒するぞ！戦いやすい方のマスターを倒してきてくれ。もう片方は私が引き受けよう。", "The time has come to show the might of we warriors! We shall overthrow the cowardly guild masters both! Please defeat the lesser of the two masters. I shall deal with the other."), strbye
-				gdata(GDATA_FLAG_SUB_GUILD_WARS3) = 1
-				txt_questupdate
-				goto *chat_end
-			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) == 1 ) {
-				chatMore lang("うむ、明確な打倒目標があると素振りにも気合が入るな！", "Mm, having a serious opponent has my blood pumping!"), strbye
-				goto *chat_end
-			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) == 2 ) {
-				chatMore lang("勝ってきたか！君ならばやってくれると信じていたよ！これは私からの特別報酬だ。受け取ってほしいな。", "You have been victorious! I knew you would! This is a special reward from me. Please accept it."), strbye
-				flt
-				itemcreate -1, ITEM_ID_FLAME_EDGE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
-				flt
-				itemcreate -1, ITEM_ID_SMALL_MEDAL, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
-				flt
-				itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
-				txt_questcompleted
-				txtmore
-				txt_questitem
-				txt_questupdate
-				gdata(GDATA_FLAG_SUB_GUILD_WARS3) = 1000
-				goto *chat_end
-			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) >= 3 ) {
-				chatMore lang("次のギルドマスターは君しかいない。私だけではなく皆もそう考えているはずだ。" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "、これからもよろしく頼むぞ。", "There is no other than you for the next guild master. Not just me but everyone believes so. " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", we are looking forward to working with you."), strbye
-				gdata(GDATA_FLAG_SUB_GUILD_WARS3) = 1000
-				goto *chat_end
-			}
+			goto *chat_end
 		}
-		chatMore lang("誰だ？見かけない顔だな。", "Who are you? I haven't seen your face before."), strbye
+		chatMore lang("他の者が気づく前に出て行ってくれ。", "Leave before things get messy, outsider."), strbye
 		goto *chat_end
 	}
 	if ( _switch_val == CREATURE_ID_SIN_THE_THIEF_GUILDMASTER | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_FLAG_GUILD_THIEF) == 1 ) {
-			if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
-				chatMore lang("貴様が新入りか。ヘマはするなよ。", "Yer still a newbie. Don't screw up."), strbye
-				goto *chat_end
+			chatList 2, lang("挨拶する", "Let's Talk.")
+			chatList 1, lang("投資したい", "Need someone to invest in your guild?")
+			chatList 0, lang("ギルドを脱退したい", "I want to leave your guild...")
+			buff = lang("…。", "...")
+			gosub *chat_select
+			if ( chatval == 0 ) {
+				chatList 11, lang("考え直す", "I will reconsider.")
+				chatList 10, lang("【ギルドを脱退する】", "It is decided.")
+				buff = lang("…足を洗いたくなったのか。わかった、貴様のことは忘れよう。貴様もここで見たことは忘れろ。これからは裏社会に関わらず、真っ当に生きていくことだ。", "...So you wanted to quit the guild. All right, I'll forget about you. Forget what you saw here. From now on, live your life regardless of the underworld.")
+				gosub *chat_select
+				if ( chatval == 11 ) {
+					chatMore lang("驚かせるな。", "Almost got me there."), strbye
+				}
+				if ( chatval == 10 ) {
+					chatMore lang("…達者でな。", "...Take care."), strbye
+					snd SOUNDLIST_WRITE1
+					txtef COLOR_GREEN
+					txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+					txtef COLOR_RED
+					txt lang("盗賊ギルドを脱退した！", "You left the Thieves Guild...")
+					gdata(GDATA_FLAG_GUILD_THIEF) = 0
+					gdata(GDATA_FLAG_GUILD_THIEF_NORMA) = 0
+					gdata(GDATA_FLAG_SUB_THIEF_1) = 0
+					gdata(GDATA_FLAG_SUB_GUILD_THIEF) = 0
+					if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) < 1000 ) {
+						gdata(GDATA_FLAG_SUB_GUILD_WARS2) = 0
+					}
+				}
 			}
-			if ( gdata(GDATA_RANK_GUILD) > 4000 ) {
-				chatMore lang("貴様の働きぶりには正直感心している。だが油断はしないことだ。", "Yer work is pretty good. Don't be getting lazy."), strbye
-				goto *chat_end
+			if ( chatval == 1 ) {
+				chatMore lang("未実装！", "Under development!"), strbye
 			}
-			if ( gdata(GDATA_RANK_GUILD) > 600 ) {
-				chatMore lang("貴様ほどの冒険者ならば他のギルドでも活躍できたろうに。わざわざ闇に生きるとは変わったやつだ。…おかげで助かってはいるがな。", "Since yer such a great adventurer ya coulda gone to another guild. Yer a strange one fer picking ours. Big help for us ya been."), strbye
-				goto *chat_end
+			if ( chatval == 2 ) {
+				if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
+					chatMore lang("貴様が新入りか。ヘマはするなよ。", "Yer still a newbie. Don't screw up."), strbye
+					goto *chat_end
+				}
+				if ( gdata(GDATA_RANK_GUILD) > 4000 ) {
+					chatMore lang("貴様の働きぶりには正直感心している。だが油断はしないことだ。", "Yer work is pretty good. Don't be getting lazy."), strbye
+					goto *chat_end
+				}
+				if ( gdata(GDATA_RANK_GUILD) > 600 ) {
+					chatMore lang("貴様ほどの冒険者ならば他のギルドでも活躍できたろうに。わざわざ闇に生きるとは変わったやつだ。…おかげで助かってはいるがな。", "Since yer such a great adventurer ya coulda gone to another guild. Yer a strange one fer picking ours. Big help for us ya been."), strbye
+					goto *chat_end
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) < 1 ) {
+					chatMore lang("とっておきの仕事が入った。魔術士ギルドと戦士ギルドのギルドマスターを片づける。重要な仕事だが…" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "、貴様に片方のマスターの始末を任せる。しくじるなよ。", "Got a reserved mission. We're gonna ice the mage and fighter guild masters. Pretty important job ya see... " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", yer gonna take down one of them, and I'll get the other. Don't screw up."), strbye
+					gdata(GDATA_FLAG_SUB_GUILD_WARS2) = 1
+					txt_questupdate
+					goto *chat_end
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) == 1 ) {
+					chatMore lang("貴様なら他のギルドマスターにもきっと勝てるさ。ふっ、他人をここまで信頼するとは俺も甘くなったものだ。", "Ya can probably take down one of the other guild masters. Heh, Can't believe I'm trustin someone else this much, I've gotten soft."), strbye
+					goto *chat_end
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) == 2 ) {
+					chatMore lang("遅かったな…別に心配をしていたわけではないが。こいつは貴様の分け前だ。とっておけ。", "Took yer sweet time... Not like I was worried. Here's yer share. Take it."), strbye
+					flt
+					itemcreate -1, ITEM_ID_WOODEN_HORSE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+					flt
+					itemcreate -1, ITEM_ID_SMALL_MEDAL, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
+					flt
+					itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
+					txt_questcompleted
+					txtmore
+					txt_questitem
+					txt_questupdate
+					gdata(GDATA_FLAG_SUB_GUILD_WARS2) = 1000
+					goto *chat_end
+				}
+				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) >= 3 ) {
+					chatMore lang("次のギルドマスターを貴様に任せてやってもいいと思っている。" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…裏切らないでくれよ。", "I'm thinkin I can just leave it up to you for next guild master. " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", ya better not double cross us."), strbye
+					gdata(GDATA_FLAG_SUB_GUILD_WARS2) = 1000
+					goto *chat_end
+				}
 			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) < 1 ) {
-				chatMore lang("とっておきの仕事が入った。魔術士ギルドと戦士ギルドのギルドマスターを片づける。重要な仕事だが…" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "、貴様に片方のマスターの始末を任せる。しくじるなよ。", "Got a reserved mission. We're gonna ice the mage and fighter guild masters. Pretty important job ya see... " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", yer gonna take down one of them, and I'll get the other. Don't screw up."), strbye
-				gdata(GDATA_FLAG_SUB_GUILD_WARS2) = 1
-				txt_questupdate
-				goto *chat_end
-			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) == 1 ) {
-				chatMore lang("貴様なら他のギルドマスターにもきっと勝てるさ。ふっ、他人をここまで信頼するとは俺も甘くなったものだ。", "Ya can probably take down one of the other guild masters. Heh, Can't believe I'm trustin someone else this much, I've gotten soft."), strbye
-				goto *chat_end
-			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) == 2 ) {
-				chatMore lang("遅かったな…別に心配をしていたわけではないが。こいつは貴様の分け前だ。とっておけ。", "Took yer sweet time... Not like I was worried. Here's yer share. Take it."), strbye
-				flt
-				itemcreate -1, ITEM_ID_WOODEN_HORSE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
-				flt
-				itemcreate -1, ITEM_ID_SMALL_MEDAL, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
-				flt
-				itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
-				txt_questcompleted
-				txtmore
-				txt_questitem
-				txt_questupdate
-				gdata(GDATA_FLAG_SUB_GUILD_WARS2) = 1000
-				goto *chat_end
-			}
-			if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) >= 3 ) {
-				chatMore lang("次のギルドマスターを貴様に任せてやってもいいと思っている。" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…裏切らないでくれよ。", "I'm thinkin I can just leave it up to you for next guild master. " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", ya better not double cross us."), strbye
-				gdata(GDATA_FLAG_SUB_GUILD_WARS2) = 1000
-				goto *chat_end
-			}
+			goto *chat_end
 		}
-		chatMore lang("貴様…何者だ？", "Who the hell are you?"), strbye
+		chatMore buff = lang("すぐに出ていけ。こんなところに用はないはずだ。", "Get out, outsider."), strbye
 		goto *chat_end
 	}
 	if ( _switch_val == CREATURE_ID_LEXUS_THE_MAGE_WATCHMAN | _switch_sw ) {
@@ -4597,18 +4706,24 @@
 			if ( chatval == 1 ) {
 				if ( gdata(GDATA_FLAG_SUB_GUILD_MAGE) == 0 ) {
 					chatMore lang("ギルドに加入したいというのか…我々が求めているのは有能な魔術士だ。お前がギルドのメンバーにふさわしいか試させてもらおう。", "So you are interested in joining our guild and we only need elite mages. Let's see if you are worthy of becoming one of us.")
-					chatMore lang("この世界には、特殊な古代文字で書かれた古書物が散らばっている。これらを収集し、解読した後に、私の横にある納入箱に収めたまえ。古書物の価値に応じてギルドポイントを与えよう。30ギルドポイント、これがお前に課せられた試験のノルマだ…", "In north Tyris, there are several ancient books encrypted with a unique rune language. Should you want to join the guild, put them into the delivery chest after you have decrypted them and we shall reward you with guild points.")
+					chatMore lang("この世界には、特殊な古代文字で書かれた古書物が散らばっている。これらを収集し、解読した後に、私の横にある納入箱に収めたまえ。古書物の価値に応じてギルドポイントを与えよう。15ギルドポイント、これがお前に課せられた試験のノルマだ…", "In north Tyris, there are several ancient books encrypted with a unique rune language. Should you want to join the guild, put them into the delivery chest after you have decrypted them and we shall reward you with guild points.")
 					gdata(GDATA_FLAG_SUB_GUILD_MAGE) = 1
-					gdata(GDATA_FLAG_GUILD_MAGE_NORMA) = 30
+					gdata(GDATA_FLAG_GUILD_MAGE_NORMA) = 15
 					txt_questupdate
-					chatMore lang("ギルドポイントを規定の値まで集めたら、また私に話しかけてくれ。", "You will need to gather 30 guild points in order to enter the Mages Guild. Until then, we have nothing more to talk about.")
+					chatMore lang("ギルドポイントを規定の値まで集めたら、また私に話しかけてくれ。", "You will need to gather 15 guild points in order to enter the Mages Guild. Until then, we have nothing more to talk about.")
 					goto *chat_unique
 				}
 				if ( gdata(GDATA_FLAG_GUILD_MAGE_NORMA) > 0 ) {
-					chatMore lang("まだノルマが残っているじゃないか…ギルドに加入するには、審査を通らなければならないぞ。", "To pass the test, you need to gather 30 guild points.")
+					chatMore lang("まだノルマが残っているじゃないか…ギルドに加入するには、審査を通らなければならないぞ。", "To pass the test, you need to gather 15 guild points.")
 					goto *chat_unique
 				}
 				chatMore lang("ほう…どうやらノルマを見事に達成したようだな。", "Quite impressive... You have accomplished the task.")
+				if ( gdata(GDATA_FLAG_GUILD_THIEF) != 0 | gdata(GDATA_FLAG_GUILD_FIGHTER) != 0 ) {
+					chatMore lang("だが加入する前に、現在のギルドを正式に抜けてこい。手続きをせず勝手に辞めるような者は、組織として信用できない。当然だろう？", "But before joining, formally leave your current guild. A person who quits arbitrarily without following procedures cannot be trusted as an organization.")
+					snd SOUNDLIST_FAIL1
+					txt lang("所属ギルドマスターに脱退を伝えよう。", "You need to tell your guildmaster that you are leaving.")
+					goto *chat_unique
+				}
 				gdata(GDATA_RANK_GUILD) = 10000
 				gdata(GDATA_FLAG_GUILD_THIEF) = 0
 				gdata(GDATA_FLAG_GUILD_FIGHTER) = 0
@@ -4648,7 +4763,7 @@
 		gosub *chat_select
 		if ( chatval == 1 ) {
 			gdata(GDATA_FLAG_SUB_MAGE_1) = 1
-			gdata(GDATA_FLAG_GUILD_MAGE_NORMA) = 75 - gdata(GDATA_RANK_GUILD) / 200
+			gdata(GDATA_FLAG_GUILD_MAGE_NORMA) = 40 - gdata(GDATA_RANK_GUILD) / 400
 			txt_questupdate
 			chatMore lang("良い心がけです。あなたにランク昇格のためのノルマを与えましょう。世界に散らばった古書物を解読し、納入してください。" + gdata(GDATA_FLAG_GUILD_MAGE_NORMA) + "ギルドポイントが集まったら、昇進のための審査会に報告してあげましょう。", "Sure, there're plenty of tasks for you. For now, collect the ancient books and decrypt them. When you gather " + gdata(GDATA_FLAG_GUILD_MAGE_NORMA) + " guild points, we will think about your promotion.")
 			goto *chat_unique
@@ -4670,7 +4785,7 @@
 			txtmore
 			txt_questitem
 			txt_questupdate
-			modrank 8, 500, 8
+			modrank 8, 1500, 10
 			chatMore lang("確かにノルマの達成を確認しました。早速審査会を開いてあなたの功績を報告しましょう。", "You've done very well. I will give a report of your achievement to the council."), strbye
 			goto *chat_end
 		}
@@ -4693,14 +4808,20 @@
 					chatMore lang("盗賊ギルドに加入したいというのか…我々は知ってのとおり闇の世界に身を置いている。まずは、お前が信頼に足る者かどうか試させてもらおう。", "So, you're interested in our guild? We hide in the shadows of society. You must win our trust to enter the guild.")
 					gdata(GDATA_FLAG_SUB_GUILD_THIEF) = 1
 					txt_questupdate
-					chatMore lang("なに、簡単な試験だ。一定期間経過した冒険者には税金が毎月徴収されるのは知っているな？その税金を4ヶ月滞納するだけだ。無論、お前は犯罪者となり、国の犬に追われる事になるだろう。その覚悟がないならば、盗賊ギルドに入るなど諦めることだ。", "It's a simple task. Are you aware that, after a certain amount of time has passed for new adventurers, they are required to pay taxes each month? Just don't pay those taxes for 4 months. Take it for granted the guards will try to hunt you down. If you aren't ready to face it, just forget it.")
+					chatMore lang("なに、簡単な試験だ。お前のカルマを−100まで落としてこい。−31からは指名手配され、国の犬に追われる事になるだろう。その覚悟がないならば、盗賊ギルドに入るなど諦めることだ。", "It is a simple task. We require you to drop your karma at -100. Take it granted the guards will try to hunt you down -31 onwards. If you aren't ready to face it, just forget it.")
 					goto *chat_unique
 				}
-				if ( gdata(GDATA_BILL) <= 4 ) {
-					chatMore lang("どうした？試験の内容は伝えたはずだ。税金を4ヶ月以上滞納してからまた来るがいい。", "I've already told you what you must do. Don't pay taxes for 4 months.")
+				if ( cdata(CDATA_KARMA, CHARA_PLAYER) > (-100) ) {
+					chatMore lang("どうした？試験の内容は伝えたはずだ。カルマを−100まで落としてからまた来るがいい。", "I've already told you what you must do. Drop your karma at -100.")
 					goto *chat_unique
 				}
 				chatMore lang("ほう…どうやらノルマを見事に達成したようだな。", "Quite impressive... You have accomplished the task.")
+				if ( gdata(GDATA_FLAG_GUILD_FIGHTER) != 0 | gdata(GDATA_FLAG_GUILD_MAGE) != 0 ) {
+					chatMore lang("だが加入する前に、現在のギルドを正式に抜けてこい。手続きをせず勝手に辞めるような者は、組織として信用できない。当然だろう？", "But before joining, formally leave your current guild. A person who quits arbitrarily without following procedures cannot be trusted as an organization.")
+					snd SOUNDLIST_FAIL1
+					txt lang("所属ギルドマスターに脱退を伝えよう。", "You need to tell your guildmaster that you are leaving.")
+					goto *chat_unique
+				}
 				gdata(GDATA_RANK_GUILD) = 10000
 				gdata(GDATA_FLAG_GUILD_THIEF) = 1
 				gdata(GDATA_FLAG_GUILD_FIGHTER) = 0
@@ -4740,7 +4861,7 @@
 		gosub *chat_select
 		if ( chatval == 1 ) {
 			gdata(GDATA_FLAG_SUB_THIEF_1) = 1
-			gdata(GDATA_FLAG_GUILD_THIEF_NORMA) = (10000 - gdata(GDATA_RANK_GUILD)) * 6 + 1000
+			gdata(GDATA_FLAG_GUILD_THIEF_NORMA) = (10000 - gdata(GDATA_RANK_GUILD)) * 3 + 1000
 			txt_questupdate
 			chatMore lang("良い心がけです。あなたにランク昇格のためのノルマを与えましょう。他人の所有物を奪い取り、盗品を売り払いなさい。金貨" + gdata(GDATA_FLAG_GUILD_THIEF_NORMA) + "枚相当の盗品を売ったら、昇進のための審査会に報告してあげましょう。", "Alright. The Thieves Guild wants you to put stolen goods into circulation. Steal some goods and sell them to any vendors. When the sum of your earnings reaches " + gdata(GDATA_FLAG_GUILD_THIEF_NORMA) + " gold pieces, we will think about your promotion.")
 			goto *chat_unique
@@ -4762,7 +4883,7 @@
 			txtmore
 			txt_questitem
 			txt_questupdate
-			modrank 8, 500, 8
+			modrank 8, 1500, 10
 			chatMore lang("確かにノルマの達成を確認しました。早速審査会を開いてあなたの功績を報告しましょう。", "You've done very well. I will give a report of your achievement to the council."), strbye
 			goto *chat_end
 		}
@@ -4785,34 +4906,23 @@
 					chatMore lang("戦士ギルドに加入したいというのか…我々が求めているのは、どんな強敵にも怯まず、与えられた指令を確実にこなす真のハンターだ。お前が信頼に足る者かどうか試させてもらおう。", "To join the Fighters Guild, you must first face a test to earn our trust. We only need skilled hunters who will obey our law and remain undaunted even in a desperate battle.")
 					gdata(GDATA_FLAG_SUB_GUILD_FIGHTER) = 1
 					txt_questupdate
-					repeat
-						flt 10
-						characreate MAX_CHARA_NC, CREATURE_ID_BUG, -3, 0
-						if ( refchara(cdata(CDATA_ID, MAX_CHARA_NC), DBSPEC_CHARA_RARE) < 70 ) {
-							continue
-						}
-						if ( cdata(CDATA_RELATION, MAX_CHARA_NC) != (-3) ) {
-							continue
-						}
-						if ( cdata(CDATA_QUALITY, MAX_CHARA_NC) >= FIX_QUALITY_MIRACLE ) {
-							continue
-						}
-						if ( cdata(CDATA_LEVEL, MAX_CHARA_NC) > cdata(CDATA_LEVEL, CHARA_PLAYER) * 2 ) {
-							continue
-						}
-						break
-					loop
-					gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) = 5
-					gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) = cdata(CDATA_ID, MAX_CHARA_NC)
-					chara_vanquish MAX_CHARA_NC
-					chatMore lang("" + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + "を" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "匹討伐するのが、お前に課せられた試験だ。ノルマを達成したら、私に報告したまえ。", "The task given to you is this. Find and slay " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " " + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + ". When you complete this task, talk to me again.")
+					gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) = 1
+					gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL) = rnd(8)
+					gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) = 5
+					chatMore lang("" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇するのが、お前に課せられた試験だ。ノルマを達成したら、私に報告したまえ。", "The task given to you is this. Find and conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " nefia more than " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " level. Talk to me again when you complete this.")
 					goto *chat_unique
 				}
 				if ( gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) > 0 ) {
-					chatMore lang("どうした？試験の内容は伝えたはずだ。" + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + "をあと" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "匹討伐してからまた来なさい。", "You still need to slay " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " more " + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + ".")
+					chatMore lang("どうした？試験の内容は伝えたはずだ。" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇してからまた来なさい。", "You still need to conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " nefia more than " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " level.")
 					goto *chat_unique
 				}
 				chatMore lang("ほう…どうやらノルマを見事に達成したようだな。", "Quite impressive... You have accomplished the task.")
+				if ( gdata(GDATA_FLAG_GUILD_THIEF) != 0 | gdata(GDATA_FLAG_GUILD_MAGE) != 0 ) {
+					chatMore lang("だが加入する前に、現在のギルドを正式に抜けてこい。手続きをせず勝手に辞めるような者は、組織として信用できない。当然だろう？", "But before joining, formally leave your current guild. A person who quits arbitrarily without following procedures cannot be trusted as an organization.")
+					snd SOUNDLIST_FAIL1
+					txt lang("所属ギルドマスターに脱退を伝えよう。", "You need to tell your guildmaster that you are leaving.")
+					goto *chat_unique
+				}
 				gdata(GDATA_RANK_GUILD) = 10000
 				gdata(GDATA_FLAG_GUILD_THIEF) = 0
 				gdata(GDATA_FLAG_GUILD_FIGHTER) = 1
@@ -4851,29 +4961,12 @@
 		buff = lang("ようこそ戦士ギルドへ、" + ranktitle(8) + "の" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…どうぞ中にお入り下さい。", "Welcome to the Fighters Guild, " + ranktitle(8) + " " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "... Please come in.")
 		gosub *chat_select
 		if ( chatval == 1 ) {
-			repeat
-				flt cdata(CDATA_LEVEL, CHARA_PLAYER) + 10
-				characreate MAX_CHARA_NC, CREATURE_ID_BUG, -3, 0
-				if ( refchara(cdata(CDATA_ID, MAX_CHARA_NC), DBSPEC_CHARA_RARE) < 70 ) {
-					continue
-				}
-				if ( cdata(CDATA_RELATION, MAX_CHARA_NC) != (-3) ) {
-					continue
-				}
-				if ( cdata(CDATA_QUALITY, MAX_CHARA_NC) >= FIX_QUALITY_MIRACLE ) {
-					continue
-				}
-				if ( cdata(CDATA_LEVEL, MAX_CHARA_NC) > cdata(CDATA_LEVEL, CHARA_PLAYER) * 2 ) {
-					continue
-				}
-				break
-			loop
-			gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) = 3
-			gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) = cdata(CDATA_ID, MAX_CHARA_NC)
-			chara_vanquish MAX_CHARA_NC
+			gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) = 1
+			gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL) = rnd(8)
+			gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) = 30 - gdata(GDATA_RANK_GUILD) / 400
 			gdata(GDATA_FLAG_SUB_FIGHTER_1) = 1
 			txt_questupdate
-			chatMore lang("良い心がけです。あなたにランク昇格のためのノルマを与えましょう。" + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + "をあと" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "匹討伐してからまた来なさい。昇進のための審査会に報告してあげましょう。", "There's a task for you. Go find and slay " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " " + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + ". Then we will think about your promotion."), strbye
+			chatMore lang("良い心がけです。あなたにランク昇格のためのノルマを与えましょう。" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇してからまた来なさい。昇進のための審査会に報告してあげましょう。", "There's a task for you. Go find and conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " nefia more than " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " level. Then we will think about your promotion."), strbye
 			goto *chat_unique
 		}
 		if ( chatval == 2 ) {
@@ -4893,7 +4986,7 @@
 			txtmore
 			txt_questitem
 			txt_questupdate
-			modrank 8, 500, 8
+			modrank 8, 1500, 10
 			chatMore lang("確かにノルマの達成を確認しました。早速審査会を開いてあなたの功績を報告しましょう。", "You've done very well. I will give a report of your achievement to the council."), strbye
 			goto *chat_end
 		}
@@ -6131,7 +6224,7 @@
 	if ( _switch_val == CREATURE_ID_MEFAN_THE_BARD | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_FLAG_SUB_UNPAID_COMPENSATION) == 0 ) {
-			chatList 1, lang("わかった", "Leave it to me.")
+			chatList 1, lang("わ??った", "Leave it to me.")
 			chatList 0, lang("お断りします", "I refuse.")
 			buff = lang("おお…旅の方よ、私の愚痴に付き合ってはくれないか。この街は以前、大量発生したネズミによって大きな被害を受けていたのだ。そこでネズミの駆除依頼を受けたのが私だ。この笛による素晴らしい演奏で小汚いネズミどもを片づけたのだが…この街の連中ときたらその報酬を全く払わないのだ！ああ、話していたら腹が立ってきた。報復としてちょっとこの街の子供をさらってきてくれ。", "Oh traveler, won't you listen to my woes? This town had a massive infestation of mice, and I received a request to get rid of them. But though I got rid of the mice with this flute of mine... The people of the town refuse to give me my pay! Ahh, it makes me so angry. As revenge, I want you to kidnap this town's children and bring them to me.")
 			gosub *chat_select
@@ -7101,6 +7194,44 @@
 			chatMore lang("将軍からさっき通信で聞いたよ。お前がレミードに潜りたがってる馬鹿だな。いいぞ、そういう馬鹿は嫌いじゃない。調査部隊に加わるかどうかに関係なく、個人的に協力してやろう。ただしちょっとしたおつかいをやってくれたら、だがな。その気になったらまた来い。", "So you must be the fool that wants to enter Remido. I've already heard all about it from the general. Good - I don't dislike fools at all. I'd like to cooperate with you personally, regardless of if you join the investigation unit or not. I won't be sending you on trifling tasks, however. Speak to me again if you're determined to go."), strbye
 			gdata(GDATA_FLAG_MAIN) = 223
 			goto *chat_end
+		}
+		if ( gdata(GDATA_FLAG_MAIN) >= 223 ) {
+			if ( cdata(CDATA_MATERIAL3_COUNTER, tc) == 0 ) {
+				p = 0
+				inv_getheader 0
+				repeat invrange, invhead
+					if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+						continue
+					}
+					if ( inv(INV_ITEM_ID, cnt) != ITEM_ID_CF_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_CRUSH_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_BATTLE_POTIOMAN & inv(INV_ITEM_ID, cnt) != ITEM_ID_SUPER_POTIOMAN ) {
+						continue
+					}
+					if ( inv(INV_ITEM_PARAM3, cnt) == 0 ) {
+						continue
+					}
+					p = 1
+					break
+				loop
+				if ( p == 1 ) {
+					chatMore lang("ちょっと待て、何だその小型ロボみたいなのは。ポーショマン？ほぅ、飲み物の栓を発射するのか…。", "Wait, What's that thing you are holding? A Potioman... shooting potion plugs??")
+					chatMore lang("うーむ。ちゃちゃっと本体を強化してやろうと思ったが、これは一種の工芸品だな。繊細な職人技だらけで簡単には手を加えられん。外付けの強化パーツで機能を追加したほうがよさそうだ。", "Huh, Full of delicate craftsmanship, it cannot be easily remodeled. It seems better to add functions with external reinforcement parts.")
+					redraw 0
+					gosub *screen_draw
+					gosub *screen_fade
+					gsel BUFFER_BUF
+					pos 0, 0
+					picload exedir + "graphic\\face1" + devfile + ".bmp", 1
+					gsel BUFFER_SCREEN
+					chatMore lang("ほれ、以前似たようなものを設計したことがあってな。即興でダウンサイジングして機能調整したが性能は保障する。", "Here's something handy for you Potioman. Don't worry about the size, it will do just fine.")
+					chatMore lang("ここを外してこっちとくっつけて展開させると強化アームになり、こっちのジョイントをスライドしてこっちとくっつければバレルになる。さらにこれを分割してさっきの余剰パーツをここにはめ込んで…ん？分かったよ手順書もつけてやる。作った俺は苦にならないんだが…やはり皆が言うように複雑すぎたのか？一応、形態数を抑えて戦闘中でも組み替えられる程度に簡略化したつもりなんだぞ。まぁ、いい気晴らしになったよ。", "Here, an custom-made Exo-skeleton Module for your Potioman, and it's instructions. Have fun!")
+					snd SOUNDLIST_COMPLETE1
+					flt
+					itemcreate -1, ITEM_ID_X_FRAME, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+					cdata(CDATA_MATERIAL3_COUNTER, tc) = 1
+					txt lang("何かが足元に転がってきた。", "Something is put on the ground.")
+					goto *chat_end
+				}
+			}
 		}
 		if ( gdata(GDATA_FLAG_MAIN) >= 223 & gdata(GDATA_FLAG_MAIN) <= 330 ) {
 			buff = lang("よう、" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "。お前は面白そうだからな。何か用があるなら俺の貴重な時間を割いてやるぞ。", "Yo, " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ". You're quite the amusing fellow. If you've got anything important I'll spare some of my precious time for you.")
@@ -8212,7 +8343,7 @@
 		gosub *chat_select
 		if ( chatval == 1 ) {
 			gdata(GDATA_FLAG_SUB_MAGE_1) = 1
-			gdata(GDATA_FLAG_GUILD_MAGE_NORMA) = 75 - gdata(GDATA_RANK_GUILD) / 200
+			gdata(GDATA_FLAG_GUILD_MAGE_NORMA) = 40 - gdata(GDATA_RANK_GUILD) / 400
 			txt_questupdate
 			chatMore lang("良い心がけです。あなたにランク昇格のためのノルマを与えましょう。世界に散らばった古書物を解読し、納入してください。" + gdata(GDATA_FLAG_GUILD_MAGE_NORMA) + "ギルドポイントが集まったら、昇進のための審査会に報告してあげましょう。", "Sure, there're plenty of tasks for you. For now, collect the ancient books and decrypt them. When you gather " + gdata(GDATA_FLAG_GUILD_MAGE_NORMA) + " guild points, we will think about your promotion.")
 			goto *chat_unique
@@ -8234,7 +8365,7 @@
 			txtmore
 			txt_questitem
 			txt_questupdate
-			modrank 8, 500, 8
+			modrank 8, 1500, 10
 			chatMore lang("確かにノルマの達成を確認しました。早速本部にあなたの功績を報告しましょう。", "You've done very well. I will give a report of your achievement to the council."), strbye
 			goto *chat_end
 		}
@@ -8255,7 +8386,7 @@
 		gosub *chat_select
 		if ( chatval == 1 ) {
 			gdata(GDATA_FLAG_SUB_THIEF_1) = 1
-			gdata(GDATA_FLAG_GUILD_THIEF_NORMA) = (10000 - gdata(GDATA_RANK_GUILD)) * 6 + 1000
+			gdata(GDATA_FLAG_GUILD_THIEF_NORMA) = (10000 - gdata(GDATA_RANK_GUILD)) * 3 + 1000
 			txt_questupdate
 			chatMore lang("良い心がけね。あなたにランク昇格のためのノルマを与えるわ。他人の所有物を奪い取り、盗品を売り払いなさい。金貨" + gdata(GDATA_FLAG_GUILD_THIEF_NORMA) + "枚相当の盗品を売ったら、昇進のための審査会に報告してあげる…。", "Alright. The Thieves Guild wants you to put stolen goods into circulation. Steal some goods and sell them to any vendors. When the sum of your earnings reaches " + gdata(GDATA_FLAG_GUILD_THIEF_NORMA) + " gold pieces, we will think about your promotion.")
 			goto *chat_unique
@@ -8277,7 +8408,7 @@
 			txtmore
 			txt_questitem
 			txt_questupdate
-			modrank 8, 500, 8
+			modrank 8, 1500, 10
 			chatMore lang("確かにノルマの達成を確認したわ。早速本部にあなたの功績を報告するわね…。", "You've done very well. I will give a report of your achievement to the council."), strbye
 			goto *chat_end
 		}
@@ -8297,29 +8428,12 @@
 		buff = lang("私は戦士ギルドの調査員。ギルドメンバーのサウスティリスでの功績を調査しているのだ。", "I'm an agent of the Fighter's Guild. I'm monitoring the progress of our guild members in South Tyris.")
 		gosub *chat_select
 		if ( chatval == 1 ) {
-			repeat
-				flt cdata(CDATA_LEVEL, CHARA_PLAYER) + 10
-				characreate MAX_CHARA_NC, CREATURE_ID_BUG, -3, 0
-				if ( refchara(cdata(CDATA_ID, MAX_CHARA_NC), DBSPEC_CHARA_RARE) < 70 ) {
-					continue
-				}
-				if ( cdata(CDATA_RELATION, MAX_CHARA_NC) != (-3) ) {
-					continue
-				}
-				if ( cdata(CDATA_QUALITY, MAX_CHARA_NC) >= FIX_QUALITY_MIRACLE ) {
-					continue
-				}
-				if ( cdata(CDATA_LEVEL, MAX_CHARA_NC) > cdata(CDATA_LEVEL, CHARA_PLAYER) * 3 ) {
-					continue
-				}
-				break
-			loop
-			gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) = 3
-			gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) = cdata(CDATA_ID, MAX_CHARA_NC)
-			chara_vanquish MAX_CHARA_NC
+			gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) = 1
+			gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL) = rnd(8)
+			gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) = 40 - gdata(GDATA_RANK_GUILD) / 400
 			gdata(GDATA_FLAG_SUB_FIGHTER_1) = 1
 			txt_questupdate
-			chatMore lang("良い心がけだ。お前にランク昇格のためのノルマを与えよう。" + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + "をあと" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "匹討伐してからまた来なさい。本部に報告してあげよう。", "There's a task for you. Go find and slay " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " " + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + ". Then we will think about your promotion."), strbye
+			chatMore lang("良い心がけだ。お前にランク昇格のためのノルマを与えよう。" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇してからまた来なさい。本部に報告してあげよう。", "There's a task for you. Go find and conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " nefia more than " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " level. Then we will consider about your promotion."), strbye
 			goto *chat_unique
 		}
 		if ( chatval == 2 ) {
@@ -8339,7 +8453,7 @@
 			txtmore
 			txt_questitem
 			txt_questupdate
-			modrank 8, 500, 8
+			modrank 8, 1500, 10
 			chatMore lang("確かにノルマの達成を確認した。早速本部にお前の功績を報告しよう。", "You've done very well. I will give a report of your achievement to the council."), strbye
 			goto *chat_end
 		}
@@ -9555,7 +9669,7 @@
 					buff = lang("(" + name(tc) + "は泣いてうずくまってしまった…)", "(" + name(tc) + " started to cry, cowering...)")
 					chatesc = 0
 					gosub *chat_select
-					chatMore lang("が、がんばる…。", "O..OK...")
+					chatMore lang("が、がんばる…。", "I..I'll do my best...")
 					soulstage = 3
 					goto *chat_end
 				}
@@ -9662,7 +9776,7 @@
 			}
 			txt_questupdate
 			chatMore lang("侵入したら、気づかれる前に…急いで…。", "Once you're in, you have to hurry... before they notice..."), strbye
-			soulimit = 4444
+			soulimit = 6666
 			soulstage = 1
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_AMUR_CAGE
@@ -10189,8 +10303,71 @@
 			}
 			chatList 0, lang("どうだろう", "That so?")
 			chatList 1, lang("合成用アイテムを持ってきた", "I brought items for synthesis.")
+			chatList 2, lang("ポーショマンの進化", "Can you evolve my potioman?")
 			buff = lang("よく夜中に猫やサリムがベッドに潜り込んでくるのじゃ。そんなに寒いのかのう？単にわしが寒さに慣れておるのかもな…ロストイルヴァに来る前はメイルーンに住んでいたからのう。", "Thalia and the cats have been sneaking into my bed at night. Is it really that cold? Maybe I'm just accustomed to it... Before I came to Lost Irva, I lived in Mayroon.")
 			gosub *chat_select
+			if ( chatval == 2 ) {
+				txt lang("対象のポーショマンは？", "Which potioman?")
+				invsubroutine = 1
+				invctrl = INVCTRL_MATERIAL_ENCHANT, 30
+				snd SOUNDLIST_INV
+				gosub *com_inventory
+				if ( stat == 1 ) {
+					cibk = ci
+					if ( inv(INV_ITEM_SHOP_SAMPLE, cibk) == 0 ) {
+						chatMore lang("なんじゃ、このクオリティの高いポーショマンは！？こ、この出来ならばとっておきの細工が使えそうじゃ…。", "What is this quality potion man! ? With this quality, that mystery seems to be usable..."), strmore
+					}
+					if ( inv(INV_ITEM_SHOP_SAMPLE, cibk) != 0 ) {
+						chatMore lang("ああ、前に進化させたやつの属性変更じゃな。", "Ah, it's an attribute change of the one that was evolved before."), strmore
+					}
+					item_find ITEM_ID_EVITEM, ITEM_FIND_MODE_DBID, ITEM_FIND_LOCATION_CHARAS
+					if ( stat != (-1) ) {
+						ci = stat
+						if ( inv(INV_ITEM_NUM, ci) >= 1 ) {
+							chatList 1, lang(itemname(ci, 1) + "を渡す", "Here, take my " + itemname(ci, 1) + ".")
+						}
+					}
+					chatList 0, lang("考えておく", "Someday.")
+					buff = lang("…よし、なんでもいいから進化アイテムを１つ持ってくるのじゃ。言っておくが種類は仕上がりに影響せんからの。", "…Okay, bring me an evolution item, whatever it is.")
+					gosub *chat_select
+					if ( chatval != 1 ) {
+						chatMore lang("ふぅん。", "Huh."), strmore
+						goto *chat_end
+					}
+					chatList 0, lang("やっぱりやめとく", "After all it is okay as it is.")
+					chatList 1, lang("火炎", "fire")
+					chatList 2, lang("冷気", "cold")
+					chatList 3, lang("電撃", "lightning")
+					chatList 4, lang("暗黒", "darkness")
+					chatList 5, lang("幻惑", "mind")
+					chatList 6, lang("毒", "poison")
+					chatList 7, lang("地獄", "nether")
+					chatList 8, lang("音", "sound")
+					chatList 9, lang("神経", "nerve")
+					chatList 10, lang("混沌", "chaos")
+					buff = lang("こいつは属性の力を得て生まれ変わるが…どの属性がよいかのう？後から変えられるし、色で決めるのもよいと思うぞ。", "Hmmm, This potioman gets the power of an attribute and is reborn...Which attribute do you want? You can change it later, and I think it's good to decide by color.")
+					chatesc = 1
+					gosub *chat_select
+					pot = chatval
+					if ( chatval >= 1 & chatval <= 10 ) {
+						ele = chatval + 49
+						inv(INV_ITEM_SHOP_SAMPLE, cibk) = ele
+						snd SOUNDLIST_BUILD1
+						inv(INV_ITEM_NUM, ci)--
+						gosub *calcBurdenPc
+						redraw 0
+						gosub *screen_draw
+						gosub *screen_fade
+						gsel BUFFER_BUF
+						pos 0, 0
+						picload exedir + "graphic\\face1" + devfile + ".bmp", 1
+						gsel BUFFER_SCREEN
+						snd SOUNDLIST_COMPLETE1
+						chatMore lang("で、出来たぞ！これがおぬしの新生ポーショマンじゃあ！大事にするんじゃぞ。", "Here you are...This is your new potioman!!"), strmore
+					}
+				}
+				goto *chat_end
+			}
 			if ( chatval == 1 ) {
 				kiseki = gdata(GDATA_THALIA_LIMIT) + 500
 				kiseki2 = gdata(GDATA_THALIA_LIMIT) + 1000
@@ -11148,7 +11325,7 @@
 		gosub *chat_select
 		if ( chatval == 0 ) {
 			chatMore lang("わかってくれればいいの。あたしのコンサート楽しんでいってね！", "As long as you understand. Enjoy the concert!")
-			chatMore lang("…あと、おひねりもよろしくっ！", "...and all donations are welcome!"), strbye
+			chatMore lang("…月末の限定コンサートもよろしくっ！", "...Please com to my concert at the end of the month! ...and all donations are welcome!"), strbye
 			goto *chat_end
 		}
 		if ( chatval == 3 ) {
@@ -13014,7 +13191,7 @@
 			gdata(STARTING_GDATA_FLAG + 330)++
 		}
 		if ( chatval == 13 ) {
-			chatMore lang("素材によって色々な効果があるわ。それに装備の能力も素材に応じて倍率がかかるの。倍率だから、元の性能が低いカテゴリ…指輪や首輪なんかは足りない耐性を補う素材を、元の性能が高いカテゴリは装備能力の高くなる素材を選ぶといいわ。", "Each material has a different effect, and can also strengthen or weaken different aspects of equipment. For jewelry, choose a material that improves your resistances. For weapons and armor, the material should improve their performance.")
+			chatMore lang("素材によって色々な効果があるわ。それに装備の能力も素材に応じて倍率がかかるの。倍率だから、元の性能が低いカテゴリ…指輪や首輪なんかは足りない耐性を???う素材を、元の性能が高いカテゴリは装備能力の高くなる素材を選ぶといいわ。", "Each material has a different effect, and can also strengthen or weaken different aspects of equipment. For jewelry, choose a material that improves your resistances. For weapons and armor, the material should improve their performance.")
 			chatMore lang("素材変化の巻物はランダムだけど、祝福した方が上位の素材が出やすいの。他には素材槌っていう対応した素材に確定で変えるものもあるけれど…レアなのよねぇ。", "Scrolls that change material work in a fixed cycle of material types, with scrolls other than inferior material adding two additional materials to the cycle when blessed. There are also material kits that change an item to a specific material, but those are rare.")
 			gdata(STARTING_GDATA_FLAG + 330)++
 		}
@@ -14485,49 +14662,13 @@
 		_switch_sw = 0
 		kaiwa = rnd(3)
 		if ( kaiwa == 0 ) {
-			listmax = 0
-			buff = lang("やだなぁ…隙を見て赤ちゃんをさらおうなんて考えてませんよぉ。", "No...I'm not thinking of stealing the baby while looking for a chance...")
-			tc = tc * (0 == 0) + (0 != 0) * 0
-			list(0, listmax) = 0
-			listn(0, listmax) = strbye
-			listmax++
-			chatesc = 1
-			gosub *chat_select
-			if ( scenemode ) {
-				if ( scene_cut == 1 ) {
-					goto *chat_end
-				}
-			}
+			chatMore lang("やだなぁ…隙を見て赤ちゃんをさらおうなんて考えてませんよぉ。", "No...I'm not thinking of stealing the baby while looking for a chance..."), strbye
 		}
 		if ( kaiwa == 1 ) {
-			listmax = 0
-			buff = lang("あー…子供ができない夫婦のとこに赤ちゃん届けてチヤホヤされてぇ…。", "Ah...I want to deliver a baby to a couple who can't have children...")
-			tc = tc * (0 == 0) + (0 != 0) * 0
-			list(0, listmax) = 0
-			listn(0, listmax) = strbye
-			listmax++
-			chatesc = 1
-			gosub *chat_select
-			if ( scenemode ) {
-				if ( scene_cut == 1 ) {
-					goto *chat_end
-				}
-			}
+			chatMore lang("あー…子供ができない夫婦のとこに赤ちゃん届けてチヤホヤされてぇ…。", "Ah...I want to deliver a baby to a couple who can't have children..."), strbye
 		}
 		if ( kaiwa == 2 ) {
-			listmax = 0
-			buff = lang("子育てってノイローゼになるくらい大変ですよ。私が預かりましょうか？", "Parenting is so hard that it makes me have a nervous breakdown. Shall I take care of the baby?")
-			tc = tc * (0 == 0) + (0 != 0) * 0
-			list(0, listmax) = 0
-			listn(0, listmax) = strbye
-			listmax++
-			chatesc = 1
-			gosub *chat_select
-			if ( scenemode ) {
-				if ( scene_cut == 1 ) {
-					goto *chat_end
-				}
-			}
+			chatMore lang("子育てってノイローゼになるくらい大変ですよ。私が預かりましょうか？", "Parenting is so hard that it makes me have a nervous breakdown. Shall I take care of the baby?"), strbye
 		}
 		goto *chat_end
 		goto *chat_unique_SWEND1
@@ -18068,7 +18209,7 @@
 								chatList 38, lang("婚約を申し込む", "May I ask for your hand?")
 							}
 							else {
-								if ( gdata(GDATA_SLEEP) >= 15 ) {
+								if ( gdata(GDATA_SLEEP) >= 13 ) {
 									chatList 39, lang("遺伝子を残す", "Let's make a gene.")
 								}
 							}
@@ -18557,6 +18698,12 @@
 		snd SOUNDLIST_PAYGOLD1
 		cdata(CDATA_GOLD, CHARA_PLAYER) -= calcmealvalued()
 		snd SOUNDLIST_DRINK1
+		if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 1 ) {
+			snd SOUNDLIST_WRITE1
+			txtef COLOR_GREEN
+			txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+			cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+		}
 		if ( TweakData(TWEAK_GAMEPLAY_CG_DISABLE_THIRST, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 			cdata(CDATA_THIRST, CHARA_PLAYER) = 15000
 		}
@@ -18620,6 +18767,12 @@
 						cdata(CDATA_HUNGER, tc) += 1000
 					}
 				loop
+				if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 1 ) {
+					snd SOUNDLIST_WRITE1
+					txtef COLOR_GREEN
+					txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+					cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+				}
 				txtef COLOR_GREEN
 				if ( val == 0 ) {
 					txt lang("くう〜っ！", "Delicious...!!!")
@@ -20107,19 +20260,7 @@
 		cdata(CDATA_SPRITE_SIZE_MILK, tc)++
 		cdata(CDATA_FRIENDSHIP, tc) = 0
 		snd SOUNDLIST_DING1
-		listmax = 0
-		buff = lang("(" + cdatan(CDATAN_NAME, tc) + "は、自分が少し大人に近づいたことを実感した！)", "(" + cdatan(CDATAN_NAME, tc) + " realized a little more grown-up!)")
-		tc = tc * (0 == 0) + (0 != 0) * 0
-		list(0, listmax) = 0
-		listn(0, listmax) = strmore
-		listmax++
-		chatesc = 1
-		gosub *chat_select
-		if ( scenemode ) {
-			if ( scene_cut == 1 ) {
-				goto *chat_end
-			}
-		}
+		chatMore lang("(" + cdatan(CDATAN_NAME, tc) + "は、自分が少し大人に近づいたことを実感した！)", "(" + cdatan(CDATAN_NAME, tc) + " realized a little more grown-up!)"), strmore
 		if ( cdata(CDATA_SPRITE_SIZE_MILK, tc) == (-1) ) {
 			cdata(CDATA_TONE, tc) = rnd(7)
 			cdata(CDATA_TONE_SEX, tc) = rnd(2) + 1
@@ -20129,19 +20270,7 @@
 		if ( cdata(CDATA_SPRITE_SIZE_MILK, tc) == 0 ) {
 			snd SOUNDLIST_DING3
 			cbitmod CHARA_BIT_BIRTHED_CHILD, tc, FALSE
-			listmax = 0
-			buff = lang("(" + cdatan(CDATAN_NAME, tc) + "はもう一人前だ！)", "(" + cdatan(CDATAN_NAME, tc) + " has grown well!)")
-			tc = tc * (0 == 0) + (0 != 0) * 0
-			list(0, listmax) = 0
-			listn(0, listmax) = strmore
-			listmax++
-			chatesc = 1
-			gosub *chat_select
-			if ( scenemode ) {
-				if ( scene_cut == 1 ) {
-					goto *chat_end
-				}
-			}
+			chatMore lang("(" + cdatan(CDATAN_NAME, tc) + "はもう一人前だ！)", "(" + cdatan(CDATAN_NAME, tc) + " has grown well!)"), strmore
 		}
 		goto *chat_end
 	}

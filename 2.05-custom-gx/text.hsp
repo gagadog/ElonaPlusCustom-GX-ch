@@ -37,6 +37,7 @@
 	_destiny = "", "D", "DE", "DES", "DEST", "DESTI", "DESTIN", "DESTINY", ""
 	_biyori = lang("修行日和", "Training-day"), lang("戦闘日和", "Combat-day"), lang("仕事日和", "Jobs-day"), lang("探索日和", "Exploration-day"), lang("勉強日和", "Study-day")
 	_dengon = lang("なし", "none"), lang("協調", "Cooperation"), lang("招待", "Invitation"), lang("告白", "Confession"), lang("応援", "Cheering"), lang("侮辱", "Contempt")
+	_nefiatype = lang("洞窟", "Cave"), lang("塔", "Tower"), lang("森", "Forest"), lang("砦", "Fort"), lang("巣穴", "Nest"), lang("霊園", "Cemetery"), lang("鉱山", "Mine"), lang("湖", "Lake")
 	_seikaku = lang("未設定", "none"), lang("陽気", "Cheerful"), lang("慎重", "Carefully"), lang("献身的", "Devoted"), lang("豪快", "Lively"), lang("自信家", "Confident"), lang("謙虚", "Humility"), lang("寡黙", "Quiet"), lang("勤勉", "Diligence"), lang("純真", "Innocent"), lang("繊細", "Delicate"), lang("温厚", "Gentle"), lang("情熱的", "Passionate"), lang("意地悪", "Evil"), lang("スケベ", "Lewd"), lang("皮肉屋", "Cynic"), lang("冷徹", "Ruthless"), lang("好戦的", "Warlike"), lang("腹黒", "Corrupt"), lang("偏執的", "Paranodic"), lang("頑固", "Stubborn"), lang("守銭奴", "Miser"), lang("怠惰", "Lazy"), lang("アホ", "Stupid"), lang("能天気", "Carefree"), lang("気分屋", "Whimsical"), lang("卑怯", "Despicable"), lang("高慢", "Arrogance"), lang("臆病", "Cowardly"), lang("陰鬱", "Gloomy"), lang("猟奇的", "Bizarre"), lang("お茶目", "Playful"), lang("内気", "Shy"), lang("神経質", "Nervous"), lang("下品", "Vulgar"), lang("天邪鬼", "Perversity"), lang("気丈", "Courageous")
 	_homename = lang("洞窟", "cave"), lang("森のほったて小屋", "shack"), lang("住み心地のいい家", "cozy house"), lang("セレブ邸", "estate"), lang("サイバーハウス", "cyber house"), lang("小城", "small castle"), lang("宮殿", "palace")
 	_bookself = lang("紙屑同然の", "paper scraps"), lang("素人丸出しの", "noob"), lang("ありきたりな", "commonplace"), lang("光るものがある", "good sense"), lang("いい感じの", "cool"), lang("納得いく", "satisfied"), lang("至高の", "masterpiece")
@@ -1247,6 +1248,77 @@
 		}
 		if ( p(cnt) == 3 ) {
 			s(cnt) = lang("レイオス", "<Redos>")
+		}
+	loop
+	return
+
+#deffunc txtsetcustom int txtsetcustom_arg1
+	repeat 7
+		i = cnt
+		p(cnt) = p(i)
+		p(i) = cnt
+	loop
+	repeat txtsetcustom_arg1
+		if ( p(cnt) == 0 ) {
+			s(cnt) = lang("やっぱりやめる", "Cancel")
+		}
+		if ( p(cnt) == 1 ) {
+			s(cnt) = lang("スピニングフットに変更", "Change Spinning Foot")
+		}
+		if ( p(cnt) == 2 ) {
+			s(cnt) = lang("マイティアームに変更", "Change Mighty Arm")
+		}
+		if ( p(cnt) == 3 ) {
+			s(cnt) = lang("デュアルコアに変更", "Change Dual Core")
+		}
+		if ( p(cnt) == 4 ) {
+			s(cnt) = lang("ラピッドサーバーに変更", "Change Rapid Server")
+		}
+		if ( p(cnt) == 5 ) {
+			s(cnt) = lang("スナイプヘッドに変更", "Change Snipe Head")
+		}
+		if ( p(cnt) == 6 ) {
+			s(cnt) = lang("デシーヴバレルに変更", "Change Deceive Barrel")
+		}
+	loop
+	return
+
+#deffunc txtsetlimitp int txtsetlimitp_arg1
+	repeat 10
+		i = cnt
+		p(cnt) = p(i)
+		p(i) = cnt
+	loop
+	repeat txtsetlimitp_arg1
+		if ( p(cnt) == 0 ) {
+			s(cnt) = lang("やっぱりやめる", "Cancel")
+		}
+		if ( p(cnt) == 1 ) {
+			s(cnt) = lang("制限レベル１", "Limiter LV.1")
+		}
+		if ( p(cnt) == 2 ) {
+			s(cnt) = lang("制限レベル２", "Limiter LV.2")
+		}
+		if ( p(cnt) == 3 ) {
+			s(cnt) = lang("制限レベル３", "Limiter LV.3")
+		}
+		if ( p(cnt) == 4 ) {
+			s(cnt) = lang("制限レベル４", "Limiter LV.4")
+		}
+		if ( p(cnt) == 5 ) {
+			s(cnt) = lang("制限レベル５", "Limiter LV.5")
+		}
+		if ( p(cnt) == 6 ) {
+			s(cnt) = lang("制限レベル６", "Limiter LV.6")
+		}
+		if ( p(cnt) == 7 ) {
+			s(cnt) = lang("制限レベル７", "Limiter LV.7")
+		}
+		if ( p(cnt) == 8 ) {
+			s(cnt) = lang("制限レベル８", "Limiter LV.8")
+		}
+		if ( p(cnt) == 9 ) {
+			s(cnt) = lang("制限レベル９", "Limiter LV.9")
 		}
 	loop
 	return
@@ -2660,13 +2732,13 @@
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_RANDOM_DUNGEON ) {
 		s = mapnamerd(adata(ADATA_NAME, mapname_mapid), limitmax(adata(ADATA_MIN_LEVEL, mapname_mapid) / 5, length2(mapnamerd) - 1))
 		if ( adata(ADATA_TYPE, mapname_mapid) == MAP_TYPE_DUNGEON ) {
-			s += lang("洞窟", "Dungeon")
-		}
-		if ( adata(ADATA_TYPE, mapname_mapid) == MAP_TYPE_FOREST ) {
-			s += lang("森", "Forest")
+			s += lang("洞窟", "Cave")
 		}
 		if ( adata(ADATA_TYPE, mapname_mapid) == MAP_TYPE_TOWER ) {
 			s += lang("塔", "Tower")
+		}
+		if ( adata(ADATA_TYPE, mapname_mapid) == MAP_TYPE_FOREST ) {
+			s += lang("森", "Forest")
 		}
 		if ( adata(ADATA_TYPE, mapname_mapid) == MAP_TYPE_FORT ) {
 			s += lang("砦", "Fort")
@@ -7670,10 +7742,114 @@
 	noteadd ""
 	return
 
+*daily_info
+	if ( val == 0 ) {
+		noteadd ""
+		noteadd lang("@QD[デイリークエスト]", "@QD[Daily Quest]")
+	}
+	noteadd lang("@QD<現在：" + cdata(CDATA_MATERIAL4_COUNTER, CHARA_PLAYER) + " / 目標ポイント：" + cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) + ">", "@QD<Now " + cdata(CDATA_MATERIAL4_COUNTER, CHARA_PLAYER) + " / RewardGet " + cdata(CDATA_MATERIAL5_COUNTER, CHARA_PLAYER) + ">")
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) >= 1000 ) {
+		s3 = lang("[達成]", "[Done]")
+		talk_conv s3, 40 - en * 4
+		buff += s3
+	}
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 1 ) {
+		s3 = lang("・何か飲み物を飲もう。", "I will drink something.")
+		talk_conv s3, 40 - en * 4
+		buff += s3
+	}
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 2 ) {
+		s3 = lang("・ワールドマップを歩こう。", "I will walk on the world map.")
+		talk_conv s3, 40 - en * 4
+		buff += s3
+	}
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 3 ) {
+		s3 = lang("・誰かと会話しよう。", "I wll have a conversation with someone.")
+		talk_conv s3, 40 - en * 4
+		buff += s3
+	}
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 4 ) {
+		s3 = lang("・高レベルの相手を倒そう。", "I will defeat high level enemy.")
+		talk_conv s3, 40 - en * 4
+		buff += s3
+	}
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 5 ) {
+		s3 = lang("・誰かに自分の気持ちを伝えよう。", "I will tell someone how I feel.")
+		talk_conv s3, 40 - en * 4
+		buff += s3
+	}
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 6 ) {
+		s3 = lang("・ランダムネフィアを訪れよう。", "I will visit Random Nefia.")
+		talk_conv s3, 40 - en * 4
+		buff += s3
+	}
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 7 ) {
+		s3 = lang("・野外を訪れよう。", "I will visit Wilderness.")
+		talk_conv s3, 40 - en * 4
+		buff += s3
+	}
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 8 ) {
+		s3 = lang("・軽疲労になるまで運動しよう。", "I will exercise until I feel lightly tired.")
+		talk_conv s3, 40 - en * 4
+		buff += s3
+	}
+	noteadd ""
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) >= 1000 ) {
+		s4 = lang("[達成]", "[Done]")
+		talk_conv s4, 40 - en * 4
+		buff += s4
+	}
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 1 ) {
+		s4 = lang("・肉を食べよう。", "I will eat a meat.")
+		talk_conv s4, 40 - en * 4
+		buff += s4
+	}
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 2 ) {
+		s4 = lang("・卵を食べよう。", "I will eat an egg.")
+		talk_conv s4, 40 - en * 4
+		buff += s4
+	}
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 3 ) {
+		s4 = lang("・野菜を食べよう。", "I will eat a vegetable.")
+		talk_conv s4, 40 - en * 4
+		buff += s4
+	}
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 4 ) {
+		s4 = lang("・果物を食べよう。", "I will eat a fruit.")
+		talk_conv s4, 40 - en * 4
+		buff += s4
+	}
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 5 ) {
+		s4 = lang("・パンを食べよう。", "I will eat a bread.")
+		talk_conv s4, 40 - en * 4
+		buff += s4
+	}
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 6 ) {
+		s4 = lang("・木の実を食べよう。", "I will eat a nut.")
+		talk_conv s4, 40 - en * 4
+		buff += s4
+	}
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 7 ) {
+		s4 = lang("・魚介を食べよう。", "I will eat a seafood.")
+		talk_conv s4, 40 - en * 4
+		buff += s4
+	}
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 8 ) {
+		s4 = lang("・麺を食べよう。", "I will eat a noodle.")
+		talk_conv s4, 40 - en * 4
+		buff += s4
+	}
+	noteadd ""
+	s5 = lang("・21：00〜23：59に就寝しよう。", "I will go to sleep between 21:00 and 23:59.")
+	talk_conv s5, 40 - en * 4
+	buff += s5
+	noteadd ""
+	return
+
 *quest_info2
 	if ( val == 0 ) {
 		noteadd ""
-		noteadd lang("@QM[サブクエスト]", "@QM[Sub Quest]")
+		noteadd lang("@QS[サブクエスト]", "@QS[Sub Quest]")
 	}
 	p = 0
 	if ( gdata(GDATA_FLAG_SUB_SLIME) != 0 ) {
@@ -8161,7 +8337,7 @@
 	}
 	if ( val == 0 ) {
 		if ( p == 1 ) {
-			s1 = lang("盗賊ギルドに加入するには、税金を4ヶ月以上滞納した状態で、ダルフィのギルドの番人に話しかける必要がある。", "To join the Thieves Guild, I need to not pay tax for 4 months, that means I'll be a criminal for sure.")
+			s1 = lang("盗賊ギルドに加入するには、カルマを-100にした状態で、ダルフィのギルドの番人に話しかける必要がある。", "To join the Thieves Guild, I need to drop karma at -100, that means I'll be a criminal for sure.")
 			talk_conv s1, 40 - en * 4
 			buff += "(" + s + ")\n" + s1
 			noteadd ""
@@ -8179,7 +8355,7 @@
 	}
 	if ( val == 0 ) {
 		if ( p == 1 ) {
-			s1 = lang("戦士ギルドに加入するには、" + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + "をあと" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "匹討伐してから、カプールのギルドの番人に話しかける必要がある。", "To join the Fighters Guild, I need to slay " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " more " + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + " and talk to the guild guard in Port Kapul.")
+			s1 = lang("戦士ギルドに加入するには、" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇してから、カプールのギルドの番人に話しかける必要がある。", "To join the Fighters Guild, I need to conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " nefia more than " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " level."
 			talk_conv s1, 40 - en * 4
 			buff += "(" + s + ")\n" + s1
 			noteadd ""
@@ -8215,7 +8391,7 @@
 	}
 	if ( val == 0 ) {
 		if ( p == 1 ) {
-			s1 = lang("戦士ギルドのランクを上げるためには、" + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + "をあと" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "匹討伐してから、カプールのギルドの番人に話しかける必要がある。", "To raise the rank in the Fighters Guild, I need to slay " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " more " + refchara(gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF), DBSPEC_CHARA_NAME_ORG, 1) + " and talk to the guild guard in Port Kapul.")
+			s1 = lang("戦士ギルドのランクを上げるためには、" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇してから、カプールのギルドの番人に話しかける必要がある。", "To raise the rank in the Fighters Guild, I need to conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " nefia more than " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " in level and talk talk to the guild guard in Port Kapul.")
 			talk_conv s1, 40 - en * 4
 			buff += "(" + s + ")\n" + s1
 			noteadd ""

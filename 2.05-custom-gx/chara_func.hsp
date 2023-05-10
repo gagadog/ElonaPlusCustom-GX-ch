@@ -1675,14 +1675,11 @@
 	locvar_addbuff_fixeddur = addbuff_arg4
 	if ( bdataref(0, addbuff_buffid) == 2 ) {
 		locvar_addbuff_f = 0
-		if ( sdata(SKILL_RES_MAGIC, addbuff_charid) / 2 > rnd(addbuff_arg3 * 2 + 100) ) {
-			locvar_addbuff_f = 1
+		if ( 0 ) {
+			txt lang("パワー" + addbuff_arg3 + "。", "But it produces no effect.")
 		}
-		if ( addbuff_arg3 * 3 < sdata(SKILL_RES_MAGIC, addbuff_charid) ) {
+		if ( sdata(SKILL_NORMAL_FAITH, addbuff_charid) * 2 + 100 > rnd(addbuff_arg3 * 2 + 100) ) {
 			locvar_addbuff_f = 1
-		}
-		if ( addbuff_arg3 / 3 > sdata(SKILL_RES_MAGIC, addbuff_charid) ) {
-			locvar_addbuff_f = 0
 		}
 		if ( cdata(CDATA_QUALITY, addbuff_charid) > FIX_QUALITY_GREAT | cdata(CDATA_ID, addbuff_charid) == CREATURE_ID_AILE_THE_ATTENDANT ) {
 			if ( rnd(4) ) {
@@ -2035,15 +2032,15 @@
 
 #deffunc resistmod int resistmod_charid, int resistmod_ele, int resistmod_arg3
 	locvar_resistmod_lv = sorg(resistmod_ele, resistmod_charid) + resistmod_arg3
-	if ( sorg(resistmod_ele, resistmod_charid) >= 200 & resistmod_arg3 >= 50 ) {
+	if ( sorg(resistmod_ele, resistmod_charid) >= 300 & resistmod_arg3 >= 25 | sorg(resistmod_ele, resistmod_charid) < 100 ) {
 		txt_nothinghappens
 	}
 	else {
 		if ( locvar_resistmod_lv < 50 ) {
 			locvar_resistmod_lv = 50
 		}
-		if ( locvar_resistmod_lv > 200 ) {
-			locvar_resistmod_lv = 200
+		if ( locvar_resistmod_lv > 300 ) {
+			locvar_resistmod_lv = 300
 		}
 		if ( resistmod_arg3 >= 50 ) {
 			txtef COLOR_GREEN
@@ -3283,6 +3280,14 @@
 	}
 	if ( check_talk_arg1 >= 0 ) {
 		if ( check_talk_arg1 == 0 | cdata(CDATA_RELATION, check_talk_arg1) >= 10 ) {
+			if ( cdata(CDATA_LEVEL, CHARA_PLAYER) < cdata(CDATA_LEVEL, check_talk_arg2) ) {
+				if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 4 ) {
+					snd SOUNDLIST_WRITE1
+					txtef COLOR_GREEN
+					txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+					cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+				}
+			}
 			if ( cbit(CHARA_BIT_NECRO, check_talk_arg2) != TRUE & cdata(CDATA_RELATION, check_talk_arg2) != RELATION_ALLY & gdata(GDATA_FLAG_MAIN) != 900 ) {
 				if ( gdata(GDATA_FLAG_LEOLD_JOB_STAGE) == 1 ) {
 					if ( cdata(CDATA_LEVEL, check_talk_arg2) >= gdata(GDATA_FLAG_LEOLD_JOB_TIER) ) {
@@ -3601,6 +3606,14 @@
 #deffunc check_kill int check_kill_arg1, int check_kill_arg2
 	if ( check_kill_arg1 >= 0 ) {
 		if ( check_kill_arg1 == 0 | cdata(CDATA_RELATION, check_kill_arg1) >= 10 ) {
+			if ( cdata(CDATA_LEVEL, CHARA_PLAYER) < cdata(CDATA_LEVEL, check_kill_arg2) ) {
+				if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 4 ) {
+					snd SOUNDLIST_WRITE1
+					txtef COLOR_GREEN
+					txt lang("ジャーナルが更新された。", "Your journal has been updated.")
+					cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) += 1000
+				}
+			}
 			if ( cbit(CHARA_BIT_NECRO, check_kill_arg2) != TRUE & cdata(CDATA_RELATION, check_kill_arg2) != RELATION_ALLY & gdata(GDATA_FLAG_MAIN) != 900 ) {
 				if ( gdata(GDATA_FLAG_LEOLD_JOB_STAGE) == 1 ) {
 					if ( cdata(CDATA_LEVEL, check_kill_arg2) >= gdata(GDATA_FLAG_LEOLD_JOB_TIER) ) {
@@ -3644,15 +3657,10 @@
 	}
 	if ( check_kill_arg1 >= 0 & check_kill_arg1 != check_kill_arg2 ) {
 		if ( check_kill_arg1 == 0 | cdata(CDATA_RELATION, check_kill_arg1) >= 10 ) {
-			if ( cbit(CHARA_BIT_NECRO, check_kill_arg2) != 1 & cdata(CDATA_RELATION, check_kill_arg2) != 10 ) {
+			if ( cbit(CHARA_BIT_NECRO, check_kill_arg2) != TRUE & cdata(CDATA_RELATION, check_kill_arg2) != RELATION_ALLY ) {
 				if ( check_kill_arg2 >= MAX_CHARA_FOLLOWER ) {
 					if ( check_kill_arg1 < MAX_CHARA_FOLLOWER ) {
 						gdata(GDATA_KILLED)++
-					}
-					if ( cdata(CDATA_ID, check_kill_arg2) == gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) ) {
-						if ( gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) > 0 ) {
-							gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA)--
-						}
 					}
 					if ( cdata(CDATA_RELATION_ORG, check_kill_arg2) >= 0 ) {
 						locvar_check_kill_p = -2
@@ -4686,6 +4694,24 @@
 		}
 		return
 	}
+	if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) == 100 ) {
+		if ( txteledmg_arg1 == 1 ) {
+			txt lang("人形に変えて事実上殺した。", "change" + _s(txteledmg_arg2) + " " + name(txteledmg_arg3) + " into a doll.")
+		}
+		if ( txteledmg_arg1 == 2 ) {
+			txt lang(name(txteledmg_arg3) + "は自由を奪われ人形になった。", name(txteledmg_arg3) + " change" + _s(txteledmg_arg3) + " into a doll.")
+		}
+		return
+	}
+	if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) == (-1) ) {
+		if ( txteledmg_arg1 == 1 ) {
+			txt lang("内部から崩壊させて殺した。", "burst" + _s(txteledmg_arg2) + " the body of " + him(txteledmg_arg3) + ".")
+		}
+		if ( txteledmg_arg1 == 2 ) {
+			txt lang(name(txteledmg_arg3) + "は身体が耐え切れずに崩壊した。", name(txteledmg_arg3) + " burst" + _s(txteledmg_arg3) + " and die" + _s(txteledmg_arg3) + ".")
+		}
+		return
+	}
 	if ( txteledmg_arg1 == 0 ) {
 		if ( synccheck(txteledmg_arg3, -1) ) {
 			txt lang(name(txteledmg_arg3) + "は傷ついた。", name(txteledmg_arg3) + " " + is(txteledmg_arg3) + " wounded.")
@@ -4737,7 +4763,7 @@
 			}
 			locvar_dmghp_dmg = locvar_dmghp_dmg * 100 / limit(locvar_dmghp_r + 110, 50, 3000)
 		}
-		if ( locvar_dmghp_ele == SKILL_RESDMG_CONSTITUTION ) {
+		if ( locvar_dmghp_ele == SKILL_RESDMG_CONSTITUTION | dmghp_source == DAMAGE_FROM_SUFFOCATION | dmghp_source == DAMAGE_FROM_POISON ) {
 			locvar_dmghp_r = sdata(SKILL_ATTR_CON, dmghp_charid)
 			locvar_dmghp_dmg = locvar_dmghp_dmg * 100 / (locvar_dmghp_r + 100)
 		}
@@ -5189,9 +5215,6 @@
 	}
 	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 100 ) {
 		locvar_dmghp_dmg = locvar_dmghp_dmg * 3 / 5
-	}
-	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-		locvar_dmghp_dmg = locvar_dmghp_dmg / 3 + 1
 	}
 	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 1200 ) {
 		locvar_dmghp_dmg = locvar_dmghp_dmg * 1 / 6 + 1
@@ -6348,7 +6371,7 @@
 			}
 		}
 	}
-	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
+	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 | gdata(GDATA_TEMPORARY_FLAGS2) == 4771 ) {
 		if ( cdata(CDATA_HP, dmghp_charid) <= cdata(CDATA_MAX_HP, dmghp_charid) / 20 | cdata(CDATA_HP, dmghp_charid) == 0 ) {
 			if ( cdata(CDATA_CONDITION_DIM, dmghp_charid) < 100 ) {
 				cdata(CDATA_CONDITION_DIM, dmghp_charid) = 100
@@ -6644,7 +6667,7 @@
 		if ( gdata(GDATA_RIDER) != dmghp_charid | dmghp_charid == CHARA_PLAYER ) {
 			cell_removechara cdata(CDATA_X, dmghp_charid), cdata(CDATA_Y, dmghp_charid)
 		}
-		if ( dmghp_source != DAMAGE_FROM_PERSUASION_LOW ) {
+		if ( dmghp_source != DAMAGE_FROM_PERSUASION_HIGH & dmghp_source != DAMAGE_FROM_PERSUASION_LOW ) {
 			if ( cbit(CHARA_BIT_STONE_BLOOD, dmghp_charid) ) {
 				if ( synccheck(dmghp_charid, -1) ) {
 					x = cdata(CDATA_X, dmghp_charid)
@@ -7366,6 +7389,10 @@
 		check_kill dmghp_source, dmghp_charid
 		catitem = 0
 		rollanatomy = 0
+		rollanatomye = 0
+		rollanatomym = 0
+		rollanatomyr = 0
+		rollsenseki = 0
 		if ( rnd(60) == 0 ) {
 			rollanatomy = 1
 		}
@@ -7375,15 +7402,54 @@
 					catitem = dmghp_source
 				}
 			}
-			if ( int(sqrt(sdata(SKILL_NORMAL_ANATOMY, dmghp_source))) > rnd(150) ) {
-				rollanatomy = 1
+			locvar_dmghp_anatomy = sdata(SKILL_NORMAL_ANATOMY, dmghp_source) + 1
+			if ( sdata(SKILL_NORMAL_ANATOMY, dmghp_source) > 0 ) {
+				locvar_dmghp_anatomy += 50
 			}
-			skillexp SKILL_NORMAL_ANATOMY, dmghp_source, 10 + rollanatomy * 4
+			if ( cdata(CDATA_RELATION, dmghp_source) == RELATION_ALLY | dmghp_source == (0 /*!!!@[CHARA_PLAYER @@@ DAMAGE_FROM_CHARA]@!!! */) ) {
+				repeat 16 - 1, 1
+					if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+						continue
+					}
+					if ( dmghp_source == cnt ) {
+						continue
+					}
+					locvar_dmghp_anatomy += sdata(SKILL_NORMAL_ANATOMY, cnt) + 1
+				loop
+			}
+			if ( int(sqrt(locvar_dmghp_anatomy)) > rnd(150) ) {
+				if ( rnd(3) == 0 ) {
+					rollanatomy = 1
+				}
+			}
+			if ( int(sqrt(locvar_dmghp_anatomy)) > rnd(150) ) {
+				if ( rnd(3) == 0 ) {
+					rollanatomye = 1
+				}
+			}
+			if ( int(sqrt(locvar_dmghp_anatomy)) > rnd(150) ) {
+				if ( rnd(3) == 0 ) {
+					rollanatomym = 1
+				}
+			}
+			if ( int(sqrt(locvar_dmghp_anatomy)) > rnd(150) ) {
+				if ( rnd(3) == 0 ) {
+					rollanatomyr = 1
+				}
+			}
+			skillexp SKILL_NORMAL_ANATOMY, dmghp_source, 10 + rollanatomy * 4 + rollanatomye * 4 + rollanatomym * 4 + rollanatomyr * 4
 			if ( cbit(CHARA_BIT_NECRO, dmghp_source) ) {
-				skillexp SKILL_NORMAL_ANATOMY, CHARA_PLAYER, 30 + rollanatomy * 8
+				skillexp SKILL_NORMAL_ANATOMY, CHARA_PLAYER, 30 + rollanatomy * 8 + rollanatomye * 8 + rollanatomym * 8 + rollanatomyr * 8
 			}
 		}
-		if ( dmghp_source == DAMAGE_FROM_PERSUASION_LOW ) {
+		else {
+			rollsenseki = 1
+		}
+		rollovercast = 0
+		if ( dmghp_source == DAMAGE_FROM_OVERCAST ) {
+			rollovercast = 1
+		}
+		if ( dmghp_source == DAMAGE_FROM_PERSUASION_HIGH | dmghp_source == DAMAGE_FROM_PERSUASION_LOW ) {
 			gdata(GDATA_FLAG_TALKING_USED) = 100
 		}
 		rc = dmghp_charid
@@ -7479,6 +7545,10 @@
 	cdata(CDATA_MP, dmgmp_charid) -= dmgmp_arg2
 	if ( cdata(CDATA_MP, dmgmp_charid) < (-99999) ) {
 		cdata(CDATA_MP, dmgmp_charid) = -99999
+	}
+	if ( cfg_dhyouji == 1 ) {
+		txtef COLOR_LIGHT_BLUE2
+		txt "<" + dmgmp_arg2 + ">"
 	}
 	if ( cdata(CDATA_MP, dmgmp_charid) < 0 ) {
 		r1 = dmgmp_charid
