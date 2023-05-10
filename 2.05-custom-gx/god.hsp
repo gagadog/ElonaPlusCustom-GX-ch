@@ -424,7 +424,7 @@
 			bmes lang("「ノロマは死ぬ、ってことにようやく気づいたみたいね」", "--- Ahaha! Looks like you finally realized that slow is going to die! ---"), 155, 125, 205
 		}
 		if ( inv(INV_ITEM_PARAM1, ci) == 3 ) {
-			lang("「研鑽せよ。元素は大いなる力を汝にもたらす」", "--- Elements will be your great power ---"), 255, 255, 205
+			bmes lang("「研鑽せよ。元素は大いなる力を汝にもたらす」", "--- Elements will be your great power ---"), 255, 255, 205
 		}
 		if ( inv(INV_ITEM_PARAM1, ci) == 4 ) {
 			bmes lang("「たらばがに、すき！！！」", "--- Mewmewmew! Coconut crab! ---"), 105, 255, 255
