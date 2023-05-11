@@ -1,20 +1,20 @@
-# Elona+ Custom-GX 2.15R
+# Elona+ Custom-GX 2.17
 
 *\~Believe in Jure and hold a determination to mince.\~*
 
-Elona+ Custom-GX is a new variant of Elona+ based on Elona+ Custom-G, updated with the changes in Elona+ up to version 2.15R.
+Elona+ Custom-GX is a new variant of Elona+ based on Elona+ Custom-G, updated with the changes in Elona+ up to version 2.17.
 
-### **[Download the latest release here.](https://github.com/Ruin0x11/ElonaPlusCustom-GX/releases/)**
+### **[Download the latest release here.](https://github.com/JianmengYu/ElonaPlusCustom-GX/releases/)**
 
 ## Installation
 
-1. Download Elona+ 2.15R from [here](https://mega.nz/file/Zjo2WR4L#cEWZoNlsNGyu5KNS9iZwDToCVaSQfuJ1eK3WznwpWmk). Extract it to `elonaplus2.15R`.
-2. Extract the contents of Custom-GX's archive to the `elonaplus2.15R` folder, overwriting all existing files.
+1. Download Elona+ 2.17 from [here](http://wanwanplus.blog.fc2.com/blog-entry-38.html). Extract it to `elonaplus2.17`.
+2. Extract the contents of Custom-GX's archive to the `elonaplus2.17` folder, overwriting all existing files.
 3. Run `elonapluscgx.exe`.
 
 ## Building
 
-1. Follow the installation instructions above. Rename the `elonaplus2.15R` folder to `2.05-custom-gx` and move it to the `assets/` folder of this repository.
+1. Follow the installation instructions above. Rename the `elonaplus2.17` folder to `2.05-custom-gx` and move it to the `assets/` folder of this repository.
 2. Download the HSP3.4 SDK (`hsp34a.zip`) from [here](http://hsp.tv/make/downlist.html) and extract it somewhere.
 3. Copy `hsplua.dll` from the `2.05-custom-gx` folder into the HSP3.4 SDK folder. Otherwise, you'll get an error saying it's missing when running the game from the editor.
 4. Open `2.05-custom-gx/main.hsp` with `hsed3.exe` from the HSP3.4 SDK folder. Press <kbd>F5</kbd> to compile and run under debug mode.

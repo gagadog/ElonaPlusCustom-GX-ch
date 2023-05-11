@@ -1,9 +1,14 @@
+# 2.17
+
+## Added
+- Ported all changes from Elona+ 2.16 and Elona+ 2.17.
+
 # 2.15R.1.0
 
 ## Added
 - Ported all changes from Elona+ 2.15R.
 - Added a tweak to disable urination from fear-related effects.
-- Added a tweak to add a chance of generating new experimental Nefia layouts, courtesy of @JianmengYu. 
+- Added a tweak to add a chance of generating new experimental Nefia layouts, courtesy of @JianmengYu.
 - Added "Use Shift Core" custom AI action.
 - Added a "Custom AI" option to the wizard menu.
 
@@ -23,7 +28,7 @@
 - Added English translations for some item descriptions (potions, drinks, music disc).
 - Added a message displaying how much gold pets receive when they enact prostitution.
 - Added a new console command for taking a screenshot of the entire map (`save_map_image`).
-- Added a tweak to revert changes to the experience formula after Elona+ 2.13. 
+- Added a tweak to revert changes to the experience formula after Elona+ 2.13.
   + Addresses "increased experience multipliers when defeating enemies above the player character's (PC) level".
   + Toggling this also reverts the change to taxation coming into effect after New Year's.
 - Ported omake's autopickup feature.
@@ -273,7 +278,7 @@ Thanks to DiscoWitch for fixing these issues.
 
 # 2.05.1.1
 
-## Added 
+## Added
 - Added back the "special drink" dialog option for bartenders.
 
 ## Fixed
@@ -287,7 +292,7 @@ Thanks to DiscoWitch for fixing these issues.
 
 # 2.05.1.0
 
-## Added 
+## Added
 - Ported all changes from Elona+ 2.05, using Elona+ Custom-G 1.90.2.4 as a base.
 - Ported omake overhaul modify's damage popup feature, configurable in the options menu.
 - Added "Allow running in world map" custom tweak.
