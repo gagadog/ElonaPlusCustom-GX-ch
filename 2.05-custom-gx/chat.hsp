@@ -4635,7 +4635,7 @@
 				buff = lang("…足を洗いたくなったのか。わかった、貴様のことは忘れよう。貴様もここで見たことは忘れろ。これからは裏社会に関わらず、真っ当に生きていくことだ。", "...So you wanted to quit the guild. All right, I'll forget about you. Forget what you saw here. From now on, live your life regardless of the underworld.")
 				gosub *chat_select
 				if ( chatval == 11 ) {
-					chatMore lang("驚かせるな。", "Almost got me there."), 
+					chatMore lang("驚かせるな。", "Almost got me there."), strbye
 					goto *chat_end
 				}
 				if ( chatval == 10 ) {
