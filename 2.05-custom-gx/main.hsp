@@ -2,6 +2,7 @@
 #pack "scene2.hsp"
 #packopt type 0
 #packopt name "ElonaPlusCGX"
+#packopt icon "icon.ico"
 #cmpopt varname 1
 
 ; Define this to enable Lua debugging features.

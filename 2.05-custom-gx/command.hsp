@@ -12241,7 +12241,7 @@
 		/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Show guild points rather than weight when turning in ancient books
 
 		if ( invctrl == 24 & invctrl(1) == 0 & gdata(GDATA_AREA) != AREA_QUEST ) {
-			s(1) = "" + (inv(INV_ITEM_PARAM1, p) + 1) * inv(INV_ITEM_NUM, p) + "(" + (inv(INV_ITEM_PARAM1, p) + 1) + ")"
+			s(1) = "" + (inv(INV_ITEM_PARAM1, p) + 5) * inv(INV_ITEM_NUM, p) + "(" + (inv(INV_ITEM_PARAM1, p) + 5) + ")"
 		}
 
 		/********** BLOODYSHADE CUSTOM - ENDING **********/

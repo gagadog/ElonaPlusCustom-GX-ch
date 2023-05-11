@@ -8648,7 +8648,7 @@
 		goto *act_use_SWEND1
 		_switch_sw++
 	}
-	if ( _switch_val == 144 | _switch_sw ) {
+	if ( _switch_val == EFFECT_WHITE_DARK_ORB | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_FLAG_ABYSS_POWER) < 5 ) {
 			txt lang("深淵魔力が5必要だ。[現在の深淵魔力: " + gdata(GDATA_FLAG_ABYSS_POWER) + "] ", "You need 5 abyss powers.[Abyss power: " + gdata(GDATA_FLAG_ABYSS_POWER) + "] ")
@@ -8669,7 +8669,7 @@
 		goto *act_use_SWEND1
 		_switch_sw++
 	}
-	if ( _switch_val == 145 | _switch_sw ) {
+	if ( _switch_val == EFFECT_AWAKE_DESTONE | _switch_sw ) {
 		_switch_sw = 0
 		if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
 			goto *act_use_SWEND1
@@ -8780,7 +8780,7 @@
 		goto *act_use_SWEND1
 		_switch_sw++
 	}
-	if ( _switch_val == 142 | _switch_sw ) {
+	if ( _switch_val == EFFECT_MANA_DESTONE | _switch_sw ) {
 		_switch_sw = 0
 		if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
 			goto *act_use_SWEND1
@@ -8831,7 +8831,7 @@
 		goto *act_use_SWEND1
 		_switch_sw++
 	}
-	if ( _switch_val == 143 | _switch_sw ) {
+	if ( _switch_val == EFFECT_FIGHTING_DESTONE | _switch_sw ) {
 		_switch_sw = 0
 		if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
 			goto *act_use_SWEND1
@@ -9651,12 +9651,14 @@
 		if ( inv(INV_ITEM_PARAM3, ci) \ 100 == 3 | inv(INV_ITEM_AMUR_CAGE, ci) == 3 & inv(INV_ITEM_PARAM2, ci) >= 2 ) {
 			dmg = dmg * 9 / 5
 		}
+		cibk_potioman = ci
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			dmghp tc, dmg, cc, SKILL_RESDMG_CRUSH, 1000
 		}
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			dmgmp tc, dmg / 100 + 5
 		}
+		ci = cibk_potioman
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_CRUSH_POTIOMAN ) {
 				if ( inv(INV_ITEM_PARAM2, ci) == 0 ) {
@@ -9668,6 +9670,7 @@
 				}
 			}
 		}
+		ci = cibk_potioman
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( inv(INV_ITEM_SHOP_SAMPLE, ci) > 0 ) {
 				dmge = (sdata(SKILL_ATTR_STR, cc) * (kinhosei + 5) / 25 + 5) * ((sdata(SKILL_NORMAL_MARKSMAN, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_ATTR_MAG, cc) * 4 + 5 + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) / 8) + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) * 3 / 8
@@ -9684,6 +9687,7 @@
 				dmghp tc, dmge, cc, inv(INV_ITEM_SHOP_SAMPLE, ci), 500 + limit(sdata(SKILL_ATTR_MAG, cc) * 2, 1, 4000)
 			}
 		}
+		ci = cibk_potioman
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( inv(INV_ITEM_PARAM3, ci) \ 100 == 1 | inv(INV_ITEM_AMUR_CAGE, ci) == 1 ) {
 				dmgcon tc, CONDITION_DIM, 50 + limit(sdata(SKILL_ATTR_STR, cc) / 2, 1, 1000)
@@ -9694,6 +9698,7 @@
 				}
 			}
 		}
+		ci = cibk_potioman
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( inv(INV_ITEM_PARAM3, ci) \ 100 == 6 | inv(INV_ITEM_AMUR_CAGE, ci) == 6 ) {
 				dmgcon tc, CONDITION_CONFUSE, 50 + limit(sdata(SKILL_ATTR_DEX, cc) / 2, 1, 1000)
@@ -9706,6 +9711,7 @@
 				}
 			}
 		}
+		ci = cibk_potioman
 		if ( cdata(CDATA_EXIST, cc) == CHAR_STATE_ALIVE ) {
 			skillexp SKILL_ATTR_STR, cc, 50
 			skillexp SKILL_ATTR_MAG, cc, 50

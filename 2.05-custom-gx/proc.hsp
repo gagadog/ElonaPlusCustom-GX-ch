@@ -198,7 +198,7 @@
 	cell_featset movx, movy, 0
 	txt lang(name(cc) + "は罠を解除した。", name(cc) + " disarmed the trap.")
 	if ( cc == CHARA_PLAYER | cdata(CDATA_RELATION, cc) == RELATION_ALLY ) {
-		if ( feat(FEAT_CELL_SUB_FEATURE_ID) <= CELL_SUB_FEATURE_TRAP_QUEST_PITFALL2 ) {
+		if ( feat(FEAT_CELL_SUB_FEATURE_ID) <= CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
 			gdata(GDATA_FLAG_ABYSS_POWER) += 3
 			if ( gdata(GDATA_FLAG_ABYSS_POWER) > 100000 ) {
 				gdata(GDATA_FLAG_ABYSS_POWER) = 100000
@@ -286,7 +286,7 @@
 			}
 			refdiff = 100 + gdata(GDATA_LEVEL) * 3 + gdata(STARTING_GDATA_FLAG + 379) * 3
 			if ( feat(0) == tile_trap ) {
-				if ( cdata(CDATA_RELATION, cc) != RELATION_ALLY | feat(FEAT_CELL_SUB_FEATURE_ID) <= CELL_SUB_FEATURE_TRAP_QUEST_PITFALL2 ) {
+				if ( cdata(CDATA_RELATION, cc) != RELATION_ALLY | feat(FEAT_CELL_SUB_FEATURE_ID) <= CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
 					refdiff = refdiff / 3
 					if ( sdata(SKILL_NORMAL_DISARM_TRAP, cc) != 0 ) {
 						gosub *calcDisarm

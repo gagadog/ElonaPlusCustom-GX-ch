@@ -4462,6 +4462,7 @@
 				gosub *chat_select
 				if ( chatval == 11 ) {
 					chatMore lang("そうそう。一時の感情で行動すると大変ですよ。", "Of course. It is not very wise to act so rashly."), strbye
+					goto *chat_end
 				}
 				if ( chatval == 10 ) {
 					chatMore lang("…意志は固いようですね。わかりました。私があなたの脱退を認めます。", "...You seem to have a strong will. Understood, I shall accept your request of withdrawal."), strbye
@@ -4477,28 +4478,35 @@
 						gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 0
 					}
 					gdata(GDATA_FLAG_SUB_GUILD_MAGE) = 0
+					goto *chat_end
 				}
 			}
 			if ( chatval == 1 ) {
 				chatMore lang("未実装！", "Under development!"), strbye
+				goto *chat_end
 			}
 			if ( chatval == 2 ) {
 				if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
 					chatMore lang("新しく入った方ですか。頑張ってください。", "One of the new arrivals? Do your best."), strbye
+					goto *chat_end
 				}
 				if ( gdata(GDATA_RANK_GUILD) > 4000 ) {
 					chatMore lang("最近活躍しているらしいですね。あなたには期待していますよ。", "It seems you've been quite active lately. I look forward to your progress."), strbye
+					goto *chat_end
 				}
 				if ( gdata(GDATA_RANK_GUILD) > 600 ) {
 					chatMore lang("以前は他の２ギルドに押され気味でしたが…あなたが来てからこのギルドもかなり活気が戻りました。…ありがとうございます。", "Some time ago it felt like we were being suppressed by the other two guilds... but since your arrival we've gained momentum. ...You have my thanks."), strbye
+					goto *chat_end
 				}
 				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) < 1 ) {
 					chatMore lang("狡猾な盗賊ギルドと野蛮な戦士ギルドを制し、我々魔術士ギルドの力を世間に見せつけるのです！あなたにはどちらか片方のギルドのマスターを倒してきてほしいのです。もう片方は私が相手しましょう。", "By claiming rule over the dastardly Thieves guild and the savage Fighters guild our Mages guild will show the world our might! I want you to defeat the guild master of one of the guilds. I will take care of the other."), strbye
 					gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 1
 					txt_questupdate
+					goto *chat_end
 				}
 				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) == 1 ) {
 					chatMore lang("さて、私はどちらのギルドを攻めましょうかね…。", "Now then, which guild shall I combat?"), strbye
+					goto *chat_end
 				}
 				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) == 2 ) {
 					chatMore lang("素晴らしい！あなたならやってくれると信じていました！これは私からの特別報酬です。どうか受け取ってください。", "Wonderful! I believed you would succeed! This is a special reward from me. Please take it."), strbye
@@ -4513,15 +4521,18 @@
 					txt_questitem
 					txt_questupdate
 					gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 1000
+					goto *chat_end
 				}
 				if ( gdata(GDATA_FLAG_SUB_GUILD_WARS1) >= 3 ) {
 					chatMore lang("次のギルドマスターはあなたしかいない。私だけではなく皆もそう考えているようです。" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…これからもよろしく頼みますね。", "There is none other than you worthy of guild master. Not just me but everyone feels the same. " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "...From now on we leave things in your hands."), strbye
 					gdata(GDATA_FLAG_SUB_GUILD_WARS1) = 1000
+					goto *chat_end
 				}
 			}
 			goto *chat_end
 		}
 		chatMore lang("部外者にいられると困ります。すぐに立ち去ってください。", "You shouldn't be here, leave at once, outsider."), strbye
+		goto *chat_end
 	}
 	if ( _switch_val == CREATURE_ID_FRAY_THE_FIGHTER_GUILDMASTER | _switch_sw ) {
 		_switch_sw = 0
@@ -4538,6 +4549,7 @@
 				gosub *chat_select
 				if ( chatval == 11 ) {
 					chatMore lang("きっと戦いで疲れているのだろう。少し休むといい。", "You must be tired from all these fighting. You should rest for a while."), strbye
+					goto *chat_end
 				}
 				if ( chatval == 10 ) {
 					chatMore lang("…さらば、戦士よ！今までご苦労だった！", "...Farewell, Warrior! Thank you for your hard work!"), strbye
@@ -4553,10 +4565,12 @@
 					if ( gdata(GDATA_FLAG_SUB_GUILD_WARS3) < 1000 ) {
 						gdata(GDATA_FLAG_SUB_GUILD_WARS3) = 0
 					}
+					goto *chat_end
 				}
 			}
 			if ( chatval == 1 ) {
 				chatMore lang("未実装！", "Under development!"), strbye
+				goto *chat_end
 			}
 			if ( chatval == 2 ) {
 				if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
@@ -4621,7 +4635,8 @@
 				buff = lang("…足を洗いたくなったのか。わかった、貴様のことは忘れよう。貴様もここで見たことは忘れろ。これからは裏社会に関わらず、真っ当に生きていくことだ。", "...So you wanted to quit the guild. All right, I'll forget about you. Forget what you saw here. From now on, live your life regardless of the underworld.")
 				gosub *chat_select
 				if ( chatval == 11 ) {
-					chatMore lang("驚かせるな。", "Almost got me there."), strbye
+					chatMore lang("驚かせるな。", "Almost got me there."), 
+					goto *chat_end
 				}
 				if ( chatval == 10 ) {
 					chatMore lang("…達者でな。", "...Take care."), strbye
@@ -4637,10 +4652,12 @@
 					if ( gdata(GDATA_FLAG_SUB_GUILD_WARS2) < 1000 ) {
 						gdata(GDATA_FLAG_SUB_GUILD_WARS2) = 0
 					}
+					goto *chat_end
 				}
 			}
 			if ( chatval == 1 ) {
 				chatMore lang("未実装！", "Under development!"), strbye
+				goto *chat_end
 			}
 			if ( chatval == 2 ) {
 				if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
@@ -4688,7 +4705,7 @@
 			}
 			goto *chat_end
 		}
-		chatMore buff = lang("すぐに出ていけ。こんなところに用はないはずだ。", "Get out, outsider."), strbye
+		chatMore lang("すぐに出ていけ。こんなところに用はないはずだ。", "Get out, outsider."), strbye
 		goto *chat_end
 	}
 	if ( _switch_val == CREATURE_ID_LEXUS_THE_MAGE_WATCHMAN | _switch_sw ) {

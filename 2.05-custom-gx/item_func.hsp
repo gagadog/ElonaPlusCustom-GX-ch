@@ -707,35 +707,35 @@
 	if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_SUPER_POTIOMAN ) {
 		if ( inv(INV_ITEM_PARAM3, itemowner_itemid) == 0 ) {
 			if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_CF_POTIOMAN ) {
-				locvar_itemowner_s += lang("ＣＦポーショマン", " cf potioman")
+				locvar_itemowner_s += lang("ＣＦポーショマン", "CF potioman")
 			}
 			if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_CRUSH_POTIOMAN ) {
-				locvar_itemowner_s += lang("クラッシュポーショマン", " crush potioman")
+				locvar_itemowner_s += lang("クラッシュポーショマン", "crush potioman")
 			}
 			if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_BATTLE_POTIOMAN ) {
-				locvar_itemowner_s += lang("バトルポーショマン", " battle potioman")
+				locvar_itemowner_s += lang("バトルポーショマン", "battle potioman")
 			}
 			if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_SUPER_POTIOMAN ) {
-				locvar_itemowner_s += lang("スーパーポーショマン", " super potioman")
+				locvar_itemowner_s += lang("スーパーポーショマン", "super potioman")
 			}
 		}
 		if ( inv(INV_ITEM_PARAM3, itemowner_itemid) \ 100 == POTIOMAN_NAME_SPINNING ) {
-			locvar_itemowner_s += lang("スピニング", " Spinning")
+			locvar_itemowner_s += lang("スピニング", "Spinning")
 		}
 		if ( inv(INV_ITEM_PARAM3, itemowner_itemid) \ 100 == POTIOMAN_NAME_MIGHTY ) {
-			locvar_itemowner_s += lang("マイティ", " Mighty")
+			locvar_itemowner_s += lang("マイティ", "Mighty")
 		}
 		if ( inv(INV_ITEM_PARAM3, itemowner_itemid) \ 100 == POTIOMAN_NAME_DUAL ) {
-			locvar_itemowner_s += lang("デュアル", " Dual")
+			locvar_itemowner_s += lang("デュアル", "Dual")
 		}
 		if ( inv(INV_ITEM_PARAM3, itemowner_itemid) \ 100 == POTIOMAN_NAME_RAPID ) {
-			locvar_itemowner_s += lang("ラピッド", " Rapid")
+			locvar_itemowner_s += lang("ラピッド", "Rapid")
 		}
 		if ( inv(INV_ITEM_PARAM3, itemowner_itemid) \ 100 == POTIOMAN_NAME_SNIPE ) {
-			locvar_itemowner_s += lang("スナイプ", " Snipe")
+			locvar_itemowner_s += lang("スナイプ", "Snipe")
 		}
 		if ( inv(INV_ITEM_PARAM3, itemowner_itemid) \ 100 == POTIOMAN_NAME_DECEIVE ) {
-			locvar_itemowner_s += lang("デシーヴ", " Deceive")
+			locvar_itemowner_s += lang("デシーヴ", "Deceive")
 		}
 		if ( inv(INV_ITEM_PARAM3, itemowner_itemid) / 100 == POTIOMAN_SUBNAME_FLAENIX ) {
 			locvar_itemowner_s += lang("フレイクス", "-Flaenix")

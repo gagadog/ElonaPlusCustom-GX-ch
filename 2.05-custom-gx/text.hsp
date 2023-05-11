@@ -7788,7 +7788,7 @@
 		talk_conv s3, 40 - en * 4
 		buff += s3
 	}
-	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) == 8 ) {
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 8 ) {
 		s3 = lang("・軽疲労になるまで運動しよう。", "I will exercise until I feel lightly tired.")
 		talk_conv s3, 40 - en * 4
 		buff += s3
@@ -7814,7 +7814,7 @@
 		talk_conv s4, 40 - en * 4
 		buff += s4
 	}
-	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) == 4 ) {
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 4 ) {
 		s4 = lang("・果物を食べよう。", "I will eat a fruit.")
 		talk_conv s4, 40 - en * 4
 		buff += s4
