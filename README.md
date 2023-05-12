@@ -4,11 +4,15 @@
 
 Elona+ Custom-GX is a new variant of Elona+ based on Elona+ Custom-G, updated with the changes in Elona+ up to version 2.17.
 
+It is originally created and maintained by [Ruin0x11](https://github.com/Ruin0x11), on [this repository](https://github.com/Ruin0x11/ElonaPlusCustom-GX).  
+This repository is an unofficial continuation of the above repository using Ruin0x11's [borscht/erystia](https://github.com/Ruin0x11/borscht) decompiler.
+
 ### **[Download the latest release here.](https://github.com/JianmengYu/ElonaPlusCustom-GX/releases/)**
 
 ## Installation
 
 1. Download Elona+ 2.17 from [here](http://wanwanplus.blog.fc2.com/blog-entry-38.html). Extract it to `elonaplus2.17`.
+1a. Backup mega.nz link from [here](https://mega.nz/file/xG9kmJTb#Qh9I7A2CsheXOIq2I7JfOiGMCzg_VBukAMCHzXRpsRQ).
 2. Extract the contents of Custom-GX's archive to the `elonaplus2.17` folder, overwriting all existing files.
 3. Run `elonapluscgx.exe`.
 
