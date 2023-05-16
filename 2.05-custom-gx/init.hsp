@@ -86,6 +86,12 @@ if instr(s,0,%1)!-1{	%c\
 
 /********** CUSTOM NEFIA TYPES - ENDING **********/
 
+/********** CUSTOM SPELL ANIMATION - BEGINNING **********/
+
+#include "custom_spellanimations.hsp"
+
+/********** CUSTOM SPELL ANIMATION - ENDING **********/
+
 #defcfunc hantozen str hantozen_arg1, var hantozen_arg2, int hantozen_arg3
 	return LCMapStringA(GetUserDefaultLCID(), 8388608, hantozen_arg1, -1, hantozen_arg2, hantozen_arg3)
 
@@ -1104,6 +1110,11 @@ if instr(s,0,%1)!-1{	%c\
 			msg_newline
 			tnew = 0
 			if ( cfg_msgaddtime ) {
+				/********** CUSTOM JOB QUESTS - BEGINNING **********/
+				if ( gdata(GDATA_TIME_LIMIT) > 0 & gdata(GDATA_AREA) == AREA_QUEST ) {
+					msgtemp = lang("[残り" + (gdata(GDATA_TIME_LIMIT) + 1) + "分] ", "(" + (gdata(GDATA_TIME_LIMIT) + 1) + " min left) ") + msgtemp
+				}
+				/********** CUSTOM JOB QUESTS - ENDING **********/
 				msgtemp = "[" + gdata(GDATA_MIN) + "] " + msgtemp
 			}
 			else {

@@ -823,6 +823,11 @@
 			}
 		}
 		size = limit(dist(dx, dy, mdata(MDATA_WIDTH) / 2, mdata(MDATA_HEIGHT) / 2) / 8, 0, 8)
+		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+			size = limit(size + rnd(1 + rnd(1 + qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)) / 10)), 0, 8)
+		}
+		/********** CUSTOM JOB QUESTS - ENDIG **********/
 		crop = isetcrop(rnd(length(isetcrop)))
 		repeat h, dy
 			y = cnt
@@ -1623,9 +1628,18 @@
 		cdata(CDATA_RELATION, rc) = -3
 		cdata(CDATA_RELATION_ORG, rc) = -3
 		qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) = rc
+		/********** CUSTOM JOB QUESTS - BEGINNING **********/ // Conquer quest enemy have breath attack
+		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+			cdata(CDATA_AI_SUB, rc) = 30
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_VARIABLE_BREATH
+			cdata(CDATA_ACT_INDEX, rc) = cdata(CDATA_ACT_INDEX, rc) \ 5 + 10
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_EXTERMINATION_BREATH
+		}
+		/********** CUSTOM JOB QUESTS - ENDING **********/
 	}
 	if ( gdata(GDATA_QUEST) == QUEST_TYPE_HUNTEX ) {
-		repeat 6 + rnd(4)
+		/********** CUSTOM JOB QUESTS - BEGINNING **********/  // Spawn enemies in a group
+		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			flt
 			initlv = qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)) * 3 / 2
 			fixlv = FIX_QUALITY_BAD
@@ -1633,8 +1647,63 @@
 			cdata(CDATA_RELATION, rc) = -3
 			cdata(CDATA_RELATION_ORG, rc) = -3
 			cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
-		loop
+			repeat 10 + rnd(6)
+				flt
+				initlv = qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)) * 3 / 2
+				fixlv = FIX_QUALITY_BAD
+				characreate -1, qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)), cdata(CDATA_X, rc), cdata(CDATA_Y, rc)
+				cdata(CDATA_RELATION, rc) = -3
+				cdata(CDATA_RELATION_ORG, rc) = -3
+				cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+			loop
+		} else {
+			/********** ORIGINAL - BEGINNING **********/
+			repeat 6 + rnd(4)
+				flt
+				initlv = qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)) * 3 / 2
+				fixlv = FIX_QUALITY_BAD
+				characreate -1, qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)), -3, 0
+				cdata(CDATA_RELATION, rc) = -3
+				cdata(CDATA_RELATION_ORG, rc) = -3
+				cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+			loop
+			/********** ORIGINAL - ENDING **********/
+		}
+		/********** CUSTOM JOB QUESTS - ENDING **********/
 	}
+	/********** CUSTOM JOB QUESTS - BEGINNING **********/
+	if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+		repeat 30 + rnd(30)
+			dbid = CREATURE_ID_CITIZEN
+			if ( rnd(10) == 0 ) { dbid = CREATURE_ID_FARMER }
+			if ( rnd(10) == 0 ) { dbid = CREATURE_ID_MINER }
+			if ( rnd(10) == 0 ) { dbid = CREATURE_ID_ROGUE }
+			if ( rnd(10) == 0 ) { dbid = CREATURE_ID_NUN }
+			if ( rnd(10) == 0 ) { dbid = CREATURE_ID_NOBLE }
+			if ( rnd(10) == 0 ) { dbid = CREATURE_ID_ARTIST }
+			if ( rnd(10) == 0 ) { dbid = CREATURE_ID_SAILOR }
+			if ( rnd(100) == 0 ) { dbid = CREATURE_ID_TOURIST }
+			if ( rnd(100) == 0 ) { dbid = CREATURE_ID_CAPTAIN }
+			if ( rnd(100) == 0 ) { dbid = CREATURE_ID_ARENA_MASTER }
+			if ( rnd(100) == 0 ) { dbid = CREATURE_ID_HEALER }
+			if ( rnd(100) == 0 ) { dbid = CREATURE_ID_BARTENDER }
+			if ( rnd(100) == 0 ) { dbid = CREATURE_ID_INFORMER }
+			if ( rnd(3) == 0 ) { dbid = CREATURE_ID_PALMIAN_ELITE_SOLDIER }
+			flt
+			objlv = 1
+			if (dbid == CREATURE_ID_PALMIAN_ELITE_SOLDIER) { objlv = 20 }
+			characreate -1, dbid, -3, 0
+			if ( stat != 0 ) {
+				cdata(CDATA_RELATION, rc) = -1
+				cdata(CDATA_RELATION_ORG, rc) = -1
+				if (dbid == CREATURE_ID_PALMIAN_ELITE_SOLDIER) {
+					cdata(CDATA_AI_AGGRO, rc) = 100
+					cdata(CDATA_TARGET, rc) = qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF))
+				}
+			}
+		loop 
+	}
+	/********** CUSTOM JOB QUESTS - ENDING **********/
 	inv_getheader -1
 	repeat invrange, invhead
 		if ( inv(INV_ITEM_NUM, cnt) == 0 ) {

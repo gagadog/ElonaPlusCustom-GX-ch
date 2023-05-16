@@ -18468,7 +18468,7 @@
 		}
 	}
 	f = 0
-	deliver = -1, -1
+	deliver = -1, -1, -1
 	if ( gdata(GDATA_LEVEL) == 1 ) {
 		repeat gdata(GDATA_CLIENT)
 			if ( qdata(QDATA_MAP, cnt) == gdata(GDATA_AREA) ) {
@@ -18499,7 +18499,12 @@
 						}
 						if ( inv(INV_ITEM_ID, cnt) == p ) {
 							deliver(1) = cnt
-							break
+							/********** CUSTOM JOB QUESTS - BEGINNING **********/
+							if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 & ibit(ITEM_BIT_HANDMADE, cnt)) {
+								deliver(2) = cnt
+							}
+							/********** CUSTOM JOB QUESTS - ENDING **********/
+							continue
 						}
 					loop
 				}
@@ -19318,6 +19323,27 @@
 		goto *chat_quest
 	}
 	if ( chatval == 25 ) {
+		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+			if ( deliver(2) == (-1) ) {
+				chatList 1, lang("これ、あげ" + _ru(2), "Here's YOUR delivery!")
+				chatList 0, lang("ごめんなさい", "Sorry.")
+				buff = lang("…。", "Is this some sort of joke? That " + ioriginalnameref(inv(INV_ITEM_ID, deliver(1))) + " you are holding isn't the custom made one I requested...")
+				chatesc = 0
+				gosub *chat_select
+				if ( chatval == 1 ) {
+					modkarma CHARA_PLAYER, -3
+					chatMore lang("もういい。", "Ah, whatever.")
+				} else {
+					goto *chat_default
+				}
+			} else {
+				deliver(1) = deliver(2)
+				flt
+				itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
+			}
+		}
+		/********** CUSTOM JOB QUESTS - ENDING **********/
 		gosub *chara_adjustInv
 		ti = stat
 		item_copy deliver(1), ti
@@ -22602,6 +22628,12 @@
 			qdata(QDATA_QUEST_TARGET, qdata(QDATA_DEST_CLIENT, rq))++
 			flt
 			itemcreate 0, qdata(QDATA_DEST_ITEM, rq), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			/********** CUSTOM JOB QUESTS - BEGINNING **********/
+			if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+				inv(INV_ITEM_WEIGHT, ci) += (rnd(11) + 5) * 200 * qdata(QDATA_LEVEL, rq)
+				ibitmod ITEM_BIT_HANDMADE, ci, 1
+			}
+			/********** CUSTOM JOB QUESTS - ENDING **********/
 			txt lang(itemname(ci, 1) + "をバックパックに入れた。", "You put " + itemname(ci, 1) + " in your backpack.")
 			snd SOUNDLIST_INV
 			gosub *calcBurdenPc

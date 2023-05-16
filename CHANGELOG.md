@@ -1,3 +1,24 @@
+# 2.17.1.0
+
+## Added
+- Added a tweak for enabling different reward mechanic in quests.
+  + Delivery quests now require the exact item they give you to be delivered, but rewards more platinum coins. 
+  + Harvest quests now give rewards based on how many crops you delivered. Added chances to spawn heavier crops in higher levels.
+  + Conquer quest boss now uses breath attacks.
+  + Exterminate quests spawn the enemies together instead.
+  + Civilians now appear in Conquer/Exterminate quests.
+  + People throw more music tickets during Party Time Quests
+- Added a tweak for custom animations for Dart/Bolt/Ball spells. Credit:
+  + [さく](https://www.pixiv.net/en/users/5877877)
+  + [craftpix](https://craftpix.net/)
+  + [unTied Games](https://untiedgames.com/)
+
+## Changed
+- QoL changes to job quests.
+  + Show the remaining time if you are in a quest map, and there's a time limit.
+  + Quest emotes are now shown immediately when you enter a map.
+  + If you have the item a Fetch Quest need, it will be marked in quest board.
+
 # 2.17
 
 ## Added

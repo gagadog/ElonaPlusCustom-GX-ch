@@ -744,6 +744,7 @@
 									}
 									flttypemajor = fsetperform(rnd(length(fsetperform)))
 									dbid = 0
+									p = 0
 									if ( gdata(GDATA_QUEST) == QUEST_TYPE_PARTY ) {
 										if ( rnd(150) == 0 ) {
 											dbid = ITEM_ID_SAFE
@@ -766,6 +767,12 @@
 												dbid = ITEM_ID_ALUD
 											}
 										}
+										/********** CUSTOM JOB QUESTS - BEGINNING **********/ // More music tickets during party
+										if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 & rnd(5) == 0 ) {
+											dbid = ITEM_ID_MUSIC_TICKET
+											p = cdata(CDATA_LEVEL, tc) * 5
+										}
+										/********** CUSTOM JOB QUESTS - ENDING **********/
 									}
 									else {
 										if ( rnd(10) == 0 ) {
@@ -775,7 +782,7 @@
 											dbid = ITEM_ID_PLATINUM_COIN
 										}
 									}
-									itemcreate -1, dbid, x, y, 1
+									itemcreate -1, dbid, x, y, 1 + p
 									if ( stat != 0 ) {
 										inv(INV_ITEM_NUM, ci)--
 										cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)

@@ -9584,6 +9584,26 @@
 		s = "%SUPPLY"
 		gosub *talk_quest_load
 		s(4) = cnvarticle(cnvitemname(qdata(QDATA_DEST_ITEM, rq)))
+		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		if ( iorgweight(qdata(QDATA_DEST_ITEM, rq)) > 50000 ) {
+			s(4) += lang("(凄く重い)", "(Heavy!)")
+		}
+		p = qdata(QDATA_DEST_ITEM, rq)
+		supply = -1
+		inv_getheader 0
+		repeat invrange, invhead
+			if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+				continue
+			}
+			if ( inv(INV_ITEM_ID, cnt) == p ) {
+				supply = cnt
+				break
+			}
+		loop
+		if ( supply > (-1) ) {
+			s(4) += lang("(既に持ち)", "(You have it)")
+		}
+		/********** CUSTOM JOB QUESTS - ENDING **********/
 		s(6) = lang(s(4) + "の納入", "Give " + s(4) + " to the client.")
 	}
 	if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_DELIVER ) {
@@ -9605,6 +9625,27 @@
 		}
 		gosub *talk_quest_load
 		s(4) = cnvarticle(foodname(qdata(QDATA_PARAM1, rq), "", qdata(QDATA_PARAM2, rq)))
+		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		p = qdata(QDATA_DEST_ITEM, rq)
+		supply = -1
+		inv_getheader 0
+		repeat invrange, invhead
+			if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+				continue
+			}
+			if ( refitem(inv(INV_ITEM_ID, cnt), DBSPEC_TYPE) == FILTER_ITEM_FOOD ) {
+				if ( inv(INV_ITEM_PARAM1, cnt) / 1000 == qdata(QDATA_PARAM1, rq) ) {
+					if ( inv(INV_ITEM_PARAM2, cnt) == qdata(QDATA_PARAM2, rq) ) {
+						supply = cnt
+						break
+					}
+				}
+			}
+		loop
+		if ( supply > (-1) ) {
+			s(4) += lang("(既に持ち)", "(You have it)")
+		}
+		/********** CUSTOM JOB QUESTS - ENDING **********/
 		s(6) = lang(s(4) + "の納入", "Give " + s(4) + " to the client.")
 	}
 	if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_CONQUER ) {
@@ -9638,6 +9679,23 @@
 		if ( iorgweight(qdata(QDATA_DEST_ITEM, rq)) > 50000 ) {
 			s(10) += lang("(凄く重い)", "(Heavy!)")
 		}
+		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		p = qdata(QDATA_DEST_ITEM, rq)
+		supply = -1
+		inv_getheader 0
+		repeat invrange, invhead
+			if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+				continue
+			}
+			if ( inv(INV_ITEM_ID, cnt) == p ) {
+				supply = cnt
+				break
+			}
+		loop
+		if ( supply > (-1) ) {
+			s(10) += lang("(既に持ち)", "(You have it)")
+		}
+		/********** CUSTOM JOB QUESTS - ENDING **********/
 		s(4) = lang("依頼人のために" + s(12) + "から" + s(10), "Acquire " + s(10) + " from " + s(12) + " for the client.")
 		s(6) = s(4) + lang("を調達", "")
 	}
@@ -9691,6 +9749,7 @@
 			}
 		}
 		if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_PARTY ) {
+			txt "Performance Score: " + qdata(QDATA_PARAM2, rq) + " points!"
 			if ( qdata(QDATA_PARAM1, rq) * 150 / 100 < qdata(QDATA_PARAM2, rq) ) {
 				buff += lang("予想以上の盛り上がりだったから、おまけをあげる" + _yo(), "The party was terrific! I'll give you these tickets as an extra bonus.")
 			}
