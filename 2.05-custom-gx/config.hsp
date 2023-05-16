@@ -131,6 +131,8 @@
 		cfgRead "msgLine.", inf_msgline = int(rtvaln)
 		cfgRead "tileSize.", inf_tiles = int(rtvaln)
 		cfgRead "fontSize.", inf_mesfont = int(rtvaln)
+		if ( inf_mesfont < 8 ) { cfgRead "fontSize .", inf_mesfont = int(rtvaln) }
+		if ( inf_mesfont < 8 | inf_mesfont > 30 ) { inf_mesfont = 14 }
 		cfgRead "infVerType.", inf_vertype = int(rtvaln)
 		cfgRead "windowX.", windowx = int(rtvaln)
 		cfgRead "windowY.", windowy = int(rtvaln)
