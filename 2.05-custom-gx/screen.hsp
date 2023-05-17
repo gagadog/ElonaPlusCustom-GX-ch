@@ -2926,8 +2926,10 @@
 		if ( attackskill == SKILL_WEAPON_SCYTHE ) {
 			ap = 1
 		}
-		if ( ammoproc == ENCHANT_AMMO_BURST | ammoproc == ENCHANT_AMMO_RAPID ) {
-			ap = -1
+		if ( attackskill == SKILL_WEAPON_FIREARM | attackskill == SKILL_WEAPON_CROSSBOW | attackskill == SKILL_WEAPON_BOW ) {
+			if ( ammoproc == ENCHANT_AMMO_BURST | ammoproc == ENCHANT_AMMO_RAPID ) {
+				ap = -1
+			}
 		}
 		if ( ap >= 0 ) {
 			if ( ap == 1 ) {
