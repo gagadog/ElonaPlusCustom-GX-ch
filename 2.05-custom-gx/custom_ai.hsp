@@ -1361,7 +1361,8 @@
 	else {
 		listn(0, CAIAvailableSlots(tc)+2) = "Tell me when you're confused."
 	}
-	listn(0, CAIAvailableSlots(tc)+3) = "Back"
+	listn(0, CAIAvailableSlots(tc)+3) = "Import/Export AI"
+	// listn(0, CAIAvailableSlots(tc)+3) = "Back"
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
 	repeat CAIAvailableSlots(tc) + 4
@@ -1469,6 +1470,10 @@
 		}
 	}
 	if ( key == key_select(CAIAvailableSlots(tc)+3) ) {
+		snd SOUNDLIST_OK1
+		gosub *AIExportImportMenu
+	}
+	if ( key == key_select(CAIAvailableSlots(tc)+4) ) {
 		snd SOUNDLIST_OK1
 		goto *AIMainMenu
 	}
@@ -1670,7 +1675,6 @@
 	if ( CAIActionsInitialized(tc) == 1 ) {
 		repeat 20
 			PlaceholderMoveList(cnt) = CAIAction2(cnt, tc)
-			CAIAction(cnt, tc) = 0
 			CAIAction2(cnt, tc) = 0
 			CAIActionFatigue(cnt, tc) = 0
 		loop
@@ -1815,6 +1819,15 @@
 				ActionToFind = PlaceholderMoveList(cnt)
 				gosub *AIFindAction
 				gosub *AIAddAction
+			}
+		loop
+		
+		repeat 20
+			cnt2 = cnt
+			ActionToFind = CAIAction(cnt2, tc)
+			gosub *AIFindAction
+			if ( FoundAction == 0 & CAIAction(cnt2, tc) > CUSTOM_AI_MAX_ACTIONS ) {
+				CAIAction(cnt2, tc) = 0
 			}
 		loop
 	}
@@ -3306,6 +3319,122 @@
 		goto *AITacticConfigMenu
 	}
 	goto *AIComparatorSetMenu
+	return
+
+*AIExportImportMenu
+	redraw 0
+	txtnew
+	txt lang("[カスタムAI]何をする？", "[Customize AI] What do you want to do?")
+	promptAdd "Export AI Instructions", "a"
+	promptAdd "Import AI Instructions", "b"
+	promptAdd "Reset Current AI", "c"
+	val = promptx, prompty, 260, 1
+	gosub *prompt_key
+	gosub *screen_draw
+	if ( rtval == 0 ) {
+		txt lang("どのファイル名で保存する？", "Enter file name.")
+		redraw 1
+		fileext = "txt"
+		filedsc = "ElonaPlus CGX custom AI"
+		_fdialog fileext, 17, filedsc, exedir + "user", "default_ai.txt"
+		if ( stat == 0 ) {
+			return
+		}
+		txtfile = refstr
+		buff = ""
+		notesel buff
+		repeat CAIAvailableSlots(tc)
+			noteadd "" + CAIEntity(cnt, tc) + "," + CAIComparator(cnt, tc) + "," + CAIComparatorFix(cnt, tc) + "," + CAIValue(cnt, tc) + "," + CAIAction(cnt, tc) + ","
+		loop
+		notesave txtfile
+		return
+	}
+	if ( rtval == 1 ) {
+		txt lang("どのファイルからAIを作成する？", "Choose the AI file.")
+		redraw 1
+		fileext = "txt"
+		filedsc = "ElonaPlus CGX custom AI"
+		_fdialog fileext, 16, filedsc, exedir + "user", ""
+		if ( stat == 0 ) {
+			return
+		}
+		txtfile = refstr
+		exist txtfile
+		buff = ""
+		notesel buff
+		noteload txtfile
+		repeat noteinfo(0)
+			noteget s, cnt
+			if ( cnt > 15 | cnt > CAIAvailableSlots(tc) ) { 
+				continue 
+			}
+			CAIEntity(cnt, tc) = 0
+			CAIComparator(cnt, tc) = 0
+			CAIComparatorFix(cnt, tc) = 0
+			CAIValue(cnt, tc) = 0
+			CAIAction(cnt, tc) = 0
+			cnt2 = cnt
+			p = 0
+			repeat 5
+				p(1) = instr(s, p, ",")
+				if ( p(1) == (-1) ) {
+					break
+				}
+				s2 = strmid(s, p, p(1))
+				p = p + p(1) + 1
+				p(2) = 0
+				p(2) = int(s2)
+				// txt "[" + s + "/" + p + "/" + s2 + "/" + p(2) + "]"
+				if ( p(2) < 0 ) {
+					continue
+				}
+				if ( cnt == 0 & (p(2) \ 1000) <= 4 ) {
+					CAIEntity(cnt2, tc) = (p(2) \ 1000) + (p(2) >= 1000) * 1000
+				}
+				if ( cnt == 1 & p(2) <= 7 ) {
+					CAIComparator(cnt2, tc) = p(2)
+				}
+				if ( cnt == 2 & p(2) <= 6 ) {
+					CAIComparatorFix(cnt2, tc) = p(2)
+				}
+				if ( cnt == 3 ) {
+					if ( p(2)/100 == 0 & p(2)\100 < MAX_BUFF ) {
+						CAIValue(cnt2, tc) = p(2)\100
+					}
+					if ( p(2)/100 == 1 & p(2)\100 <= 11 ) {
+						CAIValue(cnt2, tc) = p(2)\100 + 100
+					}
+					if ( p(2)/100 == 2 & p(2)\100 <= 9 ) {
+						CAIValue(cnt2, tc) = p(2)\100 + 200
+					}
+					if ( p(2)/100 == 3 & p(2)\100 <= 11 ) {
+						CAIValue(cnt2, tc) = p(2)\100 + 300
+					}
+					if ( p(2)/100 == 4 & p(2)\100 <= 20 ) {
+						CAIValue(cnt2, tc) = p(2)\100 + 400
+					}
+				}
+				if ( cnt == 4 ) {
+					ActionToFind = p(2)
+					gosub *AIFindAction
+					if ( FoundAction == 1 | p(2) <= CUSTOM_AI_MAX_ACTIONS ) {
+						CAIAction(cnt2, tc) = p(2)
+					}
+				}
+			loop
+		loop
+		return
+	}
+	if ( rtval == 2 ) {
+		repeat 15
+			CAIEntity(cnt, tc) = 0
+			CAIComparator(cnt, tc) = 0
+			CAIComparatorFix(cnt, tc) = 0
+			CAIValue(cnt, tc) = 0
+			CAIAction(cnt, tc) = 0
+		loop
+		return
+	}
 	return
 
 *DeleteAIInfo
