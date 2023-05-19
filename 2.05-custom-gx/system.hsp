@@ -2986,7 +2986,8 @@
 *game_title_WHILE1
 	if ( cfg_autonumlock ) {
 		GetKeyboardState keybd_st
-		if ( peek(keybd_st, 144) == 1 ) {
+		GetForegroundWindow
+		if ( peek(keybd_st, 144) == 1 & hwnd == stat ) {
 			keybd_event 144
 			keybd_event 144, 0, 2
 		}

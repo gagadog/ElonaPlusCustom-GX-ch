@@ -34665,6 +34665,13 @@
 	dbmax++
 *db_creature_usernpc
 	repeat usernpcmax
+		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+			if ( gdata(GDATA_AREA) != AREA_MELKAWN & gdata(GDATA_AREA) != AREA_DERPHY ) {
+				break
+			}
+		}
+		/********** CUSTOM NPC SUMMONING - ENDING **********/
 		if ( cmshade ) {
 			break
 		}

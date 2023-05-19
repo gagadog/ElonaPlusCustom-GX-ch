@@ -94,6 +94,7 @@
 #func CreatePopupMenu "CreatePopupMenu"
 #func DrawMenuBar "DrawMenuBar" sptr
 #func SetMenu "SetMenu" sptr, sptr
+#func GetForegroundWindow "GetForegroundWindow"
 #func keybd_event "keybd_event" int, int, int
 #func GetKeyboardState "GetKeyboardState" var
 #func MonitorFromPoint "MonitorFromPoint" sptr, sptr, sptr

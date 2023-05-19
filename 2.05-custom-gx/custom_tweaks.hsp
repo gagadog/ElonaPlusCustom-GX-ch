@@ -476,7 +476,7 @@ TweakData(51, 4) = "Disable cicada noises."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 31
+    listmax = 32
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -518,6 +518,7 @@ TweakData(51, 4) = "Disable cicada noises."
 	listn(0, 28) = "Use CGX Map Layouts in Random Nefia." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES) + "% Chance."
 	listn(0, 29) = "Use CGX Job Quests." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS)
 	listn(0, 30) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_SPELL_ANIMATIONS)
+	listn(0, 31) = "Disable random CNPC spawn." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING)
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -635,6 +636,9 @@ TweakData(51, 4) = "Disable cicada noises."
 				s = "Use Custom Animation for Arrow/Bolt/Ball spell animations."
 			}
 			if ( p == 31 ) {
+				s = "Disable Random CNPC spawn in all areas except Derphy and Melkawn.\nInstead, you can use a summon crystal to summon them at will."
+			}
+			if ( p == 32 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -814,6 +818,11 @@ TweakData(51, 4) = "Disable cicada noises."
 		gosub *ToggleTweak
 	}
 	if ( p == 31 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING
+		gosub *ToggleTweak
+	}
+	if ( p == 32 ) {
 		snd SOUNDLIST_OK1
 		return
 	}

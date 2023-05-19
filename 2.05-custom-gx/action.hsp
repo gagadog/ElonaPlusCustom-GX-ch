@@ -13369,6 +13369,18 @@
 	}
 	if ( _switch_val == EFFECT_SUMMONING_CRYSTAL | _switch_sw ) {
 		_switch_sw = 0
+		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+			if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
+				if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
+					txt lang("それは鈍く輝いた。", "It glows dully.")
+					goto *act_use_SWEND1
+				}
+				gosub *com_userNpcExisting
+				goto *act_use_SWEND1
+			}
+		}
+		/********** CUSTOM NPC SUMMONING - ENDING **********/
 		if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
 			txt lang("それは鈍く輝いた。", "It glows dully.")
 			goto *act_use_SWEND1
