@@ -5,6 +5,7 @@
 
 #define cfgRead(%1,%2,%3=nullstr) \
 if instr(s,0,%1)!-1{	%c\
+	if instr(s,1,%1)!-1:break %c\
 	i=0:p=0	%c\
 	repeat	%c\
 	p(2)=instr(s,p,"\"") : if p(2)=-1:break	%c\
