@@ -49,27 +49,27 @@
 			bedtxt += lang("とっても寝心地が良さそうだ！", "I think I'll be able to sleep very comfortably!")
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_BOMB_BARREL ) {
-			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
 				bedtxt += lang("「たる…」", "\"Barrel...\"")
 			}
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_POTION_NEKTAR ) {
-			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
 				bedtxt += lang("「たる〜」", "\"Barrel~\"")
 			}
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_SNOW_BARREL ) {
-			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
-				bedtxt += lang("「たるっ」", "\"Barrell.\"")
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
+				bedtxt += lang("「たるっ」", "\"Borrel.\"")
 			}
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_CARGO_BARREL ) {
-			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
 				bedtxt += lang("「たる！」", "\"Barrel!\"")
 			}
 	}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_BARREL ) {
-			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" ) {
+			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
 				bedtxt += lang("「たーる」", "\"Barrel.\"")
 			}
 		}
