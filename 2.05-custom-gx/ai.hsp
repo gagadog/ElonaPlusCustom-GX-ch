@@ -888,23 +888,67 @@
 
 	/********** ANNA CUSTOM - BEGINNING **********/ // Pets eat food from their inventories
 
-	if ( cc < MAX_CHARA_FOLLOWER & cc > 0 & cdata(CDATA_HUNGER, cc) <= 6000 & tc == CHARA_PLAYER & CustomVal(0, cc) == 1 ) {
-		FoundFood = 0
-		inv_getheader cc
+	if ( CustomVal(0, cc) == 1 ) {
+		if ( cc < MAX_CHARA_FOLLOWER & cc > 0 & tc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_HUNGER, cc) <= 10000 ) {
+				FoundFood = 0
+				inv_getheader cc
 
-		repeat invrange, invhead
-		if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
-			continue
-		}
-		if ( refitem(inv(INV_ITEM_ID, cnt), DBSPEC_TYPE) == FILTER_ITEM_FOOD ) {
-			ci = cnt
-			FoundFood = 1
-			break
-		}
-		loop
+				repeat invrange, invhead
+				if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+					continue
+				}
+				if ( refitem(inv(INV_ITEM_ID, cnt), DBSPEC_TYPE) == FILTER_ITEM_FOOD ) {
+					ci = cnt
+					FoundFood = 1
+					break
+				}
+				loop
 
-		if ( FoundFood ) {
-			goto *act_eat
+				if ( FoundFood ) {
+					goto *act_eat
+				}
+			}
+
+			if ( cdata(CDATA_HUNGER, cc) <= 5000 & rnd(1000) == 0 ) {
+				cdata(CDATA_EMO_ICON, cc) = 16 + 100 * 3
+				txt lang("" + name(cc) + "の所持品内に食料が存在しない。", "" + name(cc) + " searched " + him(cc) + " bag and find nothing to eat!")
+			}
+		}
+	}
+
+	if ( TweakData(TWEAK_GAMEPLAY_CG_DISABLE_THIRST, TWEAK_CATEGORY_GAMEPLAY) == FALSE & CustomVal(1, cc) == 1 ) {
+		if ( cc < MAX_CHARA_FOLLOWER & cc > 0 & tc == CHARA_PLAYER ) {
+			if ( cdata(CDATA_THIRST, cc) <= 10000 ) {
+				FoundDrink = 0
+				inv_getheader cc
+		
+				repeat invrange, invhead
+				if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+					continue
+				}
+				if ( refitem(inv(INV_ITEM_ID, cnt), DBSPEC_TYPE) == FILTER_ITEM_POTION ) {
+					ci = cnt
+					FoundDrink = 1
+					break
+				}
+				loop
+		
+				if ( FoundDrink ) {
+					goto *act_drink
+				}
+			}
+
+			if ( cdata(CDATA_THIRST, cc) <= 5000 & rnd(1000) == 0 ) {
+				cdata(CDATA_EMO_ICON, cc) = 9 + 100 * 3
+				txt lang("" + name(cc) + "の喉がカラカラだ。", "" + name(cc) + " searched " + him(cc) + " bag and find nothing to drink!")
+			}
+		}
+	}
+
+	if ( CustomVal(2, cc) == 1 ) {
+		if ( cdata(CDATA_EVOCHAT_POINTS, cc) <= 0 & ( cdata(CDATA_INTEREST, cc) >= 80 | cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) > 0 ) ) {
+			cdata(CDATA_EMO_ICON, cc) = 7 + 100 * 3
 		}
 	}
 

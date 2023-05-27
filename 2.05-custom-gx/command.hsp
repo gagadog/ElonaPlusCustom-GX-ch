@@ -50,27 +50,27 @@
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_BOMB_BARREL ) {
 			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
-				bedtxt += lang("「たる…」", "\"Barrel...\"")
+				bedtxt += lang("「たる…」", " \"Baaarrel...\"")
 			}
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_POTION_NEKTAR ) {
 			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
-				bedtxt += lang("「たる〜」", "\"Barrel~\"")
+				bedtxt += lang("「たる〜」", " \"It's a Barrel~\"")
 			}
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_SNOW_BARREL ) {
 			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
-				bedtxt += lang("「たるっ」", "\"Borrel.\"")
+				bedtxt += lang("「たるっ」", " \"A barrel.\"")
 			}
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_CARGO_BARREL ) {
 			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
-				bedtxt += lang("「たる！」", "\"Barrel!\"")
+				bedtxt += lang("「たる！」", " \"Barrel!\"")
 			}
 	}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_BARREL ) {
 			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
-				bedtxt += lang("「たーる」", "\"Barrel.\"")
+				bedtxt += lang("「たーる」", " \"Barrel.\"")
 			}
 		}
 		return bedtxt
@@ -6164,6 +6164,12 @@
 				txtef COLOR_RED
 				txt lang(cdatan(CDATAN_NAME, tc) + "は気持ち悪そうにあなたを見ている…。", cdatan(CDATAN_NAME, tc) + " is looking at you like you're some kind of creep.")
 			}
+			/********** CUSTOM - BEGINNING **********/ // Pets should (normally) be happy after you tell them how you feel.
+			cdata(CDATA_EVOCHAT_POINTS, tc) += 2
+			if ( cdata(CDATA_EVOCHAT_POINTS, tc) > 10 ) {
+				cdata(CDATA_EVOCHAT_POINTS, tc) = 10
+			}
+			/********** CUSTOM - ENDING **********/
 		}
 		if ( rtval >= 4 & rtval <= 6 ) {
 			snd SOUNDLIST_DING2
@@ -6171,6 +6177,12 @@
 			txt lang(cdatan(CDATAN_NAME, tc) + "はまんざらでもないようだ。", cdatan(CDATAN_NAME, tc) + " doesn't seem to be very happy about that.")
 			modimp tc, 7
 			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			/********** CUSTOM - BEGINNING **********/ // Pets should (normally) be happy after you tell them how you feel.
+			cdata(CDATA_EVOCHAT_POINTS, tc) += 1
+			if ( cdata(CDATA_EVOCHAT_POINTS, tc) > 10 ) {
+				cdata(CDATA_EVOCHAT_POINTS, tc) = 10
+			}
+			/********** CUSTOM - ENDING **********/
 		}
 		if ( rtval >= 7 & rtval <= 9 ) {
 			if ( cdata(CDATA_IMPRESSION, tc) >= 150 ) {
@@ -6184,6 +6196,12 @@
 			if ( cdata(CDATA_IMPRESSION, tc) < 75 ) {
 				txt lang(cdatan(CDATAN_NAME, tc) + "はやれやれと肩をすくめた。", cdatan(CDATAN_NAME, tc) + " shrugged " + his(tc) + " shoulders in relief.")
 			}
+			/********** CUSTOM - BEGINNING **********/
+			cdata(CDATA_EVOCHAT_POINTS, tc) -= 1
+			if ( cdata(CDATA_EVOCHAT_POINTS, tc) < 0 ) {
+				cdata(CDATA_EVOCHAT_POINTS, tc) = 0
+			}
+			/********** CUSTOM - ENDING **********/
 		}
 		if ( rtval == 10 ) {
 			if ( cbit(CHARA_BIT_MARRIED, tc) != FALSE ) {

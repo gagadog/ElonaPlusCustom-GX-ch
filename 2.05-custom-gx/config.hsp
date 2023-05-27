@@ -20,6 +20,9 @@
 		if ( instr(s, 0, valn) == (-1) ) {
 			continue
 		}
+		if ( instr(s, 1, valn) != (-1) ) {
+			continue
+		}
 		i = 1
 		p = 0
 		repeat
