@@ -3762,7 +3762,19 @@
 		if ( p == 83 ) {
 			s += "mcMelan"
 		}
-		if ( p == 84 ) {
+		if ( p == 85 ) {
+			s += "mcChurch"
+		}
+		if ( p == 86 ) {
+			s += "mcOceanDay"
+		}
+		if ( p == 87 ) {
+			s += "mcOceanNight"
+		}
+		if ( p == 88 ) {
+			s += "mcScene"
+		}
+		if ( p == 89 ) {
 			s += "No Music"
 		}
 		cs_list s, wx + 84, wy + 66 + cnt * 19 - 1, 19
@@ -4093,6 +4105,10 @@
 		inputlog = getpath(inputlog, 16)
 	}
 	snd SOUNDLIST_DING2
+	if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD & gdata(GDATA_AREA) == AREA_WILDERNESS ) {
+		txt lang("水中でゴボゴボ言われてもよく分かんないんだけど…。", "I don't quite understand what you're saying underwater...")
+		goto *com_wish_end
+	}
 	if ( instr(inputlog, 0, "中の神") != (-1) | instr(inputlog, 0, "god inside") != (-1) ) {
 		txt lang("中の神も大変…あ…中の神なんているわけないじゃない！…ねえ、聞かなかったことにしてね。", "It must be rough for the god insi... Ah... There's no god inside!... Hey, listen to me!")
 		goto *com_wish_end
@@ -4561,6 +4577,13 @@
 				inv(INV_ITEM_NUM, ci) = 0
 				flt
 				itemcreate -1, ITEM_ID_DEED_OF_CARRIAGE, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0
+				txt lang("あ、それ在庫切れ。", "It's sold out.")
+				txtmore
+			}
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_PIRATE_SHIP | inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_CRUISE_SHIP | inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_WARSHIP | inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_SUBMARINE ) {
+				inv(INV_ITEM_NUM, ci) = 0
+				flt
+				itemcreate -1, ITEM_ID_DEED_OF_FISHING_SHIP, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0
 				txt lang("あ、それ在庫切れ。", "It's sold out.")
 				txtmore
 			}
@@ -9098,10 +9121,10 @@
 		font lang(cfg_font1, cfg_font2), 12 + sizefix - en * 2, 1
 		color 20, 10, 0
 		if ( cdata(CDATA_ROLE, cc) == ROLE_ADVENTURER | cc < MAX_CHARA_FOLLOWER ) {
-			s = lang("レベル", "Level"), lang("経験", "EXP"), lang("必要値", "Next Lv"), lang("信仰", "God"), lang("所属", "Guild")
+			s = lang("レベル", "Level"), lang("必要値", "Next Lv"), lang("信仰", "God"), lang("所属", "Guild"), lang("成長力", "Growth"), ""
 		}
 		else {
-			s = lang("レベル", "Level"), lang("経験", "EXP"), lang("必要値", "Next Lv"), lang("信仰", "God"), ""
+			s = lang("レベル", "Level"), lang("必要値", "Next Lv"), lang("信仰", "God"), "", "", ""
 		}
 		repeat 5
 			pos wx + 355, wy + 46 + cnt * 15
@@ -9169,11 +9192,12 @@
 		font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 		color 0, 0, 0
 		if ( cdata(CDATA_ROLE, cc) != ROLE_ADVENTURER ) {
+			growrate = gdata(GDATA_FLAG_MAIN) + 100
 			if ( cc < MAX_CHARA_FOLLOWER ) {
-				s = "" + cdata(CDATA_LEVEL, cc), "" + cdata(CDATA_EXP, cc), "" + cdata(CDATA_EXP_TO_NEXT_LVL, cc), godname(cdata(CDATA_GOD, cc)), guildname()
+				s = "" + cdata(CDATA_LEVEL, cc), "" + cdata(CDATA_EXP_TO_NEXT_LVL, cc), godname(cdata(CDATA_GOD, cc)), guildname(), "" + growrate + "" + lang("%", " %")
 			}
 			if ( cc >= MAX_CHARA_FOLLOWER ) {
-				s = "" + cdata(CDATA_LEVEL, cc), "" + cdata(CDATA_EXP, cc), "" + cdata(CDATA_EXP_TO_NEXT_LVL, cc), godname(cdata(CDATA_GOD, cc)), ""
+				s = "" + cdata(CDATA_LEVEL, cc), "" + cdata(CDATA_EXP_TO_NEXT_LVL, cc), godname(cdata(CDATA_GOD, cc)), "", ""
 			}
 		}
 		if ( cdata(CDATA_ROLE, cc) == ROLE_ADVENTURER ) {
@@ -9190,7 +9214,8 @@
 			if ( cdatan(CDATAN_CLASS, cc) == "archer" ) {
 				guildadv = lang("盗賊ギルド", "Thieves Guild")
 			}
-			s = "" + cdata(CDATA_LEVEL, cc), "" + cdata(CDATA_EXP, cc), "" + cdata(CDATA_EXP_TO_NEXT_LVL, cc), godname(cdata(CDATA_GOD, cc)), guildadv
+			growrate = cdata(CDATA_LEVEL, cc) / 3 + gdata(GDATA_FLAG_MAIN) / 3 + 100
+			s = "" + cdata(CDATA_LEVEL, cc), "" + cdata(CDATA_EXP_TO_NEXT_LVL, cc), godname(cdata(CDATA_GOD, cc)), guildadv, "" + growrate + "" + lang("%", " %"), ""
 		}
 		repeat 5
 			pos wx + 410 + en * 5, wy + 45 + cnt * 15

@@ -853,6 +853,11 @@
 			gdata(GDATA_FLAG_GUILD_THIEF_NORMA) = 0
 		}
 	}
+	if ( gdata(GDATA_VERSION) < 6180 ) {
+		if ( gdata(GDATA_FLAG_SUB_DOGS_TAIL) >= 1000 ) {
+			kamen10 = 100
+		}
+	}
 	if ( gdata(GDATA_VERSION) != VERSION_NUMBER ) {
 		gdata(GDATA_WORLD_RENEW) = 1
 	}

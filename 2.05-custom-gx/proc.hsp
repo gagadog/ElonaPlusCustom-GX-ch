@@ -1637,7 +1637,7 @@
 							if ( gdata(GDATA_QUEST) == QUEST_TYPE_PARTY ) {
 								if ( tc >= 57 ) {
 									if ( cdata(CDATA_IMPRESSION, tc) < 53 ) {
-										cdata(CDATA_IMPRESSION, tc) += rnd(2)
+										cdata(CDATA_IMPRESSION, tc) += rnd(2) + 1
 										calcpartyscore
 									}
 								}
@@ -4343,12 +4343,23 @@
 		if ( gdata(GDATA_WEATHER) == WEATHER_SNOW | chipm(CHIPM_ROLE, map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)) == MAP_CHIP_ROLE_SNOW ) {
 			cdata(CDATA_ACTION_PERIOD, cc) = cdata(CDATA_ACTION_PERIOD, cc) * 22 / 10
 		}
-		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
-			cdata(CDATA_ACTION_PERIOD, cc) = cdata(CDATA_ACTION_PERIOD, cc) * 5 / 10
-			norimono = 500
+		if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+			if ( gdata(GDATA_FLAG_SHIP_TYPE) > 0 ) {
+				norimono = 500
+				cdata(CDATA_ACTION_PERIOD, cc) = cdata(CDATA_ACTION_PERIOD, cc) * 2
+			}
+			if ( gdata(GDATA_FLAG_SHIP_TYPE) == 0 ) {
+				norimono = 0
+				cdata(CDATA_ACTION_PERIOD, cc) = cdata(CDATA_ACTION_PERIOD, cc) * 2
+			}
 		}
 		else {
-			norimono = 0
+			if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 ) {
+				norimono = 500
+			}
+			else {
+				norimono = 0
+			}
 		}
 		cdata(CDATA_ACTION_PERIOD, cc) = cdata(CDATA_ACTION_PERIOD, cc) * 100 / (100 + gdata(GDATA_TRAVEL_SPEED) + sdata(SKILL_NORMAL_TRAVELING, CHARA_PLAYER) + norimono)
 		if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > VEHICLE_NONE ) {
@@ -4397,38 +4408,56 @@
 			gosub *insta_eat
 		}
 	}
-	if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) != VEHICLE_MAGIC_LOCOMOTIVE ) {
-        if ( gdata(GDATA_WEATHER) == WEATHER_SNOW | chipm(CHIPM_ROLE, map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)) == MAP_CHIP_ROLE_SNOW ) {
-            if ( gdata(GDATA_RES_WEATHER) == 0 ) {
-                if ( rnd(100) == 0 ) {
-                    if ( cbit(CHARA_BIT_FLOAT, CHARA_PLAYER) == 0 | cdata(CDATA_CONDITION_GRAVITY, CHARA_PLAYER) > 0 ) {
-                        txtef COLOR_SKY_BLUE
-                        if ( jp ) {
-                            txt " *ずぶっ* ", " *ザシュ* ", " *ズボ* ", " *ズサッ* "
-                        }
-                        if ( en ) {
-                            txt " *kisssh* ", " *thudd* ", " *siz* ", " *clump* ", " *skritch* "
-                        }
-                        cdata(CDATA_ACTION_PERIOD, cc) += 10
-                    }
-                }
-                if ( rnd(1000) == 0 ) {
-                    txtef COLOR_PURPLE
-                    txt lang("積雪のせいで旅程が遅れている。", "Snow delays your travel."), lang("雪道を進むのは大変な苦労だ。", "You are caught in a snowdrift."), lang("深い雪に脚をとられている。", "It's hard to walk on a snowy road.")
-                    cdata(CDATA_ACTION_PERIOD, cc) += 50
-                }
-            }
-            if ( cdata(CDATA_HUNGER, CHARA_PLAYER) <= 1200 ) {
-                if ( cbit(CHARA_BIT_ANOREXIA, CHARA_PLAYER) == 0 ) {
-                    snd SOUNDLIST_EAT1
-                    txt lang("空腹のあまり、あなたは積もっている雪を腹にかきこんだ。", "You are too hungry. You chow down snow.")
-                    cdata(CDATA_HUNGER, cc) += 5000
-                    gosub *eat_finish
-                    dmgcon CHARA_PLAYER, CONDITION_DIM, 1000
-                }
-            }
-        }
-    }
+	if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+		if ( rnd(1000) == 0 ) {
+			txtef COLOR_PURPLE
+			if ( jp ) {
+				txt "高波のせいで旅程が遅れている。", "流れに逆らって進むのは大変な苦労だ。"
+			}
+			if ( en ) {
+				txt "High waves delays your travel.", "It's hard to go against the flow."
+			}
+		}
+	}
+	if ( gdata(GDATA_AREA) != AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) != 3 ) {
+			if ( gdata(GDATA_WEATHER) == WEATHER_SNOW | chipm(CHIPM_ROLE, map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), MAP_TILE_ID)) == MAP_CHIP_ROLE_SNOW ) {
+				if ( gdata(GDATA_RES_WEATHER) == 0 ) {
+					if ( rnd(100) == 0 ) {
+						if ( cbit(CHARA_BIT_FLOAT, CHARA_PLAYER) == FALSE | cdata(CDATA_CONDITION_GRAVITY, CHARA_PLAYER) > 0 ) {
+							txtef COLOR_SKY_BLUE
+							if ( jp ) {
+								txt " *ずぶっ* ", " *ザシュ* ", " *ズボ* ", " *ズサッ* "
+							}
+							if ( en ) {
+								txt " *kisssh*", "*thudd*", "*siz*", "*clump*", "*skritch*"
+							}
+							cdata(CDATA_ACTION_PERIOD, cc) += 10
+						}
+					}
+					if ( rnd(1000) == 0 ) {
+						txtef COLOR_PURPLE
+						if ( jp ) {
+							txt "積雪のせいで旅程が遅れている。", "雪道を進むのは大変な苦労だ。", "深い雪に脚をとられている。"
+						}
+						if ( en ) {
+							txt "Snow delays your travel.", "You are caught in a snowdrift.", "It's hard to walk on a snowy road."
+						}
+						cdata(CDATA_ACTION_PERIOD, cc) += 50
+					}
+				}
+				if ( cdata(CDATA_HUNGER, CHARA_PLAYER) <= 1200 ) {
+					if ( cbit(CHARA_BIT_ANOREXIA, CHARA_PLAYER) == FALSE ) {
+						snd SOUNDLIST_EAT1
+						txt lang("空腹のあまり、あなたは積もっている雪を腹にかきこんだ。", "You are too hungry. You chow down snow.")
+						cdata(CDATA_HUNGER, cc) += 5000
+						gosub *eat_finish
+						dmgcon CHARA_PLAYER, CONDITION_DIM, 1000
+					}
+				}
+			}
+		}
+	}
 	if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) != VEHICLE_LAND_BATTLESHIP ) {
         if ( chipm(CHIPM_ROLE, map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)) == MAP_CHIP_ROLE_SAND ) {
             if ( rnd(15) == 0 ) {
@@ -4496,9 +4525,16 @@
 			gdata(GDATA_FLAG_MANUSCRIPT_IDEAS)++
 		}
 	}
-	traveldone = 1
-	gdata(GDATA_TRAVEL_DISTANCE) += 4
-	gdata(GDATA_FLAG_MILES_TRAVELED) += 4
+	if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+		traveldone = 1
+		gdata(GDATA_TRAVEL_DISTANCE) += 1
+		gdata(GDATA_FLAG_MILES_TRAVELED) += 1
+	}
+	else {
+		traveldone = 1
+		gdata(GDATA_TRAVEL_DISTANCE) += 4
+		gdata(GDATA_FLAG_MILES_TRAVELED) += 4
+	}
 	if ( gdata(GDATA_FLAG_MILES_TRAVELED) >= 1000000000 ) {
 		gdata(GDATA_FLAG_MILES_TRAVELED) = 0
 	}
@@ -6569,7 +6605,7 @@
 		txt lang(npcn(cc) + itemname(ci, 1) + "を読んだ。", name(cc) + " read" + _s(cc) + " " + itemname(ci, 1) + ".")
 		txtmore
 	}
-	if ( inv(INV_ITEM_ID, ci) != ITEM_ID_TREASURE_MAP & inv(INV_ITEM_ID, ci) != ITEM_ID_MAP & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_LAND_BATTLESHIP & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_MAGIC_LOCOMOTIVE & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_TRUCK & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_CARRIAGE ) {
+	if ( inv(INV_ITEM_ID, ci) != ITEM_ID_TREASURE_MAP & inv(INV_ITEM_ID, ci) != ITEM_ID_MAP & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_LAND_BATTLESHIP & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_MAGIC_LOCOMOTIVE & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_TRUCK & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_CARRIAGE & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_HUGE_RAFT & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_FISHING_SHIP & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_PIRATE_SHIP & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_CRUISE_SHIP & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_WARSHIP & inv(INV_ITEM_ID, ci) != ITEM_ID_DEED_OF_SUBMARINE ) {
 		inv(INV_ITEM_NUM, ci)--
 		if ( ci >= RANGE_INV2 ) {
 			cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
@@ -9190,6 +9226,10 @@
 			txt lang("それはワールドマップで読む必要がある。", "You need to read it while you are in the world map.")
 			goto *effect_end
 		}
+		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+			txt lang("それは海の地図ではない。", "It's not a sea map.")
+			goto *effect_end
+		}
 		if ( efstatus <= (-1) ) {
 			if ( rnd(5) == 0 ) {
 				txt lang("呪われた地図は触れると崩れ落ちた。", "The cursed map crumbles as you touch it.")
@@ -10211,6 +10251,18 @@
 					p++
 					continue cnt
 				}
+				cdata(STARTING_CDATA_BUFF + i * ARRAY_CDATA_BUFF + 1, tc) -= efp
+				cdata(STARTING_CDATA_BUFF + i * ARRAY_CDATA_BUFF + 2, tc) -= efp / 5
+				if ( cdata(STARTING_CDATA_BUFF + i * ARRAY_CDATA_BUFF + 1, tc) <= BUFF_NONE ) {
+					delbuff tc, i
+					p++
+					continue cnt
+				}
+				if ( cdata(STARTING_CDATA_BUFF + i * ARRAY_CDATA_BUFF + 2, tc) <= BUFF_NONE ) {
+					delbuff tc, i
+					p++
+					continue cnt
+				}
 			loop
 			animeload ANIMATION_HEAL_FAST, tc
 		loop
@@ -10245,6 +10297,18 @@
 				continue
 			}
 			if ( rnd(efp * 2 + 1) > rnd(cdata(STARTING_CDATA_BUFF + i * ARRAY_CDATA_BUFF + 1, tc) + 1) ) {
+				delbuff tc, i
+				p++
+				continue cnt
+			}
+			cdata(STARTING_CDATA_BUFF + i * ARRAY_CDATA_BUFF + 1, tc) -= efp
+			cdata(STARTING_CDATA_BUFF + i * ARRAY_CDATA_BUFF + 2, tc) -= efp / 5
+			if ( cdata(STARTING_CDATA_BUFF + i * ARRAY_CDATA_BUFF + 1, tc) <= BUFF_NONE ) {
+				delbuff tc, i
+				p++
+				continue cnt
+			}
+			if ( cdata(STARTING_CDATA_BUFF + i * ARRAY_CDATA_BUFF + 2, tc) <= BUFF_NONE ) {
 				delbuff tc, i
 				p++
 				continue cnt
@@ -11527,6 +11591,106 @@
 			}
 		}
 		goto *effect_end
+	}
+	if ( _switch_val == SKILL_SPACT_SHADOW_JUMP | _switch_sw ) {
+		_switch_sw = 0
+		if ( gdata(GDATA_RIDER) != 0 ) {
+			if ( cc == gdata(GDATA_RIDER) ) {
+				goto *effect_end
+			}
+		}
+		if ( cdata(CDATA_IN_TAGTEAM, cc) == 1 ) {
+			goto *effect_end
+		}
+		/********** CUSTOM - BEGINNING **********/
+		if ( cdata(CDATA_TARGET, CHARA_PLAYER) == 0 & cc == CHARA_PLAYER ) {
+			gosub *findTarget
+		}	
+		/********** CUSTOM - BEGINNING **********/	
+		if ( cdata(CDATA_TARGET, cc) == (-1) | cc == cdata(CDATA_TARGET, cc) ) {
+			if ( cc == CHARA_PLAYER ) {	
+				txt lang("ターゲットをしていない。", "you have not set a target.")
+			}
+			goto *effect_end
+		}
+		tc = cdata(CDATA_TARGET, cc)
+		telex = cdata(CDATA_X, tc)
+		teley = cdata(CDATA_Y, tc)
+		snd SOUNDLIST_ATK_DARK
+		repeat 200
+			cdata(CDATA_X_NEW, cc) = telex + rnd(cnt / 8 + 2) - rnd(cnt / 8 + 2)
+			cdata(CDATA_Y_NEW, cc) = teley + rnd(cnt / 8 + 2) - rnd(cnt / 8 + 2)
+			cell_check cdata(CDATA_X_NEW, cc), cdata(CDATA_Y_NEW, cc)
+			if ( cellaccess == 1 ) {
+				if ( synccheck(cc, -1) ) {
+					txt lang(name(cc) + "は" + cdatan(CDATAN_NAME, tc) + "の影へと移動し縛り付けた。", name(cc) + " teleport" + _s(cc) + " in the shadow and bind" + _s(cc) + " " + cdatan(CDATAN_NAME, tc) + ".")
+				}
+				if ( cdata(CDATA_CONDITION_BIND, tc) < 5 ) {
+					cdata(CDATA_CONDITION_BIND, tc) = 5
+				}
+				rowactend cc
+				if ( cdata(CDATA_IN_TAGTEAM, cc) != 0 ) {
+					tcc = cdata(CDATA_TAGTEAM_PARTNER, cc)
+					rowactend tcc
+				}
+				ccprev = cc
+				gosub *procMove
+				cc = ccprev
+				if ( cc == CHARA_PLAYER ) {
+					gosub *screen_draw
+				}
+				break
+			}
+		loop
+		goto *effect_end
+		_switch_sw++
+	}
+	if ( _switch_val == SKILL_SPACT_SHADOW_HOP | _switch_sw ) {
+		_switch_sw = 0
+		if ( cdata(CDATA_HP, cc) < cdata(CDATA_MAX_HP, cc) / 2 ) {
+			txt lang("何もおきない… ", "Nothing happens...")
+			goto *effect_end
+		}
+		if ( cbit(CHARA_BIT_SHADOW_CLONE, cc) ) {
+			txt lang("何もおきない… ", "Nothing happens...")
+			goto *effect_end
+		}
+		cost = cdata(CDATA_MAX_HP, cc) / 2
+		cdata(CDATA_HP, cc) -= cdata(CDATA_MAX_HP, cc) / 2
+		snd SOUNDLIST_OFFER1
+		necrolv = sdata(SKILL_NORMAL_STEALTH, cc)
+		if ( cc == CHARA_PLAYER ) {
+			if ( necrolv > gdata(GDATA_DEEPEST_LEVEL) * 3 / 2 ) {
+				necrolv = gdata(GDATA_DEEPEST_LEVEL) * 3 / 2
+			}
+		}
+		cbitmod CHARA_BIT_SHADOW_CLONE, cc, TRUE
+		repeat 25
+			flt
+			initlv = necrolv
+			novoidlv = 1
+			fixlv = FIX_QUALITY_GOOD
+			characreate -1, CREATURE_ID_SHADE, cdata(CDATA_X, cc), cdata(CDATA_Y, cc)
+			cdata(CDATA_HP, rc) = limit(cost / 25, 1, 2000)
+			cdata(CDATA_MAX_HP, rc) = limit(cost / 25, 1, 2000)
+			cbitmod CHARA_BIT_NECRO, rc, TRUE
+			cdata(CDATA_TARGET, rc) = cdata(CDATA_TARGET, cc)
+			cdata(CDATA_AI_AGGRO, rc) = cdata(CDATA_AI_AGGRO, cc)
+			/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
+			cdata(CDATA_RELATION, rc) = 10
+			cdata(CDATA_RELATION_ORG, rc) = 10
+			cbitmod CHARA_BIT_SUMMONED, rc, TRUE
+			/********** CUSTOM - ENDING **********/
+			if ( cc != CHARA_PLAYER ) {
+				cdata(CDATA_PIC, rc) = cdata(CDATA_PIC, cc)
+				cdata(CDATA_CHARA_PIC, rc) = cdata(CDATA_CHARA_PIC, cc)
+				cdatan(CDATAN_NAME, rc) = cdatan(CDATAN_NAME, cc)
+				cdata(CDATA_RELATION, rc) = cdata(CDATA_RELATION, cc)
+				cdata(CDATA_RELATION_ORG, rc) = cdata(CDATA_RELATION_ORG, cc)
+			}
+		loop
+		goto *effect_end
+		_switch_sw++
 	}
 	if ( _switch_val == SKILL_SPACT_ROCKET_FIRE | _switch_sw ) {
 		_switch_sw = 0
@@ -13407,6 +13571,7 @@
 			obvious = 0
 			goto *effect_end
 		}
+		gdata(GDATA_FLAG_SHIP_LAST_PORT) = 0
 		if ( gdata(GDATA_RETURN) != 0 ) {
 			txt lang("脱出を中止した。", "The air around you gradually loses power.")
 			gdata(GDATA_RETURN) = 0
@@ -13430,7 +13595,7 @@
 			}
 			gdata(GDATA_TELEPORT_AREA) = gdata(GDATA_WORLD), 1
 			if ( efstatus <= (-1) ) {
-				if ( gdata(GDATA_WORLD) != AREA_LOST_YLVA ) {
+				if ( gdata(GDATA_WORLD) != AREA_LOST_YLVA & gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
 					if ( rnd(3) == 0 ) {
 						gdata(GDATA_TELEPORT_AREA) = AREA_JAIL, 1
 					}
@@ -13447,12 +13612,21 @@
 			obvious = 0
 			goto *effect_end
 		}
+		/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
+		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+			snd SOUNDLIST_FAIL1
+			txt lang("この階層では帰還が出来ないようだ。", "It seems that you cannot return from this floor.")
+			obvious = 0
+			goto *effect_end
+		}
+		/********** BLOODYSHADE CUSTOM - BEGINNING **********/
 		if ( gdata(GDATA_AREA) == AREA_REMIDO & gdata(GDATA_LEVEL) == 129 | (gdata(GDATA_AREA) == AREA_CHAOS_CRADLE & gdata(GDATA_LEVEL) == 179) ) {
 			snd SOUNDLIST_FAIL1
 			txt lang("この階層では帰還が出来ないようだ。", "It seems that you cannot return from this floor.")
 			obvious = 0
 			goto *effect_end
 		}
+		gdata(GDATA_FLAG_SHIP_LAST_PORT) = 0
 		if ( gdata(GDATA_RETURN) != 0 ) {
 			txt lang("帰還を中止した。", "The air around you gradually loses power.")
 			gdata(GDATA_RETURN) = 0
@@ -13460,7 +13634,7 @@
 		else {
 			gosub *com_return
 			if ( efstatus <= (-1) ) {
-				if ( gdata(GDATA_WORLD) != AREA_LOST_YLVA ) {
+				if ( gdata(GDATA_WORLD) != AREA_LOST_YLVA & gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
 					if ( rnd(3) == 0 ) {
 						gdata(GDATA_TELEPORT_AREA) = AREA_JAIL, 1
 					}
@@ -14413,6 +14587,87 @@
 			gdata(GDATA_CARGO_LIMIT) += 100 * 1000
 		}
 		gosub *calcBurdenPc
+		goto *effect_end
+		_switch_sw++
+	}
+	if ( _switch_val == SKILL_EFFECT_SHIP_DEED | _switch_sw ) {
+		_switch_sw = 0
+		if ( gdata(GDATA_AREA) != AREA_PORT_KAPUL & gdata(GDATA_AREA) != AREA_DEVIL_CAPE & gdata(GDATA_AREA) != AREA_LUMIEST & gdata(GDATA_AREA) != AREA_KURUALM & gdata(GDATA_AREA) != AREA_VALM ) {
+			txt lang("それは海に面した街などで読む必要がある。", "You need to read it while you are in the town by the sea.")
+			goto *effect_end
+		}
+		if ( cc != CHARA_PLAYER ) {
+			txt lang("何もおきない… ", "Nothing happens...")
+			obvious = 0
+			goto *effect_end
+		}
+		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_HUGE_RAFT ) {
+			cost = 5000
+		}
+		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_FISHING_SHIP ) {
+			cost = 10000
+		}
+		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_PIRATE_SHIP ) {
+			cost = 15000
+		}
+		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_CRUISE_SHIP ) {
+			cost = 20000
+		}
+		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_WARSHIP ) {
+			cost = 25000
+		}
+		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_SUBMARINE ) {
+			cost = 30000
+		}
+		txtmore
+		txt lang("保険料" + cost + "gpを払って出航する？", "Do you pay " + cost + "gp for insurance and set sail?")
+		promptl(0, 0) = stryes, "y", "0"
+		promptl(0, 1) = strno, "n", "1"
+		promptmax = 2
+		val = promptx, prompty, 160, 1
+		gosub *prompt_key
+		if ( rtval != 0 ) {
+			gosub *screen_draw
+			goto *pc_turn
+		}
+		if ( rtval == 0 ) {
+			if ( cdata(CDATA_GOLD, tc) < cost ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("金が足りない…", "You don't have enough money.")
+				gosub *screen_draw
+				goto *pc_turn
+			}
+			snd SOUNDLIST_PAYGOLD1
+			cdata(CDATA_GOLD, tc) -= cost
+			snd SOUNDLIST_DING1
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_HUGE_RAFT ) {
+				gdata(GDATA_FLAG_SHIP_TYPE) = 1
+			}
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_FISHING_SHIP ) {
+				gdata(GDATA_FLAG_SHIP_TYPE) = 2
+			}
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_PIRATE_SHIP ) {
+				gdata(GDATA_FLAG_SHIP_TYPE) = 3
+			}
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_CRUISE_SHIP ) {
+				gdata(GDATA_FLAG_SHIP_TYPE) = 4
+			}
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_WARSHIP ) {
+				gdata(GDATA_FLAG_SHIP_TYPE) = 5
+			}
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_SUBMARINE ) {
+				gdata(GDATA_FLAG_SHIP_TYPE) = 6
+			}
+			gdata(GDATA_FLAG_SHIP_IMAGE) = gdata(GDATA_FLAG_SHIP_TYPE) + inv(INV_ITEM_COL, ci) * 1000
+			if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) < gdata(GDATA_FLAG_SHIP_TYPE) ) {
+				gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) = gdata(GDATA_FLAG_SHIP_TYPE)
+			}
+			cdata(CDATA_CHARACTER_TIER, CHARA_PLAYER) = CHARACTER_TIER_SHIP_HULL_ENDURANCE
+			gdata(GDATA_FLAG_COLLECTED_WISHES) = 0
+			gdata(GDATA_FLAG_SHIP_LAST_PORT) = gdata(GDATA_WORLD) * 100 + gdata(GDATA_AREA)
+			gdata(GDATA_TELEPORT_AREA) = AREA_TEST_WORLD, gdata(GDATA_AREA)
+			gdata(GDATA_RETURN) = 1
+		}
 		goto *effect_end
 		_switch_sw++
 	}
@@ -18339,6 +18594,11 @@
 				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 					continue
 				}
+				/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
+				if ( cdata(CDATA_ID, cnt) == CREATURE_ID_SHADE ) {
+					continue
+				}
+				/********** CUSTOM - ENDING **********/
 				if ( cc == cnt ) {
 					continue
 				}
@@ -22334,6 +22594,9 @@
 	if ( _switch_val == SKILL_SPACT_FORCED_DRAFT | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE ) {
+			goto *effect_end
+		}
+		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
 			goto *effect_end
 		}
 		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 ) {

@@ -658,7 +658,7 @@
 			if ( tc >= MAX_CHARA_FOLLOWER ) {
 				hostileaction cc, tc
 			}
-			if ( refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ITEM_FOOD & cdata(CDATA_HUNGER, tc) < 10000 & cdata(CDATA_CONDITION_SLEEP, tc) == 0 & cdata(CDATA_CONDITION_DIM, tc) < 60 ) {
+			if ( refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ITEM_FOOD & cdata(CDATA_HUNGER, tc) <= 10000 & cdata(CDATA_CONDITION_SLEEP, tc) == 0 & cdata(CDATA_CONDITION_DIM, tc) < 60 ) {
 				cc = tc
 				txt lang(name(tc) + "は思わず" + itemname(ci, 1) + "に食いついた！", "It hits " + name(tc) + "!")
 				gosub *insta_eat
@@ -2182,185 +2182,195 @@
 	gosub *cell_info
 	if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
 		if ( gdata(GDATA_WORLD) != AREA_AIMWELL ) {
-			if ( cc == CHARA_PLAYER ) {
-				encounter = 0
-				gdata(GDATA_WORLD_TILE) = map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)
-				if ( gdata(STARTING_GDATA_FLAG + 375) > 0 ) {
-					gdata(STARTING_GDATA_FLAG + 375)--
-					if ( gdata(STARTING_GDATA_FLAG + 375) <= 0 ) {
-						txtef COLOR_RED
-						txt lang("魔よけが切れた。", "Encounter canceller effect is gone.")
+			if ( gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
+				if ( cc == CHARA_PLAYER ) {
+					encounter = ENCOUNTER_NONE
+					gdata(GDATA_WORLD_TILE) = map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)
+					if ( gdata(STARTING_GDATA_FLAG + 375) > 0 ) {
+						gdata(STARTING_GDATA_FLAG + 375)--
+						if ( gdata(STARTING_GDATA_FLAG + 375) <= 0 ) {
+							txtef COLOR_RED
+							txt lang("魔よけが切れた。", "Encounter canceller effect is gone.")
+						}
+						mile = gdata(STARTING_GDATA_FLAG + 375) * 4
+						txt lang("残り" + mile + "マイル。", "Encounters cancelled for " + mile + " miles.")
 					}
-					mile = gdata(STARTING_GDATA_FLAG + 375) * 4
-					txt lang("残り" + mile + "マイル。", "Encounters cancelled for " + mile + " miles.")
-				}
-				if ( map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 6) == 0 ) {
-					if ( gdata(GDATA_AREA) == AREA_NORTH_TYRIS ) {
-						enarea = 1
-					}
-					if ( gdata(GDATA_AREA) == AREA_SOUTH_TYRIS ) {
-						enarea = 2
-					}
-					p = map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)
-					if ( rnd(30) == 0 ) {
-						encounter = 1
-					}
-					if ( gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN ) {
-						if ( rnd(10) == 0 ) {
+					if ( map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 6) == 0 ) {
+						if ( gdata(GDATA_AREA) == AREA_NORTH_TYRIS ) {
+							enarea = 1
+						}
+						if ( gdata(GDATA_AREA) == AREA_SOUTH_TYRIS ) {
+							enarea = 2
+						}
+						p = map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)
+						if ( rnd(30) == 0 ) {
 							encounter = 1
 						}
-					}
-					if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
-						if ( rnd(13) == 0 ) {
-							encounter = 1
+						if ( gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN ) {
+							if ( rnd(10) == 0 ) {
+								encounter = 1
+							}
 						}
-					}
-					if ( gdata(GDATA_FLAG_THROWN_CHESTNUTS) >= 100 ) {
-						if ( rnd(5) == 0 ) {
-							encounter = 5
+						if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
+							if ( rnd(13) == 0 ) {
+								encounter = 1
+							}
 						}
-					}
-					if ( 33 <= p & p < 57 & p != 44 ) {
-						if ( rnd(2) == 0 ) {
-							encounter = 0
+						if ( gdata(GDATA_FLAG_THROWN_CHESTNUTS) >= 100 ) {
+							if ( rnd(5) == 0 ) {
+								encounter = 5
+							}
 						}
-						if ( rnd(100) == 0 ) {
-							encounter = 2
+						if ( 33 <= p & p < 57 & p != 44 ) {
+							if ( rnd(2) == 0 ) {
+								encounter = 0
+							}
+							if ( rnd(100) == 0 ) {
+								encounter = 2
+							}
 						}
-					}
-					plevel = limit(cdata(CDATA_LEVEL, CHARA_PLAYER) * 10, 1, 500)
-					if ( rnd(220 + plevel - limit(gdata(GDATA_CARGO_WEIGHT) * 150 / (gdata(GDATA_CARGO_LIMIT) + 1), 0, 210 + plevel)) == 0 ) {
-						encounter = 4
-					}
-					if ( rnd(40) == 0 ) {
-						repeat 5
-							rq = gdata(GDATA_QUEST_POOL + cnt)
-							if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_ESCORT ) {
-								if ( qdata(QDATA_STATUS, rq) == QUEST_STATE_ONGOING ) {
-									if ( qdata(QDATA_VAR, rq) == 0 ) {
-										if ( qdata(QDATA_ENCOUNTER, rq) < 2 ) {
-											encounter = 3
-											encounterref = rq
-											qdata(QDATA_ENCOUNTER, rq)++
-											break
+						plevel = limit(cdata(CDATA_LEVEL, CHARA_PLAYER) * 10, 1, 500)
+						if ( rnd(220 + plevel - limit(gdata(GDATA_CARGO_WEIGHT) * 150 / (gdata(GDATA_CARGO_LIMIT) + 1), 0, 210 + plevel)) == 0 ) {
+							encounter = 4
+						}
+						if ( rnd(40) == 0 ) {
+							repeat 5
+								rq = gdata(GDATA_QUEST_POOL + cnt)
+								if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_ESCORT ) {
+									if ( qdata(QDATA_STATUS, rq) == QUEST_STATE_ONGOING ) {
+										if ( qdata(QDATA_VAR, rq) == 0 ) {
+											if ( qdata(QDATA_ENCOUNTER, rq) < 2 ) {
+												encounter = 3
+												encounterref = rq
+												qdata(QDATA_ENCOUNTER, rq)++
+												break
+											}
 										}
 									}
 								}
-							}
-						loop
+							loop
+						}
 					}
-				}
-				if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 4 ) {
+					if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 4 ) {
+						if ( encounter == 4 ) {
+							snd SOUNDLIST_ATTACK00
+							encounter = 0
+							gdata(GDATA_FLAG_BANDITS_KILLED)++
+							txtef COLOR_YELLOW
+							txt lang("盗賊団が絡んできたが無視して轢いた。", "You were stopped by rogues, but you smashed them using your battleship.")
+						}
+						if ( encounter == 1 ) {
+							snd SOUNDLIST_BALL1
+							encounter = 0
+							txtef COLOR_YELLOW
+							txt lang("モンスターが襲撃してきたが主砲で吹き飛ばした。", "You were ambushed by monsters, but you blasted them away with the battleship's main cannon.")
+						}
+					}
 					if ( encounter == 4 ) {
-						snd SOUNDLIST_ATTACK00
-						encounter = 0
-						gdata(GDATA_FLAG_BANDITS_KILLED)++
-						txtef COLOR_YELLOW
-						txt lang("盗賊団が絡んできたが無視して轢いた。", "You were stopped by rogues, but you smashed them using your battleship.")
-					}
-					if ( encounter == 1 ) {
-						snd SOUNDLIST_BALL1
-						encounter = 0
-						txtef COLOR_YELLOW
-						txt lang("モンスターが襲撃してきたが主砲で吹き飛ばした。", "You were ambushed by monsters, but you blasted them away with the battleship's main cannon.")
-					}
-				}
-				if ( encounter == 4 ) {
-					encounterlv = cdata(CDATA_FAME, CHARA_PLAYER) / 1000
-					levelexitby = 4
-					goto *map_exit
-				}
-				if ( encounter == 3 ) {
-		   	 		if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == VEHICLE_LAND_BATTLESHIP ) {
-		   	 			txt lang("行商人に変装していた暗殺者が襲いかかってきた。あなたはクライアントを守らなければならない。", "You are caught by assassins disguised as a wandering merchant and their crew. You have to protect your client.")
-		   	 		}
-		   	 		if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) != VEHICLE_LAND_BATTLESHIP ) {
-		   	 			txt lang("暗殺者につかまった。あなたはクライアントを守らなければならない。", "You are caught by assassins. You have to protect your client.")
-		   	 		}
-					msg_halt
-					gdata(GDATA_RETURN_AREA) = gdata(GDATA_AREA), gdata(GDATA_LEVEL), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
-					levelexitby = 4
-					goto *map_exit
-				}
-				if ( encounter == 2 ) {
-					encounterlv = 10 + rnd(100)
-					levelexitby = 4
-					goto *map_exit
-				}
-				if ( encounter == 5 ) {
-					encounterlv = 111 + sdata(SKILL_WEAPON_THROWING, CHARA_PLAYER)
-					levelexitby = 4
-					goto *map_exit
-				}
-				if ( gdata(STARTING_GDATA_FLAG + 375) <= 0 ) {
-					if ( encounter == 1 ) {
-						p = rnd(gdata(GDATA_DEEPEST_LEVEL) + 1) + 50
-						if ( enarea == 1 ) {
-							p = limit(rnd(rnd(gdata(GDATA_DEEPEST_LEVEL) + 1) + 1), 1, 50)
-						}
-						if ( enarea == 2 ) {
-							p = limit(rnd(gdata(GDATA_DEEPEST_LEVEL) + 1), 50, 100)
-						}
-						encounterlv = p * 4 / 5 - 10
-						if ( cdata(CDATA_LEVEL, CHARA_PLAYER) <= 5 ) {
-							encounterlv /= 2
-						}
-                        if ( xy2pic(0, 1) <= map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), MAP_TILE_ID) & map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), MAP_TILE_ID) < xy2pic(24, 1) & map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), MAP_TILE_ID) != xy2pic(11, 1) ) {
-							encounterlv /= 2
-						}
-						else {
-							if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
-								encounterlv = encounterlv * 3 / 2 + 10
-							}
-						}
-						if ( encounterlv < 0 ) {
-							encounterlv = 1
-						}
-						if ( encounterlv >= 999 ) {
-							p = 999
-						}
-						valn = lang(" (危険度:" + p + " 敵勢力:", " (Danger Level: " + p + " Enemy strength: ")
-						repeat 1
-							if ( encounterlv < 5 ) {
-								valn += lang("プチ級", "Puti Rank")
-								break
-							}
-							if ( encounterlv < 10 ) {
-								valn += lang("オーク級", "Orc Rank")
-								break
-							}
-							if ( encounterlv < 20 ) {
-								valn += lang("グリズリー級", "Grizzly Bear Rank")
-								break
-							}
-							if ( encounterlv < 30 ) {
-								valn += lang("ドレイク級", "Drake Rank")
-								break
-							}
-							if ( encounterlv < 40 ) {
-								valn += lang("リッチ級", "Lich Rank")
-								break
-							}
-							if ( encounterlv < 60 ) {
-								valn += lang("ドラゴン級", "Dragon Rank")
-								break
-							}
-							if ( encounterlv < 70 ) {
-								valn += lang("イス級", "Yith Rank")
-								break
-							}
-							if ( encounterlv >= 70 ) {
-								valn += lang("不明", "???? Rank")
-							}
-						loop
-						valn += ")"
-						txt lang("襲撃だ！", "Ambush!") + valn
-						msg_halt
+						encounterlv = cdata(CDATA_FAME, CHARA_PLAYER) / 1000
 						levelexitby = 4
 						goto *map_exit
 					}
+					if ( encounter == 3 ) {
+						if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == VEHICLE_LAND_BATTLESHIP ) {
+							txt lang("行商人に変装していた暗殺者が襲いかかってきた。あなたはクライアントを守らなければならない。", "You are caught by assassins disguised as a wandering merchant and their crew. You have to protect your client.")
+						}
+						if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) != VEHICLE_LAND_BATTLESHIP ) {
+							txt lang("暗殺者につかまった。あなたはクライアントを守らなければならない。", "You are caught by assassins. You have to protect your client.")
+						}
+						msg_halt
+						gdata(GDATA_RETURN_AREA) = gdata(GDATA_AREA), gdata(GDATA_LEVEL), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
+						levelexitby = 4
+						goto *map_exit
+					}
+					if ( encounter == 2 ) {
+						encounterlv = 10 + rnd(100)
+						levelexitby = 4
+						goto *map_exit
+					}
+					if ( encounter == 5 ) {
+						encounterlv = 111 + sdata(SKILL_WEAPON_THROWING, CHARA_PLAYER)
+						levelexitby = 4
+						goto *map_exit
+					}
+					if ( gdata(STARTING_GDATA_FLAG + 375) <= 0 ) {
+						if ( encounter == 1 ) {
+							p = rnd(gdata(GDATA_DEEPEST_LEVEL) + 1) + 50
+							if ( enarea == 1 ) {
+								p = limit(rnd(rnd(gdata(GDATA_DEEPEST_LEVEL) + 1) + 1), 1, 50)
+							}
+							if ( enarea == 2 ) {
+								p = limit(rnd(gdata(GDATA_DEEPEST_LEVEL) + 1), 50, 100)
+							}
+							encounterlv = p * 4 / 5 - 10
+							if ( cdata(CDATA_LEVEL, CHARA_PLAYER) <= 5 ) {
+								encounterlv /= 2
+							}
+							if ( xy2pic(0, 1) <= map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), MAP_TILE_ID) & map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), MAP_TILE_ID) < xy2pic(24, 1) & map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), MAP_TILE_ID) != xy2pic(11, 1) ) {
+								encounterlv /= 2
+							}
+							else {
+								if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
+									encounterlv = encounterlv * 3 / 2 + 10
+								}
+							}
+							if ( encounterlv < 0 ) {
+								encounterlv = 1
+							}
+							if ( encounterlv >= 999 ) {
+								p = 999
+							}
+							valn = lang(" (危険度:" + p + " 敵勢力:", " (Danger Level: " + p + " Enemy strength: ")
+							repeat 1
+								if ( encounterlv < 5 ) {
+									valn += lang("プチ級", "Puti Rank")
+									break
+								}
+								if ( encounterlv < 10 ) {
+									valn += lang("オーク級", "Orc Rank")
+									break
+								}
+								if ( encounterlv < 20 ) {
+									valn += lang("グリズリー級", "Grizzly Bear Rank")
+									break
+								}
+								if ( encounterlv < 30 ) {
+									valn += lang("ドレイク級", "Drake Rank")
+									break
+								}
+								if ( encounterlv < 40 ) {
+									valn += lang("リッチ級", "Lich Rank")
+									break
+								}
+								if ( encounterlv < 60 ) {
+									valn += lang("ドラゴン級", "Dragon Rank")
+									break
+								}
+								if ( encounterlv < 70 ) {
+									valn += lang("イス級", "Yith Rank")
+									break
+								}
+								if ( encounterlv >= 70 ) {
+									valn += lang("不明", "???? Rank")
+								}
+							loop
+							valn += ")"
+							txt lang("襲撃だ！", "Ambush!") + valn
+							msg_halt
+							levelexitby = 4
+							goto *map_exit
+						}
+					}
+					encounter = 0
 				}
-				encounter = 0
+			}
+		}
+	}
+	if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN | gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
+			if ( rnd(10 + gdata(GDATA_FLAG_SHIP_TYPE) * 2) == 0 ) {
+				breakfast = 666
+				gosub *random_event
 			}
 		}
 	}
@@ -2537,36 +2547,46 @@
 		}
 		else {
 			if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-				if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > VEHICLE_NONE ) {
-					snd SOUNDLIST_DRAG01
-					if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 3 ) {
-						if ( cdata(CDATA_MP, CHARA_PLAYER) > (-9999) ) {
-							cdata(CDATA_MP, CHARA_PLAYER) -= limit(cdata(CDATA_MAX_MP, CHARA_PLAYER) / 200, 1, 100)
+				if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+					snd SOUNDLIST_MIZU2
+				}
+				if ( gdata(GDATA_AREA) != AREA_TEST_WORLD ) {
+					if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > VEHICLE_NONE ) {
+						snd SOUNDLIST_DRAG01
+						if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 3 ) {
+							if ( cdata(CDATA_MP, CHARA_PLAYER) > (-9999) ) {
+								cdata(CDATA_MP, CHARA_PLAYER) -= limit(cdata(CDATA_MAX_MP, CHARA_PLAYER) / 200, 1, 100)
+							}
 						}
 					}
-				}
-				else {
-					addefmap cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 2, 10, dirsub
-					snd 81 + foot \ 2
-					foot++
+					else {
+						addefmap cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 2, 10, dirsub
+						snd 81 + foot \ 2
+						foot++
+					}
 				}
 			}
 		}
 		if ( map(x, y, 6) != 0 ) {
 			cell_featread x, y
-			if ( feat(1) == CELL_FEATURE_UPSTAIRS ) {
+			if ( feat(FEAT_CELL_FEATURE_ID) == CELL_FEATURE_DOWNSTAIRS ) {
 				if ( gdata(GDATA_AREA) == AREA_WEST_RASKILIS ) {
-					txt lang("空間の裂け目がある。", "There is a rift in space here.")
-                } else {
-					txt lang("昇り階段がある。", "There is a stair leading upwards here.")
-                }
-			}
-			if ( feat(1) == CELL_FEATURE_DOWNSTAIRS ) {
-				if ( gdata(GDATA_AREA) == AREA_WEST_RASKILIS ) {
-					txt lang("空間の裂け目がある。", "There is a rift in space here.")
-                } else {
+					txt lang("空間の裂け目がある。", "There is a crevice of space.")
+				}
+				if ( gdata(GDATA_AREA) != AREA_WEST_RASKILIS ) {
 					txt lang("降り階段がある。", "There is a stair leading downwards here.")
-                }
+				}
+			}
+			if ( feat(FEAT_CELL_FEATURE_ID) == CELL_FEATURE_UPSTAIRS ) {
+				if ( gdata(GDATA_AREA) == AREA_WEST_RASKILIS ) {
+					txt lang("空間の裂け目がある。", "There is a crevice of space.")
+				}
+				if ( gdata(GDATA_AREA) != AREA_WEST_RASKILIS & gdata(GDATA_AREA) != AREA_TEST_WORLD ) {
+					txt lang("昇り階段がある。", "There is a stair leading upwards here.")
+				}
+				if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+					txt lang("停泊ポイントがある。", "There is a mooring point.")
+				}
 			}
 			if ( feat(1) == CELL_FEATURE_NEFIA ) {
 				txt mapname(feat(2) + feat(3) * 100, 1)
@@ -5907,17 +5927,21 @@
 
 *act_search
 	if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-		if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 1 ) {
-			snd SOUNDLIST_INANAKI
+		if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
 		}
-		if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 2 ) {
-			snd SOUNDLIST_CAR_HORN1
-		}
-		if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 3 ) {
-			snd SOUNDLIST_LOCOMO
-		}
-		if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 4 ) {
-			snd SOUNDLIST_SIREN
+		else {
+			if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 1 ) {
+				snd SOUNDLIST_INANAKI
+			}
+			if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 2 ) {
+				snd SOUNDLIST_CAR_HORN1
+			}
+			if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 3 ) {
+				snd SOUNDLIST_LOCOMO
+			}
+			if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 4 ) {
+				snd SOUNDLIST_SIREN
+			}
 		}
 		goto *turn_end
 	}
@@ -6218,7 +6242,7 @@
 		}
 	}
 	if ( inv(INV_ITEM_ID, cidip) == ITEM_ID_BOTTLE_MILK ) {
-		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_JUICE | inv(INV_ITEM_ID, ci) == ITEM_ID_COFFEE ) {
+		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_JUICE | inv(INV_ITEM_ID, ci) == ITEM_ID_COFFEE | inv(INV_ITEM_ID, ci) == ITEM_ID_BLACK_TEA ) {
 			item_num cidip, -1
 			item_separate ci
 			txt lang(itemname(ci) + "に乳を混ぜた！", "You mixed milk.")
@@ -8195,8 +8219,8 @@
 			snd SOUNDLIST_FAIL1
 			goto *act_use_SWEND1
 		}
-		gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) = 100
-		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) == 100 ) {
+		gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) = 1000
+		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) == 1000 ) {
 			if ( synccheck(tc, -1) ) {
 				snd SOUNDLIST_FREEZE01
 				txtef COLOR_RED
@@ -8275,6 +8299,10 @@
 	if ( _switch_val == EFFECT_BIGAMY_PERMIT | _switch_sw ) {
 		_switch_sw = 0
 		if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
+			goto *act_use_SWEND1
+		}
+		if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE ) {
+			txt lang("この場所では効果がない。", "The effect doesn't work in this area.")
 			goto *act_use_SWEND1
 		}
 		txt lang("誰に使用する？", "Who is the target?")
@@ -9651,14 +9679,14 @@
 		if ( inv(INV_ITEM_PARAM3, ci) \ 100 == 3 | inv(INV_ITEM_AMUR_CAGE, ci) == 3 & inv(INV_ITEM_PARAM2, ci) >= 2 ) {
 			dmg = dmg * 9 / 5
 		}
-		cibk_potioman = ci
+		cibk = ci
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			dmghp tc, dmg, cc, SKILL_RESDMG_CRUSH, 1000
 		}
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			dmgmp tc, dmg / 100 + 5
 		}
-		ci = cibk_potioman
+		ci = cibk
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_CRUSH_POTIOMAN ) {
 				if ( inv(INV_ITEM_PARAM2, ci) == 0 ) {
@@ -9670,7 +9698,7 @@
 				}
 			}
 		}
-		ci = cibk_potioman
+		ci = cibk
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( inv(INV_ITEM_SHOP_SAMPLE, ci) > 0 ) {
 				dmge = (sdata(SKILL_ATTR_STR, cc) * (kinhosei + 5) / 25 + 5) * ((sdata(SKILL_NORMAL_MARKSMAN, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_ATTR_MAG, cc) * 4 + 5 + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) / 8) + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) * 3 / 8
@@ -9687,7 +9715,7 @@
 				dmghp tc, dmge, cc, inv(INV_ITEM_SHOP_SAMPLE, ci), 500 + limit(sdata(SKILL_ATTR_MAG, cc) * 2, 1, 4000)
 			}
 		}
-		ci = cibk_potioman
+		ci = cibk
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( inv(INV_ITEM_PARAM3, ci) \ 100 == 1 | inv(INV_ITEM_AMUR_CAGE, ci) == 1 ) {
 				dmgcon tc, CONDITION_DIM, 50 + limit(sdata(SKILL_ATTR_STR, cc) / 2, 1, 1000)
@@ -9698,7 +9726,7 @@
 				}
 			}
 		}
-		ci = cibk_potioman
+		ci = cibk
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( inv(INV_ITEM_PARAM3, ci) \ 100 == 6 | inv(INV_ITEM_AMUR_CAGE, ci) == 6 ) {
 				dmgcon tc, CONDITION_CONFUSE, 50 + limit(sdata(SKILL_ATTR_DEX, cc) / 2, 1, 1000)
@@ -9711,7 +9739,7 @@
 				}
 			}
 		}
-		ci = cibk_potioman
+		ci = cibk
 		if ( cdata(CDATA_EXIST, cc) == CHAR_STATE_ALIVE ) {
 			skillexp SKILL_ATTR_STR, cc, 50
 			skillexp SKILL_ATTR_MAG, cc, 50
@@ -10304,6 +10332,19 @@
 					txt lang("「キャー」", cnvtalk("Pervert!"))
 				}
 				cbitmod CHARA_BIT_STETHOSCOPE, tc, 1
+				goto *turn_end
+			}
+		}
+		if ( tc >= MAX_CHARA_FOLLOWER ) {
+			if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+				gdata(GDATA_SCOPE) = tc
+				txt lang("あなたは" + name(tc) + "に聴診器を当てた。", "You start to keep an eye on " + his(tc) + " health.")
+				if ( cdata(CDATA_SEX, tc) == 1 ) {
+					txt lang("" + name(tc) + "は顔を赤らめた。", name(tc) + " blush" + _s(tc, 1) + ".")
+					txtmore
+					txtef COLOR_BLUE
+					txt lang("「ヘンタイ！」", cnvtalk("Pervert!"))
+				}
 				goto *turn_end
 			}
 		}

@@ -15,6 +15,10 @@
 - Fixed a bug where NumLock button get spammed when the game starts in background.
 - Fixed a bug where "autodestroy_sound." config overwrites "sound." config.
 - "BARREL!" support for english speaking alchemists.
+- Fixed following bug from original 2.18
+  + Saving drifters not awarding karma.
+  + Shadow hop summoning hostile shades that drops loot.
+  + Casting return underwater stuck you inside another continent.
 
 # 2.17.1.0
 

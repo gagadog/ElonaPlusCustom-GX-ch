@@ -889,7 +889,7 @@
 	/********** ANNA CUSTOM - BEGINNING **********/ // Pets eat food from their inventories
 
 	if ( CustomVal(0, cc) == 1 ) {
-		if ( cc < MAX_CHARA_FOLLOWER & cc > 0 & tc == CHARA_PLAYER ) {
+		if ( cc < MAX_CHARA_FOLLOWER & cc > 0 & tc == CHARA_PLAYER & (gdata(GDATA_AREA) != AREA_VALM & gdata(GDATA_AREA) != AREA_SHELTER) ) {
 			if ( cdata(CDATA_HUNGER, cc) <= 10000 ) {
 				FoundFood = 0
 				inv_getheader cc
@@ -918,7 +918,7 @@
 	}
 
 	if ( TweakData(TWEAK_GAMEPLAY_CG_DISABLE_THIRST, TWEAK_CATEGORY_GAMEPLAY) == FALSE & CustomVal(1, cc) == 1 ) {
-		if ( cc < MAX_CHARA_FOLLOWER & cc > 0 & tc == CHARA_PLAYER ) {
+		if ( cc < MAX_CHARA_FOLLOWER & cc > 0 & tc == CHARA_PLAYER & (gdata(GDATA_AREA) != AREA_VALM & gdata(GDATA_AREA) != AREA_SHELTER) ) {
 			if ( cdata(CDATA_THIRST, cc) <= 10000 ) {
 				FoundDrink = 0
 				inv_getheader cc
@@ -3079,6 +3079,13 @@
 			}
 		}
 	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_13TH_STEP_GHOST | cdata(CDATA_ID, cc) == CREATURE_ID_GHOST | cdata(CDATA_ID, cc) == CREATURE_ID_NINJA ) {
+		if ( cdata(CDATA_TARGET, cc) > (-1) ) {
+			if ( rnd(15) == 0 ) {
+				act = SKILL_SPACT_SHADOW_JUMP
+			}
+		}
+	}
 	if ( cdata(CDATA_ID, cc) == CREATURE_ID_LOTHRIAN_AGENT | cdata(CDATA_ID, cc) == CREATURE_ID_METAL_ZILLA | cdata(CDATA_ID, cc) == CREATURE_ID_MELGET_THE_INFORMER | cdata(CDATA_ID, cc) == CREATURE_ID_MOBILE_COMMUNICATION_EQUIPMENT | cdata(CDATA_ID, cc) == CREATURE_ID_LEAD_DEVELOPER_DR_GAVELA ) {
 		if ( cdata(CDATA_ANALYSIS_GAUGE, cc) >= 50 ) {
 			if ( cdata(CDATA_ALLIED, cc) == 0 ) {
@@ -3102,6 +3109,15 @@
 			if ( cdata(CDATA_POWER_GAUGE, cc) >= 25 ) {
 				if ( rnd(10) == 0 ) {
 					act = SKILL_SPACT_EXTERMINATION_BREATH
+				}
+			}
+		}
+	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_GETUEI_THE_NINJA_MASTER | cdata(CDATA_ID, cc) == CREATURE_ID_SHADOW ) {
+		if ( cbit(CHARA_BIT_SHADOW_CLONE, cc) == FALSE ) {
+			if ( cdata(CDATA_HP, cc) >= cdata(CDATA_MAX_HP, cc) / 2 ) {
+				if ( cdata(CDATA_RELATION, cc) != RELATION_NEUTRAL ) {
+					act = SKILL_SPACT_SHADOW_HOP
 				}
 			}
 		}

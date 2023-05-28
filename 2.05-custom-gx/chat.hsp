@@ -7409,6 +7409,8 @@
 			flt
 			itemcreate -1, ITEM_ID_PHILOSOPHERS_STONE_MASK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 3
 			flt
+			itemcreate -1, ITEM_ID_POT_OF_ALCHEMIST, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			flt
 			itemcreate -1, ITEM_ID_MUSIC_TICKET, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 800
 			txt_questcompleted
 			txtmore
@@ -23686,7 +23688,7 @@
 			if ( rnd(8) == 0 ) {
 				flttypemajor = FILTER_CARGO_FOOD
 			}
-			if ( rnd(10) == 0 ) {
+			if ( rnd(5) == 0 ) {
 				dbid = isetdeed(rnd(length(isetdeed)))
 			}
 			if ( rnd(20) == 0 ) {
@@ -23809,7 +23811,7 @@
 			if ( rnd(10) == 0 ) {
 				flttypemajor = FILTER_CARGO_FOOD
 			}
-			if ( rnd(10) == 0 ) {
+			if ( rnd(5) == 0 ) {
 				dbid = isetdeed(rnd(length(isetdeed)))
 			}
 			if ( rnd(20) == 0 ) {
@@ -23890,7 +23892,7 @@
 				continue
 			}
 			flttypemajor = FILTER_ITEM_BOOK
-			if ( rnd(3) == 0 ) {
+			if ( rnd(2) == 0 ) {
 				dbid = isetdeed(rnd(length(isetdeed)))
 			}
 			if ( rnd(5) == 0 ) {

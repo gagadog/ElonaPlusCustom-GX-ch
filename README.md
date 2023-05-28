@@ -11,8 +11,7 @@ This repository is an unofficial continuation of the above repository using Ruin
 
 ## Installation
 
-1. Download Elona+ 2.18 from [here](http://wanwanplus.blog.fc2.com/blog-entry-38.html). Extract it to `elonaplus2.18`.
-1a. Backup mega.nz link from [here](https://mega.nz/file/xG9kmJTb#Qh9I7A2CsheXOIq2I7JfOiGMCzg_VBukAMCHzXRpsRQ).
+1. Download Elona+ 2.18 from [here](https://mega.nz/file/Ee0XyDaY#8q4GUh-Anprlhvgs4Us_mwBLiLP0Y5e4J7x-SzmLG2Q). Extract it to `elonaplus2.18`.
 2. Extract the contents of Custom-GX's archive to the `elonaplus2.18` folder, overwriting all existing files.
 3. Run `elonapluscgx.exe`.
 
