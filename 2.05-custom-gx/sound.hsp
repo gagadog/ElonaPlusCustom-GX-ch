@@ -892,10 +892,10 @@
 		if ( gdata(GDATA_AREA) == AREA_WILDERNESS ) {
 			if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
 				if ( gdata(GDATA_HOUR) > 5 & gdata(GDATA_HOUR) < 17 ) {
-					music = MUSICLIST_MCOCEANDAY
+					music = MUSICLIST_MCSEA1
 				}
 				else {
-					music = MUSICLIST_MCOCEANNIGHT
+					music = MUSICLIST_MCSEA2
 				}
 			}
 		}

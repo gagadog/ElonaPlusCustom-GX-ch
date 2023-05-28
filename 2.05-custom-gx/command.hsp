@@ -3762,19 +3762,16 @@
 		if ( p == 83 ) {
 			s += "mcMelan"
 		}
-		if ( p == 85 ) {
+		if ( p == 84 ) {
 			s += "mcChurch"
 		}
+		if ( p == 85 ) {
+			s += "mcSea1"
+		}
 		if ( p == 86 ) {
-			s += "mcOceanDay"
+			s += "mcSea2"
 		}
 		if ( p == 87 ) {
-			s += "mcOceanNight"
-		}
-		if ( p == 88 ) {
-			s += "mcScene"
-		}
-		if ( p == 89 ) {
 			s += "No Music"
 		}
 		cs_list s, wx + 84, wy + 66 + cnt * 19 - 1, 19

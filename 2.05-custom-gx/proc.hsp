@@ -5704,6 +5704,14 @@
 				snd SOUNDLIST_FAIL1
 				return 1
 			}
+			/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
+			if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("この階層では帰還が出来ないようだ。", "It seems that you cannot return from this floor.")
+				obvious = 0
+				goto *effect_end
+			}
+			/********** CUSTOM - BEGINNING **********/
 			if ( gdata(GDATA_AREA) == AREA_REMIDO & gdata(GDATA_LEVEL) == 129 | (gdata(GDATA_AREA) == AREA_CHAOS_CRADLE & gdata(GDATA_LEVEL) == 179) ) {
 				snd SOUNDLIST_FAIL1
 				txt lang("この階層では脱出が出来ないようだ。", "This floor gradually loses power.")
@@ -13565,6 +13573,14 @@
 			obvious = 0
 			goto *effect_end
 		}
+		/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
+		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+			snd SOUNDLIST_FAIL1
+			txt lang("この階層では帰還が出来ないようだ。", "It seems that you cannot return from this floor.")
+			obvious = 0
+			goto *effect_end
+		}
+		/********** CUSTOM - BEGINNING **********/
 		if ( gdata(GDATA_AREA) == AREA_REMIDO & gdata(GDATA_LEVEL) == 129 | (gdata(GDATA_AREA) == AREA_CHAOS_CRADLE & gdata(GDATA_LEVEL) == 179) ) {
 			snd SOUNDLIST_FAIL1
 			txt lang("この階層では脱出が出来ないようだ。", "It seems that you cannot escape from this floor.")
@@ -13619,7 +13635,7 @@
 			obvious = 0
 			goto *effect_end
 		}
-		/********** BLOODYSHADE CUSTOM - BEGINNING **********/
+		/********** CUSTOM - BEGINNING **********/
 		if ( gdata(GDATA_AREA) == AREA_REMIDO & gdata(GDATA_LEVEL) == 129 | (gdata(GDATA_AREA) == AREA_CHAOS_CRADLE & gdata(GDATA_LEVEL) == 179) ) {
 			snd SOUNDLIST_FAIL1
 			txt lang("この階層では帰還が出来ないようだ。", "It seems that you cannot return from this floor.")

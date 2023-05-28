@@ -18,7 +18,9 @@
 - Fixed following bug from original 2.18
   + Saving drifters not awarding karma.
   + Shadow hop summoning hostile shades that drops loot.
-  + Casting return underwater stuck you inside another continent.
+  + Using return/escape/aurtehom underwater stuck you inside another continent.
+  + Jukebox missing several music.
+  + Title plays World map music due to a mistake in settings.
 
 # 2.17.1.0
 

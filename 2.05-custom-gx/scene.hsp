@@ -377,14 +377,11 @@
 		if ( s(1) == "mcChurch" ) {
 			music = MUSICLIST_MCCHURCH
 		}
-		if ( s(1) == "mcOceanDay" ) {
-			music = MUSICLIST_MCOCEANDAY
+		if ( s(1) == "mcSea1" ) {
+			music = MUSICLIST_MCSEA1
 		}
-		if ( s(1) == "mcOceanNight" ) {
-			music = MUSICLIST_MCOCEANNIGHT
-		}
-		if ( s(1) == "mcScene" ) {
-			music = MUSICLIST_MCHOME0
+		if ( s(1) == "mcSea2" ) {
+			music = MUSICLIST_MCSEA2
 		}
 		if ( music == (-1) ) {
 			musicfile(MUSICLIST_SCENE_MUSIC) = s(1)
