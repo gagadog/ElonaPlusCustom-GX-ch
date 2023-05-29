@@ -178,9 +178,6 @@
             // if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver | DmgPopupX < 0 | DmgPopupX + strlen(s) * (2 + cfg_dmgfont + DmgPopFontInc + 1) > windoww) {
             //     continue
             // }
-            if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver) {
-                continue
-            }
             font lang(cfg_font1, cfg_font2), 13 - en * 2 + DmgPopFontInc, 0
             pos DmgPopupX, DmgPopupY
             color DmgPopups(5, i@DP), DmgPopups(6, i@DP), DmgPopups(7, i@DP)

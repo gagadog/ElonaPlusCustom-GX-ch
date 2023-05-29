@@ -545,7 +545,7 @@
 						txt lang("ﾄﾞﾝﾄﾞﾝ♪ ", "*Bam*"), lang("ｶｯｶ♪ ", "*Rat-a-tat*"), lang("ﾄﾞｺﾄﾞﾝ♪ ", "*Bash*"), lang("ﾄﾞｺﾄﾞｺ♪ ", "*Bump*")
 					}
 				}
-				if ( rnd(10) == 0 ) {
+				if ( rnd(3) == 0 ) {
 					if ( cdata(CDATA_ID, cc) == CREATURE_ID_KARAVIKA ) {
 						chatc@DP = cc
 						if ( rnd(2) == 0 ) {
