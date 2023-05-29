@@ -1083,7 +1083,7 @@ if instr(s,0,%1)!-1{	%c\
 	/********** CUSTOM DIALOG POP UPS - BEGINNING **********/
 	if ( chatc@DP != 0) {
 		if ( chatc@DP < 0 ) { 
-			chatc = CHARA_PLAYER
+			chatc@DP = CHARA_PLAYER
 		}
 		if ( msgtemp != "" & ( instr(msgtemp, 0, "\"") != (-1) | instr(msgtemp, 0, "*") != (-1) ) ) {
 			DamagePopupAdd msgtemp, chatc@DP, DMGPOPUP_REMOVE_CONDITION, 9999
