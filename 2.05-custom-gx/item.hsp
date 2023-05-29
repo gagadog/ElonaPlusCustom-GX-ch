@@ -1975,6 +1975,7 @@
 	if ( rnd(15) == 0 ) {
 		if ( synccheck(cc, -1) ) {
 			txt lang(name(cc) + "は不安げに腹を押さえた。", name(cc) + " pat" + _s(cc) + " " + his(cc) + " stomach uneasily.")
+			chatc@DP = cc
 			txt lang("「なにかが産まれそうだよ！」", cnvtalk("I'm going to have a baby!")), lang("「腹になにかが…」", cnvtalk("Something is wrong with my stomach..."))
 		}
 	}
@@ -2780,6 +2781,7 @@
 	cibk = ci
 	txtmore
 	txtef COLOR_SKY_BLUE
+	chatc@DP = lovemiracle_arg1
 	txt lang("「あ…！」", cnvtalk("Uh...!"))
 	flt
 	if ( rnd(2) ) {
@@ -3831,6 +3833,7 @@
 		if ( cdata(CDATA_ID, cc) == CREATURE_ID_SILVER_FOX_BROTHER | cdata(CDATA_ID, cc) == CREATURE_ID_FOX_SPIRIT | cdata(CDATA_ID, cc) == CREATURE_ID_FOX_BROTHER ) {
 			kaiwa = rnd(4)
 			txtef COLOR_GREEN
+			chatc@DP = cc
 			if ( kaiwa == 0 ) {
 				txt lang("「あぶらあげぇ…♪1」", name(cc) + " muttered " + cnvtalk("Abura-Age...!"))
 			}
@@ -3861,6 +3864,7 @@
 		inv_find ITEM_ID_BIO_BATTERY, cc
 		if ( stat == (-1) ) {
 			if ( cc != CHARA_PLAYER ) {
+				chatc@DP = cc
 				txt lang("「パッサパサ！」", cnvtalk("This is hard!")), lang("「パッサパサ！」", cnvtalk("This is hard!")), lang("「口のなかパッサパサ！」", cnvtalk("This dries your mouth!")), lang("「口の中パッサパサだよ！」", cnvtalk("Ugh, this is so dry!")), lang("「パッサパサだよ！」", cnvtalk("Ugh, this is hard!")), lang("「パッサパサだよ」", cnvtalk("Ugh, this is hard."))
 			}
 			omosa = limit(cdata(CDATA_WEIGHT, cc), 1, 100000000)
@@ -4138,6 +4142,7 @@
 	if ( ibit(ITEM_BIT_POISON_BLEND, ci) == 1 ) {
 		if ( synccheck(cc, -1) ) {
 			txt lang("これは毒されている！" + name(cc) + "はもがき苦しみのたうちまわった！", "It's poisoned! " + name(cc) + " writhe" + _s(cc) + " in agony!")
+			chatc@DP = cc
 			txt lang("「ギャァァ…！」", cnvtalk("Gyaaaaa...!")), lang("「ブッ！」", cnvtalk("Ugh!"))
 		}
 		dmghp cc, rnd(250) + 250, DAMAGE_FROM_POISON
@@ -4168,6 +4173,7 @@
 		}
 		else {
 			txtef COLOR_SKY_BLUE
+			chatc@DP = cc
 			txt name(cc) + lang("「なんだか…変な気分なの…」", " gasps, " + cnvtalk("I f-feel...strange...")), name(cc) + lang("「あれ…なにこの感じは…」", "gasps " + cnvtalk("Uh.. uh.. What is this feeling..."))
 			cdata(CDATA_EMO_ICON, cc) = 17 + 100 * 3
 			if ( cdata(CDATA_IMPRESSION, cc) < 100 ) {

@@ -1716,6 +1716,7 @@
 	if ( cdata(CDATA_CONDITION_SUFFOCATION, r1) > 0 ) {
 		if ( cdata(CDATA_CONDITION_SUFFOCATION, r1) \ 3 == 0 ) {
 			if ( synccheck(r1, -1) ) {
+				chatc@DP = r1
 				txt lang("「うぐぐ…！」", cnvtalk("Ughh...!"))
 			}
 		}
@@ -2120,6 +2121,7 @@
 						txt name(r1) + " start" + _s(r1) + " to take " + his(r1) + " clothes off.", name(r1) + " shout" + _s(r1) + ".", name(r1) + " dance" + _s(r1) + "."
 					}
 					if ( r2 == 1 ) {
+						chatc@DP = r1
 						txt cnvtalk("Wheeeeeee!"), cnvtalk("Forgive me! Forgive me!"), cnvtalk("P-P-Pika!"), cnvtalk("Shhhhhh!"), cnvtalk("So I have to kill."), cnvtalk("You snail!")
 					}
 				}

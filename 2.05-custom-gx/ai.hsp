@@ -59,6 +59,7 @@
 	return 0
 
 *ai_turn
+	chatc@DP = 0
 	if ( cdata(CDATA_CHAIN_ATTACK_COUNT, cc) != 0 ) {
 		cdata(CDATA_CHAIN_ATTACK_COUNT, cc) = 0
 	}
@@ -422,6 +423,7 @@
 		if ( synccheck(cc, -1) ) {
 			if ( rnd(30) == 0 ) {
 				tc = cc
+				chatc@DP = cc
 				txt lang("「もっとぶって" + _yo(2) + "」", cnvtalk("Release me now.")), lang("「こんなことして、許さない" + _yo() + "」", cnvtalk("I won't forget this.")), lang("「何をする" + _nda(2) + "」", cnvtalk("Hit me!"))
 			}
 		}
@@ -457,6 +459,7 @@
 							}
 							else {
 								if ( rnd(2) ) {
+									chatc@DP = cc
 									txt lang("「痛っ！」", cnvtalk("Ouch!")), lang("「やめて！」", cnvtalk("Stop it!"))
 									hostileaction CHARA_PLAYER, cc
 								}
@@ -562,6 +565,7 @@
 				if ( rnd(40) == 0 ) {
 					txtef COLOR_BLUE
 					txtmore
+					chatc@DP = cc
 					txt lang("「いいぞ！」", cnvtalk("Come on!")), lang("「もっとやれー」", cnvtalk("More blood!")), lang("「血をみせろー」", cnvtalk("Beat'em!")), lang("「頑張って！」", cnvtalk("Use your brain!")), lang("「うぉぉぉぉ！」", cnvtalk("Wooooo!")), lang("「行けぇ！」", cnvtalk("Go go!")), lang("「頭を使えよ」", cnvtalk("Good fighting.")), lang("「きゃー」", cnvtalk("Yeeee!"))
 				}
 				goto *ai_calmMove
@@ -573,6 +577,7 @@
 				if ( rnd(40) == 0 ) {
 					txtef COLOR_BLUE
 					txtmore
+					chatc@DP = cc
 					txt lang("「面白そう！」", cnvtalk("Come on!")), lang("「どっちもがんばれー」", cnvtalk("More blood!"))
 				}
 				goto *turn_end
@@ -1249,6 +1254,7 @@
 				if ( cdata(CDATA_CONDITION_DRUNK, cc) < 5 ) {
 					cdata(CDATA_CONDITION_DRUNK, cc) += 40
 				}
+				chatc@DP = cc
 				if ( rnd(3) == 0 ) {
 					txt lang("「米さ米種だろ♪」", cnvtalk("Vrei sa pleci dar♪")), lang("「飲ま飲まイェイ！！」", cnvtalk("Numa numa yay!!")), lang("「飲ま飲ま飲まイェイ！！」", cnvtalk("Numa numa numa yay!!"))
 					goto *ai_calmMove_WEND1
@@ -1322,6 +1328,7 @@
 											tlocx = cdata(CDATA_X, gdata(GDATA_FLAG_GIANT_ID))
 											tlocy = cdata(CDATA_Y, gdata(GDATA_FLAG_GIANT_ID))
 											txtef COLOR_SKY_BLUE
+											chatc@DP = cc
 											txt lang("「化け物め！」", cnvtalk("Filthy monster!")), lang("「くたばれっ」", cnvtalk("Go to hell!")), lang("「退治してやるぅ！」", cnvtalk("I'll get rid of you.")), lang("「くらえー！」", cnvtalk("Eat this!"))
 											goto *act_throw
 										}
@@ -1366,6 +1373,7 @@
 									tlocx = cdata(CDATA_X, CHARA_PLAYER)
 									tlocy = cdata(CDATA_Y, CHARA_PLAYER)
 									txtef COLOR_SKY_BLUE
+									chatc@DP = cc
 									txt lang(" *クスクス* ", " *grin* "), lang("「えいっ」", cnvtalk("Fire in the hole!")), lang("「うりゃ」", cnvtalk("Tee-hee-hee!")), lang("「くらえー！」", cnvtalk("Eat this!")), lang("「危ないっ！」", cnvtalk("Watch out!")), lang("「避けてー」", cnvtalk("Scut!"))
 									txtmore
 									goto *act_throw
@@ -1512,6 +1520,7 @@
 						if ( synccheck(cc, -1) ) {
 							txtef COLOR_SKY_BLUE
 							txtmore
+							chatc@DP = cc
 							txt lang("「なめくじだ！」", cnvtalk("Snail!")), lang("「殺す！」", cnvtalk("Kill!"))
 						}
 						goto *act_throw
@@ -4166,6 +4175,7 @@
 		customtalk cc, DBMODE_FLAVOR_SHIFT
 		gosub *convert_word
 		if ( gdata(GDATA_CUSTOM_TALK) == 100 ) {
+			chatc@DP = cc
 			txt lang("「変身！」", cnvtalk("Transform!")), lang("「フォームアップ！」", cnvtalk("Form Up!")), lang("「ドレスアップ！」", cnvtalk("Dress Up!")), lang("「トランスフォーム！」", cnvtalk("Transform!"))
 		}
 		if ( inv(INV_ITEM_ID, cic) == ITEM_ID_ALPHA_SHIFT_CORE ) {

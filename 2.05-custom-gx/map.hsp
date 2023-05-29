@@ -12775,6 +12775,9 @@
 	adata(ADATA_ID, p) = areatestworld
 	adata(ADATA_ICON, p) = xy2pic(0, 0)
 	adata(ADATA_TYPE, p) = MAP_TYPE_WORLD
+	/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
+	adata(ADATA_TYPE, 0) = 0
+	/********** CUSTOM - ENDING **********/
 	adata(ADATA_X, p) = 26
 	adata(ADATA_Y, p) = 23
 	adata(ADATA_START_ON, p) = 6

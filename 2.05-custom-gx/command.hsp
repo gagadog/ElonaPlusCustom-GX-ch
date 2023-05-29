@@ -3447,6 +3447,7 @@
 	if ( p != (-1) ) {
 		if ( p == ITEM_ID_SPELLBOOK_WISHING | p == ITEM_ID_SPELLBOOK_HARVEST ) {
 			snd SOUNDLIST_FAIL1
+			chatc@DP = tc
 			txt lang("「その本は入手できないね」", cnvtalk("Ah, that book is unavailable."))
 			goto *com_reserve_loop_pgchk
 		}
@@ -6412,6 +6413,7 @@
 		goto *pc_turn
 	}
 	if ( p == 15 ) {
+		chatc@DP = tc
 		if ( cdata(CDATA_IMPRESSION, tc) < 0 ) {
 			if ( jp ) {
 				txtef COLOR_RED
@@ -9190,6 +9192,12 @@
 		color 0, 0, 0
 		if ( cdata(CDATA_ROLE, cc) != ROLE_ADVENTURER ) {
 			growrate = gdata(GDATA_FLAG_MAIN) + 100
+			/********** CUSTOM - BEGINNING **********/
+			growrate = ( gdata(GDATA_FLAG_MAIN) + 100 ) / 4
+			if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+				growrate = 100
+			}
+			/********** CUSTOM - ENDING **********/
 			if ( cc < MAX_CHARA_FOLLOWER ) {
 				s = "" + cdata(CDATA_LEVEL, cc), "" + cdata(CDATA_EXP_TO_NEXT_LVL, cc), godname(cdata(CDATA_GOD, cc)), guildname(), "" + growrate + "" + lang("%", " %")
 			}
@@ -13143,6 +13151,7 @@
 				snd SOUNDLIST_FAIL1
 				goto *com_inventory_loop
 			}
+			chatc@DP = tc
 			reftype = refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE)
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_GIFT ) {
 				snd SOUNDLIST_EQUIP1
@@ -16010,7 +16019,8 @@
 		}
 		s = s + ":" + s(1)
 		if ( inv(INV_ITEM_AMMO, ci) == cnt - 1 ) {
-			s = "[" + s + "]"
+			chatc@DP = (-1)
+			s = "*[" + s + "]*"
 			txtef COLOR_BLUE
 		}
 		else {

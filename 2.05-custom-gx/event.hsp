@@ -366,6 +366,7 @@
 		if ( tc == CHARA_PLAYER ) {
 			goto *random_eventProc_SWEND1
 		}
+		chatc@DP = tc
 		txt lang(name(tc) + "「ぎゃぁーー！」", name(tc) + " screams, " + cnvtalk("Ahhhhhhh!"))
 		dmghp tc, 44444, DAMAGE_FROM_EXECUTION
 		mdata(MDATA_WEREWOLF_STAGE) = 0
@@ -417,6 +418,7 @@
 					}
 				}
 				if ( cdata(CDATA_EXIST, p) == CHAR_STATE_ALIVE ) {
+					chatc@DP = p
 					txt lang(name(p) + "「ぎゃぁーー！」", name(p) + " screams, " + cnvtalk("Ahhhhhhh!"))
 					dmghp p, 99999, DAMAGE_FROM_UNSEEN
 					kitune = 10
@@ -451,6 +453,7 @@
 				continue cnt
 			}
 			if ( cdata(CDATA_EXIST, p) == CHAR_STATE_ALIVE ) {
+				chatc@DP = p
 				txt lang(name(p) + "「ぎゃぁーー！」", name(p) + " screams, " + cnvtalk("Ahhhhhhh!"))
 				dmghp p, 99999, DAMAGE_FROM_UNSEEN
 				break
@@ -1183,6 +1186,7 @@
 		chatList 2, lang("真面目に考えようね", "Please reconsider.")
 		chatList 3, lang("なれるように勉強しようね", "Let's study so that you can!")
 		gosub *re_select
+		chatc@DP = child
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt cdatan(CDATAN_NAME, child) + "「へへへ…」", cdatan(CDATAN_NAME, child) + "「" + _ore(3) + "の夢を真似してもいいよ！」"
@@ -1284,6 +1288,7 @@
 		chatList 2, lang("受け取ってこっそり捨てる", "(Receive and secretly throw away)")
 		chatList 3, lang("ゴミ拾ってないで勉強しろ", "Study without picking up junk!!")
 		gosub *re_select
+		chatc@DP = child
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt cdatan(CDATAN_NAME, child) + "「あげないよ！？」", cdatan(CDATAN_NAME, child) + "「見せるだけ！見せるだけだから！」"
@@ -1331,6 +1336,7 @@
 		chatList 2, lang("コウノトリさんが運んできた", "The white stork brings it.")
 		chatList 3, lang("橋の下から拾ってきた", "It can be picked up in a cabbage patch.")
 		gosub *re_select
+		chatc@DP = child
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt cdatan(CDATAN_NAME, child) + "「遺伝子…？？？」", cdatan(CDATAN_NAME, child) + "「意味わからない！」"
@@ -1377,6 +1383,7 @@
 		chatList 2, lang("もっと現実世界でがんばらなくちゃ", "Try harder in the real world.")
 		chatList 3, lang("するなら戦いの勉強をするべき", "If you do, you should study fighting.")
 		gosub *re_select
+		chatc@DP = child
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt cdatan(CDATAN_NAME, child) + "「とうっ！」", cdatan(CDATAN_NAME, child) + "「なかなかやるな！」"
@@ -1423,6 +1430,7 @@
 		chatList 2, lang("最後はちゃんと消しておくように", "Erase it properly at the end.")
 		chatList 3, lang("本格的な絵の勉強してみる？", "Do you want to study painting?")
 		gosub *re_select
+		chatc@DP = child
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt cdatan(CDATAN_NAME, child) + "「恥ずかしい" + _na(3) + "」", cdatan(CDATAN_NAME, child) + "「勝手に見ないでー」"
@@ -1470,6 +1478,7 @@
 		chatList 2, lang("大人になっても仕事の勉強が続く", "Even when you grow up, you need to study for a job.")
 		chatList 3, lang("子供が馬鹿だと親が恥ずかしいから", "Parents are embarrassed that their children are stupid.")
 		gosub *re_select
+		chatc@DP = child
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt cdatan(CDATAN_NAME, child) + "「意味がよくわからない…」", cdatan(CDATAN_NAME, child) + "「" + _ore(3) + "はどうせ冒険者になるから関係ない" + _daro(3) + "」"
@@ -1516,6 +1525,7 @@
 		chatList 2, lang("一緒に考えてあげる", "I'll think about it with you.")
 		chatList 3, lang("勉強して語彙力つけなさい", "Study hard and improve your vocabulary.")
 		gosub *re_select
+		chatc@DP = child
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt cdatan(CDATAN_NAME, child) + "「意味不明」", cdatan(CDATAN_NAME, child) + "「決めポーズの練習するからあっち行ってて" + _kure(3) + "」"
@@ -1562,6 +1572,7 @@
 		chatList 2, lang("個性的でいいと思う", "I think it's good to be individual.")
 		chatList 3, lang("オシャレの勉強する？", "Do you want to study fashion?")
 		gosub *re_select
+		chatc@DP = child
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt cdatan(CDATAN_NAME, child) + "「もういい…」", cdatan(CDATAN_NAME, child) + "「相談する相手を間違えた" + _kana(3) + "」"
@@ -1609,6 +1620,7 @@
 		chatList 2, lang("そんなこと言ってる間はまだまだ子供", "As long as you care about such things, you are still a child.")
 		chatList 3, lang("どうやら勉強が足りないようだな", "It seems that you haven't studied enough.")
 		gosub *re_select
+		chatc@DP = child
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt cdatan(CDATAN_NAME, child) + "「難しい言葉で誤魔化さないで…」", cdatan(CDATAN_NAME, child) + "「…大人もつらい" + _noka(3) + "？」"
@@ -2664,6 +2676,7 @@
 		chatesc = -1
 		gosub *re_select
 		msg_clear
+		chatc@DP = (-1)
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt "「そんなぁ…」", "「ごぼぼぼぼ…」", "「乗せてよー！」"
@@ -2717,6 +2730,7 @@
 		chatesc = -1
 		gosub *re_select
 		msg_clear
+		chatc@DP = (-1)
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt "「ひ、ひどい」", "「おーい！？」", "「乗せてぇえ…！」"
@@ -2771,6 +2785,7 @@
 		gosub *re_select
 		msg_clear
 		kazu = 3 + rnd(8)
+		chatc@DP = (-1)
 		if ( rtval == 1 ) {
 			if ( jp ) {
 				txt "「鬼だ…」", "「ウソだろ！？」", "「子供だけでも乗せてやってくれー！」"
@@ -2812,6 +2827,7 @@
 		chatesc = -1
 		gosub *re_select
 		msg_clear
+		chatc@DP = (-1)
 		if ( rtval == 1 ) {
 			if ( rnd(gdata(GDATA_FLAG_SHIP_TYPE) * 2) > rnd(10) ) {
 				txt lang("大きな損傷を受ける前に逃げ切ることができた。", "Your ship was able to escape before it was severely damaged.")
@@ -2860,6 +2876,7 @@
 		chatesc = -1
 		gosub *re_select
 		msg_clear
+		chatc@DP = (-1)
 		if ( rtval == 1 ) {
 			if ( rnd(gdata(GDATA_FLAG_SHIP_TYPE) * 2) > rnd(10) ) {
 				txt lang("大きな損傷を受ける前に逃げ切ることができた。", "Your ship was able to escape before it was severely damaged.")

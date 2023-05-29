@@ -2,6 +2,20 @@
 
 ## Added
 - Ported all changes from Elona+ 2.18.
+- Added chat pop ups.
+- Added a tweak option to disable "exp modifier based on Main Quest Progress".
+
+## Fixed
+- Fixed following bug from original 2.18
+  + Saving drifters not awarding karma.
+  + Shadow hop summoning hostile shades that drops loot.
+  + Using return/escape/aurtehom underwater stuck you inside another continent.
+  + Jukebox missing several music.
+  + Title plays World map music due to a mistake in settings.
+
+# 2.17.1.1
+
+## Added
 - Added "Percent Chance" condition for Custom AI.
 - Added Import/Export/Reset utility for Custom AI, added hint for swap rows.
 - Added a tweak option to "enable CNPC summoning using a summoning crystal and disable random CNPC spawn".
@@ -15,12 +29,6 @@
 - Fixed a bug where NumLock button get spammed when the game starts in background.
 - Fixed a bug where "autodestroy_sound." config overwrites "sound." config.
 - "BARREL!" support for english speaking alchemists.
-- Fixed following bug from original 2.18
-  + Saving drifters not awarding karma.
-  + Shadow hop summoning hostile shades that drops loot.
-  + Using return/escape/aurtehom underwater stuck you inside another continent.
-  + Jukebox missing several music.
-  + Title plays World map music due to a mistake in settings.
 
 # 2.17.1.0
 

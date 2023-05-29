@@ -476,7 +476,7 @@ TweakData(51, 4) = "Disable cicada noises."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 32
+    listmax = 33
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -519,6 +519,7 @@ TweakData(51, 4) = "Disable cicada noises."
 	listn(0, 29) = "Use CGX Job Quests." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS)
 	listn(0, 30) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_SPELL_ANIMATIONS)
 	listn(0, 31) = "Use summoning crystals to summon Custom NPCs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING)
+	listn(0, 32) = "Revert post-1.90 skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES)
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -639,6 +640,9 @@ TweakData(51, 4) = "Disable cicada noises."
 				s = "You can now use a summon crystal to summon Custom NPCS.\nThis will also disable Random CNPC spawn in all areas except Derphy and Melkawn."
 			}
 			if ( p == 32 ) {
+				s = "Reverts changes to the skill experience formula after version 2.17.\nThis will lock your growth rate at 100% (compared to growth in 2.17)."
+			}
+			if ( p == 33 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -823,6 +827,11 @@ TweakData(51, 4) = "Disable cicada noises."
 		gosub *ToggleTweak
 	}
 	if ( p == 32 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES
+		gosub *ToggleTweak
+	}
+	if ( p == 33 ) {
 		snd SOUNDLIST_OK1
 		return
 	}

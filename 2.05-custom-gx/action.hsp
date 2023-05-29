@@ -120,7 +120,8 @@
 			}
 		}
 	}
-	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_CHESTNUT & inv(INV_ITEM_PARAM2, ci) == 0 & cdatan(CDATAN_FAKE_CLASS, cc) == "錬金術士" ) {
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_CHESTNUT & inv(INV_ITEM_PARAM2, ci) == 0 & ( cdatan(CDATAN_FAKE_CLASS, cc) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, cc), 0, "lchemist") != (-1) ) ) {
+		chatc@DP = cc
 		txt lang("「うにーっ！」", cnvtalk("Urchinn!"))
 	}
 	animeid = ANIMATION_THROW
@@ -245,6 +246,7 @@
 							if ( tc != CHARA_PLAYER ) {
 								txtef COLOR_SKY_BLUE
 								txtmore
+								chatc@DP = tc
 								txt lang("「いてー！」", cnvtalk("Hey!")), lang("「やったな」", cnvtalk("Now you did it.")), lang(" *クスクス* ", "*chuckle*"), lang("「キャハハ」", cnvtalk("Tee-hee-hee!")), lang("「こやつめ」", cnvtalk("You'll pay for this.")), lang("「むむっ」", "*grin*")
 							}
 						}
@@ -269,10 +271,13 @@
 						goto *turn_end
 					}
 					if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DYING_CICADA ) {
+						chatc@DP = (-1)
 						txt lang("「死ぬなら…せめて前のめりで…！」", "This cicada hasn't died yet!")
 						txtef COLOR_BLUE
+						chatc@DP = (-1)
 						txt lang(" *必殺セミファイナル！* ", "*FINAL CICADA*")
 						txtvalid = 0
+						chatc@DP = (-1)
 						txt lang("「ジジジジジジジジッッッ！！！！！」", "Ziiziziziiiii!!!!")
 						if ( cdata(CDATA_CONDITION_WINCE, tc) < 5 ) {
 							cdata(CDATA_CONDITION_WINCE, tc) = 5
@@ -320,6 +325,7 @@
 					if ( inv(INV_ITEM_ID, ci) == ITEM_ID_BUTTER ) {
 						if ( synccheck(tc, -1) ) {
 							txtef COLOR_YELLOW
+							chatc@DP = tc
 							txt lang(name(tc) + "は香ばしいバターまみれになった。「べちゃべちゃする…」", name(tc) + " was covered in savory butter." + cnvtalk("It's gooey..."))
 						}
 						if ( cdata(CDATA_BRUSH_LEVEL, tc) <= 1 ) {
@@ -542,6 +548,7 @@
 			dmghp tc, rnd(sdata(SKILL_WEAPON_THROWING, cc) * 2) + 1, cc, SKILL_RESDMG_CHESTNUT, 1000
 			dmghp tc, (sdata(SKILL_WEAPON_THROWING, cc) + 2) / 2, cc, SKILL_RESDMG_CUT, 500
 			if ( cdata(CDATA_ID, tc) == CREATURE_ID_CHESTNUT_GIANT ) {
+				chatc@DP = tc
 				txt lang("「お、おのれ！卑劣な真似を！」", "Chestnut giant yells, " + cnvtalk("You idiot!"))
 				dmghp tc, cdata(CDATA_MAX_HP, tc) / 10, cc, SKILL_RESDMG_CHESTNUT, 1000
 			}
@@ -1494,6 +1501,7 @@
 				dmghp tc, sdata(SKILL_ATTR_STR, cc) * 2, cc
 				if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 					txt lang(name(tc) + "は気道を確保した。", name(tc) + " secured the airway.")
+					chatc@DP = tc
 					txt lang("「助かったよ！」", cnvtalk("You saved me!"))
 					cdata(CDATA_CONDITION_SUFFOCATION, tc) = 0
 					if ( tc != CHARA_PLAYER ) {
@@ -1753,6 +1761,7 @@
 								snd SOUNDLIST_GETGOLD1
 								cdata(CDATA_GOLD, cc) -= p
 								cdata(CDATA_GOLD, tc) += p
+								chatc@DP = tc
 								txt lang("「おっと、ごめんよ」", cnvtalk("Oops, sorry.")), lang("「気をつけな」", cnvtalk("Watch it."))
 							}
 						}
@@ -3044,6 +3053,7 @@
 						if ( tc != CHARA_PLAYER ) {
 							txtef COLOR_SKY_BLUE
 							txtmore
+							chatc@DP = tc
 							txt lang("モイアー「馬鹿やろう！！」", "Moyer yells, " + cnvtalk("You idiot!"))
 							cdata(CDATA_TARGET, gdata(GDATA_FLAG_GIANT_ID)) = tc
 							cdata(CDATA_AI_AGGRO, gdata(GDATA_FLAG_GIANT_ID)) = 1000
@@ -8075,6 +8085,7 @@
 				if ( cdata(CDATA_CONDITION_DIM, tc) < 3 ) {
 					cdata(CDATA_CONDITION_DIM, tc) = 3
 				}
+				chatc@DP = tc
 				if ( cdata(CDATA_ID, tc) != CREATURE_ID_KUROYA_THE_LOOKING_UNIVERSE ) {
 					txtef COLOR_SKY_BLUE
 					txtmore
@@ -9367,6 +9378,7 @@
 			}
 		}
 		if ( tc != CHARA_PLAYER & cdata(CDATA_DRUG_DEPENDENCE, tc) < 100 & cdata(CDATA_MASTER_SERVANT, tc) < 200 ) {
+			chatc@DP = tc
 			txt lang("「駄目。絶対」", cnvtalk("Stop the drug!"))
 			snd SOUNDLIST_FAIL1
 			goto *act_use_SWEND1
@@ -9463,6 +9475,7 @@
 			}
 		}
 		if ( tc >= MAX_CHARA_FOLLOWER ) {
+			chatc@DP = tc
 			txt lang("「いらん」", cnvtalk("No way."))
 			snd SOUNDLIST_FAIL1
 			goto *act_use_SWEND1
@@ -10329,6 +10342,7 @@
 					txt lang("" + name(tc) + "は顔を赤らめた。", name(tc) + " blush" + _s(tc, 1) + ".")
 					txtmore
 					txtef COLOR_BLUE
+					chatc@DP = tc
 					txt lang("「キャー」", cnvtalk("Pervert!"))
 				}
 				cbitmod CHARA_BIT_STETHOSCOPE, tc, 1
@@ -10343,6 +10357,7 @@
 					txt lang("" + name(tc) + "は顔を赤らめた。", name(tc) + " blush" + _s(tc, 1) + ".")
 					txtmore
 					txtef COLOR_BLUE
+					chatc@DP = tc
 					txt lang("「ヘンタイ！」", cnvtalk("Pervert!"))
 				}
 				goto *turn_end
@@ -10389,12 +10404,14 @@
 						cbitmod CHARA_BIT_LEASHED, tc, 1
 						txt lang("あなたは" + name(tc) + "を紐でくくりつけた。", "You leash " + name(tc) + ".")
 						txtef COLOR_SKY_BLUE
+						chatc@DP = tc
 						txt lang(name(tc) + "は呻き声を洩らした。「アン…♪」", name(tc) + " gasp" + _s(tc) + ", " + cnvtalk("Pervert!"))
 					}
 					else {
 						cbitmod CHARA_BIT_LEASHED, tc, 0
 						txt lang("あなたは" + name(tc) + "にくくりつけた紐をほどいた。", "You unleash " + name(tc) + ".")
 						txtef COLOR_SKY_BLUE
+						chatc@DP = tc
 						txt lang(name(tc) + "は呻き声を洩らした。「はぁはぁ…」", name(tc) + " gasp" + _s(tc) + ", " + cnvtalk("D-don't sto... N-nothing!"))
 					}
 				}
@@ -10447,6 +10464,7 @@
 					snd SOUNDLIST_BUILD1
 					cbitmod CHARA_BIT_SANDBAG, tc, 1
 					txt lang("あなたは" + name(tc) + "を吊るした。", "You hang " + name(tc) + " up.")
+					chatc@DP = tc
 					txt lang(name(tc) + "は呻き声を洩らした。「アン…♪」", name(tc) + " gasp" + _s(tc) + ", " + cnvtalk("Pervert!"))
 					animeload ANIMATION_FIZZLE, tc
 					inv(INV_ITEM_NUM, ci)--
@@ -10566,6 +10584,7 @@
 					await 30
 					snd SOUNDLIST_WATER2
 					txtef COLOR_YELLOW
+					chatc@DP = tc
 					txt lang("下ごしらえとして" + name(tc) + "に頭から醤油をかけた。「やめろ」", "You sprinkle the soy sauce to head of " + name(tc) + " as mise en place, " + cnvtalk("Stop..."))
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_BOTTLE_PEPPER ) {
@@ -10573,11 +10592,13 @@
 					await 400
 					snd SOUNDLIST_GET1
 					txtef COLOR_YELLOW
+					chatc@DP = tc
 					txt lang("下ごしらえとして" + name(tc) + "にコショウをふりかけた。「は…はっくしょん！」", "You sprinkle the pepper to " + name(tc) + " as mise en place, " + cnvtalk("Achoo!"))
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_SACK_SUGAR ) {
 					snd SOUNDLIST_BUSH1
 					txtef COLOR_YELLOW
+					chatc@DP = tc
 					txt lang("下ごしらえとして" + name(tc) + "に砂糖をぶちまけた。「甘っ！！」", "You dusted the sugar to " + name(tc) + " as mise en place, " + cnvtalk("Sweet!"))
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_BOTTLE_SALT ) {
@@ -10869,6 +10890,7 @@
 				customtalk tc, DBMODE_FLAVOR_SHIFT
 				gosub *convert_word
 				if ( gdata(GDATA_CUSTOM_TALK) == 100 ) {
+					chatc@DP = tc
 					txt lang("「変身！」", cnvtalk("Transform!")), lang("「フォームアップ！」", cnvtalk("Form Up!")), lang("「ドレスアップ！」", cnvtalk("Dress Up!")), lang("「トランスフォーム！」", cnvtalk("Transform!"))
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_ALPHA_SHIFT_CORE ) {
@@ -11192,6 +11214,7 @@
 						}
 						if ( cdata(CDATA_ID, cnt) == CREATURE_ID_ROVID ) {
 							snd SOUNDLIST_AMMO
+							chatc@DP = cnt
 							txt lang(cdatan(CDATAN_NAME, cnt) + "「叩きたいのなら私を叩きなさい！」", cdatan(CDATAN_NAME, cnt) + " says: " + cnvtalk("If you want to hit someone, hit me instead!"))
 							goto *act_use_SWEND1
 						}
@@ -11313,6 +11336,7 @@
 						}
 					}
 					txtef COLOR_YELLOW
+					chatc@DP = tc
 					txt lang("「わ、わかった" + _yo(3) + "！" + _ore(3) + "はこういう喋り方でどう" + _kana(3) + "？」", cnvtalk("I-I get it! How about I talk like this?"))
 					f = 1
 				}
@@ -13087,12 +13111,14 @@
 				}
 				animeload ANIMATION_FIZZLE, tc
 				txtef COLOR_PURPLE
+				chatc@DP = (-1)
 				txt lang("「対象を複製しています…」", cnvtalk("Duplicating objects..."))
 				hostileaction CHARA_PLAYER, tc
 				animeload ANIMATION_FIZZLE, CHARA_PLAYER
 				inv(INV_ITEM_NUM, ci)--
 				cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
 				txtef COLOR_PURPLE
+				chatc@DP = (-1)
 				txt lang("「バイオネットワークに接続されていません。内部構成を中止しました」", cnvtalk("No connection to bionetwork. Internal configuration aborted."))
 				txt_questitem
 				hostileaction CHARA_PLAYER, tc
@@ -13291,6 +13317,7 @@
 			cibk = ci
 			kane = 210000000
 			inv(INV_ITEM_PARAM1, ci) = 0
+			chatc@DP = (-1)
 			txt lang("「計算間違えとったみたいやわ…ゴメンな」", cnvtalk("Looks like I made a mistake in my calculations. Sorry..."))
 			snd SOUNDLIST_PAYGOLD1
 			flt
@@ -13325,6 +13352,7 @@
 		}
 		if ( rtval == 0 ) {
 			inv(INV_ITEM_CHARGE, ci) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12
+			chatc@DP = (-1)
 			txt lang("「ウチウチ詐欺には気をつけんといかんよ！」", cnvtalk("Please pay attention to fraud when transferring money!"))
 			goto *pc_turn
 		}
@@ -13332,11 +13360,13 @@
 			inv(INV_ITEM_CHARGE, ci) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12
 			if ( inv(INV_ITEM_PARAM1, ci) == 0 ) {
 				inv(INV_ITEM_PARAM1, ci) = 0
+				chatc@DP = (-1)
 				txt lang("「これぞ金を産むガチョウ…って空っぽやんか！」", cnvtalk("This is the goose that gives birth to go...ld... What? Empty!?"))
 			}
 			if ( inv(INV_ITEM_PARAM1, ci) > 0 ) {
 				kane = inv(INV_ITEM_PARAM1, ci)
 				inv(INV_ITEM_PARAM1, ci) = 0
+				chatc@DP = (-1)
 				txt lang("「よいしょ…なかなか貯まっとるみたいやな」", cnvtalk("Nice... My savings are piling up inside here!"))
 				snd SOUNDLIST_PAYGOLD1
 				flt
@@ -13373,6 +13403,7 @@
 				gosub *screen_draw
 				goto *pc_turn
 			}
+			chatc@DP = (-1)
 			kaiwa = rnd(4)
 			if ( kaiwa == 0 ) {
 				txt lang("「よっしゃ！ウチが責任もって増やしたるっ！」", cnvtalk("OK! OK! I'll increase your coins with responsibility!"))
@@ -13672,62 +13703,63 @@
 	}
 	if ( _switch_val == EFFECT_YACATECT_GEMSTONE | _switch_sw ) {
 		_switch_sw = 0
+		chatc@DP = (-1)
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 1 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「あのなぁ…今月分はもうやったやろ？」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「あのなぁ…今月分はもうやったやろ？」", cnvtalk("You know, you already used that this month, right?"))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 2 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「こら。来月まで辛抱せんかい」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「こら。来月まで辛抱せんかい」", cnvtalk("Hey, just be patient until next month."))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 3 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「せやから！今月のお小遣いはあれで終いやって！」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「せやから！今月のお小遣いはあれで終いやって！」", cnvtalk("Listen 'ere! You already have this month's allowance!"))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 4 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「…そないにせがまれてもウチも困るんやけど」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「…そないにせがまれてもウチも困るんやけど」", cnvtalk("..I really couldn't care less."))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 5 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「隣の信者くんを見てみ？あのお小遣いでちゃあんと我慢してるやろ？」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「隣の信者くんを見てみ？あのお小遣いでちゃあんと我慢してるやろ？」", cnvtalk("You see that guy over there? Well, His not wasting his allowance this month."))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 6 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「また…。もしかしてツッコミ待ちなん？」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「また…。もしかしてツッコミ待ちなん？」", cnvtalk("Wait.. you just wanted my attention?"))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 7 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「ま、まさか記憶喪失しとるんとちゃうやろな…あかん、心配なってきたわ」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「ま、まさか記憶喪失しとるんとちゃうやろな…あかん、心配なってきたわ」", cnvtalk("It's not like I'm losing my memory or anything.. seriously, I'm starting to worry."))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 8 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「…心配すんのもアホらしゅうなってきたわ」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「…心配すんのもアホらしゅうなってきたわ」", cnvtalk(".. I'm such a idiot to worry about things like that.."))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 9 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「うっさいわボケ…」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「うっさいわボケ…」", cnvtalk(".. Shut it dumbass.."))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 10 ) {
-			txt lang("「だああああああっ！！！ええ加減に！！ええ加減にせんかいアホーーー！！！…はぁはぁ」", cnvtalk("You'll have to wait until next month!!!"))
+			txt lang("「だああああああっ！！！ええ加減に！！ええ加減にせんかいアホーーー！！！…はぁはぁ」", cnvtalk("Aaaaaaaaaa!!!! Quit it! Quit doing it you idiot!!!! ha.. haa.."))
 			efid = SKILL_SPACT_PUNISHMENT
 			efp = 2000
 			tc = CHARA_PLAYER
@@ -13738,7 +13770,7 @@
 		}
 		if ( gdata(GDATA_YACTECT_GEMSTONE_MSG) == 11 ) {
 			snd SOUNDLIST_DING3
-			txt lang("「…前はちとやりすぎてもうたわ、勘忍な。せやけどこれは月イチなんよ、わかってや」", cnvtalk("You'll have to wait until next month."))
+			txt lang("「…前はちとやりすぎてもうたわ、勘忍な。せやけどこれは月イチなんよ、わかってや」", cnvtalk(".. I overreacted last time, sorry about that. But the allowance is monthly, you know."))
 			gdata(GDATA_YACTECT_GEMSTONE_MSG)++
 			goto *act_use_SWEND1
 		}
@@ -13753,6 +13785,7 @@
 		itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) / 6, 10, 25)
 		txt_questitem
 		gdata(GDATA_YACTECT_GEMSTONE_MSG) = 1
+		chatc@DP = (-1)
 		txt lang("「ほれほれ、今月のお小遣いやでー！…無駄使いしたら許さへんよ」", cnvtalk("Here you go, this month's allowance! ...I won't forgive you if you waste it."))
 		goto *act_use_SWEND1
 	}
@@ -13764,6 +13797,7 @@
 			goto *pc_turn
 		}
 		txtef COLOR_YELLOW
+		chatc@DP = (-1)
 		txt lang("ヤカテクト「今" + gdata(GDATA_FLAG_YACA_POINTS) + "ヤカポイント溜まっとるけど、どうするん？」", "A voice echoes, " + cnvtalk("You have " + gdata(GDATA_FLAG_YACA_POINTS) + " YacaPoints! So, what do you want in exchange?"))
 		txtsetypoint 8
 		repeat 8
@@ -13784,6 +13818,7 @@
 		if ( 0 ) {
 			gdata(GDATA_FLAG_YACA_POINTS) = 100000
 		}
+		chatc@DP = (-1)
 		if ( rtval == 1 ) {
 			if ( gdata(GDATA_FLAG_YACA_POINTS) < 100 ) {
 				snd SOUNDLIST_FAIL1
@@ -14011,6 +14046,7 @@
 					}
 					if ( rtval == 2 ) {
 						tc = tcbk
+						chatc@DP = tc
 						if ( cdata(CDATA_RELATION, tc) == RELATION_ENEMY ) {
 							snd SOUNDLIST_STAB
 							txt lang("「隙あり！」", cnvtalk("Now's my chance!")), lang("「馬鹿め！」", cnvtalk("You idiot!"))
@@ -14043,6 +14079,7 @@
 						snd SOUNDLIST_BALL1
 						txt lang("耳掻棒が膨張し、あなたの耳穴が破裂した！", "The mimikaki expands and your ear canal ruptures!")
 						if ( tc != CHARA_PLAYER ) {
+							chatc@DP = tc
 							txt lang("「めんご」", cnvtalk("Whoops.")), lang("「手が滑った" + _nda(3) + "…」", cnvtalk("My hand slipped...")), lang("「許して" + _kure(3) + "！」", cnvtalk("Forgive me!"))
 						}
 						dmgcon CHARA_PLAYER, CONDITION_BLEED, 100
@@ -14086,6 +14123,7 @@
 						skillexp SKILL_ATTR_WIL, CHARA_PLAYER, 9000
 					}
 					if ( tc != CHARA_PLAYER ) {
+						chatc@DP = tc
 						txt lang("「じゃあ次は反対の耳" + _da(3) + "」", cnvtalk("Okay, now for the other ear.")), lang("「まだ反対側もある" + _na(3) + "…」", cnvtalk("There's more on the other side."))
 					}
 					gosub *screen_draw
@@ -14108,6 +14146,7 @@
 						snd SOUNDLIST_BALL1
 						txt lang("耳掻棒が膨張し、あなたの耳穴が破裂した！", "The mimikaki expands and your ear canal ruptures!")
 						if ( tc != CHARA_PLAYER ) {
+							chatc@DP = tc
 							txt lang("「めんご」", cnvtalk("Whoops.")), lang("「手が滑った" + _nda(3) + "…」", cnvtalk("My hand slipped...")), lang("「許して" + _kure(3) + "！」", cnvtalk("Forgive me!"))
 						}
 						dmgcon CHARA_PLAYER, CONDITION_BLEED, 100
@@ -14151,6 +14190,7 @@
 						skillexp SKILL_ATTR_WIL, CHARA_PLAYER, 9000
 					}
 					if ( tc != CHARA_PLAYER ) {
+						chatc@DP = tc
 						txt lang("「ちゃんと我慢できて偉い" + _yo(3) + "！」", cnvtalk("Great job! You were so patient.")), lang("「痛くなかった" + _kana(3) + "？」", cnvtalk("Did it hurt?")), lang("「もっとほじくりたかった" + _na(3) + "…」", cnvtalk("I wish I could clean your ears just a bit more..."))
 					}
 					mimikaki = 0
@@ -14309,6 +14349,7 @@
 		_switch_sw = 0
 		snd SOUNDLIST_WHISTLE00
 		txtef COLOR_SKY_BLUE
+		chatc@DP = (-1)
 		txt lang(" *ピッ* ", "*Pep* ")
 		repeat MAX_CHARA_TOTAL
 			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
@@ -14446,6 +14487,7 @@
 				if ( cdata(CDATA_SPRITE_SIZE_MILK, tc) == (-1) ) {
 					if ( rnd(2) == 0 ) {
 						snd SOUNDLIST_FAIL1
+						chatc@DP = tc
 						if ( jp ) {
 							txt cdatan(CDATAN_NAME, tc) + "「指図しないで" + _kure(3) + "」", cdatan(CDATAN_NAME, tc) + "「今やろうと思っていたのにやる気がなくなった" + _yo(3) + "」"
 						}
@@ -16508,6 +16550,7 @@
 						cdata(CDATA_HEIGHT, tc) += rnd(100) + 200
 						cdata(CDATA_WEIGHT, tc) += rnd(100) + 200
 						txtef COLOR_PURPLE
+						chatc@DP = tc
 						txt lang("「ぎゃああアアアアアッ！」", cnvtalk("Gyaaaaaaa!"))
 					}
 					if ( evmode == 57 ) {
@@ -17904,6 +17947,7 @@
 	if ( _switch_val == EFFECT_SECRET_EXP_KUMIROMI | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_NEW_FEAT) > cdata(CDATA_LEVEL, CHARA_PLAYER) ) {
+			chatc@DP = (-1)
 			txt lang("クミロミの声がした。「ダメ…経験…足りない…」", "Kumiromi talks to you, " + cnvtalk("No... you aren't... experienced enough... for this..."))
 			gosub *screen_draw
 			goto *pc_turn
@@ -17913,6 +17957,7 @@
 		inv(INV_ITEM_NUM, ci)--
 		cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
 		gdata(GDATA_TRAIT_POINT)++
+		chatc@DP = (-1)
 		txt lang("「…よく…経験をつんだね…酬いてあげる…」", cnvtalk("...You have acquired enough... experience... I shall reward you..."))
 		txtef COLOR_YELLOW
 		txt lang("クミロミはあなたを祝福した。あなたは新たなフィートを取得できるようになった！", "Kumiromi blesses you. You can obtain one more feat now!")
@@ -17951,6 +17996,7 @@
 		dmgcon CHARA_PLAYER, CONDITION_BLEED, 1000
 		if ( gdata(GDATA_FLAG_DUEL_TARGET) > 0 ) {
 			gdata(GDATA_FLAG_DUEL_TARGET) = 0
+			chatc@DP = (-1)
 			txt lang("＊決闘終了＊", "*Duel-Over!*")
 		}
 		repeat MAX_CHARA_TOTAL
@@ -17973,6 +18019,7 @@
 			if ( cdata(CDATA_CONDITION_SEPPUKU, cnt) > 0 ) {
 				snd SOUNDLIST_ATKSWORD
 				txtef COLOR_RED
+				chatc@DP = cnt
 				txt lang("「介錯つかまつる！」 *ブシュッ* ", "*Kaisyaku*")
 				txt lang(name(cnt) + "は" + name(CHARA_PLAYER) + "の首をちょんぎった。", name(cnt) + " cut" + _s(cnt) + " " + name(CHARA_PLAYER) + your(CHARA_PLAYER) + " head.")
 				cdata(CDATA_HP, CHARA_PLAYER) = 1
@@ -17989,6 +18036,7 @@
 			if ( rnd(2) == 0 ) {
 				continue
 			}
+			chatc@DP = cnt
 			txt lang("「ナイスハラキリ！」", cnvtalk("Nice harakiri!")), lang("「気が変わらないうちに早く行け」", cnvtalk("Leave before my mind changes!")), lang("「なんて無茶を…」", cnvtalk("Oh...!")), lang("「見事な切腹よ」", cnvtalk("What a splendid seppuku!")), lang("「いいものを見せてもらった" + _yo(3) + "」", cnvtalk("You've shown me some good stuff!")), lang("「腹筋キレてるー！いい血液出てる" + _yo(3) + "！」", cnvtalk("Those abs are RIPPED! Literally! You're pumping some good blood!"))
 		loop
 		goto *act_use_SWEND1
@@ -18290,11 +18338,13 @@
 		txt lang("あなたはアイアンメイデンの中に入った。", "You enter the iron maiden.")
 		txtmore
 		txtef COLOR_SKY_BLUE
+		chatc@DP = (-1)
 		txt lang("「わくわく♪」", cnvtalk("Interesting!"))
 		txtmore
 		txt lang("突然誰かが蓋を閉めた。", "Suddenly, someone closes the door.")
 		txtmore
 		txtef COLOR_SKY_BLUE
+		chatc@DP = (-1)
 		txt lang("「ニヤリ」", "*Grin*")
 		dmghp CHARA_PLAYER, 9999, DAMAGE_FROM_MAIDEN
 		goto *act_use_SWEND1
@@ -18304,11 +18354,13 @@
 		txt lang("あなたはギロチンに首をつっこんでみた。", "You set your head on the guillotine.")
 		txtmore
 		txtef COLOR_SKY_BLUE
+		chatc@DP = (-1)
 		txt lang("「わくわく♪」", cnvtalk("Interesting!"))
 		txtmore
 		txt lang("突然誰かがギロチンの刃を落とした。", "Suddenly, someone activates the guillotine.")
 		txtmore
 		txtef COLOR_SKY_BLUE
+		chatc@DP = (-1)
 		txt lang("「ニヤリ」", "*Grin*")
 		dmghp CHARA_PLAYER, 9999, DAMAGE_FROM_GUILLOTINE
 		goto *act_use_SWEND1

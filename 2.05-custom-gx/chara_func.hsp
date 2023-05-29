@@ -193,6 +193,7 @@
 	locvar_customtalk_f = 0
 	gdata(GDATA_CUSTOM_TALK) = 100
 	chatc = customtalk_charid
+	chatc@DP = customtalk_charid
 	if ( cbit(CHARA_BIT_MSG_FILE, customtalk_charid) ) {
 		exist exedir + "user\\talk\\" + cdatan(CDATAN_MSG, customtalk_charid)
 		if ( strsize == (-1) ) {
@@ -399,6 +400,7 @@
 	if ( cdata(CDATA_TXT, customtalk_charid) != 0 ) {
 		dbid = cdata(CDATA_ID, customtalk_charid)
 		dbmode = customtalk_dbmode
+		chatc@DP = customtalk_charid
 		gosub *db_creature
 		return 1
 	}
@@ -1197,6 +1199,7 @@
 								if ( synccheck(cnt, -1) ) {
 									txtef COLOR_SKY_BLUE
 									txt lang(name(cnt) + "はキレた。", name(cnt) + " can no longer put up with it.")
+									chatc@DP = cnt
 									txt lang("「もう我慢できない」", cnvtalk("That's it."))
 								}
 								turn_aggro cnt, make_sound_arg6, 80
@@ -2741,7 +2744,8 @@
 						snd SOUNDLIST_WATERM
 						txt lang(name(dmgcon_charid) + "は漏らした。", name(dmgcon_charid) + " is incontinent.")
 						if ( dmgcon_charid != CHARA_PLAYER ) {
-							txt lang("「…スッキリ！」", cnvtalk("Do not look at me!"))
+							chatc@DP = dmgcon_charid
+							txt lang("「…スッキリ！」", cnvtalk("Don't look at me!"))
 						}
 					}
 					if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
@@ -5669,6 +5673,7 @@
 				locvar_dmghp_dmgpro = locvar_dmghp_dmg / 2 + 1
 				locvar_dmghp_dmg = 0
 				snd SOUNDLIST_AMMO
+				chatc@DP = cnt
 				txt lang("＊絶対防衛＊", "*Absolute protect*")
 				cdata(CDATA_HP, cnt) -= locvar_dmghp_dmgpro
 				break
@@ -5965,7 +5970,8 @@
 			}
 			cbitmod CHARA_BIT_EXCLUSIVE_SKILL_CHARGE, cnt, 0
 			txtef COLOR_SKY_BLUE
-			txt lang(name(cnt) + "は叫んだ。「この者にジュアの加護を。レイハンド！」", name(cnt) + " shout" + _s(cnt) + ", " + cnvtalk("Lay hand!"))
+			chatc@DP = cnt
+			txt lang(name(cnt) + "は叫んだ。「この者にジュアの加護を。レイハンド！」", name(cnt) + " shout" + _s(cnt) + ", " + cnvtalk("Lay on Hands!"))
 			txtmore
 			txt lang(name(dmghp_charid) + "は回復した。", name(dmghp_charid) + " " + is(dmghp_charid) + " healed.")
 			cdata(CDATA_HP, dmghp_charid) = cdata(CDATA_MAX_HP, dmghp_charid) / 2
@@ -6393,6 +6399,7 @@
 			if ( cdata(CDATA_CONDITION_DIM, dmghp_charid) < 100 ) {
 				cdata(CDATA_CONDITION_DIM, dmghp_charid) = 100
 				txtef COLOR_YELLOW
+				chatc@DP = dmghp_source
 				txt lang("＊ノックアウト＊", "*Knockout*")
 				snd SOUNDLIST_GONG
 			}
@@ -6762,7 +6769,8 @@
 					}
 				}
 				gdata(GDATA_FLAG_SUB_AMURDAD) += 9
-				txt lang("ネヘルタード「もう駄目…残念…」", "Amurdad: " + cnvtalk("It's no use... Alas..."))
+				chatc@DP = (-1)
+				txt lang("ネヘルタード「もう駄目…残念…」", "Amurdad: " + cnvtalk("Alas... It was in vain..."))
 				msg_halt
 				evadd EVENT_AMURDEAD_SUB_CREATE_STAIRS, 0
 			}
@@ -6931,6 +6939,7 @@
 		if ( gdata(GDATA_FLAG_DUEL_TARGET) > 0 ) {
 			if ( dmghp_charid == gdata(GDATA_FLAG_DUEL_TARGET) | dmghp_charid == CHARA_PLAYER ) {
 				txtef COLOR_GREEN
+				chatc@DP = (-1)
 				txt lang("＊決闘終了＊", "*Duel-Over!*")
 				snd SOUNDLIST_GONG
 				gdata(GDATA_FLAG_DUEL_TARGET) = -3
@@ -7550,6 +7559,7 @@
 	if ( cbit(CHARA_BIT_SANDBAG, dmghp_charid) ) {
 		if ( synccheck(dmghp_charid, -1) ) {
 			if ( rnd(20) == 0 ) {
+				chatc@DP = dmghp_charid
 				txt lang("「くっ！」", cnvtalk("Kill me already!")), lang("「まだまだ！」", cnvtalk("No... not yet...!")), lang("「もう限界…」", cnvtalk("I can't take it anymore...")), lang("「うぐぐ」", cnvtalk("Argh!")), lang("「あう」", cnvtalk("Uhhh")), lang("「ああんっ」", cnvtalk("Ugggg"))
 			}
 		}
@@ -7848,7 +7858,8 @@
 		snd SOUNDLIST_WATERM
 		txt lang(name(chara_morasi_arg1) + "は漏らした。", name(chara_morasi_arg1) + " is incontinent.")
 		if ( chara_morasi_arg1 != 0 ) {
-			txt lang("「…スッキリ！」", cnvtalk("Do not look at me!"))
+			chatc@DP = chara_morasi_arg1
+			txt lang("「…スッキリ！」", cnvtalk("Don't look at me!"))
 		}
 	}
 	if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
