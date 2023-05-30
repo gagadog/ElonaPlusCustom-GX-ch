@@ -271,6 +271,9 @@
 	if ( map_tileset_arg1 == 96 ) {
 		tile_default = 541
 		tile_fog = 599
+		/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
+		tile_fog = 701
+		/********** CUSTOM - ENDING **********/
 		tile_tunnel = 351
 		tile_wall = 541
 		tile_room = 351

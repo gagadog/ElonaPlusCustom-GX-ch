@@ -1179,6 +1179,9 @@
 			if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_COFFEE ) {
 				locvar_itemname_s2 += "cup"
 			}
+			if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_BLACK_TEA ) {
+				locvar_itemname_s2 += "cup"
+			}
 			if ( instr(ioriginalnameref(inv(INV_ITEM_ID, itemname_itemid)), 0, "with") != (-1) ) {
 				locvar_itemname_s3 = "with"
 			}
