@@ -1,6 +1,6 @@
 // Ports oom's damage popups.
 
-#define MAX_DAMAGE_POPUPS 400
+#define MAX_DAMAGE_POPUPS 20
 
 #define DefineDmgConCol(%1,%2) locvar_colorres_i = %2%c\
     colorres%c\
@@ -50,7 +50,60 @@
 	DefineDmgConCol CONDITION_INVERT, 0
 	DefineDmgConCol CONDITION_MPOISON, 0
 	DefineDmgConCol CONDITION_WINCE, SKILL_RES_FIRE
-	DefineDmgConCol CONDITION_CHILLS, SKILL_RES_COLD
+    DefineDmgConCol CONDITION_CHILLS, SKILL_RES_COLD
+    
+    dim DmgPopupColorsNPCName, 6, 50
+	DmgPopupColorsNPCName(0, 0)                     = 255, 255, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_SHOPKEEPER)       = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_CHEF)             = 255, 150, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_SPECIAL)          = 230, 200, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_CITIZEN)          = 255, 255, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_IDENTIFIER)       = 255, 0,   255, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_MAYOR)            = 230, 200, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_TRAINER)          = 255, 255, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_INFORMER)         = 0,   0,   255, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_BARTENDER)        = 255, 150, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_ARENA_MASTER)     = 190, 60,  0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_PET_ARENA_MASTER) = 0,   255, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_HEALER)           = 0,   160, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_ADVENTURER)       = 255, 150, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_GUARD)            = 210, 210, 210, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_KING)             = 230, 200, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_SHOP_GUARD)       = 210, 210, 210, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_SLAVER)           = 210, 210, 210, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_MAID)             = 180, 255, 180, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_SISTER)           = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_USER)             = 255, 255, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_RETURNER)         = 0,   255, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_HORSE_MASTER)     = 255, 150, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_CARAVAN_MASTER)   = 255, 150, 0,   0,   0,   0
+    DmgPopupColorsNPCName(0, ROLE_BOUNTY_HUNTER)    = 255, 0,   0,   0,   0,   0
+    
+	DmgPopupColorsNPCName(0, 25) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 26) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 27) = 255, 150, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, 28) = 255, 150, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, 29) = 255, 0,   255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 30) = 255, 150, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, 31) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 32) = 210, 210, 210, 0,   0,   0
+	DmgPopupColorsNPCName(0, 33) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 34) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 35) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 36) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 37) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 38) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 39) = 0,   0,   255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 40) = 230, 200, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, 41) = 230, 200, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, 42) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 43) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 44) = 255, 0,   255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 45) = 255, 0,   255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 46) = 210, 210, 210, 0,   0,   0
+	DmgPopupColorsNPCName(0, 47) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 48) = 210, 210, 210, 0,   0,   0
+	DmgPopupColorsNPCName(0, 49) = 210, 210, 210, 0,   0,   0
 
     return
 
@@ -132,6 +185,53 @@
 
     t@DP = timeGetTime()
     font lang(cfg_font1, cfg_font2), 2 + cfg_dmgfont - en * 2, 0
+    
+    /********** CUSTOM - BEGINNING **********/ // Show npc name in town.
+    if ( cfg_showNpcName & mode != MODELIST_TXT_ADV & ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | gdata(GDATA_AREA) == AREA_HOME ) ) {
+		repeat MAX_CHARA_TOTAL
+			if ( cnt < MAX_CHARA_FOLLOWER ) {
+				continue
+			}
+			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+				continue
+			}
+			if ( cbit(CHARA_BIT_NECRO, cnt) == 1 ) {
+				continue
+            }
+            DmgPopupR = cdata(CDATA_ROLE, cnt)
+            if ( DmgPopupR == ROLE_NONE ) {
+                if ( cdata(CDATA_ID, cnt) == CREATURE_ID_WEREWOLF | cdata(CDATA_ID, cnt) == CREATURE_ID_SUNBARARIAN |  cdata(CDATA_ID, cnt) == CREATURE_ID_FOX_SPIRIT | cdata(CDATA_ID, cnt) == CREATURE_ID_WEREWOLF_DETECTIVE | cdata(CDATA_ID, cnt) == CREATURE_ID_DETECTIVE | cdata(CDATA_ID, cnt) == CREATURE_ID_CHAOS_SPIRIT ) {
+                    DmgPopupR = ROLE_CITIZEN
+                } else {
+                    continue
+                }
+            }
+            if ( cdata(CDATA_ROLE, cnt) == ROLE_SPECIAL & cdata(CDATA_QUALITY, cnt) < FIX_QUALITY_MIRACLE ) {
+                continue
+            }
+            if ( DmgPopupR >= 1000 ) { DmgPopupR -= 1000 - 25 }
+            if ( DmgPopupR >= 1000 ) { DmgPopupR = ROLE_CITIZEN }
+            DmgPopupR = DmgPopupR \ 50
+            dx = cdata(CDATA_X, cnt)
+            dy = cdata(CDATA_Y, cnt)
+			if ( dist(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx, dy) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
+				continue
+			}
+			if ( fov_los(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx, dy) == 0 ) {
+				continue
+			}
+            s = cdatan(CDATAN_NAME, cnt) // + "("+cdata(CDATA_ROLE, cnt)+")"
+            DmgPopupP = cdata(CDATA_PIC, cnt) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cnt) * COLOR_TINT_MULT
+            DmgPopupX = (dx - scx) * inf_tiles + inf_screenx - strlen(s) * (2 + cfg_dmgfont + 1 + DmgPopFontInc) / 2 / 2 + inf_tiles / 2
+            DmgPopupY = (dy - scy) * inf_tiles + inf_screeny - chipc(CHIPC_HEIGHT, DmgPopupP) + 20
+            DmgPopupX += (scx != scxbk) * sxfix
+            DmgPopupY += (scy != scybk) * syfix
+            pos DmgPopupX, DmgPopupY
+            color 0, 0, 0
+            bmes s, DmgPopupColorsNPCName(0, DmgPopupR), DmgPopupColorsNPCName(1, DmgPopupR), DmgPopupColorsNPCName(2, DmgPopupR)
+        loop
+    }
+    /********** CUSTOM - BEGINNING **********/
     repeat length2(DmgPopups)
         i@DP = (DmgPopupNext + cnt) \ length2(DmgPopups)
         j@DP = cnt + 1
@@ -163,22 +263,33 @@
 
             DmgPopFontInc = 0
             if ( DmgPopups(8, i@DP) != 9999 & ( DmgPopups(9, i@DP) == DMGPOPUP_NORMAL_DAMAGE | DmgPopups(9, i@DP) == DMGPOPUP_ELEM_DAMAGE ) ) {
-                if ( (t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1) + popupY@DP * (2 + cfg_dmgfont + 3) < 16) {
-                    DmgPopFontInc = 16 - ((t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1) - popupY@DP * (2 + cfg_dmgfont + 3))
+                if ( (t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1) + popupY@DP * (2 + cfg_dmgfont + 3) < cfg_dmgfont) {
+                    DmgPopFontInc = cfg_dmgfont - ((t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1) - popupY@DP * (2 + cfg_dmgfont + 3))
                 }
             }
 
             DmgPopupX = (cdata(CDATA_X, cc@DP) - scx) * inf_tiles + inf_screenx - strlen(s) * (2 + cfg_dmgfont + 1 + DmgPopFontInc) / 2 / 2 + inf_tiles / 2
             DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3 + DmgPopFontInc) - (t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1)
             if (DmgPopups(8, i@DP) == 9999) {
-                DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3) - 24
+                DmgPopupP = cdata(CDATA_PIC, cc@DP) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cc@DP) * COLOR_TINT_MULT
+                DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3) - chipc(CHIPC_HEIGHT, DmgPopupP) + 20
+                /********** CUSTOM - BEGINNING **********/ // Show npc name in town.
+                if ( cfg_showNpcName ) {
+                    DmgPopupY += (-2) - cfg_dmgfont
+                }
+                /********** CUSTOM - BEGINNING **********/
             }
             DmgPopupX += (scx != scxbk) * sxfix
             DmgPopupY += (scy != scybk) * syfix
             // if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver | DmgPopupX < 0 | DmgPopupX + strlen(s) * (2 + cfg_dmgfont + DmgPopFontInc + 1) > windoww) {
             //     continue
             // }
-            font lang(cfg_font1, cfg_font2), 13 - en * 2 + DmgPopFontInc, 0
+
+            DmgPopupSize = 2 + cfg_dmgfont - en * 2 + DmgPopFontInc
+            if ( DmgPopupSize < 8 ) { DmgPopupSize = 8 }
+            if ( DmgPopupSize > 30 ) { DmgPopupSize = 30 }
+            font lang(cfg_font1, cfg_font2), DmgPopupSize, 0
+
             pos DmgPopupX, DmgPopupY
             color DmgPopups(5, i@DP), DmgPopups(6, i@DP), DmgPopups(7, i@DP)
             bmes s, DmgPopups(2, i@DP), DmgPopups(3, i@DP), DmgPopups(4, i@DP)

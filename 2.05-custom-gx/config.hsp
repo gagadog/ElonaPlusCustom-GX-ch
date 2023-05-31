@@ -291,6 +291,7 @@
 		cfgRead "dmgPopupChat.", cfg_dmgpopup_chat = int(rtvaln)
 		cfgRead "dmgPopupFontSize.", cfg_dmgfont = int(rtvaln)
 		cfgRead "dmgPopupSpeed.", cfg_dmgspeed = int(rtvaln)
+		cfgRead "showNpcNameInTown.", cfg_showNpcName = int(rtvaln)
 
 		// Autopickup options
 
@@ -610,7 +611,7 @@
 	}
 	if ( submenu == 9 ) {
         q = lang("拡張設定2(表示)", "EX Setting 2 (Display)")
-        s = lang("ダメージ表示", "Damage Popups"), lang("　HEX+バフ", "  Hexes/Buffs"), lang("　状態異常", "  Ailments"), lang("　回避", "  Evade"), lang("　会話", "  Chat"), lang("　フォントサイズ", "  Font Size"), lang("　表示速度", "  Display Duration"), ""
+        s = lang("ダメージ表示", "Damage Popups"), lang("　HEX+バフ", "  Hexes/Buffs"), lang("　状態異常", "  Ailments"), lang("　回避", "  Evade"), lang("　会話", "  Chat"), lang("　フォントサイズ", "  Font Size"), lang("　表示速度", "  Display Duration"), lang("　表示NPC名前", "  Show NPC Name in Town"), ""
 		dx = 440
 		dy = 300
 	}
@@ -948,6 +949,10 @@
 			}
 			if ( cnt == 6 ) {
 				mes "" + cfg_dmgspeed
+			}
+			if ( cnt == 7 ) {
+				s = lang("なし", "Don't show"), lang("あり", "Show")
+				mes s(cfg_showNpcName)
 			}
 		}
 	loop
@@ -1789,6 +1794,9 @@
 			}
 			if ( cs == 6 ) {
 				setOption cfg_dmgspeed, "dmgPopupSpeed", 1, 50
+			}
+			if ( cs == 7 ) {
+				setBoolOption cfg_showNpcName, "showNpcNameInTown"
 			}
 		}
 	}
