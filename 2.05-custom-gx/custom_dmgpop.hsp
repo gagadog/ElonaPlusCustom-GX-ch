@@ -222,7 +222,7 @@
 			}
             s = cdatan(CDATAN_NAME, cnt) // + "("+cdata(CDATA_ROLE, cnt)+")"
             DmgPopupP = cdata(CDATA_PIC, cnt) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cnt) * COLOR_TINT_MULT
-            DmgPopupX = (dx - scx) * inf_tiles + inf_screenx - strlen(s) * (2 + cfg_dmgfont + 1 + DmgPopFontInc) / 2 / 2 + inf_tiles / 2
+            DmgPopupX = (dx - scx) * inf_tiles + inf_screenx - strlen(s) * (2 + cfg_dmgfont + 1) / 2 / 2 + inf_tiles / 2
             DmgPopupY = (dy - scy) * inf_tiles + inf_screeny - chipc(CHIPC_HEIGHT, DmgPopupP) + 20
             DmgPopupX += (scx != scxbk) * sxfix
             DmgPopupY += (scy != scybk) * syfix
