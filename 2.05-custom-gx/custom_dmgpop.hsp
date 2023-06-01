@@ -222,8 +222,11 @@
 			}
             s = cdatan(CDATAN_NAME, cnt) // + "("+cdata(CDATA_ROLE, cnt)+")"
             DmgPopupP = cdata(CDATA_PIC, cnt) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cnt) * COLOR_TINT_MULT
+            if ( cdata(CDATA_PIC, cnt) >= xy2pic(1, 21) & cdata(CDATA_PIC, cnt) <= xy2pic(31, 21) ) {
+                DmgPopupP = cdata(CDATA_PIC, cnt)
+            }
             DmgPopupX = (dx - scx) * inf_tiles + inf_screenx - strlen(s) * (2 + cfg_dmgfont + 1) / 2 / 2 + inf_tiles / 2
-            DmgPopupY = (dy - scy) * inf_tiles + inf_screeny - chipc(CHIPC_HEIGHT, DmgPopupP) + 20
+            DmgPopupY = (dy - scy) * inf_tiles + inf_screeny - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
             DmgPopupX += (scx != scxbk) * sxfix
             DmgPopupY += (scy != scybk) * syfix
             pos DmgPopupX, DmgPopupY
@@ -272,7 +275,10 @@
             DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3 + DmgPopFontInc) - (t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1)
             if (DmgPopups(8, i@DP) == 9999) {
                 DmgPopupP = cdata(CDATA_PIC, cc@DP) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cc@DP) * COLOR_TINT_MULT
-                DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3) - chipc(CHIPC_HEIGHT, DmgPopupP) + 20
+                if ( cdata(CDATA_PIC, cnt) >= xy2pic(1, 21) & cdata(CDATA_PIC, cnt) <= xy2pic(31, 21) ) {
+                    DmgPopupP = cdata(CDATA_PIC, cnt)
+                }
+                DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3) - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
                 /********** CUSTOM - BEGINNING **********/ // Show npc name in town.
                 if ( cfg_showNpcName ) {
                     DmgPopupY += (-2) - cfg_dmgfont
