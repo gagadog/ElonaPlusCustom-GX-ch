@@ -1002,6 +1002,11 @@
 	if ( cdata(CDATA_ROW_ACT, CHARA_PLAYER) == ACTION_WORK_A | cdata(CDATA_ROW_ACT, CHARA_PLAYER) == ACTION_WORK_B | cdata(CDATA_ROW_ACT, CHARA_PLAYER) == ACTION_WORK_C ) {
 		gdata(GDATA_SEC) += 30
 	}
+	/********** CUSTOM DAMAGE METER - BEGINNING **********/
+	if ( cfg_showDamageMeter > 0 ) {
+		DamageParsesRefresh
+	}
+	/********** CUSTOM DAMAGE METER - ENDING **********/
 	if ( gdata(GDATA_SEC) >= 60 ) {
 		gdata(GDATA_TURN)++
 		cc = CHARA_PLAYER

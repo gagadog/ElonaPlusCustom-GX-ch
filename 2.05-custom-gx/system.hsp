@@ -36,6 +36,11 @@
 		}
 		calccosthire
 	}
+	/********** CUSTOM DAMAGE METER - BEGINNING **********/
+	if ( cfg_showDamageMeter > 0 ) {
+		DamageParsesReset
+	}
+	/********** CUSTOM DAMAGE METER - ENDING **********/
 	gdata(GDATA_TEMPORARY_FLAGS2) = 0
 	return
 

@@ -1719,6 +1719,13 @@
 		/********** ANNA CUSTOM - ENDING **********/
 
 	loop
+
+	/********** CUSTOM DAMAGE METER - BEGINNING **********/
+	if ( cfg_showDamageMeter > 0 ) {
+		gosub *DamageParsesDraw
+	}
+	/********** CUSTOM DAMAGE METER - ENDING **********/
+	
 	if ( evochat != 0 ) {
 		gsel selbufh
 		pos 0, 0

@@ -5676,6 +5676,16 @@
 				chatc@DP = cnt
 				txt lang("＊絶対防衛＊", "*Absolute protect*")
 				cdata(CDATA_HP, cnt) -= locvar_dmghp_dmgpro
+				/********** CUSTOM DAMAGE METER - BEGINNING **********/
+				txtmore
+				txtef COLOR_BLUE
+				txt "(" + locvar_dmghp_dmgpro + ")."
+				DamagePopupAdd "" + locvar_dmghp_dmgpro, cnt, DMGPOPUP_ELEM_DAMAGE, 0
+				DamagePopupAdd "" + locvar_dmghp_dmg + " (" + locvar_dmghp_dmgpro + "Migrated)", dmghp_charid, DMGPOPUP_ELEM_DAMAGE, locvar_dmghp_ele
+				if ( cfg_showDamageMeter > 0 ) {
+					DamageParsesAdd dmghp_source, cnt, locvar_dmghp_dmgpro, locvar_dmghp_ele
+				}
+				/********** CUSTOM DAMAGE METER - ENDING **********/
 				break
 			}
 		loop
@@ -5756,6 +5766,15 @@
 					locvar_dmghp_manabar = locvar_dmghp_dmg
 					cdata(CDATA_MP, dmghp_charid) -= locvar_dmghp_manabar
 					locvar_dmghp_dmg = 0
+					/********** CUSTOM DAMAGE METER - BEGINNING **********/
+					txtmore
+					txtef COLOR_BLUE
+					txt "The damage is absorbed by the mana barrier (" + locvar_dmghp_manabar + ")."
+					DamagePopupAdd "" + locvar_dmghp_dmg + " (" + locvar_dmghp_manabar + " Absorbed)", dmghp_charid, DMGPOPUP_ELEM_DAMAGE, locvar_dmghp_ele
+					if ( cfg_showDamageMeter > 0 ) {
+						DamageParsesAdd dmghp_source, cnt, locvar_dmghp_manabar, locvar_dmghp_ele
+					}
+					/********** CUSTOM DAMAGE METER - ENDING **********/
 				}
 			}
 		}
@@ -5789,6 +5808,11 @@
             DamagePopupAdd "" + locvar_dmghp_dmg, dmghp_charid, DMGPOPUP_ELEM_DAMAGE, locvar_dmghp_ele
         }
     }
+	/********** CUSTOM DAMAGE METER - BEGINNING **********/
+	if ( cfg_showDamageMeter > 0 ) {
+		DamageParsesAdd dmghp_source, cnt, locvar_dmghp_dmg, locvar_dmghp_ele
+	}
+	/********** CUSTOM DAMAGE METER - ENDING **********/
 
     /********** RUIN0X11 CUSTOM - ENDING **********/
 
