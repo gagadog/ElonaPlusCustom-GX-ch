@@ -363,6 +363,7 @@
 	pos 0, 0
 	gzoom windoww, windowh - inf_verh, 4, 0, 0, 600, 400, 1
 	gsel 0
+	gosub *screen_drawStatus
 	keyrange = 0
 	repeat pagesize
 		p = pagesize * page + cnt
@@ -378,7 +379,6 @@
 	pos 0, 0
 	gcopy 4, 0, 0, windoww, windowh - inf_verh
 	gmode 2
-	gosub *screen_drawStatus
 	dx = 650
 	dy = 270
 	window2 (windoww - dx) / 2 + inf_screenx, winposy(dy), dx, dy, 4, 6

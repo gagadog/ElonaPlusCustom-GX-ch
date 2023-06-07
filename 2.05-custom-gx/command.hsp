@@ -3000,6 +3000,7 @@
 	redraw 0
 	gsel 4
 	fillbg 3, 960, 96, 128, 128
+	gosub *screen_drawStatus
 	ww = 560
 	h = 140
 	wh = h * 4
@@ -3012,7 +3013,6 @@
 		pos wx + 20, y + 8
 		gcopy 3, 960, 144 + 96, 48, 84
 	loop
-	gosub *screen_drawStatus
 	gsel 0
 *com_quest_loop_pgchk
 	redraw 0

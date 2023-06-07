@@ -463,6 +463,9 @@
 	if ( cdata(CDATA_ROLE, calchirecost_charid) == ROLE_GUARD ) {
 		locvar_calcitemvalue_value = 50
 	}
+	if ( cdata(CDATA_ROLE, calchirecost_charid) == ROLE_TRAINER ) {
+		locvar_calcitemvalue_value = 800
+	}
 	if ( cdata(CDATA_ROLE, calchirecost_charid) >= ROLE_SHOP_MIN & cdata(CDATA_ROLE, calchirecost_charid) < ROLE_GUEST_MIN | cdata(CDATA_ROLE, calchirecost_charid) == ROLE_GUEST_MERCHANT ) {
 		locvar_calcitemvalue_value = 1000
 		if ( cdata(CDATA_ROLE, calchirecost_charid) == ROLE_SHOP_BLACKMARKET ) {

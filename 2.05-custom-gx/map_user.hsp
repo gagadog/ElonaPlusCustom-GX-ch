@@ -1488,6 +1488,11 @@
 				hire = rnd(length(isethire))
 			}
 			dbid = isethire(hire)
+			dbidrole = isethirerole(hire)
+			if ( rnd(15) == 0 & moreHireableHomeServants > 0 ) {
+				dbid = CREATURE_ID_TRAINER
+				dbidrole = ROLE_TRAINER
+			}
 
 			randomize gdata(GDATA_DAY) + gdata(GDATA_MONTH) * 31 + cnt
 			flt 20
@@ -1496,7 +1501,7 @@
 				continue
 			}
 			cdata(CDATA_EXIST, rc) = CHAR_STATE_TEMP
-			cdata(CDATA_ROLE, rc) = isethirerole(hire)
+			cdata(CDATA_ROLE, rc) = dbidrole
 			if ( cdata(CDATA_ID, rc) == CREATURE_ID_SHOPKEEPER ) {
 				p = rnd(6 + moreHireableHomeServants)
 				if ( p == 0 | p == 4 ) {
