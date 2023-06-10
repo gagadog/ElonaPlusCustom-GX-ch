@@ -81,7 +81,7 @@
 
     repeat MAX_DAMAGE_PARSES
         cnt2 = (MAX_DAMAGE_PARSES  * 2 - cnt + DmgParsesNext - 1) \ MAX_DAMAGE_PARSES
-        if ( DmgParses(0, cnt2) < gdata(GDATA_TURN) - 10 ) {
+        if ( DmgParses(0, cnt2) < gdata(GDATA_TURN) - cfg_showDamageMeterTurns ) {
             break
         }
         if ( DmgParses(1, cnt2) >= MAX_CHARA_FOLLOWER | DmgParses(1, cnt2) < 0 ) {

@@ -519,11 +519,6 @@
 		cbitmod CHARA_BIT_MAGNETISM_N_POLE, cnt, FALSE
 		if ( gdata(GDATA_AREA) == AREA_WILDERNESS ) {
 			if ( gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
-				/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-				if ( cnt == CHARA_PLAYER ) {
-					gdatatotalsaved = gdata(GDATA_FLAG_COLLECTED_WISHES)
-				}
-				/********** CUSTOM - ENDING **********/
 				gdata(GDATA_FLAG_COLLECTED_WISHES) = 0
 			}
 		}
@@ -810,18 +805,8 @@
 				gdata(GDATA_AREA) = gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100
 				gdata(GDATA_FLAG_SHIP_LAST_PORT) = 0
 				snd SOUNDLIST_MIZU
-				/********** ORIGINAL - BEGINNING ********** // Fixes Some Bugs made by Ano
 				modkarma CHARA_PLAYER, gdata(GDATA_FLAG_COLLECTED_WISHES) * 2
-				msgtemp += lang("漂流者は礼を言って去っていった。", "Drifter thanked you and left. ")
-				 ********** ORIGINAL - ENDING **********/
-					
-				/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-				if ( gdatatotalsaved > 0 ) {
-					modkarma CHARA_PLAYER, gdatatotalsaved * 2
-					msgtemp += lang("漂流者は礼を言って去っていった。", "Drifter thanked you and left. (Karma + " + gdatatotalsaved * 2 + ")")
-					gdatatotalsaved = 0
-				}
-				/********** CUSTOM - ENDING **********/
+				msgtemp += lang("漂流者は礼を言って去っていった。", "Drifter thanked you and left. (Karma + " + gdata(GDATA_FLAG_COLLECTED_WISHES) * 2 + ")")
 			}
 		}
 		if ( f == 0 ) {

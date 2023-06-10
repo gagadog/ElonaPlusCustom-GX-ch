@@ -35906,7 +35906,7 @@
 		if ( dbmode == DBMODE_FLAVOR_PASSIVE ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			txt lang("「甘えてきてもいいんだぞ」", cnvtalk("I'm going to spoil you~")), lang("「私がしっかりしないとな！」", cnvtalk("I'll have to do it by myself!")), lang("「こういう時はもっと姉を頼るものだ」", cnvtalk("You could reply more on your older sister."))
+			txt lang("「甘えてきてもいいんだぞ」", cnvtalk("I'm going to spoil you~")), lang("「私がしっかりしないとな！」", cnvtalk("I'll have to do it by myself!")), lang("「こういう時はもっと姉を頼るものだ」", cnvtalk("You could rely more on your older sister."))
 			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_ANGERED ) {

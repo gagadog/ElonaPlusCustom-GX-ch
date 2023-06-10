@@ -294,6 +294,8 @@
 
 		cfgRead "showNpcNameInTown.", cfg_showNpcName = int(rtvaln)
 		cfgRead "showDamageMeter.", cfg_showDamageMeter = int(rtvaln)
+		cfgRead "showDamageMeterTurns.", cfg_showDamageMeterTurns = int(rtvaln)
+		if ( cfg_showDamageMeterTurns < 5 | cfg_showDamageMeterTurns > 60 ) { cfg_showDamageMeterTurns = 10 }
 
 		// Autopickup options
 
@@ -613,7 +615,7 @@
 	}
 	if ( submenu == 9 ) {
 		q = lang("拡張設定2(表示)", "EX Setting 2 (Display)")
-		s = lang("ダメージ表示", "Damage Popups"), lang("　HEX+バフ", "  Hexes/Buffs"), lang("　状態異常", "  Ailments"), lang("　回避", "  Evade"), lang("　会話", "  Chat"), lang("　フォントサイズ", "  Font Size"), lang("　表示速度", "  Display Duration"), lang("　表示NPC名前", "  Show NPC Name in Town"), lang("　表示ダメージ測定", "  Show Damage Meter"), ""
+		s = lang("ダメージ表示", "Damage Popups"), lang("　HEX+バフ", "  Hexes/Buffs"), lang("　状態異常", "  Ailments"), lang("　回避", "  Evade"), lang("　会話", "  Chat"), lang("　フォントサイズ", "  Font Size"), lang("　表示速度", "  Display Duration"), lang("　表示NPC名前", "  Show NPC Name in Town"), lang("　表示ダメージ測定", "  Show Damage Meter"), lang("　測定ターン", "  Meter Duration Turns"), ""
 		dx = 440
 		dy = 410
 	}
@@ -962,6 +964,9 @@
 				} else {
 					mes "" + cfg_showDamageMeter + lang("行", " rows")
 				}
+			}
+			if ( cnt == 9 ) {
+				mes "" + cfg_showDamageMeterTurns + lang("ターン", " turns")
 			}
 		}
 	loop
@@ -1809,6 +1814,9 @@
 			}
 			if ( cs == 8 ) {
 				setOption cfg_showDamageMeter, "showDamageMeter", 0, 16
+			}
+			if ( cs == 9 ) {
+				setOption cfg_showDamageMeterTurns, "showDamageMeterTurns", 5, 60
 			}
 		}
 	}
