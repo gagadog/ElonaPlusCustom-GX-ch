@@ -764,7 +764,7 @@
 	rpdatan(rpid) = lang("ネクロチューニング", "necro remodel")
 	rpdata(RPDATA_ITEM, rpid) = RECIPE_BLEND_ACTION_NECRO_REMODEL, 20, 1
 	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_ANATOMY, 20, SKILL_NORMAL_ALCHEMY, 20
-	rpdata(RPDATA_MAT + 0, rpid) = ITEM_ID_COFFIN_OF_NECROMANCY, FILTER_REMAINS
+	rpdata(RPDATA_MAT + 0, rpid) = ITEM_ID_COFFIN_OF_NECROMANCY, ITEM_ID_FIGURINE
 
 	rpid++
 	rplistdef(length(rplistdef)) = 1 * EXT_RECIPES + rpid
@@ -3111,16 +3111,16 @@
 				inv(INV_ITEM_CHARA_PIC, ci) = xy2pic(1, 0)
 			}
 		}
-		if ( inv(INV_ITEM_ID, ti) == ITEM_ID_CARD ) {
-			inv(INV_ITEM_PARAM2, ci) = inv(INV_ITEM_COL, ti) + COLOR_LIGHT_PURPLE * COLOR_TINT_MULT
-			if ( inv(INV_ITEM_COL, ti) >= COLOR_TINT_MULT ) {
-				inv(INV_ITEM_CHARA_PIC, ci) = xy2pic(1, 0)
-			}
-		}
 		item_stack CHARA_PLAYER, ci
 		txtef COLOR_GREEN
 		txt_createitem
 		snd SOUNDLIST_CURSE3
+		if ( spact(SKILL_SPACT_ACCEL_NECRO - STARTING_SKILL_SPACT) == 0 ) {
+			spact(SKILL_SPACT_ACCEL_NECRO - STARTING_SKILL_SPACT) = 1
+			txtmore
+			txtef COLOR_YELLOW
+			txt lang("あなたは「" + skillname(SKILL_SPACT_ACCEL_NECRO) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_ACCEL_NECRO) + ".")
+		}
 		goto *blend_act_SWEND1
 	}
 	if ( _switch_val == RECIPE_BLEND_ACTION_BARREL_BOMB | _switch_sw ) {

@@ -272,44 +272,64 @@
 		}
 		if ( cdata(CDATA_ID, rc) == CREATURE_ID_CAT_ZOMBIE | cdata(CDATA_ID, rc) == CREATURE_ID_ZOMBIE | cdata(CDATA_ID, rc) == CREATURE_ID_MUMMY | cdata(CDATA_ID, rc) == CREATURE_ID_SKELETON_WARRIOR | cdata(CDATA_ID, rc) == CREATURE_ID_LICH | cdata(CDATA_ID, rc) == CREATURE_ID_NECRO_DOLL | cdata(CDATA_ID, rc) == CREATURE_ID_DRAGON_ZOMBIE | cdata(CDATA_ID, rc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
 			if ( cbit(CHARA_BIT_LIVESTOCK, rc) != 1 ) {
-				if ( rc >= MAX_CHARA_FOLLOWER ) {
-					if ( cbit(CHARA_BIT_NECRO, rc) == 1 ) {
-						txt lang(cdatan(CDATAN_NAME, rc) + "は棺に戻った。", "You push " + name(rc) + " into the coffin.")
-						if ( cdata(CDATA_ID, rc) == CREATURE_ID_CAT_ZOMBIE ) {
-							necrop = 2
+				if ( cbit(CHARA_BIT_SHADOW_CLONE, rc) != TRUE ) {
+					if ( rc >= MAX_CHARA_FOLLOWER ) {
+						if ( cbit(CHARA_BIT_NECRO, rc) == 1 ) {
+							txt lang(cdatan(CDATAN_NAME, rc) + "は棺に戻った。", "You push " + name(rc) + " into the coffin.")
+							if ( cdata(CDATA_ID, rc) == CREATURE_ID_CAT_ZOMBIE ) {
+								necrop = 2
+							}
+							if ( cdata(CDATA_ID, rc) == CREATURE_ID_ZOMBIE ) {
+								necrop = 3
+							}
+							if ( cdata(CDATA_ID, rc) == CREATURE_ID_MUMMY ) {
+								necrop = 4
+							}
+							if ( cdata(CDATA_ID, rc) == CREATURE_ID_SKELETON_WARRIOR ) {
+								necrop = 5
+							}
+							if ( cdata(CDATA_ID, rc) == CREATURE_ID_LICH ) {
+								necrop = 6
+							}
+							if ( cdata(CDATA_ID, rc) == CREATURE_ID_NECRO_DOLL ) {
+								necrop = 7
+							}
+							if ( cdata(CDATA_ID, rc) == CREATURE_ID_DRAGON_ZOMBIE ) {
+								necrop = 8
+							}
+							if ( cdata(CDATA_ID, rc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
+								necrop = 9
+							}
+							necrop3 = cdata(CDATA_CHARA_PIC, rc)
+							flt
+							itemcreate -1, ITEM_ID_COFFIN_OF_NECROMANCY, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
+							inv(INV_ITEM_PARAM1, ci) = necrop
+							inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, rc)
+							inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
+							inv(INV_ITEM_CHARGE, ci) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + inv(INV_ITEM_PARAM3, ci) * 24
+							inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+							inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
+							inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+							if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
+								inv(INV_ITEM_PARAM2, ci) = 0
+							}
+							if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
+								inv(INV_ITEM_PARAM2, ci) = 0
+							}
+							if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
+								inv(INV_ITEM_PARAM2, ci) = 0
+							}
+							if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
+								inv(INV_ITEM_PARAM2, ci) = 0
+							}
+							if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
+								inv(INV_ITEM_PARAM2, ci) = 0
+							}
+							if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
+								inv(INV_ITEM_PARAM2, ci) = 0
+							}
+							return
 						}
-						if ( cdata(CDATA_ID, rc) == CREATURE_ID_ZOMBIE ) {
-							necrop = 3
-						}
-						if ( cdata(CDATA_ID, rc) == CREATURE_ID_MUMMY ) {
-							necrop = 4
-						}
-						if ( cdata(CDATA_ID, rc) == CREATURE_ID_SKELETON_WARRIOR ) {
-							necrop = 5
-						}
-						if ( cdata(CDATA_ID, rc) == CREATURE_ID_LICH ) {
-							necrop = 6
-						}
-						if ( cdata(CDATA_ID, rc) == CREATURE_ID_NECRO_DOLL ) {
-							necrop = 7
-						}
-						if ( cdata(CDATA_ID, rc) == CREATURE_ID_DRAGON_ZOMBIE ) {
-							necrop = 8
-						}
-						if ( cdata(CDATA_ID, rc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-							necrop = 9
-						}
-						necrop3 = cdata(CDATA_CHARA_PIC, rc)
-						flt
-						itemcreate -1, ITEM_ID_COFFIN_OF_NECROMANCY, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
-						inv(INV_ITEM_PARAM1, ci) = necrop
-						inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, rc)
-						inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
-						inv(INV_ITEM_CHARGE, ci) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + inv(INV_ITEM_PARAM3, ci) * 24
-						inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
-						inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
-						inv(INV_ITEM_CHARA_PIC, ci) = necrop3
-						return
 					}
 				}
 			}
@@ -1823,7 +1843,7 @@
 					if ( inv(INV_ITEM_ROT, cnt) > 0 ) {
 						if ( inv(INV_ITEM_PROPERTY, cnt) <= PROP_NONE ) {
 							if ( inv(INV_ITEM_PARAM1, cnt) / 1000 == 6 & inv(INV_ITEM_PARAM2, cnt) == 0 ) {
-								if ( chipm(CHIPM_ROLE, map(inv(INV_ITEM_X, cnt), inv(INV_ITEM_Y, cnt), 0)) == MAP_CHIP_ROLE_WATER | (gdata(GDATA_WORLD) == AREA_TEST_WORLD & gdata(GDATA_AREA) == AREA_WILDERNESS) ) {
+								if ( chipm(CHIPM_ROLE, map(inv(INV_ITEM_X, cnt), inv(INV_ITEM_Y, cnt), 0)) == MAP_CHIP_ROLE_WATER | (gdata(GDATA_WORLD) == AREA_OCEAN & gdata(GDATA_AREA) == AREA_WILDERNESS) ) {
 									inv(INV_ITEM_ROT, cnt) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 72
 									continue
 								}

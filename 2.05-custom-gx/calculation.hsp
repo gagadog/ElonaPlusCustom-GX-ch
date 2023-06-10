@@ -554,23 +554,22 @@
 	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_WORLD_MAP_VEHICLE_THIS_MONTH) == VEHICLE_LAND_BATTLESHIP ) {
 		locvar_calccosthire_cost += 200000
 	}
-	// TODO Ano made a bug here? Ship doesn't cost anything for now.
-	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 11 ) {
+	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 1 ) {
 		locvar_calccosthire_cost += 100
 	}
-	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 12 ) {
+	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 2 ) {
 		locvar_calccosthire_cost += 3000
 	}
-	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 13 ) {
+	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 3 ) {
 		locvar_calccosthire_cost += 10000
 	}
-	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 14 ) {
+	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 4 ) {
 		locvar_calccosthire_cost += 50000
 	}
-	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 15 ) {
+	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 5 ) {
 		locvar_calccosthire_cost += 100000
 	}
-	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 16 ) {
+	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) == 6 ) {
 		locvar_calccosthire_cost += 150000
 	}
 	if ( locvar_calccostbuilding_hantei == 0 ) {
@@ -1670,7 +1669,7 @@
 		loop
 		tarudmg = 0
 	}
-	if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 		if ( gdata(GDATA_AREA) == AREA_WILDERNESS ) {
 			if ( cdata(CDATA_CONDITION_WET, r1) < 5 ) {
 				cdata(CDATA_CONDITION_WET, r1) = 5
@@ -1680,7 +1679,7 @@
 			}
 		}
 	}
-	if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 		if ( gdata(GDATA_FLAG_SHIP_TYPE) == 0 ) {
 			if ( cdata(CDATA_CONDITION_WET, r1) < 5 ) {
 				cdata(CDATA_CONDITION_WET, r1) = 5
@@ -2259,6 +2258,22 @@
 				cdata(CDATA_EMO_ICON, r1) = 25 + 100 + 100
 			}
 		}
+	}
+	if ( findbuff(r1, BUFF_FLAME_OF_LIFE) != (-1) ) {
+		healhp r1, cdata(CDATA_MAX_HP, r1) / 50 + 1
+		cdata(CDATA_CONDITION_POISON, r1) = 0
+		cdata(CDATA_CONDITION_MPOISON, r1) = 0
+		cdata(CDATA_CONDITION_SLEEP, r1) = 0
+		cdata(CDATA_CONDITION_CONFUSE, r1) = 0
+		cdata(CDATA_CONDITION_BLIND, r1) = 0
+		cdata(CDATA_CONDITION_PARALYZE, r1) = 0
+		cdata(CDATA_CONDITION_DIM, r1) = 0
+		cdata(CDATA_CONDITION_DRUNK, r1) = 0
+		cdata(CDATA_CONDITION_BLEED, r1) = 0
+		cdata(CDATA_CONDITION_FEAR, r1) = 0
+		cdata(CDATA_CONDITION_SUFFOCATION, r1) = 0
+		cdata(CDATA_CONDITION_ATROPHY, r1) = 0
+		cdata(CDATA_CONDITION_BRAINWASH, r1) = 0
 	}
 	if ( regen == 1 ) {
 		if ( findbuff(r1, BUFF_ELEMENT_SCAR) == (-1) ) {

@@ -268,8 +268,16 @@
 	bufftxt(0, BUFF_DISINFECTION) = lang("は汚染から守られた。", " receive"), " pollution protection."
 	
 	bdataref(0, BUFF_CURSE_OF_HUNGER) = BUFF_TYPE_HEX, 1, 0
-	buffname(BUFF_CURSE_OF_HUNGER) = lang("脆弱の霧", "Curse of Hunger")
-	bufftxt(0, BUFF_CURSE_OF_HUNGER) = lang("は脆くなった。", " feel"), " hungry."
+	buffname(BUFF_CURSE_OF_HUNGER) = lang("飢餓の呪い", "Curse of Hunger")
+	bufftxt(0, BUFF_CURSE_OF_HUNGER) = lang("はお腹が減りやすくなった。", "feel"), " hungry."
+
+	bdataref(BDATAREF_BUFF_TYPE, BUFF_CHAIN_OF_MANA) = BUFF_TYPE_BUFF, 1, 0
+	buffname(BUFF_CHAIN_OF_MANA) = lang("操魔の鎖", "Chain of Mana")
+	bufftxt(0, BUFF_CHAIN_OF_MANA) = lang("は魔力を帯びた鎖に繋がれた。", "was chained"), " with enchanted chain."
+	
+	bdataref(BDATAREF_BUFF_TYPE, BUFF_FLAME_OF_LIFE) = BUFF_TYPE_BUFF, 1, 0
+	buffname(BUFF_FLAME_OF_LIFE) = lang("偽命の灯", "Flame of Life")
+	bufftxt(0, BUFF_FLAME_OF_LIFE) = lang("の身体に生命力が満ち始めた。", "gained"), " life force temporarily."
 
 	return
 
@@ -402,6 +410,37 @@
 			}
 		}
 		sdata(SKILL_RES_MAGIC, calcbuff_charid) += 100 + calcbuff_power
+		return
+	}
+	if ( calcbuff_buffid == BUFF_FLAME_OF_LIFE ) {
+		dur = 10 + calcbuff_power / 20
+		if ( calcbuff_charid < CHARA_PLAYER ) {
+			if ( calcbuff_charid == CALCBUFF_DURATION ) {
+				return
+			}
+			else {
+				buffdesc = lang("毎ターンHPと状態異常回復/火炎耐性の獲得", "Recovery every turn/RES+ fire")
+				return
+			}
+		}
+		sdata(SKILL_RES_FIRE, calcbuff_charid) += 100 + calcbuff_power
+		return
+	}
+	if ( calcbuff_buffid == BUFF_CHAIN_OF_MANA ) {
+		dur = 10 + calcbuff_power / 20
+		locvar_calcbuff_p = limit(5 + calcbuff_power, 5, 1000)
+		if ( calcbuff_charid < CHARA_PLAYER ) {
+			if ( calcbuff_charid == CALCBUFF_DURATION ) {
+				return
+			}
+			else {
+				buffdesc = lang("戦術魔力制御詠唱" + locvar_calcbuff_p + "上昇/物理攻撃に魔法属性追加", "Increases Tact/MagCtl/Cast " + locvar_calcbuff_p + "/Add magic to attack")
+				return
+			}
+		}
+		sdata(SKILL_NORMAL_TACTICS, calcbuff_charid) += locvar_calcbuff_p
+		sdata(SKILL_NORMAL_CONTROL_MAGIC, calcbuff_charid) += locvar_calcbuff_p
+		sdata(SKILL_NORMAL_CASTING, calcbuff_charid) += locvar_calcbuff_p
 		return
 	}
 	if ( calcbuff_buffid == BUFF_FORM_SHIFT_ALPHA ) {

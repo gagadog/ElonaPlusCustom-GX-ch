@@ -413,7 +413,7 @@
 		flt calcobjlv(gdata(GDATA_LEVEL)), calcfixlv(FIX_QUALITY_GOOD)
 		return
 	}
-	if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD & gdata(GDATA_AREA) == AREA_WILDERNESS ) {
+	if ( gdata(GDATA_WORLD) == AREA_OCEAN & gdata(GDATA_AREA) == AREA_WILDERNESS ) {
 		flt gdata(GDATA_DEEPEST_LEVEL), calcfixlv(FIX_QUALITY_GREAT)
 		fltnrace = "seamonster"
 		return
@@ -518,7 +518,7 @@
 		cbitmod CHARA_BIT_MAGNETISM_S_POLE, cnt, FALSE
 		cbitmod CHARA_BIT_MAGNETISM_N_POLE, cnt, FALSE
 		if ( gdata(GDATA_AREA) == AREA_WILDERNESS ) {
-			if ( gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
+			if ( gdata(GDATA_WORLD) != AREA_OCEAN ) {
 				gdata(GDATA_FLAG_COLLECTED_WISHES) = 0
 			}
 		}
@@ -577,61 +577,99 @@
 					continue
 				}
 				tc = cnt
-				if ( cbit(CHARA_BIT_LIVESTOCK, tc) != 1 ) {
-					if ( tc >= MAX_CHARA_FOLLOWER ) {
-						if ( cbit(CHARA_BIT_NECRO, tc) == 1 ) {
-							necrop = 0
-							if ( cdata(CDATA_ID, tc) == CREATURE_ID_CAT_ZOMBIE ) {
-								necrop = 2
-							}
-							if ( cdata(CDATA_ID, tc) == CREATURE_ID_ZOMBIE ) {
-								necrop = 3
-							}
-							if ( cdata(CDATA_ID, tc) == CREATURE_ID_MUMMY ) {
-								necrop = 4
-							}
-							if ( cdata(CDATA_ID, tc) == CREATURE_ID_SKELETON_WARRIOR ) {
-								necrop = 5
-							}
-							if ( cdata(CDATA_ID, tc) == CREATURE_ID_LICH ) {
-								necrop = 6
-							}
-							if ( cdata(CDATA_ID, tc) == CREATURE_ID_NECRO_DOLL ) {
-								necrop = 7
-							}
-							if ( cdata(CDATA_ID, tc) == CREATURE_ID_DRAGON_ZOMBIE ) {
-								necrop = 8
-							}
-							if ( cdata(CDATA_ID, tc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-								necrop = 9
-							}
-							necrop3 = cdata(CDATA_CHARA_PIC, tc)
-							if ( necrop != 0 ) {
-								if ( inv_getspace(CHARA_PLAYER) != 0 ) {
-									flt
-									itemcreate 0, ITEM_ID_COFFIN_OF_NECROMANCY, -1, -1, 0
-									inv(INV_ITEM_PARAM1, ci) = necrop
-									inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, tc)
-									inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
-									inv(INV_ITEM_CHARGE, ci) = 6666
-									inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
-									inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
-									inv(INV_ITEM_CHARA_PIC, ci) = necrop3
-									item_stack CHARA_PLAYER, ci, 1
+				if ( cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE ) {
+					if ( cbit(CHARA_BIT_SHADOW_CLONE, tc) != TRUE ) {
+						if ( tc >= MAX_CHARA_FOLLOWER ) {
+							if ( cbit(CHARA_BIT_NECRO, tc) == TRUE ) {
+								necrop = 0
+								if ( cdata(CDATA_ID, tc) == CREATURE_ID_CAT_ZOMBIE ) {
+									necrop = 2
 								}
-								else {
-									flt
-									itemcreate -1, ITEM_ID_COFFIN_OF_NECROMANCY, -1, -1, 1
-									inv(INV_ITEM_PARAM1, ci) = necrop
-									inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, tc)
-									inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
-									inv(INV_ITEM_CHARGE, ci) = 6666
-									inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
-									inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
-									inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+								if ( cdata(CDATA_ID, tc) == CREATURE_ID_ZOMBIE ) {
+									necrop = 3
 								}
+								if ( cdata(CDATA_ID, tc) == CREATURE_ID_MUMMY ) {
+									necrop = 4
+								}
+								if ( cdata(CDATA_ID, tc) == CREATURE_ID_SKELETON_WARRIOR ) {
+									necrop = 5
+								}
+								if ( cdata(CDATA_ID, tc) == CREATURE_ID_LICH ) {
+									necrop = 6
+								}
+								if ( cdata(CDATA_ID, tc) == CREATURE_ID_NECRO_DOLL ) {
+									necrop = 7
+								}
+								if ( cdata(CDATA_ID, tc) == CREATURE_ID_DRAGON_ZOMBIE ) {
+									necrop = 8
+								}
+								if ( cdata(CDATA_ID, tc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
+									necrop = 9
+								}
+								necrop3 = cdata(CDATA_CHARA_PIC, tc)
+								if ( necrop != 0 ) {
+									if ( inv_getspace(CHARA_PLAYER) != 0 ) {
+										flt
+										itemcreate 0, ITEM_ID_COFFIN_OF_NECROMANCY, -1, -1, 0
+										inv(INV_ITEM_PARAM1, ci) = necrop
+										inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, tc)
+										inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
+										inv(INV_ITEM_CHARGE, ci) = 6666
+										inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+										inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
+										inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										item_stack CHARA_PLAYER, ci, 1
+									}
+									else {
+										flt
+										itemcreate -1, ITEM_ID_COFFIN_OF_NECROMANCY, -1, -1, 1
+										inv(INV_ITEM_PARAM1, ci) = necrop
+										inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, tc)
+										inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
+										inv(INV_ITEM_CHARGE, ci) = 6666
+										inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+										inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
+										inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+										if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
+											inv(INV_ITEM_PARAM2, ci) = 0
+										}
+									}
+								}
+								chara_vanquish tc
 							}
-							chara_vanquish tc
 						}
 					}
 				}
@@ -781,7 +819,7 @@
 			}
 		}
 		if ( feat(1) == CELL_FEATURE_UPSTAIRS ) {
-			if ( gdata(GDATA_AREA_PREV) != AREA_NT_SOUTH_BORDER & gdata(GDATA_LEVEL) != 100 & gdata(GDATA_AREA_PREV) != AREA_TEST_WORLD ) {
+			if ( gdata(GDATA_AREA_PREV) != AREA_NT_SOUTH_BORDER & gdata(GDATA_LEVEL) != 100 & gdata(GDATA_AREA_PREV) != AREA_OCEAN ) {
 				msgtemp += lang("階段を昇った。", "You walk up the stairs.")
 			}
 			f = 1
@@ -799,7 +837,7 @@
 		else {
 			zyuusann = 0
 		}
-		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_TEST_WORLD ) {
+		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_OCEAN ) {
 			if ( gdata(GDATA_LEVEL) == 1 ) {
 				gdata(GDATA_WORLD) = gdata(GDATA_FLAG_SHIP_LAST_PORT) / 100
 				gdata(GDATA_AREA) = gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100
@@ -983,7 +1021,7 @@
 			gdata(GDATA_LEVEL_START_ON) = 7
 			fixstart = 1
 		}
-		if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 			if ( gdata(GDATA_LEVEL) == 11 ) {
 				mapstartx = 93
 				mapstarty = 51
@@ -1074,7 +1112,7 @@
 		}
 		else {
 			if ( adata(ADATA_TYPE, gdata(GDATA_AREA_PREV)) == MAP_TYPE_WORLD ) {
-				if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD & gdata(GDATA_AREA) != AREA_TEST_WORLD ) {
+				if ( gdata(GDATA_WORLD) == AREA_OCEAN & gdata(GDATA_AREA) != AREA_OCEAN ) {
 					msgtemp += lang("船から降りた。", "You leave your ship.")
 				}
 				else {
@@ -1087,7 +1125,7 @@
 				}
 			}
 			else {
-				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_TEST_WORLD ) {
+				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_OCEAN ) {
 					msgtemp += lang("船に乗った。", "You boarded your ship")
 				}
 				else {
@@ -1182,8 +1220,8 @@
 			msgtemp += lang("古の庭園に辿りついた。", "You reached the ancient garden.")
 		}
 	}
-	if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
-		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
+		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_OCEAN ) {
 			gdata(GDATA_LEVEL) = gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100
 			snd SOUNDLIST_MIZU
 		}
@@ -3607,7 +3645,7 @@
 				inv(INV_ITEM_PROPERTY, ci) = PROP_NPC
 			loop
 		}
-		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 			mdatan(0) = lang("海底", "Seabed")
 			map_randomtile 281, 30
 			map_randomtile 282, 20
@@ -3801,7 +3839,7 @@
 		if ( 264 <= gdata(GDATA_WORLD_TILE) & gdata(GDATA_WORLD_TILE) < 363 ) {
 		}
 		else {
-			if ( gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
+			if ( gdata(GDATA_WORLD) != AREA_OCEAN ) {
 				repeat 4 + rnd(5)
 					flt
 					flttypeminor = FILTER_JUNK
@@ -3810,7 +3848,7 @@
 			}
 		}
 		if ( encounter == ENCOUNTER_NONE ) {
-			if ( gdata(GDATA_WORLD) != AREA_AIMWELL & gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
+			if ( gdata(GDATA_WORLD) != AREA_AIMWELL & gdata(GDATA_WORLD) != AREA_OCEAN ) {
 				repeat mdata(MDATA_MODERATE_CROWD) + 1
 					gosub *fltChara
 					flt
@@ -3931,7 +3969,7 @@
 			adata(ADATA_BOSS, gdata(GDATA_AREA)) = 0
 		}
 	}
-	if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 		if ( gdata(GDATA_LEVEL) == 1 ) {
 			mdata(MDATA_MODERATE_CROWD) = 40
 			map_initcustom "sea1"
@@ -12354,7 +12392,7 @@
 			}
 		}
 	}
-	if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 		if ( gdata(GDATA_AREA) == AREA_WILDERNESS ) {
 			if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 53 | gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 54 ) {
 				if ( gdata(GDATA_HOUR) >= 24 ) {
@@ -12740,8 +12778,8 @@
 	adata(ADATA_CAN_SAVE, p) = 1
 	adata(ADATA_RESTORE_POS, p) = 0
 	adata(ADATA_PARENT, p) = AREA_LOST_YLVA
-	p = AREA_TEST_WORLD
-	adata(ADATA_ID, p) = AREA_TEST_WORLD
+	p = AREA_OCEAN
+	adata(ADATA_ID, p) = AREA_OCEAN
 	adata(ADATA_ICON, p) = xy2pic(0, 0)
 	adata(ADATA_TYPE, p) = MAP_TYPE_WORLD
 	adata(ADATA_X, p) = 6
@@ -12755,14 +12793,11 @@
 	adata(ADATA_FIELD, p) = 2
 	adata(ADATA_CAN_SAVE, p) = 1
 	adata(ADATA_RESTORE_POS, p) = 0
-	adata(ADATA_PARENT, p) = AREA_TEST_WORLD
+	adata(ADATA_PARENT, p) = AREA_OCEAN
 	p = areatestworld
 	adata(ADATA_ID, p) = areatestworld
 	adata(ADATA_ICON, p) = xy2pic(0, 0)
 	adata(ADATA_TYPE, p) = MAP_TYPE_WORLD
-	/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-	adata(ADATA_TYPE, 0) = 0
-	/********** CUSTOM - ENDING **********/
 	adata(ADATA_X, p) = 26
 	adata(ADATA_Y, p) = 23
 	adata(ADATA_START_ON, p) = 6

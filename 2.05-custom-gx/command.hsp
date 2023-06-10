@@ -4103,7 +4103,7 @@
 		inputlog = getpath(inputlog, 16)
 	}
 	snd SOUNDLIST_DING2
-	if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD & gdata(GDATA_AREA) == AREA_WILDERNESS ) {
+	if ( gdata(GDATA_WORLD) == AREA_OCEAN & gdata(GDATA_AREA) == AREA_WILDERNESS ) {
 		txt lang("水中でゴボゴボ言われてもよく分かんないんだけど…。", "I don't quite understand what you're saying underwater...")
 		goto *com_wish_end
 	}
@@ -4530,7 +4530,8 @@
 				f = 0
 				break
 			}
-			flt cdata(CDATA_LEVEL, CHARA_PLAYER) + 10, 4
+			bukifix = 1
+			flt cdata(CDATA_LEVEL, CHARA_PLAYER) + 10, FIX_QUALITY_MIRACLE
 			if ( p == ITEM_ID_AURORA_RING | p == ITEM_ID_SEVEN_LEAGUE_BOOTS | p == ITEM_ID_VINDALE_CLOAK | p == ITEM_ID_SPEED_RING ) {
 				fixlv = calcobjlv(3)
 			}
@@ -4636,6 +4637,7 @@
 			item_identify ci, ITEM_KNOWN_FULL
 			txt lang("足元に" + itemname(ci) + "が転がってきた。", "" + itemname(ci) + " appear" + _s2(inv(INV_ITEM_NUM, ci)) + ".")
 			f = 1
+			bukifix = 0
 			break
 		loop
 		if ( f ) {
@@ -5616,10 +5618,12 @@
 		}
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_CAT_ZOMBIE | cdata(CDATA_ID, tc) == CREATURE_ID_ZOMBIE | cdata(CDATA_ID, tc) == CREATURE_ID_MUMMY | cdata(CDATA_ID, tc) == CREATURE_ID_SKELETON_WARRIOR | cdata(CDATA_ID, tc) == CREATURE_ID_LICH | cdata(CDATA_ID, tc) == CREATURE_ID_NECRO_DOLL | cdata(CDATA_ID, tc) == CREATURE_ID_DRAGON_ZOMBIE | cdata(CDATA_ID, tc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-		if ( cbit(CHARA_BIT_LIVESTOCK, tc) != 1 ) {
-			if ( tc >= MAX_CHARA_FOLLOWER ) {
-				if ( cbit(CHARA_BIT_NECRO, tc) == 1 ) {
-					promptAdd lang("棺に戻す", "Return to the coffin"), "null", 13
+		if ( cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE ) {
+			if ( cbit(CHARA_BIT_SHADOW_CLONE, tc) != TRUE ) {
+				if ( tc >= MAX_CHARA_FOLLOWER ) {
+					if ( cbit(CHARA_BIT_NECRO, tc) == TRUE ) {
+						promptAdd lang("棺に戻す", "Return to the coffin"), "null", 13
+					}
 				}
 			}
 		}
@@ -6407,6 +6411,24 @@
 		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 		inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
 		inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
 		snd SOUNDLIST_CURSE3
 		chara_vanquish tc
 		gosub *screen_draw

@@ -2191,7 +2191,7 @@
 	gosub *cell_info
 	if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
 		if ( gdata(GDATA_WORLD) != AREA_AIMWELL ) {
-			if ( gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
+			if ( gdata(GDATA_WORLD) != AREA_OCEAN ) {
 				if ( cc == CHARA_PLAYER ) {
 					encounter = ENCOUNTER_NONE
 					gdata(GDATA_WORLD_TILE) = map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)
@@ -2375,7 +2375,7 @@
 			}
 		}
 	}
-	if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 		if ( gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN | gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
 			if ( rnd(10 + gdata(GDATA_FLAG_SHIP_TYPE) * 2) == 0 ) {
 				breakfast = 666
@@ -2556,10 +2556,10 @@
 		}
 		else {
 			if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-				if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+				if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 					snd SOUNDLIST_MIZU2
 				}
-				if ( gdata(GDATA_AREA) != AREA_TEST_WORLD ) {
+				if ( gdata(GDATA_AREA) != AREA_OCEAN ) {
 					if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > VEHICLE_NONE ) {
 						snd SOUNDLIST_DRAG01
 						if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 3 ) {
@@ -2590,10 +2590,10 @@
 				if ( gdata(GDATA_AREA) == AREA_WEST_RASKILIS ) {
 					txt lang("空間の裂け目がある。", "There is a crevice of space.")
 				}
-				if ( gdata(GDATA_AREA) != AREA_WEST_RASKILIS & gdata(GDATA_AREA) != AREA_TEST_WORLD ) {
+				if ( gdata(GDATA_AREA) != AREA_WEST_RASKILIS & gdata(GDATA_AREA) != AREA_OCEAN ) {
 					txt lang("昇り階段がある。", "There is a stair leading upwards here.")
 				}
-				if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+				if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 					txt lang("停泊ポイントがある。", "There is a mooring point.")
 				}
 			}
@@ -5093,6 +5093,13 @@
 				}
 			}
 		}
+		if ( findbuff(cc, BUFF_CHAIN_OF_MANA) != (-1) ) {
+			ele = SKILL_RES_MAGIC
+			gdata(GDATA_DMG_TYPE) = 1
+			dmghp tc, orgdmg * (rnd(30) + 60) / 100 + 1, cc, ele, 1000
+			subdmg = 0
+			ele = SKILL_NONE
+		}
 		if ( attackskill == SKILL_WEAPON_MARTIAL_ARTS ) {
 			if ( findbuff(cc, BUFF_ATTRIBUTE) != (-1) ) {
 				if ( gdata(GDATA_TEMPORARY_FLAGS2) == 0 ) {
@@ -5937,7 +5944,7 @@
 
 *act_search
 	if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-		if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 		}
 		else {
 			if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 1 ) {
@@ -11004,6 +11011,9 @@
 			if ( cbit(CHARA_BIT_NECRO, tc) != 1 ) {
 				continue
 			}
+			if ( cbit(CHARA_BIT_SHADOW_CLONE, tc) ) {
+				continue
+			}
 			if ( rtval == 0 ) {
 				if ( cdata(CDATA_ID, tc) == CREATURE_ID_ZOMBIE ) {
 					dead1 = tc
@@ -11111,6 +11121,24 @@
 		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 		inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
 		inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
 		chara_vanquish dead1
 		gosub *screen_draw
 		if ( cdata(CDATA_ID, dead2) == CREATURE_ID_CAT_ZOMBIE ) {
@@ -11147,6 +11175,24 @@
 		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 		inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
 		inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
+		if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
+			inv(INV_ITEM_PARAM2, ci) = 0
+		}
 		chara_vanquish dead2
 		gosub *screen_draw
 		txtef COLOR_RED

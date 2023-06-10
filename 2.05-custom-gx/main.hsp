@@ -18,8 +18,8 @@
 #include "mock_defines.hsp"
 #endif
 
-#define global VARIANT_NAME "ElonaPlus Custom-GX 2.18.1.0"
-#define global VARIANT_TITLE "Elona+ Custom-GX 2.18.1.0"
+#define global VARIANT_NAME "ElonaPlus Custom-GX 2.18R.1.0"
+#define global VARIANT_TITLE "Elona+ Custom-GX 2.18R.1.0"
 #define global VERSION_STRING "6.18"
 #define global VERSION_NUMBER int(double(VERSION_STRING) * 1000)
 #define global NET_VERSION	200000
@@ -272,7 +272,6 @@
 		gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) = 2
 		gdata(GDATA_FLAG_SUB_DOGS_TAIL) = 1000
 		gdata(GDATA_FLAG_SUB_YEEK) = 1000
-		gdata(GDATA_FLAG_SUB_H_SISTER) = 1000
 		gdata(GDATA_FLAG_SUB_CAT) = 1000
 		gdata(GDATA_FLAG_SUB_MINOTAUR) = 1000
 		gdata(GDATA_FLAG_SUB_PYRAMID) = 1000
@@ -1805,7 +1804,7 @@
 				}
 				if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) != 0 ) {
 					prevsekai = gdata(GDATA_WORLD)
-					gdata(GDATA_WORLD) = AREA_TEST_WORLD
+					gdata(GDATA_WORLD) = AREA_OCEAN
 					fixtransfermap = 1
 				}
 				msg_halt

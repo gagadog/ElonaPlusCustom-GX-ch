@@ -4375,7 +4375,7 @@
 		if ( gdata(GDATA_WEATHER) == WEATHER_SNOW | chipm(CHIPM_ROLE, map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)) == MAP_CHIP_ROLE_SNOW ) {
 			cdata(CDATA_ACTION_PERIOD, cc) = cdata(CDATA_ACTION_PERIOD, cc) * 22 / 10
 		}
-		if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 			if ( gdata(GDATA_FLAG_SHIP_TYPE) > 0 ) {
 				norimono = 500
 				cdata(CDATA_ACTION_PERIOD, cc) = cdata(CDATA_ACTION_PERIOD, cc) * 2
@@ -4440,7 +4440,7 @@
 			gosub *insta_eat
 		}
 	}
-	if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 		if ( rnd(1000) == 0 ) {
 			txtef COLOR_PURPLE
 			if ( jp ) {
@@ -4451,7 +4451,7 @@
 			}
 		}
 	}
-	if ( gdata(GDATA_AREA) != AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_AREA) != AREA_OCEAN ) {
 		if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) != 3 ) {
 			if ( gdata(GDATA_WEATHER) == WEATHER_SNOW | chipm(CHIPM_ROLE, map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), MAP_TILE_ID)) == MAP_CHIP_ROLE_SNOW ) {
 				if ( gdata(GDATA_RES_WEATHER) == 0 ) {
@@ -4558,7 +4558,7 @@
 			gdata(GDATA_FLAG_MANUSCRIPT_IDEAS)++
 		}
 	}
-	if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 		traveldone = 1
 		gdata(GDATA_TRAVEL_DISTANCE) += 1
 		gdata(GDATA_FLAG_MILES_TRAVELED) += 1
@@ -4889,6 +4889,7 @@
 								flt
 								itemcreate -1, ITEM_ID_ROD_WISHING, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 							}
+							bukifix = 2
 							repeat 4
 								flt calcobjlv(cdata(CDATA_LEVEL, CHARA_PLAYER) + 10), calcfixlv(FIX_QUALITY_GREAT)
 								if ( cnt == 0 ) {
@@ -4897,6 +4898,7 @@
 								flttypemajor = fsetchest(rnd(length(fsetchest)))
 								itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 							loop
+							bukifix = 0
 							txt_questitem
 							autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
 							inv(INV_ITEM_NUM, cnt)--
@@ -5741,17 +5743,14 @@
 				snd SOUNDLIST_FAIL1
 				return 1
 			}
-			/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-			if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
-				snd SOUNDLIST_FAIL1
-				txt lang("この階層では帰還が出来ないようだ。", "It seems that you cannot return from this floor.")
-				obvious = 0
-				goto *effect_end
-			}
-			/********** CUSTOM - BEGINNING **********/
 			if ( gdata(GDATA_AREA) == AREA_REMIDO & gdata(GDATA_LEVEL) == 129 | (gdata(GDATA_AREA) == AREA_CHAOS_CRADLE & gdata(GDATA_LEVEL) == 179) ) {
 				snd SOUNDLIST_FAIL1
-				txt lang("この階層では脱出が出来ないようだ。", "This floor gradually loses power.")
+				txt lang("この階層では脱出が出来ないようだ。", "It seems that you cannot escape from this floor.")
+				return 1
+			}
+			if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
+				txt lang("ここでは脱出ができない。", "It seems that you cannot escape here.")
+				obvious = 0
 				return 1
 			}
 			snd SOUNDLIST_BREATH1
@@ -5784,6 +5783,7 @@
 				cdata(CDATA_RELATION, rc) = RELATION_ALLY
 				cdata(CDATA_RELATION_ORG, rc) = RELATION_ALLY
 				cbitmod CHARA_BIT_NECRO, rc, TRUE
+				cbitmod CHARA_BIT_SHADOW_CLONE, rc, TRUE
 				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
 			}
 			if ( findchara(CREATURE_ID_BLUE_DARK_GUARDIAN) == 0 ) {
@@ -5795,6 +5795,7 @@
 				cdata(CDATA_RELATION, rc) = RELATION_ALLY
 				cdata(CDATA_RELATION_ORG, rc) = RELATION_ALLY
 				cbitmod CHARA_BIT_NECRO, rc, TRUE
+				cbitmod CHARA_BIT_SHADOW_CLONE, rc, TRUE
 				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
 			}
 			if ( findchara(CREATURE_ID_CRIMSON_DARK_GUARDIAN) == 0 ) {
@@ -5806,6 +5807,7 @@
 				cdata(CDATA_RELATION, rc) = RELATION_ALLY
 				cdata(CDATA_RELATION_ORG, rc) = RELATION_ALLY
 				cbitmod CHARA_BIT_NECRO, rc, TRUE
+				cbitmod CHARA_BIT_SHADOW_CLONE, rc, TRUE
 				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
 			}
 		}
@@ -9274,7 +9276,7 @@
 			txt lang("それはワールドマップで読む必要がある。", "You need to read it while you are in the world map.")
 			goto *effect_end
 		}
-		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 			txt lang("それは海の地図ではない。", "It's not a sea map.")
 			goto *effect_end
 		}
@@ -11740,13 +11742,12 @@
 			cdata(CDATA_HP, rc) = limit(cost / 25, 1, 2000)
 			cdata(CDATA_MAX_HP, rc) = limit(cost / 25, 1, 2000)
 			cbitmod CHARA_BIT_NECRO, rc, TRUE
+			cbitmod CHARA_BIT_SUMMONED, rc, TRUE
+			cbitmod CHARA_BIT_SHADOW_CLONE, rc, TRUE
+			cdata(CDATA_RELATION, rc) = RELATION_ALLY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ALLY
 			cdata(CDATA_TARGET, rc) = cdata(CDATA_TARGET, cc)
 			cdata(CDATA_AI_AGGRO, rc) = cdata(CDATA_AI_AGGRO, cc)
-			/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-			cdata(CDATA_RELATION, rc) = 10
-			cdata(CDATA_RELATION_ORG, rc) = 10
-			cbitmod CHARA_BIT_SUMMONED, rc, TRUE
-			/********** CUSTOM - ENDING **********/
 			if ( cc != CHARA_PLAYER ) {
 				cdata(CDATA_PIC, rc) = cdata(CDATA_PIC, cc)
 				cdata(CDATA_CHARA_PIC, rc) = cdata(CDATA_CHARA_PIC, cc)
@@ -13633,17 +13634,14 @@
 			obvious = 0
 			goto *effect_end
 		}
-		/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
-			snd SOUNDLIST_FAIL1
-			txt lang("この階層では帰還が出来ないようだ。", "It seems that you cannot return from this floor.")
-			obvious = 0
-			goto *effect_end
-		}
-		/********** CUSTOM - BEGINNING **********/
 		if ( gdata(GDATA_AREA) == AREA_REMIDO & gdata(GDATA_LEVEL) == 129 | (gdata(GDATA_AREA) == AREA_CHAOS_CRADLE & gdata(GDATA_LEVEL) == 179) ) {
 			snd SOUNDLIST_FAIL1
 			txt lang("この階層では脱出が出来ないようだ。", "It seems that you cannot escape from this floor.")
+			obvious = 0
+			goto *effect_end
+		}
+		if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
+			txt lang("ここでは脱出ができない。", "It seems that you cannot escape here.")
 			obvious = 0
 			goto *effect_end
 		}
@@ -13671,7 +13669,7 @@
 			}
 			gdata(GDATA_TELEPORT_AREA) = gdata(GDATA_WORLD), 1
 			if ( efstatus <= (-1) ) {
-				if ( gdata(GDATA_WORLD) != AREA_LOST_YLVA & gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
+				if ( gdata(GDATA_WORLD) != AREA_LOST_YLVA & gdata(GDATA_WORLD) != AREA_OCEAN ) {
 					if ( rnd(3) == 0 ) {
 						gdata(GDATA_TELEPORT_AREA) = AREA_JAIL, 1
 					}
@@ -13688,17 +13686,14 @@
 			obvious = 0
 			goto *effect_end
 		}
-		/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_AREA) == AREA_REMIDO & gdata(GDATA_LEVEL) == 129 | (gdata(GDATA_AREA) == AREA_CHAOS_CRADLE & gdata(GDATA_LEVEL) == 179) ) {
 			snd SOUNDLIST_FAIL1
 			txt lang("この階層では帰還が出来ないようだ。", "It seems that you cannot return from this floor.")
 			obvious = 0
 			goto *effect_end
 		}
-		/********** CUSTOM - BEGINNING **********/
-		if ( gdata(GDATA_AREA) == AREA_REMIDO & gdata(GDATA_LEVEL) == 129 | (gdata(GDATA_AREA) == AREA_CHAOS_CRADLE & gdata(GDATA_LEVEL) == 179) ) {
-			snd SOUNDLIST_FAIL1
-			txt lang("この階層では帰還が出来ないようだ。", "It seems that you cannot return from this floor.")
+		if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
+			txt lang("帰還できる場所が無い。", "There's no place to return to.")
 			obvious = 0
 			goto *effect_end
 		}
@@ -13710,7 +13705,7 @@
 		else {
 			gosub *com_return
 			if ( efstatus <= (-1) ) {
-				if ( gdata(GDATA_WORLD) != AREA_LOST_YLVA & gdata(GDATA_WORLD) != AREA_TEST_WORLD ) {
+				if ( gdata(GDATA_WORLD) != AREA_LOST_YLVA & gdata(GDATA_WORLD) != AREA_OCEAN ) {
 					if ( rnd(3) == 0 ) {
 						gdata(GDATA_TELEPORT_AREA) = AREA_JAIL, 1
 					}
@@ -14741,7 +14736,7 @@
 			cdata(CDATA_CHARACTER_TIER, CHARA_PLAYER) = CHARACTER_TIER_SHIP_HULL_ENDURANCE
 			gdata(GDATA_FLAG_COLLECTED_WISHES) = 0
 			gdata(GDATA_FLAG_SHIP_LAST_PORT) = gdata(GDATA_WORLD) * 100 + gdata(GDATA_AREA)
-			gdata(GDATA_TELEPORT_AREA) = AREA_TEST_WORLD, gdata(GDATA_AREA)
+			gdata(GDATA_TELEPORT_AREA) = AREA_OCEAN, gdata(GDATA_AREA)
 			gdata(GDATA_RETURN) = 1
 		}
 		goto *effect_end
@@ -18611,6 +18606,48 @@
 		tyouhatu = 0
 		goto *effect_end
 	}
+	if ( _switch_val == SKILL_SPACT_ACCEL_NECRO | _switch_sw ) {
+		_switch_sw = 0
+		animeid = ANIMATION_GENE
+		anic = cc
+		gosub *anime
+		snd SOUNDLIST_CURSE3
+		nelv = 0
+		repeat 245
+			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+				continue
+			}
+			if ( cc == cnt ) {
+				continue
+			}
+			tc = cnt
+			dx = cdata(CDATA_X, tc)
+			dy = cdata(CDATA_Y, tc)
+			if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) > sdataref(SKILL_DATAREF_TG, SKILL_SPACT_CHEER) \ 1000 + 1 ) {
+				continue
+			}
+			if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 ) {
+				continue
+			}
+			if ( cbit(CHARA_BIT_SHADOW_CLONE, tc) == TRUE ) {
+				continue
+			}
+			if ( cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE ) {
+				if ( tc >= MAX_CHARA_FOLLOWER ) {
+					if ( cbit(CHARA_BIT_NECRO, tc) == TRUE ) {
+						addbuff tc, BUFF_GRAVITY_ACCEL, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_WIL, CHARA_PLAYER)) / 4 + 1, 50
+						addbuff tc, BUFF_SPEED, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_WIL, CHARA_PLAYER)) / 2 + 1, 50
+						addbuff tc, BUFF_BOOST, 20, 50
+						nelv = cdata(CDATA_MAX_SP, CHARA_PLAYER) / 20 + 1
+						skillexp SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER, 100
+					}
+				}
+			}
+		loop
+		dmgsp CHARA_PLAYER, nelv
+		goto *effect_end
+		_switch_sw++
+	}
 	if ( _switch_val == SKILL_SPACT_NECRO_FORCE | _switch_sw ) {
 		_switch_sw = 0
 		if ( cc == CHARA_PLAYER ) {
@@ -18672,11 +18709,6 @@
 				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 					continue
 				}
-				/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-				if ( cdata(CDATA_ID, cnt) == CREATURE_ID_SHADE ) {
-					continue
-				}
-				/********** CUSTOM - ENDING **********/
 				if ( cc == cnt ) {
 					continue
 				}
@@ -18689,9 +18721,12 @@
 				if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 ) {
 					continue
 				}
-				if ( cbit(CHARA_BIT_LIVESTOCK, tc) != 1 ) {
+				if ( cbit(CHARA_BIT_SHADOW_CLONE, tc) == TRUE ) {
+					continue
+				}
+				if ( cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE ) {
 					if ( tc >= MAX_CHARA_FOLLOWER ) {
-						if ( cbit(CHARA_BIT_NECRO, tc) == 1 ) {
+						if ( cbit(CHARA_BIT_NECRO, tc) == TRUE ) {
 							if ( rtval == 1 ) {
 								necrop = 0
 								if ( cdata(CDATA_ID, tc) == CREATURE_ID_CAT_ZOMBIE ) {
@@ -18730,51 +18765,36 @@
 									inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 									inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
 									inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
+										inv(INV_ITEM_PARAM2, ci) = 0
+									}
+									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
+										inv(INV_ITEM_PARAM2, ci) = 0
+									}
+									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
+										inv(INV_ITEM_PARAM2, ci) = 0
+									}
+									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
+										inv(INV_ITEM_PARAM2, ci) = 0
+									}
+									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
+										inv(INV_ITEM_PARAM2, ci) = 0
+									}
+									if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
+										inv(INV_ITEM_PARAM2, ci) = 0
+									}
 									chara_vanquish tc
 									gosub *screen_draw
 								}
 							}
 							if ( rtval == 2 ) {
-								txtef COLOR_BLUE
-								txt lang(name(tc) + "は魔力を注がれ狂暴化した！", name(tc) + " became enraged through magic!")
-								addbuff tc, BUFF_BOOST, 20, 50
-								addbuff tc, BUFF_ATTRIBUTE_SHIELD, sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + 100, 50
-								nelv += cdata(CDATA_LEVEL, tc)
+								addbuff tc, BUFF_CHAIN_OF_MANA, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_MAG, CHARA_PLAYER)) / 4 + 1, 100
+								cdata(CDATA_MP, CHARA_PLAYER) -= cdata(CDATA_LEVEL, tc) + cdata(CDATA_MAX_MP, CHARA_PLAYER) / 33 + 1
 								skillexp SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER, 100
 							}
 							if ( rtval == 3 ) {
-								txtef COLOR_BLUE
-								txt lang(name(tc) + "の身体は闇に包まれて再生した！", name(tc) + "'s body was enveloped by darkness and regenerated!")
-								healhp tc, cdata(CDATA_MAX_HP, tc) / 3
-								addbuff tc, BUFF_REGENERATION, sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + 100, 50
-								if ( cdata(CDATA_CONDITION_POISON, tc) != 0 ) {
-									cdata(CDATA_CONDITION_POISON, tc) = cdata(CDATA_CONDITION_POISON, tc) / 5 + 1
-								}
-								if ( cdata(CDATA_CONDITION_MPOISON, tc) != 0 ) {
-									cdata(CDATA_CONDITION_MPOISON, tc) = cdata(CDATA_CONDITION_MPOISON, tc) / 5 + 1
-								}
-								if ( cdata(CDATA_CONDITION_SLEEP, tc) != 0 ) {
-									cdata(CDATA_CONDITION_SLEEP, tc) = cdata(CDATA_CONDITION_SLEEP, tc) / 5 + 1
-								}
-								if ( cdata(CDATA_CONDITION_CONFUSE, tc) != 0 ) {
-									cdata(CDATA_CONDITION_CONFUSE, tc) = cdata(CDATA_CONDITION_CONFUSE, tc) / 5 + 1
-								}
-								if ( cdata(CDATA_CONDITION_BLIND, tc) != 0 ) {
-									cdata(CDATA_CONDITION_BLIND, tc) = cdata(CDATA_CONDITION_BLIND, tc) / 5 + 1
-								}
-								if ( cdata(CDATA_CONDITION_PARALYZE, tc) != 0 ) {
-									cdata(CDATA_CONDITION_PARALYZE, tc) = cdata(CDATA_CONDITION_PARALYZE, tc) / 5 + 1
-								}
-								if ( cdata(CDATA_CONDITION_DIM, tc) != 0 ) {
-									cdata(CDATA_CONDITION_DIM, tc) = cdata(CDATA_CONDITION_DIM, tc) / 5 + 1
-								}
-								if ( cdata(CDATA_CONDITION_DRUNK, tc) != 0 ) {
-									cdata(CDATA_CONDITION_DRUNK, tc) = cdata(CDATA_CONDITION_DRUNK, tc) / 5 + 1
-								}
-								if ( cdata(CDATA_CONDITION_BLEED, tc) != 0 ) {
-									cdata(CDATA_CONDITION_BLEED, tc) = cdata(CDATA_CONDITION_BLEED, tc) / 5 + 1
-								}
-								nelv += cdata(CDATA_LEVEL, tc)
+								addbuff tc, BUFF_FLAME_OF_LIFE, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_MAG, CHARA_PLAYER)) / 4 + 1, 100
+								cdata(CDATA_HP, CHARA_PLAYER) -= cdata(CDATA_LEVEL, tc) + cdata(CDATA_MAX_HP, CHARA_PLAYER) / 33 + 1
 								skillexp SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER, 100
 							}
 							if ( rtval == 4 ) {
@@ -18795,16 +18815,10 @@
 			loop
 			snd SOUNDLIST_CURSE3
 			if ( rtval == 2 ) {
-				if ( nelv != 0 ) {
-					dmgmp cc, 1
-					cdata(CDATA_MP, cc) += -nelv
-				}
+				animeload 46, 0
 			}
 			if ( rtval == 3 ) {
-				if ( nelv != 0 ) {
-					dmghp cc, 1
-					cdata(CDATA_HP, cc) += -nelv
-				}
+				animeload 38, 0
 			}
 			nelv = 0
 		}
@@ -18818,7 +18832,10 @@
 					if ( cdata(CDATA_ID, cnt) != CREATURE_ID_ZOMBIE ) {
 						continue
 					}
-					if ( cbit(CHARA_BIT_SUMMONED, cnt) != 1 ) {
+					if ( cbit(CHARA_BIT_SHADOW_CLONE, cnt) == TRUE ) {
+						continue
+					}
+					if ( cbit(CHARA_BIT_SUMMONED, cnt) != TRUE ) {
 						continue
 					}
 				}
@@ -18826,7 +18843,10 @@
 					if ( cdata(CDATA_ALLIED, cnt) == 100 ) {
 						continue
 					}
-					if ( cbit(CHARA_BIT_NECRO, cnt) != 1 ) {
+					if ( cbit(CHARA_BIT_SHADOW_CLONE, cnt) == TRUE ) {
+						continue
+					}
+					if ( cbit(CHARA_BIT_NECRO, cnt) != TRUE ) {
 						continue
 					}
 				}
@@ -21912,6 +21932,7 @@
 					}
 					txt lang("deru" + gdata(GDATA_FLAG_RARE_DROP) + "、" + gdata(GDATA_FLAG_REALTIME_MINUTES) + "だ。運勢は" + sdata(SKILL_ATTR_LUC, CHARA_PLAYER) + "。", "*" + skillname(efid) + "* ")
 				loop
+				goto *game_title
 			}
 		}
 
@@ -22677,7 +22698,7 @@
 		if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE ) {
 			goto *effect_end
 		}
-		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 			goto *effect_end
 		}
 		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 ) {

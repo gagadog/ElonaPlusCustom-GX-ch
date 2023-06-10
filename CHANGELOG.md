@@ -1,3 +1,30 @@
+# 2.18R.1.0
+
+## Added
+- Ported all changes from Elona+ 2.18R.
+- Added damage meter, the Bar color is decided by the character's real class.
+  + <span style="color:#C79C6E">warrior</span>
+  + <span style="color:#FFF569">thief</span>
+  + <span style="color:#69CCF0">wizard</span>
+  + <span style="color:#00FF96">farmer</span>
+  + <span style="color:#FF7D0A">predator</span>
+  + <span style="color:#ABD473">archer</span>
+  + <span style="color:#A330C9">warmage</span>
+  + <span style="color:#F58CBA">pianist</span>
+  + <span style="color:#C41F3B">gunner</span>
+  + <span style="color:#0070DE">priest</span>
+  + <span style="color:#FFFFFF">claymore</span>
+  + <span style="color:#D0D0D0">tourist</span>
+  + <span style="color:#4DD827">no class</span>
+
+## Changed
+  - Added trainer to 'more hireable servant' tweak.
+
+## Fixed
+- NPC name/chat showing above quest/god UI
+- Added (machine) translations for some item and characters.
+
+
 # 2.18.1.0
 
 ## Added
@@ -7,7 +34,6 @@
 
 ## Fixed
 - Fixed following bug from original 2.18
-  + Saving drifters not awarding karma.
   + Shadow hop summoning hostile shades that drops loot.
   + Using return/escape/aurtehom underwater stuck you inside another continent.
   + Jukebox missing several music.

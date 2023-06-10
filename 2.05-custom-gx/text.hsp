@@ -2596,7 +2596,7 @@
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_WEST_RASKILIS ) {
 		s = lang("ラスキリスの谷間・西", "West Raskilis valley"), lang("谷の奥に街道が見える。なぜか懐かしさと禍々しさを感じる。", "You see a pathway near the end of the valley. For some reason, you feel nostalgic and disquieted.")
 	}
-	if ( adata(ADATA_ID, mapname_mapid) == AREA_TEST_WORLD ) {
+	if ( adata(ADATA_ID, mapname_mapid) == AREA_OCEAN ) {
 		s = lang("海", "Sea")
 	}
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_LOST_YLVA ) {
@@ -2650,6 +2650,11 @@
 	if ( adata(ADATA_ID, mapname_mapid) == areatestworld ) {
 		s = lang("テストワールド", "Test World")
 	}
+	/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
+	if ( adata(ADATA_ID, mapname_mapid) == 0 ) {
+		s = lang("野外", "Wilderness")
+	}
+	/********** CUSTOM - ENDING **********/
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_TW_NORTH_BORDER ) {
 		s = lang("テストワールド北関所", "Test World north border")
 	}
@@ -7747,6 +7752,12 @@
 	return
 
 *daily_info
+	if ( cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 9 | cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) \ 1000 == 0 ) {
+		cdata(CDATA_MATERIAL1_COUNTER, CHARA_PLAYER) = 1
+	}
+	if ( cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 9 | cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) \ 1000 == 0 ) {
+		cdata(CDATA_SPINDLE_COMBINATION_B, CHARA_PLAYER) = 1
+	}
 	if ( val == 0 ) {
 		noteadd ""
 		noteadd lang("@QD[デイリークエスト]", "@QD[Daily Quest]")

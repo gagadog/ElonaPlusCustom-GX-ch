@@ -450,7 +450,7 @@
 		env = SOUNDLIST_BG_WIND
 	}
 	if ( gdata(GDATA_AREA) == AREA_WILDERNESS ) {
-		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 			env = SOUNDLIST_UMINADO
 		}
 	}
@@ -508,7 +508,7 @@
 		DSSTOP lpfilewind
 		DSRELEASE lpfilewind
 	}
-	if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+	if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 		snd SOUNDLIST_BG_SEA, TRUE
 	}
 	else {
@@ -890,7 +890,7 @@
 			}
 		}
 		if ( gdata(GDATA_AREA) == AREA_WILDERNESS ) {
-			if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+			if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 				if ( gdata(GDATA_HOUR) > 5 & gdata(GDATA_HOUR) < 17 ) {
 					music = MUSICLIST_MCSEA1
 				}
@@ -901,13 +901,16 @@
 		}
 	}
 	if ( scenemode == FALSE ) {
-	    if ( music == MUSICLIST_NONE | adata(ADATA_TYPE, gdata(GDATA_AREA)) == MAP_TYPE_WORLD ) {
-	    	music = MUSICLIST_MCFIELD1 + gdata(GDATA_DAY) \ 3
-	    }
+		if ( music == MUSICLIST_NONE ) {
+			music = MUSICLIST_MCOPENING
+		}
+		if ( gdata(GDATA_AREA) == AREA_NORTH_TYRIS | gdata(GDATA_AREA) == AREA_SOUTH_TYRIS ) {
+			music = 86 + gdata(GDATA_DAY) \ 3
+		}
 	    if ( gdata(GDATA_AREA) == AREA_LOST_YLVA ) {
 	    	music = MUSICLIST_MCLOST1 + gdata(GDATA_DAY) \ 3
 	    }
-		if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 			music = MUSICLIST_MCHUGE
 		}
 	    if ( gdata(GDATA_AREA) == AREA_AIMWELL ) {

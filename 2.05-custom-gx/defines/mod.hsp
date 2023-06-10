@@ -111,8 +111,10 @@
 #define global	BUFF_HARMONIC_ASSAULT	65
 #define global	BUFF_MOGRANIC_AURA	66
 #define global	BUFF_LIFE_TASTING	67
+#define global	BUFF_CHAIN_OF_MANA	68
+#define global	BUFF_FLAME_OF_LIFE	69
 
-#define global	MAX_BUFF	(BUFF_LIFE_TASTING + 1)
+#define global	MAX_BUFF	(BUFF_FLAME_OF_LIFE + 1)
 
 // calcbuff information type
 #define global	CALCBUFF_DESCRIPTION	-2
@@ -596,8 +598,9 @@
 #define global	SKILL_SPACT_LIMITER_VANISH	851
 #define global	SKILL_SPACT_SHADOW_JUMP	852
 #define global	SKILL_SPACT_SHADOW_HOP	853
+#define global	SKILL_SPACT_ACCEL_NECRO	854
 
-#define global	MAX_SKILL	(SKILL_SPACT_SHADOW_HOP + 1)
+#define global	MAX_SKILL	(SKILL_SPACT_ACCEL_NECRO + 1)
 
 // Absolute skill limits
 #define global	MAX_SPACT_COUNT	500 // Maximum number of spact slots available in the array, beginning at STARTING_SKILL_SPACT, meaning the effective max skillid is 1099 (1100 if you really push it)
@@ -3252,7 +3255,7 @@
 #define global	AREA_SOUTH_TYRIS	44
 #define global	AREA_ST_NORTH_BORDER	45
 #define global	AREA_SMOKE_AND_PIPE	46
-#define global	AREA_TEST_WORLD	47
+#define global	AREA_OCEAN	47
 #define global	AREA_TW_NORTH_BORDER	48
 #define global	AREA_REMIDO	49
 #define global	AREA_EIREL	50

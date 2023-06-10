@@ -194,7 +194,7 @@
 		tile_upstairs = xy2pic(2, 7)
 	}
 	else {
-		if ( gdata(GDATA_AREA) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 			tile_downstairs = xy2pic(22, 8)
 			tile_upstairs = xy2pic(22, 8)
 		}
@@ -270,10 +270,7 @@
 	}
 	if ( map_tileset_arg1 == 96 ) {
 		tile_default = 541
-		tile_fog = 599
-		/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-		tile_fog = 701
-		/********** CUSTOM - ENDING **********/
+		tile_fog = 697
 		tile_tunnel = 351
 		tile_wall = 541
 		tile_room = 351
@@ -407,7 +404,7 @@
 			tile_fog = 533
 			tile_default = 23
 		}
-		if ( gdata(GDATA_WORLD) == AREA_TEST_WORLD ) {
+		if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 			tile_fog = xy2pic(25, 16)
 			tile_default = xy2pic(16, 8)
 		}

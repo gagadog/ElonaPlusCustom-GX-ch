@@ -1464,10 +1464,14 @@
 	skillname(SKILL_SPACT_BODY_BLOW) = lang("ボディブロー", "Body Blow")
 	skilldesc(SKILL_SPACT_BODY_BLOW) = lang("通常格闘攻撃にボディブロー追加", "Add body blow to martial")
 
-	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_NECRO_FORCE) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 10, TARGET_TYPE_SELF + SKILL_TYPE_FOV_BOLT, 500
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_NECRO_FORCE) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 0, TARGET_TYPE_SELF + SKILL_TYPE_FOV_BOLT, 500
 	skillname(SKILL_SPACT_NECRO_FORCE) = lang("ネクロフォース", "Necro Force")
 	skilldesc(SKILL_SPACT_NECRO_FORCE) = lang("使役アンデッド制御", "Control coffin undead")
 
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_ACCEL_NECRO) = SKILL_ATTR_WIL, SKILL_TYPE_SP, 0, TARGET_TYPE_SELF + SKILL_TYPE_FOV_BOLT, 500
+	skillname(SKILL_SPACT_ACCEL_NECRO) = lang("アクセルネクロ", "Accel Necro")
+	skilldesc(SKILL_SPACT_ACCEL_NECRO) = lang("使役アンデッド加速/1体毎にSP5%消費", "Accelerate coffin undead/Consumes 5% SP per undead")
+	
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_CLOSE_SUICIDE) = SKILL_ATTR_CON, SKILL_TYPE_SP, 18, TARGET_TYPE_ENEMY, 700
 	skillname(SKILL_SPACT_CLOSE_SUICIDE) = lang("道連れ", "Close Suicide")
 	skilldesc(SKILL_SPACT_CLOSE_SUICIDE) = lang("自爆", "Suicide")
