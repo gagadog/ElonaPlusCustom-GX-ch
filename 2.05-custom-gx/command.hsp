@@ -14263,6 +14263,12 @@
 	dbid = inv(INV_ITEM_ID, ci)
 	dbmode = DBMODE_REF
 	gosub *db_item
+	if ( en ) {
+		description(0) = ""
+		description(1) = ""
+		description(2) = ""
+		description(3) = ""
+	}
 	dbmode = DBMODE_DESC
 	gosub *db_item
 
