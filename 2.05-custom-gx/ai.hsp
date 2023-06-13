@@ -518,6 +518,9 @@
 						gosub *findTarget
 					}
 				}
+				if ( TweakData(TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING, TWEAK_CATEGORY_GAMEPLAY) == 1 & cbit(CHARA_BIT_NECRO, cc) ) {
+					gosub *findTarget
+				}
 			}
 			if ( cdata(CDATA_RELATION, cdata(CDATA_TARGET, cc)) > (-3) ) {
 				cdata(CDATA_TARGET, cc) = 0
