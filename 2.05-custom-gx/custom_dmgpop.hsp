@@ -229,6 +229,9 @@
             DmgPopupY = (dy - scy) * inf_tiles + inf_screeny - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
             DmgPopupX += (scx != scxbk) * sxfix
             DmgPopupY += (scy != scybk) * syfix
+            if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver ) {
+                continue
+            }
             pos DmgPopupX, DmgPopupY
             color 0, 0, 0
             bmes s, DmgPopupColorsNPCName(0, DmgPopupR), DmgPopupColorsNPCName(1, DmgPopupR), DmgPopupColorsNPCName(2, DmgPopupR)
@@ -295,6 +298,10 @@
             if ( DmgPopupSize < 8 ) { DmgPopupSize = 8 }
             if ( DmgPopupSize > 30 ) { DmgPopupSize = 30 }
             font lang(cfg_font1, cfg_font2), DmgPopupSize, 0
+
+            if (DmgPopupY < 0 | DmgPopupY + (2 + DmgPopupSize + 3) > inf_ver ) {
+                continue
+            }
 
             pos DmgPopupX, DmgPopupY
             color DmgPopups(5, i@DP), DmgPopups(6, i@DP), DmgPopups(7, i@DP)
