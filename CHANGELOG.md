@@ -1,3 +1,15 @@
+# 2.18R.1.1
+
+## Added
+- Added Tweak to make necromancy minions actively seek out enemies like pets, Thanks to @air1068
+
+## Fixed
+- Some visual issues.
+- Custom Harvest Quests too hard for new characters.
+- Big Daddy spawning causing DESTINY item spawn at coordinate (0,0)
+
+Thanks to @air1068 for contributing.
+
 # 2.18R.1.0
 
 ## Added

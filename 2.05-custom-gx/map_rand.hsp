@@ -529,6 +529,7 @@
 			itemcreate -1, ITEM_ID_DUMMY, -1, -1, 0
 		}
 	loop
+	cibk = ci // CUSTOM fixes big daddy + DESTINY bug
 	if ( adata(ADATA_WAKEUP_NEFIA, gdata(GDATA_AREA)) != WAKEUP_NEFIA_NONE & gdata(GDATA_LEVEL) - gdata(GDATA_LEVEL) / 10 * 10 == 8 ) {
 		repeat mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 5
 			map_trap 0, 0, gdata(GDATA_LEVEL)
@@ -574,6 +575,7 @@
 			itemcreate -1, ITEM_ID_DERNEFIA, -1, -1, 0
 		}
 	}
+	ci = cibk // CUSTOM fixes big daddy + DESTINY bug
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
 		if ( gdata(GDATA_LEVEL) != adata(ADATA_MIN_LEVEL, gdata(GDATA_AREA)) ) {
 			if ( gdata(STARTING_GDATA_FLAG + 353) == 100 ) {
