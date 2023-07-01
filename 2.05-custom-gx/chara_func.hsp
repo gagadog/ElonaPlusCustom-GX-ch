@@ -5301,7 +5301,7 @@
 	if ( gdata(GDATA_FLAG_INVULNERABLE_TURNS) > 0 & dmghp_charid == CHARA_PLAYER ) {
 		locvar_dmghp_dmg = 0
 	}
-	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
+	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 | gdata(GDATA_TEMPORARY_FLAGS2) == 4771 ) {
 		if ( locvar_dmghp_dmg > cdata(CDATA_HP, dmghp_charid) ) {
 			locvar_dmghp_dmg = 0
 			cdata(CDATA_HP, dmghp_charid) = 0
@@ -6418,7 +6418,7 @@
 			}
 		}
 	}
-	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 | gdata(GDATA_TEMPORARY_FLAGS2) == 4771 ) {
+	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
 		if ( cdata(CDATA_HP, dmghp_charid) <= cdata(CDATA_MAX_HP, dmghp_charid) / 20 | cdata(CDATA_HP, dmghp_charid) == 0 ) {
 			if ( cdata(CDATA_CONDITION_DIM, dmghp_charid) < 100 ) {
 				cdata(CDATA_CONDITION_DIM, dmghp_charid) = 100
