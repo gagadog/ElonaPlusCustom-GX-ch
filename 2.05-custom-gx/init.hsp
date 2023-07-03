@@ -99,6 +99,12 @@ if instr(s,0,%1)!-1{	%c\
 
 /********** CUSTOM DAMAGE METER - ENDING **********/
 
+/********** CUSTOM ENEMY EVOLUTION - BEGINNING **********/
+
+#include "custom_enemyevolution.hsp"
+
+/********** CUSTOM ENEMY EVOLUTION - ENDING **********/
+
 #defcfunc hantozen str hantozen_arg1, var hantozen_arg2, int hantozen_arg3
 	return LCMapStringA(GetUserDefaultLCID(), 8388608, hantozen_arg1, -1, hantozen_arg2, hantozen_arg3)
 

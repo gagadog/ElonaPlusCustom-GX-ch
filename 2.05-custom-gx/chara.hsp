@@ -2248,6 +2248,25 @@
 	}
 	cdata(CDATA_QUALITY, rc) = fixlv
 	gosub *cm_finish
+	/********** CUSTOM ENEMY EVOLUTION - BEGINNING **********/
+	if ( rc >= MAX_CHARA_FOLLOWER ) {
+		f@PE = 0
+		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
+			if ( adata(ADATA_WAKEUP_NEFIA, gdata(GDATA_AREA)) != WAKEUP_NEFIA_NONE ) {
+				if ( TweakData(TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES, TWEAK_CATEGORY_GAMEPLAY) == 1 ) { f@PE = 1 }
+			}
+			if ( TweakData(TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES, TWEAK_CATEGORY_GAMEPLAY) == 2 ) { f@PE = 1 }
+		}
+		if ( TweakData(TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES, TWEAK_CATEGORY_GAMEPLAY) == 3 ) { f@PE = 1 }
+
+		if ( f@PE ) {
+			if ( rnd(300) < gdata(GDATA_LEVEL) ) {
+				tc@PE = rc
+				gosub *custom_enemy_evolution
+			}
+		}
+	}
+	/********** CUSTOM ENEMY EVOLUTION - ENDING **********/
 	rtval = rc
 	return 1
 

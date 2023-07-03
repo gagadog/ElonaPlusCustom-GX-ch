@@ -55,8 +55,9 @@ TweakData(71, 2) = "Use CGX Map Layouts in Random Nefia."
 TweakData(72, 2) = "Use CGX Job Quests."
 TweakData(73, 2) = "Use CGX Arrow/Bolt/Ball Spell Animation."
 TweakData(74, 2) = "Use summoning crystals to summon Custom NPCs."
-TweakData(75, 2) = "Revert post-1.90 skill exp formula changes."
+TweakData(75, 2) = "Revert post-2.17 skill exp formula changes."
 TweakData(76, 2) = "Make necromancy minions actively seek out enemies like pets do."
+TweakData(77, 2) = "Spawn evolved enemies in: "
 
 TweakData(x, 3) = "AI Tweaks"
 TweakData(0, 3) = "Change Zeome's AI."
@@ -313,6 +314,20 @@ TweakData(51, 4) = "Disable cicada noises."
 			return " (Currently: Romanji)"
 		}
 	}
+	if ( TweakCategory == TWEAK_CATEGORY_GAMEPLAY ) & ( TweakNumber == 77 ) {
+		if ( TweakData(TweakNumber, TweakCategory) == 1 ) {
+			return " (Currently: Awakened Random Nefias)"
+		}
+		if ( TweakData(TweakNumber, TweakCategory) == 2 ) {
+			return " (Currently: All Random Nefias)"
+		}
+		if ( TweakData(TweakNumber, TweakCategory) == 3 ) {
+			return " (Currently: Everywhere)"
+		}
+		else {
+			return " (Currently: None)"
+		}
+	}
 	if ( TweakData(TweakNumber, TweakCategory) == 1 ) {
 		return " (Currently: On)"
 	}
@@ -481,7 +496,7 @@ TweakData(51, 4) = "Disable cicada noises."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 34
+    listmax = 35
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -524,8 +539,9 @@ TweakData(51, 4) = "Disable cicada noises."
 	listn(0, 29) = "Use CGX Job Quests." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS)
 	listn(0, 30) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_SPELL_ANIMATIONS)
 	listn(0, 31) = "Use summoning crystals to summon Custom NPCs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING)
-	listn(0, 32) = "Revert post-1.90 skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES)
+	listn(0, 32) = "Revert post-2.17 skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES)
 	listn(0, 33) = "Necromancy Autotargeting." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING)
+	listn(0, 34) = "Spawn evolved enemies in: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES)
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -652,6 +668,9 @@ TweakData(51, 4) = "Disable cicada noises."
 				s = "Make necromancy minions actively seek out enemies like pets do."
 			}
 			if ( p == 34 ) {
+				s = "Spawn evolved enemies at given locations. \nChance start at 1/1800 chance, caps at area lvl 301 with 1/6 chance.\nEvolution branches chance stack. \nEvolution stages are calculated independently."
+			}
+			if ( p == 35 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -846,6 +865,13 @@ TweakData(51, 4) = "Disable cicada noises."
 		gosub *ToggleTweak
 	}
 	if ( p == 34 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES
+		ts = 1 // Increments by
+		tm = 3 // Max
+		gosub *IncrementTweak
+	}
+	if ( p == 35 ) {
 		snd SOUNDLIST_OK1
 		return
 	}

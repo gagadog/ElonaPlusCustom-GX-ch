@@ -16373,7 +16373,7 @@
 						cdata(CDATA_WEIGHT, tc) += rnd(5000) + 5000
 					}
 					if ( evmode == 37 ) {
-						evname = lang("ハイパービートル", "Hyper Beetle ")
+						evname = lang("ハイパービートル", "Hyper Beetle")
 						evold = lang("ヘブンズビートル", "kabuto")
 						skillmod SKILL_ATTR_SPD, tc, 40000
 					}
@@ -17312,7 +17312,7 @@
 					}
 					if ( evmode == 115 ) {
 						evname = lang("メタルスラッグ", "Metalslug")
-						evold = lang("なめくじ", "slug")
+						evold = lang("なめくじ", "Slug")
 						cdata(CDATA_PIC, tc) = xy2pic(13, 25)
 						skillmod SKILL_ATTR_SPD, tc, 5000
 						skillmod SKILL_ATTR_STR, tc, 10000
@@ -17418,7 +17418,7 @@
 					}
 					if ( evmode == 123 ) {
 						evname = lang("ビッグピッグ", "Big Pig")
-						evold = lang("イノブタ", "pig boar")
+						evold = lang("イノブタ", "Pig boar")
 						skillmod SKILL_ATTR_SPD, tc, 20000
 						skillmod SKILL_ATTR_CON, tc, 15000
 						skillmod SKILL_ATTR_DEX, tc, 15000
@@ -17517,7 +17517,7 @@
 					}
 					if ( evmode == 133 ) {
 						evname = lang("フェニキシアン", "Phoenixian")
-						evold = lang("フレアチック", "flare chick")
+						evold = lang("フレアチック", "Flare chick")
 						skillmod SKILL_ATTR_SPD, tc, 30000
 						skillmod SKILL_ATTR_LIFE, tc, 25000
 						skillmod SKILL_ATTR_STR, tc, 20000
@@ -17640,7 +17640,7 @@
 					}
 					if ( evmode == 143 ) {
 						evname = lang("カオス・プラント", "Chaos Plant")
-						evold = lang("カオス・スプラウト", "chaos sprout")
+						evold = lang("カオス・スプラウト", "Chaos Sprout")
 						cdata(CDATA_PIC, tc) = xy2pic(6, 28)
 						skillmod SKILL_ATTR_SPD, tc, 20000
 						skillmod SKILL_ATTR_STR, tc, 15000
@@ -17732,7 +17732,7 @@
 						skillmod SKILL_ATTR_SPD, tc, 10000
 					}
 					if ( evmode == 151 ) {
-						evname = lang("少年スカウト", "scout boy")
+						evname = lang("少年スカウト", "boy scout")
 						evold = lang("少年", "little boy")
 						cdata(CDATA_PIC, tc) = xy2pic(7, 33)
 						skillmod SKILL_ATTR_SPD, tc, 10000
