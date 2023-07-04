@@ -33435,7 +33435,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1035), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1036), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33467,7 +33467,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1036), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1037), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33499,7 +33499,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1037), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1038), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33531,7 +33531,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1038), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1039), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33563,7 +33563,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1039), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1040), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33595,7 +33595,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1040), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1041), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33627,7 +33627,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1041), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1042), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33659,7 +33659,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1042), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1043), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33691,7 +33691,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1043), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1044), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33723,7 +33723,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1044), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1045), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33755,7 +33755,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1045), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1046), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33787,7 +33787,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1046), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1047), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33819,7 +33819,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1047), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1048), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33851,7 +33851,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1048), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1049), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33883,7 +33883,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1049), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1050), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33915,7 +33915,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1050), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1051), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33947,7 +33947,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1051), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1052), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -33979,7 +33979,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1052), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1053), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34011,7 +34011,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1053), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1054), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34043,7 +34043,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1054), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1055), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34075,7 +34075,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1055), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1056), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34107,7 +34107,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1056), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1057), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34139,7 +34139,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1057), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1058), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34171,7 +34171,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1058), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1059), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34203,7 +34203,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1059), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1060), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34235,7 +34235,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1060), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1061), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34267,7 +34267,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1061), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1062), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34299,7 +34299,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1062), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1063), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34331,7 +34331,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1063), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1064), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34363,7 +34363,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1064), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1065), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34395,7 +34395,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1065), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1066), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34427,7 +34427,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1066), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1067), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34459,7 +34459,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1067), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1068), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34491,7 +34491,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1068), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1069), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34523,7 +34523,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1069), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1070), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34555,7 +34555,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1070), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1071), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34587,7 +34587,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1071), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1072), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34619,7 +34619,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1072), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1073), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -34651,7 +34651,7 @@
 	if ( filtermax != 0 ) {
 		dbtmp = 1
 		repeat filtermax
-			if ( instr(filter_creature(1073), 0, filtern(cnt)) == (-1) ) {
+			if ( instr(filter_creature(1074), 0, filtern(cnt)) == (-1) ) {
 				dbtmp = 0
 				break
 			}
@@ -120263,6 +120263,11 @@
 *db_setFilterCreature
 	maxnpcid = MAX_CREATURE_ID
 	dim cbitorg, 30, maxnpcid
+	// TODO 
+	// Due to some magical shenanigans of the decompiler this section is regenerated every-time Ano adds a new monster.
+	// This causes weird bugs in almost every version of CGX, so if you don't want to change every reference to "filter_creature".
+	// Just change filter_creature(bullshit_number) to filter_creature(new_creature_id + 2) like the ones below.
+	// Make sure the filter matches or you will get bugs like fairys spawning in lake dungeons or something.
 	filter_creature(CREATURE_ID_CHAOSHAPRINCESS_ZEHLS + 2) = "/nefia4/"
 	HMMBITON cbitorg(CHARA_BIT_FLOAT / 32, CREATURE_ID_CHAOSHAPRINCESS_ZEHLS), CHARA_BIT_FLOAT \ 32
 	HMMBITON cbitorg(CHARA_BIT_RES_FEAR / 32, CREATURE_ID_CHAOSHAPRINCESS_ZEHLS), CHARA_BIT_RES_FEAR \ 32
