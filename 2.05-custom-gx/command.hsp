@@ -6916,6 +6916,10 @@
 	cs = 0
 	cc = CHARA_PLAYER
 	cs_bk = -1
+	if ( pagesaved_summon == 1 ) {
+		page = pagebk_summon
+		cs = csprev_summon
+	}
 	repeat usernpcmax
 		if ( instr(userdatan(6, cnt), 0, "_tmp_") > (-1) ) {
 			continue
@@ -6938,7 +6942,7 @@
 	grotate 4, cmbg / 4 \ 4 * 180, cmbg / 4 / 4 \ 2 * 300, 0, x, y
 	gmode 2
 	display_topic lang("名前", "Name"), wx + 28, wy + 36
-	display_topic lang("Level", "Level"), wx + 348, wy + 36
+	display_topic lang("Level(Pow)", "Level(Pow)"), wx + 348, wy + 36
 	keyrange = 0
 	repeat pagesize
 		p = pagesize * page + cnt
@@ -6965,7 +6969,7 @@
 		i = list(0, p)
 		s = "" + listn(0, p)
 		pos wx + 380, wy + 66 + cnt * 19
-		mes "" + userdata(2, i)
+		mes "" + userdata(2, i) + "(" + calccostcnpcsummon(i) + ")"
 		cs_list s, wx + 85, wy + 66 + cnt * 19 - 1, 19
 	loop
 	if ( keyrange != 0 ) {
@@ -6983,43 +6987,107 @@
 			break
 		}
 	loop
+	pagebk_summon = page
+	csprev_summon = cs
+	pagesaved_summon = 1
 	if ( p != (-1) ) {
 		gosub *com_knowCNPC
 		if ( key == key_enter ) {
-			f = 0
-			if ( cdata(CDATA_PLATINUM, CHARA_PLAYER) >= userdata(2, knowCNPC) ) {
-				txtef COLOR_YELLOW
-				txt lang("..？", "Summon them as friendly npc? It will cost you " + userdata(2, knowCNPC) + " plantinum coins.")
-				promptYesNo
-				if ( rtval == 0 ) {
-					cdata(CDATA_PLATINUM, CHARA_PLAYER) -= userdata(2, knowCNPC)
-					f = 1
+			p@NE = get_freeallysum()
+			if ( (0 < (15 - p@NE)) & mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
+				txtef COLOR_GREEN
+				txt lang(godname(cdata(CDATA_GOD, CHARA_PLAYER)) + "への信仰の深さ：" + cdata(CDATA_PIETY, CHARA_PLAYER) + "/" + sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) * 100 + "、祈りチャージ：" + limit((cdata(CDATA_PRAY, CHARA_PLAYER) + 1) / 10, 0, 100) + "％ ", "Piety: " + cdata(CDATA_PIETY, CHARA_PLAYER) + "/" + sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) * 100 + " Pray Charge: " + limit((cdata(CDATA_PRAY, CHARA_PLAYER) + 1) / 10, 0, 100) + "%")
+				p@NE(1) = calccostcnpcsummon(knowCNPC)
+				if ( userdata(2, knowCNPC) < cdata(CDATA_LEVEL, CHARA_PLAYER) + 5 ) {
+					if ( p@NE(1) <= cdata(CDATA_PIETY, CHARA_PLAYER) ) {
+						cdata(CDATA_PIETY, CHARA_PLAYER) -= p@NE(1)
+						initunid = findunid(userdatan(0, knowCNPC))
+						s = ""
+						if ( userdata(5, knowCNPC) <= 1 ) { s += "Common " }
+						if ( userdata(5, knowCNPC) == 2 ) { s += "Skilled " }
+						if ( userdata(5, knowCNPC) == 3 ) { s += "Professional " }
+						if ( userdata(5, knowCNPC) == 4 ) { s += "Legendary " }
+						if ( userdata(5, knowCNPC) == 5 ) { s += "Godly " }
+						if ( userdata(5, knowCNPC) == 6 ) { s += "Well-Known " }
+						s += userdatan(3, knowCNPC)
+						txtef COLOR_GREEN
+						txt lang("別世界の何かを召喚した！", "A " + s + " is summoned from another world!")
+						if ( cdata(CDATA_X, CHARA_PLAYER) > 1 ) {
+							sux = cdata(CDATA_X, CHARA_PLAYER) - 1
+						}
+						flt
+						characreate -1, CREATURE_ID_USER, sux, cdata(CDATA_Y, CHARA_PLAYER)
+						cbitmod CHARA_BIT_NECRO, rc, TRUE
+						cbitmod CHARA_BIT_SUMMONED, rc, TRUE
+						cbitmod CHARA_BIT_SHADOW_CLONE, rc, TRUE
+						cdata(CDATA_RELATION, rc) = RELATION_ALLY
+						cdata(CDATA_RELATION_ORG, rc) = RELATION_ALLY
+						cdata(CDATA_TARGET, rc) = cdata(CDATA_TARGET, cc)
+						cdata(CDATA_AI_AGGRO, rc) = cdata(CDATA_AI_AGGRO, cc)
+						cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+						repeat MAX_CHARA_TOTAL
+							if ( cnt <= MAX_CHARA_FOLLOWER ) {
+								continue
+							}
+							if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) {
+								getunid cnt
+							}
+						loop
+						animeid = ANIMATION_GENE
+						anic = rc
+						gosub *anime
+					} else {
+						txtef COLOR_RED
+						txt lang("次元の壁を通過させるには、もっと信仰の深が必要だ。", "You need to be more pious to let the being pass through the dimensional barrier.")
+					}
+				} else {
+					txtef COLOR_RED
+					txt lang("次元の壁を通過させるには、もっと経験が必要だ。", "You need more experience to let the being pass through the dimensional barrier.")
 				}
-			}
-			initunid = findunid(userdatan(0, knowCNPC))
-			txtef COLOR_GREEN
-			txt lang("カスタムNPCを作成した！", "A custom NPC has been successfully summoned from another world!")
-			if ( cdata(CDATA_X, CHARA_PLAYER) > 1 ) {
-				sux = cdata(CDATA_X, CHARA_PLAYER) - 1
-			}
-			flt
-			characreate -1, CREATURE_ID_USER, sux, cdata(CDATA_Y, CHARA_PLAYER)
-			repeat MAX_CHARA_TOTAL
-				if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) {
-					getunid cnt
-				}
-			loop
-			txtef COLOR_YELLOW
-			if ( f == 1 ) {
-				cdata(CDATA_RELATION, rc) = -1
-				cdata(CDATA_RELATION_ORG, rc) = -1
-				txt lang(name(rc) + "は興奮して襲い掛かってきた。", cdatan(CDATAN_NAME, rc) + " is excited!")
+				return 1
 			} else {
-				cdata(CDATA_RELATION, rc) = -3
-				cdata(CDATA_RELATION_ORG, rc) = -3
-				txt lang(name(rc) + "は興奮して襲い掛かってきた。", cdatan(CDATAN_NAME, rc) + " is confused and attacks you.")
+				f = 0
+				if ( cdata(CDATA_PLATINUM, CHARA_PLAYER) >= userdata(2, knowCNPC) ) {
+					txtef COLOR_YELLOW
+					txt lang("..？", "Summon them as friendly npc? It will cost you " + userdata(2, knowCNPC) + " plantinum coins.")
+					promptYesNo
+					if ( rtval == 0 ) {
+						cdata(CDATA_PLATINUM, CHARA_PLAYER) -= userdata(2, knowCNPC)
+						f = 1
+					}
+				}
+				initunid = findunid(userdatan(0, knowCNPC))
+				txtef COLOR_GREEN
+				txt lang("カスタムNPCを召喚した！", "A custom NPC has been successfully summoned from another world!")
+				if ( cdata(CDATA_X, CHARA_PLAYER) > 1 ) {
+					sux = cdata(CDATA_X, CHARA_PLAYER) - 1
+				}
+				flt
+				characreate -1, CREATURE_ID_USER, sux, cdata(CDATA_Y, CHARA_PLAYER)
+				repeat MAX_CHARA_TOTAL
+					if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) {
+						getunid cnt
+					}
+				loop
+				txtef COLOR_YELLOW
+				if ( f == 1 ) {
+					cdata(CDATA_RELATION, rc) = (-1)
+					cdata(CDATA_RELATION_ORG, rc) = (-1)
+					if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
+						cdata(CDATA_RELATION, rc) = 0
+						cdata(CDATA_RELATION_ORG, rc) = 0
+						if ( cdata(CDATA_AI_CALM, rc) == 4 | cdata(CDATA_AI_CALM, rc) == 5 ) {
+							cdata(CDATA_AI_CALM, rc) = 0
+						}
+					}
+					txt lang(name(rc) + "は興奮して襲い掛かってきた。", cdatan(CDATAN_NAME, rc) + " is excited!")
+				} else {
+					cdata(CDATA_RELATION, rc) = -3
+					cdata(CDATA_RELATION_ORG, rc) = -3
+					txt lang(name(rc) + "は興奮して襲い掛かってきた。", cdatan(CDATAN_NAME, rc) + " is confused and attacks you.")
+				}
+				return 1
 			}
-			return 1
 		} 
 		key = ""
 	}
@@ -7028,7 +7096,60 @@
 		return -1
 	}
 	goto *com_userNpcExisting_loop
-	
+
+#defcfunc calccostcnpcsummon int calccostcnpcsummon_arg1
+	locvar_calccostcnpcsummon_cost = userdata(2, calccostcnpcsummon_arg1) // Level
+	locvar_calccostcnpcsummon_multiplier = 10 // Base multiplier
+	// fixLv
+	if ( userdata(5, calccostcnpcsummon_arg1) == 4 ) { locvar_calccostcnpcsummon_multiplier += 2 }
+	if ( userdata(5, calccostcnpcsummon_arg1) == 5 ) { locvar_calccostcnpcsummon_multiplier += 5 }
+	if ( userdata(5, calccostcnpcsummon_arg1) == 6 ) { locvar_calccostcnpcsummon_multiplier += 10 }
+	// Class
+	if ( userdatan(3, calccostcnpcsummon_arg1) == "tourist" ) { locvar_calccostcnpcsummon_multiplier -= 2 }
+	// Race
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "snail" ) { locvar_calccostcnpcsummon_multiplier -= 5 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "eye" ) { locvar_calccostcnpcsummon_multiplier -= 4 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "wisp" ) { locvar_calccostcnpcsummon_multiplier -= 4 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "zombie" ) { locvar_calccostcnpcsummon_multiplier -= 4 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "mushroom" ) { locvar_calccostcnpcsummon_multiplier -= 3 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "kobolt" ) { locvar_calccostcnpcsummon_multiplier -= 2 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "orc" ) { locvar_calccostcnpcsummon_multiplier -= 2 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "dragon" ) { locvar_calccostcnpcsummon_multiplier += 2 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "yith" ) { locvar_calccostcnpcsummon_multiplier += 5 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "quickling" ) { locvar_calccostcnpcsummon_multiplier += 20 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "metal" ) { locvar_calccostcnpcsummon_multiplier += 30 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "god" ) { locvar_calccostcnpcsummon_multiplier += 40 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "undeadgod" ) { locvar_calccostcnpcsummon_multiplier += 40 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "machinegod" ) { locvar_calccostcnpcsummon_multiplier += 40 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "catgod" ) { locvar_calccostcnpcsummon_multiplier += 50 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "doggod" ) { locvar_calccostcnpcsummon_multiplier += 50 }
+	// Resistance
+	if ( userdatan(5, calccostcnpcsummon_arg1) != "" ) {
+		sdim unres, 6, 32
+		csvstr2 unres, userdatan(5, calccostcnpcsummon_arg1)
+		repeat
+			if ( cnt > 15 | unres(cnt * 2) == "" ) { break }
+			locvar_calccostcnpcsummon_multiplier += int(unres(cnt * 2 + 1)) / 2
+		loop
+	}
+	// Bits
+	repeat 35
+		HMMBITCHECK userdata(40 + cnt / 32, calccostcnpcsummon_arg1), cnt \ 32
+		if ( stat ) {
+			locvar_calccostcnpcsummon_multiplier += 1
+			if ( cnt >= 8 & cnt <= 13 ) { locvar_calccostcnpcsummon_multiplier += 1 }
+			if ( cnt == CHARA_BIT_RAPID_MAGIC ) { locvar_calccostcnpcsummon_multiplier += 20 }
+			if ( cnt == CHARA_BIT_LAY_HANDS ) { locvar_calccostcnpcsummon_multiplier += 20 }
+			if ( cnt == CHARA_BIT_METAL ) { locvar_calccostcnpcsummon_multiplier += 30 }
+			if ( cnt == CHARA_BIT_RES_ELEMENTAL ) { locvar_calccostcnpcsummon_multiplier += 15 }
+			if ( cnt == CHARA_BIT_ARMOUR ) { locvar_calccostcnpcsummon_multiplier += 5 }
+			if ( cnt == CHARA_BIT_QUICK_SHOOTING ) { locvar_calccostcnpcsummon_multiplier += 10 }
+			if ( cnt == CHARA_BIT_SPLIT_KEEP_EFFECT ) { locvar_calccostcnpcsummon_multiplier += 15 }
+			if ( cnt == CHARA_BIT_SPLIT_NO_EFFECT ) { locvar_calccostcnpcsummon_multiplier += 8 }
+		}
+	loop
+	return locvar_calccostcnpcsummon_cost * limit(locvar_calccostcnpcsummon_multiplier, 1, 300) / 10
+
 *com_knowCNPC
 	listmaxbk = listmax
 	pagesizebk = pagesize
@@ -7134,10 +7255,7 @@
 	buff += "<title1>*Resistance<def>\n"
 	csvstr2 unres, userdatan(5, knowCNPC)
 	repeat
-		if ( cnt > 15 | unres(cnt) == "" ) {
-			break
-		}
-		if ( unres(cnt * 2) == "") {
+		if ( cnt > 15 | unres(cnt * 2) == "" ) {
 			break
 		}
 		unrespower = limit( int(unres(cnt * 2 + 1))  / 2 + 4, 0, 8 )
@@ -7148,7 +7266,7 @@
 		buff += _resist(unrespower) + " " + skilldesc(unrestype) + "\n"
 	loop
 	buff += "<title1>*Quirks<def>\n"
-	repeat 34
+	repeat 35
 		HMMBITCHECK userdata(40 + cnt / 32, knowCNPC), cnt \ 32
 		if ( stat ) {
 			if ( cnt == 5 ) { buff += "Can Float.\n" }
@@ -7173,7 +7291,7 @@
 			if ( cnt == 24 ) { buff += "Immune to Curse.\n" }
 			if ( cnt == 25 ) { buff += "Hate Carrying Others.\n" }
 			if ( cnt == 26 ) { buff += "Blessed by Elements.\n" }
-			if ( cnt == 27 ) { buff += "Splits.\n" }
+			if ( cnt == 27 ) { buff += "Splits Sometimes.\n" }
 			if ( cnt == 28 ) { buff += "Made of Metal.\n" }
 			if ( cnt == 29 ) { buff += "Immune to Bleeding.\n" }
 			if ( cnt == 30 ) { buff += "Hate Walls.\n" }
@@ -7248,9 +7366,11 @@
 	cs = 0
 	cc = CHARA_PLAYER
 	cs_bk = -1
+	cnpc_skipcount = 0
 	if ( allyctrl == 0 ) {
 		repeat usernpcmax
 			if ( instr(userdatan(6, cnt), 0, "_tmp_") == (-1) ) {
+				cnpc_skipcount++
 				continue
 			}
 			setCom lang(userdatan(1, cnt) + "(" + userdatan(0, cnt) + ")", userdatan(0, cnt)), userdatan(6, cnt)
@@ -7299,7 +7419,7 @@
 		i = list(0, p)
 		s = "" + listn(0, p)
 		pos wx + 380, wy + 66 + cnt * 19
-		mes "" + userdata(2, i)
+		mes "" + userdata(2, i+cnpc_skipcount)
 		cs_list s, wx + 85, wy + 66 + cnt * 19 - 1, 19
 	loop
 	if ( keyrange != 0 ) {
@@ -7318,6 +7438,17 @@
 		}
 	loop
 	if ( p != (-1) ) {
+		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+			pbk = p
+			p += cnpc_skipcount
+			gosub *com_knowCNPC
+			if ( key == key_cancel ) {
+				goto *com_userNpc_loop
+			}
+			p = pbk
+		}
+		/********** CUSTOM NPC SUMMONING - ENDING **********/
 		listmax = p
 		snd SOUNDLIST_PRAY1
 		txt listn(0, listmax) + lang("は、あなたの世界に召喚された！", " has been summoned to your world!")

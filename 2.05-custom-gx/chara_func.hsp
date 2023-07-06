@@ -359,7 +359,8 @@
 		locvar_customtalk_p = instr(locvar_customtalk_buff, 0, locvar_customtalk_s + "," + lang("JP", "EN"))
 		locvar_customtalk_buff = strmid(locvar_customtalk_buff, locvar_customtalk_p, instr(locvar_customtalk_buff, locvar_customtalk_p + 1, "%"))
 		if ( noteinfo(0) > 1 ) {
-			if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE & customtalk_dbmode == DBMODE_FLAVOR_DIALOG & customtalk_charid > MAX_CHARA_FOLLOWER & cdata(CDATA_ID, customtalk_charid) == CREATURE_ID_USER ) {
+			// gdata(GDATA_AREA) == AREA_SHOW_HOUSE & customtalk_dbmode == DBMODE_FLAVOR_DIALOG & customtalk_charid > MAX_CHARA_FOLLOWER & cdata(CDATA_ID, customtalk_charid) == CREATURE_ID_USER
+			if ( customtalk_charid > MAX_CHARA_SAVE & cdata(CDATA_ID, customtalk_charid) == CREATURE_ID_USER ) {
 				if ( cdata(CDATA_CUSTOM_TALK_LINE, customtalk_charid) > 100 ) {
 					cdata(CDATA_CUSTOM_TALK_LINE, customtalk_charid) = 0
 				}
@@ -1224,6 +1225,7 @@
 
 #defcfunc get_freeally
 	locvar_get_freechara_f = 0
+	locvar_get_freeally_np = 0
 	repeat limit(sdata(SKILL_ATTR_CHA, CHARA_PLAYER) / 5 + 1, 2, 16 - 1), 1
 		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_DEAD ) {
 			continue
@@ -1283,6 +1285,28 @@
 	}
 	locvar_get_freeally_np = 0
 	return locvar_get_freechara_f
+
+/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+#defcfunc get_freeallysum
+	locvar_get_freeally_np = 0
+	repeat MAX_CHARA_TOTAL
+		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+			continue
+		}
+		if ( cnt == CHARA_PLAYER ) {
+			continue
+		}
+		if ( cnt < MAX_CHARA_FOLLOWER ) {
+			locvar_get_freeally_np++
+		}
+		if ( cbit(CHARA_BIT_LIVESTOCK, cnt) != 1 ) {
+			if ( cbit(CHARA_BIT_NECRO, cnt) == 1 ) {
+				locvar_get_freeally_np++
+			}
+		}
+	loop
+	return locvar_get_freeally_np
+/********** CUSTOM NPC SUMMONING - ENDING **********/
 
 #deffunc del_chara int del_chara_arg1
 	if ( gdata(STARTING_GDATA_FLAG + 301) == 0 ) {

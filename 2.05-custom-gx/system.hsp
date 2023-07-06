@@ -1202,7 +1202,7 @@
 		sdim unres, 6, 32
 		csvstr2 unres, userdatan(5, cun)
 		repeat
-			if ( cnt > 15 | unres(cnt) == "" ) {
+			if ( cnt > 15 | unres(cnt * 2) == "" ) {
 				break
 			}
 			sdata(int(unres(cnt * 2)), rc) += int(unres(cnt * 2 + 1)) * 50
@@ -1270,6 +1270,7 @@
 		noteget s, cnt
 		cnt2 = tg
 		unzip2 exedir + "user\\", s
+		cnpcfilename = strmid(s, 0, strlen(s) - 4)
 		procid = (procid + 1) \ 4
 		proclist(procid) = "userNpc_update:2a" + " ct:" + ct
 		if ( fread == 0 ) {
@@ -1313,7 +1314,10 @@
 		s = getnpctxt("name.", "unknown,unknown")
 		csvstr2 s, s
 		userdatan(0, tg) = s
-		userdatan(1, tg) = s(jp)
+		userdatan(1, tg) = s(1)
+		if ( en ) {
+			userdatan(1, tg) = cnpcfilename
+		}
 		noteget s, cnt
 		userdatan(6, tg) = s
 		if ( instr(untaglist, 0, "/" + userdatan(0, tg) + "/") != (-1) ) {

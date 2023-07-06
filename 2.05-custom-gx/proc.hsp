@@ -8493,6 +8493,7 @@
 						goto *effect_SWEND1
 					}
 				}
+				p@NE = get_freeallysum()
 				repeat 1 + rnd(p)
 					flt calcobjlv(efp), 2
 					dbid = 0
@@ -8597,6 +8598,21 @@
 						chara_vanquish rc
 						continue cnt
 					}
+
+					/********** CUSTOM NPC SUMMONING - BEGINNING **********/ // Make spell summons friendly (like necromancy)
+					if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+						if ( cc < MAX_CHARA_FOLLOWER & (cnt < (15 - p@NE)) & ( efid == SKILL_SPELL_SUMMON_MONSTERS | efid == SKILL_SPELL_SUMMON_WILD | efid == SKILL_SPELL_SUMMON_SPIRIT ) ) {
+							cbitmod CHARA_BIT_NECRO, rc, TRUE
+							cbitmod CHARA_BIT_SUMMONED, rc, TRUE
+							cbitmod CHARA_BIT_SHADOW_CLONE, rc, TRUE
+							cdata(CDATA_RELATION, rc) = RELATION_ALLY
+							cdata(CDATA_RELATION_ORG, rc) = RELATION_ALLY
+							cdata(CDATA_TARGET, rc) = cdata(CDATA_TARGET, cc)
+							cdata(CDATA_AI_AGGRO, rc) = cdata(CDATA_AI_AGGRO, cc)
+							cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+						}
+					}
+					/********** CUSTOM NPC SUMMONING - ENDING **********/
 				loop
 				if ( synccheck(cc, -1) ) {
 					if ( efid == SKILL_SPACT_TEMPEST_ARROW ) {

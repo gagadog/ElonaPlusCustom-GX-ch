@@ -659,7 +659,7 @@ TweakData(51, 4) = "Disable cicada noises."
 				s = "Use Custom Animation for Arrow/Bolt/Ball spell animations."
 			}
 			if ( p == 31 ) {
-				s = "You can now use a summon crystal to summon Custom NPCS.\nThis will also disable Random CNPC spawn in all areas except Derphy and Melkawn."
+				s = "Play as a summoner. Summon CNPCS and monsters to help you in battle. \nYou can summon allied CNPCS in dungeons using god's favor, or at Home using PP. \nThis will also disable Random CNPC spawn in all areas except Derphy and Melkawn. \nThis will also change player summoned monsters in dungeons to be allied."
 			}
 			if ( p == 32 ) {
 				s = "Reverts changes to the skill experience formula after version 2.17.\nThis will lock your growth rate at 100% (compared to growth in 2.17)."
