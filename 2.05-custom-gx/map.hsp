@@ -493,6 +493,10 @@
 	}
 	msg_newline
 	msgtemp = "  "
+	if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE ) {
+		gosub *del_userTemp
+		gosub *userNpc_update
+	}
 	if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE | gdata(GDATA_AREA) == AREA_ARENA | gdata(GDATA_AREA) == AREA_PET_ARENA ) {
 		usermapid = 0
 	}

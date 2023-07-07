@@ -7003,11 +7003,11 @@
 						cdata(CDATA_PIETY, CHARA_PLAYER) -= p@NE(1)
 						initunid = findunid(userdatan(0, knowCNPC))
 						s = ""
-						if ( userdata(5, knowCNPC) <= 1 ) { s += "Common " }
-						if ( userdata(5, knowCNPC) == 2 ) { s += "Skilled " }
-						if ( userdata(5, knowCNPC) == 3 ) { s += "Professional " }
-						if ( userdata(5, knowCNPC) == 4 ) { s += "Legendary " }
-						if ( userdata(5, knowCNPC) == 5 ) { s += "Godly " }
+						if ( userdata(5, knowCNPC) == 1 ) { s += "Bad " }
+						if ( userdata(5, knowCNPC) == 2 ) { s += "Common " }
+						if ( userdata(5, knowCNPC) == 3 ) { s += "Skilled " }
+						if ( userdata(5, knowCNPC) == 4 ) { s += "Professional " }
+						if ( userdata(5, knowCNPC) == 5 ) { s += "Legendary " }
 						if ( userdata(5, knowCNPC) == 6 ) { s += "Well-Known " }
 						s += userdatan(3, knowCNPC)
 						txtef COLOR_GREEN
@@ -7366,11 +7366,9 @@
 	cs = 0
 	cc = CHARA_PLAYER
 	cs_bk = -1
-	cnpc_skipcount = 0
 	if ( allyctrl == 0 ) {
 		repeat usernpcmax
 			if ( instr(userdatan(6, cnt), 0, "_tmp_") == (-1) ) {
-				cnpc_skipcount++
 				continue
 			}
 			setCom lang(userdatan(1, cnt) + "(" + userdatan(0, cnt) + ")", userdatan(0, cnt)), userdatan(6, cnt)
@@ -7419,7 +7417,7 @@
 		i = list(0, p)
 		s = "" + listn(0, p)
 		pos wx + 380, wy + 66 + cnt * 19
-		mes "" + userdata(2, i+cnpc_skipcount)
+		mes "" + userdata(2, i)
 		cs_list s, wx + 85, wy + 66 + cnt * 19 - 1, 19
 	loop
 	if ( keyrange != 0 ) {
@@ -7441,7 +7439,6 @@
 		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			pbk = p
-			p += cnpc_skipcount
 			gosub *com_knowCNPC
 			if ( key == key_cancel ) {
 				goto *com_userNpc_loop
