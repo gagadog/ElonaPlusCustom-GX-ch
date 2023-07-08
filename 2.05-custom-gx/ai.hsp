@@ -433,7 +433,8 @@
 	if ( cbit(CHARA_BIT_LIVESTOCK, cc) ) {
 		goto *ai_calmMove
 	}
-	if ( cbit(CHARA_BIT_NECRO, cc) ) {
+	// CUSTOM NPC SUMMONING let summoned monsters use their default calm ai instead of follow
+	if ( cbit(CHARA_BIT_NECRO, cc) & TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) == 0 ) {
 		if ( synccheck(cc, -1) == 0 ) {
 			if ( rnd(2) == 0 ) {
 				if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
@@ -993,6 +994,11 @@
 		if ( cdata(CDATA_RELATION, cc) == 10 ) {
 			if ( tc == CHARA_PLAYER ) {
 				if ( cbit(CHARA_BIT_NECRO, cc) == 1 ) {
+					/********** CUSTOM NPC SUMMONING - BEGINNING **********/ // let summoned monsters use their default calm ai instead of follow
+					if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+						goto *ai_calmMove
+					}
+					/********** CUSTOM NPC SUMMONING - ENDING **********/
 					goto *ai_followMove
 				}
 				if ( map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 4) != 0 ) {

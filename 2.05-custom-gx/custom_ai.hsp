@@ -694,6 +694,9 @@
 	; Melee Attacks
 	if ( act == CUSTOM_AI_ACTION_ATTACK_MELEE ) {
 		distance = dist(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), cdata(CDATA_X, cc), cdata(CDATA_Y, cc))
+		if ( distance > 1 & cdata(CDATA_REMOTE_BLOW, cc) > 0 ) {
+            act = SKILL_SPACT_DISTANT_ATTACK
+        }
 		if ( distance == 1 ) {
 			gosub *act_melee
 			goto *turn_end

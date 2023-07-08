@@ -1169,6 +1169,12 @@
 	cs = 0
 	cs_bk = -1
 	cc = CHARA_PLAYER
+	/********** CUSTOM - BEGINNING **********/ // remember blending page 
+	if ( pagesaved_blend == 1 & step == (-1) ) {
+		page = pagebk_blend
+		cs = csprev_blend
+	}
+	/********** CUSTOM - ENDING **********/
 	screenupdate = -1
 	gosub *screen_draw
 	if ( step == (-1) ) {
@@ -1283,6 +1289,13 @@
 			break
 		}
 	loop
+	/********** CUSTOM - BEGINNING **********/ // remember blending page 
+	if ( step == (-1) ) {
+		pagebk_blend = page
+		csprev_blend = cs
+		pagesaved_blend = 1
+	}
+	/********** CUSTOM - ENDING **********/
 	if ( p != (-1) ) {
 		rpid = p
 		step = 0

@@ -2739,7 +2739,7 @@
 		}
 	}
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_RANDOM_DUNGEON ) {
-		s = mapnamerd(adata(ADATA_NAME, mapname_mapid), limitmax(adata(ADATA_MIN_LEVEL, mapname_mapid) / 5, length2(mapnamerd) - 1))
+		s = mapnamerd(limitmax(adata(ADATA_NAME, mapname_mapid), length(mapnamerd) - 1), limitmax(adata(ADATA_MIN_LEVEL, mapname_mapid) / 5, length2(mapnamerd) - 1))
 		if ( adata(ADATA_TYPE, mapname_mapid) == MAP_TYPE_DUNGEON ) {
 			s += lang("洞窟", "Cave")
 		}

@@ -6942,7 +6942,12 @@
 	grotate 4, cmbg / 4 \ 4 * 180, cmbg / 4 / 4 \ 2 * 300, 0, x, y
 	gmode 2
 	display_topic lang("名前", "Name"), wx + 28, wy + 36
-	display_topic lang("Level(Pow)", "Level(Pow)"), wx + 348, wy + 36
+	if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
+        display_topic lang("Level(Piety Cost)", "Level(Piety Cost)"), wx + 328, wy + 36
+        display_topic lang("信仰の深さ：" + cdata(CDATA_PIETY, CHARA_PLAYER) + "/" + sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) * 100, "Piety: " + cdata(CDATA_PIETY, CHARA_PLAYER) + "/" + sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) * 100), wx + 150, wy + 36
+    } else {
+        display_topic lang("Level", "Level"), wx + 348, wy + 36
+    }
 	keyrange = 0
 	repeat pagesize
 		p = pagesize * page + cnt
@@ -6969,8 +6974,19 @@
 		i = list(0, p)
 		s = "" + listn(0, p)
 		pos wx + 380, wy + 66 + cnt * 19
-		mes "" + userdata(2, i) + "(" + calccostcnpcsummon(i) + ")"
-		cs_list s, wx + 85, wy + 66 + cnt * 19 - 1, 19
+		custom_summon_cost = calccostcnpcsummon(i)
+        custom_summon_text_color = 0
+        color 10, 10, 10
+        if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
+            if ( userdata(2, i) >= cdata(CDATA_LEVEL, CHARA_PLAYER) + 5 | custom_summon_cost >= cdata(CDATA_PIETY, CHARA_PLAYER) ) {
+                color 160, 10, 10
+                custom_summon_text_color = 3
+            }
+            mes "" + userdata(2, i) + "(" + custom_summon_cost + ")"
+        } else {
+            mes "" + userdata(2, i)
+        }
+        cs_list s, wx + 85, wy + 66 + cnt * 19 - 1, 19, 0, custom_summon_text_color
 	loop
 	if ( keyrange != 0 ) {
 		cs_bk = cs
@@ -6995,8 +7011,6 @@
 		if ( key == key_enter ) {
 			p@NE = get_freeallysum()
 			if ( (0 < (15 - p@NE)) & mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
-				txtef COLOR_GREEN
-				txt lang(godname(cdata(CDATA_GOD, CHARA_PLAYER)) + "への信仰の深さ：" + cdata(CDATA_PIETY, CHARA_PLAYER) + "/" + sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) * 100 + "、祈りチャージ：" + limit((cdata(CDATA_PRAY, CHARA_PLAYER) + 1) / 10, 0, 100) + "％ ", "Piety: " + cdata(CDATA_PIETY, CHARA_PLAYER) + "/" + sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) * 100 + " Pray Charge: " + limit((cdata(CDATA_PRAY, CHARA_PLAYER) + 1) / 10, 0, 100) + "%")
 				p@NE(1) = calccostcnpcsummon(knowCNPC)
 				if ( userdata(2, knowCNPC) < cdata(CDATA_LEVEL, CHARA_PLAYER) + 5 ) {
 					if ( p@NE(1) <= cdata(CDATA_PIETY, CHARA_PLAYER) ) {

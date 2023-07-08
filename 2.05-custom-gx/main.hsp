@@ -1002,8 +1002,11 @@
 		gdata(GDATA_SEC) += 30
 	}
 	/********** CUSTOM DAMAGE METER - BEGINNING **********/
-	if ( cfg_showDamageMeter > 0 ) {
-		DamageParsesRefresh
+    if ( cfg_showDamageMeter > 0 ) {
+		if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_AREA) == AREA_VALM & gdata(GDATA_LEVEL) == 3) | gdata(GDATA_AREA) == AREA_SHELTER ) {
+		} else {
+			DamageParsesRefresh
+		}
 	}
 	/********** CUSTOM DAMAGE METER - ENDING **********/
 	if ( gdata(GDATA_SEC) >= 60 ) {
@@ -5337,6 +5340,10 @@
 	if ( _switch_val == EVENT_FIRST_ALLY | _switch_sw ) {
 		_switch_sw = 0
 		gosub *screen_draw
+		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+		flt
+		itemcreate -1, ITEM_ID_SUMMONING_CRYSTAL, 51, 1, 0
+		/********** CUSTOM NPC SUMMONING - ENDING **********/
 		s = lang("ペットとの再会", "Reunion with your pet")
 		file = "bg_re13"
 		buff = lang("あなたは懐かしい鳴き声に気付いて、ふと歩みを止めた。なんと、船が難破した時に居なくなったあなたのペットが、嬉しそうに走ってくる！あなたのペットは…", "As you approach the mining town, you notice a familiar call and stop walking. Your old pet who got separated from you during the shipwreck is now running towards you joyfully! Your pet is...")
