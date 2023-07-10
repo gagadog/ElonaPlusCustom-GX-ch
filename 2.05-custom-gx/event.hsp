@@ -264,6 +264,18 @@
 		if ( rnd(80) == 0 ) {
 			id = RANDOM_EVENT_HUNGRY, 45
 		}
+		/********** CUSTOM - BEGINNING **********/ 
+        // Ano forgot to add the world events filter. 
+		// This should prevent low speed character from getting overwhelmed with events.
+		// I don't know if it's intentional or not, 
+		// but adding it back makes event almost impossible to happen with vehicles, so I added a rnd(6) instead.
+        if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
+            if ( rnd(40) | (rnd(6) == 0 & gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0) ) {
+                return 0
+            }
+            goto *random_eventProc
+        }
+        /********** CUSTOM - ENDING **********/
 	}
 	else {
 		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
