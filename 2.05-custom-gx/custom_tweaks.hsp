@@ -70,6 +70,7 @@ TweakData(2, 4) = "Confirm Reload With F2."
 TweakData(3, 4) = "Prevent home stayers from moving."
 TweakData(50, 4) = "Fist of the North Star Mode."
 TweakData(51, 4) = "Disable cicada noises."
+TweakData(52, 4) = "Faster Fishing Animations."
 */
 
 *TweakMenu
@@ -984,10 +985,11 @@ TweakData(51, 4) = "Disable cicada noises."
 	listn(0, TWEAK_MISC_PREVENT_BUMP_ATTACK) = "Prevent bump attack." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_PREVENT_BUMP_ATTACK)
 	listn(0, 5) = "Fist of the North Star Mode." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_HOKUTO_NO_KEN_MODE)
 	listn(0, 6) = "Disable cicada noises." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DISABLE_CICADA_NOISES)
-	listn(0, 7) = "Return."
+	listn(0, 7) = "Faster Fishing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_FASTER_FISHING)
+	listn(0, 8) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat 8
+	repeat 9
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
@@ -1021,6 +1023,9 @@ TweakData(51, 4) = "Disable cicada noises."
 				s = "Prevents cicada noises from playing during the summer months."
 			}
 			if ( cnt == 7 ) {
+				s = "Makes fishing animations much faster. \nAnd instant dimensional fishing with a super lure."
+			}
+			if ( cnt == 8 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1070,6 +1075,11 @@ TweakData(51, 4) = "Disable cicada noises."
 		gosub *ToggleTweak
 	}
 	if ( key == key_select(7) ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_FASTER_FISHING
+		gosub *ToggleTweak
+	}
+	if ( key == key_select(8) ) {
 		snd SOUNDLIST_OK1
         return
 	}
