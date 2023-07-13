@@ -6955,11 +6955,15 @@
 		page = pagebk_summon
 		cs = csprev_summon
 	}
+	dim user_npc_index, 240
+	tg = 0
 	repeat usernpcmax
 		if ( instr(userdatan(6, cnt), 0, "_tmp_") > (-1) ) {
 			continue
 		}
 		setCom lang(userdatan(1, cnt) + "(" + userdatan(0, cnt) + ")", userdatan(1, cnt)), userdatan(6, cnt)
+		user_npc_index(tg) = cnt
+		tg++
 	loop
 	txt lang("どの者を召喚したいと願うか？", "Check which CNPC?")
 	windowshadow = 1
@@ -7006,14 +7010,14 @@
 		if ( p >= listmax ) {
 			break
 		}
-		i = list(0, p)
+		i = user_npc_index(list(0, p))
 		s = "" + listn(0, p)
 		pos wx + 380, wy + 66 + cnt * 19
 		custom_summon_cost = calccostcnpcsummon(i)
         custom_summon_text_color = 0
         color 10, 10, 10
         if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
-            if ( userdata(2, i) >= cdata(CDATA_LEVEL, CHARA_PLAYER) + 5 | custom_summon_cost >= cdata(CDATA_PIETY, CHARA_PLAYER) ) {
+            if ( userdata(2, i) >= cdata(CDATA_LEVEL, CHARA_PLAYER) * 3 / 2 + 5 | custom_summon_cost >= cdata(CDATA_PIETY, CHARA_PLAYER) ) {
                 color 160, 10, 10
                 custom_summon_text_color = 3
             }
@@ -7042,12 +7046,14 @@
 	csprev_summon = cs
 	pagesaved_summon = 1
 	if ( p != (-1) ) {
+		pbk = p
+		p = user_npc_index(list(0, p))
 		gosub *com_knowCNPC
 		if ( key == key_enter ) {
 			p@NE = get_freeallysum()
 			if ( (0 < (15 - p@NE)) & mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
 				p@NE(1) = calccostcnpcsummon(knowCNPC)
-				if ( userdata(2, knowCNPC) < cdata(CDATA_LEVEL, CHARA_PLAYER) + 5 ) {
+				if ( userdata(2, knowCNPC) < cdata(CDATA_LEVEL, CHARA_PLAYER) * 3 / 2 + 5 ) {
 					if ( p@NE(1) <= cdata(CDATA_PIETY, CHARA_PLAYER) ) {
 						cdata(CDATA_PIETY, CHARA_PLAYER) -= p@NE(1)
 						initunid = findunid(userdatan(0, knowCNPC))
@@ -7138,6 +7144,7 @@
 				return 1
 			}
 		} 
+		p = pbk
 		key = ""
 	}
 	page_change *com_userNpcExisting_loop_pgchk
@@ -7245,11 +7252,11 @@
 	if ( userdata(3, knowCNPC) == 0 ) { buff += "Male " }
 	if ( userdata(3, knowCNPC) == 1 ) { buff += "Female " }
 	buff += userdatan(2, knowCNPC) + "\n"
-	if ( userdata(5, knowCNPC) <= 1 ) { buff += "Common " }
-	if ( userdata(5, knowCNPC) == 2 ) { buff += "Skilled " }
-	if ( userdata(5, knowCNPC) == 3 ) { buff += "Professional " }
-	if ( userdata(5, knowCNPC) == 4 ) { buff += "Legendary " }
-	if ( userdata(5, knowCNPC) == 5 ) { buff += "Godly " }
+	if ( userdata(5, knowCNPC) <= 1 ) { buff += "Bad " }
+	if ( userdata(5, knowCNPC) == 2 ) { buff += "Common " }
+	if ( userdata(5, knowCNPC) == 3 ) { buff += "Skilled " }
+	if ( userdata(5, knowCNPC) == 4 ) { buff += "Professional " }
+	if ( userdata(5, knowCNPC) == 5 ) { buff += "Legendary " }
 	if ( userdata(5, knowCNPC) == 6 ) { buff += "Well-Known " }
 	buff += userdatan(3, knowCNPC) + "\n"
 
@@ -7415,12 +7422,16 @@
 	cs = 0
 	cc = CHARA_PLAYER
 	cs_bk = -1
+	dim user_npc_index, 240
+	tg = 0
 	if ( allyctrl == 0 ) {
 		repeat usernpcmax
 			if ( instr(userdatan(6, cnt), 0, "_tmp_") == (-1) ) {
 				continue
 			}
 			setCom lang(userdatan(1, cnt) + "(" + userdatan(0, cnt) + ")", userdatan(0, cnt)), userdatan(6, cnt)
+			user_npc_index(tg) = cnt
+			tg++
 		loop
 	}
 	txt lang("どの者を召喚したいと願うか？", "Which one do you wish to summon?")
@@ -7463,7 +7474,7 @@
 		if ( p >= listmax ) {
 			break
 		}
-		i = list(0, p)
+		i = user_npc_index(list(0, p))
 		s = "" + listn(0, p)
 		pos wx + 380, wy + 66 + cnt * 19
 		mes "" + userdata(2, i)
@@ -7488,6 +7499,7 @@
 		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			pbk = p
+			p = user_npc_index(p)
 			gosub *com_knowCNPC
 			if ( key == key_cancel ) {
 				goto *com_userNpc_loop
