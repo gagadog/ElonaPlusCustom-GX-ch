@@ -10399,7 +10399,8 @@
 				}
 				else {
 					if ( cbit(CHARA_BIT_LEASHED, tc) == 0 ) {
-						if ( tc >= MAX_CHARA_FOLLOWER ) {
+						// CUSTOM - Allow leashing temporary allies
+						if ( tc >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION_ORG, tc) < 10 ) {
 							if ( rnd(5) == 0 ) {
 								txt lang(name(tc) + "が激しく抵抗したため紐は切れた。", "The leash is cut as " + name(tc) + " resists.")
 								inv(INV_ITEM_NUM, ci)--

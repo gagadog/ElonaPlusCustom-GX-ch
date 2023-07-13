@@ -433,8 +433,8 @@
 	if ( cbit(CHARA_BIT_LIVESTOCK, cc) ) {
 		goto *ai_calmMove
 	}
-	// CUSTOM NPC SUMMONING let summoned monsters use their default calm ai instead of follow
-	if ( cbit(CHARA_BIT_NECRO, cc) & TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) == 0 ) {
+	// CUSTOM NPC SUMMONING disable forced shadow step for non-necro summons
+	if ( cbit(CHARA_BIT_NECRO, cc) & ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) == 0 | cbit(CHARA_BIT_SUMMONED, cc) == 0 | cdata(CDATA_AI_CALM, cc) == 0 ) ) {
 		if ( synccheck(cc, -1) == 0 ) {
 			if ( rnd(2) == 0 ) {
 				if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
@@ -454,7 +454,8 @@
 				if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
 					if ( cbit(CHARA_BIT_LEASHED, cc) ) {
 						if ( gdata(GDATA_AREA) != AREA_PET_ARENA ) {
-							if ( cc < MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_LIVESTOCK, cc) == 1 ) {
+							// CUSTOM - Allow leashing temporary allies
+							if ( cc < MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_LIVESTOCK, cc) == 1 | cdata(CDATA_RELATION_ORG, cc) == 10 ) {
 								cdata(CDATA_AI_AGGRO, cc) = 0
 								cdata(CDATA_TARGET, cc) = 0
 							}
@@ -995,7 +996,7 @@
 			if ( tc == CHARA_PLAYER ) {
 				if ( cbit(CHARA_BIT_NECRO, cc) == 1 ) {
 					/********** CUSTOM NPC SUMMONING - BEGINNING **********/ // let summoned monsters use their default calm ai instead of follow
-					if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+					if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 & cbit(CHARA_BIT_SUMMONED, cc) & cdata(CDATA_AI_CALM, cc) > 0 ) {
 						goto *ai_calmMove
 					}
 					/********** CUSTOM NPC SUMMONING - ENDING **********/

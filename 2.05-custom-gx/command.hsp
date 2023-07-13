@@ -27,26 +27,26 @@
 				bedtxt = lang(rtvaln + "が設置されている。", "" + rtvaln + " is constructed here.")
 			}
 			else {
-				bedtxt = lang(rtvaln + "がある。", "You see " + rtvaln + " placed here.")
+				bedtxt = lang(rtvaln + "がある。", "You see " + rtvaln + " placed here.(" + cnvweight(inv(INV_ITEM_WEIGHT, rtval(1))) + ")")
 			}
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_JURES_BODY_PILLOW ) {
-			bedtxt += lang("寝心地は悪そうだが、いい夢を見れそうだ。", "It looks uncomfortable to sleep on, but I'm sure I'll have good dreams.")
+			bedtxt += lang("寝心地は悪そうだが、いい夢を見れそうだ。", " It looks uncomfortable to sleep on, but I'm sure I'll have good dreams.")
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_SLEEPING_BAG | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_CHEAP_BED2 ) {
-			bedtxt += lang("地べたで寝るのと大差ないだろう。", "It wouldn't be much different from sleeping on the ground.")
+			bedtxt += lang("地べたで寝るのと大差ないだろう。", " It wouldn't be much different from sleeping on the ground.")
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_PLAIN_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_CHEAP_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_BUNK_BED ) {
-			bedtxt += lang("地べたで寝るよりはマシだが…。", "It's better than sleeping on the ground.")
+			bedtxt += lang("地べたで寝るよりはマシだが…。", " It's better than sleeping on the ground.")
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_GIANT_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_COMFORTABLE_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_EASTERN_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_CLEAN_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_SOFT_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_COFFIN ) {
-			bedtxt += lang("まぁまぁ休めそうだ。", "I think I can rest to some extent.")
+			bedtxt += lang("まぁまぁ休めそうだ。", " I think I can rest to some extent.")
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_SLEEP_SHEEP | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_LUXURY_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_DOUBLE_BED ) {
-			bedtxt += lang("寝心地が良さそうだ。", "I think I'll be able to sleep comfortably.")
+			bedtxt += lang("寝心地が良さそうだ。", " I think I'll be able to sleep comfortably.")
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_KINGS_BED | inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_HAPPY_BED ) {
-			bedtxt += lang("とっても寝心地が良さそうだ！", "I think I'll be able to sleep very comfortably!")
+			bedtxt += lang("とっても寝心地が良さそうだ！", " I think I'll be able to sleep very comfortably!")
 		}
 		if ( inv(INV_ITEM_ID, rtval(1)) == ITEM_ID_BOMB_BARREL ) {
 			if ( cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER) == "錬金術士" | instr(cdatan(CDATAN_FAKE_CLASS, CHARA_PLAYER), 0, "lchemist") != (-1) ) {
@@ -115,13 +115,48 @@
 				locvar_txttargetnpc_dy++
 				bmes s, 255, 2552, 255
 			loop
+			/********** CUSTOM - BEGINNING **********/ // more status display
+			displaystates = CDATA_CONDITION_GRAVITY, CDATA_CONDITION_INVERT, CDATA_CONDITION_OIL, CDATA_CONDITION_WET, CDATA_CONDITION_ANGRY, CDATA_CONDITION_BIND, CDATA_CONDITION_INSANE, CDATA_CONDITION_SUFFOCATION, CDATA_CONDITION_MPOISON, CDATA_CONDITION_BLEED, CDATA_CONDITION_SLEEP, CDATA_CONDITION_ATROPHY, CDATA_CONDITION_BRAINWASH, CDATA_CONDITION_FEAR, CDATA_CONDITION_DIM, CDATA_CONDITION_POISON, CDATA_CONDITION_CONFUSE, CDATA_CONDITION_BLIND, CDATA_CONDITION_PARALYZE, CDATA_CONDITION_CHILLS, CDATA_CONDITION_WINCE
+			displaytexts  = _congravity, _coninvert, _conoil, _conwet, _conangry, _conbind, _coninsane, _conmochi, _conmpoison, _conbleed, _consleep, _conbrowbeat, _conwash, _confear, _condim, _conpoison, _conconfuse, _conblind, _conparalyze, _conreiki, _conkaen
+			repeat length(displaystates)
+				if ( cdata(displaystates(cnt), locvar_txttargetnpc_i) > 0 ) {
+					s = "" + displaytexts(cnt) + ": " + cdata(displaystates(cnt), locvar_txttargetnpc_i) + lang("ﾀｰﾝ", " stacks ")
+					color 0, 0, 0
+					pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+					locvar_txttargetnpc_dy++
+					bmes s, 255, 2552, 255
+				}
+			loop
+			if ( ( cdata(CDATA_TARGET, locvar_txttargetnpc_i) != CHARA_PLAYER | cdata(CDATA_RELATION, locvar_txttargetnpc_i) == (-3) ) & cdata(CDATA_AI_AGGRO, locvar_txttargetnpc_i) > 0 ) {
+				color 0, 0, 0
+				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+				locvar_txttargetnpc_dy++
+				bmes "Target: " + cdatan(CDATAN_NAME, cdata(CDATA_TARGET, locvar_txttargetnpc_i)) + "(" + cdata(CDATA_AI_AGGRO, locvar_txttargetnpc_i) + ")", 255, 2552, 255
+			}
+			/********** CUSTOM - ENDING **********/
 			if ( cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i) > 0 ) {
+				/********** CUSTOM - BEGINNING **********/ // more status display
+				color 0, 0, 0
+				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+				locvar_txttargetnpc_dy++
+				bmes "" + name(cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)) + ": " + cdata(CDATA_HP, cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)) + "/" + cdata(CDATA_MAX_HP, cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)), 255, 2552, 255
+				color 0, 0, 0
+				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+				locvar_txttargetnpc_dy++
+				bmes "" + name(locvar_txttargetnpc_i) + ": " + cdata(CDATA_HP, locvar_txttargetnpc_i) + "/" + cdata(CDATA_MAX_HP, locvar_txttargetnpc_i), 255, 2552, 255
+				/********** CUSTOM - ENDING **********/
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
 				bmes lang("現在のターゲットは", "You are targeting ") + cdatan(CDATAN_NAME, locvar_txttargetnpc_i) + lang(" ＋ ", " + ") + cdatan(CDATAN_NAME, cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)) + lang(" (距離 ", ".(Distance ") + dist(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), cdata(CDATA_X, locvar_txttargetnpc_i), cdata(CDATA_Y, locvar_txttargetnpc_i)) + ")", 255, 2552, 255
 			}
 			else {
+				/********** CUSTOM - BEGINNING **********/ // more status display
+				color 0, 0, 0
+				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+				locvar_txttargetnpc_dy++
+				bmes "" + name(locvar_txttargetnpc_i) + ": " + cdata(CDATA_HP, locvar_txttargetnpc_i) + "/" + cdata(CDATA_MAX_HP, locvar_txttargetnpc_i), 255, 2552, 255
+				/********** CUSTOM - ENDING **********/
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
@@ -11574,7 +11609,9 @@
 			********************************************************************************/
 
 			if ( sdata(SKILL_ACTIVE_PICKPOCKET, CHARA_PLAYER) != 0 & adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_SHOW_HOUSE & gdata(GDATA_QUEST) != QUEST_TYPE_HUNTEX & gdata(GDATA_QUEST) != QUEST_TYPE_CONQUER & TweakData(TWEAK_UI_DISPLAY_PICKPOCKET_SHORTCUT, TWEAK_CATEGORY_UI) == 1 ) {
-				txt lang("それを盗もうとしていますか？", "Do you want to attempt to steal it?")
+				s = itemname(ci, inv(INV_ITEM_NUM, ci)), cnvweight(inv(INV_ITEM_WEIGHT, ci) * inv(INV_ITEM_NUM, ci))
+				s(1) = cnvweight(inv(INV_ITEM_WEIGHT, ci))
+				txt lang("それを盗もうとしていますか？", "You see a " + s + " weight " + s(1) + ". Do you want to attempt to steal it?")
 				promptYesNo
 				if ( rtval == 0 ) {
 					if ( cc == CHARA_PLAYER ) {

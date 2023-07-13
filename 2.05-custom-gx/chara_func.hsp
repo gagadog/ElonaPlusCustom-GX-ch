@@ -359,8 +359,9 @@
 		locvar_customtalk_p = instr(locvar_customtalk_buff, 0, locvar_customtalk_s + "," + lang("JP", "EN"))
 		locvar_customtalk_buff = strmid(locvar_customtalk_buff, locvar_customtalk_p, instr(locvar_customtalk_buff, locvar_customtalk_p + 1, "%"))
 		if ( noteinfo(0) > 1 ) {
+			// Allow non-pet/non-adventurer CNPCs have ordered dialogues, it's disabled for pets because the cdata is used for Advance Casting (Player) / Obedience Training (Pet) / Send Message (Adventurers)
 			// gdata(GDATA_AREA) == AREA_SHOW_HOUSE & customtalk_dbmode == DBMODE_FLAVOR_DIALOG & customtalk_charid > MAX_CHARA_FOLLOWER & cdata(CDATA_ID, customtalk_charid) == CREATURE_ID_USER
-			if ( customtalk_charid >= MAX_CHARA_SAVE & cdata(CDATA_ID, customtalk_charid) == CREATURE_ID_USER ) {
+			if ( customtalk_dbmode == DBMODE_FLAVOR_DIALOG & customtalk_charid >= MAX_CHARA_SAVE & cdata(CDATA_ID, customtalk_charid) == CREATURE_ID_USER ) {
 				if ( cdata(CDATA_CUSTOM_TALK_LINE, customtalk_charid) > 100 ) {
 					cdata(CDATA_CUSTOM_TALK_LINE, customtalk_charid) = 0
 				}

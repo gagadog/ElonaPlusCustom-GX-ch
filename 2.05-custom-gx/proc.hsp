@@ -8722,7 +8722,7 @@
 				loop
 				if ( synccheck(cc, -1) ) {
 					if ( efid == SKILL_SPACT_TEMPEST_ARROW ) {
-						txt lang("「アハハ！竜巻に呑まれて消えなさい」", cnvtalk("Huh! Go into the tornado!"))
+						txt lang("「アハハ！竜巻に呑まれて消えなさい」", cnvtalk("Hah! Begone with the winds!"))
 						snd SOUNDLIST_ENC
 						animeload ANIMATION_UNISON_IMPACT2, cc
 						cdata(CDATA_POWER_GAUGE, cc) -= 100
