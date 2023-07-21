@@ -7279,40 +7279,52 @@
 	buff += "Move Willingness: " + userdata(8, knowCNPC) + "%\n"
 	buff += "<title1>*Actions(" + (100 - unaiactsubfreq(knowCNPC)) + "%)<def>\n"
 	repeat 5
+		// buff += " (" + userdata(15+cnt, knowCNPC) + ")"
 		if ( userdata(15+cnt, knowCNPC) == 0 ) { buff += "Do Nothing\n" }
 		if ( userdata(15+cnt, knowCNPC) == (-1) ) { buff += "Melee Attack\n" }
 		if ( userdata(15+cnt, knowCNPC) == (-2) ) { buff += "Ranged Attack\n" }
 		if ( userdata(15+cnt, knowCNPC) == (-3) ) { buff += "Melee Attack\n" }
 		if ( userdata(15+cnt, knowCNPC) == (-4) ) { buff += "Roam Around\n" }
+		if ( userdata(15+cnt, knowCNPC) == (-9996) ) { buff += "Throw Salt\n" }
+		if ( userdata(15+cnt, knowCNPC) <= (-9997) ) { buff += "Throw Potions\n" }
 		if ( userdata(15+cnt, knowCNPC) >= STARTING_SKILL_SPELL ) {
 			buff += skillname(userdata(15+cnt, knowCNPC)) + "\n"
 		}
 	loop
 	buff += "<title1>*Subactions(" + (unaiactsubfreq(knowCNPC)) + "%)<def>\n"
 	repeat 5
+		// buff += "(" + userdata(20+cnt, knowCNPC) + ")"
 		if ( userdata(20+cnt, knowCNPC) == 0 ) { buff += "Do Nothing\n" }
 		if ( userdata(20+cnt, knowCNPC) == (-1) ) { buff += "Melee Attack\n" }
 		if ( userdata(20+cnt, knowCNPC) == (-2) ) { buff += "Ranged Attack\n" }
 		if ( userdata(20+cnt, knowCNPC) == (-3) ) { buff += "Melee Attack\n" }
 		if ( userdata(20+cnt, knowCNPC) == (-4) ) { buff += "Roam Around\n" }
+		if ( userdata(20+cnt, knowCNPC) == (-9996) ) { buff += "Throw Salt\n" }
+		if ( userdata(20+cnt, knowCNPC) <= (-9997) ) { buff += "Throw Potions\n" }
 		if ( userdata(20+cnt, knowCNPC) >= STARTING_SKILL_SPELL ) {
 			buff += skillname(userdata(20+cnt, knowCNPC)) + "\n"
 		}
 	loop
-	buff += "<title1>*Emergency Action<def>\n"
-	if ( userdata(10, knowCNPC) == 0 ) { buff += "Do Nothing\n" }
-	if ( userdata(10, knowCNPC) == (-1) ) { buff += "Melee Attack\n" }
-	if ( userdata(10, knowCNPC) == (-2) ) { buff += "Ranged Attack\n" }
-	if ( userdata(10, knowCNPC) == (-3) ) { buff += "Melee Attack\n" }
-	if ( userdata(10, knowCNPC) == (-4) ) { buff += "Roam Around\n" }
-	if ( userdata(10, knowCNPC) >= STARTING_SKILL_SPELL ) {
-		buff += skillname(userdata(10, knowCNPC)) + "\n"
+	if ( userdata(10, knowCNPC) != 0 ) {
+		buff += "<title1>*Emergency Action<def>\n"
+		// buff += "(" + userdata(10, knowCNPC) + ")"
+		if ( userdata(10, knowCNPC) == (-1) ) { buff += "Melee Attack\n" }
+		if ( userdata(10, knowCNPC) == (-2) ) { buff += "Ranged Attack\n" }
+		if ( userdata(10, knowCNPC) == (-3) ) { buff += "Melee Attack\n" }
+		if ( userdata(10, knowCNPC) == (-4) ) { buff += "Roam Around\n" }
+		if ( userdata(10, knowCNPC) == (-9996) ) { buff += "Throw Salt\n" }
+		if ( userdata(10, knowCNPC) <= (-9997) ) { buff += "Throw Potions\n" }
+		if ( userdata(10, knowCNPC) >= STARTING_SKILL_SPELL ) {
+			buff += skillname(userdata(10, knowCNPC)) + "\n"
+		}
 	}
-	buff += "<title1>*Resistance<def>\n"
 	csvstr2 unres, userdatan(5, knowCNPC)
 	repeat
 		if ( cnt > 15 | unres(cnt * 2) == "" ) {
 			break
+		}
+		if ( cnt == 0 ) {
+			buff += "<title1>*Resistance<def>\n"
 		}
 		unrespower = limit( int(unres(cnt * 2 + 1))  / 2 + 4, 0, 8 )
 		unrestype = int(unres(cnt * 2))
@@ -7321,10 +7333,14 @@
 		}
 		buff += _resist(unrespower) + " " + skilldesc(unrestype) + "\n"
 	loop
-	buff += "<title1>*Quirks<def>\n"
+	showtitle@NE = 1
 	repeat 35
 		HMMBITCHECK userdata(40 + cnt / 32, knowCNPC), cnt \ 32
 		if ( stat ) {
+			if ( showtitle@NE == 1 ) {
+				buff += "<title1>*Quirks<def>\n"
+				showtitle@NE = 0
+			}
 			if ( cnt == 5 ) { buff += "Can Float.\n" }
 			if ( cnt == 6 ) { buff += "Invisible.\n" }
 			if ( cnt == 7 ) { buff += "Keen Eyes.\n" }

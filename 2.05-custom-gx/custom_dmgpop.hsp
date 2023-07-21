@@ -59,7 +59,7 @@
 	DmgPopupColorsNPCName(0, ROLE_SPECIAL)          = 230, 200, 0,   0,   0,   0
 	DmgPopupColorsNPCName(0, ROLE_CITIZEN)          = 255, 255, 255, 0,   0,   0
 	DmgPopupColorsNPCName(0, ROLE_IDENTIFIER)       = 255, 0,   255, 0,   0,   0
-	DmgPopupColorsNPCName(0, ROLE_MAYOR)            = 230, 200, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, ROLE_MAYOR)            = 128, 255, 0,   0,   0,   0
 	DmgPopupColorsNPCName(0, ROLE_TRAINER)          = 255, 255, 0,   0,   0,   0
 	DmgPopupColorsNPCName(0, ROLE_INFORMER)         = 0,   0,   255, 0,   0,   0
 	DmgPopupColorsNPCName(0, ROLE_BARTENDER)        = 255, 150, 0,   0,   0,   0
@@ -79,21 +79,21 @@
 	DmgPopupColorsNPCName(0, ROLE_CARAVAN_MASTER)   = 255, 150, 0,   0,   0,   0
     DmgPopupColorsNPCName(0, ROLE_BOUNTY_HUNTER)    = 255, 0,   0,   0,   0,   0
     
-	DmgPopupColorsNPCName(0, 25) = 0,   180, 255, 0,   0,   0
-	DmgPopupColorsNPCName(0, 26) = 0,   180, 255, 0,   0,   0
-	DmgPopupColorsNPCName(0, 27) = 255, 150, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, 25) = 128, 180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 26) = 180, 128, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 27) = 255, 0,   128, 0,   0,   0
 	DmgPopupColorsNPCName(0, 28) = 255, 150, 0,   0,   0,   0
 	DmgPopupColorsNPCName(0, 29) = 255, 0,   255, 0,   0,   0
-	DmgPopupColorsNPCName(0, 30) = 255, 150, 0,   0,   0,   0
+	DmgPopupColorsNPCName(0, 30) = 128, 255, 128, 0,   0,   0
 	DmgPopupColorsNPCName(0, 31) = 0,   180, 255, 0,   0,   0
-	DmgPopupColorsNPCName(0, 32) = 210, 210, 210, 0,   0,   0
+	DmgPopupColorsNPCName(0, 32) = 128, 210, 210, 0,   0,   0
 	DmgPopupColorsNPCName(0, 33) = 0,   180, 255, 0,   0,   0
-	DmgPopupColorsNPCName(0, 34) = 0,   180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 34) = 255, 128, 128, 0,   0,   0
 	DmgPopupColorsNPCName(0, 35) = 0,   180, 255, 0,   0,   0
 	DmgPopupColorsNPCName(0, 36) = 0,   180, 255, 0,   0,   0
-	DmgPopupColorsNPCName(0, 37) = 0,   180, 255, 0,   0,   0
-	DmgPopupColorsNPCName(0, 38) = 0,   180, 255, 0,   0,   0
-	DmgPopupColorsNPCName(0, 39) = 0,   0,   255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 37) = 0,   180, 0  , 0,   0,   0
+	DmgPopupColorsNPCName(0, 38) = 180, 180, 255, 0,   0,   0
+	DmgPopupColorsNPCName(0, 39) = 40,  128, 255, 0,   0,   0
 	DmgPopupColorsNPCName(0, 40) = 230, 200, 0,   0,   0,   0
 	DmgPopupColorsNPCName(0, 41) = 230, 200, 0,   0,   0,   0
 	DmgPopupColorsNPCName(0, 42) = 0,   180, 255, 0,   0,   0
@@ -187,7 +187,7 @@
     font lang(cfg_font1, cfg_font2), 2 + cfg_dmgfont - en * 2, 0
     
     /********** CUSTOM - BEGINNING **********/ // Show npc name in town.
-    if ( cfg_showNpcName & mode != MODELIST_TXT_ADV & ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE | mdata(MDATA_TYPE) == MAP_TYPE_HOME ) ) {
+    if ( cfg_showNpcName > 0 & mode == MODELIST_MAIN & evochat <= 0 & ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE | mdata(MDATA_TYPE) == MAP_TYPE_HOME | (cfg_showNpcName == 3 & mdata(MDATA_TYPE) != MAP_TYPE_WORLD) ) ) {
 		repeat MAX_CHARA_TOTAL
 			if ( cnt < MAX_CHARA_FOLLOWER ) {
 				continue
@@ -198,19 +198,30 @@
 			if ( cbit(CHARA_BIT_NECRO, cnt) == 1 ) {
 				continue
             }
+            if ( cbit(CHARA_BIT_INVISIBLE, cnt) == 1 ) {
+                if ( cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, cnt) == 0 ) {
+                    continue
+                }
+            }
             DmgPopupR = cdata(CDATA_ROLE, cnt)
             if ( DmgPopupR == ROLE_NONE ) {
                 if ( cdata(CDATA_ID, cnt) == CREATURE_ID_WEREWOLF | cdata(CDATA_ID, cnt) == CREATURE_ID_SUNBARARIAN |  cdata(CDATA_ID, cnt) == CREATURE_ID_FOX_SPIRIT | cdata(CDATA_ID, cnt) == CREATURE_ID_WEREWOLF_DETECTIVE | cdata(CDATA_ID, cnt) == CREATURE_ID_DETECTIVE | cdata(CDATA_ID, cnt) == CREATURE_ID_CHAOS_SPIRIT ) {
                     DmgPopupR = ROLE_CITIZEN
                 } else {
-                    continue
+                    if ( cfg_showNpcName <= 1 & cdata(CDATA_QUALITY, cnt) < FIX_QUALITY_MIRACLE ) {  
+                        continue
+                    }
                 }
             }
             if ( cdata(CDATA_ROLE, cnt) == ROLE_SPECIAL & cdata(CDATA_QUALITY, cnt) < FIX_QUALITY_MIRACLE ) {
-                continue
+                if ( cfg_showNpcName <= 1 ) {  
+                    continue
+                }
             }
             if ( DmgPopupR >= 1000 ) { DmgPopupR -= 1000 - 25 }
             if ( DmgPopupR >= 1000 ) { DmgPopupR = ROLE_CITIZEN }
+            if ( cdata(CDATA_QUALITY, cnt) == FIX_QUALITY_UNIQUE & DmgPopupR == ROLE_NONE ) { DmgPopupR = ROLE_SPECIAL }
+            if ( cdata(CDATA_QUALITY, cnt) >= FIX_QUALITY_MIRACLE & DmgPopupR == ROLE_NONE ) { DmgPopupR = ROLE_ADVENTURER }
             DmgPopupR = DmgPopupR \ 50
             dx = cdata(CDATA_X, cnt)
             dy = cdata(CDATA_Y, cnt)
@@ -255,9 +266,9 @@
         }
         if (dt@DP + cfg_dmgspeed * 150 > t@DP) {
             popupY@DP = 0
-            repeat length2(DmgPopups) - j@DP
-                otheri@DP = (i@DP + cnt) \ length2(DmgPopups)
-                if (DmgPopups(0, otheri@DP) + cfg_dmgspeed * 150 > t@DP & otheri@DP != i@DP) {
+            repeat length2(DmgPopups)
+                otheri@DP = (length2(DmgPopups) + i@DP - cnt) \ length2(DmgPopups)
+                if (DmgPopups(0, otheri@DP) + cfg_dmgspeed * 150 > t@DP & DmgPopups(0, otheri@DP) > DmgPopups(0, i@DP) & otheri@DP != i@DP) {
                     if (cdata(CDATA_X, cc@DP) == cdata(CDATA_X, DmgPopups(1, otheri@DP)) & cdata(CDATA_Y, cc@DP) == cdata(CDATA_Y, DmgPopups(1, otheri@DP)) ) {
                         if (DmgPopups(8, i@DP) == 9999 & DmgPopups(8, otheri@DP) != 9999) { continue }
                         popupY@DP++
@@ -283,13 +294,15 @@
                 }
                 DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3) - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
                 /********** CUSTOM - BEGINNING **********/ // Show npc name in town.
-                if ( cfg_showNpcName ) {
+                if ( cfg_showNpcName > 0 ) {
                     DmgPopupY += (-2) - cfg_dmgfont
                 }
                 /********** CUSTOM - BEGINNING **********/
             }
             DmgPopupX += (scx != scxbk) * sxfix
             DmgPopupY += (scy != scybk) * syfix
+
+            // Disabled X axis out of bound continue because the dialogue pop up could be really long.
             // if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver | DmgPopupX < 0 | DmgPopupX + strlen(s) * (2 + cfg_dmgfont + DmgPopFontInc + 1) > windoww) {
             //     continue
             // }
