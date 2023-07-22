@@ -58,6 +58,7 @@ TweakData(74, 2) = "Use summoning crystals to summon Custom NPCs."
 TweakData(75, 2) = "Revert post-2.17 skill exp formula changes."
 TweakData(76, 2) = "Make necromancy minions actively seek out enemies like pets do."
 TweakData(77, 2) = "Spawn evolved enemies in: "
+TweakData(78, 2) = "Collect kits instead of socks in Urcaguary quest."
 
 TweakData(x, 3) = "AI Tweaks"
 TweakData(0, 3) = "Change Zeome's AI."
@@ -497,7 +498,7 @@ TweakData(52, 4) = "Faster Fishing Animations."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 35
+    listmax = 37
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -543,6 +544,8 @@ TweakData(52, 4) = "Faster Fishing Animations."
 	listn(0, 32) = "Revert post-2.17 skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES)
 	listn(0, 33) = "Necromancy Autotargeting." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING)
 	listn(0, 34) = "Spawn evolved enemies in: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES)
+	listn(0, 35) = "Collect kits instead of socks in Urcaguary quest." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST)
+	listn(0, 36) = "Go back."
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -672,6 +675,9 @@ TweakData(52, 4) = "Faster Fishing Animations."
 				s = "Spawn evolved enemies at given locations. \nChance start at 1/1800 chance, caps at area lvl 301 with 1/6 chance.\nEvolution branches chance stack. \nEvolution stages are calculated independently."
 			}
 			if ( p == 35 ) {
+				s = "Urcaguary now accept craft repair kits and material kits instead of socks.\nCraft repair kit count as 1 and material kit count as 2.\nYou still need to find the sock-thief for the first time.\nBut he will drop enough socks for you complete the quest."
+			}
+			if ( p == 36 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -873,6 +879,11 @@ TweakData(52, 4) = "Faster Fishing Animations."
 		gosub *IncrementTweak
 	}
 	if ( p == 35 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST
+		gosub *ToggleTweak
+	}
+	if ( p == 36 ) {
 		snd SOUNDLIST_OK1
 		return
 	}

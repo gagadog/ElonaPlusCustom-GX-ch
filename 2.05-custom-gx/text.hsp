@@ -9077,6 +9077,11 @@
 	if ( val == 0 ) {
 		if ( p == gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) * (gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) < 33) + (gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) == 0) + (gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) == 1) ) {
 			s1 = lang("オルドランにいるウリカグアルから靴下30枚の調達を頼まれている。あと" + (32 - gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)) + "枚の靴下を届ける必要がある。", "Urcaguary in Ol-Dran has asked me to provide her with 30 socks. I still need to deliver " + (32 - gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)) + " more.")
+			/********** CUSTOM - BEGINNING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
+			if ( TweakData(TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST, TWEAK_CATEGORY_GAMEPLAY) != 0 & gdata(GDATA_FLAG_SUB_SOCKS_THIEF) >= 100 ) {
+				s1 = lang("オルドランにいるウリカグアルからリペアキット30枚の調達を頼まれている。あと" + (32 - gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)) + "枚のリペアキットを届ける必要がある。", "Urcaguary in Ol-Dran has asked me to provide her with about 30 kits. I still need to deliver " + (32 - gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)) + " more.")
+			}
+			/********** CUSTOM - ENDING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
 			talk_conv s1, 40 - en * 4
 			buff += "(" + s + ")\n" + s1
 			noteadd ""

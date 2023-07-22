@@ -11439,6 +11439,101 @@
 	}
 	if ( _switch_val == CREATURE_ID_URCAGUARY | _switch_sw ) {
 		_switch_sw = 0
+		/********** CUSTOM - BEGINNING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
+		if ( TweakData(TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST, TWEAK_CATEGORY_GAMEPLAY) != 0 & gdata(GDATA_FLAG_SUB_SOCKS_THIEF) >= 100 ) {
+			if ( gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) >= 32 ) {
+				chatMore lang("我が黄金騎士団はハードなトレーニングを積んできた。トレーニング用具のほとんどを壊してしまったので、リペアキットや素材槌がまだまだ必要だ。", "Our Golden Knights has been training hard, a bit too hard to be honest. We broke most of our training equipments, so we still need more Craft Repair Kits and Material Kits to fix all the mess here.")
+				chatMore lang("備品調達係、仕事だよ。またキット30枚集めてきな。また褒美はやるよ。", "Time to work, Procurement Officer. Collect about 30 kits to fix our training equipments, and you'll get another reward.")
+				gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) = 2
+				goto *chat_end
+			}
+			if ( gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) >= 2 ) {
+				if ( gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) <= 32 ) {
+					chatList 0, lang("ちょっと待って", "Wait a little longer.")
+					chatList 1, lang("所持リペアキットや素材槌全納入", "(Deliver all kits)")
+					buff = lang("どうだい？リペアキットは持ってきたのかい？", "What's going on? Did you bring some repair kits?")
+					gosub *chat_select
+					if ( chatval == 1 ) {
+						inv_getheader 0
+						f = 0
+						fchoco = 0
+						repeat invrange, invhead
+							if ( gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) >= 32 ) {
+								break
+							}
+							if ( inv(INV_ITEM_NUM, cnt) > 0 ) {
+								if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_CRAFT_REPAIR_KIT | inv(INV_ITEM_ID, cnt) == ITEM_ID_MATERIAL_KIT ) {
+									if ( inv(INV_ITEM_EQUIP, cnt) == 0 ) {
+										if ( ibit(ITEM_BIT_NO_DROP, cnt) != 1 ) {
+											inv(INV_ITEM_NUM, cnt)--
+											gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)++
+											if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_MATERIAL_KIT ) {
+												gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)++
+											}
+											f = 1
+											txt itemname(cnt, 1) + lang("を納入した。", " was handed over.")
+											if ( gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) >= 32 ) {
+												break
+											}
+											continue cnt
+										}
+									}
+								}
+								if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_HANDMADE_CHOCOLATE_KIT ) {
+									fchoco = 1
+								}
+							}
+						loop
+						if ( f ) {
+							chatMore lang("よぉし…確かに受け取ったよ。", "Alright... I'll take these kits.")
+							if ( fchoco ) {
+								if ( gdata(GDATA_MONTH) != 2 ) {
+									chatMore lang("チョコレート手作りキット？次の2月を待とう。", "Chocolate kits? Well, you have to wait until next February.")
+								} else {
+									chatMore lang("チョコレート手作りキット？フハハ！面白い冗談を言うじゃないか、照れちまうよ！", "Chocolate kits? Fuhaha, We have no use for those. Maybe you should just use those for your loved ones.")
+								}
+							}
+						}
+						if ( f == 0 ) {
+							chatMore lang("しっかりしな。アタシに渡せるリペアキットがないじゃないか。", "Get a hold of yourself. You don't have any kits to give me."), strbye
+						}
+						gosub *calcBurdenPc
+						if ( gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) >= 32 ) {
+							chatMore lang("根性あるじゃないか…アンタは立派な騎士団備品調達係さ！褒美をやるよ、取っておきな。", "Got some guts, don't you... Alright, here's your reward. Take care of it.")
+							txt_questitem
+							if ( gdata(GDATA_HOUR) >= 0 & gdata(GDATA_HOUR) < 6 ) {
+								flt
+								itemcreate -1, ITEM_ID_TEAR_OF_GOD, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+								inv(INV_ITEM_PARAM1, ci) = 8
+								encadd ci, ENCHANT_PROC * EXT_ENCHANTMENT + ENCHANT_PROC_GRAVITY_SPHERE, 150, 0, 1, 0, 1
+							}
+							if ( gdata(GDATA_HOUR) >= 6 & gdata(GDATA_HOUR) < 12 ) {
+								flt
+								itemcreate -1, ITEM_ID_TEAR_OF_GOD, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+								inv(INV_ITEM_PARAM1, ci) = 9
+								encadd ci, ENCHANT_ELEMENTAL_DMG * EXT_ENCHANTMENT + SKILL_RES_MAGIC, 300, 0, 1, 0, 1
+							}
+							if ( gdata(GDATA_HOUR) >= 12 & gdata(GDATA_HOUR) < 18 ) {
+								flt
+								itemcreate -1, ITEM_ID_TEAR_OF_GOD, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+								inv(INV_ITEM_PARAM1, ci) = 10
+								encadd ci, ENCHANT_PIERCING_CHANCE, 200, 0, 1, 0, 1
+							}
+							if ( gdata(GDATA_HOUR) >= 18 & gdata(GDATA_HOUR) < 24 ) {
+								flt
+								itemcreate -1, ITEM_ID_TEAR_OF_GOD, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+								inv(INV_ITEM_PARAM1, ci) = 11
+								encadd ci, ENCHANT_REMOTE_BLOW, 250, 0, 1, 0, 1
+							}
+							goto *chat_end
+						}
+						goto *chat_end
+					}
+					goto *chat_end
+				}
+			}
+		}
+		/********** CUSTOM - ENDING **********/
 		if ( gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) >= 32 ) {
 			chatMore lang("おかしい…少し目を離した隙にまた靴下が全部無くなっているぞ。", "That's funny... All the socks disappeared again when I wasn't looking.")
 			chatMore lang("備品調達係、仕事だよ。また靴下30枚集めてきな。…そう嫌な顔をするなって。また褒美はやるよ。", "Time to work, Procurement Officer. Collect another 30 socks... Don't give me that look. You'll get another reward.")

@@ -1731,6 +1731,18 @@
 			flt
 			itemcreate -1, ITEM_ID_SOCKS2, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 3
 		}
+		/********** CUSTOM - BEGINNING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
+		if ( TweakData(TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST, TWEAK_CATEGORY_GAMEPLAY) != 0 & gdata(GDATA_FLAG_SUB_SOCKS_THIEF) >= 11 & gdata(GDATA_FLAG_SUB_SOCKS_THIEF) < 100 ) {
+			flt
+			itemcreate -1, ITEM_ID_SOCKS2, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 3
+			flt
+			itemcreate -1, ITEM_ID_SOCKS, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 4
+			flt
+			itemcreate -1, ITEM_ID_SOCKS2, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 3
+			flt
+			itemcreate -1, ITEM_ID_SOCKS2, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 3
+		}
+		/********** CUSTOM - ENDING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
 	}
 	if ( cdata(CDATA_ID, rc) == CREATURE_ID_ARKHAI ) {
 		if ( cdata(CDATA_ROLE, rc) != ROLE_CITIZEN & cdata(CDATA_ROLE, rc) != ROLE_SPECIAL ) {

@@ -1681,6 +1681,8 @@
 			}
 			if ( cnt == 17 ) {
 				file += "tweaks.s1"
+				// TODO: Add this to 6190 version update so we have 100 more spaces in the tweak.
+				// fsize = 4000
 				fsize = 2000
 			}
 			if ( cnt == 18 ) {
@@ -4113,6 +4115,29 @@
 
 	if ( instr(buff, 0, "save_map_image") != (-1) ) {
 		outputmapimage
+		noteadd "Done."
+		goto *console_write
+	}
+
+	if ( instr(buff, 0, "fix_tweak_6190") != (-1) ) {
+		// TODO: Add this to 6190 version update so we have 100 more spaces in the tweak.
+		repeat 100
+			TweakData(cnt, 4) = TweakData(cnt, 2)
+			TweakData(cnt, 3) = TweakData(cnt + 100, 1)
+			TweakData(cnt, 2) = TweakData(cnt, 1)
+			TweakData(cnt, 1) = TweakData(cnt + 100, 0)
+			TweakData(cnt + 100, 0) = 0
+			TweakData(cnt + 100, 1) = 0
+		loop
+		// buff = ""
+		// notesel buff
+		// repeat 200
+		// 	noteadd "" + (cnt + 1) + "," + TweakData(cnt, 0) + "," + TweakData(cnt, 1) + "," + TweakData(cnt, 2) + "," + TweakData(cnt, 3) + "," + TweakData(cnt, 4)
+		// loop
+		// s = exedir + "\\tweak.txt"
+		// notesave s
+		buff = ""
+		notesel buff
 		noteadd "Done."
 		goto *console_write
 	}
