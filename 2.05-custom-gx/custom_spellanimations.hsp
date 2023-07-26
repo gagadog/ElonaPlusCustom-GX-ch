@@ -69,6 +69,9 @@
     if ( efid == SKILL_SPELL_HYDRO_FANG ) {
 		preparePicItem xy2pic(6, 0), anicol
     }
+    if ( rapidmagic ) {
+        hoseiwait /= 3
+    }
     buffer 9, inf_tiles, inf_tiles
     gosub *buffer_pen_reset
 
@@ -149,6 +152,9 @@
         pos 0, 0
         gzoom 96 * 5, 96, 7, 0, 0, 960, 192
         boxf 96 * 5, 0, 96 * 5, 96
+    }
+    if ( rapidmagic ) {
+        hoseiwait /= 3
     }
 
     gosub *buffer_pen_reset

@@ -250,7 +250,10 @@
     }
     /********** CUSTOM - BEGINNING **********/
     repeat length2(DmgPopups)
-        i@DP = (DmgPopupNext + cnt) \ length2(DmgPopups)
+        i@DP = (DmgPopupNext + length2(DmgPopups) - cnt - 1) \ length2(DmgPopups)
+        if (DmgPopups(0, i@DP) + cfg_dmgspeed * 150 <= t@DP ) {
+            break
+        }
         j@DP = cnt + 1
 
         dt@DP = DmgPopups(0, i@DP)
@@ -266,11 +269,16 @@
         }
         if (dt@DP + cfg_dmgspeed * 150 > t@DP) {
             popupY@DP = 0
-            repeat length2(DmgPopups)
-                otheri@DP = (length2(DmgPopups) + i@DP - cnt) \ length2(DmgPopups)
-                if (DmgPopups(0, otheri@DP) + cfg_dmgspeed * 150 > t@DP & DmgPopups(0, otheri@DP) > DmgPopups(0, i@DP) & otheri@DP != i@DP) {
+            repeat length2(DmgPopups) - 1
+                otheri@DP = (i@DP + cnt + 1) \ length2(DmgPopups)
+                if ( otheri@DP == DmgPopupNext ) {
+                    break
+                }
+                if ( DmgPopups(8, i@DP) == 9999 & DmgPopups(8, otheri@DP) != 9999 ) { 
+                    continue 
+                }
+                if (DmgPopups(0, otheri@DP) + cfg_dmgspeed * 150 > t@DP) {
                     if (cdata(CDATA_X, cc@DP) == cdata(CDATA_X, DmgPopups(1, otheri@DP)) & cdata(CDATA_Y, cc@DP) == cdata(CDATA_Y, DmgPopups(1, otheri@DP)) ) {
-                        if (DmgPopups(8, i@DP) == 9999 & DmgPopups(8, otheri@DP) != 9999) { continue }
                         popupY@DP++
                     }
                 }
@@ -293,11 +301,9 @@
                     DmgPopupP = cdata(CDATA_PIC, cnt)
                 }
                 DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3) - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
-                /********** CUSTOM - BEGINNING **********/ // Show npc name in town.
                 if ( cfg_showNpcName > 0 ) {
                     DmgPopupY += (-2) - cfg_dmgfont
                 }
-                /********** CUSTOM - BEGINNING **********/
             }
             DmgPopupX += (scx != scxbk) * sxfix
             DmgPopupY += (scy != scybk) * syfix

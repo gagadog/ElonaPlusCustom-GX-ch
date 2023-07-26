@@ -1,4 +1,6 @@
 *custom_enemy_evolution
+    evname = "aaa"
+    evold = "aaa"
     evmode = 0
     p@PE = rnd(6), rnd(6), rnd(6)
     if ( cdata(CDATA_ID, tc@PE) == CREATURE_ID_YOUNGER_CAT_SISTER ) {

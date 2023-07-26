@@ -9420,9 +9420,9 @@
 		if ( cdata(CDATA_ROLE, cc) != ROLE_ADVENTURER ) {
 			growrate = gdata(GDATA_FLAG_MAIN) + 100
 			/********** CUSTOM - BEGINNING **********/
-			growrate = ( gdata(GDATA_FLAG_MAIN) + 100 ) / 4
+			growrate = ( gdata(GDATA_FLAG_MAIN) + 100 )
 			if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
-				growrate = 100
+				growrate = 400
 			}
 			/********** CUSTOM - ENDING **********/
 			if ( cc < MAX_CHARA_FOLLOWER ) {

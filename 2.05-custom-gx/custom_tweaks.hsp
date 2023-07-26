@@ -666,7 +666,7 @@ TweakData(52, 4) = "Faster Fishing Animations."
 				s = "Play as a summoner. Summon CNPCS and monsters to help you in battle. \nYou can summon allied CNPCS in dungeons using god's favor, or at Home using PP. \nThis will also disable Random CNPC spawn in all areas except Derphy and Melkawn. \nThis will also change player summoned monsters in dungeons to be allied."
 			}
 			if ( p == 32 ) {
-				s = "Reverts changes to the skill experience formula after version 2.17.\nThis will lock your growth rate at 100% (compared to growth in 2.17)."
+				s = "Reverts changes to the skill experience formula after version 2.17.\nThis will lock your growth rate at 400% (100% compared to growth in 2.17)."
 			}
 			if ( p == 33 ) {
 				s = "Make necromancy minions actively seek out enemies like pets do."

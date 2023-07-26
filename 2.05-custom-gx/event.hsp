@@ -2251,8 +2251,8 @@
 				break
 			}
 		loop
-		chatList 1, lang("放置して寝る", "(Sleep on standing)")
-		chatList 2, lang("土下座させる", "(To Dogeza)")
+		chatList 1, lang("放置して寝る", "(Leave them alone)")
+		chatList 2, lang("土下座させる", "(Forced Dogeza)")
 		chatList 3, lang(bui + "を舐めさせる", "(Lick your " + bui + ")")
 		chatList 4, lang("ひっぱたく", "(Slap)")
 		chatList 5, lang("撫でまわす", "(Rub)")
@@ -2273,25 +2273,25 @@
 			gosub *re_select
 			if ( rtval == 1 ) {
 				txtef COLOR_YELLOW
-				txt lang("あなたは" + cdatan(CDATAN_NAME, tc) + "を放置して、そのまま寝た。", "You slept on standing " + cdatan(CDATAN_NAME, tc) + ".")
+				txt lang("あなたは" + cdatan(CDATAN_NAME, tc) + "を放置して、そのまま寝た。", "You shove " + cdatan(CDATAN_NAME, tc) + " away and go back to sleeping.")
 				break
 			}
 			if ( rtval == 2 ) {
 				if ( cdata(CDATA_MASTER_SERVANT, tc) >= 200 | rnd(sdata(SKILL_ATTR_CHA, CHARA_PLAYER)) > rnd(sdata(SKILL_ATTR_WIL, tc)) ) {
-					txt lang(cdatan(CDATAN_NAME, tc) + "はわけもわからないまま、ひたすら土下座をした。", "Without knowing apparent reason, " + cdatan(CDATAN_NAME, tc) + " was the prostrate earnestly.")
+					txt lang(cdatan(CDATAN_NAME, tc) + "はわけもわからないまま、ひたすら土下座をした。", "Without knowing apparent reason, " + cdatan(CDATAN_NAME, tc) + " started to prostrate earnestly.")
 					modimp2 tc, 5
 					cdata(CDATA_POWER_GAUGE, CHARA_PLAYER) += 10
 				}
 				else {
 					if ( rnd(sdata(SKILL_ATTR_STR, CHARA_PLAYER)) > rnd(sdata(SKILL_ATTR_STR, tc)) ) {
-						txt lang(cdatan(CDATAN_NAME, tc) + "が拒絶したので、力づくで土下座させた。", "Because " + cdatan(CDATAN_NAME, tc) + " was rejected, to dogeza by force.")
+						txt lang(cdatan(CDATAN_NAME, tc) + "が拒絶したので、力づくで土下座させた。", "" + cdatan(CDATAN_NAME, tc) + " refuses, so you make them Dogeza by force.")
 						modimp2 tc, 3
 						cdata(CDATA_POWER_GAUGE, CHARA_PLAYER) += 10
 						cdata(CDATA_POWER_GAUGE, tc) += 15
 						modimp tc, -5
 					}
 					else {
-						txt lang(cdatan(CDATAN_NAME, tc) + "は目に涙を浮かべて拒絶した。", cdatan(CDATAN_NAME, tc) + " rejected with tears in eyes.")
+						txt lang(cdatan(CDATAN_NAME, tc) + "は目に涙を浮かべて拒絶した。", cdatan(CDATAN_NAME, tc) + " refuses, with tears in their eyes.")
 						cdata(CDATA_POWER_GAUGE, tc) += 10
 					}
 				}
@@ -2305,7 +2305,7 @@
 				}
 				else {
 					if ( rnd(sdata(SKILL_ATTR_STR, CHARA_PLAYER)) > rnd(sdata(SKILL_ATTR_STR, tc) * 2) ) {
-						txt lang(cdatan(CDATAN_NAME, tc) + "が拒絶したので、無理矢理" + bui + "を舐めさせた。", "Because " + cdatan(CDATAN_NAME, tc) + " was rejected, forced to lick your " + bui + ".")
+						txt lang(cdatan(CDATAN_NAME, tc) + "が拒絶したので、無理矢理" + bui + "を舐めさせた。", "" + cdatan(CDATAN_NAME, tc) + " refuses, so you forced them to lick your " + bui + ".")
 						snd SOUNDLIST_WATER2
 						modimp2 tc, 8
 						cdata(CDATA_POWER_GAUGE, CHARA_PLAYER) += 20
@@ -2326,17 +2326,17 @@
 				await 400
 				snd SOUNDLIST_SLAP
 				if ( cdata(CDATA_MASTER_SERVANT, tc) >= 200 | cdata(CDATA_MASTER_SERVANT2, tc) <= (-5) ) {
-					txt lang(cdatan(CDATAN_NAME, tc) + "はあなたのなすがまま、黙って耐えている…。", "Form your left, He endured the pain in silence...")
+					txt lang(cdatan(CDATAN_NAME, tc) + "はあなたのなすがまま、黙って耐えている…。", "At your mercy, " + cdatan(CDATAN_NAME, tc) + " endured the pain in silence...")
 					modimp2 tc, 10
 					cdata(CDATA_POWER_GAUGE, CHARA_PLAYER) += 35
 					if ( cdata(CDATA_MASTER_SERVANT2, tc) <= (-5) ) {
-						txt lang(cdatan(CDATAN_NAME, tc) + "は何故かちょっと嬉しそうだ。", cdatan(CDATAN_NAME, tc) + " is a happy little for some reason.")
+						txt lang(cdatan(CDATAN_NAME, tc) + "は何故かちょっと嬉しそうだ。", cdatan(CDATAN_NAME, tc) + " is a little happy for some reason.")
 						cdata(CDATA_MASTER_SERVANT, tc)++
 					}
 				}
 				else {
 					if ( rnd(sdata(SKILL_ATTR_STR, CHARA_PLAYER)) > rnd(sdata(SKILL_ATTR_STR, tc)) ) {
-						txt lang("あなたは" + cdatan(CDATAN_NAME, tc) + "が大人しくなるまでひっぱたいた。", "You were beaten up until " + cdatan(CDATAN_NAME, tc) + " was quiet.")
+						txt lang("あなたは" + cdatan(CDATAN_NAME, tc) + "が大人しくなるまでひっぱたいた。", cdatan(CDATAN_NAME, tc) + " were beaten up until they were quiet.")
 						modimp2 tc, 15
 						cdata(CDATA_POWER_GAUGE, tc) += 30
 						cdata(CDATA_POWER_GAUGE, CHARA_PLAYER) += 30
@@ -2357,14 +2357,14 @@
 				}
 				else {
 					if ( rnd(sdata(SKILL_ATTR_STR, CHARA_PLAYER)) > rnd(sdata(SKILL_ATTR_STR, tc)) ) {
-						txt lang(cdatan(CDATAN_NAME, tc) + "が暴れるので、しっかりと押さえつけてから撫でまわした。", "Because " + cdatan(CDATAN_NAME, tc) + " rage, you were turning stroked it from hold " + cdatan(CDATAN_NAME, tc) + " down.")
+						txt lang(cdatan(CDATAN_NAME, tc) + "が暴れるので、しっかりと押さえつけてから撫でまわした。", "" + cdatan(CDATAN_NAME, tc) + " resisted furiously, you have to hold " + cdatan(CDATAN_NAME, tc) + " down while stroking.")
 						modimp2 tc, 2
 						cdata(CDATA_POWER_GAUGE, CHARA_PLAYER) += 10
 						cdata(CDATA_POWER_GAUGE, tc) += 15
 						modimp tc, -2
 					}
 					else {
-						txt lang(cdatan(CDATAN_NAME, tc) + "は嫌がって暴れた！", cdatan(CDATAN_NAME, tc) + " was violent and loath!")
+						txt lang(cdatan(CDATAN_NAME, tc) + "は嫌がって暴れた！", cdatan(CDATAN_NAME, tc) + " was disgusted and furious!")
 						cdata(CDATA_POWER_GAUGE, tc) += 5
 					}
 				}
@@ -2374,11 +2374,11 @@
 			if ( cdata(CDATA_POWER_GAUGE, tc) >= 100 ) {
 				txtef COLOR_RED
 				txtmore
-				txt lang(cdatan(CDATAN_NAME, tc) + "はこれ以上耐えられなくなり、逃げ出した！", "It is no longer endure any more, " + cdatan(CDATAN_NAME, tc) + " ran away!")
+				txt lang(cdatan(CDATAN_NAME, tc) + "はこれ以上耐えられなくなり、逃げ出した！", cdatan(CDATAN_NAME, tc) + " can no longer endure any more, and ran away!")
 				modimp tc, -5
 				if ( cdata(CDATA_POWER_GAUGE, CHARA_PLAYER) >= 100 | rnd(sdata(SKILL_ATTR_SPD, CHARA_PLAYER)) > rnd(sdata(SKILL_ATTR_SPD, tc)) ) {
 					await 400
-					txt lang("しかし、あなたは逃げ出す" + cdatan(CDATAN_NAME, tc) + "を捕まえると容赦なくベッドに引き戻した…。", "But you caught " + cdatan(CDATAN_NAME, tc) + " and pulled back to bed without mercy.")
+					txt lang("しかし、あなたは逃げ出す" + cdatan(CDATAN_NAME, tc) + "を捕まえると容赦なくベッドに引き戻した…。", "But you caught " + cdatan(CDATAN_NAME, tc) + " without mercy, and pulled them back to bed.")
 					modimp2 tc, 20
 					snd SOUNDLIST_GET1
 				}
@@ -2394,7 +2394,7 @@
 				snd SOUNDLIST_ATK_FIRE
 				txtef COLOR_RED
 				txtmore
-				txt lang("あなたはこれ以上我慢できない！", "You can not stand any more!")
+				txt lang("あなたはこれ以上我慢できない！", "You cannot withstand any more!")
 				customtalk 0, DBMODE_FLAVOR_LIMIT
 				gosub *convert_word
 				await 800

@@ -1,3 +1,28 @@
+# 2.18.R.1.2
+
+## Added
+- Tweak that allow random enemy mob to evolve.
+- Tweak that allow faster fishing animation.
+- Tweak that allow you to hand in Craft Repair Kits and Material Kits instead of Socks in Urcaguary Quest.
+
+## Changed
+- Custom AI supports remote blow. (If distance > 1 and action is set to Melee Attack)
+- Pot of Fusion Page is now remembered.
+- Devil fragments are split when used in fusion.
+- Item weight is shown when you walk on them.
+- More status information is displayed when you (l)ook at people.
+- Added a temporary world event filter so world event won't overwhelm slow/new characters.
+- Removed the growth value 1/4 display change because it confuses people.
+- Adjusted the CNPC summon screen and and added some balancing.
+- Allow leashing temporary allies.
+
+## Fixed
+- Thread of innervation does knockout animation.
+- Wrong creature filter causing some NPC spawning at wrong places.
+- Some dialog pop-up / npc name display issue.
+- Optimized some performance issues caused by DamageMeter/ShowNPCName/DamagePopup.
+  + The DamageMeter and ShowNPCName will be disabled by default in the config.txt
+
 # 2.18R.1.1
 
 ## Added

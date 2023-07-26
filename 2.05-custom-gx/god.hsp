@@ -968,20 +968,20 @@
 		repeat 1
 			if ( i == 60 ) {
 				if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_EHEKATL ) {
-					txt lang(itemname(ci) + "はまばゆく輝いて消え、四つ葉のクローバーがふってきた。", itemname(ci) + " shine" + _s2(inv(INV_ITEM_NUM, ci)) + " all around and disappear" + _s2(inv(INV_ITEM_NUM, ci)) + ". A three-leaved falls from the altar.")
+					txt lang(itemname(ci) + "はまばゆく輝いて消え、四つ葉のクローバーがふってきた。", itemname(ci) + " shine" + _s2(inv(INV_ITEM_NUM, ci)) + " brightly and disappear" + _s2(inv(INV_ITEM_NUM, ci)) + ". A four-leaved clover falls onto the altar.")
 					txtef COLOR_YELLOW
-					txt lang("「たらばがに？…たらばがに！！！！！」", cnvtalk("Coconut crab!!!!"))
+					txt lang("「たらばがに？…たらばがに！！！！！」", cnvtalk("Coconut crab?.. Coconut crab!!!!"))
 					break
 				}
 				if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_JURE ) {
-					txt lang(itemname(ci) + "はまばゆく輝いて消え、四つ葉のクローバーがふってきた。", itemname(ci) + " shine" + _s2(inv(INV_ITEM_NUM, ci)) + " all around and disappear" + _s2(inv(INV_ITEM_NUM, ci)) + ". A three-leaved falls from the altar.")
+					txt lang(itemname(ci) + "はまばゆく輝いて消え、四つ葉のクローバーがふってきた。", itemname(ci) + " shine" + _s2(inv(INV_ITEM_NUM, ci)) + " brightly and disappear" + _s2(inv(INV_ITEM_NUM, ci)) + ". A four-leaved clover falls onto the altar.")
 					txtef COLOR_YELLOW
 					txt lang("「わぁっ♪………な、何よ！？別に喜んでいるわけじゃないから！」", cnvtalk("I'm glad....j-just a little!!"))
 					break
 				}
 			}
 			if ( i >= 15 ) {
-				txt lang(itemname(ci) + "はまばゆく輝いて消えた。", itemname(ci) + " shine" + _s2(inv(INV_ITEM_NUM, ci)) + " all around and disappear" + _s2(inv(INV_ITEM_NUM, ci)) + ".")
+				txt lang(itemname(ci) + "はまばゆく輝いて消えた。", itemname(ci) + " shine" + _s2(inv(INV_ITEM_NUM, ci)) + " brightly and disappear" + _s2(inv(INV_ITEM_NUM, ci)) + ".")
 				txtgod cdata(CDATA_GOD, CHARA_PLAYER), GOD_TEXT_OFFER_GREAT
 				break
 			}
