@@ -7236,7 +7236,7 @@
 					break
 				loop
 				if ( p == 1 ) {
-					chatMore lang("ちょっと待て、何だその小型ロボみたいなのは。ポーショマン？ほぅ、飲み物の栓を発射するのか…。", "Wait, What's that thing you are holding? A Potioman... shooting potion plugs??")
+					chatMore lang("ちょっと待て、何だその小型ロボみたいなのは。ポーショマン？ほぅ、飲み物の栓を発射するのか…。", "Wait, What's that robot-looking thing you are holding? A Potioman? and it can... shoot potion plugs??")
 					chatMore lang("うーむ。ちゃちゃっと本体を強化してやろうと思ったが、これは一種の工芸品だな。繊細な職人技だらけで簡単には手を加えられん。外付けの強化パーツで機能を追加したほうがよさそうだ。", "Huh, Full of delicate craftsmanship, it cannot be easily remodeled. It seems better to add functions with external reinforcement parts.")
 					redraw 0
 					gosub *screen_draw
