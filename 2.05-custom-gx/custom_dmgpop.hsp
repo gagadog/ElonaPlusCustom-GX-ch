@@ -187,7 +187,7 @@
     font lang(cfg_font1, cfg_font2), 2 + cfg_dmgfont - en * 2, 0
     
     /********** CUSTOM - BEGINNING **********/ // Show npc name in town.
-    if ( cfg_showNpcName > 0 & mode == MODELIST_MAIN & evochat <= 0 & ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE | mdata(MDATA_TYPE) == MAP_TYPE_HOME | (cfg_showNpcName == 3 & mdata(MDATA_TYPE) != MAP_TYPE_WORLD) ) ) {
+    if ( cfg_showNpcName > 0 & mode == MODELIST_MAIN & evochat == 0 & ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE | mdata(MDATA_TYPE) == MAP_TYPE_HOME | (cfg_showNpcName == 3 & mdata(MDATA_TYPE) != MAP_TYPE_WORLD) ) ) {
 		repeat MAX_CHARA_TOTAL
 			if ( cnt < MAX_CHARA_FOLLOWER ) {
 				continue

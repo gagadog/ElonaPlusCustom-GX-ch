@@ -792,6 +792,14 @@
 		mes _conadvance
 		sy -= 20
 	}
+	if ( cbit(CHARA_BIT_DEATH_CREST, CHARA_PLAYER) ) {
+		color 220, 0, 0
+		pos sx, sy
+		gcopy BUFFER_INF, 0 + en * 84, 416, 65 + en * 30, 15
+		pos sx + 6, sy + 1
+		mes _conkokusi
+		sy -= 20
+	}
 	if ( cdata(CDATA_CONDITION_WINCE, CHARA_PLAYER) != 0 ) {
 		color 160, 0, 0
 		pos sx, sy
@@ -1120,6 +1128,11 @@
 		}
 	}
 	if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
+		if ( encounter == ENCOUNTER_NONE ) {
+			enemyhp = 0
+		}
+	}
+	if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 		pos inf_clockw + 230, inf_clocky + 37
 		color 0, 0, 0
 		if ( jp ) {
@@ -1127,6 +1140,16 @@
 		}
 		if ( en ) {
 			bmes "Ship-Condition < " + _shiphp(cdata(CDATA_CHARACTER_TIER, CHARA_PLAYER)) + " > ", 35, 235, 235
+		}
+		if ( enemyhp > 0 ) {
+			pos inf_clockw + 230, inf_clocky + 77
+			color 0, 0, 0
+			if ( jp ) {
+				bmes "相手の船の状態：" + _shiphp(enemyhp) + " ", 15, 215, 215
+			}
+			if ( en ) {
+				bmes "Opponent's Ship-Condition < " + _shiphp(enemyhp) + " > ", 15, 215, 215
+			}
 		}
 		if ( gdata(GDATA_FLAG_SHIP_TYPE) == 0 ) {
 			gdata(GDATA_FLAG_COLLECTED_WISHES) = 0

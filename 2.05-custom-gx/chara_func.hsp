@@ -192,7 +192,6 @@
 #deffunc customtalk int customtalk_charid, int customtalk_dbmode
 	locvar_customtalk_f = 0
 	gdata(GDATA_CUSTOM_TALK) = 100
-	chatc = customtalk_charid
 	chatc@DP = customtalk_charid
 	if ( cbit(CHARA_BIT_MSG_FILE, customtalk_charid) ) {
 		exist exedir + "user\\talk\\" + cdatan(CDATAN_MSG, customtalk_charid)
@@ -574,19 +573,54 @@
 		}
 	}
 	cdata(CDATA_IMPRESSION, modimp_charid) += locvar_modimp_i
-	if ( cdata(CDATA_IMPRESSION, modimp_charid) > 400 ) {
-		cdata(CDATA_IMPRESSION, modimp_charid) = 400
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) >= 0 ) {
+		if ( cdata(CDATA_IMPRESSION, modimp_charid) > 400 ) {
+			cdata(CDATA_IMPRESSION, modimp_charid) = 400
+		}
+	}
+	else {
+		if ( cdata(CDATA_IMPRESSION, modimp_charid) > 400 + limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, modimp_charid) + 10) / 5, 0, 599) ) {
+			cdata(CDATA_IMPRESSION, modimp_charid) = 400 + limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, modimp_charid) + 10) / 5, 0, 599)
+		}
+	}
+	if ( locvar_modimp_i > 0 ) {
+		cdata(CDATA_IMPRESSION, CHARA_PLAYER)++
+		if ( cdata(CDATA_IMPRESSION, CHARA_PLAYER) > 999 ) {
+			cdata(CDATA_IMPRESSION, CHARA_PLAYER) = 999
+		}
 	}
 	locvar_modimp_p(1) = implevel(cdata(CDATA_IMPRESSION, modimp_charid))
+	locvar_modimp_pp = _impression(locvar_modimp_p(1)) + ""
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) == (-1) ) {
+		locvar_modimp_pp = _impressiona1(locvar_modimp_p(1)) + ""
+	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) == (-2) ) {
+		locvar_modimp_pp = _impressiona2(locvar_modimp_p(1)) + ""
+	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) == (-3) ) {
+		locvar_modimp_pp = _impressiona3(locvar_modimp_p(1)) + ""
+	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) == (-4) ) {
+		locvar_modimp_pp = _impressiona4(locvar_modimp_p(1)) + ""
+	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) == (-5) ) {
+		locvar_modimp_pp = _impressiona5(locvar_modimp_p(1)) + ""
+	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) == (-6) ) {
+		locvar_modimp_pp = _impressiona6(locvar_modimp_p(1)) + ""
+	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) == (-7) ) {
+		locvar_modimp_pp = _impressiona7(locvar_modimp_p(1)) + ""
+	}
 	if ( locvar_modimp_p > locvar_modimp_p(1) ) {
 		txtef COLOR_PURPLE
-		txt lang(cdatan(CDATAN_NAME, modimp_charid) + "との関係が<" + _impression(locvar_modimp_p(1)) + ">になった…", "Your relation with " + cdatan(CDATAN_NAME, modimp_charid) + " becomes <" + _impression(locvar_modimp_p(1)) + ">...")
+		txt lang(cdatan(CDATAN_NAME, modimp_charid) + "との関係が<" + locvar_modimp_pp + ">になった…", "Your relation with " + cdatan(CDATAN_NAME, modimp_charid) + " becomes <" + locvar_modimp_pp + ">...")
 		return
 	}
 	if ( locvar_modimp_p(1) > locvar_modimp_p ) {
-		if ( cdata(CDATA_RELATION, modimp_charid) != (-3) ) {
+		if ( cdata(CDATA_RELATION, modimp_charid) != RELATION_ENEMY ) {
 			txtef COLOR_GREEN
-			txt lang(cdatan(CDATAN_NAME, modimp_charid) + "との関係が<" + _impression(locvar_modimp_p(1)) + ">になった！", "Your relation with " + cdatan(CDATAN_NAME, modimp_charid) + " becomes <" + _impression(locvar_modimp_p(1)) + ">!")
+			txt lang(cdatan(CDATAN_NAME, modimp_charid) + "との関係が<" + locvar_modimp_pp + ">になった！", "Your relation with " + cdatan(CDATAN_NAME, modimp_charid) + " becomes <" + locvar_modimp_pp + ">!")
 		}
 		return
 	}
@@ -630,13 +664,30 @@
 		}
 	}
 	cdata(CDATA_MASTER_SERVANT, modimp2_charid) += locvar_modimp2_i
-	if ( cdata(CDATA_MASTER_SERVANT, modimp2_charid) > 300 ) {
-		cdata(CDATA_MASTER_SERVANT, modimp2_charid) = 300
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp2_charid) >= 0 ) {
+		if ( cdata(CDATA_MASTER_SERVANT, modimp2_charid) > 300 ) {
+			cdata(CDATA_MASTER_SERVANT, modimp2_charid) = 300
+		}
+	}
+	else {
+		if ( cdata(CDATA_MASTER_SERVANT, modimp2_charid) > 300 + limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, modimp2_charid) + 10) / 5, 0, 699) ) {
+			cdata(CDATA_MASTER_SERVANT, modimp2_charid) = 300 + limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, modimp2_charid) + 10) / 5, 0, 699)
+		}
 	}
 	if ( cdata(CDATA_MASTER_SERVANT, modimp2_charid) < (-300) ) {
 		cdata(CDATA_MASTER_SERVANT, modimp2_charid) = -300
 	}
 	locvar_modimp2_p(1) = implevel2(cdata(CDATA_MASTER_SERVANT, modimp2_charid))
+	locvar_modimp2_pp = _impressionb(locvar_modimp2_p(1)) + ""
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp2_charid) == (-11) ) {
+		locvar_modimp2_pp = _impressionb1(locvar_modimp2_p(1)) + ""
+	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp2_charid) == (-12) ) {
+		locvar_modimp2_pp = _impressionb2(locvar_modimp2_p(1)) + ""
+	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp2_charid) == (-13) ) {
+		locvar_modimp2_pp = _impressionb3(locvar_modimp2_p(1)) + ""
+	}
 	if ( locvar_modimp2_i > 0 ) {
 		item_find ITEM_ID_CANDLE_OF_LULWY, 3, 1
 		if ( stat != (-1) ) {
@@ -649,17 +700,21 @@
 				}
 				cdata(CDATA_EMO_ICON, modimp2_charid) = 17 + 100 * 3
 			}
+			cdata(CDATA_MASTER_SERVANT, CHARA_PLAYER)++
+			if ( cdata(CDATA_MASTER_SERVANT, CHARA_PLAYER) > 999 ) {
+				cdata(CDATA_MASTER_SERVANT, CHARA_PLAYER) = 999
+			}
 		}
 	}
 	if ( locvar_modimp2_p > locvar_modimp2_p(1) ) {
 		txtef COLOR_YELLOW
-		txt lang(cdatan(CDATAN_NAME, modimp2_charid) + "との主従関係が<" + _impression2(locvar_modimp2_p(1)) + ">になった。", "Your master/servant relationship with " + cdatan(CDATAN_NAME, modimp2_charid) + " becomes <" + _impression2(locvar_modimp2_p(1)) + ">.")
+		txt lang(cdatan(CDATAN_NAME, modimp2_charid) + "との主従関係が<" + locvar_modimp2_pp + ">になった。", "Your master/servant relation with " + cdatan(CDATAN_NAME, modimp2_charid) + " becomes <" + locvar_modimp2_pp + ">.")
 		return
 	}
 	if ( locvar_modimp2_p(1) > locvar_modimp2_p ) {
 		if ( cdata(CDATA_RELATION, modimp2_charid) != (-3) ) {
 			txtef COLOR_YELLOW
-			txt lang(cdatan(CDATAN_NAME, modimp2_charid) + "との主従関係が<" + _impression2(locvar_modimp2_p(1)) + ">になった。！", "Your master/servant relationship with " + cdatan(CDATAN_NAME, modimp2_charid) + " becomes <" + _impression2(locvar_modimp2_p(1)) + ">.")
+			txt lang(cdatan(CDATAN_NAME, modimp2_charid) + "との主従関係が<" + locvar_modimp2_pp + ">になった。！", "Your master/servant relationship with " + cdatan(CDATAN_NAME, modimp2_charid) + " becomes <" + locvar_modimp2_pp + ">.")
 		}
 		return
 	}
@@ -4802,8 +4857,8 @@
 			locvar_dmghp_dmg = locvar_dmghp_dmg * 100 / limit(locvar_dmghp_r + 110, 50, 3000)
 		}
 		if ( locvar_dmghp_ele == SKILL_RESDMG_CONSTITUTION | dmghp_source == DAMAGE_FROM_SUFFOCATION | dmghp_source == DAMAGE_FROM_POISON ) {
-			locvar_dmghp_r = sdata(SKILL_ATTR_CON, dmghp_charid)
-			locvar_dmghp_dmg = locvar_dmghp_dmg * 100 / (locvar_dmghp_r + 100)
+			locvar_dmghp_r = sdata(SKILL_ATTR_CON, dmghp_charid) + limit(cdata(CDATA_MASTER_SERVANT, dmghp_charid), 50, 1000) + limit(cdata(CDATA_IMPRESSION, dmghp_charid), 50, 1000)
+			locvar_dmghp_dmg = locvar_dmghp_dmg * 100 / (locvar_dmghp_r + 50)
 		}
 	}
 	else {
@@ -7671,6 +7726,11 @@
 	cdata(CDATA_SANITY, healsan_charid) -= healsan_arg2
 	if ( cdata(CDATA_SANITY, healsan_charid) < 0 ) {
 		cdata(CDATA_SANITY, healsan_charid) = 0
+	}
+	if ( cbit(CHARA_BIT_HEARTLOCK_DANGEROUS, healsan_charid) == TRUE ) {
+		if ( cdata(CDATA_SANITY, healsan_charid) < 10 ) {
+			cdata(CDATA_SANITY, healsan_charid) = 10
+		}
 	}
 	return
 

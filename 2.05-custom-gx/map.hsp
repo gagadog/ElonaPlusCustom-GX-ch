@@ -837,6 +837,12 @@
 				gdata(GDATA_LEVEL) = feat(2)
 			}
 			zyuusann = 100
+			if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_OCEAN ) {
+				mapstartx = gdata(GDATA_RETURN_X)
+				mapstarty = gdata(GDATA_RETURN_Y)
+				gdata(GDATA_LEVEL_START_ON) = 7
+				fixstart = 1
+			}
 		}
 		else {
 			zyuusann = 0
@@ -847,8 +853,10 @@
 				gdata(GDATA_AREA) = gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100
 				gdata(GDATA_FLAG_SHIP_LAST_PORT) = 0
 				snd SOUNDLIST_MIZU
-				modkarma CHARA_PLAYER, gdata(GDATA_FLAG_COLLECTED_WISHES) * 2
-				msgtemp += lang("漂流者は礼を言って去っていった。", "Drifter thanked you and left. (Karma + " + gdata(GDATA_FLAG_COLLECTED_WISHES) * 2 + ")")
+				if ( gdata(GDATA_FLAG_COLLECTED_WISHES) > 0 ) {
+					modkarma CHARA_PLAYER, gdata(GDATA_FLAG_COLLECTED_WISHES) * 2
+					msgtemp += lang("漂流者は礼を言って去っていった。", "Drifter thanked you and left. (Karma + " + gdata(GDATA_FLAG_COLLECTED_WISHES) * 2 + ")")
+				}
 			}
 		}
 		if ( f == 0 ) {
@@ -1227,6 +1235,12 @@
 	if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
 		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_OCEAN ) {
 			gdata(GDATA_LEVEL) = gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100
+			if ( encounter == ENCOUNTER_SHIP_MERCHANT ) {
+				gdata(GDATA_LEVEL) = 700
+			}
+			if ( encounter == ENCOUNTER_SHIP_PIRATE ) {
+				gdata(GDATA_LEVEL) = 701
+			}
 			snd SOUNDLIST_MIZU
 		}
 	}
@@ -3685,10 +3699,16 @@
 				itemcreate -1, ITEM_ID_DUMMY, -1, -1, 0
 			loop
 			repeat 2 + rnd(2)
-				if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 53 | gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 54 ) {
+				if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 53 ) {
 					if ( rnd(2) == 0 ) {
 						flt
 						itemcreate -1, ITEM_ID_SAZAE, -1, -1, 0
+					}
+				}
+				if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 54 ) {
+					if ( rnd(6) == 0 ) {
+						flt
+						itemcreate -1, ITEM_ID_COCONUT_CRAB, -1, -1, 0
 					}
 				}
 				if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 36 ) {
@@ -3986,7 +4006,7 @@
 			mdata(MDATA_TYPE) = MAP_TYPE_WORLD
 			mdata(MDATA_MODERATE_CROWD) = 0
 			mdata(MDATA_MUSIC) = MUSICLIST_MCHUGE
-			mdata(MDATA_CAN_SAVE) = 0
+			mdata(MDATA_CAN_SAVE) = 1
 			mdata(MDATA_NO_RENEW) = 0
 			mdatan(0) = lang("カプール近海", "Kapul coastal")
 			map_placeplayer
@@ -3998,7 +4018,7 @@
 			mdata(MDATA_TYPE) = MAP_TYPE_WORLD
 			mdata(MDATA_MODERATE_CROWD) = 0
 			mdata(MDATA_MUSIC) = MUSICLIST_MCHUGE
-			mdata(MDATA_CAN_SAVE) = 0
+			mdata(MDATA_CAN_SAVE) = 1
 			mdata(MDATA_NO_RENEW) = 0
 			mdatan(0) = lang("ルミエスト近海", "Lumiest coastal")
 			map_placeplayer
@@ -4010,7 +4030,7 @@
 			mdata(MDATA_TYPE) = MAP_TYPE_WORLD
 			mdata(MDATA_MODERATE_CROWD) = 0
 			mdata(MDATA_MUSIC) = MUSICLIST_MCHUGE
-			mdata(MDATA_CAN_SAVE) = 0
+			mdata(MDATA_CAN_SAVE) = 1
 			mdata(MDATA_NO_RENEW) = 0
 			mdatan(0) = lang("クルアルム近海", "Kurualm coastal")
 			map_placeplayer
@@ -4022,7 +4042,7 @@
 			mdata(MDATA_TYPE) = MAP_TYPE_WORLD
 			mdata(MDATA_MODERATE_CROWD) = 0
 			mdata(MDATA_MUSIC) = MUSICLIST_MCHUGE
-			mdata(MDATA_CAN_SAVE) = 0
+			mdata(MDATA_CAN_SAVE) = 1
 			mdata(MDATA_NO_RENEW) = 0
 			mdatan(0) = lang("ヴァルム近海", "Valm coastal")
 			map_placeplayer
@@ -4034,11 +4054,35 @@
 			mdata(MDATA_TYPE) = MAP_TYPE_WORLD
 			mdata(MDATA_MODERATE_CROWD) = 0
 			mdata(MDATA_MUSIC) = MUSICLIST_MCHUGE
-			mdata(MDATA_CAN_SAVE) = 0
+			mdata(MDATA_CAN_SAVE) = 1
 			mdata(MDATA_NO_RENEW) = 0
 			mdatan(0) = lang("悪魔岬近海", "Devil coastal")
 			map_placeplayer
 			cell_featset 46, 70, tile_upstairs, CELL_FEATURE_UPSTAIRS, 1
+		}
+		if ( gdata(GDATA_LEVEL) == 700 ) {
+			map_initcustom "sea700"
+			mdata(MDATA_FIELD) = MAP_FIELD_INDOOR
+			mdata(MDATA_TYPE) = MAP_TYPE_VILLAGE
+			mdata(MDATA_MODERATE_CROWD) = 0
+			mdata(MDATA_MUSIC) = MUSICLIST_MCPUTI
+			mdata(MDATA_CAN_SAVE) = 0
+			mdata(MDATA_NO_RENEW) = 0
+			mdatan(0) = lang("商船内部", "Merchant ship")
+			map_placeplayer
+			cell_featset 31, 10, tile_upstairs, CELL_FEATURE_UPSTAIRS, gdata(GDATA_RETURN_LEVEL)
+		}
+		if ( gdata(GDATA_LEVEL) == 701 ) {
+			map_initcustom "sea701"
+			mdata(MDATA_FIELD) = MAP_FIELD_INDOOR
+			mdata(MDATA_TYPE) = MAP_TYPE_VILLAGE
+			mdata(MDATA_MODERATE_CROWD) = 0
+			mdata(MDATA_MUSIC) = MUSICLIST_MCPUTI
+			mdata(MDATA_CAN_SAVE) = 0
+			mdata(MDATA_NO_RENEW) = 0
+			mdatan(0) = lang("海賊船内部", "Pirate ship")
+			map_placeplayer
+			cell_featset 31, 10, tile_upstairs, CELL_FEATURE_UPSTAIRS, gdata(GDATA_RETURN_LEVEL)
 		}
 	}
 	if ( gdata(GDATA_AREA) == AREA_LESIMAS ) {
@@ -9328,6 +9372,26 @@
 							map_reload "3haka2"
 						}
 					}
+					if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
+						if ( gdata(GDATA_LEVEL) == 1 ) {
+							map_reload "sea1"
+						}
+						if ( gdata(GDATA_LEVEL) == 11 ) {
+							map_reload "sea11"
+						}
+						if ( gdata(GDATA_LEVEL) == 36 ) {
+							map_reload "sea36"
+						}
+						if ( gdata(GDATA_LEVEL) == 53 ) {
+							map_reload "sea53"
+						}
+						if ( gdata(GDATA_LEVEL) == 54 ) {
+							map_reload "sea54"
+						}
+						if ( gdata(GDATA_LEVEL) == 93 ) {
+							map_reload "sea93"
+						}
+					}
 				}
 			}
 		}
@@ -10318,19 +10382,15 @@
 		snd SOUNDLIST_BEAST02
 		snd SOUNDLIST_BEAST02
 		snd SOUNDLIST_BEAST02
+		await 50
+		snd SOUNDLIST_BEAST02
+		snd SOUNDLIST_BEAST02
 		snd SOUNDLIST_BEAST02
 		await 50
 		snd SOUNDLIST_BEAST02
 		snd SOUNDLIST_BEAST02
 		snd SOUNDLIST_BEAST02
-		snd SOUNDLIST_BEAST02
 		await 50
-		snd SOUNDLIST_BEAST02
-		snd SOUNDLIST_BEAST02
-		snd SOUNDLIST_BEAST02
-		snd SOUNDLIST_BEAST02
-		await 50
-		snd SOUNDLIST_BEAST02
 		snd SOUNDLIST_BEAST02
 		snd SOUNDLIST_BEAST02
 		snd SOUNDLIST_BEAST02
@@ -10448,6 +10508,103 @@
 			chara_vanquish cnt
 		}
 	loop
+	if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
+		if ( gdata(GDATA_LEVEL) < 700 ) {
+			if ( umimass == 1 ) {
+				umimass = 0
+				repeat 100
+					x = rnd(mdata(MDATA_WIDTH))
+					y = rnd(mdata(MDATA_HEIGHT))
+					f = 1
+					if ( x < 0 | y < 0 | x >= mdata(MDATA_WIDTH) | y >= mdata(MDATA_HEIGHT) ) {
+						f = 0
+					}
+					else {
+						if ( chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
+							f = 0
+						}
+					}
+					if ( f == 0 ) {
+						if ( rnd(2) == 0 ) {
+							continue
+						}
+						else {
+							continue cnt
+						}
+					}
+					kaiwa = rnd(3)
+					if ( kaiwa == 0 ) {
+						addmef x, y, MEF_TYPE_OCEAN_SHIP, xy2pic(4, 38), -1, 1000
+					}
+					if ( kaiwa == 1 ) {
+						addmef x, y, MEF_TYPE_OCEAN_DRIFTERS, xy2pic(5, 38), -1, 1000
+					}
+					if ( kaiwa == 2 ) {
+						addmef x, y, MEF_TYPE_OCEAN_BIG_CATCH, xy2pic(6, 38), -1, 1000
+					}
+				loop
+			}
+		}
+	}
+	if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
+		if ( gdata(GDATA_LEVEL) == 701 ) {
+			if ( encounter != ENCOUNTER_NONE ) {
+				mdata(MDATA_MODERATE_CROWD) = 0
+				flt
+				initlv = encounterlv + 10
+				characreate -1, CREATURE_ID_ROGUE_BOSS, 29, 10
+				cdatan(CDATAN_NAME, rc) = lang("『海賊船長』", "<the pirate captain>")
+				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+				repeat 6 + rnd(6)
+					flt
+					initlv = encounterlv + rnd(10)
+					characreate -1, CREATURE_ID_PIRATE, 25, 10
+					cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+					cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+				loop
+				repeat 6 + rnd(6)
+					flt
+					initlv = encounterlv + rnd(10)
+					characreate -1, CREATURE_ID_PIRATE, 15, 7
+					cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+					cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+				loop
+				gdatan(GDATAN_TEAM2) = random_title(2)
+				evadd EVENT_SHIP_PIRATE
+			}
+		}
+		if ( gdata(GDATA_LEVEL) == 700 ) {
+			if ( encounter != ENCOUNTER_NONE ) {
+				flt
+				characreate -1, CREATURE_ID_SHOPKEEPER, 29, 10
+				cdata(CDATA_ROLE, rc) = ROLE_SHIP_MERCHANT, encounterlv
+				cdatan(CDATAN_NAME, rc) = lang("船" + cdatan(CDATAN_NAME, rc), sncnv(cdatan(CDATAN_NAME, rc)) + "on the ship")
+				generatemoney rc
+				repeat encounterlv / 2 + 1
+					r1 = rc
+					r2 = 1
+					gosub *calcLevelUp
+				loop
+				repeat 6 + rnd(6)
+					flt
+					initlv = encounterlv + rnd(10)
+					characreate -1, 159 + rnd(161 - 159 + 1), 25, 10
+					cdata(CDATA_ROLE, rc) = ROLE_SHOP_GUARD
+					cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+					cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+				loop
+				repeat 6 + rnd(6)
+					flt
+					initlv = encounterlv + rnd(10)
+					characreate -1, 159 + rnd(161 - 159 + 1), 15, 7
+					cdata(CDATA_ROLE, rc) = ROLE_SHOP_GUARD
+					cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+					cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+				loop
+				evadd EVENT_SHIP_MERCHANT
+			}
+		}
+	}
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_TRUCE_GROUND ) {
 		if ( gdata(GDATA_MONTH) != 11 ) {
 			repeat MAX_CHARA_TOTAL - MAX_CHARA_SAVE, MAX_CHARA_SAVE
@@ -10840,7 +10997,7 @@
 		}
 	}
 	if ( gdata(GDATA_AREA) == AREA_VERNIS ) {
-		if ( gdata(GDATA_FLAG_MAIN) == 0 ) {
+		if ( gdata(GDATA_FLAG_MAIN) < 9 ) {
 			sceneid = 1
 			gosub *scene
 			gdata(GDATA_FLAG_MAIN) = 9

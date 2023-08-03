@@ -1248,8 +1248,9 @@
 				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_SHOP ) {
 					s = "   " + sdata(SKILL_ATTR_CHA, i) + " / " + sdata(SKILL_NORMAL_NEGOTIATION, i)
 				}
+				hansyoku = cbreeder(i) + 1
 				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH ) {
-					s = "   " + cbreeder(i)
+					s = "   " + hansyoku
 				}
 			}
 			if ( allyctrl == 5 ) {
@@ -2280,6 +2281,16 @@
 	if ( cdata(CDATA_ROLE_RESTOCK, tc) > 0 ) {
 		list(0, listmax) = 1, 99998
 		listn(0, listmax) = lang("[性格]", "[CHARA]") + lang("あなたには" + _seikaku(cdata(CDATA_ROLE_RESTOCK, tc)) + "な一面もある[被ダメージ時にパワーゲージ+1]", "You have a " + _seikaku(cdata(CDATA_ROLE_RESTOCK, tc)) + " aspect. [Power gauge +1 when damaged]")
+		listmax++
+	}
+	if ( cbit(CHARA_BIT_HEARTLOCK_CAREFREE, tc) == TRUE ) {
+		list(0, listmax) = 1, 99999
+		listn(0, listmax) = lang("[その他]", "[ETC]") + lang("あなたは悩みに囚われていない[パワーゲージ下限+1]", "You are not trapped by your trouble. [Power gauge lower limit +1]")
+		listmax++
+	}
+	if ( cbit(CHARA_BIT_HEARTLOCK_DANGEROUS, tc) == TRUE ) {
+		list(0, listmax) = 1, 99999
+		listn(0, listmax) = lang("[その他]", "[ETC]") + lang("あなたはやばい趣味に目覚めている[狂気度下限+10とパワーゲージ下限+5]", "You have developed a dangerous hobby. [SAN lower limit +10/Power gauge lower limit +5]")
 		listmax++
 	}
 	if ( dump_return == 1 ) {
@@ -4868,7 +4879,7 @@
 			goto *turn_end
 		}
 	}
-	if ( (chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 | chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == MAP_CHIP_ROLE_WATER | mdata(MDATA_TYPE) == MAP_TYPE_WORLD | map(x, y, MAP_TILE_ID) == xy2pic(8, 21) | map(x, y, MAP_TILE_ID) == xy2pic(14, 23) | map(x, y, MAP_TILE_ID) == xy2pic(17, 23) | map(x, y, MAP_TILE_ID) == xy2pic(20, 23) ) {
+	if ( (chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 | chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == MAP_CHIP_ROLE_WATER | mdata(MDATA_TYPE) == MAP_TYPE_WORLD | map(x, y, MAP_TILE_ID) == xy2pic(24, 16) | map(x, y, MAP_TILE_ID) == xy2pic(8, 21) | map(x, y, MAP_TILE_ID) == xy2pic(14, 23) | map(x, y, MAP_TILE_ID) == xy2pic(17, 23) | map(x, y, MAP_TILE_ID) == xy2pic(20, 23) ) {
 		txt_impossible
 		gosub *screen_draw
 		goto *pc_turn

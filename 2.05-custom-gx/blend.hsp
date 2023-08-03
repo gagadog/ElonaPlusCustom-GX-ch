@@ -365,7 +365,7 @@
 	}
 	pos locvar_window_recipe2_dx + 140, locvar_window_recipe2_dy
 	color 30, 30, 30
-	bmes lang("成功率: ", "Success Rate: ") + locvar_window_recipe2_s, 235, 235, 235
+	bmes lang("成功率　: ", "Success Rate : ") + locvar_window_recipe2_s, 235, 235, 235
 	locvar_window_recipe2_p = rpdata(RPDATA_TIME, rpid)
 	if ( rpmode ) {
 		if ( locvar_window_recipe2_p < 10000 ) {
@@ -380,7 +380,7 @@
 	if ( locvar_window_recipe2_p >= 10000 ) {
 		locvar_window_recipe2_s += lang("と", " and ") + locvar_window_recipe2_p / 10000 + lang("時間", " hours")
 	}
-	pos locvar_window_recipe2_dx + 140, locvar_window_recipe2_dy + 20
+	pos locvar_window_recipe2_dx + 140, locvar_window_recipe2_dy + 30
 	color 40, 40, 40
 	bmes lang("必要時間: ", "Time: ") + locvar_window_recipe2_s, 235, 235, 235
 	return
@@ -636,6 +636,27 @@
 	rpdata(RPDATA_ITEM, rpid) = ITEM_ID_POTION_WISDOM, 50 + 1 * 10000
 	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_ALCHEMY, 35, SKILL_ATTR_LER, 50
 	rpdata(RPDATA_MAT + 0, rpid) = ITEM_ID_SCROLL_KNOWLEDGE, ITEM_ID_POTION_HERO, ITEM_ID_POTION_CONCENTRATION, ITEM_ID_POTION_GEM
+
+	rpid++
+	rplistdef(length(rplistdef)) = 1 * EXT_RECIPES + rpid
+	rpdatan(rpid) = lang("新式の薬", "novelty medicine")
+	rpdata(RPDATA_ITEM, rpid) = ITEM_ID_POTION_PHYSICAL, 50 + 1 * 10000
+	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_ALCHEMY, 30, SKILL_ATTR_LER, 70
+	rpdata(RPDATA_MAT + 0, rpid) = ITEM_ID_POTION_DEFENDER, ITEM_ID_POTION_TROLL_BLOOD, ITEM_ID_POTION_SPEED, ITEM_ID_POTION_FEATHER
+	
+	rpid++
+	rplistdef(length(rplistdef)) = 1 * EXT_RECIPES + rpid
+	rpdatan(rpid) = lang("苦しみの薬", "agonising medicine")
+	rpdata(RPDATA_ITEM, rpid) = ITEM_ID_POTION_AGONY, 50 + 1 * 10000
+	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_ALCHEMY, 20, SKILL_NORMAL_MAGIC_DEVICE, 20
+	rpdata(RPDATA_MAT + 0, rpid) = RF_ALE, RF_POISON, RF_POISON
+
+	rpid++
+	rplistdef(length(rplistdef)) = 1 * EXT_RECIPES + rpid
+	rpdatan(rpid) = lang("呪いの薬", "cursed medicine")
+	rpdata(RPDATA_ITEM, rpid) = ITEM_ID_POTION_CALAMITY, 50 + 1 * 10000
+	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_ALCHEMY, 15, SKILL_NORMAL_MAGIC_DEVICE, 30
+	rpdata(RPDATA_MAT + 0, rpid) = RF_ALE, RF_DEBUFF_POTION, RF_DEBUFF_POTION
 
 	rpid++
 	rplistdef(length(rplistdef)) = 1 * EXT_RECIPES + rpid
@@ -1044,7 +1065,7 @@
 	rpdata(RPDATA_ITEM, rpid) = ITEM_ID_POTION_DISASTER, 60 + 3 * 10000
 	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_ALCHEMY, 20, SKILL_NORMAL_MAGIC_DEVICE, 50
 	rpdata(RPDATA_EQ + 0, rpid) = 0
-	rpdata(RPDATA_MAT + 0, rpid) = ITEM_ID_CARAMEL_OF_TERMINATION, RF_POISON
+	rpdata(RPDATA_MAT + 0, rpid) = ITEM_ID_CARAMEL_OF_TERMINATION, RF_POISON, RF_DEBUFF_POTION
 
 	rpid = ITEM_ID_POTION_AQUA_SANCTIO + EXT_RP
 	rplistshop(length(rplistshop)) = 30 * EXT_RECIPES + rpid
@@ -1092,6 +1113,7 @@
 	rfnameorg(RFNAMEORG_ID, RF_VEGE - EXT_RF) = "vege", lang("適当な野菜", "any vege")
 	rfnameorg(RFNAMEORG_ID, RF_DIARY - EXT_RF) = "diary", lang("日記帳", "any diary")
 	rfnameorg(RFNAMEORG_ID, RF_POISON - EXT_RF) = "poison", lang("状態異常薬", "nega potion")
+	rfnameorg(RFNAMEORG_ID, RF_DEBUFF_POTION - EXT_RF) = "poison", lang("デバフ薬", "debuff potion")
 	rfnameorg(RFNAMEORG_ID, RF_FRUIT - EXT_RF) = "fruit", lang("適当な果物", "any fruit")
 	rfnameorg(RFNAMEORG_ID, RF_BREAD - EXT_RF) = "bread", lang("パン類", "any bread")
 	rfnameorg(RFNAMEORG_ID, RF_ALE - EXT_RF) = "ale", lang("適当なアルコール", "any alcohol")

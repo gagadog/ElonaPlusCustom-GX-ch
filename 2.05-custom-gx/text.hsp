@@ -14,7 +14,7 @@
 #define global txt_invfull txt lang("バックパックが一杯だ。", "Your inventory is full.")
 #define global txt_invfull2 txt lang("バックパックには、もうアイテムを入れる余裕がない。", "Your inventory is full.")
 #define global txt_nospace txt lang("充分なスペースがない。", "There's not enough space.")
-#define global txt_exhausted txt lang("疲労し過ぎて失敗した！", "You are too exhausted!")
+#define global txt_exhausted txt lang(name(cc) + "は疲労し過ぎて攻撃に失敗した！", name(cc) + " got too tired and failed!")
 #define global txt_nodrop txt lang("それはあなたの大事なものだ。<調べる>メニューから解除できる。", "It's set as no-drop. You can reset it from the <examine> menu.")
 #define global txt_preciousally txt lang("それはあなたの大事な仲間だ。会話メニューから解除できる。", "It's set as a precious ally.")
 #define global txt_activateitem txt lang(itemname(ci, 1) + "を始動させた。", "You activate " + itemname(ci, 1) + ".")
@@ -29,8 +29,18 @@
 #deffunc text_set
 	sdim bodyn, 4, 15
 	bodyn = "", "頭", "首", "背中", "胴体", "手", "指", "腕", "腰", "足", "遠隔", "矢弾"
-	_impression = lang("大嫌い", "Foe"), lang("嫌い", "Hate"), lang("うざい", "Annoying"), lang("普通", "Normal"), lang("好意的", "Amiable"), lang("友達", "Friend"), lang("親友", "Fellow"), lang("魂の友", "Soul Mate"), lang("*Love*", "*Love*")
-	_impression2 = lang("*Cat*", "*Cat*"), lang("奔放", "Uninhibited"), lang("対等", "Peer"), lang("素直", "Docile"), lang("従順", "Amenable"), lang("服従", "Subjection"), lang("忠誠", "Fidelity"), lang("*Dog*", "*Dog*")
+	_impression = lang("大嫌い", "Foe"), lang("嫌い", "Hate"), lang("うざい", "Annoying"), lang("普通", "Normal"), lang("好意的", "Amiable"), lang("信用", "Accredit"), lang("信頼", "Trust"), lang("仲間", "Ally"), lang("*仲間*", "*Ally*")
+	_impressiona1 = lang("大嫌い", "Foe"), lang("嫌い", "Hate"), lang("うざい", "Annoying"), lang("普通", "Normal"), lang("好意的", "Amiable"), lang("信頼", "Trust"), lang("仲間", "Ally"), lang("戦友", "Comrade"), lang("戦士の絆", "Battle-Bond")
+	_impressiona2 = lang("大嫌い", "Foe"), lang("嫌い", "Hate"), lang("うざい", "Annoying"), lang("普通", "Normal"), lang("好意的", "Amiable"), lang("友達", "Friend"), lang("親友", "Fellow"), lang("盟友", "Sworn Friend"), lang("魂の友", "Soul Mate")
+	_impressiona3 = lang("大嫌い", "Foe"), lang("嫌い", "Hate"), lang("うざい", "Annoying"), lang("普通", "Normal"), lang("好意的", "Amiable"), lang("競争相手", "Competitor"), lang("切磋琢磨", "Adversary"), lang("ライバル", "Rival"), lang("宿命", "Fateful Rival")
+	_impressiona4 = lang("大嫌い", "Foe"), lang("嫌い", "Hate"), lang("うざい", "Annoying"), lang("普通", "Normal"), lang("好意的", "Amiable"), lang("恋心", "Affection"), lang("相思相愛", "Mutual"), lang("熱愛", "Passionate"), lang("Love", "*Love*")
+	_impressiona5 = lang("大嫌い", "Foe"), lang("嫌い", "Hate"), lang("うざい", "Annoying"), lang("普通", "Normal"), lang("好意的", "Amiable"), lang("教え子", "Student"), lang("後継", "Successor"), lang("比肩者", "Apostle"), lang("愛弟子", "*Disciple*")
+	_impressiona6 = lang("大嫌い", "Foe"), lang("嫌い", "Hate"), lang("うざい", "Annoying"), lang("普通", "Normal"), lang("好意的", "Amiable"), lang("先生", "Teacher"), lang("師匠", "Mentor"), lang("敬愛", "Respect"), lang("生涯の師", "*Master*")
+	_impressiona7 = lang("大嫌い", "Foe"), lang("嫌い", "Hate"), lang("うざい", "Annoying"), lang("普通", "Normal"), lang("好意的", "Amiable"), lang("家族", "Family"), lang("親愛", "Dear"), lang("溺愛", "Doting"), lang("熟愛", "Devotion")
+	_impressionb = lang("*Cat*", "*Cat*"), lang("奔放", "Uninhibited"), lang("対等", "Peer"), lang("素直", "Docile"), lang("*素直*", "*Docile*"), lang("従順", "Amenable"), lang("*従順*", "*Amenable*"), lang("遵守", "*Adherence*")
+	_impressionb1 = lang("*Cat*", "*Cat*"), lang("奔放", "Uninhibited"), lang("対等", "Peer"), lang("素直", "Docile"), lang("契約者", "Contracted"), lang("専属契約", "*Contracted*"), lang("相棒", "Partner"), lang("運命共同", "Fate-Bond")
+	_impressionb2 = lang("*Cat*", "*Cat*"), lang("奔放", "Uninhibited"), lang("対等", "Peer"), lang("素直", "Docile"), lang("従順", "Amenable"), lang("飼い主", "Owner"), lang("服従", "Subjection"), lang("依存", "Reliance")
+	_impressionb3 = lang("*Cat*", "*Cat*"), lang("奔放", "Uninhibited"), lang("対等", "Peer"), lang("素直", "Docile"), lang("忠誠", "Allegiance"), lang("恭順", "Obedience"), lang("心酔", "Adoration"), lang("忠義", "Loyalty")
 	_impression3 = lang("普通", "normal"), lang("質のいい肉がとれそうだ", "Looks plump with decent meat"), lang("かなり質のいい肉がとれそうだ", "Looks plump with quality meat"), lang("最高級の肉がとれそうだ", "Looks plump with succulent meat"), lang("質のいい皮がとれそうだ", "The skin is decent grade"), lang("かなり質のいい皮がとれそうだ", "The skin is of high quality"), lang("最高級の皮がとれそうだ", "The skin looks absolutely luxurious"), lang("もしかすると肉が多くとれるかもしれない", "You just might be able to get more meat"), lang("肉が多くとれるかもしれない", "You're likely to get more meat"), lang("きっと肉が多くとれる", "You're certain that you'll get more meat"), lang("もしかすると皮が多くとれるかもしれない", "You just might be able to get more skin"), lang("皮が多くとれるかもしれない", "You're likely to get more skin"), lang("きっと皮が多くとれる", "You're certain that you'll get more skin")
 	_impression4 = lang("普通", "normal"), lang("乳の出があまり良くなさそうだ", "Doesn't look too good at producing milk"), lang("乳の出が悪そうだ", "Doesn't look any good at producing milk"), lang("乳の出が非常に悪そうだ", "Looks extremely inept at producing milk"), lang("あまり産卵しなさそうだ", "Doesn't look too good at laying eggs"), lang("なかなか産卵しなさそうだ", "Doesn't look any good at laying eggs"), lang("ほとんど産卵しなさそうだ", "Looks extremely inept at laying eggs"), lang("よく卵を産みそうだ", "Looks adept at laying eggs"), lang("卵を多く産みそうだ", "Looks adept at laying many eggs"), lang("卵をかなり多く産みそうだ", "Eggs are coming out of the wazoo"), lang("乳の出が良さそうだ", "Looks good at producing milk"), lang("乳の出がかなり良さそうだ", "Looks good at producing lots of milk"), lang("乳を大量に出しそうだ", "Simply oozing with milk")
 	_weather = "", lang("*エーテル*", "Etherwind"), lang("雪", "Snow"), lang("雨", "Rain"), lang("雷雨", "Hard rain")
@@ -64,7 +74,8 @@
 	_condupli = lang("杖複製", "Dupli")
 	_conmuteki = lang("無　敵", "Invulnerable")
 	_conjudo = lang("柔　術", "Jiu-jitsu")
-	_conadvance = lang("高度詠唱", "Adv-Cast")
+	_conadvance = lang("刻死紋", "Death-Crest")
+	_conkousi = lang("高度詠唱", "Adv-Cast")
 	_conmags = lang("Ｓ極状態", "Magnet-S")
 	_conmagn = lang("Ｎ極状態", "Magnet-N")
 	_conwash = lang("洗　脳", "Brainwash")
@@ -110,6 +121,7 @@
 	strthankyou = lang("ありがとうございます！", "Thank you very much!")
 	strbye = lang("さようなら", "Bye bye.")
 	strbyea = lang("さよならだ", "Bye bye.")
+	strmada = lang("まだお礼もできていないのに！", "I haven't thank you yet...")
 	strquestion = lang("？？？", "What???")
 	strbaby = lang("ベイベー！", "Party time!")
 	strmore = lang("(続く)", "(More)")
@@ -9422,7 +9434,9 @@
 	return
 
 *quest_item
-	noteadd lang("[古びたお守り]", "[An old talisman]")
+	if ( gdata(GDATA_FLAG_MAIN) > 0 ) {
+		noteadd lang("[古びたお守り]", "[An old talisman]")
+	}
 	if ( gdata(GDATA_FLAG_MAIN) >= 830 ) {
 		noteadd lang("[エルシアの首飾り]", "[Elsian Necklace]")
 	}

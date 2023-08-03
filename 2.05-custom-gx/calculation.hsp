@@ -1517,7 +1517,7 @@
 	return 0
 
 *calcStealth
-	if ( cdata(CDATA_CONDITION_SEPPUKU, r2) > 0 ) {
+	if ( cbit(CHARA_BIT_HAS_SEPPUKUED, r2) == TRUE ) {
 		return 0
 	}
 	if ( map(cdata(CDATA_X, r2), cdata(CDATA_Y, r2), 5) != 0 ) {
@@ -1774,9 +1774,6 @@
 		if ( r1 != 0 ) {
 			dmgspt r1, 2
 		}
-	}
-	if ( cdata(CDATA_CONDITION_SEPPUKU, r1) > 0 ) {
-		cdata(CDATA_CONDITION_SEPPUKU, r1)--
 	}
 	if ( cdata(CDATA_CONDITION_BRAINWASH, r1) > 0 ) {
 		cdata(CDATA_CONDITION_BRAINWASH, r1)--

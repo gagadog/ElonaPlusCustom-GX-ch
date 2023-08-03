@@ -500,8 +500,6 @@
 *quest_death
 	rc = CHARA_PLAYER
 	gosub *chara_respawn
-	skillexp SKILL_ATTR_CHA, CHARA_PLAYER, -500
-	skillexp SKILL_ATTR_WIL, CHARA_PLAYER, -500
 	levelexitby = 4
 	gdata(GDATA_LEVEL) = 0
 	goto *map_exit

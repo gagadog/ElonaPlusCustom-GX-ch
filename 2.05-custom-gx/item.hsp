@@ -90,9 +90,9 @@
 	fsetcollect = FILTER_JUNK, FILTER_FURNITURE, FILTER_ITEM_FOOD, FILTER_ORE
 	isetdeed = ITEM_ID_DEED, ITEM_ID_DEED_MUSEUM, ITEM_ID_DEED_SHOP, ITEM_ID_DEED_FARM, ITEM_ID_DEED_STORAGE_HOUSE, ITEM_ID_SHELTER, ITEM_ID_DEED_RANCH, ITEM_ID_DEED_OF_LAND_BATTLESHIP, ITEM_ID_DEED_OF_MAGIC_LOCOMOTIVE, ITEM_ID_DEED_OF_TRUCK, ITEM_ID_DEED_OF_CARRIAGE, ITEM_ID_DEED_OF_HUGE_RAFT, ITEM_ID_DEED_OF_FISHING_SHIP, ITEM_ID_DEED_OF_PIRATE_SHIP, ITEM_ID_DEED_OF_CRUISE_SHIP, ITEM_ID_DEED_OF_WARSHIP, ITEM_ID_DEED_OF_SUBMARINE
 	isetfruit = ITEM_ID_APPLE, ITEM_ID_GRAPE, ITEM_ID_TANGERINE, ITEM_ID_LEMON, ITEM_ID_STRAWBERRY, ITEM_ID_CHERRY, ITEM_ID_KAKI
-	isetthrowpotionminor = ITEM_ID_POTION_BLINDNESS, ITEM_ID_POTION_CONFUSION, ITEM_ID_SLEEPING_DRUG, ITEM_ID_POTION_PARALYSIS, ITEM_ID_POISON, ITEM_ID_BOTTLE_BEER
-	isetthrowpotionmajor = ITEM_ID_POTION_SLOW, ITEM_ID_POTION_SILENCE, ITEM_ID_POTION_WEAKEN_RESISTANCE, ITEM_ID_ESSENTIAL_OIL, ITEM_ID_MOLOTOV, ITEM_ID_BOTTLE_WHISKY, ITEM_ID_POTION_WEAKNESS
-	isetthrowpotiongreater = ITEM_ID_BOTTLE_SULFURIC, ITEM_ID_BOTTLE_SULFURIC, ITEM_ID_BOTTLE_SULFURIC, ITEM_ID_POTION_DISASTER, ITEM_ID_POTION_AQUA_SANCTIO, ITEM_ID_BOTTLE_CRIM_ALE
+	isetthrowpotionminor = ITEM_ID_POTION_BLINDNESS, ITEM_ID_POTION_CONFUSION, ITEM_ID_SLEEPING_DRUG, ITEM_ID_POTION_PARALYSIS, ITEM_ID_POISON, ITEM_ID_POTION_CALAMITY
+	isetthrowpotionmajor = ITEM_ID_POTION_SLOW, ITEM_ID_POTION_SILENCE, ITEM_ID_POTION_WEAKEN_RESISTANCE, ITEM_ID_POTION_AGONY, ITEM_ID_POTION_WEAKNESS
+	isetthrowpotiongreater = ITEM_ID_BOTTLE_SULFURIC, ITEM_ID_LOVE_POTION, ITEM_ID_GASOLINE, ITEM_ID_POTION_CALAMITY, ITEM_ID_POTION_AGONY, ITEM_ID_POTION_AQUA_SANCTIO
 	isethire = CREATURE_ID_MAID, CREATURE_ID_BARTENDER, CREATURE_ID_HEALER, CREATURE_ID_WIZARD, CREATURE_ID_INFORMER, CREATURE_ID_GUARD, CREATURE_ID_SHOPKEEPER, CREATURE_ID_SHOPKEEPER, CREATURE_ID_SHOPKEEPER
 	isetgiftminor = ITEM_ID_KOTATSU, ITEM_ID_DARUMA, ITEM_ID_DARUMA, ITEM_ID_MOCHI, ITEM_ID_MOCHI, ITEM_ID_BLACK_CRYSTAL, ITEM_ID_SNOW_MAN, ITEM_ID_PAINTING_LANDSCAPE, ITEM_ID_PAINTING_SUNFLOWER, ITEM_ID_TREE_FRUIT, ITEM_ID_TREASURE_BALL, ITEM_ID_DEED_HEIRSHIP, ITEM_ID_RUNE, ITEM_ID_HEART, ITEM_ID_BLOOD, ITEM_ID_UPRIGHT_PIANO, ITEM_ID_DEAD_FISH, ITEM_ID_SHIT, ITEM_ID_SMALL_MEDAL, ITEM_ID_BRAND_NEW_GRAVE
 	isetgiftmajor = ITEM_ID_KAGAMI_MOCHI, ITEM_ID_KAGAMI_MOCHI, ITEM_ID_PANTY, ITEM_ID_BOTTLE_SPEED_UPPER, ITEM_ID_SCROLL_SUPERIOR_MATERIAL, ITEM_ID_FLYING_SCROLL, ITEM_ID_SISTERS_LOVE_FUELED_LUNCH, ITEM_ID_SHELTER, ITEM_ID_SUMMONING_CRYSTAL, ITEM_ID_UNICORN_HORN
@@ -133,130 +133,6 @@
 		if ( gdata(GDATA_QUEST) != QUEST_TYPE_NONE ) {
 			return
 		}
-		inv_getheader rc
-		repeat invrange, invhead
-			ci = cnt
-			if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
-				continue
-			}
-			if ( mdata(MDATA_CAN_SAVE) == 0 ) {
-				if ( gdata(GDATA_FLAG_GAME_MODE) != GAMEMODE_ABNORMAL ) {
-					if ( inv(INV_ITEM_EQUIP, cnt) != 0 ) {
-						continue
-					}
-				}
-				if ( gdata(GDATA_FLAG_GAME_MODE) != GAMEMODE_ABNORMAL ) {
-					if ( ibit(ITEM_BIT_PRECIOUS, ci) ) {
-						continue
-					}
-				}
-				if ( gdata(GDATA_FLAG_GAME_MODE) != GAMEMODE_ABNORMAL ) {
-					if ( rnd(3) ) {
-						continue
-					}
-				}
-			}
-			else {
-				if ( gdata(GDATA_FLAG_GAME_MODE) != GAMEMODE_ABNORMAL ) {
-					if ( rnd(5) ) {
-						continue
-					}
-				}
-			}
-			if ( refitem(inv(INV_ITEM_ID, ci), DBSPEC_CARGO) == 1 ) {
-				if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD & mdata(MDATA_TYPE) != MAP_TYPE_HOME & mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_LOCAL & mdata(MDATA_TYPE) != MAP_TYPE_FIELD & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE ) {
-					continue
-				}
-				else {
-					if ( rnd(2) ) {
-						if ( gdata(GDATA_FLAG_GAME_MODE) != GAMEMODE_ABNORMAL ) {
-							continue
-						}
-					}
-				}
-			}
-			f = 0
-			if ( inv(INV_ITEM_EQUIP, ci) != 0 ) {
-				if ( rnd(10) ) {
-					f = 1
-				}
-				if ( inv(INV_ITEM_STATUS, ci) >= ITEM_STATUS_BLESSED ) {
-					if ( rnd(2) ) {
-						f = 1
-					}
-				}
-				if ( inv(INV_ITEM_STATUS, ci) <= ITEM_STATUS_CURSED ) {
-					if ( rnd(2) ) {
-						f = 0
-					}
-				}
-				if ( inv(INV_ITEM_STATUS, ci) <= ITEM_STATUS_DOOMED ) {
-					if ( rnd(2) ) {
-						f = 0
-					}
-				}
-			}
-			else {
-				if ( inv(INV_ITEM_KNOWN, ci) >= ITEM_KNOWN_FULL ) {
-					if ( rnd(4) ) {
-						f = 1
-					}
-				}
-			}
-			if ( gdata(GDATA_FLAG_GAME_MODE) != GAMEMODE_ABNORMAL ) {
-				if ( f ) {
-					continue
-				}
-			}
-			if ( inv(INV_ITEM_EQUIP, ci) != 0 ) {
-				cdata(inv(INV_ITEM_EQUIP, ci), rc) = cdata(inv(INV_ITEM_EQUIP, ci), rc) / 10000 * 10000
-				inv(INV_ITEM_EQUIP, ci) = 0
-			}
-			f = 0
-			if ( ibit(ITEM_BIT_PRECIOUS, ci) == 0 ) {
-				if ( rnd(4) == 0 ) {
-					f = 1
-				}
-				if ( inv(INV_ITEM_STATUS, ci) >= ITEM_STATUS_BLESSED ) {
-					if ( rnd(3) == 0 ) {
-						f = 0
-					}
-				}
-				if ( inv(INV_ITEM_STATUS, ci) <= ITEM_STATUS_CURSED ) {
-					if ( rnd(3) == 0 ) {
-						f = 1
-					}
-				}
-				if ( inv(INV_ITEM_STATUS, ci) <= ITEM_STATUS_DOOMED ) {
-					if ( rnd(3) == 0 ) {
-						f = 1
-					}
-				}
-			}
-
-			/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Show dropped items on death.
-
-			items_lost_on_death += "" + itemname(ci) + ". "
-
-			/********** BLOODYSHADE CUSTOM - ENDING **********/
-
-			if ( f ) {
-				inv(INV_ITEM_NUM, ci) = 0
-				continue
-			}
-			inv(INV_ITEM_X, ci) = cdata(CDATA_X, rc)
-			inv(INV_ITEM_Y, ci) = cdata(CDATA_Y, rc)
-			item_stack -1, ci
-			if ( stat == 0 ) {
-				ti = inv_getfreeid(-1)
-				if ( ti == (-1) ) {
-					break
-				}
-				item_copy ci, ti
-				inv(INV_ITEM_PROPERTY, ti) = -2
-			}
-			inv(INV_ITEM_NUM, ci) = 0
-		loop
 		cell_refresh cdata(CDATA_X, rc), cdata(CDATA_Y, rc)
 		create_pcpic 0, 1
 		return
@@ -991,7 +867,7 @@
 	if ( gdata(GDATA_FLAG_DUEL_TARGET) == (-2) ) {
 		gdata(GDATA_FLAG_DUEL_TARGET) = -1
 	}
-	if ( cdata(CDATA_ROLE, rc) == ROLE_SHOP_WANDER ) {
+	if ( cdata(CDATA_ROLE, rc) == ROLE_SHOP_WANDER | cdata(CDATA_ROLE, rc) == ROLE_SHIP_MERCHANT ) {
 		flt
 		itemcreate -1, ITEM_ID_SHOPKEEPERS_TRUNK, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
 		inv(INV_ITEM_PARAM1, ci) = cdata(CDATA_ROLE_FILE_ID, rc)

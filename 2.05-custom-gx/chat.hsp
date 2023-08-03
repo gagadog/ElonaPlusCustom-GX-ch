@@ -1301,6 +1301,50 @@
 			}
 			goto *chat_end
 		}
+		if ( gdata(GDATA_FLAG_MAIN) == 5 ) {
+			tc = findchara(CREATURE_ID_LOMIAS_THE_MESSENGER_FROM_VINDALE)
+			chatMore lang("…もう出歩けるほどに回復したのか？時間が経つのは早いものだ。我々もそろそろ出発するとしよう。", "...have you recovered enough to walk around? Time flies. We should be on our way too."), strmada
+			tc = findchara(CREATURE_ID_LARNNEIRE_THE_LISTENER_OF_WIND)
+			chatMore lang("そんなに残念そうな顔をしないで、" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "。私達はこの国に用事があるから…きっとまた会えるわ。", "Don't look so disappointed, " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ". We have important things to do in this country, so I'm sure we'll meet again."), strmore
+
+			txtef COLOR_GREEN
+			txt lang("クエストアイテム[古びたお守り]を手に入れた。クエストアイテムはジャーナル(jキー)で確認できる。", "You obtain an old talisman! Quest items can be checked in the journal (j key).")
+			snd SOUNDLIST_COMPLETE1
+			
+			tc = findchara(CREATURE_ID_LARNNEIRE_THE_LISTENER_OF_WIND)
+			chatMore lang("そうね…。このお守り、持っていて。いつか役立つ時が来るかもしれない。", "Well...Please keep this amulet. It may come in handy someday."), strmore
+
+			tc = findchara(CREATURE_ID_LOMIAS_THE_MESSENGER_FROM_VINDALE)
+			chatMore lang("我々にもあまり余裕はないが、使えそうなアイテムをいくつか置いていく。わざわざ旅を中断してまで救助したのだ、簡単に野垂れ死んでもらっては困る。", "We don't have much to spare either, but we leave a few items that could be used. We went through all this trouble to rescue them, interrupting our journey even, it be a shame if they just wander off and die."), strmore
+
+			tc = findchara(CREATURE_ID_LARNNEIRE_THE_LISTENER_OF_WIND)
+			chatMore lang("…それじゃあ、また巡り会う時まで、" + cdatan(CDATAN_AKA, CHARA_PLAYER) + "、あなたに風の加護のあらんことを。", "..until we meet again, " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", may the winds of Lulwy bless you."), strbye
+
+			chara_vanquish findchara(CREATURE_ID_LARNNEIRE_THE_LISTENER_OF_WIND)
+			chara_vanquish findchara(CREATURE_ID_LOMIAS_THE_MESSENGER_FROM_VINDALE)
+
+			txt lang("二人は荷物をまとめ洞窟を後にした。", "Lomias and Larnneire packed their belongings and left the cave.")
+			txtvalid = 0
+			txt lang("何かが足元に転がってきた。", "Something is put on the ground.")
+			autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
+			flt
+			itemcreate -1, ITEM_ID_POTION_CURE_CORRUPTION, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			flt
+			itemcreate -1, ITEM_ID_POT_FOR_FUSION, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			flt
+			itemcreate -1, ITEM_ID_LEASH, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			flt
+			itemcreate -1, ITEM_ID_STETHOSCOPE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			flt
+			itemcreate -1, ITEM_ID_FILTRATION_BOTTLE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_PARAM2, ci) = 5
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			goto *chat_end
+		}
 		if ( chatflag == 0 ) {
 			if ( gdata(GDATA_FLAG_TUTORIAL) == 0 ) {
 				buff = lang("見たところ君はノースティリスの人間ではないようだ。余計な世話でなければ、我々が旅を再開する前に、この土地での生活の知恵を授ける程度の時間は割けるのだが。", "It looks like you aren't familiar with this land. Before we leave, I can spare a moment to teach you a few lessons.")
@@ -1379,9 +1423,6 @@
 			if ( gdata(GDATA_FLAG_TUTORIAL) == (-1) ) {
 				buff = lang("まだ、何か用があるのか？", "What?")
 				chatList 0, lang("何も", "Nothing.")
-			}
-			if ( gdata(GDATA_FLAG_TUTORIAL) == 0 | gdata(GDATA_FLAG_TUTORIAL) == (-1) ) {
-				chatList 2, lang("そろそろ出発したら？", "You had better leave for Palmia soon.")
 			}
 			gosub *chat_select
 		}
@@ -3530,6 +3571,12 @@
 			chatMore lang("感じるわ、大勢の人の苦しみ…悲しみ…。あなたはたくさん殺したのね。小さな子供…女性…老人…生まれて間もない赤ん坊…あたし、今日は身体が火照って眠れそうにないわ。ありがとう。報酬を受け取りなさい。", "I can feel it already... the suffering... the misery... the pain... You've killed many people this day, you should be proud. Little kids, girls, women, old men, the sick, the feeble, even those neither born nor conceived yet. My body's hot, excited, I can hardly breathe... I won't be able to sleep tonight. My thanks, these are for you.")
 		}
 		if ( gdata(GDATA_FLAG_SUB_NUKE) == 0 ) {
+			if ( cdata(CDATA_FAME, CHARA_PLAYER) < 7000 ) {
+				chatMore lang("ふーん。こちら側の世界のことなんて分かっていない、甘ったれた顔をしてるわね。もう少し社会勉強を積んだらイロイロと教えてあげる。", "Hmm. Such a spoiled child, too naive to fathom this side of the world. I'll teach you various things when you've accumulated a little more social experience."), strbye
+				txtef COLOR_RED
+				txt lang("クエスト必要名声：7000　", "Required Fame: 7000 ")
+				goto *chat_end
+			}
 			chatMore lang("ねえ、あなたはこの街の人じゃないでしょ？匂いで分かるのよ、外の人間は。外の…世界があたしに教えてくれたのは、力のない生物はただ利用され、弄ばれ、最後には食べられてしまうっていうことだけ。同情や慈悲さえ勝ち取れない人間が、この街には大勢いる。そんな者達がどうやって生活しているか、あなたは知りたいと思わない？", "Hey, you're not from around here are you? I can tell just by your smell. The world out there... it's taught me that the meek are inevitably used, abused, and then chewed up and swallowed kicking and screaming. The people here are a rank lot, you won't win them over with sympathy and compassion. Don't you ever wonder how people like that can survive? Don't you want to know?")
 			chatList 1, lang("もちろん", "Of course I will.")
 			chatList 0, strbye
@@ -5060,11 +5107,33 @@
 		_switch_sw = 0
 		if ( cdata(CDATA_GOLD, CHARA_PLAYER) <= 10 ) {
 			chatMore lang("チッ、一文無しの乞食" + _ka() + "とっとといっちまい" + _na(), "Bah, a beggar without a penny. What a waste of time! Just go away!")
+			levelexitby = MAP_EXIT_NORMAL
+			chatteleport = 1
+			snd SOUNDLIST_EXITMAP1
 			goto *chat_end
 		}
-		chatList 1, lang("返り討ちにする", "Try me.")
+		if ( gdata(GDATA_WORLD) != AREA_OCEAN ) {
+			chatList 1, lang("返り討ちにする", "Try me.")
+		}
+		if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
+			seikou = 75 - enemyhp * enemyhp * 2
+			if ( cdata(CDATA_CHARACTER_TIER, CHARA_PLAYER) > CHARACTER_TIER_SHIP_HULL_MIN ) {
+				chatList 2, lang("船をぶつけて飛び移る（成功率:" + seikou + "％）", "(Ram your ship and get in) (success rate:" + seikou + "%)")
+			}
+			if ( cdata(CDATA_CHARACTER_TIER, CHARA_PLAYER) > CHARACTER_TIER_SHIP_HULL_MIN ) {
+				if ( gdata(GDATA_FLAG_SHIP_TYPE) == 3 | gdata(GDATA_FLAG_SHIP_TYPE) >= 5 ) {
+					chatList 3, lang("遠距離から船を攻撃する", "(Attack from a distance)")
+				}
+			}
+			chatList 4, lang("全力で逃げ出す", "(Run away)")
+		}
 		chatList 0, lang("降参する", "I surrender.")
-		buff = lang("おまえさん、ついてない" + _na() + _ore(3) + "達は泣く子も黙る冷血な盗賊団、その名も" + gdatan(GDATAN_TEAM2) + _da() + "命が惜しければ、おとなしく荷車の積荷と金貨" + cdata(CDATA_GOLD, CHARA_PLAYER) / 5 + "枚を渡すがいい" + _yo(), "Halt, halt, traveler. You're a quite fortunate one. Before you is the renowned band of legendary brigands \"" + gdatan(GDATAN_TEAM2) + "\" that the mere mention of its name is enough to silence a naughty child. Yet we will spare your life for only a toll of " + cdata(CDATA_GOLD, CHARA_PLAYER) / 5 + " gold pieces and your cargos. Quite fortunate indeed.")
+		if ( gdata(GDATA_WORLD) != AREA_OCEAN ) {
+			buff = lang("おまえさん、ついてない" + _na() + _ore(3) + "達は泣く子も黙る冷血な盗賊団、その名も" + gdatan(GDATAN_TEAM2) + _da() + "命が惜しければ、おとなしく荷車の積荷と金貨" + cdata(CDATA_GOLD, CHARA_PLAYER) / 5 + "枚を渡すがいい" + _yo(), "Halt, halt, traveler. You're a quite fortunate one. Before you is the renowned band of legendary brigands \"" + gdatan(GDATAN_TEAM2) + "\" that the mere mention of its name is enough to silence a naughty child. Yet we will spare your life for only a toll of " + cdata(CDATA_GOLD, CHARA_PLAYER) / 5 + " gold pieces and your cargos. Quite fortunate indeed.")
+		}
+		if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
+			buff = lang("大人しく" + _siro() + "逃げたら背後から撃つ" + _yo() + _ore(3) + "達はロマンの欠片もない略奪系海賊団、その名も" + gdatan(GDATAN_TEAM2) + _da() + "抵抗せずに積荷と金貨" + cdata(CDATA_GOLD, CHARA_PLAYER) / 5 + "枚を渡すがいい" + _yo(), "Don't resist! We will sink your ship if you try to run. Before you is the renowned band of legendary pirates \"" + gdatan(GDATAN_TEAM2) + "\" that the mere mention of its name is enough to silence a naughty child. Yet we will spare your life for only a toll of " + cdata(CDATA_GOLD, CHARA_PLAYER) / 5 + " gold pices and your cargos. Quite fortunate indeed.")
+		}
 		chatesc = 0
 		gosub *chat_select
 		if ( chatval == 0 ) {
@@ -5082,14 +5151,116 @@
 			loop
 			gosub *calcBurdenPc
 			chatMore lang("なかなか賢明な判断" + _da(), "A wise choice."), strbye
-			levelexitby = 4
+			if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
+				encounter = ENCOUNTER_NONE
+				chatteleport = 1
+				snd SOUNDLIST_EXITMAP1
+				gdata(GDATA_AREA) = gdata(GDATA_RETURN_AREA)
+				gdata(GDATA_LEVEL) = gdata(GDATA_RETURN_LEVEL)
+				mapstartx = gdata(GDATA_RETURN_X)
+				mapstarty = gdata(GDATA_RETURN_Y)
+				gdata(GDATA_LEVEL_START_ON) = 7
+				fixstart = 1
+				levelexitby = MAP_EXIT_NONE
+				goto *chat_end
+			}
+			levelexitby = MAP_EXIT_NORMAL
 			chatteleport = 1
 			snd SOUNDLIST_EXITMAP1
 			goto *chat_end
 		}
-		chatMore lang("いい度胸" + _da() + "…しかし、賢い選択とは言えない" + _na() + "ここがおまえさんの墓場" + _da(2), "You've got some guts. But your decision sure ain't a wise one. This will be your grave, kid."), strbye
-		gdata(GDATA_QUEST) = QUEST_TYPE_THIEVES, 1, encounterref, 1
-		goto *chat_end
+		if ( chatval == 1 ) {
+			chatMore lang("いい度胸" + _da() + "…しかし、賢い選択とは言えない" + _na() + "ここがおまえさんの墓場" + _da(2), "You've got some guts. But your decision sure ain't a wise one. This will be your grave, kid."), strbye
+			gdata(GDATA_QUEST) = QUEST_TYPE_THIEVES, 1, encounterref, 1
+			goto *chat_end
+		}
+		
+		if ( chatval == 2 ) {
+			if ( seikou >= rnd(100) ) {
+				snd SOUNDLIST_CRUSH1
+				chatMore lang("乗り込んでくる気" + _ka() + "…いい度胸" + _da(2), "Try'na invade me ship!? Ye got guts!"), strmore
+				encounter = ENCOUNTER_NONE
+				gdata(GDATA_QUEST) = QUEST_TYPE_THIEVES, 1, encounterref, 1
+				goto *chat_end
+			}
+			else {
+				snd SOUNDLIST_CRUSH1
+				enemyhp--
+				cdata(CDATA_CHARACTER_TIER, CHARA_PLAYER)--
+				txtef COLOR_RED
+				txt lang("船のぶつけかたが悪く、飛び移るのに失敗した…。", "Your ship is rammed badly, and you failed to jump over...")
+				if ( enemyhp <= 0 ) {
+					chatMore lang("うわぁぁぁ！" + _ore(3) + "達の船が沈むだと！？", "Shiver me timbers! Our ship be sinkin'!!"), strbye
+					encounter = ENCOUNTER_NONE
+					chatteleport = 1
+					snd SOUNDLIST_EXITMAP1
+					gdata(GDATA_AREA) = gdata(GDATA_RETURN_AREA)
+					gdata(GDATA_LEVEL) = gdata(GDATA_RETURN_LEVEL)
+					mapstartx = gdata(GDATA_RETURN_X)
+					mapstarty = gdata(GDATA_RETURN_Y)
+					gdata(GDATA_LEVEL_START_ON) = 7
+					fixstart = 1
+					levelexitby = MAP_EXIT_NONE
+					goto *chat_end
+				}
+				chatMore lang("ムチャクチャ" + _da(3) + "！海の藻屑になりたい" + _noka(3) + "！？", "Arrr! Don't do anythin' reckless?!"), strmore
+				goto *chat_unique
+			}
+		}
+		if ( chatval == 3 ) {
+			snd SOUNDLIST_BALL1
+			enemyhp--
+			chatMore lang("うおっ！？", "Blimey!?"), strmore
+			if ( enemyhp <= 0 ) {
+				snd SOUNDLIST_MIZU
+				txtef COLOR_GREEN
+				txt lang("あなたは海戦で勝利し、1000の名声値を手に入れた。", "You won the naval battle and gain 1000 fame.")
+				cdata(CDATA_FAME, CHARA_PLAYER) += 1000
+				chatMore lang("うわぁぁぁ！" + _ore(3) + "達の船が沈むだと！？", "Shiver me timbers! Our ship be sinkin'!!"), strbye
+				encounter = ENCOUNTER_NONE
+				chatteleport = 1
+				snd SOUNDLIST_EXITMAP1
+				gdata(GDATA_AREA) = gdata(GDATA_RETURN_AREA)
+				gdata(GDATA_LEVEL) = gdata(GDATA_RETURN_LEVEL)
+				mapstartx = gdata(GDATA_RETURN_X)
+				mapstarty = gdata(GDATA_RETURN_Y)
+				gdata(GDATA_LEVEL_START_ON) = 7
+				fixstart = 1
+				levelexitby = MAP_EXIT_NONE
+				goto *chat_end
+			}
+			if ( rnd(2) == 0 ) {
+				snd SOUNDLIST_BALL1
+				cdata(CDATA_CHARACTER_TIER, CHARA_PLAYER)--
+				chatMore lang("いい加減に" + _siro(3) + "！こっちも反撃" + _da(2), "Avast! We be retaliating!"), strmore
+				goto *chat_unique
+			}
+			goto *chat_unique
+		}
+		if ( chatval == 4 ) {
+			snd SOUNDLIST_BALL1
+			if ( cdata(CDATA_CHARACTER_TIER, CHARA_PLAYER) > CHARACTER_TIER_SHIP_HULL_MIN ) {
+				cdata(CDATA_CHARACTER_TIER, CHARA_PLAYER)--
+			}
+			decfame CHARA_PLAYER, 40
+			p = stat
+			txtmore
+			txtef COLOR_RED
+			txt lang("どうにか逃げ切れたが、名声値を" + p + "失った。", "You managed to escape, but you lost " + p + " fame.")
+			chatMore lang("あいつ逃げていくぞ！野郎ども、船尾に砲弾をぶちこんでやれ！！", "That ship be runnin' away! Bastards, shoot a cannonball into the aft!!"), strbye
+			encounter = ENCOUNTER_NONE
+			chatteleport = 1
+			snd SOUNDLIST_EXITMAP1
+			gdata(GDATA_AREA) = gdata(GDATA_RETURN_AREA)
+			gdata(GDATA_LEVEL) = gdata(GDATA_RETURN_LEVEL)
+			mapstartx = gdata(GDATA_RETURN_X)
+			mapstarty = gdata(GDATA_RETURN_Y)
+			gdata(GDATA_LEVEL_START_ON) = 7
+			fixstart = 1
+			levelexitby = MAP_EXIT_NONE
+			goto *chat_end
+		}
+		goto *chat_unique_SWEND1
 	}
 	if ( _switch_val == CREATURE_ID_LULWY | _switch_sw ) {
 		_switch_sw = 0
@@ -8505,7 +8676,7 @@
 			if ( chatval == 1 ) {
 				if ( gdata(GDATA_FLAG_DUEL_TARGET) > 0 ) {
 					snd SOUNDLIST_FAIL1
-					txt lang("決闘から逃げるわけにはいかない！", "You can not run away from the duel!")
+					txt_duel
 					goto *chat_end
 				}
 				chatMore lang("さようなら。君のことは忘れないよ。", "Farewell. We will never forget you.")
@@ -12481,7 +12652,10 @@
 				txt lang("[システム]原因不明のエラーによりglobalrcbit961が削除されました。", "[System]By unknown error, CHARA_BIT_MARRIED has been initialized.")
 				cdata(CDATA_IMPRESSION, rc) = 50
 				cdata(CDATA_MASTER_SERVANT, rc) = 50
-				cbitmod CHARA_BIT_MARRIED, rc, 0
+				cdata(CDATA_HEART_LOCK_RELATION, rc) = 0
+				cbitmod CHARA_BIT_MARRIED, rc, FALSE
+				cbitmod CHARA_BIT_HEARTLOCK_CAREFREE, rc, FALSE
+				cbitmod CHARA_BIT_HEARTLOCK_DANGEROUS, rc, FALSE
 				if ( cdata(CDATA_EXIST, rc) == CHAR_STATE_ALIVE ) {
 					txtef COLOR_PURPLE
 					txt lang(name(rc) + "は、初めて会ったような顔であなたを見ている…。", name(rc) + " is looking at you as if you'd never met before...")
@@ -15258,8 +15432,8 @@
 					if ( chatval == 2 ) {
 						chatMore lang("俺がこのフロアで交戦した時点では、オルフェはレベル350程度。混沌の渦や衝撃波動を使ってきたから、混沌耐性やPVとDVが低いと致命的だろう。だがこれは最新の情報ではない。", "The last time I fought Orphe on this floor, he was about level 350. He used Chaos Ball and Shining Wave, so having little resistance to chaos and a low PV or DV would prove fatal. But things may have changed since then.")
 						chatMore lang("もし動けない混沌の超児からオルフェが全神力を吸収していた場合…とんでもないことになっているはず。そう、レベルは1200をゆうに超え、混沌のみならず他の神々から吸収したあらゆる属性で攻撃を仕掛けてくるだろう。", "If Orphe has absorbed all of the divine power from the motionless Chaos Child... he would have become unimaginably more powerful by now. His level could be well over 1200, and he would likely attack with not only the element of chaos, but all the elements of the gods he's absorbed also.")
-						chatMore lang("もはや弱点は神に威力を発揮するエンチャントくらいのものだろう。それにしたって、物理攻撃は重力や束縛で回避率を落とさないとまず当たるまい。", "The only weakness he would have left would be to enchantments that deal increased damage to gods. Even then, physical attacks are unlikely to hit him unless his evasion is reduced by gravity or binding.")
-						chatMore lang("今の俺なら強化前のオルフェには余裕で勝てるだろう。だが強化されていた場合は…正直勝てる見込みは薄い。", "In my current condition, I would have been able to defeat Orphe in his original form with ease. But with all of the power he's obtained... I honestly don't think we stand much of a chance of beating him."), strbye
+						chatMore lang("もはや弱点は神に威力を発揮するエンチャントくらいのものだろう。それにしたって、物理攻撃は重力や束縛で回避率を落とさないとまず当たるまい。当たったとしても傷になるとは思えんがな…。", "The only weakness he would have left would be to enchantments that deal increased damage to gods. Even then, physical attacks are unlikely to hit him unless his evasion is reduced by gravity or binding. I don't think anything would be powerful enough to leave a scar.")
+						chatMore lang("今の俺なら強化前のオルフェには余裕で勝てるだろう。だが強化されていた場合は…正直勝てる見込みは薄い。", "In my current condition, I would have been able to defeat Orphe in his original form with ease. But with all of the power he's obtained... I honestly don't think we stand much of a chance of beating him. Bring more items that can restore stamina, in case you manage to get into an endurance battle. If you run out of stamina, you won't be able to attack or chant."), strbye
 						goto *chat_end
 					}
 					if ( chatval == 3 ) {
@@ -17929,6 +18103,48 @@
 	if ( tagevochat == 0 ) {
 		tag = 0
 	}
+	if ( evochat == (-1) ) {
+		if ( hyouzyou == 0 ) {
+			if ( rnd(2) == 0 ) {
+				buff = lang("(" + name(tc) + "はあなたに心を開こうとしている…)", "(" + name(tc) + " seems to open up to you...)")
+			}
+			else {
+				buff = lang("何をする気" + _kana(3) + "？", "What are you gonna do to me?")
+			}
+		}
+		if ( hyouzyou == 1 ) {
+			if ( rnd(2) == 0 ) {
+				buff = lang("(" + name(tc) + "はこれからの関係を想像して照れている…)", "(" + name(tc) + " envisions a future relationship...)")
+			}
+			else {
+				buff = lang("改めて、" + _yoro(3) + "！", "Once again, I look forward to adventuring with you!")
+			}
+		}
+		if ( hyouzyou == 6 ) {
+			if ( rnd(2) == 0 ) {
+				buff = lang("(" + name(tc) + "は心を閉ざしている…)", "(" + name(tc) + " seems to be embarrassed.)")
+			}
+			else {
+				buff = lang("気安く心に踏み込まないで" + _kure(3) + "！", "Don't step into my heart so easily!")
+			}
+		}
+		if ( hyouzyou == 5 ) {
+			if ( rnd(2) == 0 ) {
+				buff = lang("(" + name(tc) + "は肩の荷が下りすぎて拍子抜けしている…)", "(" + name(tc) + " get rids of the worries and eases...)")
+			}
+			else {
+				buff = lang("あんなに悩んでいたことなのに、不思議" + _dana(3) + "。", "It's strange, why would I worry about that.")
+			}
+		}
+		if ( hyouzyou == 3 ) {
+			if ( rnd(2) == 0 ) {
+				buff = lang("(" + name(tc) + "はやばい表情であなたをじっと見ている)", "(" + name(tc) + " is staring at you in a dangerous smile.)")
+			}
+			else {
+				buff = lang("あーあ…責任は取って" + _kure(3) + "。", "Ahh...You will take responsibility, right?")
+			}
+		}
+	}
 	if ( evochat == 1 ) {
 		if ( cdata(CDATA_EVOCHAT_POINTS, tc) >= 10 ) {
 			hyouzyou = 3
@@ -18200,6 +18416,33 @@
 			chatList 59, lang("追い返す", "I don't want to meet anyone.")
 		}
 	}
+	if ( evochat == (-1) ) {
+		if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) > 0 & cdata(CDATA_EVOCHAT_POINTS, tc) < 10 ) {
+			ulp1 = limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc) + cdata(CDATA_IMPRESSION, tc)) / 5, 0, 100)
+			ulp2 = limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc) + cdata(CDATA_IMPRESSION, tc)) / 10 - 5, 0, 90)
+			ulp3 = limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc) + cdata(CDATA_IMPRESSION, tc)) / 20 - 10, 0, 80)
+			ulpb1 = limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc) + cdata(CDATA_MASTER_SERVANT, tc)) / 5, 0, 100)
+			ulpb2 = limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc) + cdata(CDATA_MASTER_SERVANT, tc)) / 10 - 5, 0, 90)
+			ulpb3 = limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc) + cdata(CDATA_MASTER_SERVANT, tc)) / 20 - 10, 0, 80)
+			chatList 119, lang("[開錠成功率" + ulp1 + "％]仲間として共に戦ってくれ", "[Unlock success rate " + ulp1 + "%]Fight together as allies.")
+			chatList 120, lang("[開錠成功率" + ulp1 + "％]友達になろう", "[Unlock success rate " + ulp1 + "%]Let's just be friends.")
+			chatList 121, lang("[開錠成功率" + ulp1 + "％]君と競い合っていきたい", "[Unlock success rate " + ulp1 + "%]I want to compete with you.")
+			chatList 122, lang("[開錠成功率" + ulp2 + "％]君に恋している", "[Unlock success rate " + ulp2 + "%]I'm in love with you.")
+			chatList 123, lang("[開錠成功率" + ulp2 + "％]色々と教わっていきたい", "[Unlock success rate " + ulp2 + "%]I want you to teach me various things.")
+			chatList 124, lang("[開錠成功率" + ulp3 + "％]君を導いていきたい", "[Unlock success rate " + ulp3 + "%]I want to teach you various things.")
+			chatList 125, lang("[開錠成功率" + ulp3 + "％]大事な家族だと思っている", "[Unlock success rate " + ulp3 + "%]I think of you as an important family member.")
+			chatList 126, lang("[開錠成功率" + ulpb1 + "％]契約を結びたい", "[Unlock success rate " + ulpb1 + "%]I want to form a contract with you.")
+			chatList 127, lang("[開錠成功率" + ulpb2 + "％]お前はペットだ！", "[Unlock success rate " + ulpb2 + "%]You are my pet!")
+			chatList 128, lang("[開錠成功率" + ulpb3 + "％]忠誠を誓ってほしい", "[Unlock success rate " + ulpb3 + "%]I want you to pledge allegiance to me.")
+			if ( cbit(CHARA_BIT_HEARTLOCK_CAREFREE, tc) != TRUE ) {
+				chatList 129, lang("[開錠成功率" + ulpb2 + "％]【君の助けになりたい】", "[Unlock success rate " + ulpb2 + "%]<I want to be your help...>")
+			}
+			if ( cbit(CHARA_BIT_HEARTLOCK_DANGEROUS, tc) != TRUE ) {
+				chatList 130, lang("[開錠成功率" + ulpb3 + "％]【本当の君を晒して】\t", "[Unlock success rate " + ulpb3 + "%]<Show me the your real self...>")
+			}
+		}
+		chatList 131, lang("戻る", "<Return>")
+	}
 	if ( evochat == 1 ) {
 		if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) > 0 & cdata(CDATA_EVOCHAT_POINTS, tc) < 10 ) {
 			chatList 78, lang("優しくする", "<Be kind>")
@@ -18208,8 +18451,9 @@
 				chatList 80, lang("10万goldあげる（現在" + cdata(CDATA_GOLD, tc) + "gold所持）", "<Pass 100,000gold>")
 			}
 			chatList 101, lang("【特別な気持ちいいこと】", "<<Interest in a little tail t'night>>")
+			chatList 118, lang("心の開錠", "<Heart unlock>")
 			if ( tagevochat == 1 ) {
-				chatList 111, lang("タッグ間でevochatさせる", "<evochat without you>")
+				chatList 111, lang("タッグ間でevochatさせる", "<Evochat without you>")
             }
 			if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) >= 4 ) {
 				chatList 87, lang("【暴走する】", "<<Get excited>>")
@@ -18261,10 +18505,25 @@
 			if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_WANDER ) {
 				chatList 31, lang("襲撃するよ", "Prepare to die!")
 			}
+			if ( cdata(CDATA_ROLE, tc) == ROLE_SHIP_MERCHANT ) {
+				chatteleport = 1
+				encounter = ENCOUNTER_NONE
+				gdata(GDATA_AREA) = gdata(GDATA_RETURN_AREA)
+				gdata(GDATA_LEVEL) = gdata(GDATA_RETURN_LEVEL)
+				mapstartx = gdata(GDATA_RETURN_X)
+				mapstarty = gdata(GDATA_RETURN_Y)
+				gdata(GDATA_LEVEL_START_ON) = 7
+				fixstart = 1
+				levelexitby = MAP_EXIT_NONE
+				chatList 116, lang("船をぶつけて飛び移る（成功率:100％）", "(Ram your ship and get in) (success rate:100%)")
+				if ( gdata(GDATA_FLAG_SHIP_TYPE) == 3 | gdata(GDATA_FLAG_SHIP_TYPE) >= 5 ) {
+					chatList 117, lang("遠距離から船を攻撃する", "(Attack from a distance)")
+				}
+			}
 			if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_BLACKMARKET ) {
 				chatList 86, lang("「キセル」が欲しい", "I want a kiseru.")
 			}
-			if ( cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER & cdata(CDATA_ROLE, tc) != ROLE_SHOP_TRADE ) {
+			if ( cdata(CDATA_ROLE, tc) != ROLE_SHIP_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER & cdata(CDATA_ROLE, tc) != ROLE_SHOP_TRADE ) {
 				chatList 12, lang("投資したい", "Need someone to invest in your shop?")
 			}
 		}
@@ -18448,7 +18707,7 @@
 		}
 		if ( cdata(CDATA_ROLE, tc) == ROLE_HEALER ) {
 			chatList 19, lang("能力の復元", "Restore my attributes.") + " (" + calcrestorecost() + strgold + ")"
-			chatList 62, lang("装備の解呪", "I want to uncurse equipments.") + " (" + calcrestorecostc() + strgold + ")"
+			chatList 62, lang("装備中のアイテム解呪", "I want to uncurse equipped items.") + " (" + calcrestorecostc() + strgold + ")"
 		}
 		if ( cdata(CDATA_ROLE, tc) == ROLE_ADVENTURER ) {
 			chatList 20, lang("アイテム交換", "Are you interested in trade?")
@@ -18524,9 +18783,7 @@
 		}
 	}
 	if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_MAGIC ) {
-		list(0, listmax) = 115
-		listn(0, listmax) = lang("ポーションの栓を分けて欲しい", "I want potion plugs.")
-		listmax++
+		chatList 115, lang("ポーションの栓を分けて欲しい", "I want potion plugs.")
 	}
 	if ( cdata(CDATA_CONDITION_DRUNK, tc) != 0 ) {
 		if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
@@ -19515,6 +19772,34 @@
 		gohostile
 		goto *chat_end
 	}
+	if ( chatval == 116 ) {
+		snd SOUNDLIST_CRUSH1
+		chatMore lang("こいつ略奪者" + _da(3) + "！", "This adventurer is a plunderer! Form up, mercenaries!")
+		chatteleport = 0
+		gohostile
+		goto *chat_end
+	}
+	if ( chatval == 117 ) {
+		snd SOUNDLIST_BALL1
+		enemyhp = 0
+		chatMore lang("そんなバカな！？", "Hey what are you doing!?")
+		snd SOUNDLIST_MIZU
+		txtef COLOR_RED
+		txt lang("あなたは商船を沈めた。", "You sunk a merchant ship.")
+		modkarma 0, -10
+		chatMore lang("略奪もせずにいきなり沈めるなんて…狂ってる！", "You just blast people's ship out of the blue? You aren't even trying to loot us?? You are batshit insane!"), strbye
+		encounter = ENCOUNTER_NONE
+		chatteleport = 1
+		snd SOUNDLIST_EXITMAP1
+		gdata(GDATA_AREA) = gdata(GDATA_RETURN_AREA)
+		gdata(GDATA_LEVEL) = gdata(GDATA_RETURN_LEVEL)
+		mapstartx = gdata(GDATA_RETURN_X)
+		mapstarty = gdata(GDATA_RETURN_Y)
+		gdata(GDATA_LEVEL_START_ON) = 7
+		fixstart = 1
+		levelexitby = MAP_EXIT_NONE
+		goto *chat_end
+	}
 	if ( chatval == 32 ) {
 		listmax = 0
 		p = itemfind(CHARA_PLAYER, ITEM_ID_WALLET)
@@ -20123,6 +20408,215 @@
 		snd SOUNDLIST_DRAG01
 		goto *chat_default
 	}
+	if ( chatval == 119 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulp1 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -1
+			txtef COLOR_GREEN
+			txt lang("戦友ルートに突入した！", "You've entered the Comrade route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 120 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulp1 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -2
+			txtef COLOR_GREEN
+			txt lang("友情ルートに突入した！", "You've entered the Friend route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 121 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulp1 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -3
+			txtef COLOR_GREEN
+			txt lang("ライバルルートに突入した！", "You've entered the Rival route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 122 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulp2 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -4
+			txtef COLOR_GREEN
+			txt lang("恋愛ルートに突入した！", "You've entered the Affection route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 123 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulp2 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -5
+			txtef COLOR_GREEN
+			txt lang("教え子ルートに突入した！", "You've entered the Student route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 124 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulp3 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -6
+			txtef COLOR_GREEN
+			txt lang("師ルートに突入した！", "You've entered the Master route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 125 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulp3 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -7
+			txtef COLOR_GREEN
+			txt lang("家族ルートに突入した！", "You've entered the Family route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 126 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulpb1 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -11
+			txtef COLOR_GREEN
+			txt lang("契約者ルートに突入した！", "You've entered the Contract route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 127 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulpb2 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -12
+			txtef COLOR_GREEN
+			txt lang("飼い主ルートに突入した！", "You've entered the Owner route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 128 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulpb3 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 1
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_HEART_LOCK_RELATION, tc) = -13
+			txtef COLOR_GREEN
+			txt lang("忠義ルートに突入した！", "You've entered the Loyalty route!")
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 129 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulpb2 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 5
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			snd SOUNDLIST_ENC
+			txtef COLOR_GREEN
+			txt lang(name(tc) + "は悩みが軽減されて心が軽くなった。", name(cc) + " got rid of troubles and felt lighter.")
+			cbitmod CHARA_BIT_HEARTLOCK_CAREFREE, tc, TRUE
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
+	if ( chatval == 130 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		if ( ulpb3 > rnd(100) ) {
+			snd SOUNDLIST_CHEST1
+			hyouzyou = 3
+			snd SOUNDLIST_AMMO
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			txtef COLOR_RED
+			txt lang(name(tc) + "のやばい扉を開いてしまった…。", name(cc) + " has awakened to a dangerous hobby...")
+			cbitmod CHARA_BIT_HEARTLOCK_DANGEROUS, tc, TRUE
+			if ( cdata(CDATA_SANITY, tc) < 10 ) {
+				cdata(CDATA_SANITY, tc) = 10
+			}
+		}
+		else {
+			snd SOUNDLIST_LOCKED1
+			hyouzyou = 6
+			cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		}
+		goto *chat_default
+	}
 	if ( chatval == 78 ) {
 		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
 		cdata(CDATA_EVOCHAT_POINTS, tc)++
@@ -20265,6 +20759,24 @@
 			cdata(CDATA_EMO_ICON, tc) = 26 + 100 * 3
 		}
 		snd SOUNDLIST_FIRE1
+		goto *chat_default
+	}
+	if ( chatval == 118 ) {
+		ulp = sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc)
+		txt lang("ふたりの開錠力は" + ulp + "だ。", "Your unlock power is " + ulp + ".")
+		evochat = -1
+		hyouzyou = 0
+		cdata(CDATA_EMO_ICON, tc) = 0
+		snd SOUNDLIST_DOOR1
+		goto *chat_default
+	}
+	if ( chatval == 131 ) {
+		evochat = 1
+		hyouzyou = 0
+		cdata(CDATA_EMO_ICON, tc) = 0
+		if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) == 0 ) {
+			goto *chat_end
+		}
 		goto *chat_default
 	}
 	if ( chatval == 67 ) {
@@ -20440,38 +20952,24 @@
 	if ( chatval == 113 ) {
 		cost = 10000
 		buff = lang("(" + cdatan(CDATAN_NAME, tc) + "の教育に" + cost + "goldを投資する？)", "(Invest " + cost + " gold pieces in " + cdatan(CDATAN_NAME, tc) + " education?)")
-		list(0, listmax) = 0
-		listn(0, listmax) = lang("やめておく", "Cancel")
-		listmax++
+		chatList 0, lang("やめておく", "Cancel")
 		if ( cdata(CDATA_GOLD, CHARA_PLAYER) >= cost ) {
-			list(0, listmax) = 1
-			listn(0, listmax) = lang("興味のあることをやらせる(効果増)", "Invest in entrusting skills(EXP up).")
-			listmax++
+			chatList 1, lang("興味のあることをやらせる(効果増)", "Invest in entrusting skills(EXP up).")
 		}
 		if ( cdata(CDATA_GOLD, CHARA_PLAYER) >= cost ) {
-			list(0, listmax) = 2
-			listn(0, listmax) = lang("修行スキルの教育に投資する", "Invest in training skills.")
-			listmax++
+			chatList 2, lang("修行スキルの教育に投資する", "Invest in training skills.")
 		}
 		if ( cdata(CDATA_GOLD, CHARA_PLAYER) >= cost ) {
-			list(0, listmax) = 3
-			listn(0, listmax) = lang("戦闘スキルの教育に投資する", "Invest in combat skills.")
-			listmax++
+			chatList 3, lang("戦闘スキルの教育に投資する", "Invest in combat skills.")
 		}
 		if ( cdata(CDATA_GOLD, CHARA_PLAYER) >= cost ) {
-			list(0, listmax) = 4
-			listn(0, listmax) = lang("仕事スキルの教育に投資する", "Invest in jobs skills.")
-			listmax++
+			chatList 4, lang("仕事スキルの教育に投資する", "Invest in jobs skills.")
 		}
 		if ( cdata(CDATA_GOLD, CHARA_PLAYER) >= cost ) {
-			list(0, listmax) = 5
-			listn(0, listmax) = lang("探索スキルの教育に投資する", "Invest in exploration skills.")
-			listmax++
+			chatList 5, lang("探索スキルの教育に投資する", "Invest in exploration skills.")
 		}
 		if ( cdata(CDATA_GOLD, CHARA_PLAYER) >= cost ) {
-			list(0, listmax) = 6
-			listn(0, listmax) = lang("勉強スキルの教育に投資する", "Invest in study skills.")
-			listmax++
+			chatList 6, lang("勉強スキルの教育に投資する", "Invest in study skills.")
 		}
 		chatesc = 0
 		gosub *chat_select
@@ -22943,7 +23441,7 @@
 	wadai = 0
 	tag = 0
 	tagevochat = 0
-	if ( evochat >= 1 ) {
+	if ( evochat >= 1 | evochat <= (-1) ) {
 		if ( evochat != 3 ) {
 			redraw 0
 			gosub *screen_draw
@@ -23479,7 +23977,7 @@
 				display_topic lang("記念日", "Anniversary"), wx + 28, wy + 280
 			}
 		}
-		if ( evochat == 1 ) {
+		if ( evochat == 1 | evochat == (-1) ) {
 			display_topic lang("行動力", "Action"), wx + 28, wy + 225
 			display_topic lang("幸福度", "Happiness"), wx + 28, wy + 280
 		}
@@ -23559,6 +24057,27 @@
 	if ( scenemode == 0 & evochat < 2 ) {
 		if ( chatval(2) == 1 ) {
 			s = _impression(implevel(cdata(CDATA_IMPRESSION, tc)))
+			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-1) ) {
+				s = _impressiona1(implevel(cdata(CDATA_IMPRESSION, tc)))
+			}
+			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-2) ) {
+				s = _impressiona2(implevel(cdata(CDATA_IMPRESSION, tc)))
+			}
+			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-3) ) {
+				s = _impressiona3(implevel(cdata(CDATA_IMPRESSION, tc)))
+			}
+			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-4) ) {
+				s = _impressiona4(implevel(cdata(CDATA_IMPRESSION, tc)))
+			}
+			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-5) ) {
+				s = _impressiona5(implevel(cdata(CDATA_IMPRESSION, tc)))
+			}
+			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-6) ) {
+				s = _impressiona6(implevel(cdata(CDATA_IMPRESSION, tc)))
+			}
+			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-7) ) {
+				s = _impressiona7(implevel(cdata(CDATA_IMPRESSION, tc)))
+			}
 			s(1) = "" + cdata(CDATA_IMPRESSION, tc)
 			pos wx + 32, wy + 198
 			mes "(" + s(1) + ")" + s
@@ -23567,7 +24086,16 @@
 				mes "" + cnvdate(cdata(CDATA_HIRE_DATE, tc), 2)
 			}
 			if ( tc < MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_LIVESTOCK, tc) == 1 ) {
-				s = _impression2(implevel2(cdata(CDATA_MASTER_SERVANT, tc)))
+				s = _impressionb(implevel2(cdata(CDATA_MASTER_SERVANT, tc)))
+				if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-11) ) {
+					s = _impressionb1(implevel2(cdata(CDATA_MASTER_SERVANT, tc)))
+				}
+				if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-12) ) {
+					s = _impressionb2(implevel2(cdata(CDATA_MASTER_SERVANT, tc)))
+				}
+				if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-13) ) {
+					s = _impressionb3(implevel2(cdata(CDATA_MASTER_SERVANT, tc)))
+				}
 				s(1) = "" + cdata(CDATA_MASTER_SERVANT, tc)
 				pos wx + 32, wy + 212
 				mes "(" + s(1) + ")" + s
@@ -23585,7 +24113,7 @@
 					mes "" + cdata(CDATA_JOIN_DATE_MONTH, tc) + "/" + cdata(CDATA_JOIN_DATE_DAY, tc)
 				}
 			}
-			if ( evochat == 1 ) {
+			if ( evochat == 1 | evochat == (-1) ) {
 				if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) > 0 ) {
 					repeat cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)
 						pos wx + 26 + cnt * 8, wy + 255
@@ -23642,7 +24170,7 @@
 	fmode = 4
 	gosub *game_ctrlFile
 	if ( cdata(CDATA_ROLE_FILE_ID, tc) == 0 ) {
-		if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_WANDER | cdata(CDATA_ROLE, tc) == ROLE_GUEST_MERCHANT ) {
+		if ( cdata(CDATA_ROLE, tc) == ROLE_SHIP_MERCHANT | cdata(CDATA_ROLE, tc) == ROLE_SHOP_WANDER | cdata(CDATA_ROLE, tc) == ROLE_GUEST_MERCHANT ) {
 			cdata(CDATA_ROLE_FILE_ID, tc) = 1
 		}
 		else {
@@ -23709,6 +24237,9 @@
 	if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_WANDER ) {
 		p = 6 + rnd(4)
 	}
+	if ( cdata(CDATA_ROLE, tc) == ROLE_SHIP_MERCHANT ) {
+		p = 6 + rnd(4)
+	}
 	if ( cdata(CDATA_ROLE, tc) == ROLE_GUEST_MERCHANT ) {
 		p = 6 + rnd(4)
 	}
@@ -23725,7 +24256,7 @@
 		p /= 4
 	}
 	if ( cdata(CDATA_FAME, tc) > 0 ) {
-		if ( cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER & cdata(CDATA_ROLE, tc) != ROLE_GUEST_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_STOKE & cdata(CDATA_ROLE, tc) != ROLE_SHOP_MOYER ) {
+		if ( cdata(CDATA_ROLE, tc) != ROLE_SHIP_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER & cdata(CDATA_ROLE, tc) != ROLE_GUEST_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_STOKE & cdata(CDATA_ROLE, tc) != ROLE_SHOP_MOYER ) {
 			p += limit(cdata(CDATA_FAME, tc) / 3000, 0, 20)
 			cdata(CDATA_FAME, tc) = 0
 		}
@@ -23909,6 +24440,18 @@
 				if ( rnd(30) == 0 ) {
 					dbid = isetdrinkinn(rnd(length(isetdrinkinn)))
 				}
+			}
+		}
+		if ( cdata(CDATA_ROLE, tc) == ROLE_SHIP_MERCHANT ) {
+			flttypemajor = FILTER_CARGO_FOOD
+			if ( rnd(3) == 0 ) {
+				flttypemajor = FILTER_ITEM_POTION
+			}
+			if ( rnd(3) == 0 ) {
+				flttypemajor = FILTER_ITEM_FOOD
+			}
+			if ( rnd(10) == 0 ) {
+				dbid = isetdrinkinn(rnd(length(isetdrinkinn)))
 			}
 		}
 		if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_GOODS ) {
@@ -24399,6 +24942,11 @@
 			inv(INV_ITEM_VALUE, ci) = limit(inv(INV_ITEM_VALUE, ci), 1, 1000000) * 50
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_GIFT ) {
 				inv(INV_ITEM_VALUE, ci) *= 10
+			}
+		}
+		if ( cdata(CDATA_ROLE, tc) == ROLE_SHIP_MERCHANT ) {
+			if ( inv(INV_ITEM_NUM, ci) > 0 ) {
+				inv(INV_ITEM_NUM, ci) = inv(INV_ITEM_NUM, ci) * 10
 			}
 		}
 		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_CHRISTMAS_CAKE_SET ) {

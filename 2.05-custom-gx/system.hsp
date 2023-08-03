@@ -44,7 +44,30 @@
 	gdata(GDATA_TEMPORARY_FLAGS2) = 0
 	return
 
+*fixTweakData6190
+	// TODO this is here because I expanded tweaks from 5x100 to 5x500 entries. And data got shifted in the process.
+	// Remove this if it causes problem in the future.
+	f = 0
+	repeat 100
+		f += 1 * (TweakData(cnt + 100, 0) != 0) + 1 * (TweakData(cnt + 200, 0) != 0) + 1 * (TweakData(cnt + 300, 0) != 0) + 1 * (TweakData(cnt + 400, 0) != 0)
+	loop
+	if ( f > 0 ) {
+		txt "Tweak Data is expanded to 2500 entries."
+		repeat 100
+			TweakData(cnt, 4) = TweakData(cnt + 400, 0)
+			TweakData(cnt, 3) = TweakData(cnt + 300, 0)
+			TweakData(cnt, 2) = TweakData(cnt + 200, 0)
+			TweakData(cnt, 1) = TweakData(cnt + 100, 0)
+			TweakData(cnt + 400, 0) = 0
+			TweakData(cnt + 300, 0) = 0
+			TweakData(cnt + 200, 0) = 0
+			TweakData(cnt + 100, 0) = 0
+		loop
+	}
+	return
+
 *fixSave
+	gosub *fixTweakData6190
 	if ( gdata(GDATA_VERSION) != VERSION_NUMBER ) {
 		dialog lang("Ver." + gdata(GDATA_VERSION) + "のセーブデータをアップデートします。", "Updating your save data from Ver." + gdata(GDATA_VERSION) + " now.")
 	}
@@ -1681,9 +1704,7 @@
 			}
 			if ( cnt == 17 ) {
 				file += "tweaks.s1"
-				// TODO: Add this to 6190 version update so we have 100 more spaces in the tweak.
-				// fsize = 4000
-				fsize = 2000
+				fsize = 10000
 			}
 			if ( cnt == 18 ) {
 				file += "customval.s1"
@@ -4120,22 +4141,7 @@
 	}
 
 	if ( instr(buff, 0, "fix_tweak_6190") != (-1) ) {
-		// TODO: Add this to 6190 version update so we have 100 more spaces in the tweak.
-		repeat 100
-			TweakData(cnt, 4) = TweakData(cnt, 2)
-			TweakData(cnt, 3) = TweakData(cnt + 100, 1)
-			TweakData(cnt, 2) = TweakData(cnt, 1)
-			TweakData(cnt, 1) = TweakData(cnt + 100, 0)
-			TweakData(cnt + 100, 0) = 0
-			TweakData(cnt + 100, 1) = 0
-		loop
-		// buff = ""
-		// notesel buff
-		// repeat 200
-		// 	noteadd "" + (cnt + 1) + "," + TweakData(cnt, 0) + "," + TweakData(cnt, 1) + "," + TweakData(cnt, 2) + "," + TweakData(cnt, 3) + "," + TweakData(cnt, 4)
-		// loop
-		// s = exedir + "\\tweak.txt"
-		// notesave s
+		gosub *fixTweakData6190
 		buff = ""
 		notesel buff
 		noteadd "Done."

@@ -98867,7 +98867,7 @@
 				return 30
 			}
 			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
-				return lang("盗賊ギルド", "thief guild member")
+				return lang("海賊", "pirate")
 			}
 			if ( dbspec == DBSPEC_CHARA_FILTER ) {
 				return "" + "/man/"

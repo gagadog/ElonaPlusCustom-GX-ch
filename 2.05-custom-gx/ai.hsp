@@ -124,10 +124,17 @@
 			}
 		}
 	}
-	if ( cdata(CDATA_EVOCHAT_POINTS, cc) > 0 ) {
+	kigen = cdata(CDATA_EVOCHAT_POINTS, cc)
+	if ( cbit(CHARA_BIT_HEARTLOCK_CAREFREE, cc) == TRUE ) {
+		kigen++
+	}
+	if ( cbit(CHARA_BIT_HEARTLOCK_DANGEROUS, cc) == TRUE ) {
+		kigen += 5
+	}
+	if ( kigen > 0 ) {
 		if ( cc != CHARA_PLAYER ) {
-			if ( cdata(CDATA_POWER_GAUGE, cc) < cdata(CDATA_EVOCHAT_POINTS, cc) ) {
-				cdata(CDATA_POWER_GAUGE, cc) = cdata(CDATA_EVOCHAT_POINTS, cc)
+			if ( cdata(CDATA_POWER_GAUGE, cc) < kigen ) {
+				cdata(CDATA_POWER_GAUGE, cc) = kigen
 			}
 		}
 	}

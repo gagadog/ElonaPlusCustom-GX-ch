@@ -1,4 +1,9 @@
-# 2.18.R.1.2
+# 2.19.1.0
+
+## Added
+- Ported all changes from Elona+ 2.19.
+
+# 2.18R.1.2
 
 ## Added
 - Tweak that allow random enemy mob to evolve.

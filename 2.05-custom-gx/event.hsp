@@ -36,277 +36,284 @@
 		}
 	}
 	if ( breakfast == 666 ) {
+		breakfast = 0
 		id = RANDOM_EVENT_SEA_RAGING_SEA
 		goto *random_eventProc
 	}
-	if ( breakfast < 100 & kitune != 10 ) {
+	if ( shipevent > 0 ) {
+		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
+			id = 48
+			if ( shipevent == 10 ) {
+				shipevent = 0
+				id = RANDOM_EVENT_SHIP
+			}
+			if ( shipevent == 11 ) {
+				kaiwa = rnd(3)
+				if ( kaiwa == 0 ) {
+					shipevent = 0
+					id = RANDOM_EVENT_SEA_SWEPT_AWAY
+				}
+				if ( kaiwa == 1 ) {
+					shipevent = 0
+					id = RANDOM_EVENT_SEA_AFTER_ESCAPE
+				}
+				if ( kaiwa == 2 ) {
+					shipevent = 0
+					id = RANDOM_EVENT_SEA_DRIFTERS
+				}
+			}
+			if ( shipevent == 12 ) {
+				shipevent = 0
+				id = RANDOM_EVENT_BIG_CATCH
+			}
+			goto *random_eventProc
+		}
+		shipevent = 0
 	}
-	child = 0
-	repeat MAX_CHARA_TOTAL
-		if ( cbit(CHARA_BIT_BIRTHED_CHILD, cnt) != TRUE ) {
-			continue
-		}
-		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
-			continue
-		}
-		if ( cdata(CDATA_CONDITION_SLEEP, cnt) > 0 ) {
-			continue
-		}
-		if ( cdata(CDATA_CONDITION_DIM, cnt) >= 60 ) {
-			continue
-		}
-		if ( rnd(100) > 10 ) {
-			continue
-		}
-		if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-4) ) {
-			if ( rnd(10) > 7 ) {
+	if ( breakfast < 100 & kitune != 10 ) {
+		child = 0
+		repeat MAX_CHARA_TOTAL
+			if ( cbit(CHARA_BIT_BIRTHED_CHILD, cnt) != TRUE ) {
 				continue
 			}
-		}
-		if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-3) ) {
-			if ( rnd(10) > 5 ) {
+			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 				continue
 			}
-		}
-		if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-2) ) {
-			if ( rnd(10) > 3 ) {
+			if ( cdata(CDATA_CONDITION_SLEEP, cnt) > 0 ) {
 				continue
 			}
-		}
-		if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-1) ) {
-			if ( rnd(10) > 3 ) {
+			if ( cdata(CDATA_CONDITION_DIM, cnt) >= 60 ) {
 				continue
 			}
-		}
-		child = cnt
-		break
-	loop
-	kitune = 0
-	if ( mode == MODELIST_TXT_ADV ) {
-		if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_EYTH ) {
-			if ( rnd(12) == 0 ) {
-				id = RANDOM_EVENT_FAITH
+			if ( rnd(100) > 10 ) {
+				continue
 			}
-		}
-		if ( rnd(120) == 0 ) {
-			id = RANDOM_EVENT_DREAM_LOSE_RES, 120
-		}
-		if ( rnd(100) == 0 ) {
-			id = RANDOM_EVENT_DREAM_CONNECT
-		}
-		if ( rnd(50) == 0 ) {
-			id = RANDOM_EVENT_DREAM_GROWTH
-		}
-		if ( rnd(25) == 0 ) {
-			id = RANDOM_EVENT_DREAM_MAGIC
-		}
-		if ( rnd(150) == 0 ) {
-			id = RANDOM_EVENT_DREAM_CURSE, 65
-		}
-		if ( rnd(150) == 0 ) {
-			id = RANDOM_EVENT_DREAM_STRANGE_STAIRS
-		}
-		if ( rnd(20) == 0 ) {
-			id = RANDOM_EVENT_DREAM_REGEN_HP
-		}
-		if ( rnd(20) == 0 ) {
-			id = RANDOM_EVENT_DREAM_REGEN_MP
-		}
-		if ( rnd(120) == 0 ) {
-			id = RANDOM_EVENT_THIEF, 40
-		}
-		if ( rnd(300) == 0 ) {
-			id = RANDOM_EVENT_DREAM_BUTTERFLY
-		}
-		if ( rnd(50) == 0 ) {
-			id = RANDOM_EVENT_DREAM_MATERIAL
-		}
-		if ( rnd(300) == 0 ) {
-			id = RANDOM_EVENT_DREAM_POTENTIAL
-		}
-		if ( rnd(120) == 0 ) {
-			id = RANDOM_EVENT_DREAM_MUTATION, 70
-		}
-		if ( rnd(100) == 0 ) {
-			id = RANDOM_EVENT_DREAM_SHEEP_NIGHTMARE
-		}
-		if ( rnd(50) == 0 | soine == 2000 ) {
-			id = RANDOM_EVENT_SLEEP_SHARING
-		}
-		if ( cdata(CDATA_ITEM_USING, CHARA_PLAYER) >= 0 ) {
-			if ( inv(INV_ITEM_ID, cdata(CDATA_ITEM_USING, CHARA_PLAYER)) == ITEM_ID_JURES_BODY_PILLOW ) {
-				if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_EYTH ) {
+			if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-4) ) {
+				if ( rnd(10) > 7 ) {
+					continue
+				}
+			}
+			if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-3) ) {
+				if ( rnd(10) > 5 ) {
+					continue
+				}
+			}
+			if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-2) ) {
+				if ( rnd(10) > 3 ) {
+					continue
+				}
+			}
+			if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-1) ) {
+				if ( rnd(10) > 3 ) {
+					continue
+				}
+			}
+			child = cnt
+			break
+		loop
+		kitune = 0
+		if ( mode == MODELIST_TXT_ADV ) {
+			if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_EYTH ) {
+				if ( rnd(12) == 0 ) {
+					id = RANDOM_EVENT_FAITH
+				}
+			}
+			if ( rnd(120) == 0 ) {
+				id = RANDOM_EVENT_DREAM_LOSE_RES, 120
+			}
+			if ( rnd(100) == 0 ) {
+				id = RANDOM_EVENT_DREAM_CONNECT
+			}
+			if ( rnd(50) == 0 ) {
+				id = RANDOM_EVENT_DREAM_GROWTH
+			}
+			if ( rnd(25) == 0 ) {
+				id = RANDOM_EVENT_DREAM_MAGIC
+			}
+			if ( rnd(150) == 0 ) {
+				id = RANDOM_EVENT_DREAM_CURSE, 65
+			}
+			if ( rnd(150) == 0 ) {
+				id = RANDOM_EVENT_DREAM_STRANGE_STAIRS
+			}
+			if ( rnd(20) == 0 ) {
+				id = RANDOM_EVENT_DREAM_REGEN_HP
+			}
+			if ( rnd(20) == 0 ) {
+				id = RANDOM_EVENT_DREAM_REGEN_MP
+			}
+			if ( rnd(120) == 0 ) {
+				id = RANDOM_EVENT_THIEF, 40
+			}
+			if ( rnd(300) == 0 ) {
+				id = RANDOM_EVENT_DREAM_BUTTERFLY
+			}
+			if ( rnd(50) == 0 ) {
+				id = RANDOM_EVENT_DREAM_MATERIAL
+			}
+			if ( rnd(300) == 0 ) {
+				id = RANDOM_EVENT_DREAM_POTENTIAL
+			}
+			if ( rnd(120) == 0 ) {
+				id = RANDOM_EVENT_DREAM_MUTATION, 70
+			}
+			if ( rnd(100) == 0 ) {
+				id = RANDOM_EVENT_DREAM_SHEEP_NIGHTMARE
+			}
+			if ( rnd(50) == 0 | soine == 2000 ) {
+				id = RANDOM_EVENT_SLEEP_SHARING
+			}
+			if ( cdata(CDATA_ITEM_USING, CHARA_PLAYER) >= 0 ) {
+				if ( inv(INV_ITEM_ID, cdata(CDATA_ITEM_USING, CHARA_PLAYER)) == ITEM_ID_JURES_BODY_PILLOW ) {
+					if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_EYTH ) {
+						if ( rnd(2) == 0 ) {
+							id = RANDOM_EVENT_FAITH
+						}
+					}
 					if ( rnd(2) == 0 ) {
-						id = RANDOM_EVENT_FAITH
+						id = RANDOM_EVENT_DREAM_REGEN_HP
+					}
+					if ( rnd(10) == 0 ) {
+						id = RANDOM_EVENT_DREAM_GROWTH
+					}
+					if ( rnd(60) == 0 ) {
+						id = RANDOM_EVENT_DREAM_POTENTIAL
 					}
 				}
-				if ( rnd(2) == 0 ) {
-					id = RANDOM_EVENT_DREAM_REGEN_HP
+			}
+			if ( child > 0 ) {
+				if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-5) ) {
+					id = RANDOM_EVENT_DREAM_CAUSE_UNKNOWN
 				}
-				if ( rnd(10) == 0 ) {
-					id = RANDOM_EVENT_DREAM_GROWTH
+			}
+			if ( rnd(200) == 0 ) {
+				id = RANDOM_EVENT_DREAM_LUCKY
+			}
+			if ( rnd(250) == 0 ) {
+				if ( inv_getfreeid(CHARA_PLAYER) != (-1) ) {
+					id = RANDOM_EVENT_DREAM_TREASURE
 				}
-				if ( rnd(60) == 0 ) {
-					id = RANDOM_EVENT_DREAM_POTENTIAL
+			}
+			if ( rnd(10000) == 0 ) {
+				if ( inv_getfreeid(CHARA_PLAYER) != (-1) ) {
+					id = RANDOM_EVENT_DREAM_EHEKATL
 				}
+			}
+			if ( soine == 1000 ) {
+				id = RANDOM_EVENT_FORCED_SLEEP_SHARING
+			}
+			goto *random_eventProc
+		}
+		if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
+			if ( cdata(CDATA_ROW_ACT, CHARA_PLAYER) != ACTION_NONE ) {
+				return
+			}
+		}
+		if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
+			return
+		}
+		if ( gdata(GDATA_AREA) == AREA_VALM ) {
+			if ( gdata(GDATA_LEVEL) == 3 ) {
+				return
 			}
 		}
 		if ( child > 0 ) {
+			kaiwa = 0
 			if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-5) ) {
 				id = RANDOM_EVENT_DREAM_CAUSE_UNKNOWN
 			}
-		}
-		if ( rnd(200) == 0 ) {
-			id = RANDOM_EVENT_DREAM_LUCKY
-		}
-		if ( rnd(250) == 0 ) {
-			if ( inv_getfreeid(CHARA_PLAYER) != (-1) ) {
-				id = RANDOM_EVENT_DREAM_TREASURE
+			if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-4) ) {
+				id = RANDOM_EVENT_DREAM_CHILD_SELF_EXPRESSION
 			}
-		}
-		if ( rnd(10000) == 0 ) {
-			if ( inv_getfreeid(CHARA_PLAYER) != (-1) ) {
-				id = RANDOM_EVENT_DREAM_EHEKATL
-			}
-		}
-		if ( soine == 1000 ) {
-			id = RANDOM_EVENT_FORCED_SLEEP_SHARING
-		}
-		goto *random_eventProc
-	}
-	if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
-		if ( cdata(CDATA_ROW_ACT, CHARA_PLAYER) != ACTION_NONE ) {
-			return
-		}
-	}
-	if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
-		return
-	}
-	if ( gdata(GDATA_AREA) == AREA_VALM ) {
-		if ( gdata(GDATA_LEVEL) == 3 ) {
-			return
-		}
-	}
-	if ( child > 0 ) {
-		kaiwa = 0
-		if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-5) ) {
-			id = RANDOM_EVENT_DREAM_CAUSE_UNKNOWN
-		}
-		if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-4) ) {
-			id = RANDOM_EVENT_DREAM_CHILD_SELF_EXPRESSION
-		}
-		if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-3) ) {
-			if ( cdata(CDATA_PERSONALITY, child) > 2 ) {
-				cdata(CDATA_PERSONALITY, child) = 0
-			}
-			if ( cdata(CDATA_PERSONALITY, child) == 0 ) {
-				id = RANDOM_EVENT_DREAM_DREAM_FOR_THE_FUTURE
-			}
-			if ( cdata(CDATA_PERSONALITY, child) == 1 ) {
-				id = RANDOM_EVENT_DREAM_TREASURE_DISCOVERY
-			}
-			if ( cdata(CDATA_PERSONALITY, child) == 2 ) {
-				id = RANDOM_EVENT_DREAM_ROOTS
-			}
-			cdata(CDATA_PERSONALITY, child)++
-		}
-		if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-2) ) {
-			if ( cdata(CDATA_PERSONALITY, child) > 2 ) {
-				cdata(CDATA_PERSONALITY, child) = 0
-			}
-			if ( cdata(CDATA_PERSONALITY, child) == 0 ) {
-				id = RANDOM_EVENT_DREAM_BATTLE_IN_THE_BRAIN
-			}
-			if ( cdata(CDATA_PERSONALITY, child) == 1 ) {
-				id = RANDOM_EVENT_DREAM_THIS_WORLD_IS_CANVAS
-			}
-			if ( cdata(CDATA_PERSONALITY, child) == 2 ) {
-				id = RANDOM_EVENT_DREAM_MEANING_OF_STUDY
-			}
-			cdata(CDATA_PERSONALITY, child)++
-		}
-		if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-1) ) {
-			if ( cdata(CDATA_PERSONALITY, child) > 2 ) {
-				cdata(CDATA_PERSONALITY, child) = 0
-			}
-			if ( cdata(CDATA_PERSONALITY, child) == 0 ) {
-				id = RANDOM_EVENT_DREAM_SELF_REVELATION
-			}
-			if ( cdata(CDATA_PERSONALITY, child) == 1 ) {
-				id = RANDOM_EVENT_DREAM_SELF_AWARENESS
-			}
-			if ( cdata(CDATA_PERSONALITY, child) == 2 ) {
-				id = RANDOM_EVENT_DREAM_MARGINAL_MAN
-			}
-			cdata(CDATA_PERSONALITY, child)++
-		}
-		goto *random_eventProc
-	}
-	if ( gdata(GDATA_WORLD) != AREA_OCEAN ) {
-		if ( rnd(30) == 0 ) {
-			id = RANDOM_EVENT_PRIEST
-		}
-		if ( rnd(25) == 0 ) {
-			id = RANDOM_EVENT_GAIN_GOLD
-		}
-		if ( rnd(25) == 0 ) {
-			id = RANDOM_EVENT_GAIN_MATERIAL
-		}
-		if ( rnd(50) == 0 ) {
-			id = RANDOM_EVENT_GAIN_PLATINUM
-		}
-		if ( rnd(80) == 0 ) {
-			id = RANDOM_EVENT_BLOATED
-		}
-		if ( rnd(50) == 0 ) {
-			id = RANDOM_EVENT_THIEF, 40
-		}
-		if ( rnd(80) == 0 ) {
-			id = RANDOM_EVENT_HUNGRY, 45
-		}
-		/********** CUSTOM - BEGINNING **********/ 
-        // Ano forgot to add the world events filter. 
-		// This should prevent low speed character from getting overwhelmed with events.
-		// I don't know if it's intentional or not, 
-		// but adding it back makes event almost impossible to happen with vehicles, so I added a rnd(6) instead.
-        if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-            if ( rnd(40) | (rnd(6) == 0 & gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0) ) {
-                return 0
-            }
-            goto *random_eventProc
-        }
-        /********** CUSTOM - ENDING **********/
-	}
-	else {
-		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
-			if ( gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN | gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
-				if ( rnd(10 + gdata(GDATA_FLAG_SHIP_TYPE) * 2) == 0 ) {
-					id = RANDOM_EVENT_SEA_RAGING_SEA
-					gosub *random_event
+			if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-3) ) {
+				if ( cdata(CDATA_PERSONALITY, child) > 2 ) {
+					cdata(CDATA_PERSONALITY, child) = 0
 				}
+				if ( cdata(CDATA_PERSONALITY, child) == 0 ) {
+					id = RANDOM_EVENT_DREAM_DREAM_FOR_THE_FUTURE
+				}
+				if ( cdata(CDATA_PERSONALITY, child) == 1 ) {
+					id = RANDOM_EVENT_DREAM_TREASURE_DISCOVERY
+				}
+				if ( cdata(CDATA_PERSONALITY, child) == 2 ) {
+					id = RANDOM_EVENT_DREAM_ROOTS
+				}
+				cdata(CDATA_PERSONALITY, child)++
 			}
-			if ( gdata(GDATA_FLAG_SHIP_TYPE) > 0 ) {
-				if ( rnd(5) == 0 ) {
-					id = RANDOM_EVENT_SEA_SWEPT_AWAY
-					goto *random_eventProc
+			if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-2) ) {
+				if ( cdata(CDATA_PERSONALITY, child) > 2 ) {
+					cdata(CDATA_PERSONALITY, child) = 0
 				}
-				if ( rnd(5) == 0 ) {
-					id = RANDOM_EVENT_SEA_AFTER_ESCAPE
-					goto *random_eventProc
+				if ( cdata(CDATA_PERSONALITY, child) == 0 ) {
+					id = RANDOM_EVENT_DREAM_BATTLE_IN_THE_BRAIN
 				}
-				if ( rnd(5) == 0 ) {
-					id = RANDOM_EVENT_SEA_DRIFTERS
-					goto *random_eventProc
+				if ( cdata(CDATA_PERSONALITY, child) == 1 ) {
+					id = RANDOM_EVENT_DREAM_THIS_WORLD_IS_CANVAS
 				}
-				if ( gdata(GDATA_FLAG_SHIP_TYPE) < 6 ) {
-					if ( rnd(10) == 0 ) {
-						id = RANDOM_EVENT_SEA_AERIAL_THREAT
-						goto *random_eventProc
+				if ( cdata(CDATA_PERSONALITY, child) == 2 ) {
+					id = RANDOM_EVENT_DREAM_MEANING_OF_STUDY
+				}
+				cdata(CDATA_PERSONALITY, child)++
+			}
+			if ( cdata(CDATA_SPRITE_SIZE_MILK, child) == (-1) ) {
+				if ( cdata(CDATA_PERSONALITY, child) > 2 ) {
+					cdata(CDATA_PERSONALITY, child) = 0
+				}
+				if ( cdata(CDATA_PERSONALITY, child) == 0 ) {
+					id = RANDOM_EVENT_DREAM_SELF_REVELATION
+				}
+				if ( cdata(CDATA_PERSONALITY, child) == 1 ) {
+					id = RANDOM_EVENT_DREAM_SELF_AWARENESS
+				}
+				if ( cdata(CDATA_PERSONALITY, child) == 2 ) {
+					id = RANDOM_EVENT_DREAM_MARGINAL_MAN
+				}
+				cdata(CDATA_PERSONALITY, child)++
+			}
+			goto *random_eventProc
+		}
+		if ( gdata(GDATA_WORLD) != AREA_OCEAN ) {
+			if ( rnd(30) == 0 ) {
+				id = RANDOM_EVENT_PRIEST
+			}
+			if ( rnd(25) == 0 ) {
+				id = RANDOM_EVENT_GAIN_GOLD
+			}
+			if ( rnd(25) == 0 ) {
+				id = RANDOM_EVENT_GAIN_MATERIAL
+			}
+			if ( rnd(50) == 0 ) {
+				id = RANDOM_EVENT_GAIN_PLATINUM
+			}
+			if ( rnd(80) == 0 ) {
+				id = RANDOM_EVENT_BLOATED
+			}
+			if ( rnd(50) == 0 ) {
+				id = RANDOM_EVENT_THIEF, 40
+			}
+			if ( rnd(80) == 0 ) {
+				id = RANDOM_EVENT_HUNGRY, 45
+			}
+		}
+		else {
+			if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
+				if ( gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN | gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
+					if ( rnd(10 + gdata(GDATA_FLAG_SHIP_TYPE) * 2) == 0 ) {
+						id = RANDOM_EVENT_SEA_RAGING_SEA
+						gosub *random_event
 					}
 				}
-				if ( rnd(10) == 0 ) {
-					id = RANDOM_EVENT_SEA_UNDERSEA_THREAT
-					goto *random_eventProc
+				if ( gdata(GDATA_FLAG_SHIP_TYPE) > 0 ) {
+					if ( gdata(GDATA_FLAG_SHIP_TYPE) < 6 ) {
+						if ( rnd(10) == 0 ) {
+							id = RANDOM_EVENT_SEA_AERIAL_THREAT
+							goto *random_eventProc
+						}
+					}
+					if ( rnd(10) == 0 ) {
+						id = RANDOM_EVENT_SEA_UNDERSEA_THREAT
+						goto *random_eventProc
+					}
 				}
 			}
 		}
@@ -329,6 +336,7 @@
 			id = RANDOM_EVENT_REMAINS_ADV
 		}
 	}
+
 *random_eventProc
 	procid = (procid + 1) \ 4
 	proclist(procid) = "random_eventProc:" + id + " ct:" + ct
@@ -534,10 +542,9 @@
 		customtalk tc, DBMODE_FLAVOR_BREAKFAST
 		gosub *convert_word
 		if ( gdata(GDATA_CUSTOM_TALK) == 100 ) {
-			if ( jp ) {
-				txtef COLOR_SKY_BLUE
-				txt name(tc) + "は一仕事やりとげた顔をしている。", name(tc) + "はなんだかそわそわしている。", "「早く来ないとなくなる" + _yo(3) + "」", "「一日の元気は朝食から" + _da(3) + "」"
-			}
+			chatc@DP = tc
+			txtef COLOR_SKY_BLUE
+			txt lang(cdatan(CDATAN_NAME, tc) + "は一仕事やりとげた顔をしている。", "Looks like " + cdatan(CDATAN_NAME, tc) + " had a job well done."), lang(cdatan(CDATAN_NAME, tc) + "はなんだかそわそわしている。", cdatan(CDATAN_NAME, tc) + " is some what nervous"), lang("「早く来ないとなくなる" + _yo(3) + "」", cnvtalk("If you don't come soon, it will be gone.")), lang("「一日の元気は朝食から" + _da(3) + "」", cnvtalk("The day's energy starts with breakfast."))
 		}
 		if ( sorg(SKILL_NORMAL_COOKING, tc) != 0 ) {
 			skillexp SKILL_NORMAL_COOKING, tc, 1000
@@ -545,10 +552,10 @@
 		s = lang("朝のひととき", "Breakfast")
 		file = "bg_re10"
 		if ( mtc == 1 ) {
-			buff = lang("どうやら" + name(tc) + "が朝食を準備しているようだ。", "Apparently, " + name(tc) + " is preparing breakfast.")
+			buff = lang("どうやら" + cdatan(CDATAN_NAME, tc) + "が朝食を準備しているようだ。", "Apparently, " + cdatan(CDATAN_NAME, tc) + " is preparing breakfast.")
 		}
 		else {
-			buff = lang("どうやら" + name(tc) + "たちが朝食を準備しているようだ。", "Apparently, " + name(tc) + " and the others are preparing breakfast.")
+			buff = lang("どうやら" + cdatan(CDATAN_NAME, tc) + "たちが朝食を準備しているようだ。", "Apparently, " + cdatan(CDATAN_NAME, tc) + " and the others are preparing breakfast.")
 		}
 		chatList 1, lang("食べる", "(Eat)")
 		chatList 2, lang("食べない", "(Leave)")
@@ -630,9 +637,7 @@
 			snd SOUNDLIST_ATK_DARK
 			cdata(CDATA_EMO_ICON, tc) = 13 + 100 * 3
 			txtef COLOR_PURPLE
-			if ( jp ) {
-				txt name(tc) + "はしょんぼりしている…。", name(tc) + "は超ショックを受けている！", name(tc) + "は無言で食器を片づけ始めた。"
-			}
+			txt lang(cdatan(CDATAN_NAME, tc) + "はしょんぼりしている…。", cdatan(CDATAN_NAME, tc) + " is sullen..."), lang(cdatan(CDATAN_NAME, tc) + "は超ショックを受けている！", cdatan(CDATAN_NAME, tc) + " is shocked with disbelief"), lang(cdatan(CDATAN_NAME, tc) + "は無言で食器を片づけ始めた。", cdatan(CDATAN_NAME, tc) + " put away the dishes in silence.")
 		}
 		mtc = 0
 		goto *random_eventProc_SWEND1
@@ -677,10 +682,9 @@
 		customtalk tc, DBMODE_FLAVOR_CREATE
 		gosub *convert_word
 		if ( gdata(GDATA_CUSTOM_TALK) == 100 ) {
-			if ( jp ) {
-				txtef COLOR_SKY_BLUE
-				txt name(tc) + "は一仕事やりとげた顔をしている。", name(tc) + "は誇らしげにお手製の品を取り出した。", "「割と自信作" + _dana(3) + "」", "「どやぁ」"
-			}
+			chatc@DP = tc
+			txtef COLOR_SKY_BLUE
+			txt lang(cdatan(CDATAN_NAME, tc) + "は一仕事やりとげた顔をしている。", "Looks like " + cdatan(CDATAN_NAME, tc) + " had a job well done."),  lang(cdatan(CDATAN_NAME, tc) + "は誇らしげにお手製の品を取り出した。", cdatan(CDATAN_NAME, tc) + " took something out with a smug."), lang("「割と自信作" + _dana(3) + "」", cnvtalk("It's my magnus opus!")), lang("「どやぁ」", cnvtalk("Aha!"))
 		}
 		if ( sorg(SKILL_NORMAL_CARPENTRY, tc) != 0 ) {
 			skillexp SKILL_NORMAL_CARPENTRY, tc, 1000
@@ -707,10 +711,10 @@
 		s = lang("手作りのプレゼント", "Handmade gifts")
 		file = "bg_re3"
 		if ( mtc == 1 ) {
-			buff = lang(name(tc) + "が夜なべをして防具を作ってくれたようだ。", name(tc) + " seems to have made armor for you during the night.")
+			buff = lang(cdatan(CDATAN_NAME, tc) + "が夜なべをして防具を作ってくれたようだ。", cdatan(CDATAN_NAME, tc) + " seems to have made armor for you during the night.")
 		}
 		else {
-			buff = lang(name(tc) + "たちが夜なべをして防具を作ってくれたようだ。", name(tc) + " and the others seem to have made armor for you during the night.")
+			buff = lang(cdatan(CDATAN_NAME, tc) + "たちが夜なべをして防具を作ってくれたようだ。", cdatan(CDATAN_NAME, tc) + " and the others seem to have made armor for you during the night.")
 		}
 		chatList 1, lang("助かる", "Thank you.")
 		chatList 2, lang("いらない", "I don't need it.")
@@ -762,13 +766,13 @@
 				nooracle = 0
 			}
 			txt_questitem
-			txt name(tc) + lang("は嬉しそうだ。", " looks happy.")
+			txt cdatan(CDATAN_NAME, tc) + lang("は嬉しそうだ。", " looks happy.")
 		}
 		if ( rtval == 2 ) {
 			snd SOUNDLIST_ATK_DARK
 			cdata(CDATA_EMO_ICON, tc) = 13 + 100 * 3
 			txtef COLOR_PURPLE
-			txt name(tc) + lang("は半泣きで防具をゴミに出した。", " throws the armor in the trash, almost crying.")
+			txt cdatan(CDATAN_NAME, tc) + lang("は半泣きで防具をゴミに出した。", " throws the armor in the trash, almost crying.")
 		}
 		autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
 		goto *random_eventProc_SWEND1
@@ -813,10 +817,9 @@
 		customtalk tc, DBMODE_FLAVOR_CREATE
 		gosub *convert_word
 		if ( gdata(GDATA_CUSTOM_TALK) == 100 ) {
-			if ( jp ) {
-				txtef COLOR_SKY_BLUE
-				txt name(tc) + "は怪我を隠している。", "「頑張って作った" + _yo(3) + "」", "「家計の足しにでも…」", "「ちょっと不恰好だけど…」"
-			}
+			chatc@DP = tc
+			txtef COLOR_SKY_BLUE
+			txt lang(cdatan(CDATAN_NAME, tc) + "は怪我を隠している。", cdatan(CDATAN_NAME, tc) + " is concealing their injuries"), lang("「頑張って作った" + _yo(3) + "」", cnvtalk("I- I tried my best..")), lang("「家計の足しにでも…」", cnvtalk("This should cut some budget..")), lang("「ちょっと不恰好だけど…」", cnvtalk("It's a bit awkward..."))
 		}
 		if ( sorg(SKILL_NORMAL_TAILORING, tc) != 0 ) {
 			skillexp SKILL_NORMAL_TAILORING, tc, 1000
@@ -843,10 +846,10 @@
 		s = lang("手編みのプレゼント", "Hand-knitted gifts")
 		file = "bg_re14"
 		if ( mtc == 1 ) {
-			buff = lang(name(tc) + "が夜なべをして防具を編んでくれたようだ。", name(tc) + " seems to have knitted armor for you during the night.")
+			buff = lang(cdatan(CDATAN_NAME, tc) + "が夜なべをして防具を編んでくれたようだ。", cdatan(CDATAN_NAME, tc) + " seems to have knitted armor for you during the night.")
 		}
 		else {
-			buff = lang(name(tc) + "たちが夜なべをして防具を編んでくれたようだ。", name(tc) + " and the others seem to have knitted armor for you during the night.")
+			buff = lang(cdatan(CDATAN_NAME, tc) + "たちが夜なべをして防具を編んでくれたようだ。", cdatan(CDATAN_NAME, tc) + " and the others seem to have knitted armor for you during the night.")
 		}
 		chatList 1, lang("ありがとう", "Thank you")
 		chatList 2, lang("いらん", "I don't need it.")
@@ -898,13 +901,13 @@
 				nooracle = 0
 			}
 			txt_questitem
-			txt name(tc) + lang("は上機嫌だ。", " is in a good mood.")
+			txt cdatan(CDATAN_NAME, tc) + lang("は上機嫌だ。", " is in a good mood.")
 		}
 		if ( rtval == 2 ) {
 			snd SOUNDLIST_STAB
 			cdata(CDATA_EMO_ICON, tc) = 13 + 100 * 3
 			txtef COLOR_PURPLE
-			txt name(tc) + lang("は無言で防具を引き裂いた。", " tore the armor apart in silence.")
+			txt cdatan(CDATAN_NAME, tc) + lang("は無言で防具を引き裂いた。", " tore the armor apart in silence.")
 		}
 		autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
 		goto *random_eventProc_SWEND1
@@ -2658,6 +2661,167 @@
 				}
 				cdata(CDATA_CONDITION_SUFFOCATION, cnt) += 10
 			loop
+		}
+		goto *random_eventProc_SWEND1
+		_switch_sw++
+	}
+	if ( _switch_val == RANDOM_EVENT_BIG_CATCH | _switch_sw ) {
+		_switch_sw = 0
+		s = lang("大漁の予感", "Premonition of a big catch")
+		file = "bg_re23"
+		buff = lang("魚群が見える…今なら魚が大量に獲れそうだ！", "You saw schools of fish... you can catch a lot of fish now!")
+		chatList 1, lang("漁を始める", "(Start fishing)")
+		chatList 2, lang("立ち去る", "(Leave)")
+		chatesc = -1
+		gosub *re_select
+		msg_clear
+		if ( rtval == 1 ) {
+			if ( inv_getspace(CHARA_PLAYER) == 0 ) {
+				txt lang("バックパックが一杯だ。", "Your inventory is full.")
+				goto *random_eventProc_SWEND1
+			}
+			snd SOUNDLIST_MIZU
+			kaiwa = rnd(2)
+			kazu = rnd(6) + 8
+			if ( gdata(GDATA_FLAG_SHIP_TYPE) == 2 ) {
+				kazu = rnd(11) + 16
+				txt lang("あなたは漁船の網を使った。", "You used the net of fishing ship.")
+			}
+			txtef COLOR_GREEN
+			txt lang("あっという間に魚が" + kazu + "匹獲れたが、残りには逃げられてしまった。", "You caught " + kazu + " fishs in no time, but the rest escaped.")
+			if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 11 ) {
+				if ( kaiwa == 0 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_MANBOO, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+				if ( kaiwa == 1 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_SEABREAM, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+			}
+			if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 36 ) {
+				if ( kaiwa == 0 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_SEABREAM, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+				if ( kaiwa == 1 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_SALMON, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+			}
+			if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 93 ) {
+				if ( kaiwa == 0 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_SANDBORER, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+				if ( kaiwa == 1 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_FLATFISH, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+			}
+			if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 54 ) {
+				if ( kaiwa == 0 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_GLOBEFISH, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+				if ( kaiwa == 1 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_MOONFISH, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+			}
+			if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 53 ) {
+				if ( kaiwa == 0 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_TUNA, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+				if ( kaiwa == 1 ) {
+					flt
+					itemcreate CHARA_PLAYER, ITEM_ID_CUTLASSFISH, -1, -1, 0
+					inv(INV_ITEM_NUM, ci) = kazu
+				}
+			}
+		}
+		goto *random_eventProc_SWEND1
+		_switch_sw++
+	}
+	if ( _switch_val == RANDOM_EVENT_SHIP | _switch_sw ) {
+		_switch_sw = 0
+		s = lang("謎の船影", "Shadow of a Ship")
+		file = "bg_re24"
+		buff = lang("前方に船影を発見した。ここからでは何の船かよく分からない。", "You spot a ship's shadow ahead. You don't quite know what ship it is from here.")
+		chatList 1, lang("近づいてみる", "(Get closer)")
+		if ( gdata(GDATA_FLAG_SHIP_TYPE) == 3 | gdata(GDATA_FLAG_SHIP_TYPE) >= 5 ) {
+			chatList 2, lang("とりあえず先制攻撃", "(Strike first)")
+		}
+		chatList 3, lang("立ち去る", "(Leave)")
+		chatesc = -1
+		gosub *re_select
+		msg_clear
+		kaiwa = 0
+		if ( rnd(22 - limit((gdata(GDATA_CARGO_WEIGHT) + 1) * 15 / (gdata(GDATA_CARGO_LIMIT) + 1), 5, 20)) == 0 ) {
+			kaiwa = 1
+		}
+		enemyhp = 4 + rnd(2)
+		if ( rtval == 1 ) {
+			encounterlv = 10 + rnd(100)
+			encounter = ENCOUNTER_SHIP_MERCHANT
+			if ( kaiwa == 1 ) {
+				encounterlv = cdata(CDATA_FAME, CHARA_PLAYER) / 1000
+				encounter = ENCOUNTER_SHIP_PIRATE
+			}
+			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
+			gdata(GDATA_RETURN_AREA) = gdata(GDATA_AREA), gdata(GDATA_LEVEL), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
+			gdata(GDATA_TELEPORT_AREA) = AREA_OCEAN
+			if ( kaiwa == 0 ) {
+				gdata(GDATA_TELEPORT_LEVEL) = 700
+			}
+			if ( kaiwa == 1 ) {
+				gdata(GDATA_TELEPORT_LEVEL) = 701
+			}
+			gdata(GDATA_LEVEL_START_ON) = 7
+			mapstartx = 17
+			mapstarty = 17
+			levelexitby = MAP_EXIT_TELEPORT
+			snd SOUNDLIST_EXITMAP1
+			goto *map_exit
+		}
+		if ( rtval == 2 ) {
+			snd SOUNDLIST_BALL1
+			if ( kaiwa == 0 ) {
+				txt lang("攻撃に驚き、船は慌てて逃げていった。", "Surprised by the attack, the ship fled in a panic.")
+				goto *random_eventProc_SWEND1
+			}
+			if ( gdata(GDATA_FLAG_SHIP_TYPE) == 3 | gdata(GDATA_FLAG_SHIP_TYPE) == 5 ) {
+				txtef COLOR_GREEN
+				txt lang("砲撃が命中！相手の船耐久が減少した。", "Artillery hit! Opponent's ship durability has decreased.")
+			}
+			if ( gdata(GDATA_FLAG_SHIP_TYPE) == 6 ) {
+				txtef COLOR_GREEN
+				txt lang("魚雷が命中！相手の船耐久が減少した。", "Torpedoes hit! Opponent's ship durability has decreased.")
+			}
+			enemyhp--
+			if ( kaiwa == 1 ) {
+				encounter = ENCOUNTER_SHIP_PIRATE
+			}
+			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
+			gdata(GDATA_RETURN_AREA) = gdata(GDATA_AREA), gdata(GDATA_LEVEL), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
+			gdata(GDATA_TELEPORT_AREA) = AREA_OCEAN
+			gdata(GDATA_TELEPORT_LEVEL) = 701
+			gdata(GDATA_LEVEL_START_ON) = 7
+			mapstartx = 17
+			mapstarty = 17
+			levelexitby = MAP_EXIT_TELEPORT
+			snd SOUNDLIST_EXITMAP1
+			goto *map_exit
 		}
 		goto *random_eventProc_SWEND1
 		_switch_sw++

@@ -4186,6 +4186,11 @@
 		txtef COLOR_GREEN
 		txt lang("心地よい目覚めだ。潜在能力が伸びた(主能力計" + grown + "%)(スキル計" + growns + "%)(魔法計" + grownsp + "%)", "You wake up feeling good. Your potential increases. (Total:" + grown + "%)(SkillTotal:" + growns + "%)(SpellTotal:" + grownsp + "%)")
 	}
+	if ( cbit(CHARA_BIT_DEATH_CREST, CHARA_PLAYER) == TRUE ) {
+		cbitmod CHARA_BIT_DEATH_CREST, CHARA_PLAYER, FALSE
+		txtef COLOR_LIGHT_BLUE2
+		txt lang("刻まれていた死紋は、いつの間にか消えていた。", "Death-Crest that had been carved into you had disappeared before you knew it.")
+	}
 	msg_halt
 	gosub *music_play
 	autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
@@ -5612,7 +5617,9 @@
 		item_stack CHARA_PLAYER, ci, 1
 	}
 	else {
-		skillgain cc, efid, 1, (rnd(100 / 2 + 1) + 100 / 2) * (90 + sdata(SKILL_NORMAL_MEMORIZATION, cc) + (sdata(SKILL_NORMAL_MEMORIZATION, cc) > 0) * 20) / 200 + 100
+		gain = (rnd(100 / 2 + 1) + 100 / 2) * (90 + sdata(SKILL_NORMAL_MEMORIZATION, cc) + (sdata(SKILL_NORMAL_MEMORIZATION, cc) > 0) * 20) / 200 + 100
+		skillgain cc, efid, 1, gain
+		txt lang("魔法のストックが" + gain + "増えた。", "You gain " + gain + " spell stocks.")
 		gosub *expMemorize
 		if ( itemmemory(2, inv(INV_ITEM_ID, ci)) == 0 ) {
 			itemmemory(2, inv(INV_ITEM_ID, ci)) = 1
@@ -6351,7 +6358,7 @@
 			if ( cdata(CDATA_SP, cc) < 50 ) {
 				if ( rnd(2) == 0 ) {
 					if ( synccheck(cc, -1) ) {
-						txt lang("疲労し過ぎて失敗した！", "You are too exhausted!")
+						txt lang(name(cc) + "は疲労し過ぎて詠唱に失敗した！", name(cc) + " got too tired and failed!")
 						animeid = ANIMATION_FIZZLE
 						gosub *anime
 					}
@@ -6436,18 +6443,20 @@
 	}
 	if ( potionspill | potionthrow ) {
 		if ( potionthrow ) {
-			efp = sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 5 + efp * potionthrow / 100
+			efp = sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 10 + efp * potionthrow / 100
 			efstatus = inv(INV_ITEM_STATUS, ci)
 		}
 	}
 	else {
-		efp = sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 5 + efp
+		efp = sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 10 + efp
 		efstatus = inv(INV_ITEM_STATUS, ci)
 		if ( synccheck(tc, -1) ) {
 			snd SOUNDLIST_DRINK1
 			txt lang(npcn(tc) + itemname(ci, 1) + "を飲み干した。", name(tc) + " drink" + _s(tc) + " " + itemname(ci, 1) + ".")
 		}
 	}
+	hoseim = limit(cdata(CDATA_LEVEL, cc) / 3, 0, 300)
+	efp = efp * (100 + hoseim) / 100
 	gosub *effect
 	if ( ibit(ITEM_BIT_HAZARD, ci) == 1 ) {
 		snd SOUNDLIST_ATK_POISON
@@ -6552,17 +6561,21 @@
 	repeat 1
 		if ( cc != CHARA_PLAYER ) {
 			if ( rnd(15) == 0 ) {
-				txt lang(name(cc) + "は井戸に落ちた！ ", name(cc) + " falls in the well!")
+				txt lang(name(cc) + "は" + valn + "に落ちた！ ", name(cc) + " falls in " + valn + "!")
 				txtmore
 				txtef COLOR_SKY_BLUE
 				chatc@DP = cc
-				txt name(cc) + lang("「手を伸ばせー」", " yells, " + cnvtalk("G-Give me your hands!"))
+				snd SOUNDLIST_MIZU
+				wet cc, 5
+				txt name(cc) + lang("「ごぼぼぼっ！？」", " yells, " + cnvtalk("Huuruulp!?"))
 				if ( cbit(CHARA_BIT_FLOAT, cc) == 1 & cdata(CDATA_CONDITION_GRAVITY, cc) == 0 | findbuff(cc, BUFF_GRAVITY_ACCEL) != (-1) ) {
 					txtmore
 					txt lang("しかしすぐに浮いてきた… ", "Soon " + he(cc) + " floats up to the surface.")
 				}
 				else {
-					dmghp cc, 9999, DAMAGE_FROM_TRAP
+					cdata(CDATA_CONDITION_SUFFOCATION, cc) += 5
+					txtef COLOR_PURPLE
+					txt lang(name(cc) + "は呼吸困難になった。", name(cc) + " couldn't breathe.")
 				}
 				break
 			}
@@ -6770,6 +6783,9 @@
 		}
 		skillexp SKILL_NORMAL_LITERACY, cc, 25, 2
 	}
+	efp = sdata(SKILL_NORMAL_MEMORIZATION, cc) * 10 + efp
+	hoseim = limit(cdata(CDATA_LEVEL, cc) / 3, 0, 300)
+	efp = efp * (100 + hoseim) / 100
 	gosub *effect
 	if ( cc == CHARA_PLAYER ) {
 		if ( obvious == 1 ) {
@@ -9766,18 +9782,65 @@
 		dmgsan tc, 100
 		goto *effect_end
 	}
+	if ( _switch_val == SKILL_EFFECT_POTION_AGONY | _switch_sw ) {
+		_switch_sw = 0
+		if ( synccheck(tc, -1) ) {
+			snd SOUNDLIST_CURSE3
+			txt lang("苦しみが" + name(tc) + "に降りかかった！", "Agony has befallen " + name(tc) + ".")
+		}
+		dmgcon tc, CONDITION_SLEEP, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		dmgcon tc, CONDITION_POISON, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		dmgcon tc, CONDITION_PARALYZE, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		dmgcon tc, CONDITION_CONFUSE, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		dmgcon tc, CONDITION_BLIND, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		r1 = tc
+		gosub *charaRefresh
+		goto *effect_end
+		_switch_sw++
+	}
+	if ( _switch_val == SKILL_EFFECT_POTION_CALAMITY | _switch_sw ) {
+		_switch_sw = 0
+		if ( synccheck(tc, -1) ) {
+			snd SOUNDLIST_CURSE3
+			txt lang("禍いが" + name(tc) + "に降りかかった！", "Calamity has befallen " + name(tc) + ".")
+		}
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		addbuff tc, BUFF_ELEMENT_SCAR, efp + limit(gdata(GDATA_LEVEL), 10, 200), dur
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		addbuff tc, BUFF_NIGHTMARE, efp + limit(gdata(GDATA_LEVEL), 10, 200), dur
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		addbuff tc, BUFF_MIST_OF_FRAILNESS, efp + limit(gdata(GDATA_LEVEL), 10, 200), dur
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		addbuff tc, BUFF_SLOW, efp + limit(gdata(GDATA_LEVEL), 10, 200), dur
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL), 10, 200)
+		addbuff tc, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL), 10, 200), dur
+		r1 = tc
+		gosub *charaRefresh
+		goto *effect_end
+		_switch_sw++
+	}
 	if ( _switch_val == SKILL_EFFECT_POTION_DISASTER | _switch_sw ) {
 		_switch_sw = 0
 		if ( synccheck(tc, -1) ) {
 			snd SOUNDLIST_CURSE3
-			animeload ANIMATION_CRUSH, tc
-			txt lang("災いが" + name(tc) + "に降りかかった！", "A disaster has befallen " + name(tc) + "!")
+			animeload 14, tc
+			txt lang("災厄が" + name(tc) + "に降りかかった！", "Disaster has befallen " + name(tc) + "!")
 		}
-		dmgcon tc, CONDITION_SLEEP, 100 + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
-		dmgcon tc, CONDITION_POISON, 100 + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
-		dmgcon tc, CONDITION_PARALYZE, 100 + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
-		dmgcon tc, CONDITION_CONFUSE, 100 + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
-		dmgcon tc, CONDITION_BLIND, 100 + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		dmgcon tc, CONDITION_SLEEP, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		dmgcon tc, CONDITION_POISON, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		dmgcon tc, CONDITION_PARALYZE, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		dmgcon tc, CONDITION_CONFUSE, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		dmgcon tc, CONDITION_BLIND, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		addbuff tc, BUFF_ELEMENT_SCAR, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400), dur
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		addbuff tc, BUFF_NIGHTMARE, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400), dur
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		addbuff tc, BUFF_MIST_OF_FRAILNESS, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400), dur
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		addbuff tc, BUFF_SLOW, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400), dur
+		calcbuff CALCBUFF_DURATION, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400)
+		addbuff tc, BUFF_MIST_OF_SILENCE, efp + limit(gdata(GDATA_LEVEL) * 2, 50, 400), dur
 		if ( cdata(CDATA_QUALITY, tc) >= FIX_QUALITY_MIRACLE ) {
 			goto *effect_end
 		}
@@ -9894,6 +9957,30 @@
 			cfg_animewait = waitbk
 		}
 		goto *effect_end
+	}
+	if ( _switch_val == SKILL_EFFECT_POTION_PHYSICAL | _switch_sw ) {
+		_switch_sw = 0
+		efid = SKILL_SPELL_HOLY_SHIELD
+		gosub *effect
+		if ( potionthrow != 90 ) {
+			waitbk = cfg_animewait
+		}
+		if ( potionthrow != 90 ) {
+			if ( cfg_animewait > 0 ) {
+				cfg_animewait = 0
+			}
+		}
+		efid = SKILL_SPELL_REGENERATION
+		gosub *effect
+		efid = SKILL_SPELL_SPEED
+		gosub *effect
+		efid = SKILL_SPELL_FEATHER
+		gosub *effect
+		if ( potionthrow != 90 ) {
+			cfg_animewait = waitbk
+		}
+		goto *effect_end
+		_switch_sw++
 	}
 	if ( _switch_val == SKILL_EFFECT_POTION_SULFURIC | _switch_sw ) {
 		_switch_sw = 0
@@ -11502,6 +11589,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit((weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap * 2 + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 30
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		healhp cc, (limit((weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap * 2 + 1)) / 5
 		healmp cc, (limit((weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap * 2 + 1)) / 5
 		eqlv = 0
@@ -12123,7 +12225,7 @@
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
-				cdata(CDATA_DRAIN_HP, tc) += 30
+				cdata(CDATA_DRAIN_HP, tc) += 60
 				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
 					cdata(CDATA_DRAIN_HP, tc) = 120
 					waitbk = cfg_animewait
@@ -12225,6 +12327,21 @@
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmgmp tc, limit(limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) / 5, 1, cdata(CDATA_MAX_MP, tc) / 2)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 40
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_SCYTHE, cc, 400
@@ -12294,6 +12411,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 40
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		eqlv = 0
 		eqbui = 0
 		if ( charaGivesExp(tc) ) {
@@ -12374,6 +12506,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 40
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_SHORTSWORD, cc, 400
@@ -12445,6 +12592,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 40
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			if ( cdata(CDATA_WEAPON_STYLE_TYPE, cc) == WEAPON_STYLE_LONGSWORD2 ) {
 				skillexp SKILL_NORMAL_TACTICS, cc, 400
@@ -12631,6 +12793,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 30
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 			skillexp SKILL_WEAPON_CROSSBOW, cc, 400
@@ -12710,6 +12887,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 30
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE ) {
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
@@ -12785,6 +12977,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 30
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 			skillexp SKILL_WEAPON_FIREARM, cc, 400
@@ -12858,6 +13065,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 30
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 			skillexp SKILL_WEAPON_FIREARM, cc, 400
@@ -13333,6 +13555,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 40
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_BLUNT, cc, 400
@@ -13402,6 +13639,21 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 40
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			if ( cdata(CDATA_WEAPON_STYLE_TYPE, cc) == WEAPON_STYLE_POLEARM ) {
 				skillexp SKILL_NORMAL_TACTICS, cc, 400
@@ -13485,6 +13737,21 @@
 			snd SOUNDLIST_ATK2
 			dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 16, 2500) / 16 * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap / 10 + 1), cc, SKILL_SPACT_DANCE_OF_BLOW
 		loop
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 40
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		eqlv = 0
 		eqbui = 0
 		if ( charaGivesExp(tc) ) {
@@ -13550,6 +13817,21 @@
 			}
 			eqlv = limit(eqlv / eqbui * 3, 3, 30)
 			dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) / 2 * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+			if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+				if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) += 40
+					if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+						cdata(CDATA_DRAIN_HP, tc) = 120
+						waitbk = cfg_animewait
+						if ( cfg_animewait < 50 ) {
+							cfg_animewait = 50
+						}
+						animeload 87, tc
+						snd SOUNDLIST_CRASH14
+						cfg_animewait = waitbk
+					}
+				}
+			}
 			dmgcon tc, CONDITION_DIM, 50 + int(sqrt(sdata(SKILL_NORMAL_SHIELD, cc))) * 15 + cbit(CHARA_BIT_BREAK_WALLS, cc) * 30
 			if ( cdata(CDATA_CONDITION_PARALYZE, tc) == 0 ) {
 				cdata(CDATA_CONDITION_PARALYZE, tc) += rnd(2) + cbit(CHARA_BIT_BREAK_WALLS, cc)
@@ -13642,6 +13924,21 @@
 			msg_halt
 		}
 		dmghp tc, cdata(444, cc), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 40
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_MARTIAL_ARTS, cc, 400
@@ -19290,6 +19587,21 @@
 			gosub *anime
 		}
 		dmghp tc, dmg, cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 30
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		if ( charaGivesExp(tc) ) {
 			repeat MAX_CHARA_TOTAL
 				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
@@ -22077,7 +22389,7 @@
 				gdata(GDATA_HOUR) = 23
 				gosub *advance_hour
 				gdata(GDATA_GUEST) = 2
-				gdata(GDATA_WORLD) = AREA_LOST_YLVA
+				mdata(MDATA_RENEW) = 1
 				gdata(GDATA_FLAG_SCROLL_OF_WITCHCRAFT_TOTAL_SPELL_BONUS) += 95
 				cdata(CDATA_SKILLPOINT, CHARA_PLAYER) += 95
 				gdata(GDATA_FLAG_DESTINY_LETTERS) = 7
@@ -22113,7 +22425,6 @@
 					}
 					txt lang("deru" + gdata(GDATA_FLAG_RARE_DROP) + "、" + gdata(GDATA_FLAG_REALTIME_MINUTES) + "だ。運勢は" + sdata(SKILL_ATTR_LUC, CHARA_PLAYER) + "。", "*" + skillname(efid) + "* ")
 				loop
-				goto *game_title
 			}
 		}
 
@@ -22833,6 +23144,40 @@
 			}
 		}
 		goto *effect_end
+	}
+	if ( _switch_val == SKILL_EFFECT_SCROLL_OF_ATTRACT | _switch_sw ) {
+		_switch_sw = 0
+		dread = 0
+		repeat 245
+			if ( dread > 2 ) {
+				dread = 0
+				break
+			}
+			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+				continue
+			}
+			if ( cc == cnt ) {
+				continue
+			}
+			if ( cc < MAX_CHARA_FOLLOWER ) {
+				if ( cdata(CDATA_RELATION, cnt) != RELATION_ENEMY ) {
+					continue
+				}
+			}
+			if ( cc >= MAX_CHARA_FOLLOWER ) {
+				if ( cdata(CDATA_RELATION, cnt) == cdata(CDATA_RELATION, cc) ) {
+					continue
+				}
+			}
+			tc = cnt
+			notconfuse = 1
+			efid = SKILL_SPACT_DRAW_SHADOW
+			gosub *effect
+			dread++
+		loop
+		dread = 0
+		goto *effect_end
+		_switch_sw++
 	}
 	if ( _switch_val == SKILL_SPACT_MULTIPLE_GATHER | _switch_sw ) {
 		_switch_sw = 0
@@ -23893,6 +24238,21 @@
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			dmghp tc, (sdata(SKILL_ATTR_MAG, cc) / 10 + 1) * sqrt(sdata(SKILL_ATTR_WIL, cc)) * eqlv, cc, SKILL_RES_MIND, sdata(SKILL_ATTR_MAG, cc) + 100
 		}
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 30
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
+		}
 		eqlv = 0
 		eqbui = 0
 		if ( charaGivesExp(tc) ) {
@@ -24085,6 +24445,21 @@
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		}
+		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+			if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
+				cdata(CDATA_DRAIN_HP, tc) += 30
+				if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+					cdata(CDATA_DRAIN_HP, tc) = 120
+					waitbk = cfg_animewait
+					if ( cfg_animewait < 50 ) {
+						cfg_animewait = 50
+					}
+					animeload 87, tc
+					snd SOUNDLIST_CRASH14
+					cfg_animewait = waitbk
+				}
+			}
 		}
 		eqlv = 0
 		eqbui = 0

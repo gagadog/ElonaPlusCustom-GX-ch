@@ -10394,7 +10394,7 @@
 		cardrefcost = 0
 		cardrefattack = 690
 		cardrefhp = 3
-		cardrefn = lang("盗賊ギルド", "thief guild member")
+		cardrefn = lang("海賊", "pirate")
 		cardrefpic = xy2pic(10, 2) + COLOR_DEFAULT * COLOR_TINT_MULT
 		cardrefrace = "293 effect:" + skillname(cardrefattack) + " "
 		return 1

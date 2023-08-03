@@ -701,6 +701,9 @@
 			if ( gdata(GDATA_QUEST) == QUEST_TYPE_HUNTEX ) {
 				music = MUSICLIST_MCARENA
 			}
+			if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
+				music = MUSICLIST_MCPUTI
+			}
 		}
 		if ( gdata(GDATA_AREA) == AREA_ARENA ) {
 			music = MUSICLIST_MCARENA
@@ -911,7 +914,15 @@
 	    	music = MUSICLIST_MCLOST1 + gdata(GDATA_DAY) \ 3
 	    }
 		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
-			music = MUSICLIST_MCHUGE
+			if ( gdata(GDATA_LEVEL) < 700 ) {
+				music = MUSICLIST_MCHUGE
+			}
+			if ( gdata(GDATA_LEVEL) == 700 ) {
+				music = MUSICLIST_MCPUTI
+			}
+			if ( gdata(GDATA_LEVEL) == 701 ) {
+				music = MUSICLIST_MCEVENT1
+			}
 		}
 	    if ( gdata(GDATA_AREA) == AREA_AIMWELL ) {
 	    	music = MUSICLIST_MCMARCH2

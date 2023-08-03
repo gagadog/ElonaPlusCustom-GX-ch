@@ -13,9 +13,7 @@
 	// battles, for which no saved data is necessary.
 	dim AIData, 125, MAX_CHARA_TOTAL - 1
 
-	// TODO: Add this to 6190 version update so we have 100 more spaces in the tweak.
-	// dim TweakData, 200, 5
-	dim TweakData, 100, 5
+	dim TweakData, 500, 5
 	sdim AITextData, 30, 15, 7
 	dim PlaceholderMoveList, 20
 	sdim AIStatusNames, 30, 25, 2

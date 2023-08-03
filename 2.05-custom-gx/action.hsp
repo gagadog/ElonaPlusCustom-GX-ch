@@ -1963,6 +1963,13 @@
 							txt_duel
 							goto *pc_turn
 						}
+						if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
+							if ( gdata(GDATA_FLAG_MAIN) < 5 ) {
+								gdata(GDATA_FLAG_MAIN) = 5
+								evadd EVENT_LEAVING_BEGGAR_CAVE
+								goto *turn_end
+							}
+						}
 						if ( adata(ADATA_FESTIVAL, gdata(GDATA_AREA)) != 9999 ) {
 							if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_DUNGEON ) {
 								mdatan(MDATAN_NAME) = lang("ダンジョン", "dungeon")
@@ -2590,11 +2597,13 @@
 				if ( gdata(GDATA_AREA) == AREA_WEST_RASKILIS ) {
 					txt lang("空間の裂け目がある。", "There is a crevice of space.")
 				}
-				if ( gdata(GDATA_AREA) != AREA_WEST_RASKILIS & gdata(GDATA_AREA) != AREA_OCEAN ) {
-					txt lang("昇り階段がある。", "There is a stair leading upwards here.")
-				}
-				if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
-					txt lang("停泊ポイントがある。", "There is a mooring point.")
+				if ( gdata(GDATA_AREA) != AREA_WEST_RASKILIS ) {
+					if ( gdata(GDATA_AREA) == AREA_OCEAN & gdata(GDATA_LEVEL) < 700 ) {
+						txt lang("停泊ポイントがある。", "There is a mooring point.")
+					}
+					else {
+						txt lang("昇り階段がある。", "There is a stair leading upwards here.")
+					}
 				}
 			}
 			if ( feat(1) == CELL_FEATURE_NEFIA ) {
@@ -2700,7 +2709,7 @@
 		if ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE ) {
 			if ( gdata(GDATA_FLAG_DUEL_TARGET) > 0 ) {
 				snd SOUNDLIST_FAIL1
-				txt lang("今は決闘中だ！", "You can not run away from the duel!")
+				txt_duel
 				goto *pc_turn
 			}
 			inv(INV_ITEM_NUM, stat)--
@@ -4206,7 +4215,7 @@
 							if ( cdata(CDATA_CONDITION_DIM, tc) < 60 & cdata(CDATA_CONDITION_SLEEP, tc) == 0 & cdata(CDATA_CONDITION_PARALYZE, tc) == 0 & cdata(CDATA_CONDITION_BLIND, tc) == 0 & gdata(GDATA_TIME_STOP_TIME) == 0 & gdata(GDATA_FLAG_STOP_TIME_OTHER) == 0 ) {
 								if ( synccheck(cc, -1) ) {
 									txtef COLOR_PURPLE
-									txt lang(name(tc) + "は反射的に先制射撃を行った。" + name(cc) + "は怯んだ。", name(cc) + " " + is(cc) + " struck by several thorns.")
+									txt lang(name(tc) + "は反射的に先制射撃を行った。" + name(cc) + "は怯んだ。", name(tc) + " fired a preemptive shot using " + his(tc) + " reflexes!")
 								}
 								waitbk = cfg_animewait
 								if ( cfg_animewait > 0 ) {
@@ -4246,7 +4255,7 @@
 		if ( cdata(CDATA_SP, cc) < 50 ) {
 			if ( rnd(2) == 0 ) {
 				if ( synccheck(cc, -1) ) {
-					txt lang("疲労し過ぎて失敗した！", "You are too exhausted!")
+					txt_exhausted
 				}
 				return
 			}
@@ -6563,7 +6572,7 @@
 		promptYesNo
 		if ( rtval == 0 ) {
 			if ( cdata(CDATA_SP, CHARA_PLAYER) <= 0 ) {
-				txt lang("疲労し過ぎて失敗した！", "You are too exhausted!")
+				txt_exhausted
 				goto *turn_end
 			}
 			if ( gdata(GDATA_AREA) == AREA_PET_ARENA | mdata(MDATA_TYPE) == MAP_TYPE_WORLD | gdata(GDATA_AREA) == AREA_PYRAMID | gdata(GDATA_AREA) == AREA_JAIL ) {
@@ -9120,11 +9129,7 @@
 			gosub *calcBurdenPc
 			goto *act_use_SWEND1
 		}
-		if ( sgrowth(inv(INV_ITEM_PARAM1, ci), tc) < 50 ) {
-			txt lang("対応するスキルの潜在能力が50％は必要だ。", "The corresponding skill's potential needs to be at least 50%.")
-			gosub *screen_draw
-			goto *pc_turn
-		}
+		modgrowth tc, inv(INV_ITEM_PARAM1, ci), sqrt(inv(INV_ITEM_PARAM2, ci) + 1) + 10
 		snd SOUNDLIST_OFFER2
 		animeload 23, tc
 		txtef COLOR_PINK
@@ -12958,7 +12963,7 @@
 			}
 		}
 		if ( sorg(SKILL_RES_FIRE, tc) >= 300 | sorg(SKILL_RES_FIRE, tc) < 100 & (sorg(SKILL_RES_COLD, tc) >= 300 | sorg(SKILL_RES_COLD, tc) < 100) & (sorg(SKILL_RES_LIGHTNING, tc) >= 300 | sorg(SKILL_RES_LIGHTNING, tc) < 100) & (sorg(SKILL_RES_DARKNESS, tc) >= 300 | sorg(SKILL_RES_DARKNESS, tc) < 100) & (sorg(SKILL_RES_MIND, tc) >= 300 | sorg(SKILL_RES_MIND, tc) < 100) & (sorg(SKILL_RES_POISON, tc) >= 300 | sorg(SKILL_RES_POISON, tc) < 100) & (sorg(SKILL_RES_NETHER, tc) >= 300 | sorg(SKILL_RES_NETHER, tc) < 100) & (sorg(SKILL_RES_SOUND, tc) >= 300 | sorg(SKILL_RES_SOUND, tc) < 100) & (sorg(SKILL_RES_NERVE, tc) >= 300 | sorg(SKILL_RES_NERVE, tc) < 100) & (sorg(SKILL_RES_CHAOS, tc) >= 300 | sorg(SKILL_RES_CHAOS, tc) < 100) & (sorg(SKILL_RES_MAGIC, tc) >= 300 | sorg(SKILL_RES_MAGIC, tc) < 100) ) {
-			txt lang("これ以上は使っても効果がない。", "There is no effect even if used against opponents with Dvfix 200 or more...")
+			txt lang("これ以上は使っても効果がない。", "Using more than this will have no effect...")
 			gosub *screen_draw
 			goto *pc_turn
 		}
@@ -13527,7 +13532,7 @@
 		}
 		if ( gdata(GDATA_FLAG_DUEL_TARGET) > 0 ) {
 			snd SOUNDLIST_FAIL1
-			txt lang("今は決闘中だ！", "You can not run away from the duel!")
+			txt_duel
 			goto *act_use_SWEND1
 		}
 		inv(INV_ITEM_NUM, ci)--
@@ -18050,6 +18055,9 @@
 			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 				continue
 			}
+			if ( cnt < MAX_CHARA_FOLLOWER ) {
+				continue
+			}
 			if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
 				continue
 			}
@@ -18063,7 +18071,7 @@
 					cdata(CDATA_RELATION, cnt) = cdata(CDATA_RELATION_ORG, cnt)
 				}
 			}
-			if ( cdata(CDATA_CONDITION_SEPPUKU, cnt) > 0 ) {
+			if ( cbit(CHARA_BIT_HAS_SEPPUKUED, cnt) == TRUE ) {
 				snd SOUNDLIST_ATKSWORD
 				txtef COLOR_RED
 				chatc@DP = cnt
@@ -18074,12 +18082,7 @@
 				dmghp CHARA_PLAYER, cdata(CDATA_MAX_HP, CHARA_PLAYER), cnt, SKILL_SPACT_DECAPITATION
 				break
 			}
-			if ( cnt != CHARA_PLAYER ) {
-				cdata(CDATA_CONDITION_SEPPUKU, cnt) = 15 + rnd(36)
-			}
-			if ( cnt < MAX_CHARA_FOLLOWER ) {
-				continue
-			}
+			cbitmod CHARA_BIT_HAS_SEPPUKUED, cnt, TRUE
 			if ( rnd(2) == 0 ) {
 				continue
 			}

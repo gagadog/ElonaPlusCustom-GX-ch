@@ -681,6 +681,10 @@
 #define global	SKILL_EFFECT_DEED_SUMMON_VEHICLE	(SKILL_EFFECT_MIN + 73)
 #define global	SKILL_EFFECT_GOLDEN_MEAD	(SKILL_EFFECT_MIN + 74)
 #define global	SKILL_EFFECT_SHIP_DEED	(SKILL_EFFECT_MIN + 75)
+#define global	SKILL_EFFECT_POTION_AGONY	SKILL_EFFECT_MIN + 76
+#define global	SKILL_EFFECT_POTION_CALAMITY	SKILL_EFFECT_MIN + 77
+#define global	SKILL_EFFECT_POTION_PHYSICAL	SKILL_EFFECT_MIN + 78
+#define global	SKILL_EFFECT_SCROLL_OF_ATTRACT	SKILL_EFFECT_MIN + 79
 
 // Basic actions
 #define global	ACTION_MELEE	-1
@@ -2161,6 +2165,10 @@
 #define global	CHARA_BIT_PROHIBIT_EATING_FROM_GROUND	1033
 #define global	CHARA_BIT_BIRTHED_CHILD	1034
 #define global	CHARA_BIT_SHADOW_CLONE	1035
+#define global	CHARA_BIT_DEATH_CREST	1036
+#define global	CHARA_BIT_HAS_SEPPUKUED	1037
+#define global	CHARA_BIT_HEARTLOCK_CAREFREE	1038
+#define global	CHARA_BIT_HEARTLOCK_DANGEROUS	1039
 
 // Database modes
 #define global	DBMODE_NONE	0
@@ -2467,8 +2475,9 @@
 #define global	RF_DISINFECTANT	(EXT_RF + 26)
 #define global	RF_STAR	(EXT_RF + 27)
 #define global	RF_BLANKET	(EXT_RF + 28)
+#define global	RF_DEBUFF_POTION	(EXT_RF + 29)
 
-#define global	MAX_RF	(RF_BLANKET + 1)
+#define global	MAX_RF	(RF_DEBUFF_POTION + 1)
 
 // RP actions
 #define global	RPACTION_LOVE	EXT_RPACTION
@@ -2878,6 +2887,8 @@
 #define global	ENCOUNTER_ASSASSIN	3
 #define global	ENCOUNTER_ROGUE	4
 #define global	ENCOUNTER_CHESTNUT_GIANT	5
+#define global	ENCOUNTER_SHIP_PIRATE	6
+#define global	ENCOUNTER_SHIP_MERCHANT	7
 
 // Random event types
 #define global	RANDOM_EVENT_LUCKY	1
@@ -2932,6 +2943,9 @@
 #define global	RANDOM_EVENT_SEA_DRIFTERS    50
 #define global	RANDOM_EVENT_SEA_AERIAL_THREAT    51
 #define global	RANDOM_EVENT_SEA_UNDERSEA_THREAT    52
+#define global	RANDOM_EVENT_SHIP	53
+#define global	RANDOM_EVENT_DRIFTER	54
+#define global	RANDOM_EVENT_BIG_CATCH	55
 
 // Event types
 #define global	EVENT_NONE	0
@@ -3028,6 +3042,9 @@
 #define global	EVENT_AMURDEAD_SUB_CREATE_STAIRS	91
 #define global	EVENT_AMURDEAD_SUB_FIREWORKS	92
 #define global	EVENT_BIRTH	93
+#define global	EVENT_SHIP_PIRATE	94
+#define global	EVENT_SHIP_MERCHANT	95
+#define global	EVENT_LEAVING_BEGGAR_CAVE	96
 
 // Map stuff
 #define global	MAP_TYPE_WORLD	1
@@ -3198,6 +3215,9 @@
 #define global	MEF_TYPE_NUKE	7
 #define global	MEF_TYPE_MIST_OF_DAZZLING	8
 #define global	MEF_TYPE_KEMURIDAMA	9
+#define global	MEF_TYPE_OCEAN_SHIP	10
+#define global	MEF_TYPE_OCEAN_DRIFTERS	11
+#define global	MEF_TYPE_OCEAN_BIG_CATCH	12
 
 // Areas
 #define global	MAX_AREA_COUNT	500
@@ -3566,6 +3586,7 @@
 #define global	ROLE_SHOP_STOKE	1023
 #define global	ROLE_SHOP_MOYER	1024
 #define global	ROLE_GUEST_HALLOWEEN	1025
+#define global	ROLE_SHIP_MERCHANT	1026
 
 #define global	ROLE_GUEST_MIN	2000
 #define global	ROLE_GUEST_BEGGAR	2000
@@ -3945,6 +3966,7 @@
 #define global	CDATA_SALES_EXP	439
 #define global	CDATA_SALES_FEATS	440
 #define global	CDATA_CONDITION_SEPPUKU	441
+#define global	CDATA_HEART_LOCK_RELATION	441
 #define global	CDATA_TOBACCO_DEPENDENCE	442
 #define global	CDATA_DRUG_DEPENDENCE	443
 #define global	CDATA_CHAIN_ATTACK_COUNT	444
@@ -3974,6 +3996,7 @@
 #define global	CHARACTER_TIER_SUMMONED_GOD_TRUCE	30
 #define global	CHARACTER_TIER_SUMMONED_GOD_HOME	40
 
+#define global	CHARACTER_TIER_SHIP_HULL_MIN 1
 #define global	CHARACTER_TIER_SHIP_HULL_ENDURANCE	5
 
 // Adventurer message type
@@ -5858,8 +5881,13 @@
 #define global	ITEM_ID_HOTATE	1285
 #define global	ITEM_ID_HAMAGURI	1286
 #define global	ITEM_ID_SAZAE	1287
+#define global	ITEM_ID_POTION_PHYSICAL	1288
+#define global	ITEM_ID_POTION_CALAMITY	1289
+#define global	ITEM_ID_POTION_AGONY	1290
+#define global	ITEM_ID_SCROLL_ATTRACT	1291
+#define global	ITEM_ID_SCROLL_HARVEST	1292
 
-#define global	MAX_ITEM_ID	(ITEM_ID_SAZAE + 3)
+#define global	MAX_ITEM_ID	(ITEM_ID_SCROLL_HARVEST + 3)
 
 // Creatures
 #define global	CREATURE_ID_BUG	0 // Also doubles as RANDOM

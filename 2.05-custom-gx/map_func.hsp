@@ -194,7 +194,7 @@
 		tile_upstairs = xy2pic(2, 7)
 	}
 	else {
-		if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
+		if ( gdata(GDATA_AREA) == AREA_OCEAN & gdata(GDATA_LEVEL) < 700 ) {
 			tile_downstairs = xy2pic(22, 8)
 			tile_upstairs = xy2pic(22, 8)
 		}

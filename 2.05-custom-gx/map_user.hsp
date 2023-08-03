@@ -2524,7 +2524,7 @@
 				goto *skipBreeder
 			}
 		}
-		if ( rnd(5000) > cbreeder(worker) * 100 / (100 + livestock * 20) - livestock * 2 ) {
+		if ( rnd(5000) > (cbreeder(worker) * 100 + 1) / (100 + livestock * 20) - livestock * 2 ) {
 			if ( livestock != 0 | rnd(30) != 0 ) {
 				goto *skipBreeder
 			}

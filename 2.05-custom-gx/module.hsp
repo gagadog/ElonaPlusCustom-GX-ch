@@ -140,7 +140,7 @@
 
 #deffunc gohostile
 	repeat MAX_CHARA_TOTAL - MAX_CHARA_SAVE, MAX_CHARA_SAVE
-		if ( cdata(CDATA_ROLE, cnt) == ROLE_GUARD | cdata(CDATA_ROLE, cnt) == ROLE_SHOP_GUARD | cdata(CDATA_ROLE, cnt) == ROLE_SHOP_WANDER | cdata(CDATA_ROLE, cnt) == ROLE_BOUNTY_HUNTER ) {
+		if ( cdata(CDATA_ROLE, cnt) == ROLE_GUARD | cdata(CDATA_ROLE, cnt) == ROLE_SHOP_GUARD | cdata(CDATA_ROLE, cnt) == ROLE_SHIP_MERCHANT | cdata(CDATA_ROLE, cnt) == ROLE_SHOP_WANDER | cdata(CDATA_ROLE, cnt) == ROLE_BOUNTY_HUNTER ) {
 			cdata(CDATA_RELATION, cnt) = -3
 			cdata(CDATA_AI_AGGRO, cnt) = 80
 			cdata(CDATA_EMO_ICON, cnt) = 18 + 100 * 2
