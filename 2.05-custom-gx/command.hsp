@@ -2346,6 +2346,8 @@
 
 				cnv_str listn(0, cnt), " your", " " + his(tc, 1)
 				cnv_str listn(0, cnt), " you", " " + him2(tc)
+				cnv_str listn(0, cnt), "Your", "" + his(tc, 1)
+				cnv_str listn(0, cnt), "You", "" + him2(tc)
 
 				/********** BLOODYSHADE CUSTOM - ENDING **********/
 
@@ -7112,45 +7114,73 @@
 				}
 				return 1
 			} else {
-				f = 0
-				if ( cdata(CDATA_PLATINUM, CHARA_PLAYER) >= userdata(2, knowCNPC) ) {
+				ppcost1@NE = userdata(2, knowCNPC)
+				ppcost2@NE = (userdata(2, knowCNPC) / 3)
+				if ( ppcost1@NE < 5 ) { ppcost1@NE = 5 }
+				if ( ppcost2@NE < 2 ) { ppcost2@NE = 2 }
+				redraw 0
+				txtnew
+				txt lang("[CNPC召喚]何をする？", "[CNPC Summon] What do you want to do?")
+				promptAdd "Summon as friendly. (" + ppcost1@NE + " pp)", "null", 1
+				promptAdd "Summon as neutral. (" + ppcost2@NE + " pp)", "null", 2
+				promptAdd "Summon as enemy.", "null", 3
+				promptAdd "Cancel.", "null", 0
+				val = promptx, prompty, 280, 1
+				gosub *prompt_key
+				gosub *screen_draw
+				rtval@NE = rtval
+				if ( rtval@NE == 0 ) {
+					return 1
+				}
+				if ( rtval@NE >= 1 & rtval@NE <= 3 ) {
+					if ( rtval@NE == 1 ) {
+						if ( cdata(CDATA_PLATINUM, CHARA_PLAYER) < ppcost1@NE ) {
+							txt lang("「足りないんよ」", cnvtalk("Not enough!"))
+							return 1
+						}
+						cdata(CDATA_PLATINUM, CHARA_PLAYER) -= ppcost1@NE
+					}
+					if ( rtval@NE == 2 ) {
+						if ( cdata(CDATA_PLATINUM, CHARA_PLAYER) < ppcost2@NE ) {
+							txt lang("「足りないんよ」", cnvtalk("Not enough!"))
+							return 1
+						}
+						cdata(CDATA_PLATINUM, CHARA_PLAYER) -= ppcost2@NE
+					}
+
+					initunid = findunid(userdatan(0, knowCNPC))
+					txtef COLOR_GREEN
+					txt lang("カスタムNPCを召喚した！", "A custom NPC has been successfully summoned from another world!")
+					if ( cdata(CDATA_X, CHARA_PLAYER) > 1 ) {
+						sux = cdata(CDATA_X, CHARA_PLAYER) - 1
+					}
+					flt
+					characreate -1, CREATURE_ID_USER, sux, cdata(CDATA_Y, CHARA_PLAYER)
+					repeat MAX_CHARA_TOTAL
+						if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) {
+							getunid cnt
+						}
+					loop
 					txtef COLOR_YELLOW
-					txt lang("..？", "Summon them as friendly npc? It will cost you " + userdata(2, knowCNPC) + " plantinum coins.")
-					promptYesNo
-					if ( rtval == 0 ) {
-						cdata(CDATA_PLATINUM, CHARA_PLAYER) -= userdata(2, knowCNPC)
-						f = 1
-					}
-				}
-				initunid = findunid(userdatan(0, knowCNPC))
-				txtef COLOR_GREEN
-				txt lang("カスタムNPCを召喚した！", "A custom NPC has been successfully summoned from another world!")
-				if ( cdata(CDATA_X, CHARA_PLAYER) > 1 ) {
-					sux = cdata(CDATA_X, CHARA_PLAYER) - 1
-				}
-				flt
-				characreate -1, CREATURE_ID_USER, sux, cdata(CDATA_Y, CHARA_PLAYER)
-				repeat MAX_CHARA_TOTAL
-					if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) {
-						getunid cnt
-					}
-				loop
-				txtef COLOR_YELLOW
-				if ( f == 1 ) {
-					cdata(CDATA_RELATION, rc) = (-1)
-					cdata(CDATA_RELATION_ORG, rc) = (-1)
-					if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
+					if ( rtval@NE == 1 ) {
 						cdata(CDATA_RELATION, rc) = 0
 						cdata(CDATA_RELATION_ORG, rc) = 0
+						// Disable follow on talkable NPC so they don't annoy player that much
 						if ( cdata(CDATA_AI_CALM, rc) == 4 | cdata(CDATA_AI_CALM, rc) == 5 ) {
 							cdata(CDATA_AI_CALM, rc) = 0
 						}
+						txt lang(name(rc) + "は興奮して襲い掛かってきた。", cdatan(CDATAN_NAME, rc) + " is excited!")
 					}
-					txt lang(name(rc) + "は興奮して襲い掛かってきた。", cdatan(CDATAN_NAME, rc) + " is excited!")
-				} else {
-					cdata(CDATA_RELATION, rc) = -3
-					cdata(CDATA_RELATION_ORG, rc) = -3
-					txt lang(name(rc) + "は興奮して襲い掛かってきた。", cdatan(CDATAN_NAME, rc) + " is confused and attacks you.")
+					if ( rtval@NE == 2 ) {
+						cdata(CDATA_RELATION, rc) = (-1)
+						cdata(CDATA_RELATION_ORG, rc) = (-1)
+						txt lang(name(rc) + "は興奮して襲い掛かってきた。", cdatan(CDATAN_NAME, rc) + " is excited!")
+					}
+					if ( rtval@NE == 3 ) {
+						cdata(CDATA_RELATION, rc) = -3
+						cdata(CDATA_RELATION_ORG, rc) = -3
+						txt lang(name(rc) + "は興奮して襲い掛かってきた。", cdatan(CDATAN_NAME, rc) + " is confused and attacks you.")
+					}
 				}
 				return 1
 			}

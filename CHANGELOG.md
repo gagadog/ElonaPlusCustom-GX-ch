@@ -3,6 +3,11 @@
 ## Added
 - Ported all changes from Elona+ 2.19.
 
+## Changed
+- Swapped the description text for Disciple/Master heart-lock relation.
+- Fusion: Debuff potions now requires debuff potions instead of poisons.
+- Added (machine) translations for some items. 
+
 # 2.18R.1.2
 
 ## Added

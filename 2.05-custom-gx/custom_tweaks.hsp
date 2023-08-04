@@ -53,7 +53,7 @@ TweakData(69, 2) = "Revert post-2.13 experience formula changes."
 TweakData(70, 2) = "Disable urination from fear."
 TweakData(71, 2) = "Use CGX Map Layouts in Random Nefia."
 TweakData(72, 2) = "Use CGX Job Quests."
-TweakData(73, 2) = "Use CGX Arrow/Bolt/Ball Spell Animation."
+TweakData(73, 2) = "Disable Random CNPC spawn."
 TweakData(74, 2) = "Use summoning crystals to summon Custom NPCs."
 TweakData(75, 2) = "Revert post-2.17 skill exp formula changes."
 TweakData(76, 2) = "Make necromancy minions actively seek out enemies like pets do."
@@ -72,6 +72,7 @@ TweakData(3, 4) = "Prevent home stayers from moving."
 TweakData(50, 4) = "Fist of the North Star Mode."
 TweakData(51, 4) = "Disable cicada noises."
 TweakData(52, 4) = "Faster Fishing Animations."
+TweakData(53, 4) = "Use CGX Arrow/Bolt/Ball Spell Animation."
 */
 
 *TweakMenu
@@ -539,7 +540,7 @@ TweakData(52, 4) = "Faster Fishing Animations."
 	listn(0, 27) = "Disable urination from fear." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_URINATION_FROM_FEAR)
 	listn(0, 28) = "Use CGX Map Layouts in Random Nefia." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES) + "% Chance."
 	listn(0, 29) = "Use CGX Job Quests." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS)
-	listn(0, 30) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_SPELL_ANIMATIONS)
+	listn(0, 30) = "Disable Random Custom NPC spawns." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN)
 	listn(0, 31) = "Use summoning crystals to summon Custom NPCs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING)
 	listn(0, 32) = "Revert post-2.17 skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES)
 	listn(0, 33) = "Necromancy Autotargeting." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING)
@@ -660,10 +661,10 @@ TweakData(52, 4) = "Faster Fishing Animations."
 				s = "Delivery quests now marks the item and makes it heavier, but rewards more PP.\nEliminate quests now spawn targets in a group, civilians will also be spawned.\nHarvest quests now reward seeds based on your performance instead.\nPeople throw more music tickets at you during Party Quest."
 			}
 			if ( p == 30 ) {
-				s = "Use Custom Animation for Arrow/Bolt/Ball spell animations."
+				s = "This will disable Random CNPC spawn in all areas except Derphy and Melkawn."
 			}
 			if ( p == 31 ) {
-				s = "Play as a summoner. Summon CNPCS and monsters to help you in battle. \nYou can summon allied CNPCS in dungeons using god's favor, or at Home using PP. \nThis will also disable Random CNPC spawn in all areas except Derphy and Melkawn. \nThis will also change player summoned monsters in dungeons to be allied."
+				s = "Play as a summoner. Summon CNPCS and monsters to help you in battle. \nYou can summon allied CNPCS in dungeons using god's favor, or at Home using PP. \nThis will also change player summoned monsters in dungeons to be allied."
 			}
 			if ( p == 32 ) {
 				s = "Reverts changes to the skill experience formula after version 2.17.\nThis will lock your growth rate at 400% (100% compared to growth in 2.17)."
@@ -853,7 +854,7 @@ TweakData(52, 4) = "Faster Fishing Animations."
 	}
 	if ( p == 30 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_CUSTOM_SPELL_ANIMATIONS
+		tn = TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN
 		gosub *ToggleTweak
 	}
 	if ( p == 31 ) {
@@ -997,10 +998,11 @@ TweakData(52, 4) = "Faster Fishing Animations."
 	listn(0, 5) = "Fist of the North Star Mode." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_HOKUTO_NO_KEN_MODE)
 	listn(0, 6) = "Disable cicada noises." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DISABLE_CICADA_NOISES)
 	listn(0, 7) = "Faster Fishing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_FASTER_FISHING)
-	listn(0, 8) = "Return."
+	listn(0, 8) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS)
+	listn(0, 9) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat 9
+	repeat 10
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
@@ -1037,6 +1039,9 @@ TweakData(52, 4) = "Faster Fishing Animations."
 				s = "Makes fishing animations much faster. \nAnd instant dimensional fishing with a super lure."
 			}
 			if ( cnt == 8 ) {
+				s = "Use Custom Animation for Arrow/Bolt/Ball spell animations. \nIf it causes crashes, make sure you have the files in 'graphic/custom_animation' folder."
+			}
+			if ( cnt == 9 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1091,6 +1096,11 @@ TweakData(52, 4) = "Faster Fishing Animations."
 		gosub *ToggleTweak
 	}
 	if ( key == key_select(8) ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS
+		gosub *ToggleTweak
+	}
+	if ( key == key_select(9) ) {
 		snd SOUNDLIST_OK1
         return
 	}

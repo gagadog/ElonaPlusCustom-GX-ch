@@ -1286,11 +1286,11 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_LIMIT_POWER) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 10, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_LIMIT_POWER) = lang("<能力の制限>", "<Limit Power>")
-	skilldesc(SKILL_SPACT_LIMIT_POWER) = lang("主能力を一時的に制限", "Temporarily limiter of main status")
+	skilldesc(SKILL_SPACT_LIMIT_POWER) = lang("主能力を一時的に制限", "Limiter on main attributes")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_LIMITER_VANISH) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_LIMITER_VANISH) = lang("<リミッター解除>", "<Limiter Vanish>")
-	skilldesc(SKILL_SPACT_LIMITER_VANISH) = lang("ゲージ50％以上時に制限解除と衝撃波", "Limiter lif/shock wave/gauge50")
+	skilldesc(SKILL_SPACT_LIMITER_VANISH) = lang("ゲージ50％以上時に制限解除と衝撃波", "Limiter off/shockwave/gauge50")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_FLASH_OF_SWIFTNESS) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 30, TARGET_TYPE_ENEMY, 0
 	skillname(SKILL_SPACT_FLASH_OF_SWIFTNESS) = lang("神速の一閃", "Flash of Swiftness")

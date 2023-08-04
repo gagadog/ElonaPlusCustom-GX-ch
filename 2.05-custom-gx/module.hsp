@@ -1242,7 +1242,7 @@
 				}
 			}
 			if ( locvar_cell_show_c != 0 ) {
-				if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN) & cdata(CDATA_RELATION, locvar_cell_draw_c) == RELATION_ALLY ) {
+				if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN & gdata(MDATA_TYPE) = MAP_TYPE_WORLD) & cdata(CDATA_RELATION, locvar_cell_draw_c) == RELATION_ALLY ) {
 					locvar_cell_show_c = 0
 				}
             }
@@ -1319,7 +1319,7 @@
 					}
 				}
 				if ( locvar_cell_show_c != 0 ) {
-					if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN) & cdata(CDATA_RELATION, locvar_cell_show_c) == RELATION_ALLY ) {
+					if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN & gdata(MDATA_TYPE) = MAP_TYPE_WORLD) & cdata(CDATA_RELATION, locvar_cell_show_c) == RELATION_ALLY ) {
 						locvar_cell_show_c = 0
 					}
 				}
@@ -2705,7 +2705,7 @@
 						}
 					}
 					if ( locvar_cell_draw_c != CHARA_PLAYER ) {
-						if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN) & cdata(CDATA_RELATION, locvar_cell_show_c) == RELATION_ALLY ) {
+						if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN & gdata(MDATA_TYPE) = MAP_TYPE_WORLD) & cdata(CDATA_RELATION, locvar_cell_show_c) == RELATION_ALLY ) {
 							locvar_cell_draw_c = 0
 						}
 					}
@@ -3327,7 +3327,7 @@
 								}
 							}
 							if ( locvar_cell_draw_c != CHARA_PLAYER ) {
-								if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN) & cdata(CDATA_RELATION, locvar_cell_show_c) == RELATION_ALLY ) {
+								if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN & gdata(MDATA_TYPE) = MAP_TYPE_WORLD) & cdata(CDATA_RELATION, locvar_cell_show_c) == RELATION_ALLY ) {
 									locvar_cell_draw_c = 0
 								}
 							}

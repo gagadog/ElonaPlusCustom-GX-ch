@@ -15125,6 +15125,7 @@
 			snd SOUNDLIST_PAYGOLD1
 			cdata(CDATA_GOLD, tc) -= cost
 			snd SOUNDLIST_DING1
+			umimass = 1
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_OF_HUGE_RAFT ) {
 				gdata(GDATA_FLAG_SHIP_TYPE) = 1
 			}

@@ -24069,11 +24069,12 @@
 			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-4) ) {
 				s = _impressiona4(implevel(cdata(CDATA_IMPRESSION, tc)))
 			}
+			// CUSTOM: I flipped 5 and 6 because it's weird
 			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-5) ) {
-				s = _impressiona5(implevel(cdata(CDATA_IMPRESSION, tc)))
+				s = _impressiona6(implevel(cdata(CDATA_IMPRESSION, tc)))
 			}
 			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-6) ) {
-				s = _impressiona6(implevel(cdata(CDATA_IMPRESSION, tc)))
+				s = _impressiona5(implevel(cdata(CDATA_IMPRESSION, tc)))
 			}
 			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-7) ) {
 				s = _impressiona7(implevel(cdata(CDATA_IMPRESSION, tc)))

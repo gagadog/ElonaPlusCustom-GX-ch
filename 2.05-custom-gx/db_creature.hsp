@@ -34666,7 +34666,7 @@
 *db_creature_usernpc
 	repeat usernpcmax
 		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
-		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
+		if ( TweakData(TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			if ( gdata(GDATA_AREA) != AREA_MELKAWN & gdata(GDATA_AREA) != AREA_DERPHY ) {
 				break
 			}
@@ -98867,7 +98867,7 @@
 				return 30
 			}
 			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
-				return lang("海賊", "pirate")
+				return lang("盗賊ギルド", "thief guild member")
 			}
 			if ( dbspec == DBSPEC_CHARA_FILTER ) {
 				return "" + "/man/"

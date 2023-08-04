@@ -2688,7 +2688,7 @@
 				txt lang("あなたは漁船の網を使った。", "You used the net of fishing ship.")
 			}
 			txtef COLOR_GREEN
-			txt lang("あっという間に魚が" + kazu + "匹獲れたが、残りには逃げられてしまった。", "You caught " + kazu + " fishs in no time, but the rest escaped.")
+			txt lang("あっという間に魚が" + kazu + "匹獲れたが、残りには逃げられてしまった。", "You caught " + kazu + " fishs in no time, but the rest of them got away.")
 			if ( gdata(GDATA_FLAG_SHIP_LAST_PORT) \ 100 == 11 ) {
 				if ( kaiwa == 0 ) {
 					flt
