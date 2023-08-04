@@ -22292,7 +22292,7 @@
 	}
 	if ( chatval == 115 ) {
 		if ( cbit(CHARA_BIT_EXCLUSIVE_SKILL_CHARGE, tc) == FALSE ) {
-			buff = lang("今は余ってない" + _na(2), "It's not left over now.")
+			buff = lang("今は余ってない" + _na(2), "I don't have anymore of these left now.")
 			goto *chat_default
 		}
 		buff = lang("何に使うのか知らない" + _ga(3) + "…廃棄品なら持って行っていい" + _yo(2), "I don't know what you're going to use it for...Bring what I was supposed to dispose of.")
@@ -23294,6 +23294,7 @@
 *chat_train
 	tcbk = tc
 	menucycle = 0
+	gosub *screen_drawStatus
 	gosub *com_charainfo
 	gosub *chat_refresh
 	if ( csskill == (-1) ) {
