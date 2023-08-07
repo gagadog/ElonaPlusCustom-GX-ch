@@ -213,17 +213,25 @@
 	gcopy 3, 312, 504, 104, 15
 	pos inf_mpx - 10, inf_mpy
 	gcopy 3, 312, 504, 104, 15
-	pos inf_spx - 20, inf_spy
-	gcopy 3, 312, 504, 104, 15
-	if ( cdata(CDATA_SP, CHARA_PLAYER) > 0 & cdata(CDATA_MAX_SP, CHARA_PLAYER) > 0 ) {
-		ap = limitmax(cdata(CDATA_SP, CHARA_PLAYER) * 84 / cdata(CDATA_MAX_SP, CHARA_PLAYER), 84)
-		fiftymark = limitmax(50 * 84 / cdata(CDATA_MAX_SP, CHARA_PLAYER), ap)
-		pos inf_spx - 4, inf_spy + 5
-		gzoom ap, 3, 3, 412 - ap, 525, ap, 1
-		pos inf_spx - 4, inf_spy + 8
-		gzoom ap, 2, 3, 412 - ap, 524, ap, 1
-		pos inf_spx - 4 + fiftymark, inf_spy + 8
-		gcopy 3, 412 - ap + fiftymark, 526, ap - fiftymark, 1
+	if ( TweakData(TWEAK_UI_DRAW_STAMINA_BAR, TWEAK_CATEGORY_UI) == TRUE ) {
+		pos inf_spx - 20, inf_spy
+		gcopy 3, 312, 504, 104, 15
+		if ( cdata(CDATA_SP, CHARA_PLAYER) > 0 & cdata(CDATA_MAX_SP, CHARA_PLAYER) > 0 ) {
+			ap = limitmax(cdata(CDATA_SP, CHARA_PLAYER) * 84 / cdata(CDATA_MAX_SP, CHARA_PLAYER), 84)
+			fiftymark = limitmax(50 * 84 / cdata(CDATA_MAX_SP, CHARA_PLAYER), ap)
+			pos inf_spx - 4, inf_spy + 5
+			gzoom ap, 3, 3, 412 - ap, 525, ap, 1
+			pos inf_spx - 4, inf_spy + 8
+			gzoom ap, 1, 3, 412 - ap, 526, ap, 1
+			pos inf_spx - 4, inf_spy + 9
+			gzoom ap, 1, 3, 412 - ap, 524, ap, 1
+			if ( fiftymark <= ap - 2 ) {
+				pos inf_spx - 4 + fiftymark, inf_spy + 5
+				gzoom 1, 4, 3, 328 + fiftymark, 509, 1, 1
+			}
+			; pos inf_spx - 4 + fiftymark, inf_spy + 8
+			; gcopy 3, 412 - ap + fiftymark, 526, ap - fiftymark, 1
+		}
 	}
 	if ( cdata(CDATA_HP, CHARA_PLAYER) > 0 ) {
 		ap = cdata(CDATA_HP, CHARA_PLAYER) * 84 / cdata(CDATA_MAX_HP, CHARA_PLAYER)
@@ -313,11 +321,13 @@
 	color 0, 0, 0
 	pos sx + 4, sy
 	bmes "" + cdata(CDATA_MP, CHARA_PLAYER) + "(" + cdata(CDATA_MAX_MP, CHARA_PLAYER) + ")", 255, 255, 255
-	sx = inf_spx - 4
-	sy = inf_spy - 8
-	color 0, 0, 0
-	pos sx + 4, sy
-	bmes "" + cdata(CDATA_SP, CHARA_PLAYER) + "(" + cdata(CDATA_MAX_SP, CHARA_PLAYER) + ")", 255, 255, 255
+	if ( TweakData(TWEAK_UI_DRAW_STAMINA_BAR, TWEAK_CATEGORY_UI) == TRUE ) {
+		sx = inf_spx - 4
+		sy = inf_spy - 8
+		color 0, 0, 0
+		pos sx + 4, sy
+		bmes "" + cdata(CDATA_SP, CHARA_PLAYER) + "(" + cdata(CDATA_MAX_SP, CHARA_PLAYER) + ")", 255, 255, 255
+	}
 	sx = inf_hpx + 102
 	sy = inf_hpy + 3
 	color 0
@@ -397,11 +407,13 @@
 	color 0
 	pos sx + 28, sy + 2
 	bmes "" + cdata(CDATA_PLATINUM, CHARA_PLAYER) + " pp", 255, 255, 255
-	// sx = windoww - 320
-	// sy = inf_ver - 16
-	// color 0
-	// pos sx + 38, sy - 5
-	// bmes "Sp" + cdata(CDATA_SP, CHARA_PLAYER) + "/" + cdata(CDATA_MAX_SP, CHARA_PLAYER), 255, 255, 255
+	if ( TweakData(TWEAK_UI_DRAW_STAMINA_BAR, TWEAK_CATEGORY_UI) != TRUE ) {
+		sx = windoww - 320
+		sy = inf_ver - 16
+		color 0
+		pos sx + 38, sy - 5
+		bmes "Sp" + cdata(CDATA_SP, CHARA_PLAYER) + "/" + cdata(CDATA_MAX_SP, CHARA_PLAYER), 255, 255, 255
+	}
 	color 0, 0, 0
 	pos 4, inf_ver - 16 - 4
 	gcopy 3, 48, 392, 24, 24

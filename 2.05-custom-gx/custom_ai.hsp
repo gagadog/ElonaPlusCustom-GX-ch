@@ -1281,8 +1281,9 @@
 	gosub *screen_drawMsg2
 	NumActions = 0
 
+	// TODO: Everytime Ano adds a player learnable action, modify this whitelist to make it learnable.
 	repeat (MAX_SKILL - STARTING_SKILL_SPACT), STARTING_SKILL_SPACT
-		if ( cnt == SKILL_SPACT_DRAIN_BLOOD | cnt == SKILL_SPACT_FIRE_BREATH | cnt == SKILL_SPACT_COLD_BREATH | cnt == SKILL_SPACT_LIGHTNING_BREATH | cnt == SKILL_SPACT_DARKNESS_BREATH | cnt == SKILL_SPACT_CHAOS_BREATH | cnt == SKILL_SPACT_SOUND_BREATH | cnt == SKILL_SPACT_NETHER_BREATH | cnt == SKILL_SPACT_NERVE_BREATH | cnt == SKILL_SPACT_POISON_BREATH | cnt == SKILL_SPACT_MIND_BREATH | cnt == SKILL_SPACT_POWER_BREATH | cnt == SKILL_SPACT_TOUCH_OF_WEAKNESS | cnt == SKILL_SPACT_TOUCH_OF_HUNGER | cnt == SKILL_SPACT_TOUCH_OF_POISON | cnt == SKILL_SPACT_TOUCH_OF_NERVE | cnt == SKILL_SPACT_TOUCH_OF_FEAR | cnt == SKILL_SPACT_TOUCH_OF_SLEEP | cnt == SKILL_SPACT_SHADOW_STEP | cnt == SKILL_SPACT_DRAW_SHADOW | cnt == SKILL_SPACT_HARVEST_MANA | cnt == SKILL_SPACT_PUNISHMENT | cnt == SKILL_SPACT_DIMENSIONAL_MOVE | cnt == SKILL_SPACT_SWARM | cnt == SKILL_SPACT_EYE_OF_MUTATION | cnt == SKILL_SPACT_EYE_OF_ETHER | cnt == SKILL_SPACT_ETHER_GROUND | cnt == SKILL_SPACT_EYE_OF_INSANITY | cnt == SKILL_SPACT_RAIN_OF_SANITY | cnt == SKILL_SPACT_EYE_OF_DIMNESS | cnt == SKILL_SPACT_CURSE | cnt == SKILL_SPACT_DEATH_WORD | cnt == SKILL_SPACT_BOOST | cnt == SKILL_SPACT_INSULT | cnt == SKILL_SPACT_SHINING_WAVE | cnt == SKILL_SPACT_DISTANT_ATTACK7 | cnt == SKILL_SPACT_EYE_OF_MANA | cnt == SKILL_SPACT_PREGNANT | cnt == SKILL_SPACT_CHEER | cnt == SKILL_SPACT_RAMPAGE | cnt == SKILL_SPACT_SYNCHRO_HEARTS | cnt == SKILL_SPACT_MAGIC_KISS | cnt == SKILL_SPACT_CLEAR_MIND | cnt == SKILL_SPACT_PRESSURE | cnt == SKILL_SPACT_SUPER_REGEN | cnt == SKILL_SPACT_PLATINUM_SONG | cnt == SKILL_SPACT_PROVOKE | cnt == SKILL_SPACT_BIND | cnt == SKILL_SPACT_BROWBEAT | cnt == SKILL_SPACT_EYE_OF_BRAINWASHING | cnt == SKILL_SPACT_EXPLOSIVE_FIST | cnt == SKILL_SPACT_CHARGE | cnt == SKILL_SPACT_EMERGENCY_EVASION | cnt == SKILL_SPACT_MAGIC_EQUIP | cnt == SKILL_SPACT_SUPER_ARMOR | cnt == SKILL_SPACT_GRAVITY_SPHERE | cnt == SKILL_SPACT_ATTRIBUTE | cnt == SKILL_SPACT_FIRE_A_VOLLEY | cnt == SKILL_SPACT_MEGID_FLAME | cnt == SKILL_SPACT_CONTINUOUS_ATTACKS | cnt == SKILL_SPACT_VARIABLE_BREATH | cnt == SKILL_SPACT_DIVINE_STREAM | cnt == SKILL_SPACT_ZERO_SHOOT | cnt == SKILL_SPACT_SQUEEZE | cnt == SKILL_SPACT_DISTURBANCE | cnt == SKILL_SPACT_UNCONTROL | cnt == SKILL_SPACT_SPACE_RETENTION | cnt == SKILL_SPACT_DISTANT_ATTACK | cnt == SKILL_SPACT_SPINNING_THROW | cnt == SKILL_SPACT_METAL_GUARD | cnt == SKILL_SPACT_THUNDERCLAP_KICK | cnt == SKILL_SPACT_STRUCK_OUT | cnt == SKILL_SPACT_BEWITCH | cnt == SKILL_SPACT_SHADOW_RUSH | cnt == SKILL_SPACT_BODY_BLOW | cnt == SKILL_SPACT_KNOCKOUT | cnt == SKILL_SPACT_OVERRAY | cnt == SKILL_SPACT_SMASH_GROUND | cnt == SKILL_SPACT_MULTIPLE_GATHER | cnt == SKILL_SPACT_MANA_BURST | cnt == SKILL_SPACT_VINDALIAN_JIUJITSU | cnt == SKILL_SPACT_CLASH_RUSH | cnt == SKILL_SPACT_BLADE_TURBULENCE | cnt == SKILL_SPACT_DEATH_SONG | cnt == SKILL_SPACT_HOMING_LASER | cnt == SKILL_SPACT_MP_BREATH | cnt == SKILL_SPACT_BOUND_IN_BLOOD | cnt == SKILL_SPACT_SILENT_OCEAN | cnt == SKILL_SPACT_DIMENSION_FISHING | cnt == SKILL_SPACT_FASCINATION_DANCE | cnt == SKILL_SPACT_OVERLIMIT_THROW | cnt == SKILL_SPACT_DESTINY_DICE | cnt == SKILL_SPACT_ACID_HURRICANE | cnt == SKILL_SPACT_KAMUI | cnt == SKILL_SPACT_LOVE_CRAFTING | cnt == SKILL_SPACT_TICKLING_HELL ) {
+		if ( cnt == SKILL_SPACT_DRAIN_BLOOD | cnt == SKILL_SPACT_FIRE_BREATH | cnt == SKILL_SPACT_COLD_BREATH | cnt == SKILL_SPACT_LIGHTNING_BREATH | cnt == SKILL_SPACT_DARKNESS_BREATH | cnt == SKILL_SPACT_CHAOS_BREATH | cnt == SKILL_SPACT_SOUND_BREATH | cnt == SKILL_SPACT_NETHER_BREATH | cnt == SKILL_SPACT_NERVE_BREATH | cnt == SKILL_SPACT_POISON_BREATH | cnt == SKILL_SPACT_MIND_BREATH | cnt == SKILL_SPACT_POWER_BREATH | cnt == SKILL_SPACT_TOUCH_OF_WEAKNESS | cnt == SKILL_SPACT_TOUCH_OF_HUNGER | cnt == SKILL_SPACT_TOUCH_OF_POISON | cnt == SKILL_SPACT_TOUCH_OF_NERVE | cnt == SKILL_SPACT_TOUCH_OF_FEAR | cnt == SKILL_SPACT_TOUCH_OF_SLEEP | cnt == SKILL_SPACT_SHADOW_STEP | cnt == SKILL_SPACT_DRAW_SHADOW | cnt == SKILL_SPACT_HARVEST_MANA | cnt == SKILL_SPACT_PUNISHMENT | cnt == SKILL_SPACT_DIMENSIONAL_MOVE | cnt == SKILL_SPACT_SWARM | cnt == SKILL_SPACT_EYE_OF_MUTATION | cnt == SKILL_SPACT_EYE_OF_ETHER | cnt == SKILL_SPACT_ETHER_GROUND | cnt == SKILL_SPACT_EYE_OF_INSANITY | cnt == SKILL_SPACT_RAIN_OF_SANITY | cnt == SKILL_SPACT_EYE_OF_DIMNESS | cnt == SKILL_SPACT_CURSE | cnt == SKILL_SPACT_DEATH_WORD | cnt == SKILL_SPACT_BOOST | cnt == SKILL_SPACT_INSULT | cnt == SKILL_SPACT_SHINING_WAVE | cnt == SKILL_SPACT_DISTANT_ATTACK7 | cnt == SKILL_SPACT_EYE_OF_MANA | cnt == SKILL_SPACT_PREGNANT | cnt == SKILL_SPACT_CHEER | cnt == SKILL_SPACT_RAMPAGE | cnt == SKILL_SPACT_SYNCHRO_HEARTS | cnt == SKILL_SPACT_MAGIC_KISS | cnt == SKILL_SPACT_CLEAR_MIND | cnt == SKILL_SPACT_PRESSURE | cnt == SKILL_SPACT_SUPER_REGEN | cnt == SKILL_SPACT_PLATINUM_SONG | cnt == SKILL_SPACT_PROVOKE | cnt == SKILL_SPACT_BIND | cnt == SKILL_SPACT_BROWBEAT | cnt == SKILL_SPACT_EYE_OF_BRAINWASHING | cnt == SKILL_SPACT_EXPLOSIVE_FIST | cnt == SKILL_SPACT_CHARGE | cnt == SKILL_SPACT_EMERGENCY_EVASION | cnt == SKILL_SPACT_MAGIC_EQUIP | cnt == SKILL_SPACT_SUPER_ARMOR | cnt == SKILL_SPACT_GRAVITY_SPHERE | cnt == SKILL_SPACT_ATTRIBUTE | cnt == SKILL_SPACT_FIRE_A_VOLLEY | cnt == SKILL_SPACT_MEGID_FLAME | cnt == SKILL_SPACT_CONTINUOUS_ATTACKS | cnt == SKILL_SPACT_VARIABLE_BREATH | cnt == SKILL_SPACT_DIVINE_STREAM | cnt == SKILL_SPACT_ZERO_SHOOT | cnt == SKILL_SPACT_SQUEEZE | cnt == SKILL_SPACT_DISTURBANCE | cnt == SKILL_SPACT_UNCONTROL | cnt == SKILL_SPACT_SPACE_RETENTION | cnt == SKILL_SPACT_DISTANT_ATTACK | cnt == SKILL_SPACT_SPINNING_THROW | cnt == SKILL_SPACT_METAL_GUARD | cnt == SKILL_SPACT_THUNDERCLAP_KICK | cnt == SKILL_SPACT_STRUCK_OUT | cnt == SKILL_SPACT_BEWITCH | cnt == SKILL_SPACT_SHADOW_RUSH | cnt == SKILL_SPACT_BODY_BLOW | cnt == SKILL_SPACT_KNOCKOUT | cnt == SKILL_SPACT_OVERRAY | cnt == SKILL_SPACT_SMASH_GROUND | cnt == SKILL_SPACT_MULTIPLE_GATHER | cnt == SKILL_SPACT_MANA_BURST | cnt == SKILL_SPACT_VINDALIAN_JIUJITSU | cnt == SKILL_SPACT_CLASH_RUSH | cnt == SKILL_SPACT_BLADE_TURBULENCE | cnt == SKILL_SPACT_DEATH_SONG | cnt == SKILL_SPACT_HOMING_LASER | cnt == SKILL_SPACT_MP_BREATH | cnt == SKILL_SPACT_BOUND_IN_BLOOD | cnt == SKILL_SPACT_SILENT_OCEAN | cnt == SKILL_SPACT_DIMENSION_FISHING | cnt == SKILL_SPACT_FASCINATION_DANCE | cnt == SKILL_SPACT_OVERLIMIT_THROW | cnt == SKILL_SPACT_DESTINY_DICE | cnt == SKILL_SPACT_ACID_HURRICANE | cnt == SKILL_SPACT_KAMUI | cnt == SKILL_SPACT_LOVE_CRAFTING | cnt == SKILL_SPACT_TICKLING_HELL | cnt == SKILL_SPACT_HARMONIC_ASSAULT | cnt == SKILL_SPACT_KIJIN_SHIBARI | cnt == SKILL_SPACT_BURN_SCROLLS | cnt == SKILL_SPACT_ALCHEMICAL_RAIN | cnt == SKILL_SPACT_SHINING_THROW | cnt == SKILL_SPACT_BLADE_STRINGS | cnt == SKILL_SPACT_DANCING_WIRE | cnt == SKILL_SPACT_EYE_OF_ILLUSION | cnt == SKILL_SPACT_EXTERMINATION_BREATH | cnt == SKILL_SPACT_RESOLUTION_HAND | cnt == SKILL_SPACT_COWERING_SMILE | cnt == SKILL_SPACT_SMILE_FIELD | cnt == SKILL_SPACT_ABYSS_IN_THE_EYE | cnt == SKILL_SPACT_SHIELD_PARRY | cnt == SKILL_SPACT_GOLDEN_STORM | cnt == SKILL_SPACT_GRAVITY_ACCEL | cnt == SKILL_SPACT_GIGA_GRAVITATION | cnt == SKILL_SPACT_HYPER_DASH | cnt == SKILL_SPACT_VIOLENT_GARDEN | cnt == SKILL_SPACT_AROMAGEDDON | cnt == SKILL_SPACT_CURTAIN_OF_SMOKE | cnt == SKILL_SPACT_FORMLESS_FETTER | cnt == SKILL_SPACT_BLOOD_STREAM | cnt == SKILL_SPACT_BLAME_PAIN | cnt == SKILL_SPACT_GROUP_HYPNOSIS | cnt == SKILL_SPACT_THREAD_OF_INNERVATION | cnt == SKILL_SPACT_MARKING | cnt == SKILL_SPACT_KILLING_DANCE | cnt == SKILL_SPACT_ANAPHYLAXIS | cnt == SKILL_SPACT_VENOTRATE | cnt == SKILL_SPACT_LIQUID_MANIPULATION | cnt == SKILL_SPACT_DATA_SCAN | cnt == SKILL_SPACT_SERIOUS_BEGGING | cnt == SKILL_SPACT_MAGNECOAT | cnt == SKILL_SPACT_LINEAR_LAUNCHER | cnt == SKILL_SPACT_E_MAG_CAGE | cnt == SKILL_SPACT_E_MAG_TORNADO | cnt == SKILL_SPACT_WIRE_WORLD | cnt == SKILL_SPACT_SAND_CANNON | cnt == SKILL_SPACT_ROCRUSHER | cnt == SKILL_SPACT_MOGRANIC_AURA | cnt == SKILL_SPACT_INDIVIDUAL_LEADING | cnt == SKILL_SPACT_POLLEN_CANNON | cnt == SKILL_SPACT_EYE_OF_ANE | cnt == SKILL_SPACT_ELECTRIC_SHOCK | cnt == SKILL_SPACT_INSTANT_SUTURE | cnt == SKILL_SPACT_SHADOW_JUMP | cnt == SKILL_SPACT_SHADOW_HOP ) {
 			if ( spact(cnt - STARTING_SKILL_SPACT) == 1 ) {
 				if ( sdata(sdataref(SKILL_DATAREF_USE, cnt), tc) > sdataref(SKILL_DATAREF_COST, cnt) * 2 ) {
 					ActionToGet = cnt
@@ -1871,341 +1872,140 @@
 	return
 
 *AIGetEvolveActions
+	// TODO: Everytime Ano adds action to ai.hsp, modify this to make it learnable.
 	if ( cdata(CDATA_EVOLUTION_STAGE, tc) != 0 ) {
 		switch cdata(CDATA_ID, tc)
-			case CREATURE_ID_PUTIT
-				ActionToFind = SKILL_SPACT_CHEER
+			// STAGE != 0 segment in ai.hsp. Single Action
+			case CREATURE_ID_DEFORMED_EYE
+			case CREATURE_ID_IMPURE_EYE
+				ActionToFind = SKILL_SPACT_DISTANT_ATTACK7
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_RED_PUTIT
-				ActionToFind = SKILL_SPACT_CHEER
+			case CREATURE_ID_FLOATING_EYE
+			case CREATURE_ID_CHAOS_EYE
+			case CREATURE_ID_MAD_GAZE
+			case CREATURE_ID_DEATH_GAZE
+				ActionToFind = SKILL_SPACT_DANCING_WIRE
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_WILD_RABBIT
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 1 ) { ; sylbunny
-					ActionToFind = SKILL_SPACT_TIME_STOP
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) { ; red-eyes w.rabbit
-					ActionToFind = SKILL_SPACT_CHEER
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_SNAIL
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_EMERGENCY_EVASION
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_FALLEN_SOLDIER
-				ActionToFind = SKILL_SPACT_SUPER_ARMOR
+			case CREATURE_ID_VARUNA
+				ActionToFind = SKILL_SPACT_SILENT_OCEAN
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_WILD_SHEEP
-				ActionToFind = SKILL_SPACT_CURSE
+			case CREATURE_ID_MITRA
+				ActionToFind = SKILL_SPACT_TAG_FORCE
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_FLYING_FROG
-				ActionToFind = SKILL_SPACT_PLATINUM_SONG
+			case CREATURE_ID_ASURA
+				ActionToFind = SKILL_SPACT_KILLING_DANCE
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_KOBOLD
-				ActionToFind = SKILL_SPACT_BROWBEAT
+			case CREATURE_ID_FIN_CROCODILE
+				ActionToFind = SKILL_SPACT_BOUND_IN_BLOOD
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_WARRIOR_OF_ELEA
-				ActionToFind = SKILL_SPACT_EMERGENCY_EVASION
+			case CREATURE_ID_CTHULHICK
+				ActionToFind = SKILL_SPACT_ALCHEMICAL_RAIN
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_MANDRAKE
-				ActionToFind = SKILL_SPACT_SHINING_WAVE
+			case CREATURE_ID_BUTLER
+				ActionToFind = SKILL_SPACT_GROUP_HYPNOSIS
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_BEETLE
-				ActionToFind = SKILL_SPACT_SUPER_ARMOR
+			case CREATURE_ID_MUSHROOM
+			case CREATURE_ID_SPORE_MUSHROOM
+			case CREATURE_ID_CHAOS_MUSHROOM
+				ActionToFind = SKILL_SPACT_DOWNPOUR_SPORE
 				gosub *AIFindAction
 				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_WIZARD_OF_ELEA
-				ActionToFind = SKILL_SPELL_MAGIC_STORM
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_GIANT_SQUIRREL
-				ActionToFind = SKILL_SPACT_INSULT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_KILLER_SQUIRREL
-				ActionToFind = SKILL_SPACT_INSULT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_GRUDGE
-				ActionToFind = ACTION_THROW_POTION_GREATER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_HUNGRY_DEMON
-				ActionToFind = ACTION_THROW_POTION_GREATER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_ELECTRIC_CLOUD
-				ActionToFind = SKILL_SPELL_DARKNESS_BOLT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPELL_HEALING_RAIN
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_CHAOS_CLOUD
-				ActionToFind = SKILL_SPELL_DARKNESS_BOLT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPELL_HEALING_RAIN
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_PUPPET
-				ActionToFind = SKILL_SPACT_CONTINUOUS_ATTACKS
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_WASP
-				ActionToFind = SKILL_SPACT_FASCINATION_DANCE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_RED_WASP
-				ActionToFind = SKILL_SPACT_FASCINATION_DANCE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_CYCLOPS
-				ActionToFind = SKILL_SPACT_COLD_BREATH
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_TITAN
-				ActionToFind = SKILL_SPACT_COLD_BREATH
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_IMP
-				ActionToFind = SKILL_SPACT_MAGIC_EQUIP
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_NETHER_IMP
-				ActionToFind = SKILL_SPACT_MAGIC_EQUIP
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_CHAOS_IMP
-				ActionToFind = SKILL_SPACT_MAGIC_EQUIP
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_GHOST
-				ActionToFind = SKILL_SPACT_CHEER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_NYMPH
-				ActionToFind = SKILL_SPACT_PLATINUM_SONG
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_MAN_EATER_FLOWER
-				ActionToFind = SKILL_SPACT_SQUEEZE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_CHAOS_FLOWER
-				ActionToFind = SKILL_SPACT_SQUEEZE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_COBRA
-				ActionToFind = SKILL_SPACT_SQUEEZE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_KING_COBRA
-				ActionToFind = SKILL_SPACT_SQUEEZE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_CUPID_OF_LOVE
-				ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_LESSER_PHANTOM
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_GRAVITY_SPHERE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_HARPY
-				ActionToFind = SKILL_SPACT_SUPER_REGEN
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_SPIDER
-				ActionToFind = SKILL_SPACT_BROWBEAT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_BLACK_WIDOW
-				ActionToFind = SKILL_SPACT_BROWBEAT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_PARALYZER
-				ActionToFind = SKILL_SPACT_BROWBEAT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_TARANTULA
-				ActionToFind = SKILL_SPACT_BROWBEAT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_BLOOD_SPIDER
-				ActionToFind = SKILL_SPACT_BROWBEAT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_WOODEN_GOLEM
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
-					ActionToFind = SKILL_SPACT_SHINING_WAVE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_STONE_GOLEM
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
-					ActionToFind = SKILL_SPACT_SHINING_WAVE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_STEEL_GOLEM
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
-					ActionToFind = SKILL_SPACT_SHINING_WAVE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_FIRE_CRAB
-				ActionToFind = SKILL_SPACT_SYNCHRO_HEARTS
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_DOG
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) >= 10 ) {
-					ActionToFind = SKILL_SPACT_FLAME_OF_RAGE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_LITTLE_GIRL
-				ActionToFind = SKILL_SPACT_CHEER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
-					ActionToFind = SKILL_SPELL_CRYSTAL_SPEAR
-					gosub *AIFindAction
-					gosub *AIAddAction
-					ActionToFind = SKILL_SPACT_RAIN_OF_SANITY
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_RAT
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_LIGHTNING_BREATH
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_SLIME
-				ActionToFind = SKILL_SPACT_MELT_CLINCH
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_YOUNGER_SISTER
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) >= 10 ) {
-					ActionToFind = SKILL_SPACT_FLAME_OF_RAGE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
 				swbreak
 			case CREATURE_ID_NURSE
 				ActionToFind = SKILL_SPACT_RAIN_OF_SANITY
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_BLADE
-				ActionToFind = SKILL_SPACT_SHADOW_STEP
+			case CREATURE_ID_PUPPET
+				ActionToFind = SKILL_SPACT_CONTINUOUS_ATTACKS
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_BLADE_ALPHA
-				ActionToFind = SKILL_SPACT_SHADOW_STEP
+			case CREATURE_ID_THIEF
+			case CREATURE_ID_ROBBER
+				ActionToFind = SKILL_SPACT_GOLDEN_STORM
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_WISP
-				ActionToFind = SKILL_SPELL_DARKNESS_BOLT
+			case CREATURE_ID_LARGE_BIKE
+			case CREATURE_ID_LAME_HORSE
+			case CREATURE_ID_WILD_HORSE
+			case CREATURE_ID_NOYEL_HORSE
+			case CREATURE_ID_YOWYN_HORSE
+			case CREATURE_ID_THOROUGHBRED
+				ActionToFind = SKILL_SPACT_HYPER_DASH
 				gosub *AIFindAction
 				gosub *AIAddAction
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPELL_NETHER_WAVE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
 				swbreak
+			case CREATURE_ID_HARPY
+				ActionToFind = SKILL_SPACT_SUPER_REGEN
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_LIZARD_MAGE
+			case CREATURE_ID_BISQUE_DOLL
+			case CREATURE_ID_GODA_THE_CAPTAIN_OF_ORC
+			case CREATURE_ID_KING_COCKROACH
+				ActionToFind = SKILL_SPACT_SHADOW_RUSH
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_KENTAURS
+			case CREATURE_ID_SPIDER
+			case CREATURE_ID_BLACK_WIDOW
+			case CREATURE_ID_PARALYZER
+			case CREATURE_ID_TARANTULA
+			case CREATURE_ID_BLOOD_SPIDER
+			case CREATURE_ID_SCORPION
+			case CREATURE_ID_KING_SCORPION
+			case CREATURE_ID_WANDERING_PENGUIN
+				ActionToFind = SKILL_SPACT_BROWBEAT
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_HAMSTER
+				ActionToFind = SKILL_SPACT_SWARM
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_SLIME
 			case CREATURE_ID_ACID_SLIME
 				ActionToFind = SKILL_SPACT_MELT_CLINCH
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_PUMPKIN
-				ActionToFind = SKILL_SPACT_BIND
+			case CREATURE_ID_BLUE_BUBBLE
+			case CREATURE_ID_BUBBLE
+				ActionToFind = SKILL_SPELL_BUBBLE_STORM
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_GREATER_PUMPKIN
-				ActionToFind = SKILL_SPACT_BIND
+			case CREATURE_ID_MAN_EATER_FLOWER
+			case CREATURE_ID_CHAOS_FLOWER
+			case CREATURE_ID_COBRA
+			case CREATURE_ID_KING_COBRA
+				ActionToFind = SKILL_SPACT_SQUEEZE
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_HALLOWEEN_NIGHTMARE
-				ActionToFind = SKILL_SPACT_BIND
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_PUPPY
-				ActionToFind = SKILL_SPACT_BIND
+			case CREATURE_ID_GIRAFFE
+				ActionToFind = SKILL_SPACT_PUNISHMENT
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
@@ -2214,78 +2014,62 @@
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_YOUNG_LADY
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_DRAIN_BLOOD
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				ActionToFind = ACTION_THROW_POTION_GREATER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_THIEF
-				ActionToFind = SKILL_SPACT_GOLDEN_STORM
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_ROBBER
-				ActionToFind = SKILL_SPACT_GOLDEN_STORM
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_YEEK
-				ActionToFind = SKILL_SPACT_CHEER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_KAMIKAZE_YEEK
-				ActionToFind = SKILL_SPACT_CHEER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_YEEK_WARRIOR
-				ActionToFind = SKILL_SPACT_CHEER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_MASTER_YEEK
-				ActionToFind = SKILL_SPACT_CHEER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_YEEK_ARCHER
-				ActionToFind = SKILL_SPACT_CHEER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_BOMB_ROCK
-				ActionToFind = SKILL_SPACT_SHADOW_STEP
+			case CREATURE_ID_BEETLE
+			case CREATURE_ID_FALLEN_SOLDIER
+				ActionToFind = SKILL_SPACT_SUPER_ARMOR
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
 			case CREATURE_ID_FAIRY
+			case CREATURE_ID_IMP
+			case CREATURE_ID_NETHER_IMP
+			case CREATURE_ID_CHAOS_IMP
 				ActionToFind = SKILL_SPACT_MAGIC_EQUIP
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_SCORPION
-				ActionToFind = SKILL_SPACT_BROWBEAT
+			case CREATURE_ID_MOAI
+			case CREATURE_ID_CUPID_OF_LOVE
+			case CREATURE_ID_GUNFISH
+			case CREATURE_ID_XEREN_AUTO_TANK
+				ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_KING_SCORPION
-				ActionToFind = SKILL_SPACT_BROWBEAT
+			case CREATURE_ID_WASP
+			case CREATURE_ID_RED_WASP
+			case CREATURE_ID_BLACK_HORNET
+				ActionToFind = SKILL_SPACT_FASCINATION_DANCE
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_APPRENTICE_ANGEL
+				ActionToFind = SKILL_SPACT_OVERRAY
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_FIRE_CRAB
+				ActionToFind = SKILL_SPACT_SYNCHRO_HEARTS
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
 			case CREATURE_ID_BLACK_CAT
+			case CREATURE_ID_KOBOLD
 				ActionToFind = SKILL_SPACT_BROWBEAT
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
 			case CREATURE_ID_CUTE_FAIRY
+			case CREATURE_ID_PUPPY
+			case CREATURE_ID_PUMPKIN
+			case CREATURE_ID_GREATER_PUMPKIN
+			case CREATURE_ID_HALLOWEEN_NIGHTMARE
 				ActionToFind = SKILL_SPACT_BIND
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_MANDRAKE
+				ActionToFind = SKILL_SPACT_SHINING_WAVE
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
@@ -2314,28 +2098,115 @@
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_LAME_HORSE
-				ActionToFind = SKILL_SPACT_HYPER_DASH
+			case CREATURE_ID_GOOSE
+			case CREATURE_ID_NYMPH
+			case CREATURE_ID_FLYING_FROG
+			case CREATURE_ID_POISON_ARROW_FROG
+				ActionToFind = SKILL_SPACT_PLATINUM_SONG
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_YOWYN_HORSE
-				ActionToFind = SKILL_SPACT_HYPER_DASH
+			case CREATURE_ID_PUTIT
+			case CREATURE_ID_RED_PUTIT
+			case CREATURE_ID_YEEK
+			case CREATURE_ID_GHOST
+			case CREATURE_ID_YEEK_WARRIOR
+			case CREATURE_ID_YEEK_ARCHER
+			case CREATURE_ID_MASTER_YEEK
+			case CREATURE_ID_KAMIKAZE_YEEK
+				ActionToFind = SKILL_SPACT_CHEER
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_NOYEL_HORSE
-				ActionToFind = SKILL_SPACT_HYPER_DASH
+			case CREATURE_ID_OLDER_DOG_SISTER
+				ActionToFind = SKILL_SPACT_CHARGE
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_WILD_HORSE
-				ActionToFind = SKILL_SPACT_HYPER_DASH
+			case CREATURE_ID_LITTLE_GIRL
+			case CREATURE_ID_ORC
+			case CREATURE_ID_ORC_WARRIOR
+				ActionToFind = SKILL_SPACT_CHEER
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_THOROUGHBRED
+			case CREATURE_ID_GIANT_SQUIRREL
+			case CREATURE_ID_KILLER_SQUIRREL
+				ActionToFind = SKILL_SPACT_INSULT
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_CYCLOPS
+			case CREATURE_ID_TITAN
+				ActionToFind = SKILL_SPACT_COLD_BREATH
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_ELECTRIC_SHEEP
+				ActionToFind = SKILL_SPELL_THUNDER_VORTEX
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_WILD_SHEEP
+				ActionToFind = SKILL_SPACT_CURSE
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_BOMB_ROCK
+			case CREATURE_ID_LITTLE_SISTER
+			case CREATURE_ID_BLADE
+			case CREATURE_ID_BLADE_ALPHA
+				ActionToFind = SKILL_SPACT_SHADOW_STEP
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_ELECTRIC_CLOUD
+			case CREATURE_ID_CHAOS_CLOUD
+			case CREATURE_ID_WISP
+				ActionToFind = SKILL_SPELL_DARKNESS_BOLT
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_WARRIOR_OF_ELEA
+				ActionToFind = SKILL_SPACT_EMERGENCY_EVASION
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_WIZARD_OF_ELEA
+				ActionToFind = SKILL_SPELL_MAGIC_STORM
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_GRUDGE
+			case CREATURE_ID_HUNGRY_DEMON
+			case CREATURE_ID_YOUNG_LADY
+                ActionToFind = ACTION_THROW_POTION_GREATER
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+
+			// STAGE != 0 segment in ai.hsp. Multiple Action
+			case CREATURE_ID_PORC
 				ActionToFind = SKILL_SPACT_HYPER_DASH
+				gosub *AIFindAction
+				gosub *AIAddAction
+				ActionToFind = SKILL_SPACT_BOOST
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_CATERPILLAR_SNIPER
+				ActionToFind = SKILL_SPACT_DRAW_SHADOW
+				gosub *AIFindAction
+				gosub *AIAddAction
+				ActionToFind = SKILL_SPACT_PUNISHMENT
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_CATTLE
+				ActionToFind = SKILL_SPACT_HYPER_DASH
+				gosub *AIFindAction
+				gosub *AIAddAction
+				ActionToFind = SKILL_SPACT_PUNISHMENT
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
@@ -2347,119 +2218,8 @@
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
-			case CREATURE_ID_MINOTAUR
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_BOOST
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_MINOTAUR_MAGICIAN
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_BOOST
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_MINOTAUR_BOXER
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_BOOST
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_MINOTAUR_KING
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_BOOST
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_LITTLE_SISTER
-				ActionToFind = SKILL_SPACT_SHADOW_STEP
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_GOOSE
-				ActionToFind = SKILL_SPACT_PLATINUM_SONG
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_OLDER_SISTER
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) >= 10 ) {
-					ActionToFind = SKILL_SPACT_FLAME_OF_RAGE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_OLDER_DOG_SISTER
-				ActionToFind = SKILL_SPACT_CHARGE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_GIRAFFE
-				ActionToFind = SKILL_SPACT_PUNISHMENT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_ELECTRIC_SHEEP
-				ActionToFind = SKILL_SPELL_THUNDER_VORTEX
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_FIRE_DRAGON_CHILD
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_BOOST
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 2 ) {
-					ActionToFind = SKILL_SPACT_MEGID_FLAME
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_BLACK_HORNET
-				ActionToFind = SKILL_SPACT_FASCINATION_DANCE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_FOX_BROTHER
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_MEGID_FLAME
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_MOAI
-				ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_HAMSTER
-				ActionToFind = SKILL_SPACT_SWARM
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_SMALL_STONE_GOLEM
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
-					ActionToFind = SKILL_SPACT_SHINING_WAVE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_SMALL_WOODEN_GOLEM
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
-					ActionToFind = SKILL_SPACT_SHINING_WAVE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_WANDERING_PENGUIN
-				ActionToFind = SKILL_SPACT_BROWBEAT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
+				
+			// STAGE != 0 segment in ai.hsp. Different Evo Stages
 			case CREATURE_ID_ZOMBIE_GIRL
 				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 1 ) {
 					ActionToFind = SKILL_SPACT_ABSOLUTE_PROTECT
@@ -2470,10 +2230,10 @@
 					gosub *AIAddAction
 				}
 				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
-					ActionToFind = SKILL_SPACT_EMERGENCY_EVASION
+					ActionToFind = SKILL_SPACT_RUBBING
 					gosub *AIFindAction
 					gosub *AIAddAction
-					ActionToFind = SKILL_SPACT_RUBBING
+					ActionToFind = SKILL_SPACT_EMERGENCY_EVASION
 					gosub *AIFindAction
 					gosub *AIAddAction
 					ActionToFind = SKILL_SPACT_KILLING_DANCE
@@ -2489,153 +2249,131 @@
 					gosub *AIAddAction
 				}
 				swbreak
-			case CREATURE_ID_KENTAURS
-				ActionToFind = SKILL_SPACT_BOOST
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_CATTLE
-				ActionToFind = SKILL_SPACT_PUNISHMENT
-				gosub *AIFindAction
-				gosub *AIAddAction
-				ActionToFind = SKILL_SPACT_HYPER_DASH
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_POISON_ARROW_FROG
-				ActionToFind = SKILL_SPACT_PLATINUM_SONG
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_APPRENTICE_ANGEL
-				ActionToFind = SKILL_SPACT_OVERRAY
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_LIZARD_MAGE
-				ActionToFind = SKILL_SPACT_SHADOW_RUSH
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_GUNFISH
-				ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_LARGE_BIKE
-				ActionToFind = SKILL_SPACT_HYPER_DASH
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_XEREN_AUTO_TANK
-				ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_CHAOS_SEED
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_EXTERMINATION_BREATH
+			case CREATURE_ID_DOG
+			case CREATURE_ID_OLDER_SISTER
+			case CREATURE_ID_YOUNGER_SISTER
+				if ( cdata(CDATA_EVOLUTION_STAGE, tc) >= 10 ) {
+					ActionToFind = SKILL_SPACT_FLAME_OF_RAGE
 					gosub *AIFindAction
 					gosub *AIAddAction
 				}
-				swbreak
-			case CREATURE_ID_CATERPILLAR_SNIPER
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_DRAW_SHADOW
-					gosub *AIFindAction
-					gosub *AIAddAction
-					ActionToFind = SKILL_SPACT_PUNISHMENT
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_LITTLE_BOY
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_KILLING_DANCE
-					gosub *AIFindAction
-					gosub *AIAddAction
-				}
-				swbreak
-			case CREATURE_ID_BUTLER
-				ActionToFind = SKILL_SPACT_GROUP_HYPNOSIS
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_BISQUE_DOLL
-				ActionToFind = SKILL_SPACT_SHADOW_RUSH
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_ORC
-				ActionToFind = SKILL_SPACT_CHEER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_ORC_WARRIOR
-				ActionToFind = SKILL_SPACT_CHEER
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_PORC
-				ActionToFind = SKILL_SPACT_BOOST
-				gosub *AIFindAction
-				gosub *AIAddAction
-				ActionToFind = SKILL_SPACT_HYPER_DASH
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_DEFORMED_EYE
-			case CREATURE_ID_IMPURE_EYE
-				ActionToFind = SKILL_SPACT_DISTANT_ATTACK7
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_FLOATING_EYE
-			case CREATURE_ID_CHAOS_EYE
-			case CREATURE_ID_MAD_GAZE
-			case CREATURE_ID_DEATH_GAZE
-				ActionToFind = SKILL_SPACT_DANCING_WIRE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_VARUNA
-				ActionToFind = SKILL_SPACT_SILENT_OCEAN
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			 case CREATURE_ID_MITRA
-				ActionToFind = SKILL_SPACT_TAG_FORCE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			 case CREATURE_ID_ASURA
-				ActionToFind = SKILL_SPACT_KILLING_DANCE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			 case CREATURE_ID_FIN_CROCODILE
-				ActionToFind = SKILL_SPACT_BOUND_IN_BLOOD
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			 case CREATURE_ID_CTHULHICK
-				act = SKILL_SPACT_ALCHEMICAL_RAIN
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_KING_COCKROACH
-				ActionToFind = SKILL_SPACT_SHADOW_RUSH
-				gosub *AIFindAction
-				gosub *AIAddAction
 				swbreak
 			case CREATURE_ID_HAND_OF_THE_DEAD
 			case CREATURE_ID_HAND_OF_THE_CHAOS
 			case CREATURE_ID_HAND_OF_THE_MURDERER
-				ActionToFind = SKILL_SPACT_EXPLOSIVE_FIST
+				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
+					ActionToFind = SKILL_SPACT_MELT_CLINCH
+					gosub *AIFindAction
+					gosub *AIAddAction
+				}
+				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 1 ) {
+					ActionToFind = SKILL_SPACT_EXPLOSIVE_FIST
+					gosub *AIFindAction
+					gosub *AIAddAction
+				}
+				swbreak
+			case CREATURE_ID_WOODEN_GOLEM
+			case CREATURE_ID_STONE_GOLEM
+			case CREATURE_ID_STEEL_GOLEM
+			case CREATURE_ID_SMALL_WOODEN_GOLEM
+			case CREATURE_ID_SMALL_STONE_GOLEM
+				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
+					ActionToFind = SKILL_SPACT_SHINING_WAVE
+					gosub *AIFindAction
+					gosub *AIAddAction
+				}
+				swbreak
+			case CREATURE_ID_WILD_RABBIT
+				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 1 ) {
+					ActionToFind = SKILL_SPACT_TIME_STOP
+					gosub *AIFindAction
+					gosub *AIAddAction
+				}
+				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
+					ActionToFind = SKILL_SPACT_CHEER
+					gosub *AIFindAction
+					gosub *AIAddAction
+				}
+				swbreak
+			default
+				swbreak
+		swend
+	}
+	if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
+		switch cdata(CDATA_ID, tc)
+			// STAGE > 1 segment in ai.hsp. Single Action
+			case CREATURE_ID_CHAOS_SEED
+				ActionToFind = SKILL_SPACT_EXTERMINATION_BREATH
 				gosub *AIFindAction
 				gosub *AIAddAction
-				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 1 ) {
-					ActionToFind = SKILL_SPACT_MELT_CLINCH
+				swbreak
+			case CREATURE_ID_ELECTRIC_CLOUD
+			case CREATURE_ID_CHAOS_CLOUD
+				ActionToFind = SKILL_SPELL_HEALING_RAIN
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_WISP
+				ActionToFind = SKILL_SPELL_NETHER_WAVE
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_MINOTAUR
+			case CREATURE_ID_MINOTAUR_MAGICIAN
+			case CREATURE_ID_MINOTAUR_BOXER
+			case CREATURE_ID_MINOTAUR_KING
+				ActionToFind = SKILL_SPACT_BOOST
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_SNAIL
+				ActionToFind = SKILL_SPACT_EMERGENCY_EVASION
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_LITTLE_BOY
+				ActionToFind = SKILL_SPACT_KILLING_DANCE
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_RAT
+				ActionToFind = SKILL_SPACT_LIGHTNING_BREATH
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_FOX_BROTHER
+				ActionToFind = SKILL_SPACT_MEGID_FLAME
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_LESSER_PHANTOM
+				ActionToFind = SKILL_SPACT_GRAVITY_SPHERE
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			case CREATURE_ID_YOUNG_LADY
+				ActionToFind = SKILL_SPACT_DRAIN_BLOOD
+				gosub *AIFindAction
+				gosub *AIAddAction
+				swbreak
+			// STAGE > 1 segment in ai.hsp. Multiple Action
+			// STAGE > 1 segment in ai.hsp. Different Evo Stages
+			case CREATURE_ID_FIRE_DRAGON_CHILD
+				ActionToFind = SKILL_SPACT_BOOST
+				gosub *AIFindAction
+				gosub *AIAddAction
+				if ( cdata(CDATA_EVOLUTION_STAGE, tc) > 2 ) {
+					ActionToFind = SKILL_SPACT_MEGID_FLAME
+					gosub *AIFindAction
+					gosub *AIAddAction
+				}
+				swbreak
+			case CREATURE_ID_LITTLE_GIRL
+				if ( cdata(CDATA_EVOLUTION_STAGE, tc) == 2 ) {
+					ActionToFind = SKILL_SPELL_CRYSTAL_SPEAR
+					gosub *AIFindAction
+					gosub *AIAddAction
+					ActionToFind = SKILL_SPACT_RAIN_OF_SANITY
 					gosub *AIFindAction
 					gosub *AIAddAction
 				}
@@ -2645,99 +2383,187 @@
 		swend
 	}
 	switch cdata(CDATA_ID, tc)
-		case CREATURE_ID_SPIRAL_KING
-			ActionToFind = SKILL_SPELL_DARK_EYE
+		// non-evolution segment in ai.hsp. Single Action
+		case CREATURE_ID_GHOST
+		case CREATURE_ID_NINJA
+			ActionToFind = SKILL_SPACT_SHADOW_JUMP
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_BLUE_BUBBLE
-			ActionToFind = SKILL_SPELL_BUBBLE_STORM
+		case CREATURE_ID_LOTHRIAN_AGENT
+		case CREATURE_ID_METAL_ZILLA
+		case CREATURE_ID_MELGET_THE_INFORMER
+		case CREATURE_ID_MOBILE_COMMUNICATION_EQUIPMENT
+		case CREATURE_ID_LEAD_DEVELOPER_DR_GAVELA
+			ActionToFind = SKILL_SPACT_DATA_SCAN
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_BUBBLE
-			ActionToFind = SKILL_SPELL_BUBBLE_STORM
+		case CREATURE_ID_INDRA
+			ActionToFind = SKILL_SPACT_EXTERMINATION_BREATH
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_SNAIL_THE_ANDROID_RIDER
-			ActionToFind = SKILL_SPACT_SHINE_SNAIL
+		case CREATURE_ID_SHADOW
+			ActionToFind = SKILL_SPACT_SHADOW_HOP
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
+		case CREATURE_ID_HELRAUNE
+		case CREATURE_ID_DAGANOTOSUS
+			ActionToFind = SKILL_SPACT_VENOTRATE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_MOSTMUSCYLLA
+		case CREATURE_ID_OOTEGUCHI
+		case CREATURE_ID_HEROYEEK
+		case CREATURE_ID_MAGIC_HAWK_MOTH
+		case CREATURE_ID_OXODE_THE_QUEEN_BEE
+			ActionToFind = SKILL_SPACT_POSING
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_NIGHTMARE_SHARK
+		case CREATURE_ID_RAGING_SHARK
+		case CREATURE_ID_CAPTAIN_SHARK
+		case CREATURE_ID_SP_CHAMPION
+			ActionToFind = SKILL_SPACT_SHARK_TRADE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_ATLACH_NACHA
+			ActionToFind = SKILL_SPACT_WIRE_WORLD
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_GRAVEED_THE_GRAVITY_VALLEY
+		case CREATURE_ID_GASYADOKURO
+		case CREATURE_ID_ATLAS
+			ActionToFind = SKILL_SPACT_ROCRUSHER
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_MAGIC_BEE
+		case CREATURE_ID_EIGHTY_SHAKU
+		case CREATURE_ID_CHAOSHAPRINCESS_DIBWL
+			ActionToFind = SKILL_SPACT_FLAME_OF_RAGE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_CRYSTALIAN
+			ActionToFind = SKILL_SPELL_GEM_POWER
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_MEGA_MOLE
+		case CREATURE_ID_TALPIDAE
+		case CREATURE_ID_SUPER_DRAGONEWT
+			ActionToFind = SKILL_SPACT_MOGRANIC_AURA
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_CURSE_WOOD_KING
+		case CREATURE_ID_PROFANITY_PRIEST
+		case CREATURE_ID_DIABOLIC_CLOWN
+		case CREATURE_ID_ULZASSIL_THE_DEAD_EMPEROR
+		case CREATURE_ID_SSIL_THE_UNDEAD_WITCH
+			ActionToFind = SKILL_SPACT_JYUSOU_GOUSHIN
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_KESALANPATHARAN
+		case CREATURE_ID_BLACK_ANGEL_HAIR
+		case CREATURE_ID_MATANGODDESS
+			ActionToFind = SKILL_SPACT_DOWNPOUR_SPORE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_GAMBLER
+			ActionToFind = SKILL_SPACT_DESTINY_DICE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_DESKTOP_NAVY
+			ActionToFind = SKILL_SPACT_ROCKET_FIRE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_BUTLER
+			ActionToFind = SKILL_SPACT_PRESSURE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_FALLEN_ANGEL
+		case CREATURE_ID_NIGHTMARE_SHEEP
+		case CREATURE_ID_TITANIA
 		case CREATURE_ID_CAMOUFLAGED_IMP
 			ActionToFind = SKILL_SPACT_GROUP_HYPNOSIS
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_EXOSSIL_THE_CHAOS_WING
-			ActionToFind = SKILL_SPACT_GROUP_HYPNOSIS
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_JYUSOU_GOUSHIN
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_TITANIA
-			ActionToFind = SKILL_SPACT_GROUP_HYPNOSIS
+		case CREATURE_ID_LAST_DANCER
+		case CREATURE_ID_GRIM_REAPER
+			ActionToFind = SKILL_SPACT_KILLING_DANCE
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
+		case CREATURE_ID_PERFORMAID_BLOODRESS
+		case CREATURE_ID_SICKFULL_OLDER_BROTHER
 		case CREATURE_ID_H_SISTER2
-			ActionToFind = SKILL_SPACT_BLOOD_STREAM
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_ARMA_THE_TOUR_GUIDE
-			ActionToFind = SKILL_SPACT_VINDALIAN_JIUJITSU
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_ALCHEMIST_NAPLUS
-			ActionToFind = ACTION_THROW_POTION_GREATER
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_GETUEI_THE_NINJA_MASTER
-			ActionToFind = SKILL_SPACT_SHADOW_RUSH
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_EILA_THE_FUGITIVE_KUNOICHI
-			ActionToFind = SKILL_SPACT_CURTAIN_OF_SMOKE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_RED_NINJA
-			ActionToFind = SKILL_SPACT_CURTAIN_OF_SMOKE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_NEW_CITIZEN
-			ActionToFind = SKILL_SPACT_CURTAIN_OF_SMOKE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
+		case CREATURE_ID_KALI
 		case CREATURE_ID_BLOOD_GOLEM
 			ActionToFind = SKILL_SPACT_BLOOD_STREAM
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
+		case CREATURE_ID_NEW_CITIZEN
+		case CREATURE_ID_RED_NINJA
+		case CREATURE_ID_EILA_THE_FUGITIVE_KUNOICHI
+			ActionToFind = SKILL_SPACT_CURTAIN_OF_SMOKE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
 		case CREATURE_ID_ULTIMATE_GOLEM
+		case CREATURE_ID_ARMA_THE_TOUR_GUIDE
 			ActionToFind = SKILL_SPACT_VINDALIAN_JIUJITSU
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_KALI
-			ActionToFind = SKILL_SPACT_BLOOD_STREAM
+		case CREATURE_ID_ALFRED_THE_CANGNAN_WIND
+			ActionToFind = SKILL_SPACT_SHIELD_PARRY
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_MARY_THE_INSECT_MASTER
-			ActionToFind = SKILL_SPACT_ATTRIBUTE
+		case CREATURE_ID_SILVER_FOX_BROTHER
+			ActionToFind = SKILL_SPACT_RESOLUTION_HAND
 			gosub *AIFindAction
 			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_VINDALIAN_JIUJITSU
+			swbreak
+		case CREATURE_ID_RIANNA_THE_DAYDREAMER
+			ActionToFind = SKILL_SPACT_TAG_FORCE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_ZANAN_OLD_SOLDIER
+			ActionToFind = SKILL_SPACT_PRESSURE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_SHURAIDA_THE_EXPERT_MERC
+		case CREATURE_ID_ARIBEL_THE_WHITE_ARMS
+			ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_URCAGUARY
+			ActionToFind = SKILL_SPACT_SUPER_ARMOR
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_CHAOS_SERPENT
+		case CREATURE_ID_BYSYMLHA_THE_AMBER_EYES
+			ActionToFind = SKILL_SPACT_ABYSS_IN_THE_EYE
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
@@ -2747,27 +2573,14 @@
 			gosub *AIAddAction
 			swbreak
 		case CREATURE_ID_DEATH_HAMSTER
+		case CREATURE_ID_ORICHAL_CHILD
 			ActionToFind = SKILL_SPELL_CONTINGENCY
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
+		case CREATURE_ID_VANSESDA_THE_ANCIENT_FIRE
 		case CREATURE_ID_YELLOW_FIRE_DRAGON
 			ActionToFind = SKILL_SPACT_ATTRIBUTE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_VANSESDA_THE_ANCIENT_FIRE
-			ActionToFind = SKILL_SPACT_ATTRIBUTE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_PHANTOM_OF_END
-			ActionToFind = SKILL_SPACT_MP_BREATH
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_URCAGUARY
-			ActionToFind = SKILL_SPACT_SUPER_ARMOR
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
@@ -2786,108 +2599,29 @@
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_LAZASYE_THE_DESTROY
-			ActionToFind = SKILL_SPACT_MP_BREATH
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_POWERFUL_GREAT_WYRM
-			ActionToFind = SKILL_SPACT_MP_BREATH
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_NIGHTMARE_SHEEP
-			ActionToFind = SKILL_SPACT_GROUP_HYPNOSIS
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_CONDUCTOR_KOALA
-			ActionToFind = SKILL_SPACT_SHADOW_RUSH
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_GRIM_REAPER
-			ActionToFind = SKILL_SPACT_KILLING_DANCE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_DREAD_RABBIT
-			ActionToFind = SKILL_SPACT_MULTIPLE_GATHER
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_FALLEN_ANGEL
-			ActionToFind = SKILL_SPACT_GROUP_HYPNOSIS
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_DHWTY
-			ActionToFind = SKILL_SPACT_MP_BREATH
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_PERFORMAID_BLOODRESS
-			ActionToFind = SKILL_SPACT_BLOOD_STREAM
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_PERFORMAID_DESWEEPER
-			ActionToFind = SKILL_SPACT_OVERRAY
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_PERFORMAID_COCRUEL
-			ActionToFind = SKILL_SPACT_SHADOW_RUSH
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_PERFORMAID_BITCHIACK
-			ActionToFind = SKILL_SPACT_MP_BREATH
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_LANKATA_THE_LIGHTNING_OF_BLUE
-			ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_ZANAN_OLD_SOLDIER
-			ActionToFind = SKILL_SPACT_PRESSURE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
 		case CREATURE_ID_STORMBLING
 			ActionToFind = SKILL_SPACT_BLADE_TURBULENCE
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_HELLSTLING
-			ActionToFind = SKILL_SPACT_BLADE_STRINGS
+		case CREATURE_ID_CONDUCTOR_KOALA
+		case CREATURE_ID_PERFORMAID_COCRUEL
+			ActionToFind = SKILL_SPACT_SHADOW_RUSH
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_RIANNA_THE_DAYDREAMER
-			ActionToFind = SKILL_SPACT_TAG_FORCE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
+		case CREATURE_ID_PERFORMAID_DESWEEPER
 		case CREATURE_ID_UNITDEAD_JOKER
 			ActionToFind = SKILL_SPACT_OVERRAY
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_ALFRED_THE_CANGNAN_WIND
-			ActionToFind = SKILL_SPACT_SHIELD_PARRY
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_CHAOS_SERPENT
-			ActionToFind = SKILL_SPACT_ABYSS_IN_THE_EYE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_AJETALIO_THE_SEMINAR_LECTURER
-			ActionToFind = SKILL_SPACT_VINDALIAN_JIUJITSU
+		case CREATURE_ID_PERFORMAID_BITCHIACK
+		case CREATURE_ID_DHWTY
+		case CREATURE_ID_PHANTOM_OF_END
+		case CREATURE_ID_LAZASYE_THE_DESTROY
+		case CREATURE_ID_POWERFUL_GREAT_WYRM
+			ActionToFind = SKILL_SPACT_MP_BREATH
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
@@ -2901,58 +2635,63 @@
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_SILVER_FOX_BROTHER
-			ActionToFind = SKILL_SPACT_RESOLUTION_HAND
+		// non-evolution segment in ai.hsp. Multiple Action
+		case CREATURE_ID_13TH_STEP_GHOST
+			ActionToFind = SKILL_SPACT_SHADOW_JUMP
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_JYUSOU_GOUSHIN
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_SICKFULL_OLDER_BROTHER
-			ActionToFind = SKILL_SPACT_BLOOD_STREAM
+		case CREATURE_ID_GETUEI_THE_NINJA_MASTER
+			ActionToFind = SKILL_SPACT_SHADOW_HOP
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SHADOW_RUSH
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_ALSAPIA_THE_MURDERER_MASK
-			ActionToFind = SKILL_SPACT_KILLING_DANCE
+		case CREATURE_ID_MUSCLE_GOLEM
+			ActionToFind = SKILL_SPACT_POSING
 			gosub *AIFindAction
 			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_EMERGENCY_EVASION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_LAST_DANCER
-		//	ActionToFind = SKILL_SPACT_GRAND_FINALE
-		//	gosub *AIFindAction
-		//	gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_KILLING_DANCE
+			ActionToFind = SKILL_SPACT_ROCRUSHER
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_BYSYMLHA_THE_AMBER_EYES
-			ActionToFind = SKILL_SPACT_ABYSS_IN_THE_EYE
+		case CREATURE_ID_SNAIL_THE_ANDROID_RIDER
+			ActionToFind = SKILL_SPACT_POSING
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SHINE_SNAIL
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_BUTLER
-			ActionToFind = SKILL_SPACT_PRESSURE
+		case CREATURE_ID_OPATOS
+			ActionToFind = SKILL_SPACT_POSING
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SUPER_VIBRATING_FIST
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_LOTHRIAN_AGENT
-		case CREATURE_ID_METAL_ZILLA
-		case CREATURE_ID_MELGET_THE_INFORMER
-		case CREATURE_ID_MOBILE_COMMUNICATION_EQUIPMENT
-		case CREATURE_ID_LEAD_DEVELOPER_DR_GAVELA
-			ActionToFind = SKILL_SPACT_DATA_SCAN
+		case CREATURE_ID_AJETALIO_THE_SEMINAR_LECTURER
+			ActionToFind = SKILL_SPACT_WIRE_WORLD
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_VINDALIAN_JIUJITSU
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_INDRA
-			ActionToFind = SKILL_SPACT_EXTERMINATION_BREATH
+		case CREATURE_ID_HELLSTLING
+			ActionToFind = SKILL_SPACT_WIRE_WORLD
 			gosub *AIFindAction
 			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_MAGIC_BEE
-			ActionToFind = SKILL_SPACT_FLAME_OF_RAGE
+			ActionToFind = SKILL_SPACT_BLADE_STRINGS
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
@@ -2978,37 +2717,167 @@
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_CURSE_WOOD_KING
-		case CREATURE_ID_13TH_STEP_GHOST
-		case CREATURE_ID_PROFANITY_PRIEST
-		case CREATURE_ID_DIABOLIC_CLOWN
-		case CREATURE_ID_ULZASSIL_THE_DEAD_EMPEROR
-		case CREATURE_ID_SSIL_THE_UNDEAD_WITCH
+		case CREATURE_ID_EXOSSIL_THE_CHAOS_WING
 			ActionToFind = SKILL_SPACT_JYUSOU_GOUSHIN
 			gosub *AIFindAction
 			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_KESALANPATHARAN
-		case CREATURE_ID_BLACK_ANGEL_HAIR
-		case CREATURE_ID_MATANGODDESS
-			ActionToFind = SKILL_SPACT_DOWNPOUR_SPORE
+			ActionToFind = SKILL_SPACT_GROUP_HYPNOSIS
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
 		case CREATURE_ID_EHEKATL
-		case CREATURE_ID_GOD_INSIDE_EHEKATL
-		case CREATURE_ID_GAMBLER
 			ActionToFind = SKILL_SPACT_DESTINY_DICE
 			gosub *AIFindAction
 			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_DESKTOP_NAVY
-			ActionToFind = SKILL_SPACT_ROCKET_FIRE
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_MEWMEWMEW
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_ORICHAL_CHILD
-			ActionToFind = SKILL_SPELL_CONTINGENCY
+		case CREATURE_ID_GOD_INSIDE_EHEKATL
+			ActionToFind = SKILL_SPACT_DESTINY_DICE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_MEWMEWMEW
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_ALSAPIA_THE_MURDERER_MASK
+			ActionToFind = SKILL_SPACT_EMERGENCY_EVASION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_KILLING_DANCE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_MARY_THE_INSECT_MASTER
+			ActionToFind = SKILL_SPACT_VINDALIAN_JIUJITSU
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_ATTRIBUTE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_LANKATA_THE_LIGHTNING_OF_BLUE
+			ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_YACATECT
+			ActionToFind = SKILL_SPACT_GOLDEN_STORM
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_GOLD_RUSH
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_HYPER_YACATECT
+			ActionToFind = SKILL_SPACT_GOLDEN_STORM
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_GOLD_RUSH
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_ITZPALT
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_ELEMENTIA
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_THE_ELEMENT
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_ELEMENTIA
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_JURE
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_EXCESSIVE_HEAL
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_BLESSED_JURE
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_EXCESSIVE_HEAL
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_LULWY
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_TEMPEST_ARROW
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_DEVASTATE_LULWY
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_TEMPEST_ARROW
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_BUILDUP_OPATOS
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SUPER_VIBRATING_FIST
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_INSANE_KUMIROMI
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_INSANE_WAVE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_DEUS_EX_MANINA
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_MANIS_DISASSEMBLY
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_KUMIROMI
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_INSANE_WAVE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_MANI
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_MANIS_DISASSEMBLY
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak

@@ -206,10 +206,11 @@ TweakData(53, 4) = "Use CGX Arrow/Bolt/Ball Spell Animation."
 	listn(0, TWEAK_UI_SHOW_SPELLSTOCK_IN_SKILL_TRACKER) = "Show Spell Stock In Tracker." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_SHOW_SPELLSTOCK_IN_SKILL_TRACKER)
 	listn(0, 5) = "Display Pickpocket shortcut." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_DISPLAY_PICKPOCKET_SHORTCUT)
 	listn(0, 6) = "Report museum duplicates." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_REPORT_MUSEUM_DUPLICATES)
-	listn(0, 7) = "Return."
+	listn(0, 7) = "Draw stamina bar." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_DRAW_STAMINA_BAR)
+	listn(0, 8) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat 8
+	repeat 9
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
@@ -243,6 +244,9 @@ TweakData(53, 4) = "Use CGX Arrow/Bolt/Ball Spell Animation."
 				s = "Reports x/y positions of duplicated cards and figurines when the museum updates."
 			}
 			if ( cnt == 7 ) {
+				s = "Draw stamina bar instead of just displaying like Sp 12/23.\nIt's using the yellow (gauge) bar below health in interface.bmp.\nIf it looks weird check if your beautify does anything to that."
+			}
+			if ( cnt == 8 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -294,11 +298,16 @@ TweakData(53, 4) = "Use CGX Arrow/Bolt/Ball Spell Animation."
 		gosub *ToggleTweak
 	}
 	if ( key == key_select(7) ) {
-        snd SOUNDLIST_OK1
-        return
+		tc = TWEAK_CATEGORY_UI
+		tn = TWEAK_UI_DRAW_STAMINA_BAR
+		gosub *ToggleTweak
+	}
+	if ( key == key_select(8) ) {
+		snd SOUNDLIST_OK1
+		return
 	}
 	if ( key == key_cancel ) {
-        return
+		return
 	}
 	goto *UITweakMenu_loop
 
