@@ -11935,6 +11935,9 @@
 				if ( sdata(SKILL_NORMAL_TRAVELING, cnt) == 0 ) {
 					continue
 				}
+				if ( cnt == 0 ) {
+					continue
+				}
 				tc = cnt
 				skillexp SKILL_NORMAL_TRAVELING, tc, 5 + gdata(GDATA_TRAVEL_DISTANCE) * 2 / 5, 0, 1000
 				if ( cdata(CDATA_IMPRESSION, cnt) >= 100 ) {

@@ -2032,6 +2032,7 @@
 			case CREATURE_ID_CUPID_OF_LOVE
 			case CREATURE_ID_GUNFISH
 			case CREATURE_ID_XEREN_AUTO_TANK
+			case CREATURE_ID_ANDROID
 				ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
 				gosub *AIFindAction
 				gosub *AIAddAction
@@ -2070,11 +2071,6 @@
 				swbreak
 			case CREATURE_ID_MANDRAKE
 				ActionToFind = SKILL_SPACT_SHINING_WAVE
-				gosub *AIFindAction
-				gosub *AIAddAction
-				swbreak
-			case CREATURE_ID_ANDROID
-				ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
 				gosub *AIFindAction
 				gosub *AIAddAction
 				swbreak
@@ -2552,6 +2548,7 @@
 			swbreak
 		case CREATURE_ID_SHURAIDA_THE_EXPERT_MERC
 		case CREATURE_ID_ARIBEL_THE_WHITE_ARMS
+		case CREATURE_ID_LANKATA_THE_LIGHTNING_OF_BLUE
 			ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
 			gosub *AIFindAction
 			gosub *AIAddAction
@@ -2668,17 +2665,6 @@
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_OPATOS
-			ActionToFind = SKILL_SPACT_POSING
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_SUPER_VIBRATING_FIST
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
 		case CREATURE_ID_AJETALIO_THE_SEMINAR_LECTURER
 			ActionToFind = SKILL_SPACT_WIRE_WORLD
 			gosub *AIFindAction
@@ -2725,28 +2711,6 @@
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_EHEKATL
-			ActionToFind = SKILL_SPACT_DESTINY_DICE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_MEWMEWMEW
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_GOD_INSIDE_EHEKATL
-			ActionToFind = SKILL_SPACT_DESTINY_DICE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_MEWMEWMEW
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
 		case CREATURE_ID_ALSAPIA_THE_MURDERER_MASK
 			ActionToFind = SKILL_SPACT_EMERGENCY_EVASION
 			gosub *AIFindAction
@@ -2763,25 +2727,7 @@
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_LANKATA_THE_LIGHTNING_OF_BLUE
-			ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_FIRE_A_VOLLEY
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
 		case CREATURE_ID_YACATECT
-			ActionToFind = SKILL_SPACT_GOLDEN_STORM
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_GOLD_RUSH
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
 		case CREATURE_ID_HYPER_YACATECT
 			ActionToFind = SKILL_SPACT_GOLDEN_STORM
 			gosub *AIFindAction
@@ -2794,13 +2740,6 @@
 			gosub *AIAddAction
 			swbreak
 		case CREATURE_ID_ITZPALT
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_ELEMENTIA
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
 		case CREATURE_ID_THE_ELEMENT
 			ActionToFind = SKILL_SPACT_SPACE_RETENTION
 			gosub *AIFindAction
@@ -2810,13 +2749,6 @@
 			gosub *AIAddAction
 			swbreak
 		case CREATURE_ID_JURE
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_EXCESSIVE_HEAL
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
 		case CREATURE_ID_BLESSED_JURE
 			ActionToFind = SKILL_SPACT_SPACE_RETENTION
 			gosub *AIFindAction
@@ -2826,13 +2758,6 @@
 			gosub *AIAddAction
 			swbreak
 		case CREATURE_ID_LULWY
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_TEMPEST_ARROW
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
 		case CREATURE_ID_DEVASTATE_LULWY
 			ActionToFind = SKILL_SPACT_SPACE_RETENTION
 			gosub *AIFindAction
@@ -2841,14 +2766,7 @@
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_BUILDUP_OPATOS
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_SUPER_VIBRATING_FIST
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
+		case CREATURE_ID_KUMIROMI
 		case CREATURE_ID_INSANE_KUMIROMI
 			ActionToFind = SKILL_SPACT_SPACE_RETENTION
 			gosub *AIFindAction
@@ -2858,26 +2776,42 @@
 			gosub *AIAddAction
 			swbreak
 		case CREATURE_ID_DEUS_EX_MANINA
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_MANIS_DISASSEMBLY
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
-		case CREATURE_ID_KUMIROMI
-			ActionToFind = SKILL_SPACT_SPACE_RETENTION
-			gosub *AIFindAction
-			gosub *AIAddAction
-			ActionToFind = SKILL_SPACT_INSANE_WAVE
-			gosub *AIFindAction
-			gosub *AIAddAction
-			swbreak
 		case CREATURE_ID_MANI
 			ActionToFind = SKILL_SPACT_SPACE_RETENTION
 			gosub *AIFindAction
 			gosub *AIAddAction
 			ActionToFind = SKILL_SPACT_MANIS_DISASSEMBLY
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_EHEKATL
+		case CREATURE_ID_GOD_INSIDE_EHEKATL
+			ActionToFind = SKILL_SPACT_DESTINY_DICE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_MEWMEWMEW
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_OPATOS
+			ActionToFind = SKILL_SPACT_POSING
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SUPER_VIBRATING_FIST
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_BUILDUP_OPATOS
+			ActionToFind = SKILL_SPACT_SPACE_RETENTION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_SUPER_VIBRATING_FIST
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak

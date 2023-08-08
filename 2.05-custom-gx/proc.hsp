@@ -6443,20 +6443,23 @@
 	}
 	if ( potionspill | potionthrow ) {
 		if ( potionthrow ) {
-			efp = sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 10 + efp * potionthrow / 100
+			efp = sdata(SKILL_NORMAL_ALCHEMY, cc) * 4 + limit(cdata(CDATA_LEVEL, cc) * 8, 0, 8000) + efp * potionthrow / 100
 			efstatus = inv(INV_ITEM_STATUS, ci)
 		}
 	}
 	else {
-		efp = sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 10 + efp
+		efp = sdata(SKILL_NORMAL_ALCHEMY, cc) * 4 + limit(cdata(CDATA_LEVEL, cc) * 8, 0, 8000) + efp
 		efstatus = inv(INV_ITEM_STATUS, ci)
 		if ( synccheck(tc, -1) ) {
 			snd SOUNDLIST_DRINK1
 			txt lang(npcn(tc) + itemname(ci, 1) + "を飲み干した。", name(tc) + " drink" + _s(tc) + " " + itemname(ci, 1) + ".")
 		}
 	}
-	hoseim = limit(cdata(CDATA_LEVEL, cc) / 3, 0, 300)
+	hoseim = limit(cdata(CDATA_ENHANCE_SPELL, cc) * 2 / 3, 0, 1000) / 10 + limit(sdata(SKILL_ATTR_MAG, cc) / 5, 0, 300)
 	efp = efp * (100 + hoseim) / 100
+	if ( cdata(CDATA_EQUIP_WEIGHT, cc) < EQUIP_WEIGHT_CLASS_HEAVY & cdata(CDATA_EQUIP_WEIGHT, cc) >= EQUIP_WEIGHT_CLASS_MEDIUM & findbuff(cc, BUFF_MAGIC_EQUIP) != (-1) ) {
+		efp = efp * 6 / 5
+	}
 	gosub *effect
 	if ( ibit(ITEM_BIT_HAZARD, ci) == 1 ) {
 		snd SOUNDLIST_ATK_POISON
@@ -6467,16 +6470,10 @@
 	}
 	if ( inv(INV_ITEM_ID, ci) != ITEM_ID_HANDFUL_SNOW & inv(INV_ITEM_ID, ci) != ITEM_ID_BOTTLE_DYE ) {
 		if ( potionthrow != 90 ) {
-			skillexp SKILL_NORMAL_MAGIC_DEVICE, cc, 40
+			skillexp SKILL_NORMAL_ALCHEMY, cc, 50
 		}
 		else {
-			skillexp SKILL_NORMAL_MAGIC_DEVICE, cc, 2
-		}
-		if ( potionthrow != 90 ) {
-			skillexp SKILL_NORMAL_ALCHEMY, cc, 40
-		}
-		else {
-			skillexp SKILL_NORMAL_ALCHEMY, cc, 2
+			skillexp SKILL_NORMAL_ALCHEMY, cc, 5
 		}
 	}
 	if ( potionspill | potionthrow ) {
@@ -6783,9 +6780,17 @@
 		}
 		skillexp SKILL_NORMAL_LITERACY, cc, 25, 2
 	}
-	efp = sdata(SKILL_NORMAL_MEMORIZATION, cc) * 10 + efp
-	hoseim = limit(cdata(CDATA_LEVEL, cc) / 3, 0, 300)
-	efp = efp * (100 + hoseim) / 100
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_HARVEST | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_CONTINGENCY | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_HEALING_RAIN | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_DETECT_OBJECTS | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_KNOWLEDGE | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_MANA | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_HOLY_RAIN | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_HOLY_LIGHT | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_HOLY_VEIL | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_MAGICAL_MAP | inv(INV_ITEM_ID, ci) == ITEM_ID_SCROLL_INCOGNITO ) {
+		if ( sdata(SKILL_NORMAL_MEMORIZATION, cc) > 0 ) {
+			skillexp SKILL_NORMAL_MEMORIZATION, cc, 50
+			efp = sdata(SKILL_NORMAL_MEMORIZATION, cc) * 4 + efp + limit(cdata(CDATA_LEVEL, cc) * 8, 0, 8000)
+			hoseim = limit(cdata(CDATA_ENHANCE_SPELL, cc) * 2 / 3, 0, 1000) / 10 + limit(sdata(SKILL_ATTR_MAG, cc) / 5, 0, 300)
+			efp = efp * (100 + hoseim) / 100
+			if ( cdata(CDATA_EQUIP_WEIGHT, cc) < EQUIP_WEIGHT_CLASS_HEAVY & cdata(CDATA_EQUIP_WEIGHT, cc) >= EQUIP_WEIGHT_CLASS_MEDIUM & findbuff(cc, BUFF_MAGIC_EQUIP) != (-1) ) {
+				efp = efp * 6 / 5
+			}
+		}
+	}
 	gosub *effect
 	if ( cc == CHARA_PLAYER ) {
 		if ( obvious == 1 ) {
@@ -6825,7 +6830,7 @@
 			goto *zapStaffSkip
 		}
 	}
-	efp = efp * (100 + sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 16 + sdata(SKILL_NORMAL_MAGIC_CAPACITY, cc) * 6 + sdata(SKILL_ATTR_LER, cc) / 2) / 220
+	efp = sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 4 + efp + limit(cdata(CDATA_LEVEL, cc) * 8, 0, 8000)
 	hoseim = limit(cdata(CDATA_ENHANCE_SPELL, cc) * 2 / 3, 0, 1000) / 10 + limit(sdata(SKILL_ATTR_MAG, cc) / 5, 0, 300)
 	efp = efp * (100 + hoseim) / 100
 	if ( cdata(CDATA_EQUIP_WEIGHT, cc) < 35000 & cdata(CDATA_EQUIP_WEIGHT, cc) >= 15000 & findbuff(cc, BUFF_MAGIC_EQUIP) != (-1) ) {
@@ -8122,7 +8127,7 @@
 				}
 				if ( efid == SKILL_SPELL_CURE_OF_JURE ) {
 					if ( synccheck(tc, -1) ) {
-						txt lang(name(tc) + "は完全に回復した。", name(tc) + " " + is(tc) + " completely healed.")
+						txt lang(name(tc) + "は急速に回復した。", name(tc) + " " + is(tc) + " rapidly healed.")
 					}
 				}
 				gosub *effect_heal
@@ -24765,12 +24770,13 @@
 		hh = 25
 	}
 	else {
-		hh = 0
+		hh = 1
 	}
 	if ( cdata(CDATA_SHIFT_FORM, cc) == SHIFT_FORM_DELTA ) {
 		hh += 25
 	}
 	iyasi = role(dice1, dice2, bonus) * (100 + hh) / 100 + cdata(CDATA_MAX_HP, tc) / 50
+	rankheal = 0
 	repeat subloop
 		healhp tc(cnt), iyasi
 		healcon tc(cnt), CONDITION_FEAR

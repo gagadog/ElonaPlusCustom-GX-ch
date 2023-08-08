@@ -169,7 +169,7 @@
 	strpotion = lang("ポーション", "potion")
 	strspellbook = lang("魔法書", "spellbook")
 	strscroll = lang("巻物", "scroll")
-	strstaff = lang("魔法棒", "rod")
+	strstaff = lang("魔杖", "rod")
 	strfix = lang("修正", "bonus")
 	strsex = lang("性別", "sex")
 	strdoomed = lang("堕落した", "doomed")

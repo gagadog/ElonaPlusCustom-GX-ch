@@ -265,7 +265,7 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_MEMORIZATION) = SKILL_ATTR_LER, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
 	skillname(SKILL_NORMAL_MEMORIZATION) = lang("暗記", "Memorization")
-	skilldesc(SKILL_NORMAL_MEMORIZATION) = lang("書物の知識や攻撃の分析結果を記憶する", "Memorize knowledge of books and analysis results.")
+	skilldesc(SKILL_NORMAL_MEMORIZATION) = lang("書物や攻撃の分析結果を記憶/巻物強化", "Memorize spells. Enhance scrolls. Analyse enemies.")
 	skillencdesc(SKILL_NORMAL_MEMORIZATION) = lang("知識の忘却を防ぐ", "enhances your memory.")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_DUAL_WIELD) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
@@ -310,7 +310,7 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_MAGIC_DEVICE) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
 	skillname(SKILL_NORMAL_MAGIC_DEVICE) = lang("魔道具", "Magic Device")
-	skilldesc(SKILL_NORMAL_MAGIC_DEVICE) = lang("魔道具を効果的に扱う", "Improves effectiveness of magic devices.")
+	skilldesc(SKILL_NORMAL_MAGIC_DEVICE) = lang("魔道具を効果的に扱う/魔杖強化", "Improves effectiveness of magic devices. Enhance Rods.")
 	skillencdesc(SKILL_NORMAL_MAGIC_DEVICE) = lang("魔道具の効果をあげる", "enhances the power of magical devices.")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_DISARM_TRAP) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
@@ -330,7 +330,7 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_ALCHEMY) = SKILL_ATTR_LER, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
 	skillname(SKILL_NORMAL_ALCHEMY) = lang("錬金術", "Alchemy")
-	skilldesc(SKILL_NORMAL_ALCHEMY) = lang("様々な材料を調合し、アイテムを作り出す", "Enables you to perform alchemy.")
+	skilldesc(SKILL_NORMAL_ALCHEMY) = lang("様々な材料を調合/ポーション強化", "Enables you to perform alchemy. Enhance Potions.")
 	skillencdesc(SKILL_NORMAL_ALCHEMY) = lang("錬金の腕をあげる", "grants you knowledge of alchemy.")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_JEWELER) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0

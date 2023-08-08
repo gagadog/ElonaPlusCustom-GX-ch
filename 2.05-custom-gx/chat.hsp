@@ -20308,6 +20308,7 @@
 		music = MUSICLIST_MCWEDDING
 		gosub *music_play
 		await 500
+		kigenbk = cdata(CDATA_EVOCHAT_POINTS, tc)
 		evochat = 1
 		if ( gdata(GDATA_WEATHER) == WEATHER_RAIN ) {
 			envwprev = 75 + 1
@@ -23459,12 +23460,16 @@
 		picload exedir + "graphic\\face1" + devfile + ".bmp", 1
 		gsel 0
 		evochat = 0
+		if ( cdata(CDATA_EVOCHAT_POINTS, tc) - kigenbk > 0 ) {
+			modimp tc, (cdata(CDATA_EVOCHAT_POINTS, tc) - kigenbk) * 4
+		}
 		gosub *music_play
 	}
 	if ( cdata(CDATA_EVOCHAT_POINTS, tc) >= 10 ) {
 		cdata(CDATA_EMO_ICON, tc) = 17 + 100 * 3
 		cdata(CDATA_EVOCHAT_POINTS, tc) = 10
 	}
+	kigenbk = 0
 	if ( scenemode == 0 ) {
 		screenupdate = -1
 		gosub *screen_draw

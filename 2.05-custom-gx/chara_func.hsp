@@ -572,6 +572,11 @@
 			}
 		}
 	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) <= (-1) & cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) >= (-9) ) {
+		if ( locvar_modimp_i > 0 ) {
+			locvar_modimp_i = locvar_modimp_i * 3 / 2
+		}
+	}
 	cdata(CDATA_IMPRESSION, modimp_charid) += locvar_modimp_i
 	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp_charid) >= 0 ) {
 		if ( cdata(CDATA_IMPRESSION, modimp_charid) > 400 ) {
@@ -661,6 +666,11 @@
 			if ( locvar_modimp2_p < rnd(10) ) {
 				locvar_modimp2_i = 1
 			}
+		}
+	}
+	if ( cdata(CDATA_HEART_LOCK_RELATION, modimp2_charid) <= (-11) ) {
+		if ( locvar_modimp2_i > 0 ) {
+			locvar_modimp2_i = locvar_modimp2_i * 3 / 2
 		}
 	}
 	cdata(CDATA_MASTER_SERVANT, modimp2_charid) += locvar_modimp2_i
@@ -2996,15 +3006,26 @@
 
 #define global healhp(%1,%2,%3=1) _healhp %1, %2, %3
 #deffunc _healhp int healhp_charid, int healhp_amount, int healhp_showpopup
+	locvar_healhp_hpbk = cdata(CDATA_HP, healhp_charid)
 	cdata(CDATA_HP, healhp_charid) += healhp_amount
 	if ( cdata(CDATA_HP, healhp_charid) > cdata(CDATA_MAX_HP, healhp_charid) ) {
 		cdata(CDATA_HP, healhp_charid) = cdata(CDATA_MAX_HP, healhp_charid)
 	}
+	locvar_healhp_kaihuku = cdata(CDATA_HP, healhp_charid) - locvar_healhp_hpbk
+	if ( cdata(CDATA_DRAIN_HP, healhp_charid) < 100 ) {
+		if ( rankheal >= 0 ) {
+			cdata(CDATA_DRAIN_HP, healhp_charid) += locvar_healhp_kaihuku * 40 / cdata(CDATA_MAX_HP, healhp_charid)
+			if ( cdata(CDATA_DRAIN_HP, healhp_charid) >= 100 ) {
+				cdata(CDATA_DRAIN_HP, healhp_charid) = 99
+			}
+		}
+	}
+	rankheal = 0
 
     /********** RUIN0X11 CUSTOM - BEGINNING **********/
 
     if ( healhp_showpopup & synccheck(healhp_charid, -1) ) {
-        DamagePopupAdd "" + healhp_amount, healhp_charid, DMGPOPUP_HEAL, 0
+        DamagePopupAdd "" + locvar_healhp_kaihuku, healhp_charid, DMGPOPUP_HEAL, 0
     }
 
     /********** RUIN0X11 CUSTOM - ENDING **********/

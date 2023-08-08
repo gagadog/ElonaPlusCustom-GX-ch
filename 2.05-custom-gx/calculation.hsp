@@ -2284,9 +2284,11 @@
 				}
 			}
 			if ( rnd(6) == 0 | findbuff(r1, BUFF_REGENERATION) != (-1) ) {
+				rankheal = -1
 				healhp r1, iyasi, FALSE
 			}
 			if ( rnd(6) == 0 & cdata(CDATA_HUNGER, r1) >= 10000 ) {
+				rankheal = -1
 				healhp r1, iyasi, FALSE
 			}
 			if ( rnd(5) == 0 ) {

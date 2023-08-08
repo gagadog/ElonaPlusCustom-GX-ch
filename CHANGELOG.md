@@ -1,3 +1,13 @@
+# 2.19R.1.0
+
+## Added
+- Ported all changes from Elona+ 2.19R.
+- Added a UI tweak to display stamina bar instead of stamina number.
+
+## Changed
+- Added (machine) translations for some items. 
+- Added missing actions to Custom AI teaching menu.
+
 # 2.19.1.0
 
 ## Added

@@ -283,7 +283,7 @@
 	}
 	if ( inv(INV_ITEM_GOD, ci) == GOD_ITZPALT ) {
 		buff = lang("イツパロトルは元素を司る神です。イツパロトルを信仰した者は、魔力を大気から吸収し、元素に対する保護を受けることができます。<p><p>", "Itzpalt is a god of elements. Those faithful to Itzpalt are<br>protected from elemental damage and learn to absorb mana from<br>their surroundings.<p>")
-		buff += lang("　捧げ物: 死体 / 魔導具<p>", "Offering: Corpses/Staves<p>")
+		buff += lang("　捧げ物: 死体 / 魔杖<p>", "Offering: Corpses/Rods<p>")
 		buff += lang("ボーナス: 魔力 / 瞑想 / 火炎耐性 / 冷気耐性 / 電撃耐性<p>", "Bonus   : MAG/Meditation/RES Fire/RES Cold/RES Lightning<p>")
 		buff += lang("特殊能力: 魔力の吸収(スキル:周囲の空気からマナを吸い出す)<p>", "Ability : Absorb magic power (Absorbs mana from the air.)<p>")
 	}

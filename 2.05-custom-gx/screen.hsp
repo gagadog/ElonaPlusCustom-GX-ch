@@ -6087,7 +6087,7 @@
 	if ( tc != (-1) & charaGivesExp(tc) == FALSE ) {
 		return
 	}
-	skillexp SKILL_NORMAL_MAGIC_DEVICE, cc, 40
+	skillexp SKILL_NORMAL_MAGIC_DEVICE, cc, 50
 	return
 
 *expFishing
