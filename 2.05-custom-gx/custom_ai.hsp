@@ -1274,12 +1274,12 @@
 	return
 
 *AIAbilityLearnMenu
-	redraw 0
-	s = "Tactical Instructions", strhint3b
-	display_window (windoww - 680) / 2 + inf_screenx, winposy(500, 1) + 20, 680, 500
-	s = "Teach Your Pet"
-	gosub *screen_drawMsg2
 	NumActions = 0
+	listmax = 0
+	page = 0
+	pagesize = 16
+	cs = 0
+	cs_bk = -1
 
 	// TODO: Everytime Ano adds a player learnable action, modify this whitelist to make it learnable.
 	repeat (MAX_SKILL - STARTING_SKILL_SPACT), STARTING_SKILL_SPACT
@@ -1290,37 +1290,81 @@
 					gosub *GetActionName
 
 					listn(0, NumActions) = ActionName
-					key_list(NumActions) = cnt
+					list(0, NumActions) = cnt
 					NumActions++
+					listmax++
 				}
 			}
 		}
 	loop
 
 	listn(0, NumActions) = "Back"
-	key_list(NumActions) = 999
+	list(0, NumActions) = 999
+	listmax++
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat NumActions+1
-		keyrange = cnt + 1
-		pos wx + 18 + (150 * (cnt/15)), (wy + 60 + cnt * 19 - 2) - (283 * (cnt/15))
-		cs_list listn(0, cnt), wx + 44 + (150 * (cnt/15)), (wy + 60 + cnt * 19 - 1) - (284 * (cnt/15)), 19
+*AIAbilityLearnMenu_pgchk
+	redraw 0
+	page_check
+*AIAbilityLearnMenu_loop
+	redraw 0
+	
+	s = "Tactical Instructions", strhint3b
+	display_window (windoww - 680) / 2 + inf_screenx, winposy(500, 1) + 20, 680, 500
+	s = "Teach Your Pet"
+	gosub *screen_drawMsg2
+	keyrange = 0
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
+		key_list(cnt) = key_select(cnt)
+		keyrange++
+		display_key wx + 58, wy + 66 + cnt * 19 - 2, cnt
 	loop
-
+	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	cs_listbk
+	repeat pagesize
+		p = pagesize * page + cnt, pagesize * ((page+1)\(pagemax+1)) + cnt, pagesize * ((page+2)\(pagemax+1)) + cnt
+		if ( p < listmax ) {
+			s = listn(0, p)
+			cs_list s, wx + 84, wy + 66 + cnt * 19 - 1, 19
+		}
+		if ( p(1) < listmax & pagemax >= 2 ) {
+			pos wx + 284, wy + 66 + cnt * 19 - 1
+			mes listn(0, p(1))
+		}
+		if ( p(2) < listmax & pagemax >= 3 ) {
+			pos wx + 484, wy + 66 + cnt * 19 - 1
+			mes listn(0, p(2))
+		}
+	loop
+	if ( keyrange != 0 ) {
+		cs_bk = cs
+	}
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 	gosub *PrintAIInfo
 	cs_bk = cs
 	redraw 1
+
 	await cfg_wait1
 	key_check
 	cursor_check
+	p = -1
+	repeat keyrange
+		if ( key == key_select(cnt) ) {
+			p = list(0, pagesize * page + cnt)
+			break
+		}
+	loop
 
 	repeat (MAX_SKILL - STARTING_SKILL_SPACT), STARTING_SKILL_SPACT
-		if ( key == cnt ) {
+		if ( p == cnt ) {
 			snd SOUNDLIST_OK1
 			LoopCount = 0
 			while ( LoopCount < 20 )
-				if ( CAIAction2(LoopCount, tc) == key ) {
+				if ( CAIAction2(LoopCount, tc) == p ) {
 					txt "" + name(tc) + " already knows that ability."
 					p = 0
 					break
@@ -1337,23 +1381,26 @@
 				LoopCount++
 			wend
 
-			CAIActionLearning(tc) = key
+			CAIActionLearning(tc) = p
 			CAIActionLearnProgress(tc) = 0
 
 			break
 		}
 	loop
-
-	if ( key == 999 ) {
+	if ( p == 999 ) {
 		snd SOUNDLIST_OK1
 		cs = 0
+		pagesize = 0
 		goto *AITeachConfigMenu
 	}
+
+	page_change *AIAbilityLearnMenu_pgchk
 	if ( key == key_cancel ) {
 		cs = 0
+		pagesize = 0
 		goto *AITeachConfigMenu
 	}
-	goto *AIAbilityLearnMenu
+	goto *AIAbilityLearnMenu_loop
 	return
 
 *AIConfigMenu
