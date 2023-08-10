@@ -1721,7 +1721,7 @@
 		}
 		if ( gdata(GDATA_FLAG_MAIN) >= 760 ) {
 			if ( gdata(GDATA_FLAG_MAIN_CHAOS_CRADLE_4) >= 100 ) {
-				chatMore lang("混沌の神が倒され、ロスリアに集まっていた混沌の精霊たちも各国の連合軍に鎮圧されました。事実上、混沌の軍勢は滅んだことになりますね。ロストイルヴァの情報も大体集まりましたし、ようやく私も落ち着けます。", "The God of Chaos has been defeated, and the spirits of chaos that had gathered in Rosuria have been overthrown by the combined forces of all the allied nations as well. That means the forces of Chaos have been effectively wiped out. Having gathered as much information on Lost Irva as I could manage, I can settle down at last.")
+				chatMore lang("混沌の神が倒され、ロスリアに集まっていた混沌の精霊たちも各国の連合軍に鎮圧されました。事実上、混沌の軍勢は滅んだことになりますね。ロストイルヴァの情報も大体集まりましたし、ようやく私も落ち着けます。", "The God of Chaos has been defeated, and the spirits of chaos that had gathered in Lothria have been overthrown by the combined forces of all the allied nations as well. That means the forces of Chaos have been effectively wiped out. Having gathered as much information on Lost Irva as I could manage, I can settle down at last.")
 			}
 			if ( gdata(GDATA_FLAG_MAIN_CHAOS_CRADLE_4) < 100 ) {
 				chatMore lang("ええっ？混沌の神を倒した…のですか？あなたが？", "What? You defeated the God of Chaos? *You* did that?")
@@ -9417,7 +9417,7 @@
 		if ( gdata(GDATA_FLAG_MAIN) >= 760 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 352) < 100 ) {
 				chatMore lang("君はよくやってくれたね。けれど大きすぎる力は人の恐怖を煽ることを忘れてはいけない。そして、情報が思わぬスピードで伝わることも。", "You've done well. But don't forget that too much power can make people fearful, and also that information can be transmitted with unexpected speed.")
-				chatMore lang("混沌の神が君に討伐されたという情報が、一部の勢力にもう伝わってしまったようだね。特にロスリアという国の上層部は、君を人類共通の新たな脅威ということにしようと画策している。気をつけたほうがいいね。", "It seems that some of the greater powers have already caught word that you've defeated the God of Chaos. In particular, the upper echelons of the nation of Rosuria are plotting to denounce you as the latest menace to all of humankind. You'd better be careful.")
+				chatMore lang("混沌の神が君に討伐されたという情報が、一部の勢力にもう伝わってしまったようだね。特にロスリアという国の上層部は、君を人類共通の新たな脅威ということにしようと画策している。気をつけたほうがいいね。", "It seems that some of the greater powers have already caught word that you've defeated the God of Chaos. In particular, the upper echelons of the nation of Lothria are plotting to denounce you as the latest menace to all of humankind. You'd better be careful.")
 				chatMore lang("民衆には伝わっていないようだけど、ほとぼりが冷めるまではあまり派手に動かず、一時的に身を隠したほうが得策かもしれないね。その頃には、例の報酬も用意できていると思う。", "The people don't seem to have gotten the message yet, but it might be a good idea to keep a low profile and go into hiding for a while until things cool down. By that time, I'm sure your reward will be ready.")
 				gdata(STARTING_GDATA_FLAG + 352) += 100
 			}
@@ -12191,7 +12191,7 @@
 				goto *chat_end
 			}
 			if ( gdata(GDATA_FLAG_MAIN) == 595 ) {
-				chatMore lang("へぇー。ロスリアの連中になかなか出くわさないと思ったら、本隊はまだ上の階層にいるんだ。やっぱり少数精鋭が身軽だよね！あまりに大所帯だと思うように進めないんじゃないかなぁ。", "Well, well. Just as I thought I'd barely seen any Rosurians around these parts, it turns out that their main army is still in the upper levels. It sure is easier to send down only a small group of highly trained elites. I guess we won't be able to advance as far as we want if we're too large of a group."), strbye
+				chatMore lang("へぇー。ロスリアの連中になかなか出くわさないと思ったら、本隊はまだ上の階層にいるんだ。やっぱり少数精鋭が身軽だよね！あまりに大所帯だと思うように進めないんじゃないかなぁ。", "Well, well. Just as I thought I'd barely seen any Lothrians around these parts, it turns out that their main army is still in the upper levels. It sure is easier to send down only a small group of highly trained elites. I guess we won't be able to advance as far as we want if we're too large of a group."), strbye
 				gdata(GDATA_FLAG_MAIN) = 600
 				goto *chat_end
 			}
@@ -12464,7 +12464,7 @@
 			if ( gdata(GDATA_FLAG_MAIN) == 735 ) {
 				chatMore lang("どうだ、次元アンカーの威力は？物理的な力では絶対に抜け出せないぞ。", "So, what do you think of this dimensional anchor's power? You'll never get out of it with physical force.")
 				chatMore lang("こちらガベラだ。通信状況は良好のようだな。" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "、あの怪物がテスカトリポカなのか？", "Gavela here. It seems that I'm getting a good signal from this place. " + cdatan(CDATAN_NAME, CHARA_PLAYER) + ", is that monster Tezcatlipoca?")
-				chatMore lang("えっ、違う？？まぁいい。ロスリアでの戦闘直後、急に心配になってな。こいつを飛ばして正解だった。", "...What? He's not? Well, anyway. Right after the battle in Rosalia, I got worried all of a sudden. It was a good thing I flew this little guy back in for one last bout.")
+				chatMore lang("えっ、違う？？まぁいい。ロスリアでの戦闘直後、急に心配になってな。こいつを飛ばして正解だった。", "...What? He's not? Well, anyway. Right after the battle in Lothria, I got worried all of a sudden. It was a good thing I flew this little guy back in for one last bout.")
 				chatList 1, lang("これなら勝てる！", "We can win this!")
 				chatList 2, lang("無理だ、下がれ！", "It's impossible, get back!")
 				chatList 3, lang("A0-Iって何？", "What is A0-I?")
@@ -18424,21 +18424,21 @@
 			ulpb1 = limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc) + cdata(CDATA_MASTER_SERVANT, tc)) / 5, 0, 100)
 			ulpb2 = limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc) + cdata(CDATA_MASTER_SERVANT, tc)) / 10 - 5, 0, 90)
 			ulpb3 = limit((sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + sdata(SKILL_NORMAL_LOCK_PICKING, tc) + cdata(CDATA_MASTER_SERVANT, tc)) / 20 - 10, 0, 80)
-			chatList 119, lang("[開錠成功率" + ulp1 + "％]仲間として共に戦ってくれ", "[Unlock success rate " + ulp1 + "%]Fight together as allies.")
-			chatList 120, lang("[開錠成功率" + ulp1 + "％]友達になろう", "[Unlock success rate " + ulp1 + "%]Let's just be friends.")
-			chatList 121, lang("[開錠成功率" + ulp1 + "％]君と競い合っていきたい", "[Unlock success rate " + ulp1 + "%]I want to compete with you.")
-			chatList 122, lang("[開錠成功率" + ulp2 + "％]君に恋している", "[Unlock success rate " + ulp2 + "%]I'm in love with you.")
-			chatList 123, lang("[開錠成功率" + ulp2 + "％]色々と教わっていきたい", "[Unlock success rate " + ulp2 + "%]I want you to teach me various things.")
-			chatList 124, lang("[開錠成功率" + ulp3 + "％]君を導いていきたい", "[Unlock success rate " + ulp3 + "%]I want to teach you various things.")
-			chatList 125, lang("[開錠成功率" + ulp3 + "％]大事な家族だと思っている", "[Unlock success rate " + ulp3 + "%]I think of you as an important family member.")
-			chatList 126, lang("[開錠成功率" + ulpb1 + "％]契約を結びたい", "[Unlock success rate " + ulpb1 + "%]I want to form a contract with you.")
-			chatList 127, lang("[開錠成功率" + ulpb2 + "％]お前はペットだ！", "[Unlock success rate " + ulpb2 + "%]You are my pet!")
-			chatList 128, lang("[開錠成功率" + ulpb3 + "％]忠誠を誓ってほしい", "[Unlock success rate " + ulpb3 + "%]I want you to pledge allegiance to me.")
+			chatList 119, lang("[開錠成功率" + ulp1 + "％]仲間として共に戦ってくれ", "[" + ulp1 + "% Unlock] Let's fight together as allies.")
+			chatList 120, lang("[開錠成功率" + ulp1 + "％]友達になろう", "[" + ulp1 + "% Unlock] Let's just be friends.")
+			chatList 121, lang("[開錠成功率" + ulp1 + "％]君と競い合っていきたい", "[" + ulp1 + "% Unlock] I want to compete with you.")
+			chatList 122, lang("[開錠成功率" + ulp2 + "％]君に恋している", "[" + ulp2 + "% Unlock] I'm in love with you.")
+			chatList 123, lang("[開錠成功率" + ulp2 + "％]色々と教わっていきたい", "[" + ulp2 + "% Unlock] I want you to teach me various things.")
+			chatList 124, lang("[開錠成功率" + ulp3 + "％]君を導いていきたい", "[" + ulp3 + "% Unlock] I want to teach you various things.")
+			chatList 125, lang("[開錠成功率" + ulp3 + "％]大事な家族だと思っている", "[" + ulp3 + "% Unlock] I think of you as an important family member.")
+			chatList 126, lang("[開錠成功率" + ulpb1 + "％]契約を結びたい", "[" + ulpb1 + "% Unlock] I want to form a contract with you.")
+			chatList 127, lang("[開錠成功率" + ulpb2 + "％]お前はペットだ！", "[" + ulpb2 + "% Unlock] You are my pet!")
+			chatList 128, lang("[開錠成功率" + ulpb3 + "％]忠誠を誓ってほしい", "[" + ulpb3 + "% Unlock] I want you to pledge allegiance to me.")
 			if ( cbit(CHARA_BIT_HEARTLOCK_CAREFREE, tc) != TRUE ) {
-				chatList 129, lang("[開錠成功率" + ulpb2 + "％]【君の助けになりたい】", "[Unlock success rate " + ulpb2 + "%]<I want to be your help...>")
+				chatList 129, lang("[開錠成功率" + ulpb2 + "％]【君の助けになりたい】", "[" + ulpb2 + "% Unlock] <I want to be your help...>")
 			}
 			if ( cbit(CHARA_BIT_HEARTLOCK_DANGEROUS, tc) != TRUE ) {
-				chatList 130, lang("[開錠成功率" + ulpb3 + "％]【本当の君を晒して】\t", "[Unlock success rate " + ulpb3 + "%]<Show me the your real self...>")
+				chatList 130, lang("[開錠成功率" + ulpb3 + "％]【本当の君を晒して】\t", "[" + ulpb3 + "% Unlock] <Show me your real self...>")
 			}
 		}
 		chatList 131, lang("戻る", "<Return>")
@@ -22941,7 +22941,7 @@
 			goto *chat_end
 		}
 		if ( chatval == 37 ) {
-			chatMore lang("ロスリアの特務部隊が神の間を目指しているのは知っている" + _kana(3) + "。隊員のレベルは164、それを率いる蒼天の稲妻『ランカータ』はレベル168" + _da(3) + "。", "Do you know about the special task force from Rosuria that's aiming to reach the Eternal Seal? The squad's level is 164, and its leader, <Lankata> the lightning of blue, is level 168.")
+			chatMore lang("ロスリアの特務部隊が神の間を目指しているのは知っている" + _kana(3) + "。隊員のレベルは164、それを率いる蒼天の稲妻『ランカータ』はレベル168" + _da(3) + "。", "Do you know about the special task force from Lothria that's aiming to reach the Eternal Seal? The squad's level is 164, and its leader, <Lankata> the lightning of blue, is level 168.")
 			chatMore lang("ランカータと強化兵は高い魔法耐性を持っているから魔法属性の魔法は悪手" + _dana(3) + "。強化兵のほうは再生能力も併せ持っていてタフだから後に回したいところだけど、異次元の手で敵を引き寄せるのが得意" + _da(3) + "。壁生成や煙幕で視線を切ると邪魔されずに済む" + _yo(3) + "。", "Lankata and her troops have high magic resistance, so using magic attribute spells is a bad idea. The troops themselves will be tough to break though since they also have decent regenerative abilities, so leaving them for later might be an option, but they're skilled at pulling enemies back towards them with Draw Shadow. If you cut off their line of sight with Create Wall or smoke screens, you'll be able to get past them.")
 			chatMore lang("特務部隊の正規メンバーは射撃と回復魔法を持っているだけで特に脅威にはならない" + _daro(3) + "。まずは、死を恐れず突撃してくる歴戦の老兵から処理するといいと思" + _u(3) + "。いずれも通常物理攻撃がメインのようだから、PVとDVを重視するべき" + _da(3) + "。", "The normal ranks of the special forces will not be a particular threat, as they only have shooting and recovery magic. I think it would be best to deal with the old guard first, who will charge at you without fear of death. It seems that they mostly use physical attacks, so you should focus on increasing your PV and DV.")
 			chatMore lang("そうそう。情報によると連中は消耗を抑えるために交戦を最小限にしているらしい" + _yo(3) + "。無理矢理突破して先に進んでしまえば、わざわざ追撃してこないんじゃない" + _kana(3) + "。", "Here's another tip. According to my sources, the squad is trying to minimize hostile engagements in order to conserve their energy. If you can force your way past them and proceed onwards, they probably won't bother to come after you.")
@@ -24075,12 +24075,11 @@
 			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-4) ) {
 				s = _impressiona4(implevel(cdata(CDATA_IMPRESSION, tc)))
 			}
-			// CUSTOM: I flipped 5 and 6 because it's weird
 			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-5) ) {
-				s = _impressiona6(implevel(cdata(CDATA_IMPRESSION, tc)))
+				s = _impressiona5(implevel(cdata(CDATA_IMPRESSION, tc)))
 			}
 			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-6) ) {
-				s = _impressiona5(implevel(cdata(CDATA_IMPRESSION, tc)))
+				s = _impressiona6(implevel(cdata(CDATA_IMPRESSION, tc)))
 			}
 			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-7) ) {
 				s = _impressiona7(implevel(cdata(CDATA_IMPRESSION, tc)))

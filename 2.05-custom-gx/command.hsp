@@ -14520,6 +14520,21 @@
 	dbmode = DBMODE_DESC
 	gosub *db_item
 
+	/********** CUSTOM - BEGINNING **********/ // Shows creature card info on corpses, cards, and figures
+
+	if ( inv(INV_ITEM_SUB_NAME, ci) != 0 ) {
+		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_CORPSE | inv(INV_ITEM_ID, ci) == ITEM_ID_CARD | inv(INV_ITEM_ID, ci) == ITEM_ID_FIGURINE ) {
+			dbid_bk = dbid
+			dbid = inv(INV_ITEM_SUB_NAME, ci)
+			gosub *db_card@
+			description(1) = description(0)
+			description(0) = cardrefskill
+			dbid = dbid_bk
+		}
+	}
+
+	/********** CUSTOM - ENDING **********/
+
 	/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Shows item sell price if the item quality is known
 
 	if ( inv(INV_ITEM_KNOWN, ci) >= ITEM_KNOWN_QUALITY ) {

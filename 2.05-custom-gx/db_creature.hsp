@@ -36736,14 +36736,8 @@
 		if ( dbmode == DBMODE_FLAVOR_ANGERED ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			if ( jp ) {
-				txt " *ドスン* "
-				return 1
-			}
-			else {
-				txt "*THUMP*"
-				return 1
-			}
+			txt lang(" *ドスン* ", "*THUMP*")
+			return 1
 		}
 		if ( dbmode == DBMODE_REF_SPEC ) {
 			if ( dbspec == DBSPEC_CHARA_LOOT ) {
@@ -36818,14 +36812,8 @@
 		if ( dbmode == DBMODE_FLAVOR_ANGERED ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			if ( jp ) {
-				txt " *ドスン* "
-				return 1
-			}
-			else {
-				txt "*THUMP*"
-				return 1
-			}
+			txt lang(" *ドスン* ", "*THUMP*")
+			return 1
 		}
 		if ( dbmode == DBMODE_ON_EAT ) {
 			gosub *eatEND
@@ -36904,28 +36892,22 @@
 	}
 	if ( dbid == CREATURE_ID_EIGHTY_SHAKU ) {
 		if ( dbmode == DBMODE_FLAVOR_PASSIVE ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「ぽ」", "「ぽぽ」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「ぽ」", cnvtalk("Po.")), lang("「ぽぽ」", cnvtalk("Po. Po."))
+			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_ANGERED ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「ぽぽぽ」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「ぽぽぽ」", cnvtalk("Popopo."))
+			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_DEATH ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「ぽぽっ！？」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「ぽぽっ！？」", cnvtalk("Popo-!?"))
+			return 1
 		}
 		if ( dbmode == DBMODE_REF_SPEC ) {
 			if ( dbspec == DBSPEC_CHARA_LOOT ) {
@@ -37215,36 +37197,28 @@
 	}
 	if ( dbid == CREATURE_ID_YOUNG_SWALLOW ) {
 		if ( dbmode == DBMODE_FLAVOR_PASSIVE ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「ちーちー」", "「おなかすいた」", "「ちゅん」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「ちーちー」", cnvtalk("Twit. Twit.")), lang("「おなかすいた」", cnvtalk("Hungry.")), lang("「ちゅん」", cnvtalk("Chun."))
+			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_DEATH ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「ちちー！」", "「ぢゅっ…」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「ちちー！」", cnvtalk("Twit- Twit!")), lang("「ぢゅっ…」", cnvtalk("Twit.."))
+			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_WELCOME ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「やぬしかー」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「やぬしかー」", cnvtalk("Well come~"))
+			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_KILL ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「つかれた」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「つかれた」", cnvtalk("Sleepy..."))
+			return 1
 		}
 		if ( dbmode == DBMODE_REF_SPEC ) {
 			if ( dbspec == DBSPEC_CHARA_LOOT ) {
@@ -37310,44 +37284,34 @@
 	}
 	if ( dbid == CREATURE_ID_MAGIC_BEE ) {
 		if ( dbmode == DBMODE_FLAVOR_PASSIVE ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「いもうとたちのためにがんばるぞ！」", "「おいけのまわりにおはながさいたよ♪」", "「みてみて！じょうずにおどれてる？」", "「ママだいすき！えへへ」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「いもうとたちのためにがんばるぞ！」", cnvtalk("We'll do our best for the little ones!")), lang("「おいけのまわりにおはながさいたよ♪」", cnvtalk("There's a flower blooming all around me~")), lang("「みてみて！じょうずにおどれてる？」", cnvtalk("Check it out! Are we doing it well?")), lang("「ママだいすき！えへへ」", cnvtalk("I love you, Mum! Hehehe."))
+			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_ANGERED ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「ぶんぶん！」", "「こらー！ママみたいにおこりますよ！」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「ぶんぶん！」", cnvtalk("Vroomoom!")), lang("「こらー！ママみたいにおこりますよ！」", cnvtalk("Hey! I'll get mad just like my mum!"))
+			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_DEATH ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「がんばった…のに…」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「がんばった…のに…」", cnvtalk("I tried.. but.."))
+			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_WELCOME ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「おおやさ〜ん！おかえりなさ〜い！」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「おおやさ〜ん！おかえりなさ〜い！」", cnvtalk("Paaapa! Welcome home~"))
+			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_KILL ) {
-			if ( jp ) {
-				txtmore
-				txtef COLOR_SKY_BLUE
-				txt "「ミツもってないの？」"
-				return 1
-			}
+			txtmore
+			txtef COLOR_SKY_BLUE
+			txt lang("「ミツもってないの？」", cnvtalk("Don't you have any honey?"))
+			return 1
 		}
 		if ( dbmode == DBMODE_REF_SPEC ) {
 			if ( dbspec == DBSPEC_CHARA_LOOT ) {
