@@ -1,3 +1,14 @@
+# 2.19R.1.1
+
+## Added
+- Added (machine) translations for some cards, items.
+
+## Fixed
+- Some unnecessary changes that causes crash or confusion.
+- Custom AI teach page overflow problem.
+- Necromancy mobs evolved by evolution tweak.
+- Plantinum count not refreshed after training.
+
 # 2.19R.1.0
 
 ## Added
