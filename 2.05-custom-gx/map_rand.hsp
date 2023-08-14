@@ -416,9 +416,11 @@
 		rdsize = rw * rh
 		/********** CUSTOM NEFIA TYPES - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
-			currentroomcount@NT = cnt
-			map_room_populate_custom
-			continue
+			if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
+				currentroomcount@NT = cnt
+				map_room_populate_custom
+				continue
+			}
 		}
 		/********** CUSTOM NEFIA TYPES - ENDING **********/
 		repeat rnd(rdsize / 8 + 2)

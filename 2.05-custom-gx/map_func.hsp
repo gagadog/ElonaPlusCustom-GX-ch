@@ -76,8 +76,10 @@
 #deffunc map_converttile
 	/********** CUSTOM NEFIA TYPES - BEGINNING **********/
 	if ( TweakData(TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
-		map_converttile_custom
-		return
+		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
+			map_converttile_custom
+			return
+		}
 	}
 	/********** CUSTOM NEFIA TYPES - ENDING **********/
 	repeat mdata(MDATA_HEIGHT)
@@ -417,7 +419,9 @@
 	proclist(procid) = "map_tileSet:End" + " ct:" + ct
 	/********** CUSTOM NEFIA TYPES - BEGINNING **********/
 	if ( TweakData(TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
-		map_tileset_custom map_tileset_arg1
+		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
+			map_tileset_custom map_tileset_arg1
+		}
 	}
 	/********** CUSTOM NEFIA TYPES - ENDING **********/
 	return
