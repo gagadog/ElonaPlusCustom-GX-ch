@@ -7196,11 +7196,14 @@
 
 #defcfunc calccostcnpcsummon int calccostcnpcsummon_arg1
 	locvar_calccostcnpcsummon_cost = userdata(2, calccostcnpcsummon_arg1) // Level
-	locvar_calccostcnpcsummon_multiplier = 10 // Base multiplier
+	locvar_calccostcnpcsummon_multiplier = 3 // Base multiplier
 	// fixLv
-	if ( userdata(5, calccostcnpcsummon_arg1) == 4 ) { locvar_calccostcnpcsummon_multiplier += 2 }
-	if ( userdata(5, calccostcnpcsummon_arg1) == 5 ) { locvar_calccostcnpcsummon_multiplier += 5 }
-	if ( userdata(5, calccostcnpcsummon_arg1) == 6 ) { locvar_calccostcnpcsummon_multiplier += 10 }
+	if ( userdata(5, calccostcnpcsummon_arg1) == 1 ) { locvar_calccostcnpcsummon_multiplier = 2 }
+	if ( userdata(5, calccostcnpcsummon_arg1) == 2 ) { locvar_calccostcnpcsummon_multiplier = 3 }
+	if ( userdata(5, calccostcnpcsummon_arg1) == 3 ) { locvar_calccostcnpcsummon_multiplier = 4 }
+	if ( userdata(5, calccostcnpcsummon_arg1) == 4 ) { locvar_calccostcnpcsummon_multiplier = 10 }
+	if ( userdata(5, calccostcnpcsummon_arg1) == 5 ) { locvar_calccostcnpcsummon_multiplier = 15 }
+	if ( userdata(5, calccostcnpcsummon_arg1) == 6 ) { locvar_calccostcnpcsummon_multiplier = 20 }
 	// Class
 	if ( userdatan(3, calccostcnpcsummon_arg1) == "tourist" ) { locvar_calccostcnpcsummon_multiplier -= 2 }
 	// Race
@@ -7234,18 +7237,24 @@
 		HMMBITCHECK userdata(40 + cnt / 32, calccostcnpcsummon_arg1), cnt \ 32
 		if ( stat ) {
 			locvar_calccostcnpcsummon_multiplier += 1
-			if ( cnt >= 8 & cnt <= 13 ) { locvar_calccostcnpcsummon_multiplier += 1 }
+			if ( cnt >= 5 & cnt <= 13 ) { locvar_calccostcnpcsummon_multiplier += 1 }
+			if ( cnt == CHARA_BIT_CURE_BLEEDING ) { locvar_calccostcnpcsummon_multiplier += 1 }
+			if ( cnt == CHARA_BIT_IMMUNE_MINE ) { locvar_calccostcnpcsummon_multiplier += 1 }
+			if ( cnt == CHARA_BIT_TEMPER ) { locvar_calccostcnpcsummon_multiplier += 1 }
 			if ( cnt == CHARA_BIT_RAPID_MAGIC ) { locvar_calccostcnpcsummon_multiplier += 20 }
 			if ( cnt == CHARA_BIT_LAY_HANDS ) { locvar_calccostcnpcsummon_multiplier += 20 }
 			if ( cnt == CHARA_BIT_METAL ) { locvar_calccostcnpcsummon_multiplier += 30 }
-			if ( cnt == CHARA_BIT_RES_ELEMENTAL ) { locvar_calccostcnpcsummon_multiplier += 15 }
+			if ( cnt == CHARA_BIT_RES_ELEMENTAL ) { locvar_calccostcnpcsummon_multiplier += 30 }
 			if ( cnt == CHARA_BIT_ARMOUR ) { locvar_calccostcnpcsummon_multiplier += 5 }
-			if ( cnt == CHARA_BIT_QUICK_SHOOTING ) { locvar_calccostcnpcsummon_multiplier += 10 }
+			if ( cnt == CHARA_BIT_QUICK_SHOOTING ) { locvar_calccostcnpcsummon_multiplier += 3 }
 			if ( cnt == CHARA_BIT_SPLIT_KEEP_EFFECT ) { locvar_calccostcnpcsummon_multiplier += 15 }
 			if ( cnt == CHARA_BIT_SPLIT_NO_EFFECT ) { locvar_calccostcnpcsummon_multiplier += 8 }
 		}
 	loop
-	return locvar_calccostcnpcsummon_cost * limit(locvar_calccostcnpcsummon_multiplier, 1, 300) / 10
+	if ( gdata(GDATA_FLAG_MAIN) >= 180 ) { locvar_calccostcnpcsummon_multiplier = limit(locvar_calccostcnpcsummon_multiplier * 2 / 3, 1, 300) }
+	if ( gdata(GDATA_FLAG_MAIN) >= 340 ) { locvar_calccostcnpcsummon_multiplier = limit(locvar_calccostcnpcsummon_multiplier * 2 / 3, 1, 300) }
+	if ( gdata(GDATA_FLAG_MAIN) >= 720 ) { locvar_calccostcnpcsummon_multiplier = limit(locvar_calccostcnpcsummon_multiplier * 2 / 3, 1, 300) }
+	return limit(limit(locvar_calccostcnpcsummon_cost, 1, 2000) * limit(locvar_calccostcnpcsummon_multiplier, 1, 300) / 10, 1, 100000)
 
 *com_knowCNPC
 	listmaxbk = listmax
@@ -11637,7 +11646,7 @@
 				txt lang("雪をかきあつめた。", "You rake up a handful of snow.")
 				actionsp CHARA_PLAYER, 10
 				if ( stat == 0 ) {
-					txt_exhausted
+					txt lang("疲労し過ぎて失敗した！", "You are too exhausted!")
 					goto *turn_end
 				}
 				flt
@@ -11686,7 +11695,7 @@
 					if ( cc == CHARA_PLAYER ) {
 						if ( cdata(CDATA_SP, CHARA_PLAYER) < 50 ) {
 							if ( cdata(CDATA_SP, CHARA_PLAYER) < rnd(75) ) {
-								txt_exhausted
+								txt lang("疲労し過ぎて失敗した！", "You are too exhausted!")
 								dmgsp CHARA_PLAYER, sdataref(SKILL_DATAREF_COST, SKILL_ACTIVE_PICKPOCKET) / 2 + 1
 								ens = 0
 								goto *turn_end
@@ -13180,7 +13189,7 @@
 				if ( invctrl(1) == 5 ) {
 					actionsp CHARA_PLAYER, 2
 					if ( stat == 0 ) {
-						txt_exhausted
+						txt lang("疲労し過ぎて失敗した！", "You are too exhausted!")
 						goto *com_inventory_end
 					}
 				}
@@ -13201,7 +13210,7 @@
 				if ( invctrl(1) == 5 ) {
 					actionsp CHARA_PLAYER, 2
 					if ( stat == 0 ) {
-						txt_exhausted
+						txt lang("疲労し過ぎて失敗した！", "You are too exhausted!")
 						goto *com_inventory_end
 					}
 				}

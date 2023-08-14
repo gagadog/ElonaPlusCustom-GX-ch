@@ -23295,9 +23295,11 @@
 *chat_train
 	tcbk = tc
 	menucycle = 0
+	redraw 0
 	gosub *screen_drawStatus
 	gosub *com_charainfo
 	gosub *chat_refresh
+	redraw 1
 	if ( csskill == (-1) ) {
 		buff = lang("訓練が必要なときは、声をかけて" + _kure(), "Come see me again when you need more training.")
 		goto *chat_default

@@ -2259,6 +2259,8 @@
 		}
 		if ( TweakData(TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES, TWEAK_CATEGORY_GAMEPLAY) == 3 ) { f@PE = 1 }
 
+		if ( f@PE == 1 & initlv == necrolv & novoidlv == 1 & fixlv == FIX_QUALITY_GOOD) { f@PE = 0 }
+
 		if ( f@PE ) {
 			if ( rnd(300) < gdata(GDATA_LEVEL) ) {
 				tc@PE = rc
