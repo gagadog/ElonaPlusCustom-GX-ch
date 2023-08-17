@@ -4612,6 +4612,16 @@
 				txt lang("うーん。ちょっと今は出ないから、これで我慢して。", "It does not come out now, please be patient with this.")
 				txtmore
 			}
+			/********** CUSTOM ETHER WINDS - BEGINNING **********/
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_VINDALE_CLOAK & TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+				inv(INV_ITEM_NUM, ci) = 0
+				flt
+				itemcreate -1, ITEM_ID_POTION_CURE_CORRUPTION, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 3
+				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_BLESSED
+				txt lang("あ、それ在庫切れ。", "It's sold out.")
+				txtmore
+			}
+			/********** CUSTOM ETHER WINDS - ENDING **********/
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_WONDER_BODY_FORMER ) {
 				inv(INV_ITEM_NUM, ci) = 0
 				flt

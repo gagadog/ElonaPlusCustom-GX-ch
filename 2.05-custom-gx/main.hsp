@@ -18,8 +18,8 @@
 #include "mock_defines.hsp"
 #endif
 
-#define global VARIANT_NAME "ElonaPlus Custom-GX 2.19R.1.0"
-#define global VARIANT_TITLE "Elona+ Custom-GX 2.19R.1.0"
+#define global VARIANT_NAME "ElonaPlus Custom-GX 2.19R.1.1"
+#define global VARIANT_TITLE "Elona+ Custom-GX 2.19R.1.1"
 #define global VERSION_STRING "6.20"
 #define global VERSION_NUMBER int(double(VERSION_STRING) * 1000)
 #define global NET_VERSION	200000
@@ -994,6 +994,11 @@
 		if ( gdata(GDATA_WEATHER) == WEATHER_SNOW | gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN | gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
 			gdata(GDATA_SEC) += 3000
 		}
+		/********** CUSTOM ETHER WINDS - BEGINNING **********/
+		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER & TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+			gdata(GDATA_SEC) -= 3000
+		}
+		/********** CUSTOM ETHER WINDS - ENDING **********/
 	}
 	if ( cdata(CDATA_ROW_ACT, CHARA_PLAYER) == ACTION_FISH ) {
 		gdata(GDATA_SEC) += 420 + rnd(60)
@@ -1133,6 +1138,15 @@
 		gdata(GDATA_NEXT_WEATHER) = rnd(22) + 2
 		p = gdata(GDATA_WEATHER)
 		repeat 1
+			/********** CUSTOM ETHER WINDS - BEGINNING **********/
+			if ( TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+				gdata(GDATA_WEATHER) = WEATHER_ETHER
+				txtef COLOR_RED
+				txt lang("(パーマネントエーテルの風)エーテルの風が吹き始めた。", "(Permanent Etherwind) Etherwind starts to blow. There's no escape.")
+				gdata(GDATA_NEXT_WEATHER) = 12 + rnd(12)
+				break
+			}
+			/********** CUSTOM ETHER WINDS - ENDING **********/
 			if ( gdata(GDATA_MONTH) \ 3 == 0 ) {
 				if ( gdata(GDATA_DAY) >= 1 & gdata(GDATA_DAY) <= 10 ) {
 					if ( rnd(15 + gdata(GDATA_YEARS_AFTER_VICTORY)) < gdata(GDATA_DAY) + 5 ) {
@@ -1201,6 +1215,13 @@
 				}
 			}
 			if ( p == WEATHER_ETHER ) {
+				/********** CUSTOM ETHER WINDS - BEGINNING **********/
+				if ( TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+					txtef COLOR_RED
+					txt lang("(パーマネントエーテルの風)エーテルの風は止まらない。", "(Permanent Etherwind) The Etherwind is restless.")
+					break
+				}
+				/********** CUSTOM ETHER WINDS - ENDING **********/
 				if ( rnd(2) == 0 ) {
 					gdata(GDATA_WEATHER) = WEATHER_CLEAR
 					txt lang("エーテルの風は止んだ。", "The Etherwind dissipates.")
@@ -6618,6 +6639,14 @@
 		}
 		txtef COLOR_RED2
 		txt lang("【 刻死紋状態で死亡すると能力値が永続低下する。睡眠を取るまで消えない。 】", "< If you die with the Death-Crest engraved, your stats will permanently drop. It doesn't go away until you sleep. >")
+		/********** CUSTOM ETHER WINDS - BEGINNING **********/
+		if ( TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+			gdata(GDATA_WEATHER) = WEATHER_CLEAR
+			gdata(GDATA_NEXT_WEATHER) = 2 + gdata(GDATA_CORRUPTION) / 1000 + rnd(12)
+			chatc@DP = (-1)
+			txt lang("「かわいそう」", cnvtalk("Pathetic."))
+		}
+		/********** CUSTOM ETHER WINDS - ENDING **********/
 		if ( gdata(GDATA_CORRUPTION) >= 20000 ) {
 			modcorrupt -2000
 		}

@@ -21177,6 +21177,12 @@
 		goto *chat_end
 	}
 	if ( chatval == 43 ) {
+		/********** CUSTOM ETHER WINDS - BEGINNING **********/
+		if ( TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+			buff = lang("冷やかし" + _ka(1), "You kidding?")
+			goto *chat_default
+		}
+		/********** CUSTOM ETHER WINDS - ENDING **********/
 		chatMore lang("悪天候時はシェルターを無料で開放している" + _nda() + "すみやかに避難して" + _kure(), "The shelter is free to use for anyone. Here, come in.")
 		if ( gdata(GDATA_FLAG_DUEL_TARGET) > 0 ) {
 			snd SOUNDLIST_FAIL1

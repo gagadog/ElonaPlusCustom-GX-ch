@@ -13718,6 +13718,17 @@
 		snd SOUNDLIST_PRAY1
 		txtef COLOR_YELLOW
 		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
+			/********** CUSTOM ETHER WINDS - BEGINNING **********/
+			if ( TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+				gdata(GDATA_WEATHER) = WEATHER_CLEAR
+				gdata(GDATA_NEXT_WEATHER) = 12 + rnd(12)
+				chatc@DP = (-1)
+				txt lang("「みじめなブタども」", cnvtalk("Pathetic pigs."))
+				envonly = 1
+				gosub *music_play
+				goto *act_use_SWEND1
+			}
+			/********** CUSTOM ETHER WINDS - ENDING **********/
 			txt lang("ルルウィ「あさはかね。エーテルの風を止めてあげるとでも思ったの？」", "Lulwy: \"Listen my little slave. Did you really think I would turn a hand in this filthy wind for you?\"")
 			goto *act_use_SWEND1
 		}

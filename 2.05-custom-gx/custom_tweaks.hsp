@@ -73,6 +73,7 @@ TweakData(50, 4) = "Fist of the North Star Mode."
 TweakData(51, 4) = "Disable cicada noises."
 TweakData(52, 4) = "Faster Fishing Animations."
 TweakData(53, 4) = "Use CGX Arrow/Bolt/Ball Spell Animation."
+TweakData(54, 4) = "Weather always change to etherwind."
 */
 
 *TweakMenu
@@ -1008,10 +1009,11 @@ TweakData(53, 4) = "Use CGX Arrow/Bolt/Ball Spell Animation."
 	listn(0, 6) = "Disable cicada noises." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DISABLE_CICADA_NOISES)
 	listn(0, 7) = "Faster Fishing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_FASTER_FISHING)
 	listn(0, 8) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS)
-	listn(0, 9) = "Return."
+	listn(0, 9) = "Permanent Etherwind." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_ALWAYS_ETHERWIND)
+	listn(0, 10) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat 10
+	repeat 11
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
@@ -1021,7 +1023,7 @@ TweakData(53, 4) = "Use CGX Arrow/Bolt/Ball Spell Animation."
 
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat 8
+	repeat 11
 		if ( listn(0, cs) == listn(0, cnt) ) {
 			if ( cnt == TWEAK_MISC_RANDOM_START_MP3 ) {
 				s = "Will make MP3s start playback from a random point.\nCould cause compatability issues."
@@ -1051,6 +1053,9 @@ TweakData(53, 4) = "Use CGX Arrow/Bolt/Ball Spell Animation."
 				s = "Use Custom Animation for Arrow/Bolt/Ball spell animations. \nIf it causes crashes, make sure you have the files in 'graphic/custom_animation' folder."
 			}
 			if ( cnt == 9 ) {
+				s = "Weather changes into etherwind 100%, but hey, at least it's not raining. \nVindale cloaks are sold out, and shelters are closed. Stay safe. Stay indoors. \nHead to Lumiest, may the Wind God have mercy on your soul. "
+			}
+			if ( cnt == 10 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1110,6 +1115,11 @@ TweakData(53, 4) = "Use CGX Arrow/Bolt/Ball Spell Animation."
 		gosub *ToggleTweak
 	}
 	if ( key == key_select(9) ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_ALWAYS_ETHERWIND
+		gosub *ToggleTweak
+	}
+	if ( key == key_select(10) ) {
 		snd SOUNDLIST_OK1
         return
 	}
