@@ -13661,6 +13661,17 @@
 					p += cdata(CDATA_PIETY, CHARA_PLAYER) / 10
 				}
 			}
+			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+			if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 2 ) {
+				repeat TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) - 2
+					if ( p < 0 | p > 10000000 ) {
+						p = 20000000
+						break
+					}
+					p *= 2
+				loop
+			}
+			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 			if ( cnt == 2 ) {
 				if ( gdata(GDATA_FLAG_STATUE_OF_YACATECT) \ 12 == 0 ) {
 					dbid = ITEM_ID_PLATINUM_COIN
@@ -13718,8 +13729,8 @@
 		snd SOUNDLIST_PRAY1
 		txtef COLOR_YELLOW
 		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
-			/********** CUSTOM ETHER WINDS - BEGINNING **********/
-			if ( TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+			/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+			if ( TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 				gdata(GDATA_WEATHER) = WEATHER_CLEAR
 				gdata(GDATA_NEXT_WEATHER) = 12 + rnd(12)
 				chatc@DP = (-1)
@@ -13728,7 +13739,7 @@
 				gosub *music_play
 				goto *act_use_SWEND1
 			}
-			/********** CUSTOM ETHER WINDS - ENDING **********/
+			/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 			txt lang("ルルウィ「あさはかね。エーテルの風を止めてあげるとでも思ったの？」", "Lulwy: \"Listen my little slave. Did you really think I would turn a hand in this filthy wind for you?\"")
 			goto *act_use_SWEND1
 		}

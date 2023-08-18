@@ -4230,6 +4230,14 @@
 		/********** RUIN0X11 CUSTOM - ENDING **********/
 
 		/********** RUIN0X11 CUSTOM - BEGINNING **********/ // Advance hours command
+		
+		if ( instr(buff, 0, "advance_month") != (-1) ) {
+			gdata(GDATA_DAY) = 30
+			gdata(GDATA_HOUR) = 23
+			gdata(GDATA_MIN) = 58
+			noteadd "Done."
+			goto *console_write
+		}
 
 		if ( instr(buff, 0, "advance_hour") != (-1) ) {
 			if ( instr(buff, 0, " ") != (-1) ) {

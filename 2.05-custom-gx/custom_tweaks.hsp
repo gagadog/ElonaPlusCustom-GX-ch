@@ -97,10 +97,11 @@ TweakData(54, 4) = "Weather always change to etherwind."
 	listn(0, TWEAK_CATEGORY_GAMEPLAY) = "Gameplay Tweaks"
 	listn(0, TWEAK_CATEGORY_AI) = "AI Tweaks"
 	listn(0, TWEAK_CATEGORY_MISC) = "Miscellaneous Tweaks"
-	listn(0, TWEAK_CATEGORY_MAX) = "Exit"
+	listn(0, TWEAK_CATEGORY_MAX) = "Challenge Tweaks"
+	listn(0, TWEAK_CATEGORY_MAX + 1) = "Exit"
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat TWEAK_CATEGORY_MAX+1
+	repeat TWEAK_CATEGORY_MAX+2
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
@@ -110,7 +111,7 @@ TweakData(54, 4) = "Weather always change to etherwind."
 
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat TWEAK_CATEGORY_MAX+1
+	repeat TWEAK_CATEGORY_MAX+2
 		if ( listn(0, cs) == listn(0, cnt) ) {
 			if ( cnt == TWEAK_CATEGORY_UI ) {
 				s = "Toggle tweaks that target UI functions."
@@ -128,6 +129,9 @@ TweakData(54, 4) = "Weather always change to etherwind."
 				s = "Toggle tweaks that don't fall into any other category."
 			}
 			if ( cnt == TWEAK_CATEGORY_MAX ) {
+				s = "Toggle tweaks that makes your life harder."
+			}
+			if ( cnt == TWEAK_CATEGORY_MAX + 1) {
 				s = "Exit the menu."
 			}
 			pos wx + 38, wy + 343
@@ -179,6 +183,13 @@ TweakData(54, 4) = "Weather always change to etherwind."
             break
         }
         if ( key == key_select(TWEAK_CATEGORY_MAX) ) {
+            snd SOUNDLIST_OK1
+            gosub *ChallengeTweakMenu
+            cs = cs_bk2
+            keyhalt = 1
+            break
+        }
+        if ( key == key_select(TWEAK_CATEGORY_MAX+1) ) {
             snd SOUNDLIST_OK1
             gosub *screen_draw
             goto *pc_turn
@@ -349,6 +360,18 @@ TweakData(54, 4) = "Weather always change to etherwind."
 	}
 	return " FAILED"
 
+#defcfunc GetTStatusProgress int TweakCategory, int TweakNumber, str TweakDesc
+	if ( TweakData(TweakNumber, TweakCategory) == 0 ) {
+		return " (Currently: Off)"
+	}
+	if ( TweakData(TweakNumber, TweakCategory) == 1 ) {
+		return " (Currently: On)"
+	}
+	if ( TweakData(TweakNumber, TweakCategory) > 1 ) {
+		return " (Currently: " + (TweakData(TweakNumber, TweakCategory) - 1) + " " + TweakDesc + ")"
+	}
+	return " (Currently: FAILED)"
+
 *ToggleTweak
     snd SOUNDLIST_OK1
 	if ( TweakData(tn, tc) == 0 ) {
@@ -356,6 +379,26 @@ TweakData(54, 4) = "Weather always change to etherwind."
 	}
 	else {
 		TweakData(tn, tc) = 0
+	}
+	return
+
+*ToggleTweakChallenge
+	msg_newline
+	if ( TweakData(tn, tc) <= 0 ) {
+		txt "This is a challenge tweak. Are you sure to enable this?"
+		promptYesNo
+		if ( rtval == 0 ) {
+			snd SOUNDLIST_OK1
+			TweakData(tn, tc) = 1
+		}
+	}
+	else {
+		txt "This will end the challenge and reset progress. Are you sure to disable this?"
+		promptYesNo
+		if ( rtval == 0 ) {
+			snd SOUNDLIST_OK1
+			TweakData(tn, tc) = 0
+		}
 	}
 	return
 
@@ -1009,8 +1052,7 @@ TweakData(54, 4) = "Weather always change to etherwind."
 	listn(0, 6) = "Disable cicada noises." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DISABLE_CICADA_NOISES)
 	listn(0, 7) = "Faster Fishing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_FASTER_FISHING)
 	listn(0, 8) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS)
-	listn(0, 9) = "Permanent Etherwind." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_ALWAYS_ETHERWIND)
-	listn(0, 10) = "Return."
+	listn(0, 9) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
 	repeat 11
@@ -1053,7 +1095,7 @@ TweakData(54, 4) = "Weather always change to etherwind."
 				s = "Use Custom Animation for Arrow/Bolt/Ball spell animations. \nIf it causes crashes, make sure you have the files in 'graphic/custom_animation' folder."
 			}
 			if ( cnt == 9 ) {
-				s = "Weather changes into etherwind 100%, but hey, at least it's not raining. \nVindale cloaks are sold out, and shelters are closed. Stay safe. Stay indoors. \nHead to Lumiest, may the Wind God have mercy on your soul. "
+				s = "Weather will change into etherwind 100%, but hey, at least it's not raining. \nShelters are closed. Vindale cloaks are sold out. Training time-skips are disabled. \nHead to Lumiest, seek Balzak, may the Wind God have mercy on your soul. "
 			}
 			if ( cnt == 10 ) {
 				s = "Return to the previous menu."
@@ -1115,11 +1157,6 @@ TweakData(54, 4) = "Weather always change to etherwind."
 		gosub *ToggleTweak
 	}
 	if ( key == key_select(9) ) {
-		tc = TWEAK_CATEGORY_MISC
-		tn = TWEAK_MISC_ALWAYS_ETHERWIND
-		gosub *ToggleTweak
-	}
-	if ( key == key_select(10) ) {
 		snd SOUNDLIST_OK1
         return
 	}
@@ -1127,6 +1164,70 @@ TweakData(54, 4) = "Weather always change to etherwind."
         return
 	}
 	goto *MiscTweakMenu_loop
+
+*ChallengeTweakMenu
+	cs = 0
+*ChallengeTweakMenu_loop
+	redraw 0
+	s = "Tweak Setup", strhint3b
+	display_window (windoww - 680) / 2 + inf_screenx, winposy(448), 640, 448
+	s = "Configure Tweaks"
+	gosub *screen_drawMsg2
+
+	// Challenge tweak uses the dataspace of TWEAK_CATEGORY_AI.
+	listn(0, 0) = "Permanent Etherwind." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_ALWAYS_ETHERWIND, "Days Survived")
+	listn(0, 1) = "Double your tax each month." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, "Months Paid")
+	listn(0, 2) = "Return."
+	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+
+	repeat 3
+		key_list(cnt) = key_select(cnt)
+		keyrange = cnt + 1
+		pos wx + 38, wy + 40 + cnt * 19 - 2
+		gcopy 3, cnt * 24 + 72, 30, 24, 18
+		cs_list listn(0, cnt), wx + 64, wy + 40 + cnt * 19 - 1, 19
+	loop
+
+	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
+
+	repeat 3
+		if ( listn(0, cs) == listn(0, cnt) ) {
+			if ( cnt == 0 ) {
+				s = "Weather will change into etherwind 100%, but hey, at least it's not raining. \nShelters are closed. Vindale cloaks are sold out. Training time-skips are disabled. \nHead to Lumiest, seek Balzak, may the Wind God have mercy on your soul. "
+			}
+			if ( cnt == 1 ) {
+				s = "You taxes will double each month. You building/hiring cost remain unchanged. \nNot paying tax or using a empty bill will fail the challenge. \nYou tax immunities will be lifted. \nWorry not, your big sister Goddess may help you pay (some) your bills."
+			}
+			if ( cnt == 2 ) {
+				s = "Return to the previous menu."
+			}
+			pos wx + 38, wy + 343
+			mes s
+		}
+	loop
+
+	redraw 1
+	await cfg_wait1
+	key_check
+	cursor_check
+	if ( key == key_select(0) ) {
+		tc = TWEAK_CATEGORY_CHALLENGE
+		tn = TWEAK_CHALLENGE_ALWAYS_ETHERWIND
+		gosub *ToggleTweakChallenge
+	}
+	if ( key == key_select(1) ) {
+		tc = TWEAK_CATEGORY_CHALLENGE
+		tn = TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH
+		gosub *ToggleTweakChallenge
+	}
+	if ( key == key_select(2) ) {
+		snd SOUNDLIST_OK1
+		return
+	}
+	if ( key == key_cancel ) {
+		return
+	}
+	goto *ChallengeTweakMenu_loop
 
 *ZeomeCustomAI
 	if ( InitZeome == 0 ) {

@@ -4612,8 +4612,8 @@
 				txt lang("うーん。ちょっと今は出ないから、これで我慢して。", "It does not come out now, please be patient with this.")
 				txtmore
 			}
-			/********** CUSTOM ETHER WINDS - BEGINNING **********/
-			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_VINDALE_CLOAK & TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+			/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_VINDALE_CLOAK & TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 				inv(INV_ITEM_NUM, ci) = 0
 				flt
 				itemcreate -1, ITEM_ID_POTION_CURE_CORRUPTION, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 3
@@ -4621,7 +4621,7 @@
 				txt lang("あ、それ在庫切れ。", "It's sold out.")
 				txtmore
 			}
-			/********** CUSTOM ETHER WINDS - ENDING **********/
+			/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_WONDER_BODY_FORMER ) {
 				inv(INV_ITEM_NUM, ci) = 0
 				flt
@@ -14075,6 +14075,18 @@
 						txt lang("まだ納税する必要はない。", "You don't have to pay your tax yet.")
 						goto *com_inventory
 					}
+					/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+					if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
+						if ( inv(INV_ITEM_SUB_NAME, ci) == 0 ) {
+							txtef COLOR_RED
+							txt "Submitting a empty bill will fail the challenge. Are you sure about that?"
+							promptYesNo
+							if ( rtval != 0 ) {
+								goto *com_inventory_loop
+							}
+						}
+					}
+					/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 					cdata(CDATA_GOLD, CHARA_PLAYER) -= inv(INV_ITEM_SUB_NAME, ci)
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_1_2_MILLION_TAX_CERTIFICATE ) {
@@ -14087,6 +14099,29 @@
 				txtef COLOR_GREEN
 				txt lang(itemname(ci) + "を支払った。", "You pay " + itemname(ci) + ".")
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_BILL ) {
+					/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+					if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
+						if ( inv(INV_ITEM_SUB_NAME, ci) == 0 ) {
+							txtmore
+							txtef COLOR_RED
+							txt "YOU COMMITED TAX EVASION."
+							TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) = (-1)
+						} else {
+							TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) += 1
+							s = lang("毎月2倍の税金", "Double Tax Each Month")
+							file = "bg_re1"
+							buff = lang("信じられない！あなたは" + (TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) - 1) + "ヶ月間税金を払った！", "Unbelievable! You paid your taxes for " + (TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) - 1) + " month!")
+							listmax = 0
+							chatList 1, lang("遂に…！", "Finally!")
+							chatList 2, lang("当然の結果だ", "Just the natural outcome.")
+							chatList 3, lang("おぉぉぉぉ！", "Woooooo!")
+							chatList 4, lang("ふっ", "Heh.")
+							chatList 5, lang("今日は眠れないな", "I can't sleep tonight.")
+							chatList 6, lang("またそんな冗談を", "You're kidding.")
+							gosub *re_select
+						}
+					}
+					/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 					gdata(GDATA_BILL)--
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_1_2_MILLION_TAX_CERTIFICATE ) {

@@ -3479,6 +3479,11 @@
 					if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME | mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE ) {
 						p = 5
 						gdata(GDATA_MIN) += 30
+						/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+						if ( gdata(GDATA_WEATHER) == WEATHER_ETHER & TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
+							gdata(GDATA_MIN) -= 30
+						}
+						/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 					}
 				}
 			}

@@ -3448,8 +3448,44 @@
 		else {
 			locvar_event_income_is_taxed = gdata(GDATA_YEAR) > 517
 		}
+		/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+		if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 & locvar_event_income_is_taxed == FALSE ) {
+			locvar_event_income_is_taxed = TRUE
+			txtmore
+			txtef COLOR_RED
+			txt lang("冒険者になれば、誰もが税金を払う。", "Everyone will pay for their taxes, you become an adventurer, you become the one who pays.")
+		}
+		/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 		if ( locvar_event_income_is_taxed ) {
 			autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
+			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+			remainingtaxes = 0
+			if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
+				remainingtaxes = gdata(GDATA_COST_HIRE) + calccostbuilding() + calccosttax()
+				if ( gdata(STARTING_GDATA_FLAG + 359) > 0 ) {
+					if ( remainingtaxes >= gdata(STARTING_GDATA_FLAG + 359) ) {
+						remainingtaxes -= gdata(STARTING_GDATA_FLAG + 359)
+						gdata(STARTING_GDATA_FLAG + 359) = 0
+						txtmore
+						txtef COLOR_RED
+						txt lang("先払い分が今月でなくなった。", "Your prepaid balance of tax payment has disappeared this month.")
+					} else {
+						TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) += 1
+						s = lang("毎月2倍の税金", "Double Tax Each Month")
+						file = "bg_re1"
+						buff = lang("信じられない！あなたは" + (TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) - 1) + "ヶ月間税金を払った！", "Unbelievable! You paid your taxes for " + (TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) - 1) + " month!")
+						listmax = 0
+						chatList 1, lang("遂に…！", "Finally!")
+						chatList 2, lang("当然の結果だ", "Just the natural outcome.")
+						chatList 3, lang("おぉぉぉぉ！", "Woooooo!")
+						chatList 4, lang("ふっ", "Heh.")
+						chatList 5, lang("今日は眠れないな", "I can't sleep tonight.")
+						chatList 6, lang("またそんな冗談を", "You're kidding.")
+						gosub *re_select
+					}
+				}
+			}
+			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 			if ( gdata(STARTING_GDATA_FLAG + 359) <= 0 ) {
 				gdata(STARTING_GDATA_FLAG + 359) = 0
 				inv_getheader -1
@@ -3467,6 +3503,11 @@
 				itemcreate -1, ITEM_ID_BILL, -1, -1, 0
 				inv(INV_ITEM_SUB_NAME, ci) = gdata(GDATA_COST_HIRE) + calccostbuilding() + calccosttax()
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, ci) * (100 + rnd(20)) / 100
+				/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+				if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 & remainingtaxes > 0 ) {
+					inv(INV_ITEM_SUB_NAME, ci) = remainingtaxes
+				}
+				/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 				mode = MODELIST_MAIN
 				gdata(GDATA_BILL)++
 				txtmore
@@ -3477,7 +3518,7 @@
 				gdata(STARTING_GDATA_FLAG + 359) -= nouzei
 				if ( gdata(STARTING_GDATA_FLAG + 359) > 0 ) {
 					txtmore
-					txt lang("今月分は既に納税している。", "You don't have to pay tax.")
+					txt lang("今月分は既に納税している。", "Your prepaid balance covered the tax this month.")
 				}
 				if ( gdata(STARTING_GDATA_FLAG + 359) <= 0 ) {
 					gdata(STARTING_GDATA_FLAG + 359) = 0
@@ -3486,6 +3527,14 @@
 				}
 			}
 			if ( gdata(GDATA_BILL) > 1 ) {
+				/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+				if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
+					txtmore
+					txtef COLOR_RED
+					txt "YOU COMMITED TAX EVASION."
+					TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) = (-1)
+				}
+				/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 				if ( gdata(GDATA_BILL) <= 4 ) {
 					txtmore
 					txtef COLOR_RED
@@ -3597,7 +3646,7 @@
 	snd SOUNDLIST_DING2
 	txtmore
 	txtef COLOR_SKY_BLUE
-	txt lang("デイリークエストの報酬アイテムが給料として振り込まれた。", "As a salary, dairy quest reward have been sent to your house.")
+	txt lang("デイリークエストの報酬アイテムが給料として振り込まれた。", "As a salary, daily quest reward have been sent to your house.")
 	file = "shop" + invfile + ".s2"
 	fmode = 4
 	gosub *game_ctrlFile

@@ -994,11 +994,11 @@
 		if ( gdata(GDATA_WEATHER) == WEATHER_SNOW | gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN | gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
 			gdata(GDATA_SEC) += 3000
 		}
-		/********** CUSTOM ETHER WINDS - BEGINNING **********/
-		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER & TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+		/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER & TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 			gdata(GDATA_SEC) -= 3000
 		}
-		/********** CUSTOM ETHER WINDS - ENDING **********/
+		/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 	}
 	if ( cdata(CDATA_ROW_ACT, CHARA_PLAYER) == ACTION_FISH ) {
 		gdata(GDATA_SEC) += 420 + rnd(60)
@@ -1138,15 +1138,20 @@
 		gdata(GDATA_NEXT_WEATHER) = rnd(22) + 2
 		p = gdata(GDATA_WEATHER)
 		repeat 1
-			/********** CUSTOM ETHER WINDS - BEGINNING **********/
-			if ( TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
-				gdata(GDATA_WEATHER) = WEATHER_ETHER
-				txtef COLOR_RED
-				txt lang("(パーマネントエーテルの風)エーテルの風が吹き始めた。", "(Permanent Etherwind) Etherwind starts to blow. There's no escape.")
-				gdata(GDATA_NEXT_WEATHER) = 12 + rnd(12)
+			/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+			if ( TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 & p != WEATHER_ETHER ) {
+				if ( gdata(GDATA_YEAR) <= 517 & gdata(GDATA_MONTH) <= 10 & gdata(GDATA_DAY) <= 14 ) {
+					txtef COLOR_RED
+					txt lang("(パーマネントのエーテルの風)エーテルの風がやって来る。", "(Permanent Etherwind) Etherwind will start in a few days, brace yourselves.")
+				} else {
+					gdata(GDATA_WEATHER) = WEATHER_ETHER
+					txtef COLOR_RED
+					txt lang("(パーマネントのエーテルの風)エーテルの風が吹き始めた。", "(Permanent Etherwind) Etherwind starts to blow. There's no escape.")
+				}
+				gdata(GDATA_NEXT_WEATHER) = 24 + rnd(12)
 				break
 			}
-			/********** CUSTOM ETHER WINDS - ENDING **********/
+			/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 			if ( gdata(GDATA_MONTH) \ 3 == 0 ) {
 				if ( gdata(GDATA_DAY) >= 1 & gdata(GDATA_DAY) <= 10 ) {
 					if ( rnd(15 + gdata(GDATA_YEARS_AFTER_VICTORY)) < gdata(GDATA_DAY) + 5 ) {
@@ -1215,13 +1220,13 @@
 				}
 			}
 			if ( p == WEATHER_ETHER ) {
-				/********** CUSTOM ETHER WINDS - BEGINNING **********/
-				if ( TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+				/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+				if ( TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 					txtef COLOR_RED
-					txt lang("(パーマネントエーテルの風)エーテルの風は止まらない。", "(Permanent Etherwind) The Etherwind is restless.")
+					txt lang("(パーマネントのエーテルの風)エーテルの風は止まらない。", "(Permanent Etherwind) The Etherwind is restless.")
 					break
 				}
-				/********** CUSTOM ETHER WINDS - ENDING **********/
+				/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 				if ( rnd(2) == 0 ) {
 					gdata(GDATA_WEATHER) = WEATHER_CLEAR
 					txt lang("エーテルの風は止んだ。", "The Etherwind dissipates.")
@@ -1529,6 +1534,24 @@
 		loop
 		snd SOUNDLIST_NIGHT
 		evadd EVENT_QUEST_CHECK
+		/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER & TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
+			TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) += gdata(GDATA_HOUR) / 24
+			if ( TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) \ 30 == 1 | TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) == 2 | TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) == 11 ) {
+				s = lang("パーマネントのエーテルの風", "Permanent Etherwind")
+				file = "bg_re17"
+				buff = lang("信じられない！あなたは" + (TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) - 1) + "日間生き延びた！", "Unbelievable! You survived Etherwind for " + (TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) - 1) + " days!")
+				listmax = 0
+				chatList 1, lang("遂に…！", "Finally!")
+				chatList 2, lang("当然の結果だ", "Just the natural outcome.")
+				chatList 3, lang("おぉぉぉぉ！", "Woooooo!")
+				chatList 4, lang("ふっ", "Heh.")
+				chatList 5, lang("今日は眠れないな", "I can't sleep tonight.")
+				chatList 6, lang("またそんな冗談を", "You're kidding.")
+				gosub *re_select
+			}
+		}
+		/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 		gdata(GDATA_DAY_PAST) += gdata(GDATA_HOUR) / 24
 		gdata(GDATA_DAY) += gdata(GDATA_HOUR) / 24
 		gdata(GDATA_HOUR) = gdata(GDATA_HOUR) \ 24
@@ -6639,14 +6662,14 @@
 		}
 		txtef COLOR_RED2
 		txt lang("【 刻死紋状態で死亡すると能力値が永続低下する。睡眠を取るまで消えない。 】", "< If you die with the Death-Crest engraved, your stats will permanently drop. It doesn't go away until you sleep. >")
-		/********** CUSTOM ETHER WINDS - BEGINNING **********/
-		if ( TweakData(TWEAK_MISC_ALWAYS_ETHERWIND, TWEAK_CATEGORY_MISC) != 0 ) {
+		/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+		if ( TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 			gdata(GDATA_WEATHER) = WEATHER_CLEAR
 			gdata(GDATA_NEXT_WEATHER) = 2 + gdata(GDATA_CORRUPTION) / 1000 + rnd(12)
 			chatc@DP = (-1)
 			txt lang("「かわいそう」", cnvtalk("Pathetic."))
 		}
-		/********** CUSTOM ETHER WINDS - ENDING **********/
+		/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 		if ( gdata(GDATA_CORRUPTION) >= 20000 ) {
 			modcorrupt -2000
 		}
