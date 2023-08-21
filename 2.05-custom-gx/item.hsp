@@ -2858,32 +2858,43 @@
 	txt lang(itemname(cooktool) + "で" + s + "を料理して、" + itemname(ci, 1) + "を作った。", "You cook " + s + " with " + itemname(cooktool, 1) + " and make " + itemname(ci, 1) + ".")
 	r1 = inv(INV_ITEM_PARAM2, ci)
 	ibitmod ITEM_BIT_HERBED_IN, ci, 0
-	inv(INV_ITEM_LEVEL, ci) += limit(sdata(SKILL_NORMAL_COOKING, CHARA_PLAYER) / 100, 0, 20)
-	p = 50 + inv(INV_ITEM_LEVEL, ci) * 30
-	i = inv(INV_ITEM_PARAM1, ci) / 1000
-	if ( i == 1 ) {
-		encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_ANATOMY, p, 0, 1
-	}
-	if ( i == 8 ) {
-		encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_GENE_ENGINEER, p, 0, 1
-	}
-	if ( i == 2 ) {
-		encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_GARDENING, p, 0, 1
-	}
-	if ( i == 3 ) {
-		encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_JEWELER, p, 0, 1
-	}
-	if ( i == 7 ) {
-		encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_MAGIC_DEVICE, p, 0, 1
-	}
-	if ( i == 4 ) {
-		encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_SENSE_QUALITY, p, 0, 1
-	}
-	if ( i == 6 ) {
-		encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_FISHING, p, 0, 1
-	}
-	if ( i == 5 ) {
-		encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_CONTROL_MAGIC, p, 0, 1
+	if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES, TWEAK_CATEGORY_GAMEPLAY) == TRUE ) { 
+		// Original Before 2.18
+		if ( sdata(SKILL_NORMAL_COOKING, CHARA_PLAYER) >= 100 ) {
+			inv(INV_ITEM_NUM, ci)++
+		}
+		if ( sdata(SKILL_NORMAL_COOKING, CHARA_PLAYER) >= 100 ) {
+			inv(INV_ITEM_NUM, ci)++
+		}
+	} else {
+		// Changes post 2.17 goes here.
+		inv(INV_ITEM_LEVEL, ci) += limit(sdata(SKILL_NORMAL_COOKING, CHARA_PLAYER) / 100, 0, 20)
+		p = 50 + inv(INV_ITEM_LEVEL, ci) * 30
+		i = inv(INV_ITEM_PARAM1, ci) / 1000
+		if ( i == 1 ) { // Meat
+			encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_ANATOMY, p, 0, 1
+		}
+		if ( i == 2 ) { // Vegetable
+			encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_GARDENING, p, 0, 1
+		}
+		if ( i == 3 ) { // Fruit
+			encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_JEWELER, p, 0, 1
+		}
+		if ( i == 4 ) { // Candy
+			encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_SENSE_QUALITY, p, 0, 1
+		}
+		if ( i == 5 ) { // Noodle
+			encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_CONTROL_MAGIC, p, 0, 1
+		}
+		if ( i == 6 ) { // Seafood
+			encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_FISHING, p, 0, 1
+		}
+		if ( i == 7 ) { // Bread
+			encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_MAGIC_DEVICE, p, 0, 1
+		}
+		if ( i == 8 ) { // Egg
+			encadd ci, ENCHANT_SKILL * EXT_ENCHANTMENT + SKILL_NORMAL_GENE_ENGINEER, p, 0, 1
+		}
 	}
 	if ( r1 > 2 ) {
 		skillexp SKILL_NORMAL_COOKING, cc, 30 + r1 * 5

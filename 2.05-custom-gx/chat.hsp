@@ -1424,6 +1424,11 @@
 				buff = lang("まだ、何か用があるのか？", "What?")
 				chatList 0, lang("何も", "Nothing.")
 			}
+			if ( TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
+				if ( gdata(GDATA_FLAG_TUTORIAL) == 0 | gdata(GDATA_FLAG_TUTORIAL) == (-1) ) {
+					chatList 2, lang("そろそろ出発したら？", "You had better leave soon to Palmia.")
+				}
+			}
 			gosub *chat_select
 		}
 		if ( chatval == 1 ) {
@@ -1450,6 +1455,7 @@
 				cdata(CDATA_TARGET, tc) = 0
 				goto *chat_end
 			}
+			TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) = (-1)
 			chatMore lang("" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "の言うとおり、私達に残されている時間は少ないわ。こうしている間にも、新王国のかの者の計画は着実に進んでいる… 出発しよう、ロミアス。", "" + cdatan(CDATAN_NAME, CHARA_PLAYER) + " is right. The time left for us is scarce. We need to depart, Lomias.")
 			chatMore lang("ああ、わかった。パルミアまでは長い旅路だ。一時であれ休息をとれて良かったのかも知れないな。", "Yes. Palmia is still far away. Perhaps it was fortunate that we could have a little rest before everything begins."), strmore, findchara(CREATURE_ID_LOMIAS_THE_MESSENGER_FROM_VINDALE)
 			chatMore lang("少ないけれど、いくつかアイテムを残していくから役立てて。…それじゃあ、また巡り会う時まで、" + cdatan(CDATAN_AKA, CHARA_PLAYER) + "、あなたに風の加護のあらんことを。", "It's not much, but here are a few items that might help you. Farewell... until we meet again. May the blessing of Lulwy be with you.")
@@ -3571,7 +3577,7 @@
 			chatMore lang("感じるわ、大勢の人の苦しみ…悲しみ…。あなたはたくさん殺したのね。小さな子供…女性…老人…生まれて間もない赤ん坊…あたし、今日は身体が火照って眠れそうにないわ。ありがとう。報酬を受け取りなさい。", "I can feel it already... the suffering... the misery... the pain... You've killed many people this day, you should be proud. Little kids, girls, women, old men, the sick, the feeble, even those neither born nor conceived yet. My body's hot, excited, I can hardly breathe... I won't be able to sleep tonight. My thanks, these are for you.")
 		}
 		if ( gdata(GDATA_FLAG_SUB_NUKE) == 0 ) {
-			if ( cdata(CDATA_FAME, CHARA_PLAYER) < 7000 ) {
+			if ( cdata(CDATA_FAME, CHARA_PLAYER) < 7000 & TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) <= 0 ) {
 				chatMore lang("ふーん。こちら側の世界のことなんて分かっていない、甘ったれた顔をしてるわね。もう少し社会勉強を積んだらイロイロと教えてあげる。", "Hmm. Such a spoiled child, too naive to fathom this side of the world. I'll teach you various things when you've accumulated a little more social experience."), strbye
 				txtef COLOR_RED
 				txt lang("クエスト必要名声：7000　", "Required Fame: 7000 ")

@@ -1965,9 +1965,35 @@
 						}
 						if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
 							if ( gdata(GDATA_FLAG_MAIN) < 5 ) {
-								gdata(GDATA_FLAG_MAIN) = 5
-								evadd EVENT_LEAVING_BEGGAR_CAVE
-								goto *turn_end
+								/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - BEGINNING **********/
+								if ( TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) == 0 ) {
+									s = lang("洞窟からこっそり抜け出そう。", "Sneak out of your house.")
+									file = "bg_re20"
+									buff = lang("エレアは君の命を救ってくれたんだ。本当に黙って出て行くの？(初心者の方にはお勧めしません)", "The Eleas just saved your life, you should tell them you are leaving. Are you sure to sneak out without telling them? (Not recommended for new players)")
+									listmax = 0
+									chatList 1, lang("当然だ", "Of course.")
+									chatList 2, lang("彼らにはそう言うよ。", "I will tell them I'm leaving.")
+									gosub *re_select
+									if ( rtval == 1 ) {
+										TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) = 1
+									} else {
+										TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) = (-1)
+										gdata(GDATA_FLAG_MAIN) = 5
+										evadd EVENT_LEAVING_BEGGAR_CAVE
+										goto *turn_end
+									}
+								} else {
+									if ( TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) <= 0 ) {
+										TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) = (-1)
+										gdata(GDATA_FLAG_MAIN) = 5
+										evadd EVENT_LEAVING_BEGGAR_CAVE
+										goto *turn_end
+									}
+								}
+								/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - ENDING **********/
+								; gdata(GDATA_FLAG_MAIN) = 5
+								; evadd EVENT_LEAVING_BEGGAR_CAVE
+								; goto *turn_end
 							}
 						}
 						if ( adata(ADATA_FESTIVAL, gdata(GDATA_AREA)) != 9999 ) {
@@ -13662,14 +13688,12 @@
 				}
 			}
 			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
-			if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 2 ) {
-				repeat TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) - 2
-					if ( p < 0 | p > 10000000 ) {
-						p = 20000000
-						break
-					}
-					p *= 2
-				loop
+			if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) >= 1 ) {
+				remainingtaxes = gdata(GDATA_COST_HIRE) + calccostbuilding() + calccosttax()
+				if ( p < remainingtaxes / 20 ) {
+					p = remainingtaxes
+				}
+				remainingtaxes = 0
 			}
 			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 			if ( cnt == 2 ) {

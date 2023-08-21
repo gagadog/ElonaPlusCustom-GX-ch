@@ -866,6 +866,22 @@
 				gdata(GDATA_LEVEL) = 1
 				if ( feat(2) != 0 | feat(3) != 0 ) {
 					gdata(GDATA_AREA) = feat(2) + feat(3) * 100
+					/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - BEGINNING **********/
+					if ( gdata(GDATA_FLAG_MAIN) < 5 & adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_VERNIS & TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) == 1 ) {
+						s = lang("ヴェルニースに入る。", "Entering Vernis.")
+						file = "bg_re6"
+						buff = lang("あなたはまだ、あなたの家のエレアたちに別れを告げていない。本当にヴェルニースに入るのですか？", "You haven't said goodbye to the Eleas in your home yet. Are you sure to enter Vernis?")
+						listmax = 0
+						chatList 1, lang("当然だ", "Of course.")
+						chatList 2, lang("彼らにはそう言うよ。", "I will them I'm leaving.")
+						gosub *re_select
+						if ( rtval == 1 ) {
+							TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) = (-1)
+						} else {
+							gdata(GDATA_AREA) = AREA_WILDERNESS
+						}
+					}
+					/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - ENDING **********/
 					if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_VOID ) {
 						if ( itemfind(CHARA_PLAYER, ITEM_ID_LICENCE_THE_VOID_EXPLORER) == (-1) ) {
 							txt lang("あなたはこの洞窟の探索を許可されていない。", "You are not permitted to explore this dungeon.")

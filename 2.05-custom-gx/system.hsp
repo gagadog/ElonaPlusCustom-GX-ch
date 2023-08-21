@@ -4155,6 +4155,10 @@
 		goto *console_write
 	}
 
+	/********** RUIN0X11 CUSTOM - ENDING **********/
+	
+	/********** JIANMENGYU CUSTOM - BEGINNING **********/
+
 	if ( instr(buff, 0, "fix_tweak_6190") != (-1) ) {
 		gosub *fixTweakData6190
 		buff = ""
@@ -4163,7 +4167,19 @@
 		goto *console_write
 	}
 
-    /********** RUIN0X11 CUSTOM - ENDING **********/
+	if ( instr(buff, 0, "deed_of_miscarriage") != (-1) ) {
+		repeat MAX_CHARA_TOTAL
+			cdata(CDATA_TAMER_WHIP_EAT, cnt) = 0
+			cdata(CDATA_TAMER_WHIP_PICKUP, cnt) = 0
+			cdata(CDATA_SP_EARNED, cnt) = 0
+		loop
+		buff = ""
+		notesel buff
+		noteadd "What is done cannot be undone."
+		goto *console_write
+	}
+
+	/********** JIANMENGYU CUSTOM - BEGINNING **********/ 
 
 	if ( gdata(GDATA_WIZARD) ) {
 
@@ -4230,14 +4246,6 @@
 		/********** RUIN0X11 CUSTOM - ENDING **********/
 
 		/********** RUIN0X11 CUSTOM - BEGINNING **********/ // Advance hours command
-		
-		if ( instr(buff, 0, "advance_month") != (-1) ) {
-			gdata(GDATA_DAY) = 30
-			gdata(GDATA_HOUR) = 23
-			gdata(GDATA_MIN) = 58
-			noteadd "Done."
-			goto *console_write
-		}
 
 		if ( instr(buff, 0, "advance_hour") != (-1) ) {
 			if ( instr(buff, 0, " ") != (-1) ) {
@@ -4374,6 +4382,7 @@
     noteadd "\tdump_buffers\tDump the graphics buffers to .bmp files."
     noteadd "\texport_itemlist\tCreates a default ItemList.txt file."
     noteadd "\tsave_map_image\tTakes a screenshot of the current map."
+    noteadd "\tdeed_of_miscarriage\tRemove unwanted Survivability-Extender consequences."
     noteadd ""
     noteadd "\tThe commands below can be used in the Wizard mode."
     noteadd "\tgain_spell\tPC gains all spells."

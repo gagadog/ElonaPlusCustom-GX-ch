@@ -1290,7 +1290,7 @@
 	gosub *item_rot
 	gosub *calcThirst
 	if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-		if ( rnd(3) == 0 ) {
+		if ( rnd(3) == 0 & TweakData(TWEAK_CHALLENGE_HARCORE_TRAVELLING, TWEAK_CATEGORY_CHALLENGE) <= 0 ) {
 			gdata(GDATA_SLEEP)++
 		}
 		if ( TweakData(53, 2) == 0 & rnd(15) == 0 ) {
@@ -8248,11 +8248,21 @@
 						}
 					}
 					dmg = 1000
+					/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - BEGINNING **********/
+					if ( TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) == 1 & mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
+						dmg = 999999
+					}
+					/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - ENDING **********/
 					dmghp tc, dmg, DAMAGE_FROM_NUKE
 				}
 				mapitem_fire dx, dy
 			loop
 		loop
+		/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - BEGINNING **********/
+		if ( TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) == 1 & mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
+			TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) = 3
+		}
+		/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - ENDING **********/
 		if ( evdata1(evnum - (evnum != 0) * 1) == 33 ) {
 			if ( evdata2(evnum - (evnum != 0) * 1) == 16 ) {
 				if ( gdata(GDATA_AREA) == AREA_PALMIA ) {

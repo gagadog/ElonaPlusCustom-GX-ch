@@ -552,7 +552,7 @@ TweakData(54, 4) = "Weather always change to etherwind."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 37
+    listmax = 38
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -599,7 +599,8 @@ TweakData(54, 4) = "Weather always change to etherwind."
 	listn(0, 33) = "Necromancy Autotargeting." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING)
 	listn(0, 34) = "Spawn evolved enemies in: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES)
 	listn(0, 35) = "Collect kits instead of socks in Urcaguary quest." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST)
-	listn(0, 36) = "Go back."
+	listn(0, 36) = "Revert post-2.17 cooking result changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES)
+	listn(0, 37) = "Go back."
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -732,6 +733,9 @@ TweakData(54, 4) = "Weather always change to etherwind."
 				s = "Urcaguary now accept craft repair kits and material kits instead of socks.\nCraft repair kit count as 1 and material kit count as 2.\nYou still need to find the sock-thief for the first time.\nBut he will drop enough socks for you complete the quest."
 			}
 			if ( p == 36 ) {
+				s = "Reverts changes to the cooking product after version 2.17. \nCooking will give extra product at cooking lvl 100 and lvl 200. \nBut will no longer gave extra enchant or enhance values. \nOn-eat changes to +enhance post 2.17 do not apply."
+			}
+			if ( p == 37 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -938,6 +942,11 @@ TweakData(54, 4) = "Weather always change to etherwind."
 		gosub *ToggleTweak
 	}
 	if ( p == 36 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES
+		gosub *ToggleTweak
+	}
+	if ( p == 37 ) {
 		snd SOUNDLIST_OK1
 		return
 	}
@@ -1055,7 +1064,7 @@ TweakData(54, 4) = "Weather always change to etherwind."
 	listn(0, 9) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat 11
+	repeat 10
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
@@ -1065,7 +1074,7 @@ TweakData(54, 4) = "Weather always change to etherwind."
 
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat 11
+	repeat 10
 		if ( listn(0, cs) == listn(0, cnt) ) {
 			if ( cnt == TWEAK_MISC_RANDOM_START_MP3 ) {
 				s = "Will make MP3s start playback from a random point.\nCould cause compatability issues."
@@ -1095,9 +1104,6 @@ TweakData(54, 4) = "Weather always change to etherwind."
 				s = "Use Custom Animation for Arrow/Bolt/Ball spell animations. \nIf it causes crashes, make sure you have the files in 'graphic/custom_animation' folder."
 			}
 			if ( cnt == 9 ) {
-				s = "Weather will change into etherwind 100%, but hey, at least it's not raining. \nShelters are closed. Vindale cloaks are sold out. Training time-skips are disabled. \nHead to Lumiest, seek Balzak, may the Wind God have mercy on your soul. "
-			}
-			if ( cnt == 10 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1177,10 +1183,12 @@ TweakData(54, 4) = "Weather always change to etherwind."
 	// Challenge tweak uses the dataspace of TWEAK_CATEGORY_AI.
 	listn(0, 0) = "Permanent Etherwind." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_ALWAYS_ETHERWIND, "Days Survived")
 	listn(0, 1) = "Double your tax each month." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, "Months Paid")
-	listn(0, 2) = "Return."
+	listn(0, 2) = "Nuke the beggar-cave." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, "Eleas Obliterated")
+	listn(0, 3) = "Make travelling harder." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_HARCORE_TRAVELLING, "Miles Travelled")
+	listn(0, 4) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat 3
+	repeat 5
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
@@ -1190,15 +1198,21 @@ TweakData(54, 4) = "Weather always change to etherwind."
 
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat 3
+	repeat 4
 		if ( listn(0, cs) == listn(0, cnt) ) {
 			if ( cnt == 0 ) {
-				s = "Weather will change into etherwind 100%, but hey, at least it's not raining. \nShelters are closed. Vindale cloaks are sold out. Training time-skips are disabled. \nHead to Lumiest, seek Balzak, may the Wind God have mercy on your soul. "
+				s = "Weather will change into etherwind 100%, but hey, at least it's not raining. \nShelters are closed. Vindale cloaks are sold out. Training time-skips are disabled. \nHead to Lumiest, seek Renton, may the Wind God have mercy on your soul. "
 			}
 			if ( cnt == 1 ) {
 				s = "You taxes will double each month. You building/hiring cost remain unchanged. \nNot paying tax or using a empty bill will fail the challenge. \nYou tax immunities will be lifted. \nWorry not, your big sister Goddess may help you pay (some) your bills."
 			}
 			if ( cnt == 2 ) {
+				s = "You can nuke your home again. \nThis will prevent you from entering Vernis until you nuked your cave. \nYou can leave home without triggering main quest. \nNoel quest no longer require 7000 fame."
+			}
+			if ( cnt == 3 ) {
+				s = "Remove the traveling needs reduction. \nYou get hungry/thirsty/tired on world map like regular maps. \nYou miles travelled (exp/idea gain) on a vehicle won't count."
+			}
+			if ( cnt == 4 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1221,6 +1235,16 @@ TweakData(54, 4) = "Weather always change to etherwind."
 		gosub *ToggleTweakChallenge
 	}
 	if ( key == key_select(2) ) {
+		tc = TWEAK_CATEGORY_CHALLENGE
+		tn = TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE
+		gosub *ToggleTweakChallenge
+	}
+	if ( key == key_select(3) ) {
+		tc = TWEAK_CATEGORY_CHALLENGE
+		tn = TWEAK_CHALLENGE_HARCORE_TRAVELLING
+		gosub *ToggleTweakChallenge
+	}
+	if ( key == key_select(4) ) {
 		snd SOUNDLIST_OK1
 		return
 	}
