@@ -332,13 +332,6 @@
 				if ( ilight(inv(INV_ITEM_ID, cnt)) != LIGHT_TYPE_NONE ) {
 					map(cell_refresh_x, cell_refresh_y, 9) = ilight(inv(INV_ITEM_ID, cnt))
 				}
-				/********** CUSTOM - MANUSCRIPT HINT - BEGINNING **********/
-				if ( inv(INV_ITEM_EFFECT, cnt) == EFFECT_BIG_TABLE ) {
-					if ( gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) == 100 ) {
-						map(cell_refresh_x, cell_refresh_y, 9) = LIGHT_TYPE_CRYSTAL_MIDDLE
-					}
-				}
-				/********** CUSTOM - MANUSCRIPT HINT - ENDING **********/
 			}
 		}
 	loop

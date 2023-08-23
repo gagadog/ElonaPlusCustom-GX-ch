@@ -4563,13 +4563,15 @@
 		gdata(GDATA_MIN)++
 		return
 	}
-	if ( gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) < 100 & (TweakData(TWEAK_CHALLENGE_HARCORE_TRAVELLING, TWEAK_CATEGORY_CHALLENGE) > 0 & gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) <= 0) ) {
+	if ( gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) < 100 & (TweakData(TWEAK_CHALLENGE_HARCORE_TRAVELLING, TWEAK_CATEGORY_CHALLENGE) <= 0 | gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) <= 0) ) {
 		if ( rnd(10000) > rnd(sdata(SKILL_NORMAL_TRAVELING, CHARA_PLAYER) + 1000) ) {
 			gdata(GDATA_FLAG_MANUSCRIPT_IDEAS)++
 			/********** CUSTOM - MANUSCRIPT HINT - BEGINNING **********/
-			if ( gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) > 0 & gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) \ 20 == 0 ) {
+			if ( gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) > 0 & gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) \ 25 == 0 ) {
+				snd SOUNDLIST_DING2
+				chatc@DP = (-1)
 				txtef COLOR_SKY_BLUE
-				txt lang("いいアイデアだ！", "You saw something interesting on your journey.")
+				txt lang("いいアイデアだ！", "*You got some ideas.*") + "(" + gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) + "/100)"
 			}
 			/********** CUSTOM - MANUSCRIPT HINT - ENDING **********/
 		}
