@@ -14065,7 +14065,7 @@
 		cardrefrace = "330 effect:" + skillname(cardrefattack) + " "
 		return 1
 	}
-	if ( dbid == 990 ) {
+	if ( dbid == 10100 ) {
 		cardreftype = 30
 		cardrefskill = lang("", "")
 		cardrefdomain = domgreen
@@ -14076,7 +14076,7 @@
 		cardrefrace = "990"
 		return 1
 	}
-	if ( dbid == 991 ) {
+	if ( dbid == 10101 ) {
 		cardreftype = 30
 		cardrefskill = lang("", "")
 		cardrefdomain = domgreen
@@ -14087,7 +14087,7 @@
 		cardrefrace = "991"
 		return 1
 	}
-	if ( dbid == 992 ) {
+	if ( dbid == 10000 ) {
 		cardreftype = 30
 		cardrefskill = lang("", "")
 		cardrefdomain = domblue
@@ -14098,7 +14098,7 @@
 		cardrefrace = "992"
 		return 1
 	}
-	if ( dbid == 993 ) {
+	if ( dbid == 10001 ) {
 		cardreftype = 30
 		cardrefskill = lang("", "")
 		cardrefdomain = domblue
@@ -14109,7 +14109,7 @@
 		cardrefrace = "993"
 		return 1
 	}
-	if ( dbid == 994 ) {
+	if ( dbid == 10300 ) {
 		cardreftype = 30
 		cardrefskill = lang("", "")
 		cardrefdomain = domblack
@@ -14120,7 +14120,7 @@
 		cardrefrace = "994"
 		return 1
 	}
-	if ( dbid == 995 ) {
+	if ( dbid == 10301 ) {
 		cardreftype = 30
 		cardrefskill = lang("", "")
 		cardrefdomain = domblack
@@ -14131,7 +14131,7 @@
 		cardrefrace = "995"
 		return 1
 	}
-	if ( dbid == 996 ) {
+	if ( dbid == 10200 ) {
 		cardreftype = 30
 		cardrefskill = lang("", "")
 		cardrefdomain = domwhite
@@ -14142,7 +14142,7 @@
 		cardrefrace = "996"
 		return 1
 	}
-	if ( dbid == 997 ) {
+	if ( dbid == 10201 ) {
 		cardreftype = 30
 		cardrefskill = lang("", "")
 		cardrefdomain = domwhite
@@ -14153,7 +14153,95 @@
 		cardrefrace = "997"
 		return 1
 	}
-	if ( dbid == 998 ) {
+	if ( dbid == 10400 ) {
+		cardreftype = 30
+		cardrefskill = lang("", "")
+		cardrefdomain = domcolorless
+		cardrefrare = 100
+		cardrefcost = 0
+		cardrefn = lang("平地", "plain")
+		cardrefpic = -9
+		cardrefrace = "996"
+		return 1
+	}
+	if ( dbid == 10401 ) {
+		cardreftype = 30
+		cardrefskill = lang("", "")
+		cardrefdomain = domcolorless
+		cardrefrare = 100
+		cardrefcost = 0
+		cardrefn = lang("雪原", "snow field")
+		cardrefpic = -10
+		cardrefrace = "997"
+		return 1
+	}
+	if ( dbid == 10500 ) {
+		cardreftype = 30
+		cardrefskill = lang("", "")
+		cardrefdomain = domlegendary
+		cardrefrare = 100
+		cardrefcost = 0
+		cardrefn = lang("平地", "plain")
+		cardrefpic = -11
+		cardrefrace = "996"
+		return 1
+	}
+	if ( dbid == 10501 ) {
+		cardreftype = 30
+		cardrefskill = lang("", "")
+		cardrefdomain = domlegendary
+		cardrefrare = 100
+		cardrefcost = 0
+		cardrefn = lang("雪原", "snow field")
+		cardrefpic = -12
+		cardrefrace = "997"
+		return 1
+	}
+	if ( dbid == 10600 ) {
+		cardreftype = 30
+		cardrefskill = lang("", "")
+		cardrefdomain = domother
+		cardrefrare = 100
+		cardrefcost = 0
+		cardrefn = lang("平地", "plain")
+		cardrefpic = 13
+		cardrefrace = "996"
+		return 1
+	}
+	if ( dbid == 10601 ) {
+		cardreftype = 30
+		cardrefskill = lang("", "")
+		cardrefdomain = domother
+		cardrefrare = 100
+		cardrefcost = 0
+		cardrefn = lang("雪原", "snow field")
+		cardrefpic = 14
+		cardrefrace = "997"
+		return 1
+	}
+	if ( dbid == 10700 ) {
+		cardreftype = 30
+		cardrefskill = lang("", "")
+		cardrefdomain = domred
+		cardrefrare = 100
+		cardrefcost = 0
+		cardrefn = lang("平地", "plain")
+		cardrefpic = -15
+		cardrefrace = "996"
+		return 1
+	}
+	if ( dbid == 10701 ) {
+		cardreftype = 30
+		cardrefskill = lang("", "")
+		cardrefdomain = domred
+		cardrefrare = 100
+		cardrefcost = 0
+		cardrefn = lang("雪原", "snow field")
+		cardrefpic = -16
+		cardrefrace = "997"
+		return 1
+	}
+	if ( dbid == 24000 ) {
 		cardreftype = 20
 		cardrefskill = lang("draw2Card", "")
 		cardrefdomain = domblue
@@ -14164,7 +14252,7 @@
 		cardrefrace = "998"
 		return 1
 	}
-	if ( dbid == 999 ) {
+	if ( dbid == 24001 ) {
 		cardreftype = 20
 		cardrefskill = lang("return", "")
 		cardrefdomain = domblue

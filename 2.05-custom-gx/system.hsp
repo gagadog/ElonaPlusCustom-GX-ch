@@ -2626,7 +2626,7 @@
 			fileadd "" + file
 		}
 		if ( fread == 1 ) {
-			zOpen hgz, file, 0
+			zopenwrapper hgz, file, 0
 		}
 		if ( fread == 0 ) {
 			zWrite deck, hgz, fsize

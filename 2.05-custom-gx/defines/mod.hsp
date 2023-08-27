@@ -7130,3 +7130,147 @@
 #define global	DMGPOPUP_REMOVE_CONDITION	13
 
 #define global	MAX_DAMAGE_POPUP_KINDS	(DMGPOPUP_REMOVE_CONDITION + 1)
+
+// TCG
+#define global	TCG_CARD_LOCATION 0
+#define global	TCG_CARD_CONTROLLER 1
+#define global	TCG_CARD_X 2
+#define global	TCG_CARD_Y 3
+#define global	TCG_CARD_X_MOVETO 4
+#define global	TCG_CARD_Y_MOVETO 5
+#define global	TCG_CARD_ANIM 6
+#define global	TCG_CARD_ANIM_DURATION 7
+
+#define global	TCG_CARD_HP 12
+#define global	TCG_CARD_EFFECT 13
+#define global	TCG_CARD_STATUS 14
+#define global	TCG_CARD_ATTACK 15
+#define global	TCG_CARD_COST 21
+#define global	TCG_CARD_TURN_COUNT 22
+
+#define global	TCG_CARD_REF_TYPE 9
+#define global	TCG_CARD_REF_COST 10
+#define global	TCG_CARD_REF_ATTACK 11
+#define global	TCG_CARD_REF_HP 16
+#define global	TCG_CARD_REF_PIC 17
+#define global	TCG_CARD_REF_DBID 18
+#define global	TCG_CARD_REF_BG 19
+#define global	TCG_CARD_REF_SKILL_COST 20
+#define global	TCG_CARD_REF_DOMAIN 23
+#define global	TCG_CARD_REF_CHARA_PIC 24
+#define global	TCG_CARD_BITS 30
+
+#define global	TCG_CARDN_REF_RACE 0
+#define global	TCG_CARDN_REF_SKILL 1
+
+#define global	TCG_PLAYER_LIFE 4
+#define global	TCG_PLAYER_MANA 5
+#define global	TCG_PLAYER_MAX_MANA 6
+#define global	TCG_PLAYER_DECK 7
+#define global	TCG_PLAYER_GRAVEYARD 8
+#define global	TCG_PLAYER_DOMAIN 9
+
+#define global	TCG_STACK 0
+#define global	TCG_STACK_CARD 0
+#define global	TCG_STACK_ACTION 1
+#define global	TCG_STACK_CONTROLLER 2
+#define global	TCG_STACK_ACTIVE_ANYWHERE 3
+#define global	TCG_STACK_TARGET 4
+#define global	TCG_STACK_POWER 5
+
+#define global	TCG_EVAL 0
+#define global	TCG_EVAL_PROB 0
+#define global	TCG_EVAL_TARGET 1
+#define global	TCG_EVAL_ACTION 2
+
+#define global	TCG_SKILL_REF 0
+#define global	TCG_SKILL_COST 0
+#define global	TCG_SKILL_TYPE 1
+#define global	TCG_SKILL_TARGET 2
+#define global	TCG_SKILL_EFF 3
+#define global	TCG_SKILL_POWER 4
+#define global	TCG_SKILL_REPEAT 5
+
+// TCG constants
+#define global	TCG_LANE_OPPONENT_HAND 3
+#define global	TCG_LANE_OPPONENT_FIELD 2
+#define global	TCG_LANE_PLAYER_FIELD 1
+#define global	TCG_LANE_PLAYER_HAND 0
+
+#define global	TCG_LOCATION_GRAVEYARD -2
+#define global	TCG_LOCATION_DECK -1
+#define global	TCG_LOCATION_DEFAULT 0
+#define global	TCG_LOCATION_FIELD 1
+#define global	TCG_LOCATION_HAND 2
+#define global	TCG_LOCATION_EXILE 4
+
+#define global	TCG_CONTROLLER_OBSERVER -1
+#define global	TCG_CONTROLLER_PLAYER 0
+#define global	TCG_CONTROLLER_OPPONENT 1
+
+#define global	TCG_TYPE_CREATURE 10
+#define global	TCG_TYPE_SPELL 20
+#define global	TCG_TYPE_LAND 30
+
+#define global	TCG_ANIM_NONE 0
+#define global	TCG_ANIM_FADE 2
+#define global	TCG_ANIM_ACTIVATE 4
+
+#define global	TCG_ACTION_NONE 0
+#define global	TCG_ACTION_ATTACKING -1
+#define global	TCG_ACTION_DEFENDING -2
+#define global	TCG_ACTION_INVOKING -3
+#define global	TCG_ACTION_EXHAUSTED -4
+#define global	TCG_ACTION_SUMMON -5
+
+#define global	TCG_BIT_EXHAUSTED 0
+#define global	TCG_BIT_FACE_UP 1
+
+#define global	TCG_SKILL_TYPE_NONE 0
+#define global	TCG_SKILL_TYPE_ACTIVATE 1
+#define global	TCG_SKILL_TYPE_BATTLECRY 2
+#define global	TCG_SKILL_TYPE_TURN_START 3
+#define global	TCG_SKILL_TYPE_TURN_END 4
+#define global	TCG_SKILL_TYPE_DEATHRATTLE 5
+#define global	TCG_SKILL_TYPE_SACRIFICE 6
+#define global	TCG_SKILL_TYPE_ONKILL 7
+#define global	TCG_SKILL_TYPE_ONGOING 8
+#define global	TCG_SKILL_TYPE_PASSIVE 9
+#define global	TCG_SKILL_TYPE_STARTWITH 10
+
+#define global	TCG_SKILL_TARGET_NONE 0
+#define global	TCG_SKILL_TARGET_PLAYER 1
+#define global	TCG_SKILL_TARGET_OPPONENT 2
+#define global	TCG_SKILL_TARGET_PLAYER_DECK 3
+#define global	TCG_SKILL_TARGET_OPPONENT_DECK 4
+#define global	TCG_SKILL_TARGET_PLAYER_SPOT 5
+#define global	TCG_SKILL_TARGET_OPPONENT_SPOT 6
+#define global	TCG_SKILL_TARGET_ENEMY_HAND_RANDOM 10
+#define global	TCG_SKILL_TARGET_ENEMY_HAND_CHOOSE 11
+#define global	TCG_SKILL_TARGET_ENEMY_HAND_ALL 12
+#define global	TCG_SKILL_TARGET_ENEMY_FIELD_RANDOM 20
+#define global	TCG_SKILL_TARGET_ENEMY_FIELD_CHOOSE 21
+#define global	TCG_SKILL_TARGET_ENEMY_FIELD_ALL 22
+#define global	TCG_SKILL_TARGET_SELF_FIELD_RANDOM 30
+#define global	TCG_SKILL_TARGET_SELF_FIELD_CHOOSE 31
+#define global	TCG_SKILL_TARGET_SELF_FIELD_ALL 32
+#define global	TCG_SKILL_TARGET_SELF_HAND_RANDOM 40
+#define global	TCG_SKILL_TARGET_SELF_HAND_CHOOSE 41
+#define global	TCG_SKILL_TARGET_SELF_HAND_ALL 42
+
+#define global	TCG_SKILL_EFF_NONE 0
+#define global	TCG_SKILL_EFF_DRAW_CARD 1
+#define global	TCG_SKILL_EFF_DEAL_PLAYER_DAMAGE 2
+#define global	TCG_SKILL_EFF_HEAL_PLAYER_DAMAGE 3
+
+// TCG skill
+
+#define global	TCG_EFF_NONE 0
+#define global	TCG_EFF_BATTLECRY_DRAW1CARD 210
+#define global	TCG_EFF_BATTLECRY_DEALOPPONENT1DAMAGE 220
+#define global	TCG_EFF_BATTLECRY_HEALPLAYER1DAMAGE 225
+#define global	TCG_EFF_TURN_START_DRAW1CARD 310
+#define global	TCG_EFF_DEATHRATTLE_DRAW1CARD 510
+#define global	TCG_EFF_SACRIFICE_DRAW1CARD 610
+#define global	TCG_EFF_ONKILL_DRAW1CARD 710
+

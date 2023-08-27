@@ -5684,6 +5684,12 @@
 	}
 
 	/********** BLOODYSHADE CUSTOM - ENDING **********/
+	
+	/********** CUSTOM TCG - BEGINNING **********/
+	if ( tc > CHARA_PLAYER ) {
+		promptAdd lang("決闘!", "Duel! (CGX beta)"), "null", 69100
+	}
+	/********** CUSTOM TCG - ENDING **********/
 
 	val = promptx, prompty, 225, 1
 	gosub *prompt_key
@@ -6085,6 +6091,17 @@
 		loop
 		goto *pc_turn
 	}
+	
+	/********** CUSTOM TCG - BEGINNING **********/
+	if ( p == 69100 ) {
+		tcgmain
+		gosub *map_prepareTile
+		gosub *screen_refreshFull
+		txtnew
+		txt lang("デッキをしまった。", "You put away the deck.")
+		goto *pc_turn
+	}
+	/********** CUSTOM TCG - ENDING **********/
 
 	if ( p == 998 ) {
 		snd SOUNDLIST_OK1

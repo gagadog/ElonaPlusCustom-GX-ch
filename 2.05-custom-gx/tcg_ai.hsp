@@ -6,14 +6,14 @@
 		}
 		c@tcg = clist@tcg(cnt, ch@tcg)
 		p@tcg = 10
-		if ( card@tcg(9, c@tcg) == 10 ) {
+		if ( card@tcg(TCG_CARD_REF_TYPE, c@tcg) == TCG_TYPE_CREATURE ) {
 			p@tcg = 20
-			p@tcg -= abs(cpdata@tcg(6, cp@tcg) - card@tcg(10, c@tcg))
+			p@tcg -= abs(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) - card@tcg(TCG_CARD_COST, c@tcg))
 		}
-		if ( card@tcg(13, c@tcg) == cddraw2card@tcg ) {
-			p@tcg = (5 - getholdersum(cp@tcg)) * 20
-		}
-		elist@tcg(0, emax@tcg) = p@tcg, c@tcg, -5
+		; if ( card@tcg(TCG_CARD_EFFECT, c@tcg) == cddraw2card@tcg ) {
+		; 	p@tcg = (5 - getholdersum(cp@tcg)) * 20
+		; }
+		elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_SUMMON
 		emax@tcg++
 	loop
 	if ( aiblock@tcg == 0 ) {
@@ -22,7 +22,7 @@
 			p@tcg = 0
 			p@tcg = rnd(40)
 			if ( cardcandeclareattack(c@tcg) ) {
-				elist@tcg(0, emax@tcg) = p@tcg, c@tcg, -1
+				elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_ATTACKING
 				emax@tcg++
 			}
 		loop
@@ -33,7 +33,7 @@
 			p@tcg = 0
 			p@tcg = rnd(40)
 			if ( cardcanblock(c@tcg) ) {
-				elist@tcg(0, emax@tcg) = p@tcg, c@tcg, -2
+				elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_DEFENDING
 				emax@tcg++
 			}
 		loop
@@ -44,7 +44,7 @@
 	repeat
 		f@tcg = 0
 		repeat emax@tcg - 1
-			if ( elist@tcg(0, cnt) < elist@tcg(0, cnt + 1) ) {
+			if ( elist@tcg(TCG_EVAL_PROB, cnt) < elist@tcg(TCG_EVAL_PROB, cnt + 1) ) {
 				cnt2@tcg = cnt
 				repeat 3
 					p@tcg(cnt) = elist@tcg(cnt, cnt2@tcg + 1)
@@ -65,7 +65,7 @@
 	if ( sac@tcg > 0 ) {
 		return 0
 	}
-	if ( getholdersum(cp@tcg) <= cpdata@tcg(6, cp@tcg) / 4 + 1 ) {
+	if ( getholdersum(cp@tcg) <= cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) / 4 + 1 ) {
 		if ( rnd(4) ) {
 			return 0
 		}
@@ -73,14 +73,14 @@
 	f@tcg = 0
 	p@tcg(1) = 50
 	repeat emax@tcg
-		c@tcg = elist@tcg(1, cnt)
-		p@tcg = elist@tcg(0, cnt)
-		if ( card@tcg(0, c@tcg) != 2 ) {
+		c@tcg = elist@tcg(TCG_EVAL_TARGET, cnt)
+		p@tcg = elist@tcg(TCG_EVAL_PROB, cnt)
+		if ( card@tcg(TCG_CARD_LOCATION, c@tcg) != TCG_LOCATION_HAND ) {
 			continue
 		}
-		if ( card@tcg(13, c@tcg) == cddraw2card@tcg ) {
-			p@tcg = 40
-		}
+		; if ( card@tcg(TCG_CARD_EFFECT, c@tcg) == cddraw2card@tcg ) {
+		; 	p@tcg = 40
+		; }
 		if ( p@tcg < p@tcg(1) ) {
 			p@tcg(1) = p@tcg
 			cc@tcg = c@tcg
@@ -106,7 +106,7 @@
 	else {
 		stick a@tcg
 		if ( a@tcg ) {
-			cpdata@tcg(4, 0) = 0
+			cpdata@tcg(TCG_PLAYER_LIFE, 0) = 0
 		}
 	}
 	gosub *ai_evaluate
@@ -118,18 +118,18 @@
 	if ( ec@tcg >= emax@tcg ) {
 		goto *card_ai_WEND1
 	}
-	if ( elist@tcg(0, ec@tcg) <= 0 ) {
+	if ( elist@tcg(TCG_EVAL_PROB, ec@tcg) <= 0 ) {
 		goto *card_ai_WEND1
 	}
-	cc@tcg = elist@tcg(1, ec@tcg)
-	if ( elist@tcg(2, ec@tcg) == (-5) ) {
-		if ( card@tcg(10, cc@tcg) <= cpdata@tcg(5, cp@tcg) ) {
+	cc@tcg = elist@tcg(TCG_EVAL_TARGET, ec@tcg)
+	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_SUMMON ) {
+		if ( card@tcg(TCG_CARD_COST, cc@tcg) <= cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) ) {
 			putcard cc@tcg, cp@tcg
 			if ( gameover() ) {
 				goto *card_ai_WEND1
 			}
-			if ( card@tcg(9, cc@tcg) == 20 ) {
-				cardstack@tcg(0, stack@tcg) = cc@tcg, -3, cp@tcg
+			if ( card@tcg(TCG_CARD_REF_TYPE, cc@tcg) == TCG_TYPE_SPELL ) {
+				cardstack@tcg(TCG_STACK, stack@tcg) = cc@tcg, TCG_ACTION_INVOKING, cp@tcg
 				stack@tcg++
 				if ( chainmode@tcg ) {
 					chaincontinue@tcg = 1
@@ -147,12 +147,12 @@
 			}
 		}
 	}
-	if ( elist@tcg(2, ec@tcg) == (-1) ) {
-		cardstack@tcg(0, stack@tcg) = cc@tcg, -1, cp@tcg
+	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_ATTACKING ) {
+		cardstack@tcg(TCG_STACK, stack@tcg) = cc@tcg, TCG_ACTION_ATTACKING, cp@tcg
 		stack@tcg++
 		actionproc
 	}
-	if ( elist@tcg(2, ec@tcg) == (-2) ) {
+	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_DEFENDING ) {
 		attacktarget@tcg = cc@tcg
 		goto *card_ai_WEND1
 	}
