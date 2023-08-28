@@ -11922,20 +11922,6 @@
 		}
 	}
 	if ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | gdata(GDATA_AREA) == AREA_HOME | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE ) {
-		/********** CUSTOM JOB QUESTS - BEGINNING **********/ //Set Emote icon for quest as soon as you enter the map
-		repeat MAX_CHARA_TOTAL
-			r1 = cnt
-			if ( cdata(CDATA_QUEST_NPC, r1) != 0 && r1 > MAX_CHARA_FOLLOWER ) {
-				p = cdata(CDATA_QUEST_NPC, r1) - 1
-				if ( qdata(QDATA_QUEST_TARGET, p) > 0 ) {
-					cdata(CDATA_EMO_ICON, r1) = 22 + 100 * 10
-				}
-				if ( qdata(QDATA_STATUS, p) != QUEST_STATE_NONE ) {
-					cdata(CDATA_EMO_ICON, r1) = 23 + 100 * 10
-				}
-			}
-		loop
-		/********** CUSTOM JOB QUESTS - ENDING **********/ 
 		if ( gdata(GDATA_TRAVEL_DISTANCE) >= 300 ) {
 			p = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 - gdata(GDATA_TRAVEL_TIME)
 			txtmore
@@ -12088,6 +12074,32 @@
 			gdata(GDATA_TRAVEL_DISTANCE) = 0
 		}
 	}
+	/********** CUSTOM JOB QUESTS - BEGINNING **********/ //Set Emote icon for quest as soon as you enter the map
+	if ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | gdata(GDATA_AREA) == AREA_HOME | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE ) {
+		repeat MAX_CHARA_TOTAL
+			r1 = cnt
+			if ( cdata(CDATA_QUEST_NPC, r1) != 0 && r1 > MAX_CHARA_FOLLOWER ) {
+				p = cdata(CDATA_QUEST_NPC, r1) - 1
+				if ( qdata(QDATA_QUEST_TARGET, p) > 0 ) {
+					cdata(CDATA_EMO_ICON, r1) = 22 + 100 * 2
+				}
+				if ( qdata(QDATA_STATUS, p) != QUEST_STATE_NONE ) {
+					cdata(CDATA_EMO_ICON, r1) = 23 + 100 * 2
+					// On quest map exit, teleport to quest giver.
+					if ( qdata(QDATA_STATUS, p) == QUEST_STATE_SUCCESS & ( qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_ELIMINATE | qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_PERFORM | qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_CONQUER | qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_TRAP | qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_CARRY ) ) {
+						tc = qdata(QDATA_CLIENT, p)
+						client = tc
+						efid = SKILL_SPACT_SHADOW_STEP
+						gosub *effect
+						cdata(CDATA_CONDITION_SLEEP, tc) = 0
+						cdata(CDATA_EMO_ICON, r1) = 0
+						gosub *chat
+					}
+				}
+			}
+		loop
+	}
+	/********** CUSTOM JOB QUESTS - ENDING **********/ 
 	if ( gdata(GDATA_AREA) == AREA_DOJO & gdata(GDATA_DOJO_TURNS) >= 100 & gdata(GDATA_PETS_IN_DOJO) != 0 ) {
 		repeat MAX_CHARA_TOTAL
 			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {

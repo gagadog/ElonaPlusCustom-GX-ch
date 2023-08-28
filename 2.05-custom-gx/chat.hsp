@@ -23143,14 +23143,25 @@
 	}
 	chatList 0, lang("やめる", "Never mind.")
 	chatesc = 1
+	/********** CUSTOM - BEGINNING **********/ // Show slave image
+	tcbk = tc
+	mcpbk = cdata(CDATA_PORTRAIT, MAX_CHARA_NC)
+	cdata(CDATA_PORTRAIT, MAX_CHARA_NC) = -1
+	tc = MAX_CHARA_NC
+	/********** CUSTOM - ENDING **********/
 	gosub *chat_select
+	/********** CUSTOM - BEGINNING **********/ // Show slave image
+	tc = tcbk
+	cdata(CDATA_PORTRAIT, MAX_CHARA_NC) = mcpbk
+	gosub *chat_refresh
+	/********** CUSTOM - ENDING **********/
 	if ( chatval == 1 ) {
 		txt lang(cdatan(CDATAN_NAME, MAX_CHARA_NC) + "を買い取った。", "You buy " + cnven(cdatan(CDATAN_NAME, MAX_CHARA_NC)) + ".")
 		snd SOUNDLIST_PAYGOLD1
 		cdata(CDATA_GOLD, CHARA_PLAYER) -= calcslavevalue(MAX_CHARA_NC)
 		rc = MAX_CHARA_NC
 		gosub *add_ally
-		buff = lang(_thanks(2), "Thanks!")
+		chatMore lang(_thanks(2), "Thanks!")
 		goto *chat_end
 	}
 	if ( chatval == 2 ) {

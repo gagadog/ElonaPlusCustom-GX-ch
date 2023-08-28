@@ -626,7 +626,7 @@
 						cdata(CDATA_INTEREST_RENEW, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 12
 					}
 				}
-				if ( sdata(SKILL_NORMAL_PERFORMER, cc) + ens / 2 < cdata(CDATA_LEVEL, tc) / 2 ) {
+				if ( sdata(SKILL_NORMAL_PERFORMER, cc) + ens / 2 < cdata(CDATA_LEVEL, tc) / 2 | ( cdata(CDATA_ID, tc) == CREATURE_ID_LOYTER_THE_CRIMSON_OF_ZANAN & cdata(CDATA_ID, cc) == CREATURE_ID_BARD ) ) {
 					if ( cdata(CDATA_ID, cc) != CREATURE_ID_KARAVIKA ) {
 						if ( tc >= MAX_CHARA_FOLLOWER ) {
 							if ( rnd(3) == 0 ) {
