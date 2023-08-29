@@ -1,10 +1,16 @@
 #include "db_card.hsp"
 
 #defcfunc cdbit int cdbit_bit, int cdbit_charid
+	if ( cdbit_charid < 0 | cdbit_charid >= maxcard@tcg ) {
+		return
+	}
 	HMMBITCHECK@ card@tcg(30 + cdbit_bit / 32, cdbit_charid), cdbit_bit \ 32
 	return abs(stat)
 
 #deffunc cdbitmod int cdbitmod_bit, int cdbitmod_charid, int cdbitmod_seton
+	if ( cdbitmod_charid < 0 | cdbitmod_charid >= maxcard@tcg ) {
+		return
+	}
 	if ( cdbitmod_seton == 0 ) {
 		HMMBITOFF@ card@tcg(30 + cdbitmod_bit / 32, cdbitmod_charid), cdbitmod_bit \ 32
 		return
@@ -112,20 +118,50 @@
 	if ( cardreftype == 10 ) {
 		cardrefbg = cardrefdomain
 		rtvaln += lang("  No.", "  No.") + cardrefno
-		rtvaln += lang("  Effect: ", "  Effect: ") + cardrefskill
+		rtvaln += lang("  Effect: ", "  Effect: ")
+		
+		s@tcg = cardrefbits
+		csvstr2 s@tcg, s@tcg
+		repeat
+			if ( s@tcg(cnt) == "" ) {
+				break
+			}
+			p@tcg = int(s@tcg(cnt))
+			if ( cnt >= 40 | p@tcg == 0 ) {
+				break
+			}
+			if ( p@tcg == TCG_BIT_REGENERATION ) { rtvaln += "Regeneration "}
+			if ( p@tcg == TCG_BIT_ARMOR ) { rtvaln += "Armored "}
+			if ( p@tcg == TCG_BIT_FLYING ) { rtvaln += "Flying "}
+			if ( p@tcg == TCG_BIT_INTIMIDATE ) { rtvaln += "Intimidate "}
+			if ( p@tcg == TCG_BIT_REACH ) { rtvaln += "Reach "}
+			if ( p@tcg == TCG_BIT_LIFELINK ) { rtvaln += "Lifelink "}
+			if ( p@tcg == TCG_BIT_HASTE ) { rtvaln += "Haste "}
+			if ( p@tcg == TCG_BIT_TRAMPLE ) { rtvaln += "Trample "}
+			if ( p@tcg == TCG_BIT_FIRST_STRIKE ) { rtvaln += "First Strike "}
+			if ( p@tcg == TCG_BIT_DOUBLE_STRIKE ) { rtvaln += "Double Strike "}
+			if ( p@tcg == TCG_BIT_DEATHTOUCH ) { rtvaln += "Deathtouch "}
+			if ( p@tcg == TCG_BIT_WINDFURY ) { rtvaln += "Windfury "}
+			if ( p@tcg == TCG_BIT_WINDFURY_USABLE ) { rtvaln += "Windfury(1) "}
+			
+			if ( p@tcg == TCG_BIT_SILENCED ) { rtvaln += "Silenced "}
+			if ( p@tcg == TCG_BIT_DEFENDER ) { rtvaln += "Defender "}
+			if ( p@tcg == TCG_BIT_FROZEN ) { rtvaln += "Frozen "}
+		loop
+		rtvaln += cardrefskill
 	}
 	if ( cardreftype == 30 ) {
 		cardrefbg = 6
-		rtvaln += lang(" <ÂúüÂú∞>", " <Land>")
+		rtvaln += lang(" <ìyín>", " <Land>")
 	}
 	if ( cardreftype == 20 ) {
 		cardrefbg = 5
-		rtvaln += lang(" <„Çπ„Éö„É´>", " <Spell>")
+		rtvaln += lang(" <ÉXÉyÉã>", " <Spell>")
 	}
-	rtvaln += lang("  „É©„É≥„ÇØ:", "  Rank:") + cardrefcost
-	rtvaln += lang("  „É¨„Ç¢Â∫¶:", "  Rare:") + cnvrare(cardrefrare)
+	rtvaln += lang("  ÉâÉìÉN:", "  Rank:") + cardrefcost
+	rtvaln += lang("  ÉåÉAìx:", "  Rare:") + cnvrare(cardrefrare)
 	s@tcg = ""
-	s@tcg += lang("ÊÉÖÂ†±: ", "Data: " ) + cardrefdescription
+	s@tcg += lang("èÓïÒ: ", "Data: " ) + cardrefdescription
 	if ( gdata(GDATA_QUICK_USE) == 1 ) {
 		talk_conv s@tcg, 95
 	}
@@ -339,6 +375,71 @@
 			if ( card@tcg(TCG_CARD_LOCATION, tcgdrawcard_arg1) == TCG_LOCATION_FIELD ) {
 				if ( cdbit(TCG_BIT_FACE_UP, tcgdrawcard_arg1) ) {
 					if ( card@tcg(TCG_CARD_REF_TYPE, tcgdrawcard_arg1) == TCG_TYPE_CREATURE ) {
+						p@tcg = 0
+						repeat 32 - 5, 5
+							if ( cdbit(cnt, tcgdrawcard_arg1) == 1 ) {
+								pos x@tcg, y@tcg + 69 - 13 * p@tcg
+								color 0, 0, 0
+								if ( cnt == TCG_BIT_REGENERATION ) { 
+									bmes "Regeneration", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_ARMOR ) { 
+									bmes "Armored", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_FLYING ) { 
+									bmes "Flying", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_INTIMIDATE ) { 
+									bmes "Intimidate", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_REACH ) { 
+									bmes "Reach", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_LIFELINK ) { 
+									bmes "Lifelink", 235, 235, 235 
+									p@tcg++
+								}
+								// if ( cnt == TCG_BIT_HASTE ) { bmes "Regeneration", 235, 235, 235 }
+								if ( cnt == TCG_BIT_TRAMPLE ) { 
+									bmes "Trample", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_FIRST_STRIKE ) { 
+									bmes "First Strike", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_DOUBLE_STRIKE ) { 
+									bmes "Double Strike", 235, 235, 235
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_DEATHTOUCH ) { 
+									bmes "Deathtouch", 235, 235, 235 
+									p@tcg++
+								}
+								// if ( cnt == TCG_BIT_WINDFURY ) { bmes "Windfury", 235, 235, 235 }
+								if ( cnt == TCG_BIT_WINDFURY_USABLE ) { 
+									bmes "Windfury", 235, 235, 235 
+								}
+
+								if ( cnt == TCG_BIT_SILENCED ) { 
+									bmes "Silenced", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_DEFENDER ) { 
+									bmes "Defender", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_FROZEN ) { 
+									bmes "Frozen", 235, 235, 235 
+									p@tcg++
+								}
+							}
+						loop
 						if ( card@tcg(TCG_CARD_STATUS, tcgdrawcard_arg1) == TCG_ACTION_ATTACKING ) {
 							pos x@tcg, y@tcg + 18
 							gcopy 7, 288, 120, 24, 24
@@ -440,10 +541,10 @@
 		if ( cs@tcg == (-1) ) {
 			if ( phase@tcg == 2 ) {
 				if ( selectmode@tcg == 0 ) {
-					cardhelp lang("„É°„Ç§„É≥„Éï„Çß„Ç§„Ç∫„ÇíÁµÇ‰∫Ü„Åô„Çã„ÄÇ", "End your main phase.")
+					cardhelp lang("ÉÅÉCÉìÉtÉFÉCÉYÇèIóπÇ∑ÇÈÅB", "End your main phase.")
 				}
 				else {
-					cardhelp lang("„Éñ„É≠„ÉÉ„ÇØ„Åó„Å™„ÅÑ„ÄÇ", "No blocker.")
+					cardhelp lang("ÉuÉçÉbÉNÇµÇ»Ç¢ÅB", "No blocker.")
 				}
 			}
 			pos holderix@tcg - holderspace@tcg - 5, holderiy@tcg - 5
@@ -484,6 +585,9 @@
 			pos efllist@tcg(5, cnt) + 11, efllist@tcg(6, cnt) + efllist@tcg(4, cnt) / 3 + 21
 			mes abs(efllist@tcg(1, cnt))
 			color 255, 100, 100
+			if ( efllist@tcg(1, cnt) > 0 ) {
+				color 100, 255, 100
+			}
 			pos efllist@tcg(5, cnt) + 10, efllist@tcg(6, cnt) + efllist@tcg(4, cnt) / 3 + 20
 			mes abs(efllist@tcg(1, cnt))
 			font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
@@ -564,6 +668,21 @@
 	card@tcg(TCG_CARD_REF_CHARA_PIC, create_card_arg1) = cardrefpicchar
 	card@tcg(TCG_CARD_REF_BG, create_card_arg1) = cardrefbg
 	carddetailn@tcg(create_card_arg1) = rtvaln
+	repeat 32
+		cdbitmod cnt, create_card_arg1, 0
+	loop
+	s@tcg = cardrefbits
+	csvstr2 s@tcg, s@tcg
+	repeat
+		if ( s@tcg(cnt) == "" ) {
+			break
+		}
+		p@tcg = int(s@tcg(cnt))
+		if ( cnt >= 40 | p@tcg == 0 ) {
+			break
+		}
+		cdbitmod p@tcg, create_card_arg1, 1
+	loop
 	return create_card_arg1
 
 #deffunc cardpos int cardpos_arg1, int cardpos_arg2
@@ -655,6 +774,10 @@
 		snd SOUNDLIST_ATK1
 	}
 	efllistadd 1, -dmgcard_arg2, card@tcg(TCG_CARD_X, dmgcard_arg1), card@tcg(TCG_CARD_Y, dmgcard_arg1)
+	if ( cdbit(TCG_BIT_ARMOR, dmgcard_arg1) & dmgcard_arg2 > 0 ) {
+		cdbitmod TCG_BIT_ARMOR, dmgcard_arg1, 0
+		return
+	}
 	card@tcg(TCG_CARD_HP, dmgcard_arg1) -= dmgcard_arg2
 	if ( card@tcg(TCG_CARD_HP, dmgcard_arg1) < 0 ) {
 		card@tcg(TCG_CARD_HP, dmgcard_arg1) = 0
@@ -746,16 +869,28 @@
 	if ( card@tcg(TCG_CARD_REF_TYPE, cardcandeclareattack_arg1) != TCG_TYPE_CREATURE ) {
 		return 0
 	}
+	if ( cdbit(TCG_BIT_FROZEN, cardcandeclareattack_arg1) ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_DEFENDER, cardcandeclareattack_arg1) ) {
+		return 0
+	}
 	if ( cdbit(TCG_BIT_EXHAUSTED, cardcandeclareattack_arg1) ) {
 		return 0
 	}
 	return 1
 
-#defcfunc cardcanblock int cardcanblock_arg1
+#defcfunc cardcanblock int cardcanblock_arg1, int cardcanblock_arg2
 	if ( card@tcg(TCG_CARD_LOCATION, cardcanblock_arg1) != TCG_LOCATION_FIELD ) {
 		return 0
 	}
 	if ( card@tcg(TCG_CARD_REF_TYPE, cardcanblock_arg1) != TCG_TYPE_CREATURE ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_FLYING, cardcanblock_arg2) == TRUE & cdbit(TCG_BIT_REACH, cardcanblock_arg1 ) != TRUE ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_INTIMIDATE, cardcanblock_arg2) == TRUE & card@tcg(TCG_CARD_REF_DOMAIN, cardcanblock_arg1) != card@tcg(TCG_CARD_REF_DOMAIN, cardcanblock_arg2) ) {
 		return 0
 	}
 	if ( cdbit(TCG_BIT_EXHAUSTED, cardcanblock_arg1) ) {
@@ -789,6 +924,9 @@
 		return
 	}
 	p@tcg = getholdersum(getrandomcard_arg1)
+	if ( getholdersum(getrandomcard_arg1) >= 7 ) {
+		return
+	}
 *getrandomcard_WHILE1
 	c@tcg = rnd(maxcard@tcg)
 	if ( card@tcg(TCG_CARD_LOCATION, c@tcg) == TCG_LOCATION_DECK ) {
@@ -818,10 +956,10 @@
 	snd SOUNDLIST_FEAT
 	sac@tcg++
 	if ( saccard_arg2 == 0 ) {
-		cardhelp lang("„Ç´„Éº„Éâ„ÇíÊçß„Åí„Åü„ÄÇ", "You sacrifice the card."), 40
+		cardhelp lang("ÉJÅ[ÉhÇï˘Ç∞ÇΩÅB", "You sacrifice the card."), 40
 	}
 	else {
-		cardhelp lang("Áõ∏Êâã„ÅØ„Ç´„Éº„Éâ„ÇíÊçß„Åí„Åü„ÄÇ", "The opponent sacrifices the card."), 40
+		cardhelp lang("ëäéËÇÕÉJÅ[ÉhÇï˘Ç∞ÇΩÅB", "The opponent sacrifices the card."), 40
 	}
 	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != saccard_arg2 ) {
@@ -875,14 +1013,14 @@
 	if ( getspotsum(putcard_arg2) >= 8 ) {
 		if ( putcard_arg2 == player@tcg ) {
 			snd SOUNDLIST_FAIL1
-			cardhelp lang("„Åì„Çå‰ª•‰∏ä„ÅØÂ†¥„Å´Âá∫„Åõ„Å™„ÅÑ„ÄÇ", "Your field is full."), 40
+			cardhelp lang("Ç±ÇÍà»è„ÇÕèÍÇ…èoÇπÇ»Ç¢ÅB", "Your field is full."), 40
 		}
 		return -1
 	}
 	if ( card@tcg(TCG_CARD_COST, putcard_arg1) > cpdata@tcg(TCG_PLAYER_MANA, putcard_arg2) ) {
 		if ( putcard_arg2 == player@tcg ) {
 			snd SOUNDLIST_FAIL1
-			cardhelp lang("„Éû„Éä„ÅåË∂≥„Çä„Å™„ÅÑ„ÄÇ", "You don't have enough mana."), 40
+			cardhelp lang("É}ÉiÇ™ë´ÇËÇ»Ç¢ÅB", "You don't have enough mana."), 40
 		}
 		if ( debug == 0 ) {
 			return -3
@@ -925,8 +1063,14 @@
 	card@tcg(TCG_CARD_LOCATION, putcard_arg1) = TCG_LOCATION_FIELD
 	cdbitmod TCG_BIT_FACE_UP, putcard_arg1, 0
 	card@tcg(TCG_CARD_TURN_COUNT, putcard_arg1) = 0
-	card@tcg(TCG_CARD_STATUS, putcard_arg1) = TCG_ACTION_EXHAUSTED
-	cdbitmod TCG_BIT_EXHAUSTED, putcard_arg1, 1
+	if ( cdbit(TCG_BIT_HASTE, putcard_arg1) != TRUE ) {
+		card@tcg(TCG_CARD_STATUS, putcard_arg1) = TCG_ACTION_EXHAUSTED
+		cdbitmod TCG_BIT_EXHAUSTED, putcard_arg1, 1
+	}
+	cdbitmod TCG_BIT_WINDFURY_USABLE, putcard_arg1, 0
+	if ( cdbit(TCG_BIT_WINDFURY, putcard_arg1) == TRUE ) {
+		cdbitmod TCG_BIT_WINDFURY_USABLE, putcard_arg1, 1
+	}
 	cardpos putcard_arg2, putcard_arg1
 	tcgdraw
 	makecardlist
@@ -976,6 +1120,7 @@
 	sdim cardrefn
 	sdim helpmsg@tcg
 	dim deck, MAX_CARD
+	dim deck_opponent, MAX_CARD
 	sdim domname@tcg, 20, 10
 	domblue = 0
 	domgreen = 1
@@ -989,14 +1134,14 @@
 	cdsummonrace@tcg = -999999
 	cdsummon@tcg = -999999
 	phasen@tcg = "Begin", "Draw", "Main", "End", ""
-	domname@tcg(0) = lang("0-150", "0-150")
-	domname@tcg(1) = lang("151-300", "151-300")
-	domname@tcg(2) = lang("301-450", "301-450")
-	domname@tcg(3) = lang("451-600", "451-600")
-	domname@tcg(4) = lang("601-750", "601-750")
-	domname@tcg(5) = lang("751-900", "751-900")
-	domname@tcg(6) = lang("901-   ", "901-   ")
-	domname@tcg(7) = lang("ALL", "All")
+	domname@tcg(0) = lang("ê¬", "BLUE")
+	domname@tcg(1) = lang("óŒ", "GREEN")
+	domname@tcg(2) = lang("îí", "WHITE")
+	domname@tcg(3) = lang("çï", "BLACK")
+	domname@tcg(4) = lang("êlä‘", "NEUTRAL")
+	domname@tcg(5) = lang("ì`è≥", "LEGENDARY")
+	domname@tcg(6) = lang("äD", "GRAY")
+	domname@tcg(7) = lang("ê‘", "RED")
 	chainx@tcg = 0
 	chainy@tcg = 0
 	cfg_chaintime = 50
@@ -1057,6 +1202,7 @@
 			}
 		loop
 		repeat 9
+			if ( cnt == 4 | cnt == 5 ) { continue }
 			if ( domain@tcg(cnt) ) {
 				cpdata@tcg(TCG_PLAYER_DOMAIN, p@tcg)++
 			}
@@ -1079,6 +1225,7 @@
 		domain@tcg(card@tcg(TCG_CARD_REF_DOMAIN, cnt)) = 1
 	loop
 	repeat 9
+		if ( cnt == 4 | cnt == 5 ) { continue }
 		if ( domain@tcg(cnt) ) {
 			cpdata@tcg(TCG_PLAYER_DOMAIN, 0)++
 		}
@@ -1115,13 +1262,13 @@
 	loop
 *tcgDeck_loop
 	tcgdrawbg
-	s@tcg = lang("ÁôΩ", "White"), lang("Èùí", "Blue"), lang("ÈäÄ", "Silver"), lang("Ëµ§", "Red"), lang("Èªí", "Black")
+	s@tcg = lang("îí", "White"), lang("ê¬", "Blue"), lang("ã‚", "Silver"), lang("ê‘", "Red"), lang("çï", "Black")
 	repeat 5
-		s@tcg(cnt) += lang("„ÅÆ„Éá„ÉÉ„Ç≠", " Deck")
+		s@tcg(cnt) += lang("ÇÃÉfÉbÉL", " Deck")
 		file@tcg = "" + exedir + "tmp\\deck_" + cnt + ".s2"
 		existwrapper file@tcg
 		if ( strsize == (-1) ) {
-			s@tcg(cnt) += lang(" (Êñ∞Ë¶è‰ΩúÊàê)", " (New)")
+			s@tcg(cnt) += lang(" (êVãKçÏê¨)", " (New)")
 		}
 		else {
 			if ( gdata(GDATA_DECK_SIZE + cnt) != 30 ) {
@@ -1141,8 +1288,8 @@
 		file = "" + exedir + "tmp\\deck_" + curdeck + ".s2"
 		existwrapper file
 		if ( strsize != (-1) ) {
-			promptAdd lang("„Éá„ÉÉ„Ç≠„ÅÆÊßãÁØâ", "Edit Deck")
-			promptAdd lang("„É°„Ç§„É≥„Éá„ÉÉ„Ç≠„Å´Ë®≠ÂÆö", "Set as Main Deck")
+			promptAdd lang("ÉfÉbÉLÇÃç\íz", "Edit Deck")
+			promptAdd lang("ÉÅÉCÉìÉfÉbÉLÇ…ê›íË", "Set as Main Deck")
 			val = basex@tcg + 400, basey@tcg + 230, 240, 1
 			gosub *prompt_key@
 			if ( rtval == (-1) ) {
@@ -1183,8 +1330,8 @@
 		}
 		if ( cardsize@tcg < 30 ) {
 			repeat 30 - cardsize@tcg
-				cc@tcg = rp@tcg * 40 + cnt
-				card_ref rnd(MAX_CREATURE_ID - 2)
+				cc@tcg = rp@tcg * 40 + cnt + cardsize@tcg
+				card_ref rnd(MAX_CREATURE_ID - 3) + 1
 				create_card cc@tcg, stat
 				card@tcg(TCG_CARD_LOCATION, cc@tcg) = TCG_LOCATION_DECK, rp@tcg
 			loop
@@ -1222,7 +1369,7 @@
 	}
 	goto *tcgmain_WHILE1
 *tcgmain_WEND1
-	cardhelp lang("„Ç´„Éº„Éâ„ÇíÊçß„Åí„Åü„ÄÇ", "Game Over! Press Enter to leave."), 40
+	cardhelp lang("ÉJÅ[ÉhÇï˘Ç∞ÇΩÅB", "Game Over! Press Enter to leave."), 40
 	tcgdraw
 	await 15
 	stick a@tcg
@@ -1249,7 +1396,12 @@
 		}
 		card@tcg(TCG_CARD_TURN_COUNT, cnt)++
 		card@tcg(TCG_CARD_STATUS, cnt) = TCG_ACTION_NONE
-		// card@tcg(TCG_CARD_HP, cnt) = card@tcg(TCG_CARD_REF_HP, cnt)
+		if ( cdbit(TCG_BIT_REGENERATION, cnt) ) {
+			card@tcg(TCG_CARD_HP, cnt) = card@tcg(TCG_CARD_REF_HP, cnt)
+		}
+		if ( cdbit(TCG_BIT_WINDFURY, cnt) == TRUE ) {
+			cdbitmod TCG_BIT_WINDFURY_USABLE, cnt, 1
+		}
 		cdbitmod TCG_BIT_EXHAUSTED, cnt, 0
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
@@ -1533,7 +1685,7 @@
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 	color 255, 255, 255
 	pos basex@tcg + 160, basey@tcg + 510
-	mes lang("" + key_next + "," + key_prev + ",Tab [„Éï„Ç£„É´„Çø„ÉºÂàáÊõø]  Ê±∫ÂÆöÔΩ∑ÔΩ∞ [„Ç´„Éº„ÉâÈÅ∏Êäû]  ÔΩ∑ÔΩ¨ÔæùÔΩæÔæôÔΩ∑ÔΩ∞ [ÁµÇ‰∫Ü]", "" + key_next + "," + key_prev + " [Change Filter] " + key_fire + " [Filter Type] Enter [Select]  Cancel [Exit]")
+	mes lang("" + key_next + "," + key_prev + ",Tab [ÉtÉBÉãÉ^Å[êÿë÷]  åàíË∑∞ [ÉJÅ[ÉhëIë]  ∑¨›æŸ∑∞ [èIóπ]", "" + key_next + "," + key_prev + " [Change Filter] " + key_fire + " [Filter Type] Enter [Select]  Cancel [Exit]")
 	pos basex@tcg + 700, basey@tcg + 510
 	mes "Page " + ((dsc@tcg / 8 / 3) + 1) + "/" + (((dlistmax@tcg - 1) / 8 / 3) + 1)
 	return
@@ -1675,32 +1827,87 @@
 	dim dlist@tcg, 2, 400
 	dim cflist@tcg, 10
 	sdim cfname@tcg, 16, 10
-	cfname@tcg = lang("ÂÄôË£ú", "List"), lang("„Éá„ÉÉ„Ç≠", "Deck"), domname@tcg(0), domname@tcg(1), domname@tcg(2), domname@tcg(3), domname@tcg(4), domname@tcg(5), domname@tcg(6), domname@tcg(7), domname@tcg(8), domname@tcg(9)
+	cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), domname@tcg(0), domname@tcg(1), domname@tcg(2), domname@tcg(3), domname@tcg(4), domname@tcg(5), domname@tcg(6), domname@tcg(7), domname@tcg(8), domname@tcg(9)
 	cflist@tcg = 0
 	cfmax@tcg = 1
 	ccf@tcg = 0
 	if ( deckmode@tcg == 0 ) {
 		cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9
 		cfmax@tcg = 9
+		if ( filtertype@tcg == 0 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "0-150", "151-300", "301-450", "451-600", "601-750", "751-900", "900+  ", "All" 
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 10
+		}
 		if ( filtertype@tcg == 1 ) {
-			cfname@tcg = lang("ÂÄôË£ú", "List"), lang("„Éá„ÉÉ„Ç≠", "Deck"), "Blue", "Green", "White", "Black", "Neutral", "Legendary", "Gray", "Red", "All"
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "Blue", "Green", "White", "Black", "Neutral", "Legendary", "Gray", "Red", "All"
 			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 			cfmax@tcg = 10
 		}
 		if ( filtertype@tcg == 2 ) {
-			cfname@tcg = lang("ÂÄôË£ú", "List"), lang("„Éá„ÉÉ„Ç≠", "Deck"), "0", "1", "2", "3", "4", "5", "6", "7", "8+"
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "0", "1", "2", "3", "4", "5", "6", "7", "8+"
 			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 			cfmax@tcg = 10
 		}
 		if ( filtertype@tcg == 3 ) {
-			cfname@tcg = lang("ÂÄôË£ú", "List"), lang("„Éá„ÉÉ„Ç≠", "Deck"), "1-", "2", "3", "4", "5", "6", "7", "8", "9+"
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "1-", "2", "3", "4", "5", "6", "7", "8", "9+"
 			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 			cfmax@tcg = 10
 		}
 		if ( filtertype@tcg == 4 ) {
-			cfname@tcg = lang("ÂÄôË£ú", "List"), lang("„Éá„ÉÉ„Ç≠", "Deck"), "1", "2", "3", "4", "5", "6", "7", "8", "9+"
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "1", "2", "3", "4", "5", "6", "7", "8", "9+"
 			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 			cfmax@tcg = 10
+		}
+		if ( filtertype@tcg == 5 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "seamonster", "frog", "snail", "shell", "spirit", "slime", "bird", "mushroom"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 9
+		}
+		if ( filtertype@tcg == 6 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "wisp", "bacteria", "wasp", "rabbit", "dinosaur", "largeanimal", "mandrake", "horse"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 9
+		}
+		if ( filtertype@tcg == 7 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "beast", "bear", "ent", "sheep", "dog", "fairy", "beetle"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 8
+		}
+		if ( filtertype@tcg == 8 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "minotaur", "lizardman", "orc", "goblin", "kobolt", "yeek", "medusa", "harpy"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 9
+		}
+		if ( filtertype@tcg == 9 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "snake", "rat", "mutant", "mazin", "imp", "hand", "dragon", "giant"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 9
+		}
+		if ( filtertype@tcg == 10 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "drake", "eye", "asura", "rock", "yith", "cupid", "metal"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 8
+		}
+		if ( filtertype@tcg == 11 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "zombie", "ghost", "piece", "armor", "lich", "skeleton", "golem", "bat"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 9
+		}
+		if ( filtertype@tcg == 12 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "spider", "worm", "cat", "eulderna", "roran", "karune", "dwarf", "elea"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 9
+		}
+		if ( filtertype@tcg == 13 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "yerles", "juere", "norland", "zanan", "catsister", "quickling", "machine", "vehicle"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 9
+		}
+		if ( filtertype@tcg == 14 ) {
+			cfname@tcg = lang("åÛï‚", "List"), lang("ÉfÉbÉL", "Deck"), "undeadgod", "machinegod", "catgod", "doggod", "servant", "god"
+			cflist@tcg = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+			cfmax@tcg = 7
 		}
 	}
 *select_deck_loop
@@ -1779,6 +1986,102 @@
 					}
 				}
 			}
+			if ( filtertype@tcg == 5 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "seamonster" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "frog" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "snail" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "shell" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "spirit" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "slime" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 8 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "bird" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 9 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "mushroom" ) { continue }
+			}
+			if ( filtertype@tcg == 6 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "wisp" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "bacteria" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "wasp" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "rabbit" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "dinosaur" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "largeanimal" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 8 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "mandrake" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 9 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "horse" ) { continue }
+			}
+			if ( filtertype@tcg == 7 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "beast" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "bear" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "ent" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "sheep" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "dog" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "fairy" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 8 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "beetle" ) { continue }
+			}
+			if ( filtertype@tcg == 8 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "minotaur" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "lizardman" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "orc" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "goblin" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "kobolt" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "yeek" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 8 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "medusa" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 9 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "harpy" ) { continue }
+			}
+			if ( filtertype@tcg == 9 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "snake" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "rat" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "mutant" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "mazin" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "imp" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "hand" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 8 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "dragon" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 9 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "giant" ) { continue }
+			}
+			if ( filtertype@tcg == 10 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "drake" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "eye" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "asura" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "rock" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "yith" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "cupid" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 8 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "metal" ) { continue }
+			}
+			if ( filtertype@tcg == 11 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "zombie" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "ghost" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "piece" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "armor" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "lich" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "skeleton" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 8 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "golem" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 9 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "bat" ) { continue }
+			}
+			if ( filtertype@tcg == 12 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "spider" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "worm" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "cat" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "eulderna" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "roran" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "karune" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 8 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "dwarf" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 9 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "elea" ) { continue }
+			}
+			if ( filtertype@tcg == 13 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "yerles" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "juere" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "norland" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "zanan" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "catsister" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "quickling" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 8 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "machine" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 9 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "vehicle" ) { continue }
+			}
+			if ( filtertype@tcg == 14 ) {
+				if ( cflist@tcg(ccf@tcg) == 2 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "undeadgod" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 3 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "machinegod" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 4 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "catgod" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 5 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "doggod" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 6 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "servant" ) { continue }
+				if ( cflist@tcg(ccf@tcg) == 7 & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "god" ) { continue }
+			}
 		}
 		if ( deckmode@tcg == 1 ) {
 			if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != deckrefn@tcg ) {
@@ -1839,7 +2142,7 @@
 	}
 	if ( key == key_fire ) {
 		filtertype@tcg++
-		if ( filtertype@tcg > 4 ) {
+		if ( filtertype@tcg > 14 ) {
 			filtertype@tcg = 0
 		}
 		if ( filtertype@tcg < 0 ) {
@@ -1877,13 +2180,6 @@
 			goto *select_deck_loop_WHILE1_CONTINUE
 		}
 		if ( deckmode@tcg == 0 ) {
-			if ( card@tcg(TCG_CARD_REF_TYPE, dlist@tcg(0, dsc@tcg)) == TCG_TYPE_CREATURE ) {
-				// if ( card@tcg(TCG_CARD_REF_COST, dlist@tcg(0, dsc@tcg)) == 0 ) {
-				// 	snd SOUNDLIST_FAIL1
-				// 	cardhelp lang("Êú™ÂÆüË£Ö„ÅÆ„Ç´„Éº„Éâ", "The card isn't available in this version."), 40
-				// 	goto *select_deck_loop_WHILE1_CONTINUE
-				// }
-			}
 *select_deck_loop_WHILE2
 			redraw 0
 			calcdecksize
@@ -1906,6 +2202,12 @@
 			gosub *select_action
 			if ( f@tcg == 0 ) {
 				if ( act@tcg(0) ) {
+					if ( card@tcg(TCG_CARD_REF_DOMAIN, cc@tcg) == 5 & deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) >= 1 ) {
+						cardhelp lang("ÉfÉbÉLÇ…ìØÇ∂ì`ê‡ÇÃÉJÅ[ÉhÇ1ñáÇµÇ©ì¸ÇÍÇÈÇ±Ç∆Ç™Ç≈Ç´Ç»Ç¢ÅB", "You can only put 1 copy of the same Legendary Card in your deck."), 40
+						deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) = 1
+						snd SOUNDLIST_FAIL1
+						goto *select_deck_loop_WEND2
+					}
 					deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg))++
 					snd SOUNDLIST_CARD1
 					goto *select_deck_loop_WHILE2_CONTINUE
@@ -1931,8 +2233,8 @@
 	}
 	if ( key == key_cancel ) {
 		if ( deckmode@tcg == 0 ) {
-			promptAdd lang("„Çª„Éº„Éñ„Åó„Å¶ÁµÇ‰∫Ü", "Save & Exit")
-			promptAdd lang("„Çª„Éº„Éñ„Åó„Å™„ÅÑ„ÅßÁµÇ‰∫Ü", "Just Exit")
+			promptAdd lang("ÉZÅ[ÉuÇµÇƒèIóπ", "Save & Exit")
+			promptAdd lang("ÉZÅ[ÉuÇµÇ»Ç¢Ç≈èIóπ", "Just Exit")
 			val = basex@tcg + 420, basey@tcg + 230, 240, 1
 			gosub *prompt_key@
 			if ( rtval == 0 ) {
@@ -2024,13 +2326,13 @@
 			if ( card@tcg(TCG_CARD_COST, cc@tcg) <= cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) ) {
 				if ( card@tcg(TCG_CARD_REF_TYPE, cc@tcg) == TCG_TYPE_SPELL | selectmode@tcg == 0 ) {
 					act@tcg(0) = 1
-					s@tcg += lang("‚Üë   „Ç´„Éº„Éâ„ÇíÂá∫„Åô„ÄÇ\n", "UP: Put the card.\n")
+					s@tcg += lang("Å™   ÉJÅ[ÉhÇèoÇ∑ÅB\n", "UP: Put the card.\n")
 				}
 			}
 			if ( sac@tcg == 0 ) {
 				if ( selectmode@tcg == 0 ) {
 					act@tcg(1) = 1
-					s@tcg += lang("‚Üì   „Ç´„Éº„Éâ„ÇíÊçß„Åí„Å¶„Éû„Éä„ÇíÂæó„Çã(1„Çø„Éº„É≥„Å´1Âõû)„ÄÇ\n", "Down: Sacrifice the card.\n")
+					s@tcg += lang("Å´   ÉJÅ[ÉhÇï˘Ç∞ÇƒÉ}ÉiÇìæÇÈ(1É^Å[ÉìÇ…1âÒ)ÅB\n", "Down: Sacrifice the card.\n")
 				}
 			}
 		}
@@ -2039,19 +2341,19 @@
 				if ( card@tcg(TCG_CARD_STATUS, cc@tcg) != TCG_ACTION_ATTACKING ) {
 					if ( cardcandeclareattack(cc@tcg) ) {
 						act@tcg(0) = 1
-						s@tcg += lang("‚Üë   ÊîªÊíÉ„ÇíÂÆ£Ë®Ä„Åô„Çã„ÄÇ\n", "UP: Declare an attack.\n")
+						s@tcg += lang("Å™   çUåÇÇêÈåæÇ∑ÇÈÅB\n", "UP: Declare an attack.\n")
 					}
 				}
 			}
 			if ( selectmode@tcg == 1 ) {
-				if ( cardcanblock(cc@tcg) ) {
+				if ( cardcanblock(cc@tcg, attackingcard@tcg) ) {
 					act@tcg(0) = 1
-					s@tcg += lang("‚Üë   „Éñ„É≠„ÉÉ„ÇØ„Åô„Çã„ÄÇ\n", "UP: Block.\n")
+					s@tcg += lang("Å™   ÉuÉçÉbÉNÇ∑ÇÈÅB\n", "UP: Block.\n")
 				}
 			}
 			if ( cardcanuseskill(cc@tcg) ) {
 				act@tcg(2) = 1
-				s@tcg += lang("Ê±∫ÂÆö „Çπ„Ç≠„É´„Çí‰ΩøÁî®„Åô„Çã„ÄÇ\n", "ENTER: Use the skill.\n")
+				s@tcg += lang("åàíË ÉXÉLÉãÇégópÇ∑ÇÈÅB\n", "ENTER: Use the skill.\n")
 			}
 		}
 		f@tcg = 0
@@ -2064,7 +2366,7 @@
 		if ( f@tcg == 0 ) {
 			if ( debug == 0 ) {
 				snd SOUNDLIST_FAIL1
-				cardhelp lang("ÂèØËÉΩ„Å™Ë°åÂãï„ÅØ„Å™„ÅÑ„ÄÇ", "There is no action available."), 40
+				cardhelp lang("â¬î\Ç»çsìÆÇÕÇ»Ç¢ÅB", "There is no action available."), 40
 				goto *card_player_WHILE1_CONTINUE
 			}
 		}
@@ -2160,7 +2462,7 @@
 		goto *card_player_WEND1
 	}
 	if ( key == "s"  | key_escape ) {
-		promptAdd lang("ÈôçÂèÇ„Åô„Çã", "Surrender")
+		promptAdd lang("ç~éQÇ∑ÇÈ", "Surrender")
 		val = basex@tcg + 420, basey@tcg + 230, 200, 1
 		gosub *prompt_key@
 		if ( rtval == 0 ) {

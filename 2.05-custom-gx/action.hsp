@@ -3240,95 +3240,92 @@
 			ri = ci
 			cc = CHARA_PLAYER
 			inv(INV_ITEM_PARAM1, ri) = 0
+			/********** CUSTOM TCG - BEGINNING **********/
+			goto *card_pack_custom
+			/********** CUSTOM TCG - ENDING **********/
 			if ( gdata(GDATA_FLAG_MAIN) < 200 ) {
 				cardno = rnd(347) + 1
-				if ( cardno <= 2 ) {
-					cardno = 3
+				if ( cardno <= CREATURE_ID_ZEOME_THE_FALSE_PROPHET ) {
+					cardno = CREATURE_ID_PUTIT
 				}
-				if ( cardno <= 23 & cardno > 18 ) {
-					cardno = 18
+				if ( cardno <= CREATURE_ID_ORPHE_THE_CHAOS_CHILD & cardno > CREATURE_ID_ORPHE_THE_CHAOS_CHILD - 5 ) {
+					cardno = CREATURE_ID_ORPHE_THE_CHAOS_CHILD - 5
 				}
 			}
 			if ( gdata(GDATA_FLAG_MAIN) < 350 & gdata(GDATA_FLAG_MAIN) >= 200 ) {
 				cardno = rnd(528) + 1
-				if ( cardno <= 458 & cardno > 453 ) {
-					cardno = 453
+				if ( cardno <= CREATURE_ID_MESHERA_ALPHA_THE_DEFORMED_ANGEL & cardno > CREATURE_ID_MESHERA_ALPHA_THE_DEFORMED_ANGEL - 5 ) {
+					cardno = CREATURE_ID_MESHERA_ALPHA_THE_DEFORMED_ANGEL - 5
 				}
-				if ( cardno <= 435 & cardno > 430 ) {
-					cardno = 430
+				if ( cardno <= CREATURE_ID_MESHERA_PLANT & cardno > CREATURE_ID_MESHERA_PLANT - 5 ) {
+					cardno = CREATURE_ID_MESHERA_PLANT - 5
 				}
-				if ( cardno <= 380 & cardno > 375 ) {
-					cardno = 375
-				}
-				if ( cardno <= 534 & cardno > 529 ) {
-					cardno = 529
+				if ( cardno <= CREATURE_ID_ORPHE_THE_CHAOS_FOLLOWER & cardno > CREATURE_ID_ORPHE_THE_CHAOS_FOLLOWER - 5 ) {
+					cardno = CREATURE_ID_ORPHE_THE_CHAOS_FOLLOWER - 5
 				}
 			}
 			if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
 				cardno = rnd(918) + 1
 				if ( gdata(GDATA_FLAG_SUB_REGULUS_ZANAN) < 1003 ) {
-					if ( cardno <= 805 & cardno > 800 ) {
-						cardno = 800
+					if ( cardno <= CREATURE_ID_RENAI_THE_OVER_MESHERA & cardno > CREATURE_ID_RENAI_THE_OVER_MESHERA - 5 ) {
+						cardno = CREATURE_ID_RENAI_THE_OVER_MESHERA - 5
 					}
 				}
 				if ( gdata(GDATA_FLAG_MAIN) < 540 ) {
-					if ( cardno <= 842 & cardno > 837 ) {
-						cardno = 837
+					if ( cardno <= CREATURE_ID_FASHIONABLE_KUNOICHI & cardno > CREATURE_ID_FASHIONABLE_KUNOICHI - 5 ) {
+						cardno = CREATURE_ID_FASHIONABLE_KUNOICHI - 5
 					}
 				}
 				if ( gdata(GDATA_FLAG_MAIN) < 540 ) {
-					if ( cardno <= 911 & cardno > 904 ) {
-						cardno = 904
+					// Also filters out CREATURE_ID_FIN_CROCODILE and CREATURE_ID_TALON_SOLDIER
+					if ( cardno <= CREATURE_ID_TEZCATLIPOCA & cardno > CREATURE_ID_TALON_SOLDIER - 5 ) {
+						cardno = CREATURE_ID_TALON_SOLDIER - 5
 					}
 				}
 			}
 			if ( gdata(GDATA_FLAG_MAIN) >= 715 ) {
-				cardno = rnd(1044) + 1
+				cardno = rnd(MAX_CREATURE_ID - 3) + 1
 				if ( gdata(GDATA_FLAG_MAIN) < 760 ) {
-					if ( cardno <= 923 & cardno > 918 ) {
-						cardno = CREATURE_ID_LIVING_BLOOD
+					if ( cardno <= CREATURE_ID_ENTHUMESIS & cardno > CREATURE_ID_ENTHUMESIS - 5 ) {
+						cardno = CREATURE_ID_ENTHUMESIS - 5
 					}
 				}
 				if ( gdata(GDATA_FLAG_MAIN) < 760 ) {
-					if ( cardno <= 936 & cardno > 929 ) {
-						cardno = CREATURE_ID_CRIMSON_ARMOR
+					// Also filters out CREATURE_ID_NAGAREW_THE_OBLIVION_BEAST and CREATURE_ID_THE_CHAOS_CHILD
+					if ( cardno <= CREATURE_ID_MELUGAST_AO_I_THE_DIMENSION_DRIVER & cardno > CREATURE_ID_THE_CHAOS_CHILD - 5 ) {
+						cardno = CREATURE_ID_THE_CHAOS_CHILD - 5
 					}
 				}
 				if ( gdata(GDATA_FLAG_MAIN) < 950 ) {
-					if ( cardno <= 961 & cardno > 941 ) {
-						cardno = CREATURE_ID_BEILGENA_THE_ARTIFICIAL_DRAGON
+					// Also filters out everything between 946 and 961 (Zaile content)
+					if ( cardno <= CREATURE_ID_OBLIVION_BEAST & cardno > CREATURE_ID_LOYTER_THE_CRIMSON_OF_DOLE - 5 ) {
+						cardno = CREATURE_ID_LOYTER_THE_CRIMSON_OF_DOLE - 5
 					}
 				}
 				if ( gdata(GDATA_FLAG_MAIN) < 950 ) {
-					if ( cardno <= 982 & cardno > 975 ) {
-						cardno = CREATURE_ID_KOBOLD_BLUE
+					// Also filters out everything between CREATURE_ID_NANCY_THE_WANDERLUST and CREATURE_ID_CARTER_THE_SKILLED_FOOT (Zaile content)
+					if ( cardno <= CREATURE_ID_TONI_THE_ANGLER & cardno > CREATURE_ID_CARTER_THE_SKILLED_FOOT - 5 ) {
+						cardno = CREATURE_ID_CARTER_THE_SKILLED_FOOT - 5
 					}
 				}
 				if ( gdata(GDATA_FLAG_MAIN) < 950 ) {
-					if ( cardno <= 995 & cardno > 985 ) {
-						cardno = CREATURE_ID_BLACK_ORC
+					// Also filters out everything between 990 and 995 (Zaile content)
+					if ( cardno <= CREATURE_ID_STRANGE_OLD_PERSON & cardno > CREATURE_ID_MANSON_THE_CAREFUL_ADVENTURER - 5 ) {
+						cardno = CREATURE_ID_MANSON_THE_CAREFUL_ADVENTURER - 5
 					}
 				}
 				if ( gdata(GDATA_FLAG_MAIN) < 950 ) {
-					if ( cardno <= 1001 & cardno > 996 ) {
-						cardno = CREATURE_ID_DESKTOP_NAVY
+					if ( cardno <= CREATURE_ID_BONYAC_THE_GENERAL_VENDOR & cardno > CREATURE_ID_BONYAC_THE_GENERAL_VENDOR - 5 ) {
+						cardno = CREATURE_ID_BONYAC_THE_GENERAL_VENDOR - 5
 					}
 				}
 				if ( gdata(GDATA_FLAG_MAIN) < 950 ) {
-					if ( cardno <= 1018 & cardno > 1009 ) {
-						cardno = CREATURE_ID_ANDHAKA
+					// Also filters out everything between 1014 and 1018 (Final boss)
+					if ( cardno <= CREATURE_ID_YAYAUHQUI_TEZCATLIPOCA & cardno > CREATURE_ID_MIKRAANESIS - 5 ) {
+						cardno = CREATURE_ID_MIKRAANESIS - 5
 					}
 				}
  			}
-
-#define spawnCard(%1) flt%c\
-	itemcreate -1, ITEM_ID_CARD, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0%c\
-	dbid = %1%c\
-	dbmode = DBMODE_REF%c\
-	gosub *db_creature%c\
-	inv(INV_ITEM_SUB_NAME, ci) = %1%c\
-	inv(INV_ITEM_COL, ci) = cpicref \ COLOR_TINT_MULT%c\
-	cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
 
 			spawnCard cardno
 			spawnCard cardno + 1

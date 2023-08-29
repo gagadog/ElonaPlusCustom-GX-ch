@@ -47,6 +47,19 @@ if instr(s,0,%1)!-1{	%c\
 #define chatList(%1,%2) list(0,listmax)=%1 : listn(0,listmax)=%2 : listmax++
 #define chatMore(%1,%2=strmore,%3=0) listmax=0:buff=%1:tc=tc*(%3=0)+(%3!0)*%3:chatList 0,%2:chatesc=1:gosub *chat_select :if scenemode:if scene_cut=1 : goto *chat_end
 
+#define spawnCard(%1) flt%c\
+	itemcreate -1, ITEM_ID_CARD, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0 %c\
+	dbid = %1 %c\
+	dbmode = DBMODE_REF %c\
+	gosub *db_creature %c\
+	cpicref2 = 0 %c\
+	if ( cpicref - refchara(dbid, DBSPEC_CHARA_COL) * COLOR_TINT_MULT >= COLOR_TINT_MULT ) { %c\
+		cpicref2 = 1 %c\
+	} %c\
+	inv(INV_ITEM_SUB_NAME, ci) = %1%c\
+	inv(INV_ITEM_COL, ci) = cpicref \ COLOR_TINT_MULT + cpicref2 * COLOR_TINT_MULT %c\
+	cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
+
 #deffunc netload str netload_filename
 	netrequest netload_filename
 	repeat

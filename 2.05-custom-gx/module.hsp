@@ -1048,6 +1048,14 @@
     boxf 0,960,chipi(CHIPI_WIDTH, ich),chipi(CHIPI_HEIGHT, ich)+960
 
 	if ich=528 { ; Cards
+		if ( cch < 0 | cch >= SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + 240 ) { 
+			gmode 2
+			pos 0,960
+			gcopy BUFFER_ITEM,0,768,inf_tiles,inf_tiles
+			gsel selcur
+			title "" + cch
+			return
+		}
         gmode 2
         pos 0,960
         gcopy BUFFER_ITEM,0,768,inf_tiles,inf_tiles
@@ -1060,6 +1068,14 @@
     }
 
     if ich=531 { ; Figurines
+		if ( cch < 0 | cch >= SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + 240 ) { 
+			pos 0,960
+			gcopy BUFFER_ITEM,144,768,inf_tiles,inf_tiles
+			gmode 2
+			gsel selcur
+			title "" + cch
+			return
+		}
         pos 8,1058-chipc(CHIPC_HEIGHT, cch)
         gcopy BUFFER_CHR,chipc(CHIPC_X, cch)+8,chipc(CHIPC_Y, cch)+2,chipc(CHIPC_WIDTH, cch)-16,chipc(CHIPC_HEIGHT, cch)-8
         gmode 4,,,150
@@ -1072,6 +1088,12 @@
     }
 
 	if ich=1119 { ; Meat Filling (30, 33)
+		if ( cch < 0 | cch >= SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + 240 ) { 
+			pos 0,960
+    		gcopy BUFFER_ITEM,chipi(CHIPI_X, ich),chipi(CHIPI_Y, ich),chipi(CHIPI_WIDTH, ich),chipi(CHIPI_HEIGHT, ich)
+			gsel selcur
+        	return
+		}
 	    pos 0, 1055 - chipc(CHIPC_HEIGHT, cch)
 	    gcopy BUFFER_CHR, chipc(CHIPC_X, cch), chipc(CHIPC_Y, cch), chipc(CHIPC_WIDTH, cch), chipc(CHIPC_HEIGHT, cch)
         gmode 2
@@ -1080,6 +1102,12 @@
     }
 
 	if ich=1206 { ; Golden Doll (18, 36)
+		if ( cch < 0 | cch >= SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + 240 ) { 
+			pos 0,960
+			gcopy BUFFER_ITEM,chipi(CHIPI_X, ich),chipi(CHIPI_Y, ich),chipi(CHIPI_WIDTH, ich),chipi(CHIPI_HEIGHT, ich)
+			gsel selcur
+			return
+		}
 		pos 0, 1055 - chipc(CHIPC_HEIGHT, cch)
 		gcopy BUFFER_CHR, chipc(CHIPC_X, cch), chipc(CHIPC_Y, cch), chipc(CHIPC_WIDTH, cch), chipc(CHIPC_HEIGHT, cch)
 		gfini chipi(CHIPI_WIDTH, ich), chipi(CHIPI_HEIGHT, ich)
