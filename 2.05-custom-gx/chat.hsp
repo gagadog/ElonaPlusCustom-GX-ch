@@ -1142,6 +1142,38 @@
 	if ( _switch_val == CREATURE_ID_MICHES_THE_APPRENTICE | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_FLAG_SUB_SLIME) == 1000 ) {
+			/********** CUSTOM TCG - BEGINNING **********/
+			if ( gdata(GDATA_HOUR) >= 12 & gdata(GDATA_HOUR) <= 20 ) {
+				chatList 2, lang("挨拶する", "Let's Talk.")
+				chatList 1, lang("引き受ける", "Sure thing.")
+				chatList 0, lang("面倒だ", "Not now.")
+				buff = lang("冒険者さん！プティットとイークのデッキを買ったばかりなんだ！一緒に遊んでくれませんか？", "Adventurer! I just bought a deck of putits and yeeks! Could you play with me, pretty please?")
+				gosub *chat_select
+				if ( chatval == 2 ) {
+				} else {
+					if ( chatval == 1) {
+						if ( card(0, CREATURE_ID_PUTIT) <= 0 ) {
+							chatMore lang("素晴らしい！このゲーム、やったことないでしょ？たまたま余ったカードセットを買ったんだ。30枚のデッキを組んで、デュエルしよう！", "Great! You haven't played this game before right? I happened to bought an extra set of cards, here, you can have it. Just assemble your deck of 30 cards, and let's duel!"), strthankyou
+							card(0, CREATURE_ID_PUTIT) = 1
+							itemcreate -1, ITEM_ID_CARD_PACK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10
+							flt
+							itemcreate -1, ITEM_ID_DECK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
+							flt
+							goto *chat_end
+						} else {
+							tcgmain
+							gosub *map_prepareTile
+							gosub *screen_refreshFull
+							gosub *chat_refresh
+							txtnew
+							txt lang("デッキをしまった。", "You put away the deck.")
+							goto *chat_end
+						}
+					}
+					goto *chat_end
+				}
+			}
+			/********** CUSTOM TCG - ENDING **********/
 			chatMore lang("あら、冒険者さん♪ お茶でもいかが？", "Hi there adventurer! Would you like some tea?"), strbye
 			goto *chat_end
 		}

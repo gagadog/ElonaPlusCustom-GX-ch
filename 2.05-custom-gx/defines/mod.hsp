@@ -33,6 +33,10 @@
 #define global	MAX_GDATAN	50
 #define global	MAX_RPDATA	1899
 #define global	MAX_CARD	1500
+#define global	MIN_CARD_DECK	30
+#define global	MAX_CARD_DECK	60
+#define global	MAX_CARD_EXTRA	40
+#define global	MAX_CARD_DECK_TOTAL	(MAX_CARD_DECK + MAX_CARD_EXTRA)
 
 #define global	MAX_DB	1499
 
@@ -7162,6 +7166,8 @@
 
 #define global	TCG_CARDN_REF_RACE 0
 #define global	TCG_CARDN_REF_SKILL 1
+#define global	TCG_CARDN_REF_CLASS 2
+#define global	TCG_CARDN_REF_SEX 3
 
 #define global	TCG_PLAYER_LIFE 4
 #define global	TCG_PLAYER_MANA 5
@@ -7169,6 +7175,8 @@
 #define global	TCG_PLAYER_DECK 7
 #define global	TCG_PLAYER_GRAVEYARD 8
 #define global	TCG_PLAYER_DOMAIN 9
+#define global	TCG_PLAYER_EXTRACARD 10
+#define global	TCG_PLAYER_NEXTTURN_MANA 11
 
 #define global	TCG_STACK 0
 #define global	TCG_STACK_CARD 0
@@ -7190,6 +7198,8 @@
 #define global	TCG_SKILL_EFF 3
 #define global	TCG_SKILL_POWER 4
 #define global	TCG_SKILL_REPEAT 5
+#define global	TCG_SKILL_FILTER 6
+#define global	TCG_SKILL_AI_PREFERENCE 7
 
 // TCG constants
 #define global	TCG_LANE_OPPONENT_HAND 3
@@ -7226,23 +7236,28 @@
 #define global	TCG_BIT_EXHAUSTED 0
 #define global	TCG_BIT_FACE_UP 1
 
-#define global	TCG_BIT_REGENERATION 5
-#define global	TCG_BIT_ARMOR 6
-#define global	TCG_BIT_FLYING 7
-#define global	TCG_BIT_INTIMIDATE 8
-#define global	TCG_BIT_REACH 9
-#define global	TCG_BIT_LIFELINK 10
-#define global	TCG_BIT_HASTE 11
-#define global	TCG_BIT_TRAMPLE 12
-#define global	TCG_BIT_FIRST_STRIKE 15
-#define global	TCG_BIT_DOUBLE_STRIKE 16
-#define global	TCG_BIT_DEATHTOUCH 17
-#define global	TCG_BIT_WINDFURY 19
+#define global	TCG_BIT_REGENERATION 5 // Recover HP at Begin Phase (like all cards in mtg)
+#define global	TCG_BIT_ARMOR 6 // Negate damage once
+#define global	TCG_BIT_FLYING 7 // Can't be blocked unless opponent has flying or reach
+#define global	TCG_BIT_INTIMIDATE 8 // Can't be blocked unless opponent is same domain.
+#define global	TCG_BIT_REACH 9 // Can block flying
+#define global	TCG_BIT_LIFELINK 10 // Gain HP when dealing dmg to creature
+#define global	TCG_BIT_HASTE 11 // Can attack the turn you put this
+#define global	TCG_BIT_TRAMPLE 12 // Excess damage dealt to opponent
+#define global	TCG_BIT_FIRST_STRIKE 15 // Attack first before combat
+#define global	TCG_BIT_DOUBLE_STRIKE 16 // Attack first, and enters regular combat
+#define global	TCG_BIT_DEATHTOUCH 17 // Attack kills creature immediately
+#define global	TCG_BIT_WINDFURY 19 // Attack twice
 #define global	TCG_BIT_WINDFURY_USABLE 20
+#define global	TCG_BIT_VIGILANCE 21 // Block does not exhaust card
+#define global	TCG_BIT_DEFENDER 22 // Block does not exhaust card, can't attack
+#define global	TCG_BIT_SPLIT 23 // Generate a copy of self after being attacked
 
-#define global	TCG_BIT_SILENCED 29
-#define global	TCG_BIT_DEFENDER 30
-#define global	TCG_BIT_FROZEN 31
+#define global	TCG_BIT_POISONED 27 // Lose 1 HP at begin phase
+#define global	TCG_BIT_SUICIDE 28 // Battlecry: Die
+#define global	TCG_BIT_SILENCED 29 // Doesn't activate effects
+#define global	TCG_BIT_PARALYSED 30 // Can't block until next turn.
+#define global	TCG_BIT_FROZEN 31 // Can't declare attack until next turn.
 
 #define global	TCG_SKILL_TYPE_NONE 0
 #define global	TCG_SKILL_TYPE_ACTIVATE 1
@@ -7252,32 +7267,45 @@
 #define global	TCG_SKILL_TYPE_DEATHRATTLE 5
 #define global	TCG_SKILL_TYPE_SACRIFICE 6
 #define global	TCG_SKILL_TYPE_ONKILL 7
-#define global	TCG_SKILL_TYPE_ONGOING 8
+#define global	TCG_SKILL_TYPE_ONDRAW 8
 #define global	TCG_SKILL_TYPE_PASSIVE 9
 #define global	TCG_SKILL_TYPE_STARTWITH 10
 
 #define global	TCG_SKILL_TARGET_NONE 0
 #define global	TCG_SKILL_TARGET_PLAYER 1
-#define global	TCG_SKILL_TARGET_OPPONENT 2
-#define global	TCG_SKILL_TARGET_PLAYER_DECK 3
-#define global	TCG_SKILL_TARGET_OPPONENT_DECK 4
-#define global	TCG_SKILL_TARGET_PLAYER_SPOT 5
-#define global	TCG_SKILL_TARGET_OPPONENT_SPOT 6
-#define global	TCG_SKILL_TARGET_SELF 7
-#define global	TCG_SKILL_TARGET_ENEMY_HAND_RANDOM 10
-#define global	TCG_SKILL_TARGET_ENEMY_HAND_CHOOSE 11
-#define global	TCG_SKILL_TARGET_ENEMY_HAND_ALL 12
-#define global	TCG_SKILL_TARGET_ENEMY_FIELD_RANDOM 20
-#define global	TCG_SKILL_TARGET_ENEMY_FIELD_CHOOSE 21
-#define global	TCG_SKILL_TARGET_ENEMY_FIELD_ALL 22
-#define global	TCG_SKILL_TARGET_SELF_FIELD_RANDOM 30
-#define global	TCG_SKILL_TARGET_SELF_FIELD_CHOOSE 31
-#define global	TCG_SKILL_TARGET_SELF_FIELD_ALL 32
-#define global	TCG_SKILL_TARGET_SELF_HAND_RANDOM 40
-#define global	TCG_SKILL_TARGET_SELF_HAND_CHOOSE 41
-#define global	TCG_SKILL_TARGET_SELF_HAND_ALL 42
-#define global	TCG_SKILL_TARGET_ALL_FIELD_RANDOM 50
-#define global	TCG_SKILL_TARGET_ALL_FIELD_ALL 52
+#define global	TCG_SKILL_TARGET_ENEMY 2
+#define global	TCG_SKILL_TARGET_SELF 3
+#define global	TCG_SKILL_TARGET_PLAYER_AND_ENEMY 4
+#define global	TCG_SKILL_TARGET_PLAYER_FIELD_ALL 110
+#define global	TCG_SKILL_TARGET_PLAYER_FIELD_CHOOSE 111
+#define global	TCG_SKILL_TARGET_PLAYER_FIELD_RANDOM 112
+#define global	TCG_SKILL_TARGET_PLAYER_HAND_ALL 120
+#define global	TCG_SKILL_TARGET_PLAYER_HAND_CHOOSE 121
+#define global	TCG_SKILL_TARGET_PLAYER_HAND_RANDOM 122
+#define global	TCG_SKILL_TARGET_PLAYER_HAND_RANDOM2 123
+#define global	TCG_SKILL_TARGET_PLAYER_HAND_RANDOM8 129
+#define global	TCG_SKILL_TARGET_PLAYER_GRAVE_ALL 130
+#define global	TCG_SKILL_TARGET_PLAYER_GRAVE_CHOOSE 131
+#define global	TCG_SKILL_TARGET_PLAYER_GRAVE_RANDOM 132
+#define global	TCG_SKILL_TARGET_PLAYER_GRAVE_RANDOM5 136
+#define global	TCG_SKILL_TARGET_PLAYER_DECK_CHOOSE 141
+#define global	TCG_SKILL_TARGET_PLAYER_DECK_RANDOM 142
+#define global	TCG_SKILL_TARGET_PLAYER_DECK_RANDOM2 143
+#define global	TCG_SKILL_TARGET_PLAYER_DECK_RANDOM3 144
+#define global	TCG_SKILL_TARGET_PLAYER_DECK_RANDOM7 148
+#define global	TCG_SKILL_TARGET_PLAYER_HANDFIELD_ALL 150
+#define global	TCG_SKILL_TARGET_ENEMY_FIELD_ALL 210
+#define global	TCG_SKILL_TARGET_ENEMY_FIELD_CHOOSE 211
+#define global	TCG_SKILL_TARGET_ENEMY_FIELD_RANDOM 212
+#define global	TCG_SKILL_TARGET_ENEMY_FIELD_RANDOM2 213
+#define global	TCG_SKILL_TARGET_ENEMY_FIELD_RANDOM3 214
+#define global	TCG_SKILL_TARGET_ENEMY_HAND_ALL 220
+#define global	TCG_SKILL_TARGET_ENEMY_HAND_CHOOSE 221
+#define global	TCG_SKILL_TARGET_ENEMY_HAND_RANDOM 222
+#define global	TCG_SKILL_TARGET_ALL_FIELD_ALL 310
+#define global	TCG_SKILL_TARGET_ALL_FIELD_CHOOSE 311
+#define global	TCG_SKILL_TARGET_ALL_FIELD_RANDOM 312
+#define global	TCG_SKILL_TARGET_ALL_DECK_RANDOM 342
 
 #define global	TCG_SKILL_EFF_NONE 0
 #define global	TCG_SKILL_EFF_DRAW_CARD 1
@@ -7286,17 +7314,148 @@
 #define global	TCG_SKILL_EFF_DEAL_CREATURE_DAMAGE 4
 #define global	TCG_SKILL_EFF_HEAL_CREATURE_DAMAGE 5
 #define global	TCG_SKILL_EFF_CREATURE_GAIN_ATTACK 6
+#define global	TCG_SKILL_EFF_RETURN_TO_DECK 7
+#define global	TCG_SKILL_EFF_DRAW_TARGET_CARD 8
+#define global	TCG_SKILL_EFF_YEEK_TRANSFORM 9
+#define global	TCG_SKILL_EFF_23PUTIT_TRANSFORM 10
+#define global	TCG_SKILL_EFF_POISON_CREATURE 11
+#define global	TCG_SKILL_EFF_FREEZE_CREATURE 12
+#define global	TCG_SKILL_EFF_PARALYSE_CREATURE 13
+#define global	TCG_SKILL_EFF_SPLITSELF 14
+#define global	TCG_SKILL_EFF_TRANSFORMTO 15
+#define global	TCG_SKILL_EFF_PUT_TARGET_CARD 16
+#define global	TCG_SKILL_EFF_1DMGEVERYPIECE 17
+#define global	TCG_SKILL_EFF_SUMMON 18
+#define global	TCG_SKILL_EFF_ZOMBIE_GIRL_EVOLVE 20
+#define global	TCG_SKILL_EFF_COPY_EFFECT 21
+#define global	TCG_SKILL_EFF_SILENCE_CREATURE 22
+#define global	TCG_SKILL_EFF_SPLITSELF01 23
+#define global	TCG_SKILL_EFF_CREATURE_GAIN_HP 24
+#define global	TCG_SKILL_EFF_CREATURE_GAIN_ATTACKHP 25
+#define global	TCG_SKILL_EFF_RETURN_TO_DECK_DRAW1 26
+#define global	TCG_SKILL_EFF_GAIN_MANA 27
+#define global	TCG_SKILL_EFF_GAIN_MANA_NEXT_TURN 28
+
+#define global	TCG_SKILL_FILTER_NONE 0
+#define global	TCG_SKILL_FILTER_MALE 1
+#define global	TCG_SKILL_FILTER_FEMALE 2
+#define global	TCG_SKILL_FILTER_SAMECOST 3
+#define global	TCG_SKILL_FILTER_YEEK 10
+#define global	TCG_SKILL_FILTER_NOT_MICHES 11
+#define global	TCG_SKILL_FILTER_BIRD 12
+#define global	TCG_SKILL_FILTER_CAT 13
+#define global	TCG_SKILL_FILTER_DOG_OR_CAT 14
+#define global	TCG_SKILL_FILTER_LESSER_PIECE 20
+#define global	TCG_SKILL_FILTER_BISHOP 21
+#define global	TCG_SKILL_FILTER_KNIGHT 22
+#define global	TCG_SKILL_FILTER_PIECE 23
+#define global	TCG_SKILL_FILTER_RAPHAEL 24
+#define global	TCG_SKILL_FILTER_ROCK 25
+#define global	TCG_SKILL_FILTER_KOBOLT 26
+#define global	TCG_SKILL_FILTER_ZOMBIE 27
+#define global	TCG_SKILL_FILTER_ZOMBIE_LESSER 28
+#define global	TCG_SKILL_FILTER_DOG 29
+#define global	TCG_SKILL_FILTER_HOUND 30
+#define global	TCG_SKILL_FILTER_HOUND_EFFECT 31
+#define global	TCG_SKILL_FILTER_WEREWOLF 32
+#define global	TCG_SKILL_FILTER_DOGFRIEND 33
+
+#define global	TCG_SKILL_FILTER_NEUTRAL 100
+#define global	TCG_SKILL_FILTER_LEGENDARY 101
+#define global	TCG_SKILL_FILTER_BLUE 102
+#define global	TCG_SKILL_FILTER_GREEN 103
+#define global	TCG_SKILL_FILTER_WHITE 104
+#define global	TCG_SKILL_FILTER_BLACK 105
+#define global	TCG_SKILL_FILTER_GRAY 106
+#define global	TCG_SKILL_FILTER_RED 107
+#define global	TCG_SKILL_FILTER_COST 120
+#define global	TCG_SKILL_FILTER_HP 140
+#define global	TCG_SKILL_FILTER_ATK 160
+#define global	TCG_SKILL_FILTER_DBID 1000
+
+
+#define global	TCG_SKILL_AI_NONE 0
+#define global	TCG_SKILL_AI_SAC 1
+#define global	TCG_SKILL_AI_DRAW 2
 
 // TCG skill
 
 #define global	TCG_EFF_NONE 0
+#define global	TCG_EFF_NOLIMIT 1
+#define global	TCG_EFF_RETURNTODECKWHENKILLED 2
+#define global	TCG_EFF_RETURNTOHANDWHENKILLED 3
+#define global	TCG_EFF_BATTLECRY_SUMMONACOPY 201
+#define global	TCG_EFF_BATTLECRY_SUMMONACOPY01 202
 #define global	TCG_EFF_BATTLECRY_DRAW1CARD 210
 #define global	TCG_EFF_BATTLECRY_DEALOPPONENT2DAMAGE 220
 #define global	TCG_EFF_BATTLECRY_HEALPLAYER2DAMAGE 225
 #define global	TCG_EFF_BATTLECRY_DEALEVERYONE1DAMAGE 230
+#define global	TCG_EFF_BATTLECRY_DEALEVERYONE9DAMAGE 231
+#define global	TCG_EFF_BATTLECRY_DEALEVERYONE3DAMAGE 232
+#define global	TCG_EFF_BATTLECRY_DEALRANDOMENEMY3DAMAGE 240
+#define global	TCG_EFF_BATTLECRY_DEAL2RANDOMENEMY2DAMAGE 241
+#define global	TCG_EFF_BATTLECRY_DEALRANDOMENEMY6DAMAGE 242
+#define global	TCG_EFF_BATTLECRY_DEAL3RANDOMENEMY3DAMAGE 243
+#define global	TCG_EFF_BATTLECRY_DEALALLENEMY2DAMAGE 244
+#define global	TCG_EFF_BATTLECRY_SEARCHDECKFOR1CARD 250
+#define global	TCG_EFF_BATTLECRY_SEARCHDECKFOR1CARDNEUTRAL 251
+#define global	TCG_EFF_BATTLECRY_DEALCHOSENENEMY2DAMAGE 260
+#define global	TCG_EFF_BATTLECRY_DEALCHOSENENEMY5DAMAGE 261
+#define global	TCG_EFF_BATTLECRY_POISONCHOSENENEMY 270
+#define global	TCG_EFF_BATTLECRY_FREEZECHOSENENEMY 271
+#define global	TCG_EFF_BATTLECRY_PARALYSECHOSENENEMY 272
+#define global	TCG_EFF_BATTLECRY_WEAKENCHOSENENEMY 273
+#define global	TCG_EFF_BATTLECRY_SILENCECHOSENENEMY 274
+#define global	TCG_EFF_BATTLECRY_PARALYSEALLENEMY 282
 #define global	TCG_EFF_TURN_START_DRAW1CARD 310
+#define global	TCG_EFF_TURN_START_HEALPLAYER2DAMAGE 325
 #define global	TCG_EFF_TURN_START_GAIN1ATK 340
 #define global	TCG_EFF_DEATHRATTLE_DRAW1CARD 510
-#define global	TCG_EFF_SACRIFICE_DRAW1CARD 610
+#define global	TCG_EFF_DEATHRATTLE_DRAW2CARD 511
+#define global	TCG_EFF_DEATHRATTLE_DRAW3CARD 512
+#define global	TCG_EFF_DEATHRATTLE_GAIN1MANANEXTTURN 515
+#define global	TCG_EFF_DEATHRATTLE_POISONRANDOMENEMY 570
+#define global	TCG_EFF_DEATHRATTLE_WEAKENRANDOM2ENEMYBY2 571
+#define global	TCG_EFF_DEATHRATTLE_WEAKENALLENEMYBY2 572
+#define global	TCG_EFF_SACRIFICE_DRAW1CARD 600
+#define global	TCG_EFF_SACRIFICE_GAIN1MANA 601
+#define global	TCG_EFF_SACRIFICE_GAIN1MANANEXTTURN 602
 #define global	TCG_EFF_ONKILL_DRAW1CARD 710
+#define global	TCG_EFF_YEEKMASTER 900
+#define global	TCG_EFF_RODLOB_THE_YEEK_CHIEF 901
+#define global	TCG_EFF_MASTER_ARCHAYEEK 902
+#define global	TCG_EFF_LUNATYEEK 903
+#define global	TCG_EFF_HEROYEEK 904
+#define global	TCG_EFF_RAPHAEL 905
+#define global	TCG_EFF_MICHES 906
+#define global	TCG_EFF_PART_TIME_WORKER 907
+#define global	TCG_EFF_ZEOME 908
+#define global	TCG_EFF_METAMORPH 909
+#define global	TCG_EFF_SHOGGOTH 910
+#define global	TCG_EFF_BISHOP 911
+#define global	TCG_EFF_QUEEN 912
+#define global	TCG_EFF_KING 913
+#define global	TCG_EFF_GRANDMASTER 914
+#define global	TCG_EFF_SUPERGRANDMASTER 915
+#define global	TCG_EFF_WYNAN 916
+#define global	TCG_EFF_NOEL 917
+#define global	TCG_EFF_ETHERGENERATOR 918
+#define global	TCG_EFF_CLUSTERBOMB 919
+#define global	TCG_EFF_KOBOLINA 920
+#define global	TCG_EFF_KOBOLBLASTER 921
+#define global	TCG_EFF_COFFIN 922
+#define global	TCG_EFF_ZOMBIE_GIRL 923
+#define global	TCG_EFF_ZOMBIE_QUEEN 924
+#define global	TCG_EFF_TUWEN 925
+#define global	TCG_EFF_HOUND 926
+#define global	TCG_EFF_CHAOS_HOUND 927
+#define global	TCG_EFF_WEREWOLF 928
+#define global	TCG_EFF_DOG 929
+#define global	TCG_EFF_DOG_GANG 930
+#define global	TCG_EFF_PASCAL 931
+#define global	TCG_EFF_DOG_COP 932
+#define global	TCG_EFF_POPPY 933
+#define global	TCG_EFF_RILIAN 934
+#define global	TCG_EFF_SHOPKEEPERCROW 935
+#define global	TCG_EFF_SCARD 936
 

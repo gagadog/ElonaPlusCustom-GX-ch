@@ -10,9 +10,9 @@
 			p@tcg = 20
 			p@tcg -= abs(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) - card@tcg(TCG_CARD_COST, c@tcg))
 		}
-		; if ( card@tcg(TCG_CARD_EFFECT, c@tcg) == cddraw2card@tcg ) {
-		; 	p@tcg = (5 - getholdersum(cp@tcg)) * 20
-		; }
+		if ( card@tcg(TCG_CARD_REF_DOMAIN, c@tcg) == 5 ) { p@tcg += 10 }
+		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_DRAW ) { p@tcg += 2 * (5 - getholdersum(1)) }
+		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_SAC ) { p@tcg -= 2 * (8 - cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg)) }
 		elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_SUMMON
 		emax@tcg++
 	loop
@@ -21,6 +21,7 @@
 			c@tcg = clist@tcg(cnt, cl@tcg)
 			p@tcg = 0
 			p@tcg = rnd(40)
+			if ( card@tcg(TCG_CARD_ATTACK, c@tcg) <= 0 & rnd(20) > 0 ) { p@tcg = -100 }
 			if ( cardcandeclareattack(c@tcg) ) {
 				elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_ATTACKING
 				emax@tcg++
@@ -32,6 +33,10 @@
 			c@tcg = clist@tcg(cnt, cl@tcg)
 			p@tcg = 0
 			p@tcg = rnd(40)
+			if ( cdbit(TCG_BIT_DEATHTOUCH, c@tcg) ) { p@tcg = 0 + 40 * rnd(2) }
+			if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) > cpdata@tcg(TCG_PLAYER_LIFE, cp@tcg) + rnd(5) ) {
+				p@tcg = 20 + rnd(40)
+			}
 			if ( cardcanblock(c@tcg, attackingcard@tcg) ) {
 				elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_DEFENDING
 				emax@tcg++
@@ -78,9 +83,8 @@
 		if ( card@tcg(TCG_CARD_LOCATION, c@tcg) != TCG_LOCATION_HAND ) {
 			continue
 		}
-		; if ( card@tcg(TCG_CARD_EFFECT, c@tcg) == cddraw2card@tcg ) {
-		; 	p@tcg = 40
-		; }
+		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_SAC ) { p@tcg -= 20 }
+		if ( card@tcg(TCG_CARD_REF_DOMAIN, c@tcg) == 5 ) { p@tcg += 20 }
 		if ( p@tcg < p@tcg(1) ) {
 			p@tcg(1) = p@tcg
 			cc@tcg = c@tcg
@@ -106,7 +110,18 @@
 	else {
 		stick a@tcg
 		if ( a@tcg ) {
-			cpdata@tcg(TCG_PLAYER_LIFE, 0) = 0
+			promptAdd lang("降参する", "Escape?"), "a"
+			promptAdd lang("降参する", "No"), "b"
+			val = basex@tcg + 420, basey@tcg + 230, 200, 1
+			gosub *prompt_key@
+			if ( rtval == 0 ) {
+				gameresult@tcg = -2
+				cpdata@tcg(TCG_PLAYER_LIFE, 0) = 0
+				return
+			} else {
+				gosub *ai_evaluate
+				goto *card_ai_WHILE1
+			}
 		}
 	}
 	gosub *ai_evaluate
@@ -125,6 +140,9 @@
 	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_SUMMON ) {
 		if ( card@tcg(TCG_CARD_COST, cc@tcg) <= cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) ) {
 			putcard cc@tcg, cp@tcg
+			if ( stat == -1 ) {
+				goto *card_ai_WEND1
+			}
 			if ( gameover() ) {
 				goto *card_ai_WEND1
 			}

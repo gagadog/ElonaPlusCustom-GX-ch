@@ -4179,6 +4179,16 @@
 		goto *console_write
 	}
 
+	if ( instr(buff, 0, "remove_all_cards") != (-1) ) {
+		repeat MAX_CARD
+			card(0, cnt) = 0
+		loop
+		buff = ""
+		notesel buff
+		noteadd "Done."
+		goto *console_write
+	}
+	
 	/********** JIANMENGYU CUSTOM - BEGINNING **********/ 
 
 	if ( gdata(GDATA_WIZARD) ) {
@@ -4268,7 +4278,7 @@
 		/********** CUSTOM TCG - BEGINNING **********/
 		if ( instr(buff, 0, "unlock_all_cards") != (-1) ) {
 			repeat MAX_CREATURE_ID - 3
-				card(0, cnt + 1) = 4
+				card(0, cnt + 1) = 9
 			loop
 			buff = ""
 			notesel buff

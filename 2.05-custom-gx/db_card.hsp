@@ -11194,7 +11194,7 @@
 	}
 	if ( dbid == CREATURE_ID_HOUND ) {
 		cardreftype = 10
-		cardrefskill = lang("獲物を狩ることに特化している犬。犬は縄張り意識が強いために、自分より強いレベルの犬がいる場所には住み着くことはない。", "獲物を狩ることに特化している犬。犬は縄張り意識が強いために、自分より強いレベルの犬がいる場所には住み着くことはない。")
+		cardrefskill = lang("獲物を狩ることに特化している犬。犬は縄張り意識が強いために、自分より強いレベルの犬がいる場所には住み着くことはない。", "Dogs specialize in hunting prey. Because dogs are territorial, they will not settle in areas where there are dogs on a stronger level than themselves.")
 		cardrefdomain = 0
 		cardrefrare = 80
 		cardrefcost = 0
