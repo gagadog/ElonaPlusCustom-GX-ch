@@ -6307,7 +6307,7 @@
 		flt
 		itemcreate -1, ITEM_ID_SCROLL_RETURN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 		flt
-		itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(nkane * 1000 + nkane * nkane * 5, 1000, 999999)
+		itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(nkane * 50 + nkane * sqrt(nkane + 1) * 5 + 200, 300, 50000)
 		flt
 		itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(1 + gdata(GDATA_LEVEL) / 20, 1, 5)
 		flt

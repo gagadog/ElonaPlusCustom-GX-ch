@@ -1152,10 +1152,10 @@
 				if ( chatval == 2 ) {
 				} else {
 					if ( chatval == 1) {
-						if ( card(0, CREATURE_ID_PUTIT) <= 0 ) {
+						if ( card(0, CREATURE_ID_USER) <= 0 ) {
 							chatMore lang("素晴らしい！このゲーム、やったことないでしょ？たまたま余ったカードセットを買ったんだ。30枚のデッキを組んで、デュエルしよう！", "Great! You haven't played this game before right? I happened to bought an extra set of cards, here, you can have it. Just assemble your deck of 30 cards, and let's duel!"), strthankyou
-							card(0, CREATURE_ID_PUTIT) = 1
-							itemcreate -1, ITEM_ID_CARD_PACK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10
+							card(0, CREATURE_ID_USER) = 1
+							itemcreate -1, ITEM_ID_CARD_PACK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 20
 							flt
 							itemcreate -1, ITEM_ID_DECK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
 							flt
