@@ -118,12 +118,6 @@ if instr(s,0,%1)!-1{	%c\
 
 /********** CUSTOM ENEMY EVOLUTION - ENDING **********/
 
-/********** CUSTOM TCG - BEGINNING **********/
-
-#include "tcg_custom.hsp"
-
-/********** CUSTOM TCG - ENDING **********/
-
 #defcfunc hantozen str hantozen_arg1, var hantozen_arg2, int hantozen_arg3
 	return LCMapStringA(GetUserDefaultLCID(), 8388608, hantozen_arg1, -1, hantozen_arg2, hantozen_arg3)
 
@@ -2170,9 +2164,6 @@ if instr(s,0,%1)!-1{	%c\
 	gosub *map_randNameInit
 	gosub *setHome
 	gosub *userNpc_update
-	/********** CUSTOM TCG - BEGINNING **********/
-    gosub *tcg_effect_define
-	/********** CUSTOM TCG - ENDING **********/
 	if ( cfg_music == 1 ) {
 		DMINIT
 		if ( stat == 0 ) {

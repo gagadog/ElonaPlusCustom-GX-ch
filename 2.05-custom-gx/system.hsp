@@ -4278,7 +4278,7 @@
 		/********** CUSTOM TCG - BEGINNING **********/
 		if ( instr(buff, 0, "unlock_all_cards") != (-1) ) {
 			repeat MAX_CREATURE_ID - 3
-				card(0, cnt + 1) = 9
+				card(0, cnt + 1) = 99
 			loop
 			buff = ""
 			notesel buff

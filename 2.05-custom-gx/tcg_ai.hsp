@@ -129,7 +129,7 @@
 	gosub *card_resolve_ongoing
 	gosub *ai_evaluate
 	ec@tcg = 0
-*card_ai_WHILE1
+	*card_ai_WHILE1
 	if ( gameover() ) {
 		goto *card_ai_WEND1
 	}
@@ -179,7 +179,7 @@
 	}
 	ec@tcg++
 	goto *card_ai_WHILE1
-*card_ai_WEND1
+	*card_ai_WEND1
 	if ( aiblock@tcg == 0 ) {
 		if ( sac@tcg == 0 ) {
 			gosub *ai_sac

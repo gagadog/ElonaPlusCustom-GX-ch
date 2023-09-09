@@ -1,4 +1,20 @@
 #include "db_card.hsp"
+#include "tcg_mod.hsp"
+#include "tcg_skill.hsp"
+#include "tcg_ai.hsp"
+#include "tcg_custom.hsp"
+// TCG is completely unused so I completely overwrite it at 2.19
+// Ano uses deck as a card gallery, so if he change anything you only need to change `*select_deck` part below.
+
+#deffunc dbghit
+	*dbghit_WHILE1
+		await
+		stick a@tcg
+		if ( a@tcg ) {
+			return
+		}
+		goto *dbghit_WHILE1
+	*dbghit_WEND1
 
 #defcfunc cdbit int cdbit_bit, int cdbit_charid
 	if ( cdbit_charid < 0 | cdbit_charid >= maxcard@tcg ) {
@@ -102,110 +118,184 @@
 	loop
 	return s@tcg
 
-#deffunc card_ref int card_ref_arg1
-	cardrefcost = 0
-	cardrefhp = 0
-	cardrefattack = 0
-	cardrefdomain = 0
-	cardrefrare = 100
-	dbid = card_ref_arg1
-	gosub *db_card@
-	gosub *db_card_custom
-	if ( cardreftype == 0 ) {
-		cardreftype = 10
-		cardrefdomain = 7
+#defcfunc gameover
+	if ( cpdata@tcg(TCG_PLAYER_LIFE, 1) <= 0 ) {
+		return 2
 	}
-	rtvaln = cardrefn
-	if ( cardreftype == 10 ) {
-		cardrefbg = cardrefdomain
-		rtvaln += lang("  No.", "  No.") + cardrefno
+	if ( cpdata@tcg(TCG_PLAYER_LIFE, 0) <= 0 ) {
+		return 1
 	}
-	if ( cardreftype == 30 ) {
-		cardrefbg = 6
-		rtvaln += lang(" <土地>", " <Land>")
+	return 0
+
+#defcfunc cardcandeclareattack int cardcandeclareattack_arg1
+	if ( card@tcg(TCG_CARD_LOCATION, cardcandeclareattack_arg1) != TCG_LOCATION_FIELD ) {
+		return 0
 	}
-	if ( cardreftype == 20 ) {
-		cardrefbg = 5
-		rtvaln += lang(" <スペル>", " <Spell>")
+	if ( card@tcg(TCG_CARD_REF_TYPE, cardcandeclareattack_arg1) != TCG_TYPE_CREATURE ) {
+		return 0
 	}
-	// rtvaln += lang("  ランク:", "  Rank:") + cardrefcost
-	rtvaln += " "
-	if ( cardrefsex != "random" ) { rtvaln += " " + cardrefsex }
-	rtvaln += " " + cardrefrace + " " + cardrefclass
-	rtvaln += lang("  レア度:", "  Rare:") + cnvrare(cardrefrare)
-	rtvaln2 = rtvaln
-	s@tcg = ""
-	s@tcg += lang("情報: ", "Data: " ) + cardrefdescription
-	if ( gdata(GDATA_QUICK_USE) == 1 ) {
-		talk_conv s@tcg, 95
+	if ( cdbit(TCG_BIT_FROZEN, cardcandeclareattack_arg1) ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_DEFENDER, cardcandeclareattack_arg1) ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_EXHAUSTED, cardcandeclareattack_arg1) ) {
+		return 0
+	}
+	return 1
+
+#defcfunc cardcanblock int cardcanblock_arg1, int cardcanblock_arg2
+	if ( card@tcg(TCG_CARD_LOCATION, cardcanblock_arg1) != TCG_LOCATION_FIELD ) {
+		return 0
+	}
+	if ( card@tcg(TCG_CARD_REF_TYPE, cardcanblock_arg1) != TCG_TYPE_CREATURE ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_GRAVITY, cardcanblock_arg2) == TRUE ) {
+		return 1
+	}
+	if ( cdbit(TCG_BIT_FLYING, cardcanblock_arg2) == TRUE & cdbit(TCG_BIT_FLYING, cardcanblock_arg1 ) != TRUE & cdbit(TCG_BIT_REACH, cardcanblock_arg1 ) != TRUE ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_INTIMIDATE, cardcanblock_arg2) == TRUE & card@tcg(TCG_CARD_REF_DOMAIN, cardcanblock_arg1) != card@tcg(TCG_CARD_REF_DOMAIN, cardcanblock_arg2) ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_PARALYSED, cardcanblock_arg1) == TRUE ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_VIGILANCE, cardcanblock_arg1) | cdbit(TCG_BIT_DEFENDER, cardcanblock_arg1) ) {
+		return 1
+	}
+	if ( cdbit(TCG_BIT_EXHAUSTED, cardcanblock_arg1) ) {
+		if ( card@tcg(TCG_CARD_STATUS, cardcanblock_arg1) != TCG_ACTION_EXHAUSTED ) {
+			return 0
+		}
+	}
+	return 1
+
+#defcfunc cardcanuseskill int cardcanuseskill_arg1
+	if ( card@tcg(TCG_CARD_LOCATION, cardcanuseskill_arg1) != TCG_LOCATION_FIELD ) {
+		return 0
+	}
+	if ( card@tcg(TCG_CARD_REF_TYPE, cardcanuseskill_arg1) != TCG_TYPE_CREATURE ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_EXHAUSTED, cardcanuseskill_arg1) ) {
+		return 0
+	}
+	if ( card@tcg(TCG_CARD_REF_SKILL_COST, cardcanuseskill_arg1) == 0 ) {
+		return 0
+	}
+	if ( card@tcg(TCG_CARD_REF_SKILL_COST, cardcanuseskill_arg1) > cpdata@tcg(TCG_PLAYER_MANA, card@tcg(TCG_CARD_CONTROLLER, cardcanuseskill_arg1)) ) {
+		return 0
+	}
+	return 1
+
+#defcfunc getholdersum int getholdersum_arg1
+	p@tcg = 0
+	repeat maxcard@tcg
+		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getholdersum_arg1 ) {
+			continue
+		}
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_HAND ) {
+			p@tcg++
+		}
+	loop
+	return p@tcg
+
+#defcfunc getspotsum int getspotsum_arg1
+	p@tcg = 0
+	repeat maxcard@tcg
+		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getspotsum_arg1 ) {
+			continue
+		}
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_FIELD ) {
+			p@tcg++
+		}
+	loop
+	return p@tcg
+
+#defcfunc getdecksum int getdecksum_arg1
+	p@tcg = 0
+	repeat maxcard@tcg
+		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getdecksum_arg1 ) {
+			continue
+		}
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_DECK ) {
+			p@tcg++
+		}
+	loop
+	return p@tcg
+
+#deffunc cardpos int cardpos_arg1, int cardpos_arg2
+	if ( cardpos_arg1 == 0 ) {
+		l@tcg = TCG_LANE_PLAYER_FIELD
 	}
 	else {
-		talk_conv s@tcg, 100
+		l@tcg = TCG_LANE_OPPONENT_FIELD
 	}
-	rtvaln += "\n" + s@tcg
-	s@tcg = ""
-	if ( cardrefbits != "" ) {
-		s@tcg += "Bits:  "
-		s2@tcg = cardrefbits
-		csvstr2 s2@tcg, s2@tcg
-		repeat
-			if ( s2@tcg(cnt) == "" ) {
-				break
+	p@tcg = -1
+	spotlistmax@tcg = clistmax@tcg(l@tcg)
+	repeat spotlistmax@tcg
+		spotlist@tcg(cnt) = clist@tcg(cnt, l@tcg)
+		if ( p@tcg == (-1) ) {
+			if ( card@tcg(TCG_CARD_REF_TYPE, clist@tcg(cnt, l@tcg)) != TCG_TYPE_CREATURE ) {
+				p@tcg = cnt
 			}
-			p@tcg = int(s2@tcg(cnt))
-			if ( cnt >= 40 | p@tcg == 0 ) {
-				break
-			}
-			if ( p@tcg == TCG_BIT_REGENERATION ) { s@tcg += "Regeneration "}
-			if ( p@tcg == TCG_BIT_ARMOR ) { s@tcg += "Armored "}
-			if ( p@tcg == TCG_BIT_FLYING ) { s@tcg += "Flying "}
-			if ( p@tcg == TCG_BIT_INTIMIDATE ) { s@tcg += "Intimidate "}
-			if ( p@tcg == TCG_BIT_REACH ) { s@tcg += "Reach "}
-			if ( p@tcg == TCG_BIT_LIFELINK ) { s@tcg += "Lifelink "}
-			if ( p@tcg == TCG_BIT_HASTE ) { s@tcg += "Haste "}
-			if ( p@tcg == TCG_BIT_TRAMPLE ) { s@tcg += "Trample "}
-			if ( p@tcg == TCG_BIT_FIRST_STRIKE ) { s@tcg += "First Strike "}
-			if ( p@tcg == TCG_BIT_DOUBLE_STRIKE ) { s@tcg += "Dual Strike "}
-			if ( p@tcg == TCG_BIT_DEATHTOUCH ) { s@tcg += "Deathtouch "}
-			if ( p@tcg == TCG_BIT_WINDFURY ) { s@tcg += "Windfury "}
-			if ( p@tcg == TCG_BIT_WINDFURY_USABLE ) { s@tcg += "Windfury(1) "}
-			if ( p@tcg == TCG_BIT_VIGILANCE ) { s@tcg += "Vigilance "}
-			if ( p@tcg == TCG_BIT_DEFENDER ) { s@tcg += "Defender "}
-			if ( p@tcg == TCG_BIT_SPLIT ) { s@tcg += "Splits "}
-			
-			if ( p@tcg == TCG_BIT_DEATHWORD ) { s@tcg += "Deathword "}
-			if ( p@tcg == TCG_BIT_GRAVITY ) { s@tcg += "Gravity "}
-			if ( p@tcg == TCG_BIT_BLEEDING ) { s@tcg += "Bleeding "}
-			if ( p@tcg == TCG_BIT_POISONED ) { s@tcg += "Poisoned "}
-			if ( p@tcg == TCG_BIT_SUICIDE ) { s@tcg += "Kamikaze "}
-			if ( p@tcg == TCG_BIT_PARALYSED ) { s@tcg += "Paralysed "}
-			if ( p@tcg == TCG_BIT_SILENCED ) { s@tcg += "Silenced "}
-			if ( p@tcg == TCG_BIT_FROZEN ) { s@tcg += "Frozen "}
-		loop
-		rtvaln2 += "\n" + s@tcg
-		s@tcg = ""
+		}
+	loop
+	if ( cardpos_arg2 != (-1) ) {
+		if ( p@tcg != (-1) ) {
+			repeat spotlistmax@tcg - p@tcg
+				spotlist@tcg(spotlistmax@tcg - cnt) = spotlist@tcg(spotlistmax@tcg - cnt - 1)
+			loop
+			spotlist@tcg(p@tcg) = cardpos_arg2
+		}
+		else {
+			spotlist@tcg(spotlistmax@tcg) = cardpos_arg2
+		}
+		spotlistmax@tcg++
 	}
-	s@tcg += lang("Effect: ", "Effect: ")
-	s@tcg += cardrefskill
-	if ( gdata(GDATA_QUICK_USE) == 1 ) {
-		talk_conv s@tcg, 65
+	x2@tcg = spotspace@tcg
+	x@tcg = basex@tcg + 466 - spotlistmax@tcg * x2@tcg / 2
+	repeat spotlistmax@tcg
+		p@tcg = spotlist@tcg(cnt)
+		card@tcg(TCG_CARD_X_MOVETO, p@tcg) = x@tcg + cnt * x2@tcg, spotiy@tcg(cardpos_arg1)
+	loop
+	return
+
+#deffunc cardposhand int cardposhand_arg1, int cardposhand_arg2
+	if ( cardposhand_arg1 == 0 ) {
+		l@tcg = TCG_LANE_PLAYER_HAND
 	}
 	else {
-		talk_conv s@tcg, 70
+		l@tcg = TCG_LANE_OPPONENT_HAND
 	}
-	rtvaln2 += "\n" + s@tcg
-	return dbid
-
-#deffunc dbghit
-*dbghit_WHILE1
-	await
-	stick a@tcg
-	if ( a@tcg ) {
-		return
+	holderlistmax@tcg = clistmax@tcg(l@tcg)
+	if ( holderlistmax@tcg <= 0 ) { 
+		return 
 	}
-	goto *dbghit_WHILE1
+	repeat holderlistmax@tcg
+		holderlist@tcg(cnt) = clist@tcg(cnt, l@tcg)
+	loop
+	if ( cardposhand_arg2 != (-1) ) {
+		holderlist@tcg(holderlistmax@tcg) = cardposhand_arg2
+		holderlistmax@tcg++
+	}
+	x2@tcg = holderspace@tcg
+	x@tcg = basex@tcg + 222
+	cnt2@tcg = 0
+	repeat holderlistmax@tcg
+		pp@tcg = holderlist@tcg(cnt)
+		if ( card@tcg(TCG_CARD_LOCATION, pp@tcg) != TCG_LOCATION_HAND ) { 
+			continue 
+		}
+		card@tcg(TCG_CARD_X_MOVETO, pp@tcg) = x@tcg + cnt2@tcg * x2@tcg, holderiy@tcg(cardposhand_arg1)
+		cnt2@tcg++
+	loop
+	return
 
-*dbghit_WEND1
 #deffunc makecardlist
 	dim clist@tcg, 10, 7
 	dim clistmax@tcg, 7
@@ -378,7 +468,7 @@
 							if ( card@tcg(TCG_CARD_LOCATION, tcgdrawcard_arg1) == TCG_LOCATION_HAND | tcgdrawcard_arg2 == 1 ) {
 								pos x@tcg, y@tcg
 								gzoom 24, 24, 7, 192, 96, 32, 32
-								pos x@tcg + 9, y@tcg + 4
+								pos x@tcg + 12 - 3 * strlen(str(drawncost@tcg)), y@tcg + 4
 								color 0, 0, 0
 								bmes "" + drawncost@tcg, 235, 235, 235
 							}
@@ -479,6 +569,10 @@
 								}
 								if ( cnt == TCG_BIT_SPLIT ) { 
 									bmes "Split", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_RIDER ) { 
+									bmes "Rider", 235, 235, 235 
 									p@tcg++
 								}
 
@@ -728,17 +822,101 @@
 	loop
 	return
 
-#deffunc create_extra_card int create_extra_card_player, int create_extra_card_id
-	if ( cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player) >= MAX_CARD_EXTRA ) { 
-		cextra@tcg = -1
-		return -1 
+#deffunc card_ref int card_ref_arg1
+	cardrefcost = 0
+	cardrefhp = 0
+	cardrefattack = 0
+	cardrefdomain = 0
+	cardrefrare = 100
+	dbid = card_ref_arg1
+	gosub *db_card@
+	gosub *db_card_custom
+	if ( cardreftype == 0 ) {
+		cardreftype = 10
+		cardrefdomain = 7
 	}
-	cextra@tcg = create_extra_card_player * MAX_CARD_DECK_TOTAL + MAX_CARD_DECK + cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player)
-	create_card cextra@tcg, create_extra_card_id
-	card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_DECK, create_extra_card_player, deckix@tcg(create_extra_card_player), deckiy@tcg(create_extra_card_player), deckix@tcg(create_extra_card_player), deckiy@tcg(create_extra_card_player)
-	cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player)++
-	cpdata@tcg(TCG_PLAYER_DECK, create_extra_card_player)++
-	return cextra@tcg
+	rtvaln = cardrefn
+	if ( cardreftype == 10 ) {
+		cardrefbg = cardrefdomain
+		rtvaln += lang("  No.", "  No.") + cardrefno
+	}
+	if ( cardreftype == 30 ) {
+		cardrefbg = 6
+		rtvaln += lang(" <土地>", " <Land>")
+	}
+	if ( cardreftype == 20 ) {
+		cardrefbg = 5
+		rtvaln += lang(" <スペル>", " <Spell>")
+	}
+	// rtvaln += lang("  ランク:", "  Rank:") + cardrefcost
+	rtvaln += " "
+	if ( cardrefsex != "random" ) { rtvaln += " " + cardrefsex }
+	rtvaln += " " + cardrefrace + " " + cardrefclass
+	rtvaln += lang("  レア度:", "  Rare:") + cnvrare(cardrefrare)
+	rtvaln2 = rtvaln
+	s@tcg = ""
+	s@tcg += lang("情報: ", "Data: " ) + cardrefdescription
+	if ( gdata(GDATA_QUICK_USE) == 1 ) {
+		talk_conv s@tcg, 95
+	}
+	else {
+		talk_conv s@tcg, 100
+	}
+	rtvaln += "\n" + s@tcg
+	s@tcg = ""
+	if ( cardrefbits != "" ) {
+		s@tcg += "Bits:  "
+		s2@tcg = cardrefbits
+		csvstr2 s2@tcg, s2@tcg
+		repeat
+			if ( s2@tcg(cnt) == "" ) {
+				break
+			}
+			p@tcg = int(s2@tcg(cnt))
+			if ( cnt >= 40 | p@tcg == 0 ) {
+				break
+			}
+			if ( p@tcg == TCG_BIT_REGENERATION ) { s@tcg += "Regeneration "}
+			if ( p@tcg == TCG_BIT_ARMOR ) { s@tcg += "Armored "}
+			if ( p@tcg == TCG_BIT_FLYING ) { s@tcg += "Flying "}
+			if ( p@tcg == TCG_BIT_INTIMIDATE ) { s@tcg += "Intimidate "}
+			if ( p@tcg == TCG_BIT_REACH ) { s@tcg += "Reach "}
+			if ( p@tcg == TCG_BIT_LIFELINK ) { s@tcg += "Lifelink "}
+			if ( p@tcg == TCG_BIT_HASTE ) { s@tcg += "Haste "}
+			if ( p@tcg == TCG_BIT_TRAMPLE ) { s@tcg += "Trample "}
+			if ( p@tcg == TCG_BIT_FIRST_STRIKE ) { s@tcg += "First Strike "}
+			if ( p@tcg == TCG_BIT_DOUBLE_STRIKE ) { s@tcg += "Dual Strike "}
+			if ( p@tcg == TCG_BIT_DEATHTOUCH ) { s@tcg += "Deathtouch "}
+			if ( p@tcg == TCG_BIT_WINDFURY ) { s@tcg += "Windfury "}
+			if ( p@tcg == TCG_BIT_WINDFURY_USABLE ) { s@tcg += "Windfury(1) "}
+			if ( p@tcg == TCG_BIT_VIGILANCE ) { s@tcg += "Vigilance "}
+			if ( p@tcg == TCG_BIT_DEFENDER ) { s@tcg += "Defender "}
+			if ( p@tcg == TCG_BIT_SPLIT ) { s@tcg += "Splits "}
+			if ( p@tcg == TCG_BIT_ENEMY ) { s@tcg += "You summon this on your Opponent's Side of Field "}
+			if ( p@tcg == TCG_BIT_RIDER ) { s@tcg += "Rider "}
+			
+			if ( p@tcg == TCG_BIT_DEATHWORD ) { s@tcg += "Deathword "}
+			if ( p@tcg == TCG_BIT_GRAVITY ) { s@tcg += "Gravity "}
+			if ( p@tcg == TCG_BIT_BLEEDING ) { s@tcg += "Bleeding "}
+			if ( p@tcg == TCG_BIT_POISONED ) { s@tcg += "Poisoned "}
+			if ( p@tcg == TCG_BIT_SUICIDE ) { s@tcg += "Kamikaze "}
+			if ( p@tcg == TCG_BIT_PARALYSED ) { s@tcg += "Paralysed "}
+			if ( p@tcg == TCG_BIT_SILENCED ) { s@tcg += "Silenced "}
+			if ( p@tcg == TCG_BIT_FROZEN ) { s@tcg += "Frozen "}
+		loop
+		rtvaln2 += "\n" + s@tcg
+		s@tcg = ""
+	}
+	s@tcg += lang("Effect: ", "Effect: ")
+	s@tcg += cardrefskill
+	if ( gdata(GDATA_QUICK_USE) == 1 ) {
+		talk_conv s@tcg, 65
+	}
+	else {
+		talk_conv s@tcg, 70
+	}
+	rtvaln2 += "\n" + s@tcg
+	return dbid
 
 #deffunc create_card int create_card_arg1, int create_card_arg2
 	card_ref create_card_arg2
@@ -779,73 +957,17 @@
 	loop
 	return create_card_arg1
 
-#deffunc cardpos int cardpos_arg1, int cardpos_arg2
-	if ( cardpos_arg1 == 0 ) {
-		l@tcg = TCG_LANE_PLAYER_FIELD
+#deffunc create_extra_card int create_extra_card_player, int create_extra_card_id
+	if ( cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player) >= MAX_CARD_EXTRA ) { 
+		cextra@tcg = -1
+		return -1 
 	}
-	else {
-		l@tcg = TCG_LANE_OPPONENT_FIELD
-	}
-	p@tcg = -1
-	spotlistmax@tcg = clistmax@tcg(l@tcg)
-	repeat spotlistmax@tcg
-		spotlist@tcg(cnt) = clist@tcg(cnt, l@tcg)
-		if ( p@tcg == (-1) ) {
-			if ( card@tcg(TCG_CARD_REF_TYPE, clist@tcg(cnt, l@tcg)) != TCG_TYPE_CREATURE ) {
-				p@tcg = cnt
-			}
-		}
-	loop
-	if ( cardpos_arg2 != (-1) ) {
-		if ( p@tcg != (-1) ) {
-			repeat spotlistmax@tcg - p@tcg
-				spotlist@tcg(spotlistmax@tcg - cnt) = spotlist@tcg(spotlistmax@tcg - cnt - 1)
-			loop
-			spotlist@tcg(p@tcg) = cardpos_arg2
-		}
-		else {
-			spotlist@tcg(spotlistmax@tcg) = cardpos_arg2
-		}
-		spotlistmax@tcg++
-	}
-	x2@tcg = spotspace@tcg
-	x@tcg = basex@tcg + 466 - spotlistmax@tcg * x2@tcg / 2
-	repeat spotlistmax@tcg
-		p@tcg = spotlist@tcg(cnt)
-		card@tcg(TCG_CARD_X_MOVETO, p@tcg) = x@tcg + cnt * x2@tcg, spotiy@tcg(cardpos_arg1)
-	loop
-	return
-
-#deffunc cardposhand int cardposhand_arg1, int cardposhand_arg2
-	if ( cardposhand_arg1 == 0 ) {
-		l@tcg = TCG_LANE_PLAYER_HAND
-	}
-	else {
-		l@tcg = TCG_LANE_OPPONENT_HAND
-	}
-	holderlistmax@tcg = clistmax@tcg(l@tcg)
-	if ( holderlistmax@tcg <= 0 ) { 
-		return 
-	}
-	repeat holderlistmax@tcg
-		holderlist@tcg(cnt) = clist@tcg(cnt, l@tcg)
-	loop
-	if ( cardposhand_arg2 != (-1) ) {
-		holderlist@tcg(holderlistmax@tcg) = cardposhand_arg2
-		holderlistmax@tcg++
-	}
-	x2@tcg = holderspace@tcg
-	x@tcg = basex@tcg + 222
-	cnt2@tcg = 0
-	repeat holderlistmax@tcg
-		pp@tcg = holderlist@tcg(cnt)
-		if ( card@tcg(TCG_CARD_LOCATION, pp@tcg) != TCG_LOCATION_HAND ) { 
-			continue 
-		}
-		card@tcg(TCG_CARD_X_MOVETO, pp@tcg) = x@tcg + cnt2@tcg * x2@tcg, holderiy@tcg(cardposhand_arg1)
-		cnt2@tcg++
-	loop
-	return
+	cextra@tcg = create_extra_card_player * MAX_CARD_DECK_TOTAL + MAX_CARD_DECK + cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player)
+	create_card cextra@tcg, create_extra_card_id
+	card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_DECK, create_extra_card_player, deckix@tcg(create_extra_card_player), deckiy@tcg(create_extra_card_player), deckix@tcg(create_extra_card_player), deckiy@tcg(create_extra_card_player)
+	cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player)++
+	cpdata@tcg(TCG_PLAYER_DECK, create_extra_card_player)++
+	return cextra@tcg
 
 #deffunc returncard int returncard_arg1
 	n@tcg = card@tcg(TCG_CARD_CONTROLLER, returncard_arg1)
@@ -910,6 +1032,11 @@
 	return
 
 #deffunc gravecard int gravecard_arg1
+	// Card HP and Atk are restored only when it dies, or regenerates.
+	card@tcg(TCG_CARD_HP, gravecard_arg1) = card@tcg(TCG_CARD_REF_HP, gravecard_arg1)
+	card@tcg(TCG_CARD_ATTACK, gravecard_arg1) = card@tcg(TCG_CARD_REF_ATTACK, gravecard_arg1)
+	cardorglocation@tcg = card@tcg(TCG_CARD_LOCATION, gravecard_arg1)
+	// // Reorganize field card locations (This is uncessary due to cardpos, delete this in the future)
 	if ( card@tcg(TCG_CARD_LOCATION, gravecard_arg1) == TCG_LOCATION_FIELD ) {
 		repeat maxcard@tcg
 			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) {
@@ -937,30 +1064,30 @@
 			card@tcg(TCG_CARD_X_MOVETO, cnt) -= holderspace@tcg
 		loop
 	}
-	effflag@tcg = 0
-	if ( card@tcg(TCG_CARD_LOCATION, gravecard_arg1) == TCG_LOCATION_FIELD ) {
+	// Set card location to grave, update grave list, and update field/hand lists
+	if ( card@tcg(TCG_CARD_LOCATION, gravecard_arg1) != TCG_LOCATION_GRAVEYARD ) {
+		card@tcg(TCG_CARD_LOCATION, gravecard_arg1) = TCG_LOCATION_GRAVEYARD
+		cpdata@tcg(TCG_PLAYER_GRAVEYARD, card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1))++
+		n@tcg = card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
+		gravelist@tcg(gravesum@tcg(n@tcg), n@tcg) = gravecard_arg1
+		gravesum@tcg(n@tcg)++
+		makecardlist
+	}
+	// Reorganize field and hand
+	if ( cardorglocation@tcg == TCG_LOCATION_FIELD ) {
+		cardpos card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1), -1
+	}
+	if ( cardorglocation@tcg == TCG_LOCATION_HAND ) {
+		cardposhand card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1), -1
+	}
+	// Fire deathrattle effect
+	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, gravecard_arg1)) == TCG_SKILL_TYPE_DEATHRATTLE & cardorglocation@tcg == TCG_LOCATION_FIELD ) {
 		effac@tcg = gravecard_arg1
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, gravecard_arg1)
-		// dialog "" + gravecard_arg1 + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
-		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_DEATHRATTLE ) {
-			effflag@tcg = 1
-		}
-	}
-	card@tcg(TCG_CARD_LOCATION, gravecard_arg1) = TCG_LOCATION_GRAVEYARD
-	cpdata@tcg(TCG_PLAYER_GRAVEYARD, card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1))++
-	n@tcg = card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
-	gravelist@tcg(gravesum@tcg(n@tcg), n@tcg) = gravecard_arg1
-	gravesum@tcg(n@tcg)++
-	makecardlist
-	cardpos card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1), -1
-	cardposhand card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1), -1
-	if ( effflag@tcg == 1 ) {
-		effflag@tcg = 0
 		gosub *card_action_choose_target
 		makecardlist
-		tcgdraw
 	}
-	if ( card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTODECKWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTOHANDWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_GWEN ) {
+	if ( card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTODECKWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTOHANDWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_GWEN | specialrulenoonedies@tcg ) {
 		returncard gravecard_arg1
 	}
 	if ( card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTOHANDWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_GWEN ) {
@@ -977,10 +1104,24 @@
 	if ( dmgcard_arg2 > 0 ) {
 		snd SOUNDLIST_ATK1
 	}
-	if ( dmgcard_arg2 != 0 ) { efllistadd 1, -dmgcard_arg2, card@tcg(TCG_CARD_X, dmgcard_arg1), card@tcg(TCG_CARD_Y, dmgcard_arg1) }
 	if ( cdbit(TCG_BIT_ARMOR, dmgcard_arg1) & dmgcard_arg2 > 0 ) {
 		cdbitmod TCG_BIT_ARMOR, dmgcard_arg1, 0
+		efllistadd 1, 0, card@tcg(TCG_CARD_X, dmgcard_arg1), card@tcg(TCG_CARD_Y, dmgcard_arg1) 
 		return
+	}
+	if ( cdbit(TCG_BIT_RIDER, dmgcard_arg1) & dmgcard_arg2 > 0 ) {
+		cdbitmod TCG_BIT_RIDER, dmgcard_arg1, 0
+		dmgcard_arg2 = 2
+	}
+	if ( specialrulelifeordeathcombat@tcg ) {
+		if ( dmgcard_arg2 >= card@tcg(TCG_CARD_HP, dmgcard_arg1) ) {
+			dmgcard_arg2 = card@tcg(TCG_CARD_HP, dmgcard_arg1)
+		} else {
+			dmgcard_arg2 = 0
+		}
+	}
+	if ( dmgcard_arg2 != 0 ) { 
+		efllistadd 1, -dmgcard_arg2, card@tcg(TCG_CARD_X, dmgcard_arg1), card@tcg(TCG_CARD_Y, dmgcard_arg1) 
 	}
 	card@tcg(TCG_CARD_HP, dmgcard_arg1) -= dmgcard_arg2
 	if ( card@tcg(TCG_CARD_HP, dmgcard_arg1) < 0 ) {
@@ -1026,116 +1167,6 @@
 	gravecard delcard@tcg
 	return
 
-#defcfunc gameover
-	if ( cpdata@tcg(TCG_PLAYER_LIFE, 1) <= 0 ) {
-		return 2
-	}
-	if ( cpdata@tcg(TCG_PLAYER_LIFE, 0) <= 0 ) {
-		return 1
-	}
-	return 0
-
-#defcfunc getholdersum int getholdersum_arg1
-	p@tcg = 0
-	repeat maxcard@tcg
-		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getholdersum_arg1 ) {
-			continue
-		}
-		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_HAND ) {
-			p@tcg++
-		}
-	loop
-	return p@tcg
-
-#defcfunc getspotsum int getspotsum_arg1
-	p@tcg = 0
-	repeat maxcard@tcg
-		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getspotsum_arg1 ) {
-			continue
-		}
-		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_FIELD ) {
-			p@tcg++
-		}
-	loop
-	return p@tcg
-
-#defcfunc getdecksum int getdecksum_arg1
-	p@tcg = 0
-	repeat maxcard@tcg
-		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getdecksum_arg1 ) {
-			continue
-		}
-		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_DECK ) {
-			p@tcg++
-		}
-	loop
-	return p@tcg
-
-#defcfunc cardcandeclareattack int cardcandeclareattack_arg1
-	if ( card@tcg(TCG_CARD_LOCATION, cardcandeclareattack_arg1) != TCG_LOCATION_FIELD ) {
-		return 0
-	}
-	if ( card@tcg(TCG_CARD_REF_TYPE, cardcandeclareattack_arg1) != TCG_TYPE_CREATURE ) {
-		return 0
-	}
-	if ( cdbit(TCG_BIT_FROZEN, cardcandeclareattack_arg1) ) {
-		return 0
-	}
-	if ( cdbit(TCG_BIT_DEFENDER, cardcandeclareattack_arg1) ) {
-		return 0
-	}
-	if ( cdbit(TCG_BIT_EXHAUSTED, cardcandeclareattack_arg1) ) {
-		return 0
-	}
-	return 1
-
-#defcfunc cardcanblock int cardcanblock_arg1, int cardcanblock_arg2
-	if ( card@tcg(TCG_CARD_LOCATION, cardcanblock_arg1) != TCG_LOCATION_FIELD ) {
-		return 0
-	}
-	if ( card@tcg(TCG_CARD_REF_TYPE, cardcanblock_arg1) != TCG_TYPE_CREATURE ) {
-		return 0
-	}
-	if ( cdbit(TCG_BIT_GRAVITY, cardcanblock_arg2) == TRUE ) {
-		return 1
-	}
-	if ( cdbit(TCG_BIT_FLYING, cardcanblock_arg2) == TRUE & ( cdbit(TCG_BIT_FLYING, cardcanblock_arg1 ) != TRUE | cdbit(TCG_BIT_REACH, cardcanblock_arg1 ) != TRUE ) ) {
-		return 0
-	}
-	if ( cdbit(TCG_BIT_INTIMIDATE, cardcanblock_arg2) == TRUE & card@tcg(TCG_CARD_REF_DOMAIN, cardcanblock_arg1) != card@tcg(TCG_CARD_REF_DOMAIN, cardcanblock_arg2) ) {
-		return 0
-	}
-	if ( cdbit(TCG_BIT_PARALYSED, cardcanblock_arg1) == TRUE ) {
-		return 0
-	}
-	if ( cdbit(TCG_BIT_VIGILANCE, cardcanblock_arg1) | cdbit(TCG_BIT_DEFENDER, cardcanblock_arg1) ) {
-		return 1
-	}
-	if ( cdbit(TCG_BIT_EXHAUSTED, cardcanblock_arg1) ) {
-		if ( card@tcg(TCG_CARD_STATUS, cardcanblock_arg1) != TCG_ACTION_EXHAUSTED ) {
-			return 0
-		}
-	}
-	return 1
-
-#defcfunc cardcanuseskill int cardcanuseskill_arg1
-	if ( card@tcg(TCG_CARD_LOCATION, cardcanuseskill_arg1) != TCG_LOCATION_FIELD ) {
-		return 0
-	}
-	if ( card@tcg(TCG_CARD_REF_TYPE, cardcanuseskill_arg1) != TCG_TYPE_CREATURE ) {
-		return 0
-	}
-	if ( cdbit(TCG_BIT_EXHAUSTED, cardcanuseskill_arg1) ) {
-		return 0
-	}
-	if ( card@tcg(TCG_CARD_REF_SKILL_COST, cardcanuseskill_arg1) == 0 ) {
-		return 0
-	}
-	if ( card@tcg(TCG_CARD_REF_SKILL_COST, cardcanuseskill_arg1) > cpdata@tcg(TCG_PLAYER_MANA, card@tcg(TCG_CARD_CONTROLLER, cardcanuseskill_arg1)) ) {
-		return 0
-	}
-	return 1
-
 #deffunc getrandomcard int getrandomcard_arg1
 	if ( getdecksum(getrandomcard_arg1) == 0 ) {
 		cpdata@tcg(TCG_PLAYER_LIFE, getrandomcard_arg1) = 0
@@ -1147,7 +1178,7 @@
 		return
 	}
 	p@tcg = getholdersum(getrandomcard_arg1)
-	if ( getholdersum(getrandomcard_arg1) >= 7 ) {
+	if ( getholdersum(getrandomcard_arg1) >= 7 & specialruledrawswhenhandfull@tcg != 1 ) {
 		return
 	}
 	*getrandomcard_WHILE1
@@ -1160,10 +1191,9 @@
 	goto *getrandomcard_WHILE1
 	*getrandomcard_WEND1
 	card@tcg(TCG_CARD_LOCATION, c@tcg) = TCG_LOCATION_HAND, getrandomcard_arg1, deckix@tcg(getrandomcard_arg1), deckiy@tcg(getrandomcard_arg1), holderix@tcg(getrandomcard_arg1) + p@tcg * holderspace@tcg, holderiy@tcg(getrandomcard_arg1), 0, 0
-	card@tcg(TCG_CARD_HP, c@tcg) = card@tcg(TCG_CARD_REF_HP, c@tcg)
-	card@tcg(TCG_CARD_ATTACK, c@tcg) = card@tcg(TCG_CARD_REF_ATTACK, c@tcg)
 	cpdata@tcg(TCG_PLAYER_DECK, getrandomcard_arg1)--
-	if ( getrandomcard_arg1 == 0 ) {
+	card@tcg(TCG_CARD_TURN_COUNT, c@tcg) = 0
+	if ( getrandomcard_arg1 == player@tcg ) {
 		cdbitmod TCG_BIT_FACE_UP, c@tcg, 1
 	}
 	else {
@@ -1172,10 +1202,10 @@
 	if ( getholdersum(getrandomcard_arg1) > 7 ) {
 		delbottomcard getrandomcard_arg1
 	}
-	effac@tcg = c@tcg
-	eff@tcg = card@tcg(TCG_CARD_EFFECT, c@tcg)
-	// dialog "" + c@tcg + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
-	if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_ONDRAW ) {
+	if ( effref@tcg(TCG_SKILL_TYPE,card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_TYPE_ONDRAW & turn@tcg > 0 ) {
+		effac@tcg = c@tcg
+		eff@tcg = card@tcg(TCG_CARD_EFFECT, c@tcg)
+		// dialog "" + c@tcg + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
 		cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
 		gosub *card_action_choose_target
 	}
@@ -1185,16 +1215,10 @@
 
 #deffunc gettargetcard int gettargetcard_arg1
 	n@tcg = card@tcg(TCG_CARD_CONTROLLER, gettargetcard_arg1)
-	if ( getdecksum(n@tcg) == 0 ) {
-		cpdata@tcg(TCG_PLAYER_LIFE, n@tcg) = 0
-		return
-	}
 	p@tcg = getholdersum(n@tcg)
-	if ( getholdersum(n@tcg) >= 7 ) {
+	if ( getholdersum(n@tcg) >= 7 & specialruledrawswhenhandfull@tcg != 1 ) {
 		return
 	}
-	card@tcg(TCG_CARD_HP, gettargetcard_arg1) = card@tcg(TCG_CARD_REF_HP, gettargetcard_arg1)
-	card@tcg(TCG_CARD_ATTACK, gettargetcard_arg1) = card@tcg(TCG_CARD_REF_ATTACK, gettargetcard_arg1)
 	if ( card@tcg(TCG_CARD_LOCATION, gettargetcard_arg1) == TCG_LOCATION_DECK ) {
 		card@tcg(TCG_CARD_LOCATION, gettargetcard_arg1) = TCG_LOCATION_HAND, n@tcg, deckix@tcg(n@tcg), deckiy@tcg(n@tcg), holderix@tcg(n@tcg) + p@tcg * holderspace@tcg, holderiy@tcg(n@tcg), 0, 0
 		cpdata@tcg(TCG_PLAYER_DECK, n@tcg)--
@@ -1213,7 +1237,6 @@
 		loop
 		gravesum@tcg(n@tcg)--
 		cpdata@tcg(TCG_PLAYER_GRAVEYARD, n@tcg)--
-		card@tcg(TCG_CARD_HP, gettargetcard_arg1) = card@tcg(TCG_CARD_REF_HP, putgettargetcard_arg1card_arg1)
 		card@tcg(TCG_CARD_X, gettargetcard_arg1) = graveix@tcg(n@tcg), graveiy@tcg(n@tcg), graveix@tcg(n@tcg), graveiy@tcg(n@tcg), 0, 0
 	}
 	if ( card@tcg(TCG_CARD_LOCATION, gettargetcard_arg1) == TCG_LOCATION_FIELD ) {
@@ -1231,6 +1254,7 @@
 	}
 	card@tcg(TCG_CARD_LOCATION, gettargetcard_arg1) = TCG_LOCATION_HAND, n@tcg
 	card@tcg(TCG_CARD_X_MOVETO, gettargetcard_arg1) = holderix@tcg(n@tcg) + p@tcg * holderspace@tcg, holderiy@tcg(n@tcg)
+	card@tcg(TCG_CARD_TURN_COUNT, gettargetcard_arg1) = 0
 	if ( n@tcg == 0 ) {
 		cdbitmod TCG_BIT_FACE_UP, gettargetcard_arg1, 1
 	}
@@ -1240,11 +1264,12 @@
 	if ( getholdersum(n@tcg) > 7 ) {
 		delbottomcard n@tcg
 	}
-	effac@tcg = gettargetcard_arg1
-	eff@tcg = card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)
-	// dialog "" + gettargetcard_arg1 + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
-	if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_ONDRAW ) {
+	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)) == TCG_SKILL_TYPE_ONDRAW ) {
+		effac@tcg = gettargetcard_arg1
+		eff@tcg = card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)
+		// dialog "" + gettargetcard_arg1 + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
 		gosub *card_action_choose_target
+		cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
 	}
 	makecardlist
 	cardposhand 0, -1
@@ -1279,9 +1304,11 @@
 	cpdata@tcg(TCG_PLAYER_MANA, saccard_arg2)++
 	effac@tcg = saccard_arg1
 	eff@tcg = card@tcg(TCG_CARD_EFFECT, saccard_arg1)
-	card_ref 10000 + card@tcg(TCG_CARD_REF_DOMAIN, saccard_arg1) * 100 + rnd(2)
-	create_card saccard_arg1, stat
-	card@tcg(TCG_CARD_EFFECT, saccard_arg1) = eff@tcg
+	// costbk@tcg = card@tcg(TCG_CARD_COST, saccard_arg1)
+	// card_ref 10000 + card@tcg(TCG_CARD_REF_DOMAIN, saccard_arg1) * 100 + rnd(2)
+	// create_card saccard_arg1, stat
+	// card@tcg(TCG_CARD_EFFECT, saccard_arg1) = eff@tcg
+	// card@tcg(TCG_CARD_COST, saccard_arg1) = costbk@tcg
 	cdbitmod TCG_BIT_FACE_UP, saccard_arg1, 0
 	card@tcg(TCG_CARD_X_MOVETO, saccard_arg1) = landix@tcg(saccard_arg2) + landsum@tcg(saccard_arg2) * limit(landspace@tcg - landsum@tcg(saccard_arg2) / 2, 4, landspace@tcg)
 	card@tcg(TCG_CARD_Y_MOVETO, saccard_arg1) = landiy@tcg(saccard_arg2)
@@ -1307,10 +1334,6 @@
 	tcgdraw
 	return
 
-
-#include "tcg_skill.hsp"
-
-
 #deffunc putcard int putcard_arg1, int putcard_arg2
 	if ( getspotsum(putcard_arg2) >= 8 ) {
 		if ( putcard_arg2 == player@tcg ) {
@@ -1323,7 +1346,6 @@
 		return -1
 	}
 	if ( card@tcg(TCG_CARD_LOCATION, putcard_arg1) == TCG_LOCATION_GRAVEYARD ) {
-		card@tcg(TCG_CARD_HP, putcard_arg1) = card@tcg(TCG_CARD_REF_HP, putcard_arg1)
 		card@tcg(TCG_CARD_X, putcard_arg1) = graveix@tcg(putcard_arg2), graveiy@tcg(putcard_arg2), graveix@tcg(putcard_arg2), graveiy@tcg(putcard_arg2), 0, 0
 		f@tcg = 0
 		repeat gravesum@tcg(putcard_arg2)
@@ -1341,6 +1363,16 @@
 	}
 	if ( card@tcg(TCG_CARD_LOCATION, putcard_arg1) == TCG_LOCATION_HAND ) {
 		if ( putcardfree@tcg == 0 ) {
+			if ( cdbit(TCG_BIT_ENEMY, putcard_arg1) ) {
+				card@tcg(TCG_CARD_CONTROLLER, putcard_arg1) = 1 - card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)
+				if ( getspotsum(card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)) >= 8 ) {
+					if ( 1 - card@tcg(TCG_CARD_CONTROLLER, putcard_arg1) == player@tcg ) {
+						snd SOUNDLIST_FAIL1
+						cardhelp lang("これ以上は場に出せない。", "Your opponent's field is full."), 40
+					}
+					return -1
+				}
+			}
 			if ( card@tcg(TCG_CARD_COST, putcard_arg1) > cpdata@tcg(TCG_PLAYER_MANA, putcard_arg2) ) {
 				if ( putcard_arg2 == player@tcg ) {
 					snd SOUNDLIST_FAIL1
@@ -1351,6 +1383,7 @@
 				}
 			}
 			cpdata@tcg(TCG_PLAYER_MANA, putcard_arg2) -= card@tcg(TCG_CARD_COST, putcard_arg1)
+			cpdata@tcg(TCG_PLAYER_MANA_SPENT, putcard_arg2) += card@tcg(TCG_CARD_COST, putcard_arg1)
 			if ( putcard_arg2 == 0 ) {
 				card@tcg(TCG_CARD_Y_MOVETO, putcard_arg1) -= 25
 			}
@@ -1378,23 +1411,10 @@
 		card@tcg(TCG_CARD_X, putcard_arg1) = deckix@tcg(card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)), deckiy@tcg(card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)), deckix@tcg(card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)), deckiy@tcg(card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)), 0, 0
 		cpdata@tcg(TCG_PLAYER_DECK, putcard_arg2)--
 	}
-	if ( card@tcg(TCG_CARD_REF_TYPE, putcard_arg1) == TCG_TYPE_LAND ) {
-		cdbitmod TCG_BIT_FACE_UP, putcard_arg1, 1
-		card@tcg(TCG_CARD_X_MOVETO, putcard_arg1) = landix@tcg(putcard_arg2) + landsum@tcg(putcard_arg2) * limit(landspace@tcg - landsum@tcg(putcard_arg2) / 2, 4, landspace@tcg)
-		card@tcg(TCG_CARD_Y_MOVETO, putcard_arg1) = landiy@tcg(putcard_arg2)
-		landlist@tcg(landsum@tcg(putcard_arg2), putcard_arg2) = putcard_arg1
-		landsum@tcg(putcard_arg2)++
-		tcgdraw
-		makecardlist
-		card@tcg(TCG_CARD_LOCATION, putcard_arg1) = TCG_LOCATION_EXILE
-		makecardlist
-		gosub *refresh_bg
-		return 1
-	}
-	p@tcg = getspotsum(putcard_arg2)
+	p@tcg = getspotsum(card@tcg(TCG_CARD_CONTROLLER, putcard_arg1))
 	card@tcg(TCG_CARD_LOCATION, putcard_arg1) = TCG_LOCATION_FIELD
 	card@tcg(TCG_CARD_TURN_COUNT, putcard_arg1) = 0
-	if ( cdbit(TCG_BIT_HASTE, putcard_arg1) != TRUE ) {
+	if ( cdbit(TCG_BIT_HASTE, putcard_arg1) != TRUE & cdbit(TCG_BIT_RIDER, putcard_arg1) != TRUE ) {
 		card@tcg(TCG_CARD_STATUS, putcard_arg1) = TCG_ACTION_EXHAUSTED
 		cdbitmod TCG_BIT_EXHAUSTED, putcard_arg1, 1
 	}
@@ -1402,13 +1422,10 @@
 	if ( cdbit(TCG_BIT_WINDFURY, putcard_arg1) == TRUE ) {
 		cdbitmod TCG_BIT_WINDFURY_USABLE, putcard_arg1, 1
 	}
-	cardpos putcard_arg2, putcard_arg1
+	cardpos card@tcg(TCG_CARD_CONTROLLER, putcard_arg1), putcard_arg1
 	tcgdraw
 	makecardlist
 	opencard putcard_arg1
-	if ( cdbit(TCG_BIT_SUICIDE, putcard_arg1) ) {
-		card@tcg(TCG_CARD_HP, putcard_arg1) = 0
-	}
 	// dialog "" + putcard_arg1 + "/" + card@tcg(TCG_CARD_EFFECT, putcard_arg1) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, putcard_arg1))
 	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, putcard_arg1)) == TCG_SKILL_TYPE_BATTLECRY ) {
 		effac@tcg = putcard_arg1
@@ -1416,6 +1433,9 @@
 		gosub *card_action_choose_target
 		makecardlist
 		tcgdraw
+	}
+	if ( cdbit(TCG_BIT_SUICIDE, putcard_arg1) ) {
+		card@tcg(TCG_CARD_HP, putcard_arg1) = 0
 	}
 	if ( card@tcg(TCG_CARD_HP, putcard_arg1) == 0 & card@tcg(TCG_CARD_LOCATION, putcard_arg1) == TCG_LOCATION_FIELD ) {
 		dmgcard putcard_arg1, 0 + cdbit(TCG_BIT_SUICIDE, putcard_arg1) * 999
@@ -1437,88 +1457,6 @@
 		loop
 	loop
 	gmode 2
-	return
-
-#deffunc tcginit
-	turn@tcg = 0
-	efllistmax@tcg = 10
-	cardmode@tcg = 0
-	filtertype@tcg = 0
-	displayinfo@tcg = 0
-	gameresult@tcg = 0
-	dim card@tcg, 50, maxcard@tcg
-	sdim cardn@tcg, 16, 4, maxcard@tcg
-	dim cpdata@tcg, 20, 2
-	dim efllist@tcg, 10, efllistmax@tcg
-	dim elist@tcg, 10, 8 * 2 + 7
-	dim gravesum@tcg, 2
-	dim landsum@tcg, 2
-	dim landlist@tcg, maxcard@tcg, 2
-	dim cardstack@tcg, 10, 100
-	dim gravelist@tcg, 50, 2
-	sdim carddetailn@tcg, 200, maxcard@tcg
-	sdim carddetailneff@tcg, 200, maxcard@tcg
-	sdim cardrefn
-	sdim helpmsg@tcg
-	dim deck, MAX_CARD
-	dim deck_opponent, MAX_CARD
-	sdim domname@tcg, 20, 10
-	domblue = 0
-	domgreen = 1
-	domwhite = 2
-	domblack = 3
-	domcolorless = 4
-	domlegendary = 5
-	domother = 6
-	domred = 7
-	cddraw2card@tcg = -999999
-	cdsummonrace@tcg = -999999
-	cdsummon@tcg = -999999
-	phasen@tcg = "Begin", "Draw", "Main", "End", ""
-	domname@tcg(0) = lang("青", "BLUE")
-	domname@tcg(1) = lang("緑", "GREEN")
-	domname@tcg(2) = lang("白", "WHITE")
-	domname@tcg(3) = lang("黒", "BLACK")
-	domname@tcg(4) = lang("中立", "NEUTRAL")
-	domname@tcg(5) = lang("伝承", "LEGENDARY")
-	domname@tcg(6) = lang("灰", "GRAY")
-	domname@tcg(7) = lang("赤", "RED")
-	chainx@tcg = 0
-	chainy@tcg = 0
-	cfg_chaintime = 50
-	basew@tcg = 800
-	baseh@tcg = 600
-	basex@tcg = (windoww - basew@tcg) / 2
-	basey@tcg = (windowh - baseh@tcg) / 2
-	graveix@tcg = basex@tcg + 682, basex@tcg + 682
-	graveiy@tcg = basey@tcg + 315, basey@tcg + 125
-	gravespace@tcg = 22
-	landix@tcg = basex@tcg + 150, basex@tcg + 150
-	landiy@tcg = basey@tcg + 315, basey@tcg + 125
-	landspace@tcg = 22
-	spotix@tcg = basex@tcg + 138, basex@tcg + 138
-	spotiy@tcg = basey@tcg + 290, basey@tcg + 150
-	spotspace@tcg = 80
-	holderix@tcg = basex@tcg + 222, basex@tcg + 222
-	holderiy@tcg = basey@tcg + 420, basey@tcg + 20
-	holderspace@tcg = 80
-	deckix@tcg = basex@tcg + 800, basex@tcg + 800
-	deckiy@tcg = basey@tcg + 420, basey@tcg + 20
-	selectmode@tcg = -1
-	gsel 3
-	pos 960, 96
-	picload exedir + "graphic\\deco_card.bmp", 1
-	gsel 7
-	picload exedir + "graphic\\interface2.bmp"
-	gsel 2
-	pos 0, 0
-	picload exedir + "graphic\\card0.bmp", 1
-	gsel 4
-	pos 0, 0
-	picload exedir + "graphic\\bg_card.bmp", 1
-	gosub *tcg_effect_define
-	gosub *tcg_initBg
-	tcgdrawbg
 	return
 
 #defcfunc calcstartcard int calcstartcard_arg1
@@ -1685,15 +1623,39 @@
 		}
 	loop
 	calcdomain
+	repeat maxcard@tcg
+		if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, cnt)) == TCG_SKILL_TYPE_ONGAMESTART ) {
+			effac@tcg = cnt
+			eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
+			gosub *card_action_choose_target
+		}
+	loop
+	ct@tcg = TCG_CONTROLLER_PLAYER
+	ct@tcg += rnd(2) // Randomly decide who go first.
+	player@tcg = TCG_CONTROLLER_PLAYER
+	if ( deck(CREATURE_ID_MANI) > 0 ) {
+		player@tcg = TCG_CONTROLLER_OBSERVER
+	} else {
+		if ( deck(CREATURE_ID_DEUS_EX_MANINA) > 0 ) {
+			player@tcg = TCG_CONTROLLER_OPPONENT
+		}
+	}
+	if ( deck(CREATURE_ID_JURE) > 0 ) { specialrulecreatureremovewounds@tcg = 1 } 
+	if ( deck(CREATURE_ID_BLESSED_JURE) > 0 ) { 
+		specialrulenosaccingmanaautoinc@tcg = 1 
+		specialrulenoonedies@tcg = 1 
+	} 
+	if ( deck(CREATURE_ID_ITZPALT) > 0 ) { 
+		specialruledrawswhenhandfull@tcg = 1 
+		specialruledrawtwocardsperturn@tcg = 1 
+	} 
+	if ( deck(CREATURE_ID_THE_ELEMENT) > 0 ) { specialrulelifeordeathcombat@tcg = 1 } 
 	repeat 2
 		cp@tcg = cnt
 		repeat calcstartcard(cnt)
 			getrandomcard cp@tcg
 		loop
 	loop
-	ct@tcg = TCG_CONTROLLER_PLAYER
-	ct@tcg += rnd(2) // Randomly decide who go first.
-	// player@tcg = TCG_CONTROLLER_OBSERVER
 	*tcgmain_WHILE1
 	cpisme
 	gosub *phase_begin
@@ -1709,6 +1671,14 @@
 		goto *tcgmain_WEND1
 	}
 	gosub *phase_end
+	if ( (specialruletimestop@tcg > 0 & ct@tcg == TCG_CONTROLLER_PLAYER) ) {
+		specialruletimestop@tcg--
+		goto *tcgmain_WHILE1
+	}
+	if ( (specialruletimestop@tcg < 0 & ct@tcg == TCG_CONTROLLER_OPPONENT) ) {
+		specialruletimestop@tcg++
+		goto *tcgmain_WHILE1
+	}
 	if ( ct@tcg == TCG_CONTROLLER_PLAYER ) {
 		ct@tcg = TCG_CONTROLLER_OPPONENT
 	}
@@ -1761,6 +1731,10 @@
 	tcgdraw
 	await 50
 	sac@tcg = 0
+	if ( specialrulenosaccingmanaautoinc@tcg ) {
+		sac@tcg = 1
+		cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg)++
+	}
 	cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) = limit(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) + cpdata@tcg(TCG_PLAYER_NEXTTURN_MANA, cp@tcg), 0, 10000)
 	cpdata@tcg(TCG_PLAYER_NEXTTURN_MANA, cp@tcg) = 0
 	repeat maxcard@tcg
@@ -1789,7 +1763,7 @@
 		if ( cdbit(TCG_BIT_POISONED, cnt) ) {
 			card@tcg(TCG_CARD_HP, cnt)--
 		}
-		if ( cdbit(TCG_BIT_REGENERATION, cnt) ) {
+		if ( cdbit(TCG_BIT_REGENERATION, cnt) | specialrulecreatureremovewounds@tcg ) {
 			card@tcg(TCG_CARD_HP, cnt) = card@tcg(TCG_CARD_REF_HP, cnt)
 			cdbitmod TCG_BIT_POISONED, cnt, 0
 		}
@@ -1816,7 +1790,11 @@
 	tcgdraw
 	await 50
 	getrandomcard cp@tcg
-	if ( cp@tcg == 1 & getspotsum(0) >= getspotsum(1) + 2 ) { // Give AI extra cards because they suck
+	if ( specialruledrawtwocardsperturn@tcg ) {
+		await 50
+		getrandomcard cp@tcg
+	}
+	if ( cp@tcg == 1 & getspotsum(0) >= getspotsum(1) + 1 + rnd(6) ) { // Give AI extra cards because they suck
 		await 50
 		getrandomcard cp@tcg
 	}
@@ -1829,6 +1807,7 @@
 	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_HAND ) { continue }
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) { continue }
+		card@tcg(TCG_CARD_TURN_COUNT, cnt)++
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
 		// dialog "" + cnt + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
@@ -1886,17 +1865,17 @@
 #deffunc csfix
 	if ( selectmode@tcg == 2 ) {
 		if ( targetlinenum@tcg <= 0 ) { return }
-		repeat 5
-			if ( clistmax@tcg(csline@tcg) == 0 | cs@tcg >= clistmax@tcg(csline@tcg) ) {
-				targetcs@tcg++
+		repeat 6
+			if ( clistmax@tcg(csline@tcg) < 0 | cs@tcg >= clistmax@tcg(csline@tcg) ) {
+				if ( cnt != 0 ) { targetcs@tcg++ }
 				if ( targetcs@tcg >= targetlinenum@tcg ) { targetcs@tcg = 0 }
-				if ( targetcs@tcg <= 0 ) { targetcs@tcg = targetlinenum@tcg - 1 }
+				if ( targetcs@tcg < 0 ) { targetcs@tcg = targetlinenum@tcg - 1 }
 				csline@tcg = targetline@tcg(targetcs@tcg)
 				cs@tcg = 0 - (csline@tcg == 0)
 			} else {
 				break
 			}
-			if ( cnt == 4 ) {
+			if ( cnt == 5 ) {
 				targetlinenum@tcg = 0
 				csline@tcg = 0
 				cs@tcg = -1
@@ -1933,9 +1912,9 @@
 		if ( targetlinenum@tcg <= 0 ) { return }
 		targetcs@tcg++
 		if ( targetcs@tcg >= targetlinenum@tcg ) { targetcs@tcg = 0 }
-		if ( targetcs@tcg <= 0 ) { targetcs@tcg = targetlinenum@tcg - 1 }
+		if ( targetcs@tcg < 0 ) { targetcs@tcg = targetlinenum@tcg - 1 }
 		csline@tcg = targetline@tcg(targetcs@tcg)
-		cs@tcg = 0 - (csline@tcg == 0)
+		cs@tcg = 0 - (csline@tcg == 0 | csline@tcg == 3)
 		return
 	}
 	repeat
@@ -1950,7 +1929,7 @@
 	if ( csline@tcg == 4 ) {
 		csline@tcg = 0
 	}
-	if ( csline@tcg == 0 ) {
+	if ( csline@tcg == 0 | csline@tcg == 3 ) {
 		cs@tcg = -1
 	}
 	else {
@@ -1966,9 +1945,9 @@
 		if ( targetlinenum@tcg <= 0 ) { return }
 		targetcs@tcg--
 		if ( targetcs@tcg >= targetlinenum@tcg ) { targetcs@tcg = 0 }
-		if ( targetcs@tcg <= 0 ) { targetcs@tcg = targetlinenum@tcg - 1 }
+		if ( targetcs@tcg < 0 ) { targetcs@tcg = targetlinenum@tcg - 1 }
 		csline@tcg = targetline@tcg(targetcs@tcg)
-		cs@tcg = 0 - (csline@tcg == 0)
+		cs@tcg = 0 - (csline@tcg == 0 | csline@tcg == 3)
 		return
 	}
 	if ( csline@tcg == 0 ) {
@@ -1986,7 +1965,7 @@
 	if ( csline@tcg == (-1) ) {
 		csline@tcg = 0
 	}
-	if ( csline@tcg == 0 ) {
+	if ( csline@tcg == 0 | csline@tcg == 3  ) {
 		cs@tcg = -1
 	}
 	else {
@@ -2148,8 +2127,8 @@
 	loop
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 	color 255, 255, 255
-	pos basex@tcg + 160, basey@tcg + 510
-	mes lang("" + key_next + "," + key_prev + ",Tab [フィルター切替]  決定ｷｰ [カード選択]  ｷｬﾝｾﾙｷｰ [終了]", "" + key_next + "," + key_prev + " [<-Filter->] " + key_fire + "," + key_get + " [Type] " + key_charainfo + " [Info] Enter [Select]  Cancel [Exit]")
+	pos basex@tcg + 130, basey@tcg + 510
+	mes lang("" + key_next + "," + key_prev + ",Tab [フィルター切替]  決定ｷｰ [カード選択]  ｷｬﾝｾﾙｷｰ [終了]", "" + key_next + "," + key_prev + " [<-Filter->] " + key_fire + "," + key_get + " [Type] " + key_search + " [Sort] " + key_charainfo + " [Info] Enter [Select]  Cancel [Exit]")
 	pos basex@tcg + 700, basey@tcg + 510
 	mes "Page " + ((dsc@tcg / 8 / 3) + 1) + "/" + (((dlistmax@tcg - 1) / 8 / 3) + 1)
 	return
@@ -2394,7 +2373,7 @@
 			cfmax@tcg = 10
 		}
 	}
-*select_deck_loop
+	*select_deck_loop
 	dlistmax@tcg = 0
 	dsc@tcg = 0
 	repeat maxcard@tcg
@@ -2633,6 +2612,18 @@
 		}
 		repeat dlistmax@tcg - 1
 			p@tcg = card@tcg(TCG_CARD_REF_DBID, dlist@tcg(0, cnt)), card@tcg(TCG_CARD_REF_DBID, dlist@tcg(0, cnt + 1))
+			if ( sortmode@tcg == 1 ) {
+				p@tcg = card@tcg(TCG_CARD_REF_DOMAIN, dlist@tcg(0, cnt)), card@tcg(TCG_CARD_REF_DOMAIN, dlist@tcg(0, cnt + 1))
+			}
+			if ( sortmode@tcg == 2 ) {
+				p@tcg = card@tcg(TCG_CARD_REF_COST, dlist@tcg(0, cnt)), card@tcg(TCG_CARD_REF_COST, dlist@tcg(0, cnt + 1))
+			}
+			if ( sortmode@tcg == 3 ) {
+				p@tcg = card@tcg(TCG_CARD_REF_ATTACK, dlist@tcg(0, cnt)), card@tcg(TCG_CARD_REF_ATTACK, dlist@tcg(0, cnt + 1))
+			}
+			if ( sortmode@tcg == 4 ) {
+				p@tcg = card@tcg(TCG_CARD_REF_HP, dlist@tcg(0, cnt)), card@tcg(TCG_CARD_REF_HP, dlist@tcg(0, cnt + 1))
+			}
 			if ( p@tcg > p@tcg(1) ) {
 				f@tcg = 1
 				p@tcg = dlist@tcg(0, cnt), dlist@tcg(1, cnt)
@@ -2645,7 +2636,7 @@
 		}
 	loop
 	gosub *select_deck_pos
-*select_deck_loop_WHILE1
+	*select_deck_loop_WHILE1
 	redraw 0
 	gosub *tcg_drawInterface
 	gosub *tcg_drawDeck
@@ -2699,6 +2690,16 @@
 			loop
 		}
 	}
+	if ( key == key_search ) {
+		sortmode@tcg++
+		if ( sortmode@tcg > 4 ) {
+			sortmode@tcg = 0
+		}
+		if ( sortmode@tcg < 0 ) {
+			sortmode@tcg = 4
+		}
+		goto *select_deck
+	}
 	if ( key == key_prev ) {
 		ccf@tcg--
 		snd SOUNDLIST_CURSOR1
@@ -2751,19 +2752,19 @@
 			gosub *select_action
 			if ( f@tcg == 0 ) {
 				if ( act@tcg(0) ) {
-					if ( card@tcg(TCG_CARD_REF_DOMAIN, cc@tcg) == 5 & deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) >= 1 ) {
+					if ( deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) >= 1 & card@tcg(TCG_CARD_REF_DOMAIN, cc@tcg) == 5 ) {
 						cardhelp lang("デッキに同じ伝説のカードを1枚しか入れることができない。", "You can only put 1 copy of the same Legendary Card in your deck."), 40
 						deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) = 1
 						snd SOUNDLIST_FAIL1
 						goto *select_deck_loop_WEND2
 					}
-					if ( card@tcg(TCG_CARD_REF_DOMAIN, cc@tcg) == 4 & deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) >= 2 ) {
+					if ( deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) >= 2 & card@tcg(TCG_CARD_REF_DOMAIN, cc@tcg) == 4 & card@tcg(TCG_CARD_EFFECT, cc@tcg) != TCG_EFF_NOVICE ) {
 						cardhelp lang("デッキに同じ中立のカードを1枚しか入れることができない。", "You can only put 2 copy of the same Neutral Card in your deck."), 40
 						deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) = 2
 						snd SOUNDLIST_FAIL1
 						goto *select_deck_loop_WEND2
 					}
-					if ( card@tcg(TCG_CARD_EFFECT, cc@tcg) != TCG_EFF_NOLIMIT & deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) >= 4 ) {
+					if ( deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) >= 4 & card@tcg(TCG_CARD_EFFECT, cc@tcg) != TCG_EFF_NOLIMIT & card@tcg(TCG_CARD_EFFECT, cc@tcg) != TCG_EFF_NOVICE ) {
 						cardhelp lang("デッキに同じカードを4枚しか入れることができない。", "You can only put 4 copy of the same Card in your deck."), 40
 						deck(card@tcg(TCG_CARD_REF_DBID, cc@tcg)) = 4
 						snd SOUNDLIST_FAIL1
@@ -2845,17 +2846,17 @@
 	displayinfo@tcg = 1
 	if ( selectmode@tcg == 0 ) {
 		cs@tcg = -1
-		csline@tcg = 0
+		csline@tcg = 0 + 3 * (player@tcg == 1)
 	}
 	if ( selectmode@tcg == 1 ) {
 		if ( cs@tcg == (-1) ) {
-			csline@tcg = 0
+			csline@tcg = 0 + 3 * (player@tcg == 1)
 		}
 		else {
-			csline@tcg = 1
+			csline@tcg = 1 + (player@tcg == 1)
 		}
 	}
-*card_player_WHILE1
+	*card_player_WHILE1
 	gosub *card_resolve_ongoing
 	tcgdraw
 	cursor@tcg = 1
@@ -2918,7 +2919,7 @@
 			rtval@tcg = cc@tcg
 			return
 		}
-		if ( csline@tcg == 0 | (csline@tcg == 3 & debug == 1) ) {
+		if ( (csline@tcg == 0 & player@tcg == 0) | (csline@tcg == 3 & (debug == 1 | player@tcg = 1)) ) {
 			if ( card@tcg(TCG_CARD_COST, cc@tcg) <= cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) ) {
 				if ( card@tcg(TCG_CARD_REF_TYPE, cc@tcg) == TCG_TYPE_SPELL | selectmode@tcg == 0 ) {
 					act@tcg(0) = 1
@@ -2932,7 +2933,7 @@
 				}
 			}
 		}
-		if ( csline@tcg == 1 | (csline@tcg == 2 & debug == 1) ) {
+		if ( (csline@tcg == 1 & player@tcg == 0) | (csline@tcg == 2 & (debug == 1 | player@tcg = 1)) ) {
 			if ( selectmode@tcg == 0 ) {
 				if ( card@tcg(TCG_CARD_STATUS, cc@tcg) != TCG_ACTION_ATTACKING ) {
 					if ( cardcandeclareattack(cc@tcg) ) {
@@ -2980,7 +2981,7 @@
 				goto *card_player_WHILE1_CONTINUE
 			}
 		}
-		if ( csline@tcg == 1 | (csline@tcg == 2 & debug == 1) ) {
+		if ( (csline@tcg == 1 & player@tcg == 0) | (csline@tcg == 2 & (debug == 1 | player@tcg = 1)) ) {
 			if ( f@tcg == 0 ) {
 				if ( selectmode@tcg == 1 ) {
 					attacktarget@tcg = cc@tcg
@@ -3022,7 +3023,7 @@
 		}
 		if ( f@tcg == 1 ) {
 			cursor@tcg = 0
-			saccard cc@tcg, cp@tcg + (csline@tcg == 3)
+			saccard cc@tcg, cp@tcg - (player@tcg == 1) + (csline@tcg == 3)
 			if ( cs@tcg >= clistmax@tcg(csline@tcg) ) {
 				cs@tcg = clistmax@tcg(csline@tcg) - 1
 			}
@@ -3031,7 +3032,7 @@
 		}
 		if ( f@tcg == 0 ) {
 			cursor@tcg = 0
-			putcard cc@tcg, cp@tcg + (csline@tcg == 3)
+			putcard cc@tcg, cp@tcg - (player@tcg == 1) + (csline@tcg == 3)
 			if ( gameover() ) {
 				goto *card_player_WEND1
 			}
@@ -3087,9 +3088,9 @@
 			gosub *select_deck
 		}
 	}
-*card_player_WHILE1_CONTINUE
+	*card_player_WHILE1_CONTINUE
 	goto *card_player_WHILE1
-*card_player_WEND1
+	*card_player_WEND1
 	cursor@tcg = 0
 	return
 
@@ -3098,7 +3099,7 @@
 	p@tcg = 0
 	i@tcg = 0
 	f@tcg = 1
-*select_action_WHILE1
+	*select_action_WHILE1
 	p@tcg++
 	i@tcg += f@tcg
 	if ( i@tcg > 30 ) {
@@ -3165,7 +3166,5 @@
 		goto *select_action_WEND1
 	}
 	goto *select_action_WHILE1
-*select_action_WEND1
+	*select_action_WEND1
 	return
-
-#include "tcg_ai.hsp"
