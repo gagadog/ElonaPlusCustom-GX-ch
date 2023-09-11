@@ -59,6 +59,8 @@ TweakData(75, 2) = "Revert post-2.17 skill exp formula changes."
 TweakData(76, 2) = "Make necromancy minions actively seek out enemies like pets do."
 TweakData(77, 2) = "Spawn evolved enemies in: "
 TweakData(78, 2) = "Collect kits instead of socks in Urcaguary quest."
+TweakData(79, 2) = "Revert post-2.17 cooking result changes."
+TweakData(80, 2) = "Revert post-2.17 boss out-of-sight healing."
 
 TweakData(x, 3) = "AI Tweaks"
 TweakData(0, 3) = "Change Zeome's AI."
@@ -552,7 +554,7 @@ TweakData(54, 4) = "Weather always change to etherwind."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 38
+    listmax = 39
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -600,7 +602,8 @@ TweakData(54, 4) = "Weather always change to etherwind."
 	listn(0, 34) = "Spawn evolved enemies in: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES)
 	listn(0, 35) = "Collect kits instead of socks in Urcaguary quest." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST)
 	listn(0, 36) = "Revert post-2.17 cooking result changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES)
-	listn(0, 37) = "Go back."
+	listn(0, 37) = "Revert post-2.17 boss out-of-sight healing." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING)
+	listn(0, 38) = "Go back."
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -679,7 +682,7 @@ TweakData(54, 4) = "Weather always change to etherwind."
 				s = "Disables the chain attacks mechanic.\nThis reduces the damage dealt by sequential attacks within the attacker's turn."
 			}
 			if ( p == 18 ) {
-				s = "Disables the sleep prevention effects caused by coffee and tobacco."
+				s = "Disables the sleep prevention effects caused by coffee and tobacco.\nThey reduce your drowsiness directly as in Version 1.86."
 			}
 			if ( p == 19 ) {
 				s = "Enables Custom-G's changes to certain skills.\nThis affects Gravity Sphere, Graviton Buster, Violent Garden,\nShadow Step, and some other skills."
@@ -736,6 +739,9 @@ TweakData(54, 4) = "Weather always change to etherwind."
 				s = "Reverts changes to the cooking product after version 2.17. \nCooking will give extra product at cooking lvl 100 and lvl 200. \nBut will no longer gave extra enchant or enhance values. \nOn-eat changes to +enhance post 2.17 do not apply."
 			}
 			if ( p == 37 ) {
+				s = "Disable the <{enemy}> self-heal anti-cheese mechanics after version 2.17. \nThis does not apply to creatures like Megamole/Talpidae/Aile."
+			}
+			if ( p == 38 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -947,6 +953,11 @@ TweakData(54, 4) = "Weather always change to etherwind."
 		gosub *ToggleTweak
 	}
 	if ( p == 37 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING
+		gosub *ToggleTweak
+	}
+	if ( p == 38 ) {
 		snd SOUNDLIST_OK1
 		return
 	}

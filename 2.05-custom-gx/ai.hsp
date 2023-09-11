@@ -1153,7 +1153,7 @@
 				goto *ai_calmMove
 			}
 		}
-		if ( cc > MAX_CHARA_FOLLOWER & (cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT | cdata(CDATA_ID, cc) == CREATURE_ID_MEGA_MOLE | cdata(CDATA_ID, cc) == CREATURE_ID_TALPIDAE | cdata(CDATA_ID, cc) == CREATURE_ID_AILE_THE_ATTENDANT) ) {
+		if ( cc > MAX_CHARA_FOLLOWER & ((cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & TweakData(TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING, TWEAK_CATEGORY_GAMEPLAY) != TRUE) | cdata(CDATA_ID, cc) == CREATURE_ID_MEGA_MOLE | cdata(CDATA_ID, cc) == CREATURE_ID_TALPIDAE | cdata(CDATA_ID, cc) == CREATURE_ID_AILE_THE_ATTENDANT) ) {
 			if ( cdata(CDATA_HP, cc) <= cdata(CDATA_MAX_HP, cc) * 9 / 10 | cdata(CDATA_MP, cc) <= cdata(CDATA_MAX_MP, cc) * 9 / 10 | cdata(CDATA_SP, cc) <= cdata(CDATA_MAX_SP, cc) * 9 / 10 ) {
 				if ( dist(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), cdata(CDATA_X, cc), cdata(CDATA_Y, cc)) > sdataref(SKILL_DATAREF_TG, SKILL_SPACT_CHEER) \ 1000 + 1 | fov_los(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), cdata(CDATA_X, cc), cdata(CDATA_Y, cc)) == 0 ) {
 					healsp cc, cdata(CDATA_MAX_SP, cc) / 50 + sqrt(sdata(SKILL_NORMAL_HEALING, cc)) + sqrt(sdata(SKILL_NORMAL_MEDITATION, cc))
