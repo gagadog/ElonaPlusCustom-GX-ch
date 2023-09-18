@@ -2029,7 +2029,7 @@
 	}
 	if ( dbid == CREATURE_ID_ALSAPIA_THE_MURDERER_MASK ) {
 		cardreftype = 10
-		cardrefskill = lang("自分を虐待していた両親を暗殺したことがきっかけで、この道に入った。奇怪な恰好でわざと目立ち、注意を惹いている間に仲間に攻撃させる。仮面を被るのは人を殺す際の表情を見られたくないため。プライベートでは外している。", "He entered this path after the assassination of his own abusive parents. He deliberately stands out with his strange appearance allowing his companions to attack while he attracts attention. He wears a mask because he doesn't want people to see the look on his face when he kills someone. In private it is removed.")
+		cardrefskill = lang("自分を虐待していた両親を暗殺したことがきっかけで、この道に入った。奇怪な恰好でわざと目立ち、注意を惹いている間に仲間に攻撃させる。仮面を被るのは人を殺す際の表情を見られたくないため。プライベートでは外している。", "She entered this path after the assassination of her own abusive parents. She deliberately stands out with her strange appearance allowing her companions to attack while she attracts attention. She wears a mask because she doesn't want people to see the look on her face when she kills someone. In private it is removed.")
 		cardrefdomain = 6
 		cardrefrare = 60
 		cardrefcost = 0

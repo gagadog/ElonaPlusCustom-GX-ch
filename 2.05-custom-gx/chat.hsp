@@ -1143,7 +1143,8 @@
 		_switch_sw = 0
 		if ( gdata(GDATA_FLAG_SUB_SLIME) == 1000 ) {
 			/********** CUSTOM TCG - BEGINNING **********/
-			if ( gdata(GDATA_HOUR) >= 12 & gdata(GDATA_HOUR) <= 20 ) {
+			// if ( gdata(GDATA_HOUR) >= 8 & gdata(GDATA_HOUR) <= 20 ) { // Uncomment this line if Ano added Miches event
+			if ( TRUE ) {
 				chatList 2, lang("挨拶する", "Let's Talk.")
 				chatList 1, lang("引き受ける", "Sure thing.")
 				chatList 0, lang("面倒だ", "Not now.")

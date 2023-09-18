@@ -940,16 +940,18 @@
 			if ( p@tcg == TCG_BIT_LIFELINK ) { s@tcg += "Lifelink "}
 			if ( p@tcg == TCG_BIT_HASTE ) { s@tcg += "Haste "}
 			if ( p@tcg == TCG_BIT_TRAMPLE ) { s@tcg += "Trample "}
-			if ( p@tcg == TCG_BIT_FIRST_STRIKE ) { s@tcg += "First Strike "}
-			if ( p@tcg == TCG_BIT_DOUBLE_STRIKE ) { s@tcg += "Dual Strike "}
+			if ( p@tcg == TCG_BIT_FIRST_STRIKE ) { s@tcg += "First-Strike "}
+			if ( p@tcg == TCG_BIT_DOUBLE_STRIKE ) { s@tcg += "Dual-Strike "}
 			if ( p@tcg == TCG_BIT_DEATHTOUCH ) { s@tcg += "Deathtouch "}
 			if ( p@tcg == TCG_BIT_WINDFURY ) { s@tcg += "Windfury "}
 			if ( p@tcg == TCG_BIT_WINDFURY_USABLE ) { s@tcg += "Windfury(1) "}
 			if ( p@tcg == TCG_BIT_VIGILANCE ) { s@tcg += "Vigilance "}
 			if ( p@tcg == TCG_BIT_DEFENDER ) { s@tcg += "Defender "}
 			if ( p@tcg == TCG_BIT_SPLIT ) { s@tcg += "Splits "}
-			if ( p@tcg == TCG_BIT_ENEMY ) { s@tcg += "[You summon this on your Opponent's Side of Field.] "}
+			if ( p@tcg == TCG_BIT_ENEMY ) { s@tcg += "[Summoned on Opponent Field] "}
 			if ( p@tcg == TCG_BIT_RIDER ) { s@tcg += "Rider "}
+			if ( p@tcg == TCG_BIT_ASSASSIN ) { s@tcg += "[Starts in Opponent Deck] "}
+			if ( p@tcg == TCG_BIT_TEMPO ) { s@tcg += "[Drawn when Mana=Cost-1] "}
 			
 			if ( p@tcg == TCG_BIT_DEATHWORD ) { s@tcg += "Deathword "}
 			if ( p@tcg == TCG_BIT_GRAVITY ) { s@tcg += "Gravity "}
@@ -959,8 +961,8 @@
 			if ( p@tcg == TCG_BIT_PARALYSED ) { s@tcg += "Paralysed "}
 			if ( p@tcg == TCG_BIT_SILENCED ) { s@tcg += "Silenced "}
 			if ( p@tcg == TCG_BIT_FROZEN ) { s@tcg += "Frozen "}
-			if ( p@tcg == TCG_BIT_DEVIL ) { s@tcg += "[You pay 2 life when this Card activates effect.] "}
-			if ( p@tcg == TCG_BIT_GHOST ) { s@tcg += "[Return to your Hand on Begin Phase.] "}
+			if ( p@tcg == TCG_BIT_DEVIL ) { s@tcg += "[Effect Cost 2 Life] "}
+			if ( p@tcg == TCG_BIT_GHOST ) { s@tcg += "[Return on Begin Phase] "}
 			if ( p@tcg == TCG_BIT_INSANE ) { s@tcg += "Insane "}
 
 			if ( p@tcg == TCG_BIT_YERLES ) { s@tcg += "<Yerles> "}
@@ -969,6 +971,18 @@
 			if ( p@tcg == TCG_BIT_FIGHTERGUILD ) { s@tcg += "<Fighter Guild> "}
 			if ( p@tcg == TCG_BIT_THIEFGUILD ) { s@tcg += "<Thief Guild> "}
 			if ( p@tcg == TCG_BIT_MAGEGUILD ) { s@tcg += "<Mage Guild> "}
+			if ( p@tcg == TCG_BIT_ZANAN ) { s@tcg += "<Zanan> "}
+			if ( p@tcg == TCG_BIT_BARIUS ) { s@tcg += "<Barius> "}
+			if ( p@tcg == TCG_BIT_EULDERNA ) { s@tcg += "<Eulderna> "}
+			if ( p@tcg == TCG_BIT_ELEAREFUGEE ) { s@tcg += "<Elea> "}
+			if ( p@tcg == TCG_BIT_BANDIT ) { s@tcg += "<Bandit> "}
+			if ( p@tcg == TCG_BIT_JUERE ) { s@tcg += "<Juere> "}
+			if ( p@tcg == TCG_BIT_MERCENARY ) { s@tcg += "<Mercenary> "}
+			if ( p@tcg == TCG_BIT_ZAILE ) { s@tcg += "<Zaile> "}
+			if ( p@tcg == TCG_BIT_CITIZEN ) { s@tcg += "<Citizen> "}
+			if ( p@tcg == TCG_BIT_NINJA ) { s@tcg += "<Ninja> "}
+			if ( p@tcg == TCG_BIT_ADVENTURER ) { s@tcg += "<Adventurer> "}
+			if ( p@tcg == TCG_BIT_SENSEI ) { s@tcg += "<Teacher> "}
 		loop
 		rtvaln2 += "\n" + s@tcg
 		s@tcg = ""
@@ -1248,19 +1262,43 @@
 	if ( getholdersum(getrandomcard_arg1) >= 7 & specialruledrawswhenhandfull@tcg != 1 ) {
 		return
 	}
-	*getrandomcard_WHILE1
-	c@tcg = rnd(maxcard@tcg)
-	if ( card@tcg(TCG_CARD_LOCATION, c@tcg) == TCG_LOCATION_DECK ) {
-		if ( card@tcg(TCG_CARD_CONTROLLER, c@tcg) == getrandomcard_arg1 ) {
-			goto *getrandomcard_WEND1
+	c@tcg = -1, 0
+	ctempo@tcg = -1, 0
+	repeat maxcard@tcg
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_DECK ) { continue }
+		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getrandomcard_arg1 ) { continue }
+		if ( cdbit(TCG_BIT_TEMPO, cnt) == TRUE ) { // Tempo Cards with satisfied condition are drawn with higher priority
+			if ( phase@tcg <= 1 & card@tcg(TCG_CARD_COST, cnt) == cpdata@tcg(TCG_PLAYER_MANA, getrandomcard_arg1) + 1 ) {
+				ctempo@tcg(1)++
+				if ( rnd(ctempo@tcg(1)) == 0 ) {
+					ctempo@tcg(0) = cnt
+				}
+			}
+		} else { // This is the normal draw.
+			c@tcg(1)++
+			if ( rnd(c@tcg(1)) == 0 ) {
+				c@tcg(0) = cnt
+			}
 		}
+	loop
+	if ( ctempo@tcg(0) >= 0 |  c@tcg(0) < 0 ) { c@tcg(0) = ctempo@tcg(0) }
+	if ( c@tcg(0) < 0 ) { // Tempo Cards with unsatisfied draw condition are drawn with lower priority
+		repeat maxcard@tcg
+			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_DECK ) { continue }
+			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getrandomcard_arg1 ) { continue }
+			if ( cdbit(TCG_BIT_TEMPO, cnt) == TRUE & ( card@tcg(TCG_CARD_COST, cnt) != cpdata@tcg(TCG_PLAYER_MANA, getrandomcard_arg1) + 1 | phase@tcg > 1 ) ) {
+				c@tcg(1)++
+				if ( rnd(c@tcg(1)) == 0 ) {
+					c@tcg(0) = cnt
+				}
+			}
+		loop
 	}
-	goto *getrandomcard_WHILE1
-	*getrandomcard_WEND1
+	if ( c@tcg(0) < 0 ) { return }
 	card@tcg(TCG_CARD_LOCATION, c@tcg) = TCG_LOCATION_HAND, getrandomcard_arg1, deckix@tcg(getrandomcard_arg1), deckiy@tcg(getrandomcard_arg1), holderix@tcg(getrandomcard_arg1) + p@tcg * holderspace@tcg, holderiy@tcg(getrandomcard_arg1), 0, 0
 	cpdata@tcg(TCG_PLAYER_DECK, getrandomcard_arg1)--
 	card@tcg(TCG_CARD_TURN_COUNT, c@tcg) = 0
-	if ( getrandomcard_arg1 == player@tcg ) {
+	if ( getrandomcard_arg1 == player@tcg | specialruleseeopponenthand@tcg ) {
 		cdbitmod TCG_BIT_FACE_UP, c@tcg, 1
 	}
 	else {
@@ -1324,7 +1362,7 @@
 	card@tcg(TCG_CARD_LOCATION, gettargetcard_arg1) = TCG_LOCATION_HAND, n@tcg
 	card@tcg(TCG_CARD_X_MOVETO, gettargetcard_arg1) = holderix@tcg(n@tcg) + p@tcg * holderspace@tcg, holderiy@tcg(n@tcg)
 	card@tcg(TCG_CARD_TURN_COUNT, gettargetcard_arg1) = 0
-	if ( n@tcg == 0 ) {
+	if ( n@tcg == 0 | specialruleseeopponenthand@tcg ) {
 		cdbitmod TCG_BIT_FACE_UP, gettargetcard_arg1, 1
 	}
 	else {
@@ -1701,6 +1739,9 @@
 	loop
 	calcdomain
 	repeat maxcard@tcg
+		if ( cdbit(TCG_BIT_ASSASSIN, cnt) == TRUE ) {
+			card@tcg(TCG_CARD_CONTROLLER, cnt) = 1 - card@tcg(TCG_CARD_CONTROLLER, cnt)
+		}
 		if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, cnt)) == TCG_SKILL_TYPE_ONGAMESTART ) {
 			effac@tcg = cnt
 			eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
@@ -1786,6 +1827,12 @@
 	if ( gameresult@tcg == 8 ) { promptAdd "You lose due to Meshera's effect.", "b" }
 	if ( gameresult@tcg == 9 ) { promptAdd "You won using Unitdeads' effect.", "b" }
 	if ( gameresult@tcg == 10 ) { promptAdd "You lose due to Unitdeads' effect.", "b" }
+	if ( gameresult@tcg == 11 ) { promptAdd "You opponent is BANNED.", "b" }
+	if ( gameresult@tcg == 12 ) { promptAdd "You are BANNED!", "b" }
+	if ( gameresult@tcg == 13 ) { promptAdd "You've been playing for too long!", "b" }
+	if ( gameresult@tcg == 14 ) { promptAdd "You've been playing for too long!", "b" }
+	if ( gameresult@tcg == 15 ) { promptAdd "You won due to Jaldabaoth' effect.", "b" }
+	if ( gameresult@tcg == 16 ) { promptAdd "You lose due to Jaldabaoth' effect.", "b" }
 	val = promptx, prompty, 320, 1
 	gosub *prompt_key
 	gosub *tcg_drawInterface
@@ -1814,8 +1861,6 @@
 		sac@tcg = 1
 		cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg)++
 	}
-	cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) = limit(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) + cpdata@tcg(TCG_PLAYER_NEXTTURN_MANA, cp@tcg), 0, 10000)
-	cpdata@tcg(TCG_PLAYER_NEXTTURN_MANA, cp@tcg) = 0
 	repeat maxcard@tcg
 		if ( cdbit(TCG_BIT_GHOST, cnt) != TRUE ) { continue }
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) { continue }
@@ -1878,6 +1923,8 @@
 			gosub *card_action_choose_target
 		}
 	loop
+	cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) = limit(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) + cpdata@tcg(TCG_PLAYER_NEXTTURN_MANA, cp@tcg), 0, 10000)
+	cpdata@tcg(TCG_PLAYER_NEXTTURN_MANA, cp@tcg) = 0
 	makecardlist
 	tcgdraw
 	return
@@ -2498,10 +2545,13 @@
 		if ( deckmode@tcg == 3 & card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_GRAVEYARD ) {
 			continue
 		}
-		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) {
+		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg & deckmode@tcg != 5 ) {
 			continue
 		}
-		if ( cflist@tcg(ccf@tcg) == 1 ) {
+		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) == cp@tcg & deckmode@tcg == 5 ) {
+			continue
+		}
+		if ( cflist@tcg(ccf@tcg) == 1 & deckmode@tcg != 5 ) {
 			if ( deck(card@tcg(TCG_CARD_REF_DBID, cnt)) == 0 ) {
 				continue
 			}
@@ -2691,7 +2741,7 @@
 				continue
 			}
 		}
-		if ( deckmode@tcg > 0 ) {
+		if ( deckmode@tcg > 0 & deckmode@tcg != 5 ) {
 			if ( target_num@tcg <= 0 ) { continue }
 			f@tcg = 0
 			repeat target_num@tcg
@@ -2703,11 +2753,11 @@
 				continue
 			}
 		}
-		if ( deckmode@tcg > 0 ) {
+		if ( deckmode@tcg > 0 & deckmode@tcg != 5 ) {
 			f@tcg = 0
 			repeat dlistmax@tcg
 				c@tcg = dlist@tcg(0, cnt)
-				if ( card@tcg(TCG_CARD_REF_DBID, c@tcg) == card@tcg(TCG_CARD_REF_DBID, cnt2@tcg) ) {
+				if ( card@tcg(TCG_CARD_REF_DBID, c@tcg) == card@tcg(TCG_CARD_REF_DBID, cnt2@tcg) & card@tcg(TCG_CARD_REF_DBID, c@tcg) != CREATURE_ID_NOVICE ) {
 					f@tcg = 1
 					break
 				}
@@ -2777,7 +2827,7 @@
 		}
 		goto *select_deck
 	}
-	if ( key == key_msglog ) {
+	if ( key == key_msglog & deckmode@tcg == 0 ) {
 		promptAdd lang("降参する", "Reset Your Deck"), "a"
 		promptAdd lang("降参する", "Cancel"), "b"
 		val = basex@tcg + 420, basey@tcg + 230, 200, 1
@@ -3025,6 +3075,17 @@
 		cslinedown
 		snd SOUNDLIST_CURSOR1
 		csfix
+	}
+	if ( key == key_msglog & dbg_tcg ) {
+		deckmode@tcg = 5
+		gosub *select_deck
+		repeat maxcard@tcg
+			if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_DECK ) {
+				cdbitmod TCG_BIT_FACE_UP, cnt, 0
+			}
+		loop
+		deckmode@tcg = 0
+		goto *card_player_WHILE1
 	}
 	if ( key == key_enter ) {
 		if ( cs@tcg == (-1) ) {

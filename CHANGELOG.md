@@ -1,3 +1,30 @@
+# 2.19R.2.0
+
+## Added
+- Added TCG functionality.
+  + Talk to Miches to get a deck and 20 card packs after you completed her quest.
+  + Assemble your deck of 30-60 card, and 'i'nteract and duel with people.
+  + Different race have different decks, some NPCs in Vernis have customized deck.
+  + Some decks may be underwhelming, some may be gamebreaking, feedback is appreciated.
+- Challenge Tweaks
+  + Always Etherwind.
+  + Double Tax each month.
+  + Slower Travel / Hunger doesn't slow in World Map.
+  + Allow you to Nuke your home (not really a challenge but still)
+- Tweak to revert 2.17 cooking changes.
+- Tweak to disable 2.17 boss out-of-sight healing.
+
+## Changed
+- Loyter now hate bards again. 
+- Slave sprite shown at Slave Trader.
+- Zeome AI Tweak are harder to cheese.
+- Auto-hand-in harvest/hunt/trap/party/panic/challenge quests.
+- Card pack image error, and Card pack generation (may become a tweak if you don't like them)
+- Removed Custom-G Nefia gold buff.
+
+## Fixed
+- Tileset error in Noyel caused by Custom Nefia.
+
 # 2.19R.1.1
 
 ## Added
