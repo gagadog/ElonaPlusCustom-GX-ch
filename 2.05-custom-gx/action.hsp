@@ -8246,11 +8246,7 @@
 			snd SOUNDLIST_FAIL1
 			goto *act_use_SWEND1
 		}
-		if ( charaIsSummoned(tc) ) {
-			snd SOUNDLIST_FAIL1
-			goto *act_use_SWEND1
-		}
-		if ( cbit(CHARA_BIT_SUMMONED, tc) ) {
+		if ( charaIsSummoned2(tc) ) {
 			snd SOUNDLIST_FAIL1
 			goto *act_use_SWEND1
 		}

@@ -953,13 +953,19 @@
 			locvar_itemowner_s += lang("", " grown ") + _weight(inv(INV_ITEM_SUB_NAME, itemowner_itemid)) + lang("育った", "")
 		}
 	}
-	if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_MANUSCRIPT ) {
-		locvar_itemowner_s += _bookself(inv(INV_ITEM_PARAM3, itemowner_itemid))
-	}
-	if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_PRODUCED_BOOK ) {
-		randomize inv(INV_ITEM_SUB_NAME, itemowner_itemid) - 40000
-		locvar_itemowner_s += _bookselfs(inv(INV_ITEM_PARAM3, itemowner_itemid))
-		randomize
+	if ( jp ) {
+		if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_MANUSCRIPT ) {
+			locvar_itemowner_s += _bookself(inv(INV_ITEM_PARAM3, itemowner_itemid))
+		}
+		if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_PRODUCED_BOOK ) {
+			randomize inv(INV_ITEM_SUB_NAME, itemowner_itemid) - 40000
+			locvar_itemowner_s += _bookselfs(inv(INV_ITEM_PARAM3, itemowner_itemid))
+			randomize
+		}
+	} else {
+		if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_MANUSCRIPT ) {
+			locvar_itemowner_s += " (" + _bookself(inv(INV_ITEM_PARAM3, itemowner_itemid))  + ")"
+		}
 	}
 	if ( inv(INV_ITEM_SUB_NAME, itemowner_itemid) != 0 ) {
 		if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_FISH | inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_FISH_JUNK ) {
@@ -1181,6 +1187,9 @@
 			}
 			if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_BLACK_TEA ) {
 				locvar_itemname_s2 += "cup"
+			}
+			if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_PRODUCED_BOOK ) {
+				locvar_itemname_s2 += _bookselfs(inv(INV_ITEM_PARAM3, itemname_itemid))
 			}
 			if ( instr(ioriginalnameref(inv(INV_ITEM_ID, itemname_itemid)), 0, "with") != (-1) ) {
 				locvar_itemname_s3 = "with"
@@ -1719,6 +1728,12 @@
 								}
 							}
 						}
+						if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_PRODUCED_BOOK ) {
+							randomize inv(INV_ITEM_SUB_NAME, itemname_itemid) - 40000
+							locvar_itemowner_s += lang("『", "<") + random_title(1) + lang("』", ">")
+							randomize
+							goto *skipName
+						}
 					}
 					if ( inv(INV_ITEM_SUB_NAME, itemname_itemid) >= 40000 ) {
 						randomize inv(INV_ITEM_SUB_NAME, itemname_itemid) - 40000
@@ -1734,7 +1749,7 @@
 			}
 		}
 	}
-*skipName
+	*skipName
 	if ( en ) {
 		if ( itemname_arg3 == 0 ) {
 			if ( inv(INV_ITEM_KNOWN, itemname_itemid) >= ITEM_KNOWN_FULL & (inv(INV_ITEM_QUALITY, itemname_itemid) >= FIX_QUALITY_MIRACLE & locvar_itemowner_a < FILTER_ITEM_MIN) ) {

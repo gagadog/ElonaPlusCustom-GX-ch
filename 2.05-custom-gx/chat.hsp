@@ -1168,6 +1168,7 @@
 							gosub *chat_refresh
 							txtnew
 							txt lang("デッキをしまった。", "You put away the deck.")
+							tcgreward
 							goto *chat_end
 						}
 					}

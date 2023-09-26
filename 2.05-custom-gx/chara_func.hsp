@@ -8170,3 +8170,12 @@
 		return TRUE
 	}
 	return FALSE
+
+#defcfunc charaIsSummoned2 int charaIsSummoned2_charidx // Splitting Monsters drop item. Use this check instead
+	if ( (cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, charaIsSummoned2_charidx) | cbit(CHARA_BIT_SPLIT_NO_EFFECT, charaIsSummoned2_charidx)) & cbit(CHARA_BIT_SUMMONED, charaIsSummoned2_charidx) ) {
+		return TRUE
+	}
+	if ( cbit(CHARA_BIT_SUMMONED, charaIsSummoned2_charidx) ) {
+		return TRUE
+	}
+	return FALSE

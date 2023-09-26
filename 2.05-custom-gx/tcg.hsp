@@ -2179,7 +2179,7 @@
 				gmode 2
 				pos x@tcg, y@tcg
 				gcopy 7, 72 + card@tcg(TCG_CARD_REF_BG, m@tcg) * 72, 0, 72, 96
-				if ( gravesum@tcg(cnt2@tcg) <= 5 | cnt == gravesum@tcg(cnt2@tcg) - 1 ) {
+				if ( gravesum@tcg(cnt2@tcg) <= 3 | cnt == gravesum@tcg(cnt2@tcg) - 1 ) {
 					if ( card@tcg(TCG_CARD_REF_DBID, m@tcg) != 343 ) {
 						n@tcg = card@tcg(TCG_CARD_REF_PIC, m@tcg) \ COLOR_TINT_MULT + card@tcg(TCG_CARD_REF_CHARA_PIC, m@tcg) * COLOR_TINT_MULT
 						chara_preparepic n@tcg, (card@tcg(TCG_CARD_REF_PIC, m@tcg) - card@tcg(TCG_CARD_REF_CHARA_PIC, m@tcg) * COLOR_TINT_MULT) / COLOR_TINT_MULT
@@ -2808,6 +2808,15 @@
 	redraw 1
 	await 30
 	key_check
+	if ( deckmode@tcg == 0 ) {
+		getkey a, 119
+		if ( a ) {
+			gosub *DeckExportImportMenu
+			gosub *tcg_drawInterface
+			gosub *tcg_drawDeck
+			goto *select_deck
+		}
+	}
 	if ( key == key_next ) {
 		ccf@tcg++
 		snd SOUNDLIST_CURSOR1
@@ -3076,7 +3085,7 @@
 		snd SOUNDLIST_CURSOR1
 		csfix
 	}
-	if ( key == key_msglog & dbg_tcg ) {
+	if ( key == key_msglog & specialruleseeopponenthand@tcg ) {
 		deckmode@tcg = 5
 		gosub *select_deck
 		repeat maxcard@tcg
@@ -3346,4 +3355,75 @@
 	}
 	goto *select_action_WHILE1
 	*select_action_WEND1
+	return
+
+*DeckExportImportMenu
+	redraw 0
+	cardhelp lang("[カスタムDeck]何をする？", "[Deck] What do you want to do?"), 100
+	promptAdd "Export Deck", "a"
+	promptAdd "Import Deck", "b"
+	promptAdd "Reset Current Deck", "c"
+	val = promptx, prompty, 260, 1
+	gosub *prompt_key
+	gosub *tcg_drawInterface
+	gosub *tcg_drawDeck
+	if ( rtval == 0 ) {
+		cardhelp lang("どのファイル名で保存する？", "Enter file name."), 100
+		gosub *tcg_drawInterface
+		gosub *tcg_drawDeck
+		redraw 1
+		fileext = "txt"
+		filedsc = "ElonaPlus CGX custom Deck"
+		_fdialog fileext, 17, filedsc, exedir + "user", "default_deck.txt"
+		if ( stat == 0 ) {
+			return
+		}
+		txtfile = refstr
+		buff = ""
+		notesel buff
+		repeat MAX_CARD
+			if ( deck(cnt) <= 0 ) { continue }
+			noteadd "" + cnt + "," + deck(cnt) + ","
+		loop
+		notesave txtfile
+		return
+	}
+	if ( rtval == 1 ) {
+		cardhelp lang("どのファイルからDeckを作成する？", "Choose the Deck file."), 100
+		gosub *tcg_drawInterface
+		gosub *tcg_drawDeck
+		redraw 1
+		fileext = "txt"
+		filedsc = "ElonaPlus CGX custom Deck"
+		_fdialog fileext, 16, filedsc, exedir + "user", ""
+		if ( stat == 0 ) {
+			return
+		}
+		repeat MAX_CARD
+			deck(cnt) = 0
+		loop
+		txtfile = refstr
+		exist txtfile
+		buff = ""
+		notesel buff
+		noteload txtfile
+		repeat noteinfo(0)
+			noteget s, cnt
+			if ( s == "" ) { break }
+			csvstr2 s, s
+			if ( length(s) < 2 ) { continue }
+			if ( s(0) == "" | s(1) == "" ) { continue }
+			if ( int(s(0)) <= 0 | int(s(0)) >= MAX_CARD | int(s(1)) <= 0 ) { continue }
+			deck(int(s(0))) = int(s(1))
+		loop
+		calcdecksize
+		return
+	}
+	if ( rtval == 2 ) {
+		repeat MAX_CARD
+			deck(cnt) = 0
+		loop
+		calcdecksize
+		return
+	}
 	return

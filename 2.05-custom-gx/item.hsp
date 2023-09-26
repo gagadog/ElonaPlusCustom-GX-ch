@@ -232,10 +232,7 @@
 	if ( cbit(CHARA_BIT_HIRED, rc) ) {
 		return
 	}
-	if ( charaIsSummoned(rc) ) {
-		return
-	}
-	if ( cbit(CHARA_BIT_SUMMONED, rc) ) {
+	if ( charaIsSummoned2(rc) ) {
 		return
 	}
 	if ( cbit(CHARA_BIT_CRADLE_15TH, rc) ) {

@@ -5687,7 +5687,9 @@
 	
 	/********** CUSTOM TCG - BEGINNING **********/
 	if ( tc > CHARA_PLAYER ) {
-		promptAdd lang("決闘!", "Duel! (CGX beta)"), "null", 69100
+		if ( cdata(CDATA_INTEREST, tc) >= 80 ) {
+			promptAdd lang("決闘!", "Duel! (CGX beta)"), "null", 69100
+		}
 	}
 	/********** CUSTOM TCG - ENDING **********/
 
@@ -6099,6 +6101,7 @@
 		gosub *screen_refreshFull
 		txtnew
 		txt lang("デッキをしまった。", "You put away the deck.")
+		tcgreward
 		goto *pc_turn
 	}
 	/********** CUSTOM TCG - ENDING **********/

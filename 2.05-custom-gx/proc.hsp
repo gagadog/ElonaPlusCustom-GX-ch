@@ -23129,7 +23129,7 @@
 		if ( cbit(CHARA_BIT_HIRED, tc) ) {
 			goto *effect_end
 		}
-		if ( charaIsSummoned(tc) ) {
+		if ( charaIsSummoned2(tc) ) {
 			goto *effect_end
 		}
 		if ( cbit(CHARA_BIT_CRADLE_15TH, tc) ) {
