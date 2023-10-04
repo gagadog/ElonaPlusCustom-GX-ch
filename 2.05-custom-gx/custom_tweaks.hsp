@@ -21,6 +21,7 @@ TweakData(52,1) = "Option to reload last save after death."
 TweakData(53,1) = "Skip skill training confirmation."
 TweakData(54,1) = "Auto-drop opened chests."
 TweakData(55, 1) = "Remove spell over-cast confirmation."
+TweakData(56, 1) = "Auto Hand-in quests."
 
 TweakData(x, 2) = "Gameplay Tweaks"
 TweakData(0, 2) = "Gather Items At End Of Party Time."
@@ -414,7 +415,7 @@ TweakData(54, 4) = "Weather always change to etherwind."
 
 *ConvenienceTweakMenu
     cs = 0
-    listmax = 11
+    listmax = 12
 *ConvenienceTweakMenu_loop
 	redraw 0
 	s = "Tweak Setup", strhint3b
@@ -432,7 +433,8 @@ TweakData(54, 4) = "Weather always change to etherwind."
 	listn(0, 7) = "Skip skill training confirmation." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_SKIP_SKILL_TRAINING_CONFIRMATION)
 	listn(0, 8) = "Auto-drop opened chests." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_AUTODROP_OPENED_CHESTS)
 	listn(0, 9) = "Remove spell over-cast confirmation." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_REMOVE_SPELL_OVER_CAST_CONFIRMATION)
-	listn(0, 10) = "Return."
+	listn(0, 10) = "Auto Hand-in quests." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_AUTO_HANDIN_QUESTS)
+	listn(0, 11) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
 	repeat listmax
@@ -478,6 +480,9 @@ TweakData(54, 4) = "Weather always change to etherwind."
 				s = "Removes confirmation window when over-casting spells."
 			}
 			if ( cnt == 10 ) {
+				s = "Automatically hand-in quests after you complete them.\nThis applies to harvest/hunt/trap/party/panic/challenge quests."
+			}
+			if ( cnt == 11 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -542,6 +547,11 @@ TweakData(54, 4) = "Weather always change to etherwind."
 		gosub *ToggleTweak
 	}
 	if ( key == key_select(10) ) {
+		tc = TWEAK_CATEGORY_CONVENIENCE
+		tn = TWEAK_CONVENIENCE_AUTO_HANDIN_QUESTS
+		gosub *ToggleTweak
+	}
+	if ( key == key_select(11) ) {
 		snd SOUNDLIST_OK1
         return
 	}

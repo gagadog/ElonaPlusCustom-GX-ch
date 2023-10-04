@@ -616,6 +616,7 @@
 	return
 
 #deffunc tcgreward
+	gdata(GDATA_MIN) += 5
 	if ( gameresult@tcg > 0) {
 		if ( gameresult@tcg \ 2 == 1 ) {
 			modimp tc, 7

@@ -1,3 +1,20 @@
+# 2.19R.2.1
+
+## Changed
+- Auto Hand-in quests is now a tweak.
+- Added rewards for TCG
+  + You need 80 interest to initiate duel, and 5 minute will pass after duel.
+  + You get a impression bonus if you win, this can be used during party time to satisfy guests.
+  + You get opponent-level / consecutive-win based music ticket reward.
+  + You get 1 card pack for every 5 win against unique NPCs
+- Some TCG balance and AI change.
+- Added TCG rules to the 'Card Game Manual' Red Book.
+
+## Fixed
+- Auto Hand-in quest causing NPC using shadow step attack on others.
+- Splitting creatures not dropping items.
+- Manuscript/Published-Book item name display error.
+
 # 2.19R.2.0
 
 ## Added
