@@ -1,3 +1,14 @@
+# 2.20.1.0
+
+## Added
+- Ported all changes from Elona+ 2.20.
+- Added (machine) Translation to new cutscenes, items, and characters.
+
+## Fixed
+- Float Cage captured 'allies' are removed upon death. (They cannot resurrect properly.)
+- Wrong main quest flag used for Meshera Plant battle.
+  + This cause time rewind if you beat meshera alpha after act II
+
 # 2.19R.2.1
 
 ## Changed

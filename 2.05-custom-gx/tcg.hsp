@@ -983,6 +983,8 @@
 			if ( p@tcg == TCG_BIT_NINJA ) { s@tcg += "<Ninja> "}
 			if ( p@tcg == TCG_BIT_ADVENTURER ) { s@tcg += "<Adventurer> "}
 			if ( p@tcg == TCG_BIT_SENSEI ) { s@tcg += "<Teacher> "}
+			if ( p@tcg == TCG_BIT_PIRATE ) { s@tcg += "<Pirate> "}
+			if ( p@tcg == TCG_BIT_ELEAMOB ) { s@tcg += "<Elea Mob> "}
 		loop
 		rtvaln2 += "\n" + s@tcg
 		s@tcg = ""

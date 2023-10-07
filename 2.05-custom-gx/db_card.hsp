@@ -1,4 +1,134 @@
 *db_card
+	if ( dbid == CREATURE_ID_ANABOLIC_RESISTANCE ) {
+		cardreftype = 10
+		cardrefskill = lang("全身が細菌に蝕まれて変貌した。正真正銘のバケモノであるが、素体が最後の根性で同化に抗っており、これでも本来の戦闘力は大きく抑制されている。", "Its entire body has been corrupted and transformed by Meshera. He is now a full-blown monster, but his base body is resisting assimilation with the last of its guts, thus greatly suppresses its fighting ability.")
+		cardrefdomain = 6
+		cardrefrare = 10
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("同化抵抗体", "anabolic resistance")
+		cardrefpic = xy2pic(7, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1091 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_MONSTER_BACTERIA ) {
+		cardreftype = 10
+		cardrefskill = lang("元はそこら辺にいるモンスターだったようだが、何かのきっかけで体内の細菌が暴走して大増殖してしまい、肉体を乗っ取られてしまった。もっと増殖するために他の生物の肉体を欲している。", "It seems that it was originally a monster that was around, but for some reason the Meshera in its body went out of control and it multiplied massively, taking over its body. They want the bodies of other creatures in order to multiply more.")
+		cardrefdomain = 6
+		cardrefrare = 90
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("モンスターバクテリア", "monster bacteria")
+		cardrefpic = xy2pic(6, 34) + COLOR_BLUE * COLOR_TINT_MULT
+		cardrefrace = "1090 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_MESHERA_UNFINISHED ) {
+		cardreftype = 10
+		cardrefskill = lang("感染による変異途中の形態。ここからさらに菌糸が増殖・結合を繰り返して新たな四肢が形成される。素体となった人間は精神的ショックで気絶しているが、目覚めてからが本当の地獄だ。", "Form in the process of mutation due to infection. From here, the mycelium further multiplies and joins together to form new limbs. The person who has become the prime body has fainted due to mental shock, but the real hell begins when he or she wakes up.")
+		cardrefdomain = 6
+		cardrefrare = 20
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("メシェーラ・イズヒギリア", "meshera unfinished")
+		cardrefpic = xy2pic(7, 34) + COLOR_RED * COLOR_TINT_MULT
+		cardrefrace = "1089 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_BOUNCTERIA ) {
+		cardreftype = 10
+		cardrefskill = lang("異常に巨大化した細菌の塊。特殊な環境下でどこまででかくなるのか、研究者が興味本位で培養し続けた結果がこれ。発達した鞭毛をうねらせて大跳躍し、獲物に襲い掛かる。", "An unusually large mass of bacteria. This is the result of researchers' curiosity to see how far it can grow under special conditions. It swells its well-developed flagellum, leaps and pounces on its prey.")
+		cardrefdomain = 6
+		cardrefrare = 20
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("大跳菌", "bouncteria")
+		cardrefpic = xy2pic(6, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1088 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_ROUGH_PIRATE ) {
+		cardreftype = 10
+		cardrefskill = lang("荒ぶる海で鍛え上げた荒々しい海賊。船酔いは肉体的なものではなく根性で解決できるものだと思いこんでいる。あまりにも粗野なので同僚からは敬遠されており、直情的に勝手に行動するので船長からは問題児扱いされている。", "A rugged pirate trained on the rough seas. He believes that seasickness is not a physical problem, but something that can be solved with guts. He is shunned by his colleagues because he is so crude, and the captain treats him as a problem child because he is intuitive and acts on his own initiative.")
+		cardrefdomain = 6
+		cardrefrare = 5
+		cardrefcost = 0
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("荒くれ海賊", "rough pirate")
+		cardrefpic = xy2pic(10, 2) + COLOR_RED * COLOR_TINT_MULT
+		cardrefrace = "1087 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_PIRATE_MUSKETEER ) {
+		cardreftype = 10
+		cardrefskill = lang("銃火器の扱いに長けた海賊。白兵戦以外では船の大砲で戦っており、どちらかと言えばそっちがメインなので砲兵にあたる。しかし銃士のほうが響きがカッコいいという風潮が彼らの中である模様。", "A pirate skilled with firearms. They fight with the ship's cannons except in hand-to-hand combat, where they are more of an artilleryman because that is their main weapon. However, there seems to be a tendency among them to think that musketeers sound cooler.")
+		cardrefdomain = 6
+		cardrefrare = 10
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("海賊銃士", "pirate musketeer")
+		cardrefpic = xy2pic(8, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1086 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_INSTIGATOR_OF_ELEA ) {
+		cardreftype = 10
+		cardrefskill = lang("エレアを扇動しているジューア。サウスティリスの風土に疎いエレア達を、支援するという名目で利用しているならずものだ。エレア迫害を盾にして強引に金や物資を募るが、その全てを着服しており困っているエレアたちには金貨一枚届かない。バレそうになる前に行方をくらます予定。", "Juere, who is instigating Elea. He is a rogue who takes advantage of the Elea, who are unfamiliar with the climate of South Tirith, under the guise of providing support. He uses the persecution of the Elea as a shield to forcefully solicit money and supplies, but he has embezzled all of it and not a single gold coin has reached the Elea in need. He plans to disappear before he is about to be discovered.")
+		cardrefdomain = 6
+		cardrefrare = 25
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("エレアの扇動者", "instigator of Elea")
+		cardrefpic = xy2pic(9, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1085 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_MOB_OF_ELEA ) {
+		cardreftype = 10
+		cardrefskill = lang("暴れ、怒鳴り、破壊と略奪の限りを尽くす暴徒。ややこしいことに、全員が全員、エレアの受けた仕打ちに怒り狂っているわけではない。中には暴れることが目的のバカやお祭り感覚のアホも混ざっているのだが、本当に怒っている者と見分けるのは困難。エレアの品位が下がるので同族から嫌われている。", "A mob that riots, shouts, destroys and loots to the hilt. To complicate matters, not all of them are outraged at what they have been subjected to by Elea. Some of them are mixed in with idiots who want to riot and festive idiots, but it is difficult to distinguish them from the truly angry ones. They are disliked by their own people because they lower the dignity of Elea.")
+		cardrefdomain = 6
+		cardrefrare = 30
+		cardrefcost = 0
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("エレアの暴徒", "mob of Elea")
+		cardrefpic = xy2pic(17, 2) + COLOR_RED * COLOR_TINT_MULT
+		cardrefrace = "1084 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_AVENGER_OF_ELEA ) {
+		cardreftype = 10
+		cardrefskill = lang("元々は異形の森の外で暮らしていたエレア。ザナンがエレアの根絶を唱えたり対立を煽ったりした影響で嫌がらせやリンチに遭い、家族を失った。もはや復讐だけが生きる目的となっている。復讐を果たした後に虚しさだけが残ること、それに自分が耐えきれないであろうことも全て覚悟の上で復讐に臨んでいる。", "Elea originally lived outside the Vindale Forest. They lost thier family due to harassment and lynching as a result of Zanan's advocacy of the eradication of Elea and instigation of conflict. Revenge is now the only purpose of thier life. They are prepared for the emptiness that will only remain after their revenge, and that they will not be able to bear it at all.")
+		cardrefdomain = 6
+		cardrefrare = 40
+		cardrefcost = 0
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("エレアの復讐者", "avenger of Elea")
+		cardrefpic = xy2pic(14, 1) + COLOR_BLACK * COLOR_TINT_MULT
+		cardrefrace = "1083 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_WANDERER_OF_ELEA ) {
+		cardreftype = 10
+		cardrefskill = lang("安住の地を求めて各地を放浪しているエレア。迫害されてネフィアに逃げ込んだり、犯罪者に拾われたり、野垂れ死んだり、大体はろくでもない末路を辿りがち。", "Elea wanders from place to place in search of a safe haven. They tend to flee to Nefia after being persecuted, get picked up by criminals, die in the field and generally end up in the wrong place.")
+		cardrefdomain = 6
+		cardrefrare = 20
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("エレアの放浪者", "wanderer of Elea")
+		cardrefpic = xy2pic(11, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1082 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
 	if ( dbid == CREATURE_ID_CHAOSHAPRINCESS_ZEHLS ) {
 		cardreftype = 10
 		cardrefskill = lang("出身地は異形の森の近く。身体のあちこちが先祖返りを起こしており、人里から追い出された。死こそが万人にとっての救いであると考えており、生気のない目で各地を放浪しながら殺戮を繰り返している。", "Her birthplace is near the Vindale Forest. She has suffered from disfigurement in various parts of her body and was driven out of the human village. She believes that death is the salvation for all, and wanders around the country killing with her lifeless eyes. ")
@@ -137,7 +267,7 @@
 		cardrefcost = 1
 		cardrefattack = 690
 		cardrefhp = 3
-		cardrefn = lang("ダゴンズイ ", "daganotosus")
+		cardrefn = lang("ダゴンズイ", "daganotosus")
 		cardrefpic = xy2pic(31, 31) + COLOR_DEFAULT * COLOR_TINT_MULT
 		cardrefrace = "1071 effect:" + skillname(cardrefattack) + " "
 		return 1

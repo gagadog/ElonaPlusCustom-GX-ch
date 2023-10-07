@@ -437,6 +437,16 @@
 		cdata(CDATA_AI_AGGRO, cc) = 0
 		goto *turn_end
 	}
+	if ( cbit(CHARA_BIT_LOCKED_UP, cc) ) {
+		if ( synccheck(cc, -1) ) {
+			if ( rnd(30) == 0 ) {
+				tc = cc
+				txt lang("「ここから出せー！」", cnvtalk("Release me now!")), lang("「こんなことして、許さない" + _yo(2) + "」", cnvtalk("I won't forget this!")), lang("「どこに連れていく" + _nda(2) + "」", cnvtalk("Where are you taking me?"))
+			}
+		}
+		cdata(CDATA_AI_AGGRO, cc) = 0
+		goto *turn_end
+	}
 	if ( cbit(CHARA_BIT_LIVESTOCK, cc) ) {
 		goto *ai_calmMove
 	}
@@ -3159,7 +3169,7 @@
 	}
 	if ( cdata(CDATA_ID, cc) == CREATURE_ID_MOSTMUSCYLLA | cdata(CDATA_ID, cc) == CREATURE_ID_OOTEGUCHI | cdata(CDATA_ID, cc) == CREATURE_ID_HEROYEEK | cdata(CDATA_ID, cc) == CREATURE_ID_MUSCLE_GOLEM | cdata(CDATA_ID, cc) == CREATURE_ID_SNAIL_THE_ANDROID_RIDER | cdata(CDATA_ID, cc) == CREATURE_ID_OPATOS | cdata(CDATA_ID, cc) == CREATURE_ID_MAGIC_HAWK_MOTH | cdata(CDATA_ID, cc) == CREATURE_ID_OXODE_THE_QUEEN_BEE ) {
 		if ( cdata(CDATA_POWER_GAUGE, cc) < 85 ) {
-			if ( cdata(CDATA_DRAIN_HP, cc) >= 15 ) {
+			if ( cdata(CDATA_GUARD_BREAK, cc) >= 15 ) {
 				if ( rnd(10) == 0 ) {
 					act = SKILL_SPACT_POSING
 				}

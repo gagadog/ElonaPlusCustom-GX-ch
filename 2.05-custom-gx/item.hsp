@@ -88,7 +88,7 @@
 	fsetremain = FILTER_AMMO, FILTER_ITEM_FOOD, FILTER_ITEM_FOOD, FILTER_ORE, FILTER_ITEM_SCROLL, FILTER_ITEM_POTION, FILTER_ITEM_FOOD
 	fsetbarrel = FILTER_AMMO, FILTER_ITEM_FOOD, FILTER_ITEM_SCROLL, FILTER_ITEM_POTION, FILTER_ORE, FILTER_JUNK
 	fsetcollect = FILTER_JUNK, FILTER_FURNITURE, FILTER_ITEM_FOOD, FILTER_ORE
-	isetdeed = ITEM_ID_DEED, ITEM_ID_DEED_MUSEUM, ITEM_ID_DEED_SHOP, ITEM_ID_DEED_FARM, ITEM_ID_DEED_STORAGE_HOUSE, ITEM_ID_SHELTER, ITEM_ID_DEED_RANCH, ITEM_ID_DEED_OF_LAND_BATTLESHIP, ITEM_ID_DEED_OF_MAGIC_LOCOMOTIVE, ITEM_ID_DEED_OF_TRUCK, ITEM_ID_DEED_OF_CARRIAGE, ITEM_ID_DEED_OF_HUGE_RAFT, ITEM_ID_DEED_OF_FISHING_SHIP, ITEM_ID_DEED_OF_PIRATE_SHIP, ITEM_ID_DEED_OF_CRUISE_SHIP, ITEM_ID_DEED_OF_WARSHIP, ITEM_ID_DEED_OF_SUBMARINE
+	isetdeed = ITEM_ID_DEED, ITEM_ID_DEED_MUSEUM, ITEM_ID_DEED_SHOP, ITEM_ID_DEED_FARM, ITEM_ID_DEED_STORAGE_HOUSE, ITEM_ID_SHELTER, ITEM_ID_DEED_RANCH, ITEM_ID_DEED_CAMP, ITEM_ID_DEED_OF_LAND_BATTLESHIP, ITEM_ID_DEED_OF_MAGIC_LOCOMOTIVE, ITEM_ID_DEED_OF_TRUCK, ITEM_ID_DEED_OF_CARRIAGE, ITEM_ID_DEED_OF_HUGE_RAFT, ITEM_ID_DEED_OF_FISHING_SHIP, ITEM_ID_DEED_OF_PIRATE_SHIP, ITEM_ID_DEED_OF_CRUISE_SHIP, ITEM_ID_DEED_OF_WARSHIP, ITEM_ID_DEED_OF_SUBMARINE
 	isetfruit = ITEM_ID_APPLE, ITEM_ID_GRAPE, ITEM_ID_TANGERINE, ITEM_ID_LEMON, ITEM_ID_STRAWBERRY, ITEM_ID_CHERRY, ITEM_ID_KAKI
 	isetthrowpotionminor = ITEM_ID_POTION_BLINDNESS, ITEM_ID_POTION_CONFUSION, ITEM_ID_SLEEPING_DRUG, ITEM_ID_POTION_PARALYSIS, ITEM_ID_POISON, ITEM_ID_POTION_CALAMITY
 	isetthrowpotionmajor = ITEM_ID_POTION_SLOW, ITEM_ID_POTION_SILENCE, ITEM_ID_POTION_WEAKEN_RESISTANCE, ITEM_ID_POTION_AGONY, ITEM_ID_POTION_WEAKNESS
@@ -955,55 +955,55 @@
 						inv(INV_ITEM_AMUR_CAGE, ci) = 1
 					}
 				}
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 0
+				inv(INV_ITEM_PARTS, ci) = 0
 				repeat 30, 100
 					p = cdata(cnt, rc) / EXT_EQUIP_SLOTS
 					if ( p == 0 ) {
 						break
 					}
 					if ( p == 1 ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, ci) < 1 ) {
-							inv(INV_ITEM_SHOP_SAMPLE, ci) += 1
+						if ( inv(INV_ITEM_PARTS, ci) < 1 ) {
+							inv(INV_ITEM_PARTS, ci) += 1
 						}
 					}
 					if ( p == 2 ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, ci) < 10 ) {
-							inv(INV_ITEM_SHOP_SAMPLE, ci) += 10
+						if ( inv(INV_ITEM_PARTS, ci) < 10 ) {
+							inv(INV_ITEM_PARTS, ci) += 10
 						}
 					}
 					if ( p == 3 ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, ci) < 100 ) {
-							inv(INV_ITEM_SHOP_SAMPLE, ci) += 100
+						if ( inv(INV_ITEM_PARTS, ci) < 100 ) {
+							inv(INV_ITEM_PARTS, ci) += 100
 						}
 					}
 					if ( p == 4 ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, ci) < 1000 ) {
-							inv(INV_ITEM_SHOP_SAMPLE, ci) += 1000
+						if ( inv(INV_ITEM_PARTS, ci) < 1000 ) {
+							inv(INV_ITEM_PARTS, ci) += 1000
 						}
 					}
 					if ( p == 5 ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, ci) < 10000 ) {
-							inv(INV_ITEM_SHOP_SAMPLE, ci) += 10000
+						if ( inv(INV_ITEM_PARTS, ci) < 10000 ) {
+							inv(INV_ITEM_PARTS, ci) += 10000
 						}
 					}
 					if ( p == 6 ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, ci) < 100000 ) {
-							inv(INV_ITEM_SHOP_SAMPLE, ci) += 100000
+						if ( inv(INV_ITEM_PARTS, ci) < 100000 ) {
+							inv(INV_ITEM_PARTS, ci) += 100000
 						}
 					}
 					if ( p == 7 ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, ci) < 1000000 ) {
-							inv(INV_ITEM_SHOP_SAMPLE, ci) += 1000000
+						if ( inv(INV_ITEM_PARTS, ci) < 1000000 ) {
+							inv(INV_ITEM_PARTS, ci) += 1000000
 						}
 					}
 					if ( p == 8 ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, ci) < 10000000 ) {
-							inv(INV_ITEM_SHOP_SAMPLE, ci) += 10000000
+						if ( inv(INV_ITEM_PARTS, ci) < 10000000 ) {
+							inv(INV_ITEM_PARTS, ci) += 10000000
 						}
 					}
 					if ( p == 9 ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, ci) < 100000000 ) {
-							inv(INV_ITEM_SHOP_SAMPLE, ci) += 100000000
+						if ( inv(INV_ITEM_PARTS, ci) < 100000000 ) {
+							inv(INV_ITEM_PARTS, ci) += 100000000
 						}
 					}
 				loop
@@ -1413,7 +1413,7 @@
 			itemcreate -1, ITEM_ID_SCROLL_NAME, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
 		}
 	}
-	if ( cdata(CDATA_ID, rc) == CREATURE_ID_ROGUE_BOSS ) {
+	if ( cdata(CDATA_ID, rc) == CREATURE_ID_ROGUE_BOSS | cdata(CDATA_ID, rc) == CREATURE_ID_INSTIGATOR_OF_ELEA ) {
 		repeat 2 + rnd(4)
 			flt cdata(CDATA_LEVEL, rc), 2
 			flttypemajor = FILTER_CARGO_TRADE
@@ -4187,20 +4187,14 @@
 			}
 		}
 	loop
-	if ( cdata(CDATA_SP_EARNED, cc) <= (-2000000) & cdata(CDATA_SP_EARNED, cc) > (-12000000) ) {
-		cdata(CDATA_SP_EARNED, cc) -= limit(nutrition / 1000, 1, 5) * 100000
-		if ( 0 ) {
-			cdata(CDATA_SP_EARNED, cc) -= 50 * 100000
-		}
-		sintyoku = (cdata(CDATA_SP_EARNED, cc) + 2000000) * (-1) / 100000
-		if ( 0 ) {
-			txt lang("満腹" + nutrition + "でステージ" + cdata(CDATA_SP_EARNED, cc) + "。", name(cc) + " get genes of " + _s(cc) + ".")
-		}
-		if ( cdata(CDATA_SP_EARNED, cc) > (-12000000) ) {
+	if ( cdata(CDATA_PREGNANCY_PROGRESS, cc) <= (-2000000) & cdata(CDATA_PREGNANCY_PROGRESS, cc) > (-12000000) ) {
+		cdata(CDATA_PREGNANCY_PROGRESS, cc) -= limit(nutrition / 1000, 1, 5) * 100000
+		sintyoku = (cdata(CDATA_PREGNANCY_PROGRESS, cc) + 2000000) * (-1) / 100000
+		if ( cdata(CDATA_PREGNANCY_PROGRESS, cc) > (-12000000) ) {
 			txtef COLOR_YELLOW
 			txt lang("[フェイズ2進捗率：" + sintyoku + "％]", "[Phase 2 progress " + sintyoku + " %]")
 		}
-		if ( cdata(CDATA_SP_EARNED, cc) <= (-12000000) ) {
+		if ( cdata(CDATA_PREGNANCY_PROGRESS, cc) <= (-12000000) ) {
 			snd SOUNDLIST_DING1
 			txtef COLOR_GREEN
 			txt lang("[HAPPY BIRTHDAY！！]　フェイズ2が完了した。", "[HAPPY BIRTHDAY!!] Phase 2 completed.")
@@ -4452,7 +4446,7 @@
 	return
 
 *alien_effect
-	if ( cdata(CDATA_SP_EARNED, tc) <= (-1000000) ) {
+	if ( cdata(CDATA_PREGNANCY_PROGRESS, tc) <= (-1000000) ) {
 		if ( synccheck(tc, -1) ) {
 			txt lang("しかしすぐに分解された。", "But it was immediately turned into fetus nutrients.")
 		}

@@ -1008,6 +1008,11 @@
 	chipi(CHIPI_HEIGHT, xy2pic(17, 34)) = inf_tiles * 2, inf_tiles + 16
 	chipi(CHIPI_HEIGHT, xy2pic(0, 38)) = inf_tiles * 2, inf_tiles + 16
 	chipi(CHIPI_HEIGHT, xy2pic(1, 38)) = inf_tiles * 2, inf_tiles + 16
+	chipi(CHIPI_HEIGHT, xy2pic(7, 38)) = inf_tiles * 2, inf_tiles + 16
+	chipi(CHIPI_HEIGHT, xy2pic(8, 38)) = inf_tiles * 2, inf_tiles + 16
+	chipi(CHIPI_HEIGHT, xy2pic(9, 38)) = inf_tiles * 2, inf_tiles + 16
+	chipi(CHIPI_HEIGHT, xy2pic(10, 38)) = inf_tiles * 2, inf_tiles + 16
+	chipi(CHIPI_HEIGHT, xy2pic(11, 38)) = inf_tiles * 2, inf_tiles + 16
 	chipi(CHIPI_HEIGHT, xy2pic(30, 33)) = inf_tiles * 2, inf_tiles + 16, 40
 	chipi(CHIPI_HEIGHT, xy2pic(18, 36)) = inf_tiles * 2, inf_tiles + 16, 40
 	chipi(CHIPI_ANIM, xy2pic(4, 0)) = 2

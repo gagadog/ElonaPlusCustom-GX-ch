@@ -174,6 +174,7 @@
 	cbitmod CHARA_BIT_FESTIVAL, rc, 0
 	cbitmod CHARA_BIT_BRUSHED, rc, 0
 	cbitmod CHARA_BIT_LIVESTOCK, rc, 0
+	cbitmod CHARA_BIT_LABOR_CAMP, rc, 0
 	if ( cdata(CDATA_ALLIED, rc) == 0 ) {
 		cdata(CDATA_FAME, rc) = (cdata(CDATA_FAME, rc) + 1) / 1000 + 1
 	}
@@ -189,9 +190,16 @@
 	}
 	r1 = rc
 	gosub *charaRefresh
-	snd SOUNDLIST_PRAY1
-	txtef COLOR_YELLOW
-	txt lang(cdatan(CDATAN_NAME, rc) + "が仲間に加わった！", cdatan(CDATAN_NAME, rc) + " join" + _s(rc) + " your party!")
+	if ( cbit(CHARA_BIT_LOCKED_UP, rc) != FALSE ) {
+		snd SOUNDLIST_LOCKED1
+		txtef COLOR_YELLOW2
+		txt lang(cdatan(CDATAN_NAME, rc) + "が連行対象に加わった。収容所に連行して、オペレートボードを使って収容しよう。", cdatan(CDATAN_NAME, rc) + " join" + _s(rc) + " your prisoner list. Go to the labor camp and use the operating board to settle " + cdatan(CDATAN_NAME, rc) + ".")
+	}
+	if ( cbit(CHARA_BIT_LOCKED_UP, rc) == FALSE ) {
+		snd SOUNDLIST_PRAY1
+		txtef COLOR_YELLOW
+		txt lang(cdatan(CDATAN_NAME, rc) + "が仲間に加わった！", cdatan(CDATAN_NAME, rc) + " join" + _s(rc) + " your party!")
+	}
 	return 1
 
 *adv_init

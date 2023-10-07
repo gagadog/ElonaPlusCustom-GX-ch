@@ -821,34 +821,34 @@
 		if ( inv(INV_ITEM_PARAM3, itemowner_itemid) / 100 == POTIOMAN_SUBNAME_HERCUREST ) {
 			locvar_itemowner_s += lang("ヘラクレスト", "-Hercurest")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 50 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 50 ) {
 			locvar_itemowner_s += lang("Ｆ", " F")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 51 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 51 ) {
 			locvar_itemowner_s += lang("Ｉ", " I")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 52 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 52 ) {
 			locvar_itemowner_s += lang("Ｌ", " L")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 53 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 53 ) {
 			locvar_itemowner_s += lang("Ｄ", " D")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 54 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 54 ) {
 			locvar_itemowner_s += lang("Ｍ", " M")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 55 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 55 ) {
 			locvar_itemowner_s += lang("Ｐ", " P")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 56 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 56 ) {
 			locvar_itemowner_s += lang("Ｈ", " H")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 57 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 57 ) {
 			locvar_itemowner_s += lang("Ｓ", " S")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 58 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 58 ) {
 			locvar_itemowner_s += lang("Ｎ", " N")
 		}
-		if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 59 ) {
+		if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 59 ) {
 			locvar_itemowner_s += lang("Ｃ", " C")
 		}
 		if ( inv(INV_ITEM_AMUR_CAGE, itemowner_itemid) > 0 ) {
@@ -1001,31 +1001,31 @@
 						}
 					}
 					if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_NECRO_PARTS & jp ) {
-						if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 1 ) {
+						if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 1 ) {
 							locvar_itemowner_s += lang("あたま", "head")
 						}
-						if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 2 ) {
+						if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 2 ) {
 							locvar_itemowner_s += lang("くび", "neck")
 						}
-						if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 3 ) {
+						if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 3 ) {
 							locvar_itemowner_s += lang("せなか", "back")
 						}
-						if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 4 ) {
+						if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 4 ) {
 							locvar_itemowner_s += lang("どうたい", "chest")
 						}
-						if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 5 ) {
+						if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 5 ) {
 							locvar_itemowner_s += lang("て", "hand")
 						}
-						if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 6 ) {
+						if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 6 ) {
 							locvar_itemowner_s += lang("ゆび", "finger")
 						}
-						if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 7 ) {
+						if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 7 ) {
 							locvar_itemowner_s += lang("うで", "arm")
 						}
-						if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 8 ) {
+						if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 8 ) {
 							locvar_itemowner_s += lang("こし", "waist")
 						}
-						if ( inv(INV_ITEM_SHOP_SAMPLE, itemowner_itemid) == 9 ) {
+						if ( inv(INV_ITEM_PARTS, itemowner_itemid) == 9 ) {
 							locvar_itemowner_s += lang("あし", "leg")
 						}
 					}
@@ -1300,31 +1300,31 @@
 			}
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_NECRO_PARTS ) {
-			if ( inv(INV_ITEM_SHOP_SAMPLE, itemname_itemid) == EQUIP_SLOT_HEAD ) {
+			if ( inv(INV_ITEM_PARTS, itemname_itemid) == EQUIP_SLOT_HEAD ) {
 				locvar_itemowner_s += "head"
 			}
-			if ( inv(INV_ITEM_SHOP_SAMPLE, itemname_itemid) == EQUIP_SLOT_NECK ) {
+			if ( inv(INV_ITEM_PARTS, itemname_itemid) == EQUIP_SLOT_NECK ) {
 				locvar_itemowner_s += "neck"
 			}
-			if ( inv(INV_ITEM_SHOP_SAMPLE, itemname_itemid) == EQUIP_SLOT_BACK ) {
+			if ( inv(INV_ITEM_PARTS, itemname_itemid) == EQUIP_SLOT_BACK ) {
 				locvar_itemowner_s += "back"
 			}
-			if ( inv(INV_ITEM_SHOP_SAMPLE, itemname_itemid) == EQUIP_SLOT_BODY ) {
+			if ( inv(INV_ITEM_PARTS, itemname_itemid) == EQUIP_SLOT_BODY ) {
 				locvar_itemowner_s += "chest"
 			}
-			if ( inv(INV_ITEM_SHOP_SAMPLE, itemname_itemid) == EQUIP_SLOT_HAND ) {
+			if ( inv(INV_ITEM_PARTS, itemname_itemid) == EQUIP_SLOT_HAND ) {
 				locvar_itemowner_s += "hand"
 			}
-			if ( inv(INV_ITEM_SHOP_SAMPLE, itemname_itemid) == EQUIP_SLOT_RING ) {
+			if ( inv(INV_ITEM_PARTS, itemname_itemid) == EQUIP_SLOT_RING ) {
 				locvar_itemowner_s += "finger"
 			}
-			if ( inv(INV_ITEM_SHOP_SAMPLE, itemname_itemid) == EQUIP_SLOT_ARM ) {
+			if ( inv(INV_ITEM_PARTS, itemname_itemid) == EQUIP_SLOT_ARM ) {
 				locvar_itemowner_s += "arm"
 			}
-			if ( inv(INV_ITEM_SHOP_SAMPLE, itemname_itemid) == EQUIP_SLOT_WAIST ) {
+			if ( inv(INV_ITEM_PARTS, itemname_itemid) == EQUIP_SLOT_WAIST ) {
 				locvar_itemowner_s += "waist"
 			}
-			if ( inv(INV_ITEM_SHOP_SAMPLE, itemname_itemid) == EQUIP_SLOT_LEG ) {
+			if ( inv(INV_ITEM_PARTS, itemname_itemid) == EQUIP_SLOT_LEG ) {
 				locvar_itemowner_s += "leg"
 			}
 		}

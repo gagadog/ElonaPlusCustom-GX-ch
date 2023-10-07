@@ -865,8 +865,8 @@
 	}
 	if ( cc == CHARA_PLAYER ) {
 		if ( inv(INV_ITEM_ID, ci) != ITEM_ID_CORPSE ) {
-			if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 100 ) {
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 0
+			if ( inv(INV_ITEM_PARTS, ci) == 100 ) {
+				inv(INV_ITEM_PARTS, ci) = 0
 			}
 		}
 		if ( ibit(ITEM_BIT_SHOP_SAMPLE, ci) == TRUE ) {
@@ -2033,7 +2033,7 @@
 							}
 							if ( qexit == 0 ) {
 								gdata(GDATA_LEVEL)--
-								levelexitby = 4
+								levelexitby = MAP_EXIT_NORMAL
 								goto *map_exit
 							}
 							if ( qexit == 100 ) {
@@ -2246,34 +2246,46 @@
 						}
 						p = map(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0)
 						if ( rnd(30) == 0 ) {
-							encounter = 1
+							encounter = ENCOUNTER_ENEMY
 						}
 						if ( gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN ) {
 							if ( rnd(10) == 0 ) {
-								encounter = 1
+								encounter = ENCOUNTER_ENEMY
 							}
 						}
 						if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
 							if ( rnd(13) == 0 ) {
-								encounter = 1
+								encounter = ENCOUNTER_ENEMY
 							}
 						}
 						if ( gdata(GDATA_FLAG_THROWN_CHESTNUTS) >= 100 ) {
 							if ( rnd(5) == 0 ) {
-								encounter = 5
+								encounter = ENCOUNTER_CHESTNUT_GIANT
 							}
 						}
 						if ( 33 <= p & p < 57 & p != 44 ) {
 							if ( rnd(2) == 0 ) {
-								encounter = 0
+								encounter = ENCOUNTER_NONE
 							}
 							if ( rnd(100) == 0 ) {
-								encounter = 2
+								encounter = ENCOUNTER_MERCHANT
 							}
 						}
 						plevel = limit(cdata(CDATA_LEVEL, CHARA_PLAYER) * 10, 1, 500)
 						if ( rnd(220 + plevel - limit(gdata(GDATA_CARGO_WEIGHT) * 150 / (gdata(GDATA_CARGO_LIMIT) + 1), 0, 210 + plevel)) == 0 ) {
-							encounter = 4
+							encounter = ENCOUNTER_ROGUE
+						}
+						if ( gdata(GDATA_AREA) == AREA_SOUTH_TYRIS ) {
+							if ( gdata(GDATA_FLAG_MAIN) < 345 ) {
+								if ( rnd(400 - gdata(GDATA_FLAG_MAIN)) == 0 ) {
+									encounter = ENCOUNTER_ELEA_REPARATION
+								}
+							}
+							if ( gdata(GDATA_FLAG_MAIN) >= 345 ) {
+								if ( rnd(250) == 0 ) {
+									encounter = ENCOUNTER_ELEA_REPARATION
+								}
+							}
 						}
 						if ( rnd(40) == 0 ) {
 							repeat 5
@@ -2294,42 +2306,47 @@
 						}
 					}
 					if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == 4 ) {
-						if ( encounter == 4 ) {
+						if ( encounter == ENCOUNTER_ROGUE ) {
 							snd SOUNDLIST_ATTACK00
 							encounter = 0
 							gdata(GDATA_FLAG_BANDITS_KILLED)++
 							txtef COLOR_YELLOW
 							txt lang("盗賊団が絡んできたが無視して轢いた。", "You were stopped by rogues, but you smashed them using your battleship.")
 						}
-						if ( encounter == 1 ) {
+						if ( encounter == ENCOUNTER_ENEMY ) {
 							snd SOUNDLIST_BALL1
 							encounter = 0
 							txtef COLOR_YELLOW
 							txt lang("モンスターが襲撃してきたが主砲で吹き飛ばした。", "You were ambushed by monsters, but you blasted them away with the battleship's main cannon.")
 						}
 					}
-					if ( encounter == 4 ) {
+					if ( encounter == ENCOUNTER_ROGUE ) {
 						encounterlv = cdata(CDATA_FAME, CHARA_PLAYER) / 1000
-						levelexitby = 4
+						levelexitby = MAP_EXIT_NORMAL
 						goto *map_exit
 					}
-					if ( encounter == 3 ) {
+					if ( encounter == ENCOUNTER_ELEA_REPARATION ) {
+						encounterlv = cdata(CDATA_FAME, CHARA_PLAYER) / 1000
+						levelexitby = MAP_EXIT_NORMAL
+						goto *map_exit
+					}
+					if ( encounter == ENCOUNTER_ASSASSIN ) {
 						gdata(GDATA_RETURN_AREA) = gdata(GDATA_AREA), gdata(GDATA_LEVEL), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
-						levelexitby = 4
+						levelexitby = MAP_EXIT_NORMAL
 						goto *map_exit
 					}
-					if ( encounter == 2 ) {
+					if ( encounter == ENCOUNTER_MERCHANT ) {
 						encounterlv = 10 + rnd(100)
-						levelexitby = 4
+						levelexitby = MAP_EXIT_NORMAL
 						goto *map_exit
 					}
-					if ( encounter == 5 ) {
+					if ( encounter == ENCOUNTER_CHESTNUT_GIANT ) {
 						encounterlv = 111 + sdata(SKILL_WEAPON_THROWING, CHARA_PLAYER)
-						levelexitby = 4
+						levelexitby = MAP_EXIT_NORMAL
 						goto *map_exit
 					}
 					if ( gdata(STARTING_GDATA_FLAG + 375) <= 0 ) {
-						if ( encounter == 1 ) {
+						if ( encounter == ENCOUNTER_ENEMY ) {
 							p = rnd(gdata(GDATA_DEEPEST_LEVEL) + 1) + 50
 							if ( enarea == 1 ) {
 								p = limit(rnd(rnd(gdata(GDATA_DEEPEST_LEVEL) + 1) + 1), 1, 50)
@@ -2392,7 +2409,7 @@
 							valn += ")"
 							txt lang("襲撃だ！", "Ambush!") + valn
 							msg_halt
-							levelexitby = 4
+							levelexitby = MAP_EXIT_NORMAL
 							goto *map_exit
 						}
 					}
@@ -2983,7 +3000,7 @@
 		}
 	}
 	snd SOUNDLIST_EXITMAP1
-	levelexitby = 4
+	levelexitby = MAP_EXIT_NORMAL
 	goto *map_exit
 
 *lockpick_val
@@ -4203,8 +4220,8 @@
 				cdata(CDATA_SP, cc)--
 			}
 		}
-		if ( cdata(CDATA_DRAIN_HP, cc) < 99 ) {
-			cdata(CDATA_DRAIN_HP, cc)++
+		if ( cdata(CDATA_GUARD_BREAK, cc) < 99 ) {
+			cdata(CDATA_GUARD_BREAK, cc)++
 		}
 		cdata(CDATA_GAUGE_COOLDOWN, cc) = 1
 		if ( cbit(CHARA_BIT_SANDBAG, tc) != TRUE ) {
@@ -5097,7 +5114,7 @@
 								if ( cfg_attackanime ) {
 									animeload ANIMATION_UNISON_IMPACT1, tc
 								}
-								dmghp tc, orgdmg / 30 * ((rnd(20) + shootp) / 50) + rnd(sdata(SKILL_NORMAL_TACTICS, cc) * 3 + 1), cc
+								dmghp tc, orgdmg / 30 * ((rnd(20) + shootp + 800) / 130) + rnd(sdata(SKILL_NORMAL_TACTICS, cc) * 3 + 1), cc
 							}
 							if ( cdata(CDATA_EXTRA_ATTACKS_TYPE, cc) == 2 ) {
 								txtef COLOR_PINK
@@ -5111,7 +5128,7 @@
 								if ( cfg_attackanime ) {
 									animeload ANIMATION_UNISON_IMPACT1, tc
 								}
-								dmghp tc, orgdmg / 30 * ((rnd(20) + shootp) / 50) + rnd(sdata(SKILL_NORMAL_MARKSMAN, cc) * 3 + 1), cc
+								dmghp tc, orgdmg / 30 * ((rnd(20) + shootp + 800) / 140) + rnd(sdata(SKILL_NORMAL_MARKSMAN, cc) * 3 + 1), cc
 							}
 						}
 					}
@@ -5425,10 +5442,12 @@
 					txtcontinue
 				}
 				if ( tc < MAX_CHARA_FOLLOWER ) {
-					txt lang(aln(tc) + name(cc) + "の攻撃を華麗に避けた。", name(tc) + " skillfully evade" + _s(tc) + " " + name(cc) + ".")
+					txtef COLOR_BLUE
+					txt lang(aln(tc) + name(cc) + "の攻撃を完全に見切って避けた。", name(tc) + " skillfully evade" + _s(tc) + " " + name(cc) + ".")
 				}
 				else {
-					txt lang(aln(cc) + "攻撃を華麗にかわされた。", name(tc) + " skillfully evade" + _s(tc) + " " + name(cc) + ".")
+					txtef COLOR_BLUE
+					txt lang(aln(cc) + "攻撃は完全に見切られてかわされた。", name(tc) + " skillfully evade" + _s(tc) + " " + name(cc) + ".")
 				}
 
                 /********** RUIN0X11 CUSTOM - BEGINNING **********/
@@ -8548,7 +8567,7 @@
 				tc = cdata(CDATA_TAGTEAM_PARTNER, tc)
 			}
 		}
-		if ( cdata(CDATA_SP_EARNED, tc) <= (-2000000) ) {
+		if ( cdata(CDATA_PREGNANCY_PROGRESS, tc) <= (-2000000) ) {
 			txt lang("フェイズ2には使っても意味がない。", "There's no point in using it during Phase 2.")
 			gosub *screen_draw
 			goto *pc_turn
@@ -8569,13 +8588,13 @@
 		snd SOUNDLIST_SWING39
 		txt lang(name(tc) + "「痛っ！」", name(tc) + " writhe" + _s(tc) + " in pain.")
 		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_SURVIVABILITY_EXTENDER_X ) {
-			cdata(CDATA_TAMER_WHIP_EAT, tc) = limit(cdata(CDATA_TAMER_WHIP_EAT, tc) + 1, 1, 9)
+			cdata(CDATA_PREGNANCY_FEMALE_CHILD, tc) = limit(cdata(CDATA_PREGNANCY_FEMALE_CHILD, tc) + 1, 1, 9)
 		}
 		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_SURVIVABILITY_EXTENDER_Y ) {
-			cdata(CDATA_TAMER_WHIP_PICKUP, tc) = limit(cdata(CDATA_TAMER_WHIP_PICKUP, tc) + 1, 1, 9)
+			cdata(CDATA_PREGNANCY_MALE_CHILD, tc) = limit(cdata(CDATA_PREGNANCY_MALE_CHILD, tc) + 1, 1, 9)
 		}
-		if ( cdata(CDATA_SP_EARNED, tc) > (-1000000) ) {
-			cdata(CDATA_SP_EARNED, tc) = -1000000
+		if ( cdata(CDATA_PREGNANCY_PROGRESS, tc) > (-1000000) ) {
+			cdata(CDATA_PREGNANCY_PROGRESS, tc) = -1000000
 		}
 		if ( cbit(CHARA_BIT_PREGNANT, tc) ) {
 			cbitmod CHARA_BIT_PREGNANT, tc, FALSE
@@ -9737,7 +9756,7 @@
 		}
 		ci = cibk
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( inv(INV_ITEM_SHOP_SAMPLE, ci) > 0 ) {
+			if ( inv(INV_ITEM_PARTS, ci) > 0 ) {
 				dmge = (sdata(SKILL_ATTR_STR, cc) * (kinhosei + 5) / 25 + 5) * ((sdata(SKILL_NORMAL_MARKSMAN, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_ATTR_MAG, cc) * 4 + 5 + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) / 8) + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) * 3 / 8
 				if ( inv(INV_ITEM_PARAM3, ci) \ 100 == 5 | inv(INV_ITEM_AMUR_CAGE, ci) == 5 ) {
 					dmge = (sdata(SKILL_ATTR_STR, cc) * (kinhosei + 5) / 25 + 5) * ((sdata(SKILL_NORMAL_MARKSMAN, cc) + 1) / 5 + 5) + sdata(SKILL_ATTR_MAG, cc) * 4 + 5 + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) / 2
@@ -9749,7 +9768,7 @@
 				if ( inv(INV_ITEM_PARAM3, ci) \ 100 == 3 | inv(INV_ITEM_AMUR_CAGE, ci) == 3 & inv(INV_ITEM_PARAM2, ci) >= 2 ) {
 					dmge = dmge * 9 / 5
 				}
-				dmghp tc, dmge, cc, inv(INV_ITEM_SHOP_SAMPLE, ci), 500 + limit(sdata(SKILL_ATTR_MAG, cc) * 2, 1, 4000)
+				dmghp tc, dmge, cc, inv(INV_ITEM_PARTS, ci), 500 + limit(sdata(SKILL_ATTR_MAG, cc) * 2, 1, 4000)
 			}
 		}
 		ci = cibk
@@ -9973,10 +9992,10 @@
 		item_stack cc, ci, 1
 		animeid = ANIMATION_LASER_BAZOOKA
 		gosub *anime
-		if ( cdata(CDATA_DRAIN_HP, tc) < 100 ) {
-			cdata(CDATA_DRAIN_HP, tc) += 20
-			if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
-				cdata(CDATA_DRAIN_HP, tc) = 99
+		if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
+			cdata(CDATA_GUARD_BREAK, tc) += 20
+			if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
+				cdata(CDATA_GUARD_BREAK, tc) = 99
 			}
 		}
 		dmg = (sdata(SKILL_ATTR_DEX, cc) / 5 + 5) * ((sdata(SKILL_NORMAL_MARKSMAN, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_NORMAL_MARKSMAN, cc) * 2 + 5) + (limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30
@@ -10503,6 +10522,80 @@
 			txt_impossible
 		}
 		goto *act_use_SWEND1
+	}
+	if ( _switch_val == EFFECT_FLOAT_CAGE | _switch_sw ) {
+		_switch_sw = 0
+		if ( gdata(GDATA_AREA) == AREA_ARENA | gdata(GDATA_AREA) == AREA_PET_ARENA | gdata(GDATA_AREA) == AREA_CHAOS_CRADLE | gdata(GDATA_AREA) == AREA_VOID | adata(ADATA_WAKEUP_NEFIA, gdata(GDATA_AREA)) != 0 | (gdata(GDATA_AREA) == AREA_SHELTER & gdata(GDATA_LEVEL) == 1) ) {
+			txt lang("このエリアでは使えない。", "You cant use it in this area.")
+			gosub *screen_draw
+			goto *pc_turn
+		}
+		txt lang("誰を閉じ込める？", "Lock up who?")
+		gosub *screen_draw
+		val = 0
+		gosub *prompt_direction
+		f = 0
+		if ( stat != 0 ) {
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
+				if ( cbit(CHARA_BIT_SANDBAG, tc) ) {
+					txt lang("サンドバッグが邪魔だ。", "The sandbag is in the way.")
+					goto *pc_turn
+				}
+				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
+					txt lang("タッグは閉じ込められない。", "It is not possible to lock up people in a tag team.")
+					goto *pc_turn
+				}
+				if ( cdata(CDATA_HP, tc) >= cdata(CDATA_MAX_HP, tc) / 4 ) {
+					if ( 0 == 0 ) {
+						txt lang("もっと弱らせないと閉じ込められない。", "The target needs to be weakened.")
+						goto *pc_turn
+					}
+				}
+				if ( tc != CHARA_PLAYER ) {
+					if ( tc < MAX_CHARA_FOLLOWER ) {
+						txt lang("仲間を閉じ込めるなんてとんでもない！", "Locking up your ally is a horrible idea!")
+						goto *pc_turn
+					}
+				}
+				if ( cbit(CHARA_BIT_LOCKED_UP, tc) ) {
+					txt lang("それは既に閉じ込められている。", "It's already locked up.")
+					goto *pc_turn
+				}
+				if ( cdata(CDATA_RELATION, tc) == RELATION_ALLY | cbit(CHARA_BIT_NECRO, tc) == TRUE | cdata(CDATA_QUALITY, tc) >= FIX_QUALITY_MIRACLE | cdata(CDATA_ROLE, tc) != ROLE_NONE | cbit(CHARA_BIT_PRECIOUS, tc) == TRUE | cdata(CDATA_CHARACTER_TIER, tc) == CHARACTER_TIER_SUMMONED_NORMAL | cbit(CHARA_BIT_BODYGUARD, tc) == TRUE | gdata(GDATA_FLAG_DUEL_TARGET) == tc ) {
+					txt lang("その生物には無効だ。", "The creature can't be captured.")
+					goto *pc_turn
+				}
+				if ( tc == CHARA_PLAYER ) {
+					txt lang("あなたは檻に入ろうと思ったがやめた…", "You try to walk into the cage, but that seems really stupid...")
+				}
+				else {
+					snd SOUNDLIST_AMMO
+					await 50
+					snd SOUNDLIST_LOCKED1
+					await 50
+					snd SOUNDLIST_ENC
+					inv(INV_ITEM_NUM, ci)--
+					cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
+					gosub *calcBurdenPc
+					cbitmod CHARA_BIT_LOCKED_UP, tc, TRUE
+					txt lang("あなたは" + name(tc) + "を閉じ込めた。", "You lock up " + name(tc) + ".")
+					txtvalid = 0
+					txt lang(name(tc) + "は呻き声を洩らした。「出せー！」", name(tc) + " gasp" + _s(tc) + ", " + cnvtalk("Release me..."))
+					modimp tc, -50
+					modimp2 tc, -50
+					rc = tc
+					gosub *add_ally
+					check_quest
+				}
+				f = 1
+			}
+		}
+		if ( f == 0 ) {
+			txt lang("それは無理だ。", "It's impossible.")
+		}
+		goto *act_use_SWEND1
+		_switch_sw++
 	}
 	if ( _switch_val == EFFECT_SOUL_SPINDLE | _switch_sw ) {
 		_switch_sw = 0
@@ -11239,6 +11332,7 @@
 		cdata(CDATA_RELATION, rc) = 10
 		cdata(CDATA_RELATION_ORG, rc) = 10
 		cbitmod CHARA_BIT_NECRO, rc, 1
+		cbitmod CHARA_BIT_SHADOW_CLONE, rc, TRUE
 		cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
 		snd SOUNDLIST_CURSE3
 		animeid = ANIMATION_GENE
@@ -12600,84 +12694,84 @@
 			cibk2 = ci
 			snd SOUNDLIST_CRACK2
 			txt lang(itemname(ci) + "を小分けにして粘菌を使った。", itemname(ci) + " became vessels for the slime mold.")
-			if ( inv(INV_ITEM_SHOP_SAMPLE, cibk2) \ 10 == 1 ) {
+			if ( inv(INV_ITEM_PARTS, cibk2) \ 10 == 1 ) {
 				flt
 				itemcreate -1, ITEM_ID_NECRO_PARTS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				inv(INV_ITEM_WEIGHT, ci) = inv(INV_ITEM_WEIGHT, cibk2) / 8
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, cibk2)
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 1
+				inv(INV_ITEM_PARTS, ci) = 1
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
 			item_identify ci, ITEM_KNOWN_FULL
-			if ( inv(INV_ITEM_SHOP_SAMPLE, cibk2) \ 100 >= 10 ) {
+			if ( inv(INV_ITEM_PARTS, cibk2) \ 100 >= 10 ) {
 				flt
 				itemcreate -1, ITEM_ID_NECRO_PARTS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				inv(INV_ITEM_WEIGHT, ci) = inv(INV_ITEM_WEIGHT, cibk2) / 20
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, cibk2)
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 2
+				inv(INV_ITEM_PARTS, ci) = 2
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
 			item_identify ci, ITEM_KNOWN_FULL
-			if ( inv(INV_ITEM_SHOP_SAMPLE, cibk2) \ 1000 >= 100 ) {
+			if ( inv(INV_ITEM_PARTS, cibk2) \ 1000 >= 100 ) {
 				flt
 				itemcreate -1, ITEM_ID_NECRO_PARTS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				inv(INV_ITEM_WEIGHT, ci) = inv(INV_ITEM_WEIGHT, cibk2) / 15
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, cibk2)
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 3
+				inv(INV_ITEM_PARTS, ci) = 3
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
 			item_identify ci, ITEM_KNOWN_FULL
-			if ( inv(INV_ITEM_SHOP_SAMPLE, cibk2) \ 10000 >= 1000 ) {
+			if ( inv(INV_ITEM_PARTS, cibk2) \ 10000 >= 1000 ) {
 				flt
 				itemcreate -1, ITEM_ID_NECRO_PARTS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				inv(INV_ITEM_WEIGHT, ci) = inv(INV_ITEM_WEIGHT, cibk2) / 8
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, cibk2)
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 4
+				inv(INV_ITEM_PARTS, ci) = 4
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
 			item_identify ci, ITEM_KNOWN_FULL
-			if ( inv(INV_ITEM_SHOP_SAMPLE, cibk2) \ 100000 >= 10000 ) {
+			if ( inv(INV_ITEM_PARTS, cibk2) \ 100000 >= 10000 ) {
 				flt
 				itemcreate -1, ITEM_ID_NECRO_PARTS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				inv(INV_ITEM_WEIGHT, ci) = inv(INV_ITEM_WEIGHT, cibk2) / 20
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, cibk2)
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 5
+				inv(INV_ITEM_PARTS, ci) = 5
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
 			item_identify ci, ITEM_KNOWN_FULL
-			if ( inv(INV_ITEM_SHOP_SAMPLE, cibk2) \ 1000000 >= 100000 ) {
+			if ( inv(INV_ITEM_PARTS, cibk2) \ 1000000 >= 100000 ) {
 				flt
 				itemcreate -1, ITEM_ID_NECRO_PARTS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				inv(INV_ITEM_WEIGHT, ci) = inv(INV_ITEM_WEIGHT, cibk2) / 20
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, cibk2)
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 6
+				inv(INV_ITEM_PARTS, ci) = 6
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
 			item_identify ci, ITEM_KNOWN_FULL
-			if ( inv(INV_ITEM_SHOP_SAMPLE, cibk2) \ 10000000 >= 1000000 ) {
+			if ( inv(INV_ITEM_PARTS, cibk2) \ 10000000 >= 1000000 ) {
 				flt
 				itemcreate -1, ITEM_ID_NECRO_PARTS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				inv(INV_ITEM_WEIGHT, ci) = inv(INV_ITEM_WEIGHT, cibk2) / 15
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, cibk2)
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 7
+				inv(INV_ITEM_PARTS, ci) = 7
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
 			item_identify ci, ITEM_KNOWN_FULL
-			if ( inv(INV_ITEM_SHOP_SAMPLE, cibk2) \ 100000000 >= 10000000 ) {
+			if ( inv(INV_ITEM_PARTS, cibk2) \ 100000000 >= 10000000 ) {
 				flt
 				itemcreate -1, ITEM_ID_NECRO_PARTS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				inv(INV_ITEM_WEIGHT, ci) = inv(INV_ITEM_WEIGHT, cibk2) / 15
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, cibk2)
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 8
+				inv(INV_ITEM_PARTS, ci) = 8
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
 			item_identify ci, ITEM_KNOWN_FULL
-			if ( inv(INV_ITEM_SHOP_SAMPLE, cibk2) \ 1000000000 >= 100000000 ) {
+			if ( inv(INV_ITEM_PARTS, cibk2) \ 1000000000 >= 100000000 ) {
 				flt
 				itemcreate -1, ITEM_ID_NECRO_PARTS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				inv(INV_ITEM_WEIGHT, ci) = inv(INV_ITEM_WEIGHT, cibk2) / 8
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, cibk2)
-				inv(INV_ITEM_SHOP_SAMPLE, ci) = 9
+				inv(INV_ITEM_PARTS, ci) = 9
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
 			item_identify ci, ITEM_KNOWN_FULL
@@ -12778,7 +12872,7 @@
 					if ( cdata(cnt, r1) != 0 ) {
 						continue
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 1 ) {
+					if ( inv(INV_ITEM_PARTS, ci) == 1 ) {
 						if ( damehead == 1 ) {
 							dame = 100
 							break
@@ -12792,7 +12886,7 @@
 							break
 						}
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 2 ) {
+					if ( inv(INV_ITEM_PARTS, ci) == 2 ) {
 						if ( dameneck == 1 ) {
 							dame = 100
 							break
@@ -12806,7 +12900,7 @@
 							break
 						}
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 3 ) {
+					if ( inv(INV_ITEM_PARTS, ci) == 3 ) {
 						if ( dameback == 1 ) {
 							dame = 100
 							break
@@ -12820,7 +12914,7 @@
 							break
 						}
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 4 ) {
+					if ( inv(INV_ITEM_PARTS, ci) == 4 ) {
 						if ( damechest == 1 ) {
 							dame = 100
 							break
@@ -12834,7 +12928,7 @@
 							break
 						}
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 5 ) {
+					if ( inv(INV_ITEM_PARTS, ci) == 5 ) {
 						if ( damehand == 1 ) {
 							dame = 100
 							break
@@ -12848,7 +12942,7 @@
 							break
 						}
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 6 ) {
+					if ( inv(INV_ITEM_PARTS, ci) == 6 ) {
 						if ( damefinger == 1 ) {
 							dame = 100
 							break
@@ -12862,7 +12956,7 @@
 							break
 						}
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 7 ) {
+					if ( inv(INV_ITEM_PARTS, ci) == 7 ) {
 						if ( damearm == 1 ) {
 							dame = 100
 							break
@@ -12876,7 +12970,7 @@
 							break
 						}
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 8 ) {
+					if ( inv(INV_ITEM_PARTS, ci) == 8 ) {
 						if ( damewaist == 1 ) {
 							dame = 100
 							break
@@ -12890,7 +12984,7 @@
 							break
 						}
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, ci) == 9 ) {
+					if ( inv(INV_ITEM_PARTS, ci) == 9 ) {
 						if ( dameleg == 1 ) {
 							dame = 100
 							break
@@ -13315,6 +13409,30 @@
 		screenupdate = -1
 		gosub *screen_draw
 		goto *com_story
+	}
+	if ( _switch_val == EFFECT_SLAVE_SPINNER | _switch_sw ) {
+		_switch_sw = 0
+		if ( adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_CAMP ) {
+			txt lang("収容所以外ではエナジーを蓄積できない。", "Energy cannot be accumulated outside of the camp.")
+			gosub *screen_draw
+			goto *pc_turn
+		}
+		gdata(GDATA_ROW_ACT) = ACTION_SLAVE_SPINNER
+		gosub *generalAct
+		goto *act_use_SWEND1
+		_switch_sw++
+	}
+	if ( _switch_val == EFFECT_SLAVE_WHEEL | _switch_sw ) {
+		_switch_sw = 0
+		if ( adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_CAMP ) {
+			txt lang("収容所以外ではエナジーを蓄積できない。", "Energy cannot be accumulated outside of the camp.")
+			gosub *screen_draw
+			goto *pc_turn
+		}
+		gdata(GDATA_ROW_ACT) = ACTION_SLAVE_WHEEL
+		gosub *generalAct
+		goto *act_use_SWEND1
+		_switch_sw++
 	}
 	if ( _switch_val == EFFECT_SHELTER | _switch_sw ) {
 		_switch_sw = 0
@@ -14439,7 +14557,7 @@
 			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 				continue
 			}
-			if ( cdata(CDATA_DRAIN_HP, cnt) >= 100 ) {
+			if ( cdata(CDATA_GUARD_BREAK, cnt) >= 100 ) {
 				continue
 			}
 			tc = cnt
@@ -14451,9 +14569,9 @@
 			if ( fov_los(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx, dy) == 0 ) {
 				continue
 			}
-			cdata(CDATA_DRAIN_HP, tc) -= 5
-			if ( cdata(CDATA_DRAIN_HP, tc) < 0 ) {
-				cdata(CDATA_DRAIN_HP, tc) = 0
+			cdata(CDATA_GUARD_BREAK, tc) -= 5
+			if ( cdata(CDATA_GUARD_BREAK, tc) < 0 ) {
+				cdata(CDATA_GUARD_BREAK, tc) = 0
 			}
 		loop
 		goto *act_use_SWEND1
@@ -14688,7 +14806,7 @@
 		txtef COLOR_BLUE
 		txt lang("衛星軌道上から荷電粒子砲が発射された！", "Destruction rains from the heavens!")
 		gdata(GDATA_TEMPORARY_FLAGS3) = 777
-		animeid = ANIMATION_HOLY
+		animeid = ANIMATION_GOD_CHARGE_ROD
 		animode = 0
 		gosub *anime
 		gdata(GDATA_TEMPORARY_FLAGS3) = 0

@@ -500,7 +500,7 @@
 *quest_death
 	rc = CHARA_PLAYER
 	gosub *chara_respawn
-	levelexitby = 4
+	levelexitby = MAP_EXIT_NORMAL
 	gdata(GDATA_LEVEL) = 0
 	goto *map_exit
 

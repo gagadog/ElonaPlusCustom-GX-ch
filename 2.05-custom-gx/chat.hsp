@@ -966,7 +966,7 @@
 					gdata(GDATA_TELEPORT_AREA) = AREA_NORTH_TYRIS
 				}
 				gdata(GDATA_TELEPORT_LEVEL) = 1
-				levelexitby = 4
+				levelexitby = MAP_EXIT_NORMAL
 				prevsekai = gdata(GDATA_WORLD)
 				if ( cdata(CDATA_ID, tc) == CREATURE_ID_LOYTER_THE_CRIMSON_OF_ZANAN ) {
 					gdata(GDATA_WORLD_RENEW) = 1
@@ -1025,7 +1025,7 @@
 					gdata(GDATA_TELEPORT_AREA) = AREA_NORTH_TYRIS
 				}
 				gdata(GDATA_TELEPORT_LEVEL) = 1
-				levelexitby = 4
+				levelexitby = MAP_EXIT_NORMAL
 				prevsekai = gdata(GDATA_WORLD)
 				if ( cdata(CDATA_ID, tc) == CREATURE_ID_LOYTER_THE_CRIMSON_OF_ZANAN ) {
 					gdata(GDATA_WORLD_RENEW) = 1
@@ -1113,7 +1113,7 @@
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_VERNIS
 			gdata(GDATA_TELEPORT_LEVEL) = 5
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			gdata(GDATA_LEVEL_START_ON) = 7
 			mapstartx = 6
 			mapstarty = 27
@@ -3306,7 +3306,7 @@
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_YOWYN
 			gdata(GDATA_TELEPORT_LEVEL) = 4
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			chatteleport = 1
 			goto *chat_end
 		}
@@ -3367,7 +3367,7 @@
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_PORT_KAPUL
 			gdata(GDATA_TELEPORT_LEVEL) = 25
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			chatteleport = 1
 			goto *chat_end
 		}
@@ -5302,6 +5302,67 @@
 		}
 		goto *chat_unique_SWEND1
 	}
+	if ( _switch_val == CREATURE_ID_INSTIGATOR_OF_ELEA | _switch_sw ) {
+		_switch_sw = 0
+		if ( cdata(CDATA_GOLD, CHARA_PLAYER) <= 10 ) {
+			chatMore lang("チッ、一文無しの乞食" + _ka() + "とっとといっちまい" + _na(), "Bah! a begger without a penny. What a waste of time! Get out of my sight!"), strmore
+			levelexitby = MAP_EXIT_NORMAL
+			chatteleport = 1
+			snd SOUNDLIST_EXITMAP1
+			goto *chat_end
+		}
+		chatList 1, lang("こんな蛮行やめさせる", "This is barbarism!")
+		chatList 2, lang("こちらも力ずくで拒否する", "I refuse because I can.")
+		chatList 3, lang("迫害していないので拒否する", "I refuse because I never persecuted Elea.")
+		chatList 4, lang("金が惜しいので拒否する", "I refuse because I don't want to part with my money.")
+		chatList 5, lang("なんだか怪しいので拒否する", "I refuse because you are kinda suspicious.")
+		chatList 0, lang("言われた通り寄付する", "I will donate as you said...")
+		buff = lang("おい、そこのお前！お前たちのような衆愚がザナンに踊らされたせいで、エレアは濡れ衣を着せられて迫害を受けてきた！真実が明らかになった今も、故郷を奪われたエレアたちは貧困にあえいでいる！少しは申し訳ないと思わないのか？さぁ、ザナンの陰謀に加担した罪を認めて、荷車の積荷と金貨" + cdata(CDATA_GOLD, CHARA_PLAYER) / 20 + "枚を我々に寄付しろ！嫌だというなら力ずくで寄付してもらうぞ！", "Hey! You there! Because people like you believed in Zanan, Elea has been falsely accused and persecuted! Even now that the truth has been revealed, Elea who have been robbed of their hometown are still suffering from poverty! Don't you feel sorry for Elea? Now, plead guilty to being part of the conspiracy and donate " + cdata(CDATA_GOLD, CHARA_PLAYER) / 20 + " gold pices and your cargos to us! If you don't like it, I'll have you donate your dirty life by force!")
+		chatesc = 0
+		gosub *chat_select
+		if ( chatval == 0 ) {
+			snd SOUNDLIST_PAYGOLD1
+			cdata(CDATA_GOLD, CHARA_PLAYER) -= cdata(CDATA_GOLD, CHARA_PLAYER) / 20
+			inv_getheader 0
+			repeat invrange, invhead
+				if ( inv(INV_ITEM_NUM, cnt) > 0 ) {
+					if ( refitem(inv(INV_ITEM_ID, cnt), DBSPEC_CARGO) == 1 ) {
+						txtmore
+						txt lang(itemname(cnt) + "を渡した。", "You hand over " + itemname(cnt) + ".")
+						inv(INV_ITEM_NUM, cnt) = 0
+					}
+				}
+			loop
+			gosub *calcBurdenPc
+			chatMore lang("おっと、罪を認めるのか！素晴らしい！だがお前がどんなに寄付をしても、エレアが苦痛を受けた事実は未来永劫消えない！これで許された気になるなよ、人でなしのカスめ！末代まで詫び続けろ！", "You have admitted your guilt well! But no matter how much you donate, the fact that Elea suffered will never disappear! Don't feel like you've been forgiven for this, you scumbag! Keep apologizing until the end of your generations!"), strbye
+			levelexitby = MAP_EXIT_NORMAL
+			chatteleport = 1
+			snd SOUNDLIST_EXITMAP1
+			goto *chat_end
+		}
+		if ( chatval == 1 ) {
+			chatMore lang("いいか、皆！我々の活動を不都合に思うということは、コイツはザナンの工作員に違いない！ザナンの工作員の言うことには一切耳を傾ける必要がない！殺ってしまえ！", "You must be an agent of Zanan because you are displeased with our activities! There is no need to listen to any of Zanan's agents! Please die!"), strbye
+			goto *chat_end
+		}
+		if ( chatval == 2 ) {
+			chatMore lang("我々は迫害され困窮しているエレアのために金品を集めているんだ！それに抵抗するのはれっきとしたエレア差別だ！お前は本当に性格が悪いな、エレアを馬鹿にするのもいい加減にしろ！お前たちが力で抵抗するのは全て暴力行為だが、我々が力で寄付を集めるのは暴力行為ではない！これはエレアに許された正義の裁きであり、世間への抗議なのだ！", "We are collecting money and goods for the persecuted Eleas in need! Resisting that is pure Elea discrimination! You really are a racist! Anything you do to resist with force is an act of violence, but what we do to collect donations by force is not violence! It's a judgment of justice allowed by Elea, and a protest against the world!"), strbye
+			goto *chat_end
+		}
+		if ( chatval == 3 ) {
+			chatMore lang("じゃあ迫害していないという証拠を出せ！出せないだろう、この嘘つき野郎め！もしもお前が実際に迫害したことがなくても関係ない！エレアは今までひどい目に遭ってきたので、直接関係ない奴を襲っても許されるんだよ！そんなことも分からないのか！", "Then show me proof that you're not persecuting Elea! You can't give evidence, don't you? It doesn't matter if you have never actually persecuted Elea! Elea has been through terrible things up until now, so even if Elea attacks someone who isn't directly involved, Elea can be forgiven! Don't you even understand that?"), strbye
+			goto *chat_end
+		}
+		if ( chatval == 4 ) {
+			chatMore lang("お前、エレアを見下しているんじゃないか？どうせ今までエレアを迫害し、暴力や暴言を浴びせてきたんだろうな！なぜならお前はエレアを見下してしているからだ！よくも今までエレアを見下して迫害してくれたな！最低の屑め、リンチにしてやる！", "You are anti-Elea, aren't you? I'm sure you've been persecuting Elea all this time, and you've been using violence and hate language! Because you are a racist! You are the worst kind of scum of all Irva! We'll lynch you!"), strbye
+			goto *chat_end
+		}
+		if ( chatval == 5 ) {
+			chatMore lang("エレアだからという理由で疑うなんて酷いレッテル張りだ！お前みたいな差別主義者は何をされても文句を言う資格がない！だからなぶり殺しにしてやる！なぶり殺しにされるだけのことをしたお前に全ての非がある！", "It's a terrible prejudice to doubt us just because we're Elea! Racists like you have no right to complain no matter what is done to you! That's why we're going to torture you to death! Blame yourself for dying like a piece of shit!"), strbye
+			goto *chat_end
+		}
+		goto *chat_unique_SWEND1
+		_switch_sw++
+	}
 	if ( _switch_val == CREATURE_ID_LULWY | _switch_sw ) {
 		_switch_sw = 0
 		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_LULWY & cdata(CDATA_PIETY, CHARA_PLAYER) >= 4000 & gdata(GDATA_FLAG_SUMMONED_LULWY) == 0 ) {
@@ -6184,7 +6245,7 @@
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_KURUALM
 			gdata(GDATA_TELEPORT_LEVEL) = 3
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			evadd EVENT_BOSS_MUSIC
 			gdata(GDATA_FLAG_BOSS_MUSIC) = 1
 			chatteleport = 1
@@ -6210,7 +6271,7 @@
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_KURUALM
 			gdata(GDATA_TELEPORT_LEVEL) = 3
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			gdata(GDATA_LEVEL_START_ON) = 7
 			mapstartx = 4
 			mapstarty = 11
@@ -6347,7 +6408,7 @@
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_EIREL
 			gdata(GDATA_TELEPORT_LEVEL) = 3
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			gdata(GDATA_LEVEL_START_ON) = 7
 			mapstartx = 9
 			mapstarty = 10
@@ -6856,7 +6917,7 @@
 					mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 					gdata(GDATA_TELEPORT_AREA) = AREA_MAID_MANSION
 					gdata(GDATA_TELEPORT_LEVEL) = 3
-					levelexitby = 2
+					levelexitby = MAP_EXIT_TELEPORT
 					gdata(GDATA_LEVEL_START_ON) = 7
 					mapstartx = 16
 					mapstarty = 28
@@ -6873,7 +6934,7 @@
 					mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 					gdata(GDATA_TELEPORT_AREA) = AREA_MAID_MANSION
 					gdata(GDATA_TELEPORT_LEVEL) = 3
-					levelexitby = 2
+					levelexitby = MAP_EXIT_TELEPORT
 					gdata(GDATA_LEVEL_START_ON) = 7
 					mapstartx = 3
 					mapstarty = 16
@@ -7719,7 +7780,7 @@
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_KURUALM
 			gdata(GDATA_TELEPORT_LEVEL) = 5
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			gdata(GDATA_LEVEL_START_ON) = 7
 			mapstartx = 23
 			mapstarty = 21
@@ -7823,7 +7884,7 @@
 				mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 				gdata(GDATA_TELEPORT_AREA) = AREA_VALM
 				gdata(GDATA_TELEPORT_LEVEL) = 1
-				levelexitby = 2
+				levelexitby = MAP_EXIT_TELEPORT
 				chatteleport = 1
 				goto *chat_end
 			}
@@ -7843,7 +7904,7 @@
 				mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 				gdata(GDATA_TELEPORT_AREA) = AREA_VALM
 				gdata(GDATA_TELEPORT_LEVEL) = 1
-				levelexitby = 2
+				levelexitby = MAP_EXIT_TELEPORT
 				chatteleport = 1
 				goto *chat_end
 			}
@@ -7870,7 +7931,7 @@
 				mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 				gdata(GDATA_TELEPORT_AREA) = AREA_VALM
 				gdata(GDATA_TELEPORT_LEVEL) = 1
-				levelexitby = 2
+				levelexitby = MAP_EXIT_TELEPORT
 				chatteleport = 1
 				goto *chat_end
 			}
@@ -8062,7 +8123,7 @@
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_VALM
 			gdata(GDATA_TELEPORT_LEVEL) = 30
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			gdata(GDATA_LEVEL_START_ON) = 7
 			mapstartx = 18
 			mapstarty = 65
@@ -8108,7 +8169,7 @@
 			mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 			gdata(GDATA_TELEPORT_AREA) = AREA_VALM
 			gdata(GDATA_TELEPORT_LEVEL) = 3
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			evadd EVENT_BOSS_MUSIC
 			gdata(GDATA_FLAG_BOSS_MUSIC) = 2
 			chatteleport = 1
@@ -8859,7 +8920,7 @@
 				gosub *anime
 				gdata(GDATA_TELEPORT_AREA) = AREA_NORTH_TYRIS
 				gdata(GDATA_TELEPORT_LEVEL) = 1
-				levelexitby = 4
+				levelexitby = MAP_EXIT_NORMAL
 				prevsekai = gdata(GDATA_WORLD)
 				gdata(GDATA_WORLD_RENEW) = 1
 				gdata(GDATA_WORLD) = AREA_NORTH_TYRIS
@@ -8888,7 +8949,7 @@
 				gosub *anime
 				gdata(GDATA_TELEPORT_AREA) = AREA_LOST_YLVA
 				gdata(GDATA_TELEPORT_LEVEL) = 1
-				levelexitby = 4
+				levelexitby = MAP_EXIT_NORMAL
 				prevsekai = gdata(GDATA_WORLD)
 				gdata(GDATA_WORLD_RENEW) = 1
 				gdata(GDATA_WORLD) = AREA_LOST_YLVA
@@ -8944,7 +9005,7 @@
 			gsel 0
 			gdata(GDATA_TELEPORT_AREA) = AREA_SOUTH_TYRIS
 			gdata(GDATA_TELEPORT_LEVEL) = 1
-			levelexitby = 2
+			levelexitby = MAP_EXIT_TELEPORT
 			prevsekai = gdata(GDATA_WORLD)
 			gdata(GDATA_WORLD_RENEW) = 1
 			gdata(GDATA_WORLD) = AREA_SOUTH_TYRIS
@@ -8988,7 +9049,7 @@
 						gdata(GDATA_TELEPORT_AREA) = AREA_LOST_YLVA
 					}
 					gdata(GDATA_TELEPORT_LEVEL) = 1
-					levelexitby = 4
+					levelexitby = MAP_EXIT_NORMAL
 					prevsekai = gdata(GDATA_WORLD)
 					if ( gdata(GDATA_AREA) == AREA_ULM_LESON ) {
 						gdata(GDATA_WORLD_RENEW) = 1
@@ -9743,7 +9804,7 @@
 						mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 						gdata(GDATA_TELEPORT_AREA) = AREA_BLIMP
 						gdata(GDATA_TELEPORT_LEVEL) = 100
-						levelexitby = 2
+						levelexitby = MAP_EXIT_TELEPORT
 						gdata(GDATA_LEVEL_START_ON) = 7
 						mapstartx = 5
 						mapstarty = 13
@@ -10554,10 +10615,10 @@
 				gosub *com_inventory
 				if ( stat == 1 ) {
 					cibk = ci
-					if ( inv(INV_ITEM_SHOP_SAMPLE, cibk) == 0 ) {
+					if ( inv(INV_ITEM_PARTS, cibk) == 0 ) {
 						chatMore lang("なんじゃ、このクオリティの高いポーショマンは！？こ、この出来ならばとっておきの細工が使えそうじゃ…。", "What is this quality potion man! ? With this quality, that mystery seems to be usable..."), strmore
 					}
-					if ( inv(INV_ITEM_SHOP_SAMPLE, cibk) != 0 ) {
+					if ( inv(INV_ITEM_PARTS, cibk) != 0 ) {
 						chatMore lang("ああ、前に進化させたやつの属性変更じゃな。", "Ah, it's an attribute change of the one that was evolved before."), strmore
 					}
 					item_find ITEM_ID_EVITEM, ITEM_FIND_MODE_DBID, ITEM_FIND_LOCATION_CHARAS
@@ -10591,7 +10652,7 @@
 					pot = chatval
 					if ( chatval >= 1 & chatval <= 10 ) {
 						ele = chatval + 49
-						inv(INV_ITEM_SHOP_SAMPLE, cibk) = ele
+						inv(INV_ITEM_PARTS, cibk) = ele
 						snd SOUNDLIST_BUILD1
 						inv(INV_ITEM_NUM, ci)--
 						gosub *calcBurdenPc
@@ -11163,7 +11224,7 @@
 						mapidou = 100
 						gdata(GDATA_TELEPORT_AREA) = AREA_NOYEL
 						gdata(GDATA_TELEPORT_LEVEL) = 100
-						levelexitby = 2
+						levelexitby = MAP_EXIT_TELEPORT
 						gdata(GDATA_LEVEL_START_ON) = 7
 						mapstartx = 20
 						mapstarty = 55
@@ -11452,7 +11513,7 @@
 						mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 						gdata(GDATA_TELEPORT_AREA) = AREA_OL_DRAN
 						gdata(GDATA_TELEPORT_LEVEL) = 5
-						levelexitby = 2
+						levelexitby = MAP_EXIT_TELEPORT
 						gdata(GDATA_LEVEL_START_ON) = 7
 						mapstartx = 14
 						mapstarty = 9
@@ -12170,7 +12231,7 @@
 					mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 					gdata(GDATA_TELEPORT_AREA) = AREA_NT_SOUTH_BORDER
 					gdata(GDATA_TELEPORT_LEVEL) = 100
-					levelexitby = 2
+					levelexitby = MAP_EXIT_TELEPORT
 					gdata(GDATA_LEVEL_START_ON) = 7
 					mapstartx = 4
 					mapstarty = 4
@@ -12929,7 +12990,7 @@
 						mapidou = 100
 						gdata(GDATA_TELEPORT_AREA) = AREA_DOCK
 						gdata(GDATA_TELEPORT_LEVEL) = 100
-						levelexitby = 2
+						levelexitby = MAP_EXIT_TELEPORT
 						gdata(GDATA_LEVEL_START_ON) = 7
 						mapstartx = 5
 						mapstarty = 52
@@ -13960,7 +14021,7 @@
 				mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 				gdata(GDATA_TELEPORT_AREA) = AREA_SEMINAR
 				gdata(GDATA_TELEPORT_LEVEL) = gdata(STARTING_GDATA_FLAG + 328) + 1
-				levelexitby = 2
+				levelexitby = MAP_EXIT_TELEPORT
 				gdata(GDATA_LEVEL_START_ON) = 7
 				mapstartx = 11
 				mapstarty = 6
@@ -15340,7 +15401,7 @@
 					mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 					gdata(GDATA_TELEPORT_AREA) = AREA_CHAOS_CRADLE
 					gdata(GDATA_TELEPORT_LEVEL) = 178
-					levelexitby = 2
+					levelexitby = MAP_EXIT_TELEPORT
 					gdata(GDATA_LEVEL_START_ON) = 7
 					mapstartx = 10
 					mapstarty = 13
@@ -15586,7 +15647,7 @@
 						mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 						gdata(GDATA_TELEPORT_AREA) = AREA_CHAOS_CRADLE
 						gdata(GDATA_TELEPORT_LEVEL) = 179
-						levelexitby = 2
+						levelexitby = MAP_EXIT_TELEPORT
 						gdata(GDATA_LEVEL_START_ON) = 7
 						mapstartx = 10
 						mapstarty = 13
@@ -15650,7 +15711,7 @@
 						mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
 						gdata(GDATA_TELEPORT_AREA) = AREA_CHAOS_CRADLE
 						gdata(GDATA_TELEPORT_LEVEL) = 179
-						levelexitby = 2
+						levelexitby = MAP_EXIT_TELEPORT
 						gdata(GDATA_LEVEL_START_ON) = 7
 						mapstartx = 10
 						mapstarty = 13
@@ -18674,6 +18735,17 @@
 				}
 			}
 		}
+		if ( cbit(CHARA_BIT_LABOR_CAMP, tc) == TRUE & gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
+			if ( cdata(CDATA_INTEREST, tc) > 0 ) {
+				chatList 132, lang("【暗黒evochat】（未実装）", "<Darkness evochat> under development")
+			}
+			if ( cdata(CDATA_INTEREST, tc) > 0 ) {
+				chatList 133, lang("収容者を解放する", "I have decided to release you.")
+			}
+			if ( cdata(CDATA_INTEREST, tc) > 0 ) {
+				chatList 134, lang("見せしめに処刑する", "I have decided to execute you as a demonstration.")
+			}
+		}
 		if ( cbit(CHARA_BIT_LIVESTOCK, tc) == 1 & gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
 			if ( cdata(CDATA_INTEREST, tc) > 0 ) {
 				chatList 96, lang("芸を仕込む (アイテム消費)", "Teach a new trick. (consume item)")
@@ -19626,7 +19698,7 @@
 		gdata(GDATA_RETURN_AREA) = gdata(GDATA_AREA), gdata(GDATA_LEVEL), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
 		gdata(GDATA_TELEPORT_AREA) = AREA_ARENA
 		gdata(GDATA_TELEPORT_LEVEL) = 1
-		levelexitby = 2
+		levelexitby = MAP_EXIT_TELEPORT
 		chatteleport = 1
 		goto *chat_end
 	}
@@ -19724,7 +19796,7 @@
 		gdata(GDATA_RETURN_AREA) = gdata(GDATA_AREA), gdata(GDATA_LEVEL), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
 		gdata(GDATA_TELEPORT_AREA) = AREA_PET_ARENA
 		gdata(GDATA_TELEPORT_LEVEL) = 1
-		levelexitby = 2
+		levelexitby = MAP_EXIT_TELEPORT
 		chatteleport = 1
 		goto *chat_end
 	}
@@ -20902,6 +20974,87 @@
 	if ( chatval == 36 | chatval == 57 ) {
 		goto *chat_slave
 	}
+	if ( chatval == 133 ) {
+		if ( cbit(CHARA_BIT_SANDBAG, tc) ) {
+			snd SOUNDLIST_FAIL1
+			txt lang("吊るしたままでは解放できない。", "You cannot release " + name(tc) + " when they are hanging on a sandbag.")
+			goto *pc_turn
+		}
+		buff = lang("ほ、本当に！？", "Really?")
+		chatList 0, lang("ウソだよー", "Just kidding~")
+		chatList 1, lang("これからは自由の身だ", "You're free from now on.")
+		chatesc = 1
+		gosub *chat_select
+		if ( chatval == 1 ) {
+			if ( cdata(CDATA_MASTER_SERVANT, tc) >= 150 ) {
+				txtef COLOR_RED2
+				txt lang("もう" + name(tc) + "は、誰かに従わないと生きていけないようだ…。", "It seems like " + cdatan(CDATAN_NAME, tc) + " can no longer live without obeying someone...")
+				f = get_freeally()
+				if ( f == 0 ) {
+					txt lang(cdatan(CDATAN_NAME, tc) + "は仲間の枠がないことに気がつくと、寂しそうにそのまま何処かに行ってしまった…。", "Seeing you have a full party, " + cdatan(CDATAN_NAME, tc) + " sigh and went somewhere else...")
+					chara_vanquish tc
+					goto *chat_end
+				}
+				rc = tc
+				gosub *add_ally
+				cdata(CDATA_AREA, rc) = 0
+				gosub *screen_draw
+				goto *turn_end
+			}
+			if ( cdata(CDATA_MASTER_SERVANT, tc) < 150 & cdata(CDATA_IMPRESSION, tc) < 100 ) {
+				chatMore lang("だったら今までの恨みを晴らしてやる！", "Well then, I shall take my revenge on you!"), strmore
+				txt lang(name(tc) + "は反旗を翻した！", name(tc) + " rebelled!")
+				cdata(CDATA_ALLIED, tc) = 0
+				cbitmod CHARA_BIT_LABOR_CAMP, tc, FALSE
+				snd SOUNDLIST_CHEER
+				cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 4
+				cdata(CDATA_RELATION, tc) = RELATION_ENEMY
+				cdata(CDATA_RELATION_ORG, tc) = RELATION_ENEMY
+				cdata(CDATA_AI_AGGRO, tc) = 80
+				cdata(CDATA_TARGET, tc) = 0
+				goto *chat_end
+			}
+			chatMore lang("自由だぁああああ！", "I'm freeeeeee!"), strmore
+			txt lang(name(tc) + "は収容所を去った。", name(tc) + " left this camp...")
+			chara_vanquish tc
+			goto *chat_end
+		}
+		goto *chat_end
+	}
+	if ( chatval == 134 ) {
+		buff = lang("えっ。", "Really?!")
+		chatList 0, lang("冗談だよ", "It's a joke.")
+		chatList 1, lang("さようなら", "Bye bye.")
+		chatesc = 1
+		gosub *chat_select
+		if ( chatval == 1 ) {
+			cdata(CDATA_HP, tc) = 1
+			snd SOUNDLIST_ATKSWORD
+			txtef COLOR_RED
+			txt lang(" *ブシュッ* ", "*Gash*")
+			gdata(GDATA_DMG_TYPE) = 2
+			txt3rd = 1
+			txt lang(name(cc) + "は" + name(tc) + "の首をちょんぎり", name(cc) + " cut" + _s(cc) + " " + name(tc) + your(tc) + " head and")
+			dmghp tc, cdata(CDATA_MAX_HP, tc), DAMAGE_FROM_CHARA, SKILL_SPACT_DECAPITATION
+			if ( cdata(CDATA_EXIST, tc) != CHAR_STATE_DEAD ) {
+				cdata(CDATA_EXIST, tc) = CHAR_STATE_DEAD
+			}
+			await 100
+			snd SOUNDLIST_ATK_DARK
+			repeat 245
+				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+					continue
+				}
+				if ( cbit(CHARA_BIT_LABOR_CAMP, cnt) != TRUE ) {
+					continue
+				}
+				dmgcon cnt, CONDITION_FEAR, limit(1000 - cdata(CDATA_MASTER_SERVANT, cnt), 1, 1000)
+				modimp2 cnt, 30
+				modimp cnt, -30
+			loop
+		}
+		goto *chat_end
+	}
 	if ( chatval == 96 ) {
 		tcbk = tc
 		invsubroutine = 1
@@ -21232,7 +21385,7 @@
 		gdata(GDATA_RETURN_AREA) = gdata(GDATA_AREA), gdata(GDATA_LEVEL), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
 		gdata(GDATA_TELEPORT_AREA) = AREA_SHELTER
 		gdata(GDATA_TELEPORT_LEVEL) = 1
-		levelexitby = 2
+		levelexitby = MAP_EXIT_TELEPORT
 		chatteleport = 1
 		snd SOUNDLIST_EXITMAP1
 		goto *chat_end
@@ -22057,7 +22210,7 @@
 			}
 			gdata(GDATA_TELEPORT_AREA) = adata(ADATA_PARENT, chatval)
 			gdata(GDATA_TELEPORT_LEVEL) = 1
-			levelexitby = 4
+			levelexitby = MAP_EXIT_NORMAL
 			prevsekai = gdata(GDATA_WORLD)
 			gdata(GDATA_WORLD_RENEW) = 1
 			gdata(GDATA_WORLD) = adata(ADATA_PARENT, chatval)
@@ -22476,7 +22629,7 @@
 			}
 			gdata(GDATA_TELEPORT_AREA) = AREA_LOST_YLVA
 			gdata(GDATA_TELEPORT_LEVEL) = 1
-			levelexitby = 4
+			levelexitby = MAP_EXIT_NORMAL
 			prevsekai = gdata(GDATA_WORLD)
 			gdata(GDATA_WORLD_RENEW) = 1
 			gdata(GDATA_WORLD) = AREA_LOST_YLVA
@@ -23130,7 +23283,7 @@
 		goto *chat_default
 	}
 	if ( evid() == EVENT_SHOP_WANDER ) {
-		levelexitby = 4
+		levelexitby = MAP_EXIT_NORMAL
 		chatteleport = 1
 		snd SOUNDLIST_EXITMAP1
 	}
@@ -23345,7 +23498,7 @@
 	gdata(GDATA_RETURN_AREA) = gdata(GDATA_AREA), gdata(GDATA_LEVEL), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
 	gdata(GDATA_TELEPORT_AREA) = AREA_QUEST
 	gdata(GDATA_TELEPORT_LEVEL) = 1
-	levelexitby = 2
+	levelexitby = MAP_EXIT_TELEPORT
 	chatteleport = 1
 	goto *chat_end
 
@@ -24150,7 +24303,7 @@
 				pos wx + 32, wy + 310
 				mes "" + cnvdate(cdata(CDATA_HIRE_DATE, tc), 2)
 			}
-			if ( tc < MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_LIVESTOCK, tc) == 1 ) {
+			if ( tc < MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_LIVESTOCK, tc) == 1 | cbit(CHARA_BIT_LABOR_CAMP, tc) == TRUE ) {
 				s = _impressionb(implevel2(cdata(CDATA_MASTER_SERVANT, tc)))
 				if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-11) ) {
 					s = _impressionb1(implevel2(cdata(CDATA_MASTER_SERVANT, tc)))

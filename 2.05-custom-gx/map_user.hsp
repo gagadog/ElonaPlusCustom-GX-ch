@@ -33,7 +33,7 @@
 *building_new
 	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_PROPERTY_TRANSFER ) {
 		if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
-			if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CROP | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_MUSEUM | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_SHOP | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_STORAGE_HOUSE | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_DISCARDED_RANCH | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_DUNGEON ) {
+			if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CROP | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CAMP | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_MUSEUM | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_SHOP | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_STORAGE_HOUSE | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_DISCARDED_RANCH | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_DUNGEON ) {
 				item_separate ci
 				inv(INV_ITEM_PARAM2, ci) = gdata(GDATA_AREA)
 				txt lang("物件No" + inv(INV_ITEM_PARAM2, ci) + "を登録" + adata(ADATA_ARENA_WIN, gdata(GDATA_AREA)) + "した。", "Property No. " + inv(INV_ITEM_PARAM2, ci) + " has been registered. (" + adata(ADATA_ARENA_WIN, gdata(GDATA_AREA)) + ")")
@@ -101,7 +101,7 @@
 		gosub *game_ctrlFile
 		mid = midbk
 		gosub *world_refresh
-		levelexitby = 2
+		levelexitby = MAP_EXIT_TELEPORT
 		gdata(GDATA_TELEPORT_AREA) = AREA_HOME
 		gdata(GDATA_TELEPORT_LEVEL) = 1
 		gdata(GDATA_WORLD_X) = adata(ADATA_X, AREA_HOME)
@@ -120,7 +120,7 @@
 		doukutu = 100
 		gosub *setHome
 		gosub *world_refresh
-		levelexitby = 2
+		levelexitby = MAP_EXIT_TELEPORT
 		gdata(GDATA_TELEPORT_AREA) = AREA_HOME
 		gdata(GDATA_TELEPORT_LEVEL) = 1
 		gdata(GDATA_WORLD_X) = adata(ADATA_X, AREA_HOME)
@@ -143,7 +143,7 @@
 		adata(ADATA_Y, bukken) = cdata(CDATA_Y, CHARA_PLAYER)
 		adata(ADATA_PARENT, bukken) = gdata(GDATA_WORLD)
 		gosub *world_refresh
-		levelexitby = 2
+		levelexitby = MAP_EXIT_TELEPORT
 		gdata(GDATA_TELEPORT_AREA) = bukken
 		gdata(GDATA_TELEPORT_LEVEL) = 1
 		gdata(GDATA_WORLD_X) = adata(ADATA_X, bukken)
@@ -176,6 +176,12 @@
 		adata(ADATA_ICON, p) = xy2pic(19, 4)
 		adata(ADATA_FIELD, p) = 1
 		s = lang("博物館", "museum")
+	}
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_CAMP ) {
+		adata(ADATA_ID, p) = AREA_CAMP
+		adata(ADATA_ICON, p) = xy2pic(29, 4)
+		adata(ADATA_FIELD, p) = 1
+		s = lang("収容所", "camp")
 	}
 	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DEED_SHOP ) {
 		adata(ADATA_ID, p) = AREA_SHOP
@@ -299,6 +305,10 @@
 	}
 	txt lang(mapname(gdata(GDATA_AREA)) + "には" + p + "個のアイテムと" + p(1) + "個の家具がある(アイテム最大" + p(2) + "個) ", "There are " + p + " items and " + p(1) + " furniture in " + mapname(gdata(GDATA_AREA)) + ".(Max: " + p(2) + ") ")
 	txtmore
+	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CAMP ) {
+		txtef COLOR_YELLOW2
+		txt lang("現在の労働強度は" + adata(ADATA_LABOR_CAMP_TOIL_LEVEL, gdata(GDATA_AREA)) + "、溜まっている労働エナジーは" + adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) + "だ。", "Current Toil-Lv is " + adata(ADATA_LABOR_CAMP_TOIL_LEVEL, gdata(GDATA_AREA)) + ", Toil-Energy is " + adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) + ".")
+	}
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_SHOP ) {
 		if ( adata(ADATA_SHOP_TYPE, gdata(GDATA_AREA)) == SHOP_TYPE_GOODS ) {
 			shops = lang("何でも屋", "Goods shop")
@@ -451,6 +461,12 @@
 		else {
 			promptAdd lang("生産防止コード解除", "Cancel production-prevent code"), "null", 22
 		}
+	}
+	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CAMP ) {
+		promptAdd lang("檻から出して収容", "Contain a inmate"), "null", 24
+		promptAdd lang("収容者の移動", "Move a inmate"), "null", 3
+		promptAdd lang("労働強度の変更", "Change Toil-Lv"), "null", 25
+		promptAdd lang("労働エナジー交換", "Exchange Toil-Energy"), "null", 26
 	}
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_DISCARDED_RANCH ) {
 		promptAdd lang("ペットを放す", "Release ally"), "null", 8
@@ -1056,6 +1072,222 @@
 			cell_refresh cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
 		}
 		goto *home_resetTargetLoc
+		_switch_sw++
+	}
+	if ( _switch_val == 24 | _switch_sw ) {
+		_switch_sw = 0
+		pet = 0
+		repeat 245
+			if ( cbit(CHARA_BIT_LABOR_CAMP, cnt) == TRUE ) {
+				pet++
+			}
+		loop
+		if ( pet >= 30 ) {
+			snd SOUNDLIST_FAIL1
+			txt lang("30体までしか収容できない。", "You cannot contain more than 30 in this camp.")
+			goto *com_home_SWEND1
+		}
+		allyctrl = 9
+		gosub *com_ally
+		if ( stat != (-1) ) {
+			c = stat
+			snd SOUNDLIST_OK1
+			txtnew
+			cdata(CDATA_X_ORG, c) = cdata(CDATA_X, c)
+			cdata(CDATA_Y_ORG, c) = cdata(CDATA_Y, c)
+			if ( cbit(CHARA_BIT_BODYGUARD, c) != FALSE | cbit(CHARA_BIT_GUARD_TEMP, c) != FALSE ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("護衛対象は放せない。", "You can not contain escort target in this camp.")
+				goto *com_home_SWEND1
+			}
+			cbitmod CHARA_BIT_LOCKED_UP, c, FALSE
+			cbitmod CHARA_BIT_LABOR_CAMP, c, TRUE
+			flt
+			itemcreate -1, ITEM_ID_FLOAT_CAGE, cdata(CDATA_X, c), cdata(CDATA_Y, c), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			snd SOUNDLIST_ENC
+			txt lang(cdatan(CDATAN_NAME, c) + "を収容した。", cdatan(CDATAN_NAME, c) + " stay" + _s(c) + " at this camp.")
+			if ( cbit(CHARA_BIT_PCC, c) == TRUE ) {
+				txtef COLOR_YELLOW
+				txtmore
+				txt lang(cdatan(CDATAN_NAME, c) + "は元々の姿に着替えた。", cdatan(CDATAN_NAME, c) + " changed to original cloth.")
+				cbitmod CHARA_BIT_PCC, c, FALSE
+			}
+			if ( cdata(CDATA_EXIST, c) != CHAR_STATE_DEAD ) {
+				if ( cdatan(CDATAN_RACE, c) == "servant" ) {
+					gdata(GDATA_ACTIVE_GOD_PETS)++
+				}
+			}
+			cdata(CDATA_AREA, c) = gdata(GDATA_AREA)
+			relocate_chara c, -1
+			cdata(CDATA_RELATION, c) = RELATION_DISLIKE
+			cdata(CDATA_RELATION_ORG, c) = RELATION_DISLIKE
+		}
+		goto *com_home_SWEND1
+		_switch_sw++
+	}
+	if ( _switch_val == 25 | _switch_sw ) {
+		_switch_sw = 0
+		txtsetwlevel 5
+		repeat 5
+			promptl(0, promptmax) = s(cnt), key_select(cnt), "" + promptmax
+			promptmax++
+		loop
+		val = promptx, prompty, 450 - 100 * en, 1
+		gosub *prompt_key
+		if ( stat == 0 ) {
+			gosub *screen_draw
+			goto *pc_turn
+		}
+		if ( rtval == 0 ) {
+			gosub *screen_draw
+			goto *pc_turn
+		}
+		snd SOUNDLIST_ENC
+		if ( rtval == 1 ) {
+			adata(ADATA_LABOR_CAMP_TOIL_LEVEL, gdata(GDATA_AREA)) = 0
+		}
+		if ( rtval == 2 ) {
+			adata(ADATA_LABOR_CAMP_TOIL_LEVEL, gdata(GDATA_AREA)) = 1
+		}
+		if ( rtval == 3 ) {
+			adata(ADATA_LABOR_CAMP_TOIL_LEVEL, gdata(GDATA_AREA)) = 2
+		}
+		if ( rtval == 4 ) {
+			adata(ADATA_LABOR_CAMP_TOIL_LEVEL, gdata(GDATA_AREA)) = 3
+		}
+		goto *com_home_SWEND1
+		_switch_sw++
+	}
+	if ( _switch_val == 26 | _switch_sw ) {
+		_switch_sw = 0
+		txtsetwpoint 9
+		repeat 9
+			promptl(0, promptmax) = s(cnt), key_select(cnt), "" + promptmax
+			promptmax++
+		loop
+		val = promptx, prompty, 450 - 50 * en, 1
+		gosub *prompt_key
+		if ( stat == 0 ) {
+			gosub *screen_draw
+			goto *pc_turn
+		}
+		if ( rtval == 0 ) {
+			gosub *screen_draw
+			goto *pc_turn
+		}
+		snd SOUNDLIST_DING3
+		if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) > 100000 ) {
+			adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) = 100000
+		}
+		if ( rtval == 1 ) {
+			if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) < 200 ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("労働エナジーが足りない…", "You don't have enough Toil-Energy...")
+				goto *com_home_SWEND1
+			}
+			txt lang("何かが足元に転がってきた。", "Something is put on the ground.")
+			adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) -= 200
+			flt
+			itemcreate -1, ITEM_ID_FLOAT_CAGE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 3
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+		}
+		if ( rtval == 2 ) {
+			if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) < 300 ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("労働エナジーが足りない…", "You don't have enough Toil-Energy...")
+				goto *com_home_SWEND1
+			}
+			txt lang("何かが足元に転がってきた。", "Something is put on the ground.")
+			adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) -= 300
+			flt
+			itemcreate -1, ITEM_ID_SLAVE_SPINNER, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			flt
+			itemcreate -1, ITEM_ID_SLAVE_WHEEL, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+		}
+		if ( rtval == 3 ) {
+			if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) < 600 ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("労働エナジーが足りない…", "You don't have enough Toil-Energy...")
+				goto *com_home_SWEND1
+			}
+			txt lang("何かが足元に転がってきた。", "Something is put on the ground.")
+			adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) -= 600
+			repeat 10
+				flt
+				itemcreate -1, ITEM_ID_BOTTLE_DYE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			loop
+		}
+		if ( rtval == 4 ) {
+			if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) < 1000 ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("労働エナジーが足りない…", "You don't have enough Toil-Energy...")
+				goto *com_home_SWEND1
+			}
+			txt lang("何かが足元に転がってきた。", "Something is put on the ground.")
+			adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) -= 1000
+			repeat 10
+				flt
+				itemcreate -1, ITEM_ID_DISC, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			loop
+		}
+		if ( rtval == 5 ) {
+			if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) < 1500 ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("労働エナジーが足りない…", "You don't have enough Toil-Energy...")
+				goto *com_home_SWEND1
+			}
+			txt lang("何かが足元に転がってきた。", "Something is put on the ground.")
+			adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) -= 1500
+			repeat 10
+				flt
+				itemcreate -1, ITEM_ID_SPIRITIUM, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			loop
+		}
+		if ( rtval == 6 ) {
+			if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) < 2000 ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("労働エナジーが足りない…", "You don't have enough Toil-Energy...")
+				goto *com_home_SWEND1
+			}
+			txt lang("何かが足元に転がってきた。", "Something is put on the ground.")
+			adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) -= 2000
+			flt
+			itemcreate -1, ITEM_ID_SURVIVABILITY_EXTENDER_X, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			flt
+			itemcreate -1, ITEM_ID_SURVIVABILITY_EXTENDER_Y, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+		}
+		if ( rtval == 7 ) {
+			if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) < 3000 ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("労働エナジーが足りない…", "You don't have enough Toil-Energy...")
+				goto *com_home_SWEND1
+			}
+			txt lang("何かが足元に転がってきた。", "Something is put on the ground.")
+			adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) -= 3000
+			flt
+			itemcreate -1, ITEM_ID_BOTTLE_WATER, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 2
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+		}
+		if ( rtval == 8 ) {
+			if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) < 10000 ) {
+				snd SOUNDLIST_FAIL1
+				txt lang("労働エナジーが足りない…", "You don't have enough Toil-Energy...")
+				goto *com_home_SWEND1
+			}
+			adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) -= 10000
+			mat(1) += 10
+			txtef COLOR_YELLOW
+			txt lang("マテリアル:カジノチップを10個受け取った。", "You get 10 Casino chips.")
+		}
+		goto *com_home_SWEND1
 		_switch_sw++
 	}
 	if ( _switch_val == 5 | _switch_sw ) {

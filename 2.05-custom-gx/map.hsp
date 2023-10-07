@@ -517,6 +517,15 @@
 		if ( cnt != CHARA_PLAYER ) {
 			cdata(CDATA_CAN_REVIVE, cnt) = 1
 		}
+		if ( cbit(CHARA_BIT_LIVESTOCK, cnt) != TRUE ) {
+			if ( cbit(CHARA_BIT_SHADOW_CLONE, cnt) == TRUE ) {
+				if ( cnt >= 16 ) {
+					if ( cbit(CHARA_BIT_NECRO, cnt) == TRUE ) {
+						chara_vanquish cnt
+					}
+				}
+			}
+		}
 		cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = 0
 		cbitmod CHARA_BIT_SHADOW_CLONE, cnt, FALSE
 		cbitmod CHARA_BIT_MAGNETISM_S_POLE, cnt, FALSE
@@ -532,7 +541,7 @@
 				cdata(CDATA_POWER_GAUGE, cnt) = 3
 			}
 		}
-		cdata(CDATA_DRAIN_HP, cnt) = 0
+		cdata(CDATA_GUARD_BREAK, cnt) = 0
 		gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) = 0
 		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 			continue
@@ -687,7 +696,7 @@
 			mode = MODELIST_MAIN
 		}
 	}
-	if ( adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_SHOP & adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_RANCH ) {
+	if ( adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_SHOP & adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_RANCH & adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_CAMP ) {
 		adata(ADATA_SHOP_SALE_RESTRICTION, gdata(GDATA_AREA)) = 0
 	}
 	gdata(GDATA_AREA_PREV) = gdata(GDATA_AREA)
@@ -794,7 +803,7 @@
 		mapstarty = gdata(GDATA_RETURN_Y)
 		gdata(GDATA_LEVEL_START_ON) = 7
 		fixstart = 1
-		levelexitby = 5
+		levelexitby = MAP_EXIT_NONE
 	}
 	if ( levelexitby == 4 ) {
 		cell_featread cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
@@ -1570,6 +1579,16 @@
 				refreshspeed cnt
 			}
 		loop
+	}
+	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CAMP ) {
+		map_initcustom "camp"
+		mdata(MDATA_MUSIC) = MUSICLIST_MCTOWN3
+		map_placeplayer
+		mdata(MDATA_WALL) = 0
+		flt
+		itemcreate -1, ITEM_ID_RED_BOOK, 22, 18, 0
+		inv(INV_ITEM_PARAM1, ci) = 32
+		mdata(MDATA_MAX_INV) = 100
 	}
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_MUSEUM ) {
 		map_initcustom "museum_1"
@@ -3896,6 +3915,20 @@
 				loop
 			}
 		}
+		if ( encounter == ENCOUNTER_ELEA_REPARATION ) {
+			mdata(MDATA_MODERATE_CROWD) = 0
+			flt
+			initlv = encounterlv
+			characreate -1, CREATURE_ID_INSTIGATOR_OF_ELEA, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
+			repeat 6 + rnd(6)
+				flt
+				initlv = encounterlv + rnd(10)
+				characreate -1, 1082 + rnd(3), 14, 11
+				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+				cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+			loop
+			evadd EVENT_ELEA_REPARATION
+		}
 		if ( encounter == ENCOUNTER_ROGUE ) {
 			mdata(MDATA_MODERATE_CROWD) = 0
 			flt
@@ -4176,11 +4209,29 @@
 					flt
 					characreate -1, CREATURE_ID_MESHERA_PLANT, 16, 5
 					cdata(CDATA_AI_CALM, rc) = 3
-					repeat 7
+					repeat 4
 						flt
 						characreate -1, CREATURE_ID_INFECTED_YERLES_SOLDIER, 16, 5
 						cdata(CDATA_AI_CALM, rc) = 3
 					loop
+					flt
+					characreate -1, CREATURE_ID_ANABOLIC_RESISTANCE, 16, 8
+					cdata(CDATA_AI_CALM, rc) = 4
+					cdata(CDATA_PIC, rc) = 1129 + 16 * 1000
+					cdata(CDATA_CHARA_PIC, rc) = xy2pic(1, 0)
+					cdatan(CDATAN_NAME, rc) = lang("メシェーラ・ギルク", "meshera Gilk")
+					flt
+					characreate -1, CREATURE_ID_ANABOLIC_RESISTANCE, 16, 8
+					cdata(CDATA_AI_CALM, rc) = 4
+					cdata(CDATA_PIC, rc) = 1129 + 17 * 1000
+					cdata(CDATA_CHARA_PIC, rc) = xy2pic(1, 0)
+					cdatan(CDATAN_NAME, rc) = lang("メシェーラ・エルマナ", "meshera Hermana")
+					flt
+					characreate -1, CREATURE_ID_ANABOLIC_RESISTANCE, 16, 8
+					cdata(CDATA_AI_CALM, rc) = 4
+					cdata(CDATA_PIC, rc) = 1129 + 19 * 1000
+					cdata(CDATA_CHARA_PIC, rc) = xy2pic(1, 0)
+					cdatan(CDATAN_NAME, rc) = lang("メシェーラ・ライモンド", "meshera Raimond")
 				}
 				proc "Rehmido1"
 				x = 16
@@ -9569,7 +9620,7 @@
 			gdata(GDATA_WORLD_X) = adata(ADATA_X, AREA_HOME)
 			gdata(GDATA_WORLD_Y) = adata(ADATA_Y, AREA_HOME)
 			gdata(GDATA_AREA_PREV) = AREA_WILDERNESS
-			levelexitby = 4
+			levelexitby = MAP_EXIT_NORMAL
 			goto *map_init
 		}
 	}
@@ -10571,17 +10622,31 @@
 				characreate -1, CREATURE_ID_ROGUE_BOSS, 29, 10
 				cdatan(CDATAN_NAME, rc) = lang("『海賊船長』", "<the pirate captain>")
 				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
-				repeat 6 + rnd(6)
+				repeat 3 + rnd(3)
 					flt
 					initlv = encounterlv + rnd(10)
 					characreate -1, CREATURE_ID_PIRATE, 25, 10
 					cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
 					cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
 				loop
-				repeat 6 + rnd(6)
+				repeat 3 + rnd(3)
 					flt
 					initlv = encounterlv + rnd(10)
-					characreate -1, CREATURE_ID_PIRATE, 15, 7
+					characreate -1, CREATURE_ID_PIRATE_MUSKETEER, 25, 10
+					cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+					cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+				loop
+				repeat 3 + rnd(3)
+					flt
+					initlv = encounterlv + rnd(10)
+					characreate -1, CREATURE_ID_PIRATE_MUSKETEER, 15, 7
+					cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+					cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+				loop
+				repeat 3 + rnd(3)
+					flt
+					initlv = encounterlv + rnd(10)
+					characreate -1, CREATURE_ID_ROUGH_PIRATE, 15, 7
 					cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
 					cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
 				loop
@@ -12199,12 +12264,43 @@
 							continue
 						}
 						if ( cbit(CHARA_BIT_BRUSHED, cnt) == 1 ) {
-							cbitmod CHARA_BIT_BRUSHED, cnt, 0
+							cbitmod CHARA_BIT_BRUSHED, cnt, FALSE
 						}
 						if ( cbit(CHARA_BIT_SQUEEZED, cnt) == 1 ) {
-							cbitmod CHARA_BIT_SQUEEZED, cnt, 0
+							cbitmod CHARA_BIT_SQUEEZED, cnt, FALSE
 						}
 					loop
+				}
+				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CAMP ) {
+					work = 0
+					cost = adata(ADATA_EXTRA_MEDAL, gdata(GDATA_AREA)) * adata(ADATA_EXTRA_MEDAL, gdata(GDATA_AREA)) * adata(ADATA_EXTRA_MEDAL, gdata(GDATA_AREA))
+					repeat 245
+						if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+							continue
+						}
+						if ( cbit(CHARA_BIT_LABOR_CAMP, cnt) != TRUE ) {
+							continue
+						}
+						if ( cost > 0 ) {
+							work += cost * 2
+							if ( sorg(SKILL_ATTR_LIFE, cnt) <= cost ) {
+								evadd EVENT_SQUEEZE, cnt
+							}
+							else {
+								skillmod SKILL_ATTR_LIFE, cnt, -cost * 1000
+							}
+						}
+						if ( cdata(CDATA_MASTER_SERVANT, cnt) > 0 ) {
+							work += cdata(CDATA_MASTER_SERVANT, cnt) / 10 + 1
+						}
+					loop
+					adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) += work
+					if ( adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) > 100000 ) {
+						adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) = 100000
+					}
+					txtmore
+					txtef COLOR_YELLOW2
+					txt lang("今回の労働エナジーの生産量は" + work + "のようだ。[現在の労働エナジー：" + adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) + "]", "It seems that " + work + " Toil-Energy has been produced. Current Toil-Energy is " + adata(ADATA_LABOR_CAMP_TOIL_ENERGY, gdata(GDATA_AREA)) + ".")
 				}
 				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CROP ) {
 					repeat mdata(MDATA_HEIGHT)
@@ -12352,6 +12448,9 @@
 		mdata(MDATA_RENEW) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 120
 		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CROP | gdata(GDATA_AREA) == AREA_HOME ) {
 			mdata(MDATA_RENEW) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 24
+		}
+		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CAMP ) {
+			mdata(MDATA_RENEW) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 72
 		}
 	}
 	if ( gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 >= mdata(MDATA_RENEW_MINOR) ) {

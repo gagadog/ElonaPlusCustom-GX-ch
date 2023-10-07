@@ -1986,6 +1986,68 @@
 	loop
 	return
 
+#deffunc txtsetwpoint int txtsetwpoint_count
+	repeat 9
+		i = cnt
+		p(cnt) = p(i)
+		p(i) = cnt
+	loop
+	repeat txtsetwpoint_count
+		if ( p(cnt) == 0 ) {
+			s(cnt) = lang("キャンセル", "Cancel")
+		}
+		if ( p(cnt) == 1 ) {
+			s(cnt) = lang("浮遊檻３個・・・・・・・・・・・200労働エナジー", "3 float cages <200 Toil-Energy>")
+		}
+		if ( p(cnt) == 2 ) {
+			s(cnt) = lang("奴隷グルグル＆奴隷バタバタ・・・300労働エナジー", "slave spinner and wheel <300 Toil-Energy>")
+		}
+		if ( p(cnt) == 3 ) {
+			s(cnt) = lang("染料１０種・・・・・・・・・・・600労働エナジー", "10 types of dye <600 Toil-Energy>")
+		}
+		if ( p(cnt) == 4 ) {
+			s(cnt) = lang("音楽ディスク１０種・・・・・・・1000労働エナジー", "10 types of music disc <1000 Toil-Energy>")
+		}
+		if ( p(cnt) == 5 ) {
+			s(cnt) = lang("スピリチウム１０種・・・・・・・1500労働エナジー", "10 types of spiritium <1500 Toil-Energy>")
+		}
+		if ( p(cnt) == 6 ) {
+			s(cnt) = lang("Suエクステンダー２種・・・・・・2000労働エナジー", "SurvivabilityEXtenderXandY <2000 Toil-Energy>")
+		}
+		if ( p(cnt) == 7 ) {
+			s(cnt) = lang("水２服・・・・・・・・・・・・・3000労働エナジー", "2 bottles of water <3000 Toil-Energy>")
+		}
+		if ( p(cnt) == 8 ) {
+			s(cnt) = lang("カジノチップ１０枚・・・・・・・1万労働エナジー", "10 Casino chips <10000 Toil-Energy>")
+		}
+	loop
+	return
+
+#deffunc txtsetwlevel int txtsetwlevel_count
+	repeat 5
+		i = cnt
+		p(cnt) = p(i)
+		p(i) = cnt
+	loop
+	repeat txtsetwlevel_count
+		if ( p(cnt) == 0 ) {
+			s(cnt) = lang("キャンセル", "Cancel")
+		}
+		if ( p(cnt) == 1 ) {
+			s(cnt) = lang("強度０：収容者の自主性に任せる", "<Level 0> work if they want to")
+		}
+		if ( p(cnt) == 2 ) {
+			s(cnt) = lang("強度１：時々休ませながら労働させる", "<Level 1> work with occasional breaks")
+		}
+		if ( p(cnt) == 3 ) {
+			s(cnt) = lang("強度２：ほとんど休ませずに労働させる", "<Level 2> work with almost no rest")
+		}
+		if ( p(cnt) == 4 ) {
+			s(cnt) = lang("強度３：使い潰すつもりで労働させる", "<Level 3> work until they collapse")
+		}
+	loop
+	return
+
 #deffunc txtsetabyss int txtsetabyss_arg1
 	repeat 10
 		i = cnt
@@ -2506,6 +2568,9 @@
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_MUSEUM ) {
 		s = lang("博物館", "My Museum")
 	}
+	if ( adata(ADATA_ID, mapname_mapid) == AREA_CAMP ) {
+		s = lang("収容所", "Camp")
+	}
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_SHOP ) {
 		s = lang("店", "Shop")
 	}
@@ -2573,10 +2638,10 @@
 		s = lang("ﾐﾉﾀｳﾛｽの巣", "the Minotaur's Nest")
 	}
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_JAIL ) {
-		s = lang("牢獄", "Jail"), lang("収容所がある。入り口は固く閉ざされている。", "You see a prison. The entrance is strictly closed.")
+		s = lang("牢獄", "Prison"), lang("収容所がある。入り口は固く閉ざされている。", "You see a prison. The entrance is strictly closed.")
 	}
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_JAIL2 ) {
-		s = lang("牢獄", "Jail"), lang("収容所がある。入り口は固く閉ざされている。", "You see a prison. The entrance is strictly closed.")
+		s = lang("牢獄", "Prison"), lang("収容所がある。入り口は固く閉ざされている。", "You see a prison. The entrance is strictly closed.")
 	}
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_NT_SOUTH_BORDER ) {
 		s = lang("ティリス関所北側", "North Tyris south border")
@@ -7345,6 +7410,10 @@
 		}
 		if ( cdata(CDATA_ID, tc) == CREATURE_ID_DETECTIVE | cdata(CDATA_ID, tc) == CREATURE_ID_WEREWOLF_DETECTIVE ) {
 			p = instr(buff, 0, "%DETECTIVE," + lang("JP", "EN"))
+			break
+		}
+		if ( cbit(CHARA_BIT_LABOR_CAMP, tc) == TRUE & gdata(GDATA_AREA) != AREA_SHOW_HOUSE & cdata(CDATA_MASTER_SERVANT, tc) < 100 ) {
+			p = instr(buff, 0, "%INMATE," + lang("JP", "EN"))
 			break
 		}
 		if ( gdata(GDATA_AREA) == AREA_WAR_GROUND ) {

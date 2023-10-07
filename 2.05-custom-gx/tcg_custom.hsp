@@ -148,7 +148,7 @@
 					if ( card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_ANCIENT_COFFIN & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_CURSED_COFFIN ) { continue }
 				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_MESHERA ) {
-					if ( card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_MESHERA_BETA & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_MESHERA_DELTA & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_MESHERA_GAMMA ) { continue }
+					if ( card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_MESHERA_BETA & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_MESHERA_DELTA & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_MESHERA_GAMMA & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_BOUNCTERIA & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_MESHERA_UNFINISHED & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_MONSTER_BACTERIA & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_ANABOLIC_RESISTANCE ) { continue }
 				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_GOD ) {
 					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "god" & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "catgod" & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "doggod" & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "machinegod" & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "undeadgod" ) { continue }
@@ -780,7 +780,13 @@
 				gosub *db_card_custom
 				cardno = dbid
 				if ( cardrefdomain != (rnddomain@tcg - 1) & rnddomain@tcg != 0 ) { continue }
-				if ( cardrefrace != rndrace@tcg & rndrace@tcg != "" ) { continue }
+				if ( cardrefrace != rndrace@tcg & rndrace@tcg != "" ) { 
+					if ( dbid == CREATURE_ID_INSTIGATOR_OF_ELEA ) {
+						if ( rndrace@tcg != "elea" ) { continue }
+					} else {
+						continue
+					}
+				}
 				if ( cardrefclass != rndclass@tcg & rndclass@tcg != "" ) { continue }
 				if ( cardrefsex != rndsex@tcg & rndsex@tcg != "" ) { continue }
 				if ( cardreflvl > rndlvl@tcg & rndlvl@tcg != 0 ) { continue }
@@ -1098,6 +1104,7 @@
 	cardrefrace = ""
 	cardrefclass = ""
 	cardrefsex = ""
+	cardrefbits = ""
 	cardrefcost = 1
 	cardrefattack = 1
 	cardrefhp = 1
@@ -3045,6 +3052,50 @@
 		return 1
 	}
 	// elea
+	if ( dbid == CREATURE_ID_MOB_OF_ELEA ) {
+		cardrefrace = "elea"
+		cardrefclass = "predator"
+		cardrefsex = "random"
+		cardrefpic2 = xy2pic(18, 2) + 3 * 1000
+		cardreflvl = 55
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 2
+		cardrefcost = 3
+		cardrefattack = 1
+		cardrefhp = 5
+		cardrefskillid = TCG_EFF_ELEAMOB
+		cardrefbits = "73,83"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_AVENGER_OF_ELEA ) {
+		cardrefrace = "elea"
+		cardrefclass = "wizard"
+		cardrefsex = "random"
+		cardrefpic2 = xy2pic(9, 1) + 7 * 1000
+		cardreflvl = 34
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 2
+		cardrefcost = 2
+		cardrefattack = 1
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_ELEAMOB
+		cardrefbits = "73,83"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_WANDERER_OF_ELEA ) {
+		cardrefrace = "elea"
+		cardrefclass = "priest"
+		cardrefsex = "random"
+		cardreflvl = 22
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 2
+		cardrefcost = 1
+		cardrefattack = 2
+		cardrefhp = 1
+		cardrefskillid = TCG_EFF_ELEAWANDERER
+		cardrefbits = "73,83"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_ALFRED_THE_CANGNAN_WIND ) {
 		cardrefrace = "elea"
 		cardrefclass = "warmage"
@@ -5181,8 +5232,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 0
 		cardrefcost = 3
-		cardrefattack = 0
-		cardrefhp = 6
+		cardrefattack = 1
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_YERLESMESHERA
 		cardrefbits = "64"
 		return 1
@@ -5658,6 +5709,50 @@
 		return 1
 	}
 	// juere
+	if ( dbid == CREATURE_ID_ROUGH_PIRATE ) {
+		cardrefrace = "juere"
+		cardrefclass = "predator"
+		cardrefsex = "random"
+		cardrefpic2 = xy2pic(11, 2) + 3 * 1000
+		cardreflvl = 96
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 2
+		cardrefcost = 3
+		cardrefattack = 3
+		cardrefhp = 5
+		cardrefskillid = TCG_EFF_BATTLECRY_BLEEDALLENEMY
+		cardrefbits = "82"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_PIRATE_MUSKETEER ) {
+		cardrefrace = "juere"
+		cardrefclass = "gunner"
+		cardrefsex = "random"
+		cardreflvl = 85
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 2
+		cardrefcost = 3
+		cardrefattack = 5
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALRANDOMENEMY3DAMAGE
+		cardrefbits = "82"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_INSTIGATOR_OF_ELEA ) {
+		cardrefrace = "juere"
+		cardrefclass = "archer"
+		cardrefsex = "random"
+		cardrefpic2 = xy2pic(10, 34)
+		cardreflvl = 66
+		cardrefquality = FIX_QUALITY_UNIQUE
+		cardrefdomain = 4
+		cardrefcost = 5
+		cardrefattack = 1
+		cardrefhp = 1
+		cardrefskillid = TCG_EFF_ELEAINSTIGATOR
+		cardrefbits = ""
+		return 1
+	}
 	if ( dbid == CREATURE_ID_MITO_THE_SEMINAR_LECTURER ) {
 		cardrefrace = "juere"
 		cardrefclass = "thief"
@@ -7703,6 +7798,58 @@
 		return 1
 	}
 	// bacteria
+	if ( dbid == CREATURE_ID_ANABOLIC_RESISTANCE ) {
+		cardrefrace = "bacteria"
+		cardrefclass = "thief"
+		cardreflvl = 115
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 0
+		cardrefcost = 6
+		cardrefattack = 6
+		cardrefhp = 6
+		cardrefskillid = TCG_EFF_ANABOLICRESISTANCE
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_MONSTER_BACTERIA ) {
+		cardrefrace = "bacteria"
+		cardrefclass = "warrior"
+		cardreflvl = 74
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 0
+		cardrefcost = 3
+		cardrefattack = 4
+		cardrefhp = 5
+		cardrefskillid = TCG_EFF_MONSTERIA
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_MESHERA_UNFINISHED ) {
+		cardrefrace = "bacteria"
+		cardrefclass = "predator"
+		cardreflvl = 60
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 0
+		cardrefcost = 3
+		cardrefattack = 4
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_YERLESMESHERA
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_BOUNCTERIA ) {
+		cardrefrace = "bacteria"
+		cardrefclass = "predator"
+		cardreflvl = 41
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 0
+		cardrefcost = 1
+		cardrefattack = 2
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_BOUNCETERIA
+		cardrefbits = ""
+		return 1
+	}
 	if ( dbid == CREATURE_ID_UNIVERSE_INVADER ) {
 		cardrefrace = "bacteria"
 		cardrefclass = "gunner"

@@ -1069,9 +1069,19 @@
 				if ( rnd(3) == 0 ) { cardno = CREATURE_ID_MESHERA_BETA }
 			}
 			if ( cardno >= 0 ) {
+				evhpbk@tcg = card@tcg(TCG_CARD_HP, ac@tcg)
+				evatkbk@tcg = card@tcg(TCG_CARD_ATTACK, ac@tcg)
+				if ( effref@tcg(TCG_SKILL_POWER, aeff@tcg) == TCG_SKILL_FILTER_MESHERA ) { 
+					evhpbk@tcg += rnd(2)
+					evatkbk@tcg += rnd(2)
+				}
 				racebk@tcg = cardn@tcg(TCG_CARDN_REF_RACE, aeft@tcg)
 				create_card aeft@tcg, cardno
 				cardn@tcg(TCG_CARDN_REF_RACE, aeft@tcg) = racebk@tcg
+				card@tcg(TCG_CARD_REF_HP, ac@tcg) = evhpbk@tcg
+				card@tcg(TCG_CARD_HP, ac@tcg) = evhpbk@tcg
+				card@tcg(TCG_CARD_REF_ATTACK, ac@tcg) = evatkbk@tcg
+				card@tcg(TCG_CARD_ATTACK, ac@tcg) = evatkbk@tcg
 				cdbitmod TCG_BIT_FACE_UP, aeft@tcg, 1
 				if ( card@tcg(TCG_CARD_STATUS, aeft@tcg) != TCG_ACTION_NONE ) {
 					cdbitmod TCG_BIT_EXHAUSTED, aeft@tcg, 1
@@ -2058,6 +2068,12 @@
 					if ( cdbit(TCG_BIT_CITIZEN, clist@tcg(cnt, 1+ap@tcg)) ) {
 						x@tcg++
 					}
+				loop
+			}
+			if ( effref@tcg(TCG_SKILL_FILTER, aeff@tcg) == -14 ) { 
+				x@tcg = 0
+				repeat gravesum@tcg(ap@tcg)
+					if ( cdbit(TCG_BIT_ELEAREFUGEE, gravelist@tcg(cnt, ap@tcg)) ) { x@tcg++ }
 				loop
 			}
 			x@tcg *= effref@tcg(TCG_SKILL_POWER, aeff@tcg)

@@ -1587,6 +1587,9 @@ I will gratefully accept... I'll be counting on you, Duke Sevilis.
 {actor_5}	"Citizen,26"
 {actor_6}	"Citzen,84"
 {actor_7}	"Guard,18"
+{actor_8} "<Gilk> The Machine Lover,13"
+{actor_9} "<Hermana> The Ruin Destroyer,124"
+{actor_0} "<Raimond> Rock Shatterer,12"
 
 {mc}	"mcField3"
 {pic}	"bg24"
@@ -1637,6 +1640,33 @@ Y-yes...
 
 {chat_3}
 Good grief. Looks like we'll be sleeping outdoors again tonight.
+
+{fade}
+{mc}	"mcDungeon7"
+{pic}	"bg23"
+{fadein}
+
+
+{txt}
+Meanwhile - Rehmido Depth - 
+
+{chat_0}
+Well, well, well, but it's not easy being an advance surveyor. I wonder how far the main group has come now.
+
+{chat_9}
+I thought the adventurers were supposed to join us before the main group? They are a monster, isn't he? I wonder where they're wandering around.
+
+{chat_8}
+I was curious too, so I checked with the soldiers just now. According to the latest regular contact, the main army, including the general, is on the surface, and the security forces are taking over guarding the entrance. The general is acting alone and it's unclear where he is.
+
+{chat_9}
+The security unit is at Orville's place, isn't it? I wonder if it's safe to leave it to them.
+
+{chat_8}
+More importantly..! It's amazing that the autonomous combat communicator can communicate on time even inside ruins like this, isn't it? And it's legs are very sexy too!
+
+{chat_0}
+Huh, typical Gilk behaviour.
 
 {end}
 
@@ -1705,9 +1735,48 @@ Regardless, this is our chance. Let's go.
 {actor_3}	"<Lomias> The Messenger From Vindale,57"
 {actor_4}	"<Bethel> The White Hawk,50"
 {actor_5}	"<Heinrich> The Iron Carnel,44"
+{actor_6}	"Frontline Investigator,7"
+{actor_7} "<Gilk> The Machine Lover,13"
+{actor_8} "<Hermana> The Ruin Destroyer,124"
+{actor_9} "<Raimond> Rock Shatterer,12"
 
+{mc}	"mcDungeon7"
+{pic}	"bg28"
+
+{chat_6}
+This reaction... there is no doubt. This is the deepest level of the Rehmido ruins.
+
+{chat_9}
+After all, I guess this one got to the deepest level before the additional adventurers joined us.
+
+{chat_7}
+Is the legacy of the biochemical civilisation period lying beyond this door... that's exciting! But it would have been better if it was from a mechanical civilisation...
+
+{chat_6}
+No. The electrical system is dead and the door cannot be unlocked. The explosives have also been used up in the battle so far. We have to wait for the main army to arrive and destroy it with firepower...
+
+{mc}	"mcBattle1"
+
+{chat_8}
+Waiting in front of the treasure is outrageous! This lock... I'll bust it open! Let's go, old man!
+
+{chat_9}
+Oooooooooooo! Rock-crushing fist! Rock-breaking fist!
+
+{chat_8}
+Treasure, treasure, treasure, treasure, treasure! Treasure aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!
+
+{chat_7}
+They might tear Nefia to shreds this time.
+
+
+{fade}
 {mc}	"mcDungeon10"
 {pic}	"bg6"
+{fadein}
+
+{txt}
+Meanwhile - Rehmido 15th Floor - 
 
 {chat_4}
 What with this area? It looks like there was a large battle here recently...
@@ -1817,7 +1886,7 @@ Good work. Hoh... So we've got the jack-of-all-trades Liana, Zanan's White Hawk,
 That aside, why are you taking us further in? I thought for sure that you'd hand us over to your army on the surface.
 
 {chat_5}
-It's good to have an audience. We received a report some time ago that our investigation unit has managed to remove the lock on the lowest floor. This place has been sealed so tightly that not even greedy adventurers have spoiled its depths. Let's all observe what's down there, shall we?
+It's good to have an audience. We received a report some time ago that our investigation team has managed to remove the lock on the lowest floor. This place has been sealed so tightly that not even greedy adventurers have spoiled its depths. Let's all observe what's down there, shall we?
 
 {end}
 
@@ -1866,13 +1935,13 @@ General! We have an urgent message from the survey team!
 Damnit! The whole army's been killed. Our adventuring group is also in tatters, and now we're just sitting here waiting to be swallowed whole. We can't so much as move an inch forward.
 
 {chat_6}
-Elmana, give me 30 more seconds... I'll send them this data at least.
+Mr.Raimond has already been swallowed. Hermana, give me 30 more seconds... I'll send them this data at least.
 
 {chat_6}
 That thing was like a dried up stone at first. But then it swallowed one soldier after another and swelled, and in no time at all... the whole floor was covered with its spores...
 
 {chat_6}
-Elmana! Hey, answer me... ugh, damn it.... Oh, I'm also sinking... my body is melting... ah... so warm...
+Hermana! Hey, answer me... ugh, damn it.... Oh, I'm also sinking... my body is melting... ah... so warm...
 
 {chat_7}
 ...
@@ -1934,7 +2003,7 @@ What?! Alright, let's go. Sorry about this Saimore, but do you mind waiting in y
 Excuse me...
 
 {chat_3}
-（Oh, I didn't realize he was *that* Saimore. He's become much quieter. ...But no matter, he's just a guest now.)
+(Oh, I didn't realize he was *that* Saimore. He's become much quieter. ...But no matter, he's just a guest now.)
 
 {chat_3}
 Sir, there's one more piece of information I'd like to share with you.
@@ -1945,7 +2014,7 @@ Sir, there's one more piece of information I'd like to share with you.
 {actor_1}	"<Sevilis> The Fog of Derphy,59"
 {actor_2}	"<Halion> The Extremist,32"
 {actor_3}	"<Gowen> The Ruthless Shadow,177"
-{actor_4}   "<Zeilhern> The Extremist Counselor,176"
+{actor_4} "<Zeilhern> The Extremist Counselor,176"
 {actor_5}	"Elea Extremist,28"
 {actor_6}	"Elea Extremist,22"
 {actor_7}	"Elea Extremist,5"
@@ -2044,12 +2113,14 @@ Uoooo!
 {115}
 {actor_1}   "Unscrupulous Doctor <Dr. Gavela>,45"
 {actor_2}   "Assistant <Siphane>,120"
-{actor_3}   "<Girk> The Machine Lover,13"
-{actor_4}   "<Elmana> The Ruin Destroyer,124"
-{actor_5}   "<Girk> The Machine Lover, 159."
-{actor_6}   "<Elmana> The Ruin Destroyer, 159."
+{actor_3}   "<Gilk> The Machine Lover,13"
+{actor_4}   "<Hermana> The Ruin Destroyer,124"
+{actor_5}   "<Gilk> The Machine Lover, 159."
+{actor_6}   "<Hermana> The Ruin Destroyer, 159."
 {actor_7}   "Special Forces Commander <Milis>,113"
 {actor_8}   "Chief Developer <Dr. Gavela>,45"
+{actor_9}   "<Raimond> Rock Shatterer,12"
+{actor_0}   "<Raimond> Rock Shatterer,159"
 
 {mc} "mcUnrest2"
 {pic} "bg36"
@@ -2080,22 +2151,37 @@ Don't entrust it to someone like me of all people, you imbeciles...!
 {pic} "bg10"
 
 {chat_3}
-Hey, doc~ When you come back, show us the Yerleswood Mk2 a little more closely. Also, I'm curious about the fighter in the hangar.
+Hey, doc~ When you come back, show us the Yerleswood Mk2 a little more closely. 
+
+{chat_9}
+That mecha has some pretty sturdy-looking fists. I'd love to see how powerful its punches are.
+
+{chat_3}
+Also, also, I'm curious about the fighter in the hangar. It definitely had a Gattai ability, right?
 
 {chat_8}
 Fine, fine, fine. I'll show you as much as I can. But stop calling me "doc".
 
 {chat_3}
-Come on. Every time I see your face, I can' t help but want to call you "doc".
+Come on. Every time I see your face, I can' t help but want to call you "doc". Right? Mr Raimond?
+
+{chat_9}
+Gahahahahahha! I can't tell the difference between a doctor and a chief developer!
 
 {chat_4}
-That's why you're such a goddamned maniac. I don't know what's so great about mechas anyway. I'm more interested in the relics in those ruins.
+That's why you're such a goddamned guy. I don't know what's so great about mechas anyway. I'm more interested in the relics in those ruins.
 
 {chat_8}
 Why don't you try and treat things that aren't relics with a little more respect. And please, don't destroy the treasured relics of Rehm-ido.
 
+{chat_9} 
+I agree with you on that. Even for adventurer standard, Miss Hermana is too rough.
+
 {chat_4}
-Don't worry. After this mission, I'll be officially employed by Yerles. I'll be careful not to ruin my reputation before then!
+Don't worry. After this mission, I'll be officially hired by Yelles. He said he'll be careful not to affect his grade!
+
+{chat_4}
+Anyway! I'll be officially employed by Yerles. I'll be careful not to ruin my reputation before then!
 
 {chat_8}
 I hope so. Oh, yeah, another adventurer is supposed to join us later. He's a pretty good fighter, you know. You might want to finish your investigation before he takes all the credit.
@@ -2105,6 +2191,9 @@ All right, I'll be on the lookout for him. Well, I'll be off then, doc.
 
 {mc} "mcDungeon13"
 {pic} "bg29"
+
+{chat_0}
+Gah...aah...
 
 {chat_5}
 Hey, doc. What the hell happened to my body? A machine or something will fix me, right...?
@@ -2126,7 +2215,7 @@ I'm sorry... I will avenge you. With this mech I've created, I promise...
 ...Wha!? Must have been a bad dream. ...Damn.
 
 {chat_8}
-（This is it. The mission, and my revenge... I'll take it all into my own hands.)
+This is it. The mission, and my revenge... I'll take it all into my own hands.)
 
 {end}
 
@@ -5449,7 +5538,7 @@ In the shadow of the battle against them arose a certain group of people.
 They are said to have appeared with the ether wind and traveled through the land of Ylva.
 
 {txt}
-We called these people ――― adventurers.
+We called these people adventurers.
 
 {fade}
 {pic}	"bg31"

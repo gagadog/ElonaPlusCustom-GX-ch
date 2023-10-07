@@ -2232,12 +2232,12 @@
 								}
 							}
 						}
-						if ( cdata(CDATA_SP_EARNED, CHARA_PLAYER) <= (-1000000) & cdata(CDATA_SP_EARNED, CHARA_PLAYER) > (-2000000) ) {
+						if ( cdata(CDATA_PREGNANCY_PROGRESS, CHARA_PLAYER) <= (-1000000) & cdata(CDATA_PREGNANCY_PROGRESS, CHARA_PLAYER) > (-2000000) ) {
 							pos locvar_cell_draw_px, locvar_cell_draw_py - 5
 							gmode 4, inf_tiles, inf_tiles, 157 + rnd(3) * 50
 							gcopy BUFFER_INF, 192 + 48 * 20 + rnd(1) * inf_tiles, 704
 						}
-						if ( cdata(CDATA_SP_EARNED, CHARA_PLAYER) <= (-2000000) ) {
+						if ( cdata(CDATA_PREGNANCY_PROGRESS, CHARA_PLAYER) <= (-2000000) ) {
 							pos locvar_cell_draw_px, locvar_cell_draw_py - 5
 							gmode 4, inf_tiles, inf_tiles, 157 + rnd(3) * 50
 							gcopy BUFFER_INF, 192 + 48 * 21 + rnd(1) * inf_tiles, 704
@@ -2416,9 +2416,9 @@
 								gcopy 1, chipi(CHIPI_X, locvar_cell_draw_p) + (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) - (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) == chipi(CHIPI_ANIM, locvar_cell_draw_p)) * 2 * (chipi(CHIPI_ANIM, locvar_cell_draw_p) != 0)) * inf_tiles, chipi(CHIPI_Y, locvar_cell_draw_p), chipi(CHIPI_WIDTH, locvar_cell_draw_p), chipi(CHIPI_HEIGHT, locvar_cell_draw_p)
 							}
 							if ( inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_SUPER_POTIOMAN ) {
-								if ( inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) > 0 ) {
+								if ( inv(INV_ITEM_PARTS, locvar_cell_draw_fp) > 0 ) {
 									pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p) - locvar_cell_draw_stackh
-									gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
+									gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_PARTS, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
 								}
 								if ( inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) > 0 ) {
 									pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p) - locvar_cell_draw_stackh
@@ -2663,9 +2663,9 @@
 									pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
 									gcopy BUFFER_ITEM, 0, 960, chipi(CHIPI_WIDTH, locvar_cell_draw_p), chipi(CHIPI_HEIGHT, locvar_cell_draw_p)
 									if ( inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_SUPER_POTIOMAN ) {
-										if ( inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) > 0 ) {
+										if ( inv(INV_ITEM_PARTS, locvar_cell_draw_fp) > 0 ) {
 											pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
-											gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
+											gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_PARTS, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
 										}
 										if ( inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) > 0 ) {
 											pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
@@ -2687,9 +2687,9 @@
 										gcopy BUFFER_ITEM, chipi(CHIPI_X, locvar_cell_draw_p) + (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) - (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) == chipi(CHIPI_ANIM, locvar_cell_draw_p)) * 2 * (chipi(CHIPI_ANIM, locvar_cell_draw_p) != 0)) * inf_tiles, chipi(CHIPI_Y, locvar_cell_draw_p), chipi(CHIPI_WIDTH, locvar_cell_draw_p), chipi(CHIPI_HEIGHT, locvar_cell_draw_p) - 22
 									}
 									if ( inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_SUPER_POTIOMAN ) {
-										if ( inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) > 0 ) {
+										if ( inv(INV_ITEM_PARTS, locvar_cell_draw_fp) > 0 ) {
 											pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
-											gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
+											gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_PARTS, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
 										}
 										if ( inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) > 0 ) {
 											pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
@@ -2706,9 +2706,9 @@
 									gcopy BUFFER_ITEM, chipi(CHIPI_X, locvar_cell_draw_p) + (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) - (locvar_cell_draw_scrturn \ (chipi(CHIPI_ANIM, locvar_cell_draw_p) + 1) == chipi(CHIPI_ANIM, locvar_cell_draw_p)) * 2 * (chipi(CHIPI_ANIM, locvar_cell_draw_p) != 0)) * inf_tiles, chipi(CHIPI_Y, locvar_cell_draw_p), chipi(CHIPI_WIDTH, locvar_cell_draw_p), chipi(CHIPI_HEIGHT, locvar_cell_draw_p)
 								}
 								if ( inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, locvar_cell_draw_fp) == ITEM_ID_SUPER_POTIOMAN ) {
-									if ( inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) > 0 ) {
+									if ( inv(INV_ITEM_PARTS, locvar_cell_draw_fp) > 0 ) {
 										pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
-										gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_SHOP_SAMPLE, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
+										gcopy BUFFER_ITEM, 1008 - (inv(INV_ITEM_PARTS, locvar_cell_draw_fp) - 50) * 48, 1776, 48, 48
 									}
 									if ( inv(INV_ITEM_AMUR_CAGE, locvar_cell_draw_fp) > 0 ) {
 										pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
@@ -2879,6 +2879,18 @@
 								if ( cdata(CDATA_EMO_ICON, locvar_cell_draw_c) != 0 ) {
 									draw_emo locvar_cell_draw_c, locvar_cell_draw_dx + 4, locvar_cell_draw_dy - chipc(CHIPC_F, locvar_cell_draw_p) / 2 - 16
 								}
+								if ( locvar_cell_draw_c != 0 ) {
+									if ( cbit(CHARA_BIT_LOCKED_UP, locvar_cell_draw_c) ) {
+										if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 1 ) {
+											pos locvar_cell_draw_dx + 24 + cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) * 8, locvar_cell_draw_dy
+										}
+										else {
+											pos locvar_cell_draw_dx + 24, locvar_cell_draw_dy
+										}
+										gmode 2, 48, 96
+										grotate BUFFER_ITEM, 335, 1824, 0, 36, 72
+									}
+								}
 							}
 							else {
 								locvar_cell_draw_mimi = 0
@@ -2953,6 +2965,19 @@
 											grotate 1, 0, 960, cdata(CDATA_MARK_ITEM_ADJUST_R, locvar_cell_draw_c) * 6.54498469498, chipi(CHIPI_WIDTH, cdata(CDATA_MARK_ITEM_PIC, locvar_cell_draw_c)) / 2 + cdata(CDATA_MARK_ITEM_ADJUST_W, locvar_cell_draw_c) * 2, chipi(CHIPI_HEIGHT, cdata(CDATA_MARK_ITEM_PIC, locvar_cell_draw_c)) / 2 + cdata(CDATA_MARK_ITEM_ADJUST_L, locvar_cell_draw_c) * 2
 										}
 									}
+								}
+							}
+						}
+						if ( locvar_cell_draw_c != 0 ) {
+							if ( cbit(CHARA_BIT_LOCKED_UP, locvar_cell_draw_c) ) {
+								if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
+									if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 1 ) {
+										pos locvar_cell_draw_dx + cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) * 12, locvar_cell_draw_dy - 63 + (chipm(CHIPM_ROLE, locvar_cell_draw_ground) == MAP_CHIP_ROLE_WATER) * 16
+									}
+									else {
+										pos locvar_cell_draw_dx, locvar_cell_draw_dy - 63 + (chipm(CHIPM_ROLE, locvar_cell_draw_ground) == MAP_CHIP_ROLE_WATER) * 16
+									}
+									gcopy BUFFER_ITEM, 335, 1824, 48, 96
 								}
 							}
 						}
@@ -3082,7 +3107,7 @@
 								locvar_cell_draw_mimi = 100
 							}
 						}
-						if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD & locvar_cell_draw_mimi == 0 & (locvar_cell_draw_c >= MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == 1 | gdata(GDATA_SCOPE) == locvar_cell_draw_c) ) {
+						if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD & locvar_cell_draw_mimi == 0 & (locvar_cell_draw_c >= MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == TRUE | gdata(GDATA_SCOPE) == locvar_cell_draw_c) ) {
 							if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 0 ) {
 								locvar_cell_draw_h = cdata(CDATA_POWER_GAUGE, locvar_cell_draw_c) * 30 / 100
 								if ( locvar_cell_draw_h > 30 ) {
@@ -3113,13 +3138,13 @@
 								gcopy 3, 1440 - locvar_cell_draw_h, 531, locvar_cell_draw_h, 3
 							}
 							if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 0 ) {
-								locvar_cell_draw_hg = cdata(CDATA_DRAIN_HP, locvar_cell_draw_c) * 30 / 100
+								locvar_cell_draw_hg = cdata(CDATA_GUARD_BREAK, locvar_cell_draw_c) * 30 / 100
 								if ( locvar_cell_draw_hg > 30 ) {
 									locvar_cell_draw_hg = 30
 								}
 							}
 							else {
-								locvar_cell_draw_hg = cdata(CDATA_DRAIN_HP, locvar_cell_draw_c) * 15 / 100
+								locvar_cell_draw_hg = cdata(CDATA_GUARD_BREAK, locvar_cell_draw_c) * 15 / 100
 								if ( locvar_cell_draw_hg > 15 ) {
 									locvar_cell_draw_hg = 15
 								}
@@ -3130,7 +3155,7 @@
 							else {
 								pos locvar_cell_draw_dx + 9, locvar_cell_draw_dy + 39
 							}
-							if ( cdata(CDATA_DRAIN_HP, locvar_cell_draw_c) < 100 ) {
+							if ( cdata(CDATA_GUARD_BREAK, locvar_cell_draw_c) < 100 ) {
 								gcopy BUFFER_INF, 1440 - locvar_cell_draw_hg, 588, locvar_cell_draw_hg, 3
 							}
 							else {
@@ -3138,7 +3163,7 @@
 							}
 						}
 						if ( cdata(CDATA_POWER_GAUGE, locvar_cell_draw_c) > 100 ) {
-							if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD & locvar_cell_draw_mimi == 0 & (locvar_cell_draw_c >= MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == 1 | gdata(GDATA_SCOPE) == locvar_cell_draw_c) ) {
+							if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD & locvar_cell_draw_mimi == 0 & (locvar_cell_draw_c >= MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == TRUE | gdata(GDATA_SCOPE) == locvar_cell_draw_c) ) {
 								if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 0 ) {
 									locvar_cell_draw_h = (cdata(CDATA_POWER_GAUGE, locvar_cell_draw_c) - 100) * 30 / 100
 									if ( locvar_cell_draw_h > 30 ) {
@@ -3327,12 +3352,12 @@
 							gmode 5, inf_tiles, inf_tiles, 100 + rnd(70)
 							gcopy 3, 192 + 48 * 11 + rnd(1) * inf_tiles, 704
 						}
-						if ( cdata(CDATA_SP_EARNED, locvar_cell_draw_c) <= (-1000000) & cdata(CDATA_SP_EARNED, locvar_cell_draw_c) > (-2000000) ) {
+						if ( cdata(CDATA_PREGNANCY_PROGRESS, locvar_cell_draw_c) <= (-1000000) & cdata(CDATA_PREGNANCY_PROGRESS, locvar_cell_draw_c) > (-2000000) ) {
 							pos locvar_cell_draw_dx, locvar_cell_draw_dy - 5
 							gmode 4, inf_tiles, inf_tiles, 157 + rnd(3) * 50
 							gcopy BUFFER_INF, 192 + 48 * 20 + rnd(1) * inf_tiles, 704
 						}
-						if ( cdata(CDATA_SP_EARNED, locvar_cell_draw_c) <= (-2000000) ) {
+						if ( cdata(CDATA_PREGNANCY_PROGRESS, locvar_cell_draw_c) <= (-2000000) ) {
 							pos locvar_cell_draw_dx, locvar_cell_draw_dy - 5
 							gmode 4, inf_tiles, inf_tiles, 157 + rnd(3) * 50
 							gcopy BUFFER_INF, 192 + 48 * 21 + rnd(1) * inf_tiles, 704
@@ -3501,6 +3526,18 @@
 										if ( cdata(CDATA_EMO_ICON, locvar_cell_draw_c) != 0 ) {
 											draw_emo locvar_cell_draw_c, locvar_cell_draw_dx + 4 + cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) * 8, locvar_cell_draw_dy - chipc(CHIPC_F, locvar_cell_draw_p) / 2 - 16
 										}
+										if ( locvar_cell_draw_c != 0 ) {
+											if ( cbit(CHARA_BIT_LOCKED_UP, locvar_cell_draw_c) ) {
+												if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 1 ) {
+													pos locvar_cell_draw_dx + 24 + cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) * 8, locvar_cell_draw_dy
+												}
+												else {
+													pos locvar_cell_draw_dx + 24, locvar_cell_draw_dy
+												}
+												gmode 2, 48, 96
+												grotate BUFFER_ITEM, 335, 1824, 0, 36, 72
+											}
+										}
 									}
 									else {
 										if ( chipm(CHIPM_ROLE, locvar_cell_draw_ground) == MAP_CHIP_ROLE_WATER ) {
@@ -3570,7 +3607,20 @@
 										}
 									}
 								}
-								if ( cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == 1 | gdata(GDATA_SCOPE) == locvar_cell_draw_c ) {
+								if ( locvar_cell_draw_c != 0 ) {
+									if ( cbit(CHARA_BIT_LOCKED_UP, locvar_cell_draw_c) ) {
+										if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
+											if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 1 ) {
+												pos locvar_cell_draw_dx + cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) * 12, locvar_cell_draw_dy - 63 + (chipm(CHIPM_ROLE, locvar_cell_draw_ground) == MAP_CHIP_ROLE_WATER) * 16
+											}
+											else {
+												pos locvar_cell_draw_dx, locvar_cell_draw_dy - 63 + (chipm(CHIPM_ROLE, locvar_cell_draw_ground) == MAP_CHIP_ROLE_WATER) * 16
+											}
+											gcopy BUFFER_ITEM, 335, 1824, 48, 96
+										}
+									}
+								}
+								if ( cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == TRUE | gdata(GDATA_SCOPE) == locvar_cell_draw_c ) {
 									if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 0 ) {
 										locvar_cell_draw_h = cdata(CDATA_HP, locvar_cell_draw_c) * 30 / cdata(CDATA_MAX_HP, locvar_cell_draw_c)
 										if ( locvar_cell_draw_h > 30 ) {
@@ -3645,7 +3695,7 @@
 										locvar_cell_draw_mimi = 100
 									}
 								}
-								if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD & locvar_cell_draw_mimi == 0 & (locvar_cell_draw_c >= MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == 1 | gdata(GDATA_SCOPE) == locvar_cell_draw_c) ) {
+								if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD & locvar_cell_draw_mimi == 0 & (locvar_cell_draw_c >= MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == TRUE | gdata(GDATA_SCOPE) == locvar_cell_draw_c) ) {
 									if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 0 ) {
 										locvar_cell_draw_h = cdata(CDATA_POWER_GAUGE, locvar_cell_draw_c) * 30 / 100
 										if ( locvar_cell_draw_h > 30 ) {
@@ -3676,13 +3726,13 @@
 										gcopy 3, 1440 - locvar_cell_draw_h, 531, locvar_cell_draw_h, 3
 									}
 									if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 0 ) {
-										locvar_cell_draw_hg = cdata(CDATA_DRAIN_HP, locvar_cell_draw_c) * 30 / 100
+										locvar_cell_draw_hg = cdata(CDATA_GUARD_BREAK, locvar_cell_draw_c) * 30 / 100
 										if ( locvar_cell_draw_hg > 30 ) {
 											locvar_cell_draw_hg = 30
 										}
 									}
 									else {
-										locvar_cell_draw_hg = cdata(CDATA_DRAIN_HP, locvar_cell_draw_c) * 15 / 100
+										locvar_cell_draw_hg = cdata(CDATA_GUARD_BREAK, locvar_cell_draw_c) * 15 / 100
 										if ( locvar_cell_draw_hg > 15 ) {
 											locvar_cell_draw_hg = 15
 										}
@@ -3693,7 +3743,7 @@
 									else {
 										pos locvar_cell_draw_dx + 9, locvar_cell_draw_dy + 39
 									}
-									if ( cdata(CDATA_DRAIN_HP, locvar_cell_draw_c) < 100 ) {
+									if ( cdata(CDATA_GUARD_BREAK, locvar_cell_draw_c) < 100 ) {
 										gcopy BUFFER_INF, 1440 - locvar_cell_draw_hg, 588, locvar_cell_draw_hg, 3
 									}
 									else {
@@ -3701,7 +3751,7 @@
 									}
 								}
 								if ( cdata(CDATA_POWER_GAUGE, locvar_cell_draw_c) > 100 ) {
-									if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD & locvar_cell_draw_mimi == 0 & (locvar_cell_draw_c >= MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == 1 | gdata(GDATA_SCOPE) == locvar_cell_draw_c) ) {
+									if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD & locvar_cell_draw_mimi == 0 & (locvar_cell_draw_c >= MAX_CHARA_FOLLOWER | cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == TRUE | gdata(GDATA_SCOPE) == locvar_cell_draw_c) ) {
 										if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 0 ) {
 											locvar_cell_draw_h = (cdata(CDATA_POWER_GAUGE, locvar_cell_draw_c) - 100) * 30 / 100
 											if ( locvar_cell_draw_h > 30 ) {
@@ -3733,7 +3783,7 @@
 										}
 									}
 								}
-								if ( cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == 1 | gdata(GDATA_SCOPE) == locvar_cell_draw_c ) {
+								if ( cbit(CHARA_BIT_STETHOSCOPE, locvar_cell_draw_c) == TRUE | gdata(GDATA_SCOPE) == locvar_cell_draw_c ) {
 									if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) == 0 ) {
 										locvar_cell_draw_h = cdata(CDATA_MP, locvar_cell_draw_c) * 30 / cdata(CDATA_MAX_MP, locvar_cell_draw_c)
 										if ( locvar_cell_draw_h > 30 ) {
@@ -3883,12 +3933,12 @@
 									gmode 5, inf_tiles, inf_tiles, 100 + rnd(70)
 									gcopy 3, 192 + 48 * 11 + rnd(1) * inf_tiles, 704
 								}
-								if ( cdata(CDATA_SP_EARNED, locvar_cell_draw_c) <= (-1000000) & cdata(CDATA_SP_EARNED, locvar_cell_draw_c) > (-2000000) ) {
+								if ( cdata(CDATA_PREGNANCY_PROGRESS, locvar_cell_draw_c) <= (-1000000) & cdata(CDATA_PREGNANCY_PROGRESS, locvar_cell_draw_c) > (-2000000) ) {
 									pos locvar_cell_draw_dx, locvar_cell_draw_dy - 5
 									gmode 4, inf_tiles, inf_tiles, 157 + rnd(3) * 50
 									gcopy BUFFER_INF, 192 + 48 * 20 + rnd(1) * inf_tiles, 704
 								}
-								if ( cdata(CDATA_SP_EARNED, locvar_cell_draw_c) <= (-2000000) ) {
+								if ( cdata(CDATA_PREGNANCY_PROGRESS, locvar_cell_draw_c) <= (-2000000) ) {
 									pos locvar_cell_draw_dx, locvar_cell_draw_dy - 5
 									gmode 4, inf_tiles, inf_tiles, 157 + rnd(3) * 50
 									gcopy BUFFER_INF, 192 + 48 * 21 + rnd(1) * inf_tiles, 704

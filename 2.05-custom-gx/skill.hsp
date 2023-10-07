@@ -68,62 +68,62 @@
 	// Resistances
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_FIRE) = SKILL_NONE, SKILL_TYPE_SP, 0, 1, 0
 	skillname(SKILL_RES_FIRE) = lang("火炎", "fire")
-	skilldesc(SKILL_RES_FIRE) = lang("熱や炎への耐性", "Resistance to fire.")
+	skilldesc(SKILL_RES_FIRE) = lang("火炎攻撃や怯みへの抵抗", "Resist Fire/Wince.")
 	skillencdesc(SKILL_RES_FIRE) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_COLD) = SKILL_NONE, SKILL_TYPE_SP, 0, 1, 0
 	skillname(SKILL_RES_COLD) = lang("冷気", "cold")
-	skilldesc(SKILL_RES_COLD) = lang("冷気や氷への耐性", "Resistance to cold.")
+	skilldesc(SKILL_RES_COLD) = lang("冷気攻撃や震えへの抵抗", "Resist Cold/Chill.")
 	skillencdesc(SKILL_RES_COLD) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_LIGHTNING) = SKILL_NONE, SKILL_TYPE_SP, 0, 1, 0
 	skillname(SKILL_RES_LIGHTNING) = lang("電撃", "lightning")
-	skilldesc(SKILL_RES_LIGHTNING) = lang("雷や電気への耐性", "Resistance to lightning.")
+	skilldesc(SKILL_RES_LIGHTNING) = lang("電撃攻撃や麻痺への抵抗", "Resist Lightning/Paralyse.")
 	skillencdesc(SKILL_RES_LIGHTNING) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_DARKNESS) = SKILL_NONE, SKILL_TYPE_SP, 0, 2, 0
 	skillname(SKILL_RES_DARKNESS) = lang("暗黒", "darkness")
-	skilldesc(SKILL_RES_DARKNESS) = lang("暗黒や盲目への耐性", "Resistance to darkness.")
+	skilldesc(SKILL_RES_DARKNESS) = lang("暗黒攻撃や盲目への抵抗", "Resist Darkness/Blind.")
 	skillencdesc(SKILL_RES_DARKNESS) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_MIND) = SKILL_NONE, SKILL_TYPE_SP, 0, 2, 0
 	skillname(SKILL_RES_MIND) = lang("幻惑", "mind")
-	skilldesc(SKILL_RES_MIND) = lang("精神攻撃への抵抗力", "Resistance to mind.")
+	skilldesc(SKILL_RES_MIND) = lang("幻惑攻撃や恐怖への抵抗", "Resist Mind/Fear.")
 	skillencdesc(SKILL_RES_MIND) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_POISON) = SKILL_NONE, SKILL_TYPE_SP, 0, 3, 0
 	skillname(SKILL_RES_POISON) = lang("毒", "poison")
-	skilldesc(SKILL_RES_POISON) = lang("毒への耐性", "Resistance to poison.")
+	skilldesc(SKILL_RES_POISON) = lang("毒攻撃や毒への抵抗", "Resist Poison/Poisoned.")
 	skillencdesc(SKILL_RES_POISON) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_NETHER) = SKILL_NONE, SKILL_TYPE_SP, 0, 4, 0
 	skillname(SKILL_RES_NETHER) = lang("地獄", "nether")
-	skilldesc(SKILL_RES_NETHER) = lang("生命吸収への抵抗力", "Resistance to nether.")
+	skilldesc(SKILL_RES_NETHER) = lang("地獄攻撃や吸収への抵抗", "Resist Nether/HP-Drain.")
 	skillencdesc(SKILL_RES_NETHER) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_SOUND) = SKILL_NONE, SKILL_TYPE_SP, 0, 3, 0
 	skillname(SKILL_RES_SOUND) = lang("音", "sound")
-	skilldesc(SKILL_RES_SOUND) = lang("音波や轟音への耐性", "Resistance to sound.")
+	skilldesc(SKILL_RES_SOUND) = lang("音攻撃や朦朧への抵抗", "Resist Sound/Dim.")
 	skillencdesc(SKILL_RES_SOUND) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_NERVE) = SKILL_NONE, SKILL_TYPE_SP, 0, 3, 0
 	skillname(SKILL_RES_NERVE) = lang("神経", "nerve")
-	skilldesc(SKILL_RES_NERVE) = lang("睡眠や麻痺への耐性", "Resistance to nerve.")
+	skilldesc(SKILL_RES_NERVE) = lang("神経攻撃や睡眠への抵抗", "Resist Nerve/Sleep.")
 	skillencdesc(SKILL_RES_NERVE) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_CHAOS) = SKILL_NONE, SKILL_TYPE_SP, 0, 4, 0
 	skillname(SKILL_RES_CHAOS) = lang("混沌", "chaos")
-	skilldesc(SKILL_RES_CHAOS) = lang("混沌の効果への耐性", "Resistance to chaos.")
+	skilldesc(SKILL_RES_CHAOS) = lang("混沌攻撃や混乱への抵抗", "Resist Chaos/Confuse.")
 	skillencdesc(SKILL_RES_CHAOS) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RES_MAGIC) = SKILL_NONE, SKILL_TYPE_SP, 0, 5, 0
 	skillname(SKILL_RES_MAGIC) = lang("魔法", "magic")
-	skilldesc(SKILL_RES_MAGIC) = lang("魔法攻撃への耐性", "Resistance to magic.")
+	skilldesc(SKILL_RES_MAGIC) = lang("魔法攻撃への抵抗", "Resist magic.")
 	skillencdesc(SKILL_RES_MAGIC) = ""
 
 	sdataref(SKILL_DATAREF_USE, SKILL_RESDMG_CUT) = SKILL_NONE, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
 	skillname(SKILL_RESDMG_CUT) = lang("出血", "cut")
-	skilldesc(SKILL_RESDMG_CUT) = lang("切り傷への耐性", "Resistance to cut.")
+	skilldesc(SKILL_RESDMG_CUT) = lang("切り傷攻撃への抵抗", "Resist cut.")
 	skillencdesc(SKILL_RESDMG_CUT) = ""
 
 	// Weapon skills
@@ -906,27 +906,27 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_WEAKNESS) = SKILL_ATTR_MAG, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_WEAKNESS) = lang("弱体化の手", "Touch of Weakness")
-	skilldesc(SKILL_SPACT_TOUCH_OF_WEAKNESS) = lang("弱体化", "Weaken target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_WEAKNESS) = lang("無属性攻撃＋弱体化", "Weaken target")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_HUNGER) = SKILL_ATTR_MAG, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_HUNGER) = lang("飢餓の手", "Touch of Hunger")
-	skilldesc(SKILL_SPACT_TOUCH_OF_HUNGER) = lang("飢餓攻撃", "Starve target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_HUNGER) = lang("無属性攻撃＋飢餓の呪い", "Starve target")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_POISON) = SKILL_ATTR_DEX, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_POISON) = lang("毒の手", "Touch of Poison")
-	skilldesc(SKILL_SPACT_TOUCH_OF_POISON) = lang("毒攻撃", "Poison target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_POISON) = lang("無属性攻撃＋毒付与", "Poison target")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_NERVE) = SKILL_ATTR_DEX, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
-	skillname(SKILL_SPACT_TOUCH_OF_NERVE) = lang("麻痺の手", "Touch of Nerve")
-	skilldesc(SKILL_SPACT_TOUCH_OF_NERVE) = lang("神経攻撃", "Paralyze target")
+	skillname(SKILL_SPACT_TOUCH_OF_NERVE) = lang("麻痺の手", "Touch of Paralyze")
+	skilldesc(SKILL_SPACT_TOUCH_OF_NERVE) = lang("無属性攻撃＋麻痺付与", "Paralyze target")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_FEAR) = SKILL_ATTR_WIL, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_FEAR) = lang("恐怖の手", "Touch of Fear")
-	skilldesc(SKILL_SPACT_TOUCH_OF_FEAR) = lang("無属性攻撃", "Fear target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_FEAR) = lang("無属性攻撃＋恐怖付与", "Fear target")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_SLEEP) = SKILL_ATTR_WIL, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_SLEEP) = lang("眠りの手", "Touch of Sleep")
-	skilldesc(SKILL_SPACT_TOUCH_OF_SLEEP) = lang("精神攻撃", "Sleep target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_SLEEP) = lang("無属性攻撃＋睡眠付与", "Sleep target")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_SHADOW_STEP) = SKILL_ATTR_WIL, SKILL_TYPE_TELEPORT, 27, TARGET_TYPE_ENEMY + SKILL_TYPE_FOV_BOLT, 0
 	skillname(SKILL_SPACT_SHADOW_STEP) = lang("シャドウステップ", "Shadow Step")
@@ -1367,6 +1367,10 @@
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_DIFFUSION_WAVE) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 30, TARGET_TYPE_ENEMY + 15, 0
 	skillname(SKILL_SPACT_DIFFUSION_WAVE) = lang("魔儀迦", "Diffusion Wave")
 	skilldesc(SKILL_SPACT_DIFFUSION_WAVE) = lang("HPMP回復長射程攻撃/ゲージ100％消費", "Attack Multiple enemies")
+	
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_GOD_CHARGE_ROD) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 30, 2000 + 15, 0
+	skillname(SKILL_SPACT_GOD_CHARGE_ROD) = lang("神填の杖", "God charge Rod")
+	skilldesc(SKILL_SPACT_GOD_CHARGE_ROD) = lang("充填用魔力+10/攻撃/ゲージ100％消費", "Attack and get recharge power")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_ASSIMILATE) = SKILL_ATTR_STR, SKILL_TYPE_SP, 30, TARGET_TYPE_ENEMY, 0
 	skillname(SKILL_SPACT_ASSIMILATE) = lang("同化吸収", "Assimilate")
@@ -2323,7 +2327,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_FIRE, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_FIRE
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_FIRE, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_COLD_BREATH ) {
@@ -2331,7 +2335,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_COLD, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_COLD
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_COLD, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_LIGHTNING_BREATH ) {
@@ -2339,7 +2343,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_LIGHTNING, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_LIGHTNING
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_LIGHTNING, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_DARKNESS_BREATH ) {
@@ -2347,7 +2351,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_DARKNESS, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_DARKNESS
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_DARKNESS, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_CHAOS_BREATH ) {
@@ -2355,7 +2359,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_CHAOS, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_CHAOS
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_CHAOS, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_NETHER_BREATH ) {
@@ -2363,7 +2367,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_NETHER, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_NETHER
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_NETHER, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_POISON_BREATH ) {
@@ -2371,7 +2375,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_POISON, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_POISON
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_POISON, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_SOUND_BREATH ) {
@@ -2379,7 +2383,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_SOUND, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_SOUND
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_SOUND, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_NERVE_BREATH ) {
@@ -2387,7 +2391,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_NERVE, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_NERVE
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_NERVE, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_MIND_BREATH ) {
@@ -2395,7 +2399,7 @@
 		dice2 = 2 + locvar_calcskill_rs / 10 + limit(sdata(SKILL_RES_MIND, calcskill_charid) - 400, 1, locvar_calcskill_rs * 2) / 20 + 1
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_MIND
-		elep = limit(locvar_calcskill_rs + sdata(SKILL_RES_MIND, calcskill_charid), 200, 2000) / 2
+		elep = 150 + locvar_calcskill_rs * 21
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_ACID_HURRICANE ) {
@@ -2417,37 +2421,41 @@
 	if ( calcskill_skillid == SKILL_SPACT_TOUCH_OF_WEAKNESS ) {
 		dice1 = 1 + locvar_calcskill_rs / 10
 		dice2 = 3 + 1
-		bonus = ep == 0
+		bonus = 0
+		ele = SKILL_RESDMG_CONSTITUTION
+		elep = 100
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_TOUCH_OF_HUNGER ) {
 		dice1 = 1 + locvar_calcskill_rs / 10
 		dice2 = 3 + 1
-		bonus = ep == 0
+		bonus = 0
+		ele = SKILL_RESDMG_CONSTITUTION
+		elep = 100
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_TOUCH_OF_FEAR ) {
 		dice1 = 1 + locvar_calcskill_rs / 10
 		dice2 = 3 + 1
 		bonus = 0
-		ele = SKILL_NONE
-		elep = 100 + locvar_calcskill_rs * 2
+		ele = SKILL_RESDMG_CONSTITUTION
+		elep = 150 + locvar_calcskill_rs * 24
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_TOUCH_OF_SLEEP ) {
 		dice1 = 1 + locvar_calcskill_rs / 10
 		dice2 = 3 + 1
 		bonus = 0
-		ele = SKILL_NONE
-		elep = 100 + locvar_calcskill_rs * 3
+		ele = SKILL_RESDMG_CONSTITUTION
+		elep = 150 + locvar_calcskill_rs * 24
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_TOUCH_OF_POISON ) {
 		dice1 = 1 + locvar_calcskill_rs / 10
 		dice2 = 4 + 1
 		bonus = 0
-		ele = SKILL_RES_POISON
-		elep = locvar_calcskill_rs * 4 + 20
+		ele = SKILL_RESDMG_CONSTITUTION
+		elep = 150 + locvar_calcskill_rs * 24
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_MEMORY_POISON ) {
@@ -2460,10 +2468,10 @@
 	}
 	if ( calcskill_skillid == SKILL_SPACT_TOUCH_OF_NERVE ) {
 		dice1 = 1 + locvar_calcskill_rs / 10
-		dice2 = 4 + 1
+		dice2 = 3 + 1
 		bonus = 0
-		ele = SKILL_RES_NERVE
-		elep = locvar_calcskill_rs * 4 + 20
+		ele = SKILL_RESDMG_CONSTITUTION
+		elep = 150 + locvar_calcskill_rs * 24
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_EYE_OF_INSANITY ) {

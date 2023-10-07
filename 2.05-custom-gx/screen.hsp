@@ -257,15 +257,15 @@
 		pos inf_hpx + 16, inf_hpy + 10
 		gcopy 3, 1439 - ap, 492, ap, 2
 	}
-	if ( cdata(CDATA_DRAIN_HP, CHARA_PLAYER) > 0 & cdata(CDATA_DRAIN_HP, CHARA_PLAYER) <= 100 ) {
-		apg = cdata(CDATA_DRAIN_HP, CHARA_PLAYER) * 84 / 100
+	if ( cdata(CDATA_GUARD_BREAK, CHARA_PLAYER) > 0 & cdata(CDATA_GUARD_BREAK, CHARA_PLAYER) <= 100 ) {
+		apg = cdata(CDATA_GUARD_BREAK, CHARA_PLAYER) * 84 / 100
 		if ( apg > 100 ) {
 			apg = 100
 		}
 		pos inf_mpx + 6, inf_mpy + 10
 		gcopy BUFFER_INF, 532 - apg, 525, apg, 2
 	}
-	if ( cdata(CDATA_DRAIN_HP, CHARA_PLAYER) > 100 ) {
+	if ( cdata(CDATA_GUARD_BREAK, CHARA_PLAYER) > 100 ) {
 		apg = 84
 		pos inf_mpx + 6, inf_mpy + 10
 		gcopy BUFFER_INF, 1439 - apg, 585, apg, 2
@@ -337,7 +337,7 @@
 	sy = inf_mpy + 3
 	color 0
 	pos sx + 4, sy - 2
-	bmes "" + cdata(CDATA_DRAIN_HP, CHARA_PLAYER) + "%", 255, 255, 255
+	bmes "" + cdata(CDATA_GUARD_BREAK, CHARA_PLAYER) + "%", 255, 255, 255
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 	color 0, 0, 0
 	sy = inf_bary + 2 + vfix
@@ -385,7 +385,7 @@
 				}
 				dvpc = cdata(CDATA_DV, CHARA_PLAYER) * dvfix / 100 + dvfix - 100
 				pvpc = (cdata(CDATA_PV, CHARA_PLAYER) + pvfix / 25) * pvfix / 100
-				if ( cdata(CDATA_DRAIN_HP, CHARA_PLAYER) >= 100 ) {
+				if ( cdata(CDATA_GUARD_BREAK, CHARA_PLAYER) >= 100 ) {
 					dvpc = 0
 					pvpc = 0
 				}
@@ -2267,10 +2267,8 @@
 
 		snd SOUNDLIST_BALL1
 		if ( animeid == ANIMATION_BALL ) {
-			if ( ele == SKILL_NONE ) {
-				if ( efid == SKILL_SPELL_BUBBLE_STORM ) {
-					anicol = 21
-				}
+			if ( ele == SKILL_RESDMG_CRUSH ) {
+				anicol = 21
 			}
 		}
 		gsel 7
@@ -2345,11 +2343,9 @@
 			await cfg_animewait
 		loop
 		if ( animeid == ANIMATION_BALL ) {
-			if ( ele == SKILL_NONE ) {
-				if ( efid == SKILL_SPELL_BUBBLE_STORM ) {
-					snd SOUNDLIST_BUBLE
-					snd SOUNDLIST_MIZU
-				}
+			if ( ele == SKILL_RESDMG_CRUSH ) {
+				snd SOUNDLIST_BUBLE
+				snd SOUNDLIST_MIZU
 			}
 		}
 		if ( anisound ) {
@@ -2359,8 +2355,8 @@
 	}
 	if ( _switch_val == ANIMATION_BOLT | _switch_sw ) {
 		_switch_sw = 0
-		if ( ele == SKILL_NONE ) {
-			anicol = 17
+		if ( ele == SKILL_RESDMG_CRUSH ) {
+			anicol = 21
 		}
 		if ( efid == SKILL_SPACT_BLOOD_STREAM ) {
 			anicol = 22
@@ -2480,7 +2476,7 @@
 			}
 			redraw 1
 		loop
-		if ( ele == SKILL_NONE ) {
+		if ( ele == SKILL_RESDMG_CRUSH ) {
 			if ( zannku != 10 ) {
 				snd SOUNDLIST_MIZU
 			}
@@ -2658,6 +2654,12 @@
 			}
 		}
 		/********** CUSTOM SPELL ANIMATION - ENDING **********/
+
+		if ( animeid == ANIMATION_ARROW ) {
+			if ( ele == SKILL_RESDMG_CRUSH ) {
+				anicol = 21
+			}
+		}
 
 		preparePicItem 6, anicol
 
@@ -3874,6 +3876,108 @@
 		snd SOUNDLIST_BOLT1
 		gsel BUFFER_PIC
 		picload exedir + "graphic\\anime81.bmp"
+		gsel BUFFER_BUF
+		pos 0, 0
+		gmode 0
+		gcopy BUFFER_SCREEN, 0, 0, windoww, windowh
+		gsel BUFFER_SCREEN
+		am = 0
+		repeat 245
+			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+				continue
+			}
+			if ( gdata(GDATA_TEMPORARY_FLAGS3) == 777 ) {
+				if ( cdata(CDATA_RELATION, cnt) != RELATION_ENEMY ) {
+					continue
+				}
+			}
+			if ( animode == 0 ) {
+				if ( cnt == cc ) {
+					continue
+				}
+			}
+			if ( animode >= 100 ) {
+				if ( cnt != animode - 100 ) {
+					continue
+				}
+			}
+			ax(am) = (cdata(CDATA_X, cnt) - scx) * inf_tiles + inf_screenx - 24
+			if ( am != 0 ) {
+				ax(am) += 4 - rnd(8)
+			}
+			ay(am) = (cdata(CDATA_Y, cnt) - scy) * inf_tiles + inf_screeny + 32
+			if ( ay(am) < 0 | ay(am) > inf_screenh * inf_tiles + inf_screeny ) {
+				continue
+			}
+			if ( ax(am) < (-20) | ax(am) > windoww + 20 ) {
+				continue
+			}
+			ap(am) = 20 + (am != 0) * rnd(5)
+			am++
+		loop
+		repeat
+			redraw 0
+			pos 0, 0
+			gmode 0
+			gcopy BUFFER_BUF, 0, 0, windoww, windowh
+			af = 0
+			repeat am
+				if ( ap(cnt) <= 0 ) {
+					continue
+				}
+				af = 1
+				cnt2 = cnt
+				anidy = ay(cnt) * limit(20 - ap(cnt), 0, 6) / 6 - 96
+				gmode 2, 96, 96
+				pos ax(cnt), anidy
+				gcopy BUFFER_PIC, limit(8 - ap(cnt), 0, 8) * 96 + 96 * (ap(cnt) < 15), 0, 96, 96
+				if ( ap(cnt) <= 14 ) {
+					if ( ap(cnt) >= 6 ) {
+						pos ax(cnt), anidy + 16
+						gcopy BUFFER_PIC, (14 - ap(cnt)) / 2 * 96, 96, 96, 96
+					}
+				}
+				anidx = limit(anidy / 55 + 1, 0, 7 - limit((11 - ap(cnt)) * 2, 0, 7))
+				repeat anidx, 1
+					pos ax(cnt2), anidy - cnt * 55
+					gcopy BUFFER_PIC, 96 * (ap(cnt2) < 15), 0, 96, 55
+					if ( cnt == anidx ) {
+						pos ax(cnt2), anidy - cnt * 55 - 40
+						gcopy BUFFER_PIC, 288, 0, 96, 40
+					}
+				loop
+				if ( ap(cnt) >= 20 ) {
+					ap(cnt) -= rnd(2)
+				}
+				else {
+					ap(cnt)--
+				}
+			loop
+			if ( cnt \ 2 == 0 ) {
+				snd SOUNDLIST_ATK_FIRE
+				snd SOUNDLIST_BOLT1
+			}
+			if ( af == 0 ) {
+				break
+			}
+			await cfg_animewait + 25
+			redraw 1
+		loop
+		goto *anime_SWEND1
+		_switch_sw++
+	}
+	if ( _switch_val == 64 | _switch_sw ) {
+		_switch_sw = 0
+		snd SOUNDLIST_BOLT1
+		anicol = 4
+		if ( gdata(GDATA_TEMPORARY_FLAGS3) == 777 ) {
+			anicol = 25
+		}
+		gsel BUFFER_PIC
+		picload exedir + "graphic\\anime12.bmp"
+		pos 0, 0
+		gfini 960, 192
+		gfdec2 c_col(0, anicol), c_col(1, anicol), c_col(2, anicol)
 		gsel BUFFER_BUF
 		pos 0, 0
 		gmode 0
@@ -6260,7 +6364,7 @@
 		dvfix = 100
 	}
 	hoseidv = cdata(CDATA_DV, tc) * dvfix / 100 + dvfix - 100
-	if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+	if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
 		hoseidv = 0
 	}
 	evade = sdata(SKILL_ATTR_PER, tc) / 6 + sdata(SKILL_NORMAL_EVASION, tc) + hoseidv * 2 * 7 / 4 + 25 - cdata(CDATA_EVASION_PENALTY, tc) * 100
@@ -6761,18 +6865,11 @@
 		if ( sdata(SKILL_NORMAL_GREATER_EVASION, tc) != 0 ) {
 			if ( tohit < sdata(SKILL_NORMAL_GREATER_EVASION, tc) * 10 ) {
 				evaderef = evade * 100 / limit(tohit, 1, tohit)
-				if ( evaderef > 300 ) {
-					if ( rnd(sdata(SKILL_NORMAL_GREATER_EVASION, tc) + 250) > 100 ) {
-						return -2
-					}
+				if ( evaderef > 1000 ) {
+					evaderef = 1000
 				}
 				if ( evaderef > 200 ) {
-					if ( rnd(sdata(SKILL_NORMAL_GREATER_EVASION, tc) + 250) > 150 ) {
-						return -2
-					}
-				}
-				if ( evaderef > 150 ) {
-					if ( rnd(sdata(SKILL_NORMAL_GREATER_EVASION, tc) + 250) > 200 ) {
+					if ( rnd(sdata(SKILL_NORMAL_GREATER_EVASION, tc) + evaderef) > 100 ) {
 						return -2
 					}
 				}
@@ -6954,7 +7051,7 @@
 		pvfix = 100
 	}
 	hoseipv = (cdata(CDATA_PV, tc) + pvfix / 25) * pvfix / 100
-	if ( cdata(CDATA_DRAIN_HP, tc) >= 100 ) {
+	if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
 		hoseipv = 0
 	}
 	prot = hoseipv + limit(sdata(carmor(tc), tc) / 4 - cdata(CDATA_PROT_PENALTY, tc) * 100, 0, 2000) + sdata(SKILL_ATTR_DEX, tc) / 10
@@ -7744,10 +7841,10 @@
 		cdata(CDATA_MAX_HP, r1) = 1
 	}
 	if ( r1 >= 57 & cdata(CDATA_ALLIED, r1) == 0 & r1 != CHARA_PLAYER ) {
-		if ( cdata(CDATA_DRAIN_HP, r1) < 100 ) {
+		if ( cdata(CDATA_GUARD_BREAK, r1) < 100 ) {
 			cdata(CDATA_DV, r1) += limit(cdata(CDATA_LEVEL, r1) / 2, 1, 200)
 		}
-		if ( cdata(CDATA_DRAIN_HP, r1) < 100 ) {
+		if ( cdata(CDATA_GUARD_BREAK, r1) < 100 ) {
 			cdata(CDATA_PV, r1) += limit(cdata(CDATA_LEVEL, r1) / 2, 1, 200)
 		}
 		if ( cdata(CDATA_QUALITY, r1) == FIX_QUALITY_GREAT ) {
