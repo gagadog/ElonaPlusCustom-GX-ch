@@ -5,9 +5,7 @@
 - Added (machine) Translation to new cutscenes, items, and characters.
 
 ## Fixed
-- Float Cage captured 'allies' are removed upon death. (They cannot resurrect properly.)
-- Wrong main quest flag used for Meshera Plant battle.
-  + This cause time rewind if you beat meshera alpha after act II
+- Ano hotfixed the bugs in 2.20fix1
 
 # 2.19R.2.1
 

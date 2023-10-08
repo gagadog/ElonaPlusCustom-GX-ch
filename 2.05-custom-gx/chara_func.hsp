@@ -7667,32 +7667,6 @@
 
 		/********** ANNA CUSTOM - ENDING **********/
 
-		/********** CUSTOM - BEGINNING **********/ // Inmates die permanently, fix inmate ghost problem in 2.20
-		if ( dmghp_charid < MAX_CHARA_FOLLOWER & cbit(CHARA_BIT_LOCKED_UP, dmghp_charid) ) {
-			txt "The inmate " + cdatan(CDATAN_NAME, dmghp_charid) + " is killed and the cage breaks into pieces."
-			inv_getheader dmghp_charid
-			repeat invrange, invhead
-				LoopCount = cnt
-				if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
-					continue
-				}
-				else {
-					itemcreate -1, inv(INV_ITEM_ID, cnt), cdata(CDATA_X, dmghp_charid), cdata(CDATA_Y, dmghp_charid), 0
-					item_copy LoopCount, ci
-					inv(INV_ITEM_X, ci) = cdata(CDATA_X, dmghp_charid)
-					inv(INV_ITEM_Y, ci) = cdata(CDATA_Y, dmghp_charid)
-					inv(INV_ITEM_EQUIP, ci) = 0
-				}
-			loop
-			cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
-
-			AllyID = dmghp_charid
-			gosub *DeleteAIInfo
-
-			del_chara dmghp_charid
-		}
-		/********** CUSTOM - ENDING **********/
-
 		return 0
 	}
 	gosub *exit_death
