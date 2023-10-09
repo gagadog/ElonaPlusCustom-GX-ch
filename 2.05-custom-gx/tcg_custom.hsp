@@ -649,6 +649,10 @@
 	return
 
 *card_pack_custom
+	if ( length2(effref@tcg) < 100 ) {
+		gosub *tcg_effect_define
+	}
+
 	targetdeck@tcg = 0
 	repeat 5
 		gosub *card_filter_reset
