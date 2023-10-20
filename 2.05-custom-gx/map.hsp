@@ -12586,7 +12586,7 @@
 	gcopy 6, 0, 0, 33 * inf_tiles, 25 * inf_tiles
 	p = 5, 5, 5
 	shade = 15
-	if ( mdata(MDATA_FIELD) == MAP_FIELD_OUTDOOR ) {
+	if ( mdata(MDATA_FIELD) == MAP_FIELD_OUTDOOR | TweakData(TWEAK_MISC_DAYNIGHTCYCLE_EVERYWHERE, TWEAK_CATEGORY_MISC) ) {
 		if ( gdata(GDATA_LIGHT_SOURCE) == 1 ) {
 			if ( gdata(GDATA_HOUR) >= 24 ) {
 				p = 80, 65, 50

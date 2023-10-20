@@ -5442,7 +5442,7 @@
 	if ( cdata(CDATA_ACTION_PERIOD, cc) > 0 ) {
 		return
 	}
-	if ( cdata(CDATA_PREGNANCY_MALE_CHILD, cc) == 10 ) {
+	if ( cbit(CHARA_BIT_PROHIBIT_PICKING_UP_ITEMS, cc) == TRUE ) {
 		if ( ci >= RANGE_INV2 ) {
 			modimp2 cc, -20
 		}
