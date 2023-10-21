@@ -2653,7 +2653,7 @@
 				f@con = 0
 			}
 		}
-		res@con = SKILL_RES_MIND
+		res@con = SKILL_RES_CHAOS
 		gosub *conCalc
 		if ( f@con == 0 ) {
 			return 0
@@ -2813,7 +2813,7 @@
 				f@con = 0
 			}
 		}
-		res@con = SKILL_RES_CHAOS
+		res@con = SKILL_RES_MIND
 		gosub *conCalc
 		if ( f@con == 0 ) {
 			return 0
