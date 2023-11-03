@@ -12171,6 +12171,7 @@
 	}
 	/********** CUSTOM JOB QUESTS - ENDING **********/ 
 	if ( gdata(GDATA_AREA) == AREA_DOJO & gdata(GDATA_DOJO_TURNS) >= 100 & gdata(GDATA_PETS_IN_DOJO) != 0 ) {
+		gdata(GDATA_DOJO_TURNS) += limit(TweakData(TWEAK_GAMEPLAY_INCREASED_DOJO_EXP, TWEAK_CATEGORY_GAMEPLAY),0,2000)
 		repeat MAX_CHARA_TOTAL
 			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 				continue

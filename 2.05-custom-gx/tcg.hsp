@@ -710,6 +710,7 @@
 		mes "" + cpdata@tcg(TCG_PLAYER_DECK, cnt) + "/" + cpdata@tcg(TCG_PLAYER_GRAVEYARD, cnt)
 	loop
 	font lang(cfg_font1, cfg_font2), 13 + en - en * 2, 0
+	drawcardcount@tcg = 0
 	repeat maxcard@tcg
 		c@tcg = maxcard@tcg - cnt - 1
 		if ( cc@tcg != 0 ) {
@@ -733,8 +734,9 @@
 		if ( card@tcg(TCG_CARD_X, c@tcg) != card@tcg(TCG_CARD_X_MOVETO, c@tcg) | card@tcg(TCG_CARD_Y, c@tcg) != card@tcg(TCG_CARD_Y_MOVETO, c@tcg) | card@tcg(TCG_CARD_ANIM_DURATION, c@tcg) > 0 ) {
 			anime@tcg = 1
 			p@tcg = 0
+			drawcardcount@tcg++
 			if ( card@tcg(TCG_CARD_X, c@tcg) != card@tcg(TCG_CARD_X_MOVETO, c@tcg) ) {
-				p@tcg = (card@tcg(TCG_CARD_X_MOVETO, c@tcg) - card@tcg(TCG_CARD_X, c@tcg)) / 6
+				p@tcg = (card@tcg(TCG_CARD_X_MOVETO, c@tcg) - card@tcg(TCG_CARD_X, c@tcg)) / limit(40/limit(drawcardcount@tcg,1,40),2,6)
 				if ( card@tcg(TCG_CARD_X, c@tcg) > card@tcg(TCG_CARD_X_MOVETO, c@tcg) ) {
 					p@tcg--
 				}
@@ -745,7 +747,7 @@
 			card@tcg(TCG_CARD_X, c@tcg) += p@tcg
 			p@tcg = 0
 			if ( card@tcg(TCG_CARD_Y, c@tcg) != card@tcg(TCG_CARD_Y_MOVETO, c@tcg) ) {
-				p@tcg = (card@tcg(TCG_CARD_Y_MOVETO, c@tcg) - card@tcg(TCG_CARD_Y, c@tcg)) / 6
+				p@tcg = (card@tcg(TCG_CARD_Y_MOVETO, c@tcg) - card@tcg(TCG_CARD_Y, c@tcg)) / limit(40/limit(drawcardcount@tcg,1,40),2,6)
 				if ( card@tcg(TCG_CARD_Y, c@tcg) > card@tcg(TCG_CARD_Y_MOVETO, c@tcg) ) {
 					p@tcg--
 				}

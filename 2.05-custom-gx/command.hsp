@@ -7723,6 +7723,9 @@
 		}
 	loop
 	gosub *sort_list
+	if ( TweakData(TWEAK_CONVENIENCE_SORT_SPELL_BY_TYPE, TWEAK_CATEGORY_CONVENIENCE) ) {
+		gosub *custom_spelllist_sort
+	}
 	redraw 0
 	gsel BUFFER_INF
 	pos 960, 96
@@ -7976,6 +7979,43 @@
 	}
 	goto *turn_end
 
+*custom_spelllist_sort
+	// Return a list of spells sorted by type. So you don't need to use all of your shortcuts on buff magic
+	listmax = 0
+	repeat 13
+		spellorder = cnt + 3
+		if ( cnt == 0 ) { spellorder = 1001 } // Buff
+		if ( cnt == 1 ) { spellorder = 1002 } // Debuff
+		if ( cnt == 8 ) { spellorder = 0 } // Speacial
+		if ( cnt == 9 ) { spellorder = 4 } // Heal
+		if ( cnt == 10 ) { spellorder = 3 } // AOE (and healing rain)
+		if ( cnt == 11 ) { spellorder = 1 } // Bolt
+		if ( cnt == 12 ) { spellorder = 2 } // Arrow
+		repeat 11
+			spelltargetype = cnt
+			repeat 200
+				if ( spell(cnt) > 0 ) {
+					if ( spells(cnt) == 0 ) {
+						if ( limit(sdataref(SKILL_DATAREF_TG, STARTING_SKILL_SPELL + cnt)/1000,0,10) == spelltargetype ) {
+							if ( spellorder >= 1000 & sdataref(SKILL_DATAREF_TYPE, STARTING_SKILL_SPELL + cnt) >= 1000 ) {
+								if ( bdataref(0, sdataref(SKILL_DATAREF_TYPE, STARTING_SKILL_SPELL + cnt) - 1000) == spellorder - 1000 ) {
+									list(0, listmax) = cnt + STARTING_SKILL_SPELL, sdataref(SKILL_DATAREF_USE, STARTING_SKILL_SPELL + cnt)
+									listmax++
+								}
+							} else {
+								if ( sdataref(SKILL_DATAREF_TYPE, STARTING_SKILL_SPELL + cnt) == spellorder ) {
+									list(0, listmax) = cnt + STARTING_SKILL_SPELL, sdataref(SKILL_DATAREF_USE, STARTING_SKILL_SPELL + cnt)
+									listmax++
+								}
+							}
+						}
+					}
+				}
+			loop
+		loop
+	loop
+	return
+
 *com_spell
 	listmax = 0
 	page = 0
@@ -7995,6 +8035,9 @@
 		}
 	loop
 	gosub *sort_list
+	if ( TweakData(TWEAK_CONVENIENCE_SORT_SPELL_BY_TYPE, TWEAK_CATEGORY_CONVENIENCE) ) {
+		gosub *custom_spelllist_sort
+	}
 	redraw 0
 	gsel 3
 	pos 960, 96

@@ -4635,7 +4635,7 @@
 		gdata(GDATA_FLAG_MILES_TRAVELED) = 0
 	}
 	if ( gdata(GDATA_PETS_IN_DOJO) != 0 & gdata(GDATA_DOJO_TURNS) < 100000 ) {
-		gdata(GDATA_DOJO_TURNS) += 1
+		gdata(GDATA_DOJO_TURNS) += 1 + TweakData(TWEAK_GAMEPLAY_INCREASED_DOJO_EXP, TWEAK_CATEGORY_GAMEPLAY) / 100
 	}
 	rowactend cc
 	return

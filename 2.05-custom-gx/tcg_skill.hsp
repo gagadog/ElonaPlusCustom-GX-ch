@@ -617,15 +617,15 @@
 				loop
 			}
 			if ( effref@tcg(TCG_SKILL_POWER, aeff@tcg) == -6 ) { 
-				repeat 3
-					if ( card@tcg(TCG_CARD_REF_DBID, 100 * ap@tcg + 39 + cnt * 10) != 0 ) { x@tcg++ }
+				repeat 6
+					if ( card@tcg(TCG_CARD_REF_DBID, 100 * ap@tcg + 34 + cnt * 5) != 0 ) { x@tcg++ }
 				loop
 			}
 			if ( effref@tcg(TCG_SKILL_POWER, aeff@tcg) == -7 ) { 
 				repeat 100
 					if ( card@tcg(TCG_CARD_REF_DBID, 100 * ap@tcg + cnt) != 0 ) { x@tcg++ }
 				loop
-				x@tcg /= 10
+				x@tcg /= 5
 			}
 			if ( effref@tcg(TCG_SKILL_POWER, aeff@tcg) == -8 ) { 
 				if ( cpdata@tcg(TCG_PLAYER_MANA) == 0 ) {
@@ -670,14 +670,14 @@
 			if ( effref@tcg(TCG_SKILL_POWER, aeff@tcg) == -15 ) { 
 				x@tcg = 0
 				repeat clistmax@tcg(1+ap@tcg)
-					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_LARNNEIRE_THE_LISTENER_OF_WIND ) { x@tcg++ }
-					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_LOMIAS_THE_MESSENGER_FROM_VINDALE ) { x@tcg++ }
-					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_RIANNA_THE_DAYDREAMER ) { x@tcg++ }
-					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_LOYTER_THE_CRIMSON_OF_ZANAN ) { x@tcg++ }
-					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_ZERNARD_THE_CAPABLE_MERCENARY ) { x@tcg++ }
-					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_REGULUS_THE_ALTERED ) { x@tcg++ }
-					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_SOPHIA_THE_WISE ) { x@tcg++ }
-					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_NORNE_THE_GUIDE ) { x@tcg++ }
+					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_LARNNEIRE_THE_LISTENER_OF_WIND ) { x@tcg += 2 }
+					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_LOMIAS_THE_MESSENGER_FROM_VINDALE ) { x@tcg += 2 }
+					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_RIANNA_THE_DAYDREAMER ) { x@tcg += 2 }
+					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_LOYTER_THE_CRIMSON_OF_ZANAN ) { x@tcg += 2 }
+					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_ZERNARD_THE_CAPABLE_MERCENARY ) { x@tcg += 2 }
+					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_REGULUS_THE_ALTERED ) { x@tcg += 2 }
+					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_SOPHIA_THE_WISE ) { x@tcg += 2 }
+					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_NORNE_THE_GUIDE ) { x@tcg += 2 }
 				loop
 				repeat maxcard@tcg
 					if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != ap@tcg ) { continue }

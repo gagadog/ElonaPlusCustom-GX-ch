@@ -54,7 +54,7 @@
 	if ( card@tcg(TCG_CARD_CONTROLLER, effac@tcg) != player@tcg & targettype@tcg >= 100 & targetloc@tcg >= 1 & targettype@tcg \ 10 == 1 ) { targettype@tcg += 1 }
 
 	efffirerepeat@tcg = limit(effref@tcg(TCG_SKILL_REPEAT, eff@tcg), 1, 10)
-	if ( specialrulebattlecrytwice@tcg > 0 ) {
+	if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_BATTLECRY & especialrulebattlecrytwice@tcg > 0 ) {
 		specialrulebattlecrytwice@tcg-- 
 		efffirerepeat@tcg *= 2
 	}
@@ -598,6 +598,12 @@
 		deck_opponent(cardno)++
 		if ( cardno == CREATURE_ID_YERLES_MACHINE_INFANTRY ) {
 			if (deck_opponent(CREATURE_ID_YERLES_COMBAT_PLANE) < 4 ) { deck_opponent(CREATURE_ID_YERLES_COMBAT_PLANE)++ }
+		}
+		if ( cardno == CREATURE_ID_ELDER ) {
+			if (deck_opponent(CREATURE_ID_GUARD) < 2 ) { deck_opponent(CREATURE_ID_GUARD) = 2 }
+		}
+		if ( cardno == CREATURE_ID_CAPTAIN ) {
+			if (deck_opponent(CREATURE_ID_SAILOR) < 2 ) { deck_opponent(CREATURE_ID_SAILOR) = 2 }
 		}
 	loop
 	create_card MAX_CARD_DECK_TOTAL, cdata(CDATA_ID, tc)
@@ -1335,8 +1341,8 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 5
-		cardrefattack = 1
-		cardrefhp = 1
+		cardrefattack = 3
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_GWENTHEPITILESS
 		cardrefbits = "11,21"
 		return 1
@@ -1529,9 +1535,9 @@
 		cardreflvl = 1
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 1
+		cardrefcost = 0
 		cardrefattack = 0
-		cardrefhp = 2
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_GWEN
 		cardrefbits = ""
 		return 1
@@ -2742,7 +2748,7 @@
 		cardreflvl = 20
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 7
-		cardrefcost = 3
+		cardrefcost = 4
 		cardrefattack = 1
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_CULTISTOFFIRE
@@ -3065,7 +3071,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
 		cardrefcost = 3
-		cardrefattack = 1
+		cardrefattack = 0
 		cardrefhp = 5
 		cardrefskillid = TCG_EFF_ELEAMOB
 		cardrefbits = "73,83"
@@ -3080,7 +3086,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
 		cardrefcost = 2
-		cardrefattack = 1
+		cardrefattack = 0
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_ELEAMOB
 		cardrefbits = "73,83"
@@ -6994,8 +7000,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 7
 		cardrefcost = 3
-		cardrefattack = 0
-		cardrefhp = 1
+		cardrefattack = 3
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_MUTANT
 		cardrefbits = ""
 		return 1
@@ -7647,8 +7653,8 @@
 		cardrefdomain = 7
 		cardrefcost = 1
 		cardrefattack = 0
-		cardrefhp = 2
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALCHOSENENEMY2DAMAGE
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALCHOSENENEMY3DAMAGE
 		cardrefbits = "36"
 		return 1
 	}
@@ -8084,8 +8090,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 0
 		cardrefcost = 2
-		cardrefattack = 1
-		cardrefhp = 2
+		cardrefattack = 0
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_TURN_START_PARALYSERANDOMENEMY
 		cardrefbits = ""
 		return 1
@@ -8900,7 +8906,7 @@
 		cardreflvl = 22
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 4
+		cardrefcost = 5
 		cardrefattack = 3
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_QUEEN
@@ -9392,7 +9398,7 @@
 		cardrefdomain = 7
 		cardrefcost = 7
 		cardrefattack = 11
-		cardrefhp = 11
+		cardrefhp = 14
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = ""
 		return 1
@@ -9432,7 +9438,7 @@
 		cardrefdomain = 1
 		cardrefcost = 5
 		cardrefattack = 8
-		cardrefhp = 7
+		cardrefhp = 8
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = ""
 		return 1
@@ -9445,7 +9451,7 @@
 		cardrefdomain = 7
 		cardrefcost = 5
 		cardrefattack = 5
-		cardrefhp = 8
+		cardrefhp = 6
 		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT5DAMAGE
 		cardrefbits = "66"
 		return 1
@@ -10092,12 +10098,12 @@
 		cardrefrace = "machine"
 		cardrefclass = "gunner"
 		cardreflvl = 65
-		cardrefquality = TCG_EFF_WORKER02
+		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
 		cardrefcost = 4
 		cardrefattack = 2
 		cardrefhp = 5
-		cardrefskillid = TCG_EFF_NONE
+		cardrefskillid = TCG_EFF_WORKER02
 		cardrefbits = ""
 		return 1
 	}
@@ -10967,7 +10973,7 @@
 		cardreflvl = 128
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 6
+		cardrefcost = 4
 		cardrefattack = 4
 		cardrefhp = 4
 		cardrefskillid = TCG_EFF_BETHEL
@@ -11453,7 +11459,7 @@
 		cardreflvl = 35
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 7
-		cardrefcost = 1
+		cardrefcost = 0
 		cardrefattack = 3
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_VAMPIRE
@@ -12845,8 +12851,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 0
 		cardrefcost = 3
-		cardrefattack = 0
-		cardrefhp = 1
+		cardrefattack = 2
+		cardrefhp = 4
 		cardrefskillid = TCG_EFF_METAMORPH
 		cardrefbits = ""
 		return 1
@@ -14714,8 +14720,8 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 4
-		cardrefattack = 6
-		cardrefhp = 6
+		cardrefattack = 3
+		cardrefhp = 9
 		cardrefskillid = TCG_EFF_BIG_DADDY
 		cardrefbits = "24"
 		return 1
@@ -16009,7 +16015,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
 		cardrefcost = 5
-		cardrefattack = 2
+		cardrefattack = 3
 		cardrefhp = 2
 		cardrefskillid = TCG_EFF_SUMMONKNIGHT
 		cardrefbits = "72"
@@ -16051,8 +16057,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
 		cardrefcost = 1
-		cardrefattack = 2
-		cardrefhp = 1
+		cardrefattack = 1
+		cardrefhp = 2
 		cardrefskillid = TCG_EFF_ONKILL_DRAW1CARD
 		cardrefbits = "72"
 		return 1

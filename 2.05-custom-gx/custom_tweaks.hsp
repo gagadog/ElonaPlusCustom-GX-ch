@@ -22,6 +22,7 @@ TweakData(53,1) = "Skip skill training confirmation."
 TweakData(54,1) = "Auto-drop opened chests."
 TweakData(55, 1) = "Remove spell over-cast confirmation."
 TweakData(56, 1) = "Auto Hand-in quests."
+TweakData(57, 1) = "Sort spells by thier type."
 
 TweakData(x, 2) = "Gameplay Tweaks"
 TweakData(0, 2) = "Gather Items At End Of Party Time."
@@ -62,6 +63,7 @@ TweakData(77, 2) = "Spawn evolved enemies in: "
 TweakData(78, 2) = "Collect kits instead of socks in Urcaguary quest."
 TweakData(79, 2) = "Revert post-2.17 cooking result changes."
 TweakData(80, 2) = "Revert post-2.17 boss out-of-sight healing."
+TweakData(81, 2) = "Increase Dojo EXP gained."
 
 TweakData(x, 3) = "AI Tweaks"
 TweakData(0, 3) = "Change Zeome's AI."
@@ -415,7 +417,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 
 *ConvenienceTweakMenu
     cs = 0
-    listmax = 12
+    listmax = 13
 *ConvenienceTweakMenu_loop
 	redraw 0
 	s = "Tweak Setup", strhint3b
@@ -434,7 +436,8 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 8) = "Auto-drop opened chests." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_AUTODROP_OPENED_CHESTS)
 	listn(0, 9) = "Remove spell over-cast confirmation." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_REMOVE_SPELL_OVER_CAST_CONFIRMATION)
 	listn(0, 10) = "Auto Hand-in quests." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_AUTO_HANDIN_QUESTS)
-	listn(0, 11) = "Return."
+	listn(0, 11) = "Sort spells by spell type." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_SORT_SPELL_BY_TYPE)
+	listn(0, 12) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
 	repeat listmax
@@ -483,6 +486,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 				s = "Automatically hand-in quests after you complete them.\nThis applies to harvest/hunt/trap/party/panic/challenge quests."
 			}
 			if ( cnt == 11 ) {
+				s = "Sort spells by spell type."
+			}
+			if ( cnt == 12 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -552,6 +558,11 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		gosub *ToggleTweak
 	}
 	if ( key == key_select(11) ) {
+		tc = TWEAK_CATEGORY_CONVENIENCE
+		tn = TWEAK_CONVENIENCE_SORT_SPELL_BY_TYPE
+		gosub *ToggleTweak
+	}
+	if ( key == key_select(12) ) {
 		snd SOUNDLIST_OK1
         return
 	}
@@ -564,7 +575,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 39
+    listmax = 40
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -613,7 +624,8 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 35) = "Collect kits instead of socks in Urcaguary quest." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST)
 	listn(0, 36) = "Revert post-2.17 cooking result changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES)
 	listn(0, 37) = "Revert post-2.17 boss out-of-sight healing." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING)
-	listn(0, 38) = "Go back."
+	listn(0, 38) = "Increase Dojo EXP gain: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASED_DOJO_EXP) + "% increase."
+	listn(0, 39) = "Go back."
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -752,6 +764,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 				s = "Disable the <{enemy}> self-heal anti-cheese mechanics after version 2.17. \nThis does not apply to creatures like Megamole/Talpidae/Aile."
 			}
 			if ( p == 38 ) {
+				s = "Increase Dojo EXP gain. \nDojo EXP is gained by traveling on world map, at ~3.5 EXP per tile.\nWhile slightly higher than travel EXP, it may be underwhelming for \nthose who doesn't visit Dojo very often."
+			}
+			if ( p == 39 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -968,6 +983,13 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		gosub *ToggleTweak
 	}
 	if ( p == 38 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_INCREASED_DOJO_EXP
+		ts = 100 // Increments by
+		tm = 1900 // Max
+		gosub *IncrementTweak
+	}
+	if ( p == 39 ) {
 		snd SOUNDLIST_OK1
 		return
 	}

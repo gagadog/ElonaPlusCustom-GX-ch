@@ -35107,7 +35107,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE, ACTION_MELEE, SKILL_SPACT_SQUEEZE, SKILL_SPACT_MELT_CLINCH
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_EYE_OF_INSANITY
 			cdata(CDATA_ACT_INDEX, rc) = 14
-			cdata(CDATA_ACT_HEAL, rc) = 690
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_DO_NOTHING
 			if ( jp ) {
 				cdatan(CDATAN_NAME, rc) = "同化抵抗体"
 			}
@@ -35255,7 +35255,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = SKILL_SPACT_DISTANT_ATTACK7
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_EYE_OF_DIMNESS
 			cdata(CDATA_ACT_INDEX, rc) = 11
-			cdata(CDATA_ACT_HEAL, rc) = 760
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_CLASH_RUSH
 			if ( jp ) {
 				cdatan(CDATAN_NAME, rc) = "メシェーラ・イズヒギリア"
 			}
@@ -35571,7 +35571,7 @@
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_INTENSIVE_POWER
 			cdata(CDATA_ACT_INDEX, rc) = 14
 			cdata(CDATA_TXT, rc) += 1
-			cdata(CDATA_ACT_HEAL, rc) = 648
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_INSULT
 			if ( jp ) {
 				cdatan(CDATAN_NAME, rc) = "エレアの扇動者"
 			}
@@ -35810,7 +35810,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = SKILL_SPELL_HYDRO_FANG, SKILL_SPELL_LIGHTNING_SPEAR
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_BOUND_IN_BLOOD
 			cdata(CDATA_ACT_INDEX, rc) = 12
-			cdata(CDATA_ACT_HEAL, rc) = 404
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPELL_HEALING_RAIN
 			if ( jp ) {
 				cdatan(CDATAN_NAME, rc) = "エレアの放浪者"
 			}
@@ -35887,7 +35887,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = SKILL_SPELL_CHAOS_BALL, SKILL_SPELL_NETHER_ARROW, SKILL_SPELL_CRYSTAL_SPEAR, SKILL_SPELL_CRYSTAL_SPEAR
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPELL_HOLY_SHIELD
 			cdata(CDATA_ACT_INDEX, rc) = 14
-			cdata(CDATA_ACT_HEAL, rc) = 403
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPELL_CURE_OF_JURE
 			if ( jp ) {
 				cdatan(CDATAN_NAME, rc) = "混形姫<天屍>"
 			}
@@ -36989,7 +36989,7 @@
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
-			cdata(CDATA_ACT_HEAL, rc) = 648
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_INSULT
 			if ( jp ) {
 				cdatan(CDATAN_NAME, rc) = "煽りイカ"
 			}
@@ -37351,7 +37351,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE, ACTION_MELEE, ACTION_MELEE, SKILL_SPELL_MIND_THORN, SKILL_SPELL_MIND_THORN
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPELL_MIST_OF_FRAILNESS
 			cdata(CDATA_ACT_INDEX, rc) = 15
-			cdata(CDATA_ACT_HEAL, rc) = 402
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPELL_CURE_OF_ERIS
 			cdatan(CDATAN_NAME, rc) = lang("アルラウネ", "alraune")
 			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
@@ -37555,7 +37555,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_RANGE, ACTION_RANGE, SKILL_SPACT_EYE_OF_ILLUSION, SKILL_SPACT_EYE_OF_ILLUSION, SKILL_SPACT_PSYCHIC_WAVE
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_HOMING_LASER
 			cdata(CDATA_ACT_INDEX, rc) = 15
-			cdata(CDATA_ACT_HEAL, rc) = 636
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_EYE_OF_INSANITY
 			cdatan(CDATAN_NAME, rc) = lang("翠魔神兵", "green dark guardian")
 			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
@@ -37626,7 +37626,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = SKILL_SPELL_FIRE_BOLT, SKILL_SPELL_FIRE_BOLT, SKILL_SPELL_COLD_BLADE, SKILL_SPELL_COLD_BLADE, SKILL_SPELL_HEAL_CRITICAL
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_HARVEST_MANA
 			cdata(CDATA_ACT_INDEX, rc) = 15
-			cdata(CDATA_ACT_HEAL, rc) = 763
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_MP_BREATH
 			cdatan(CDATAN_NAME, rc) = lang("蒼魔神兵", "blue dark guardian")
 			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
@@ -37691,7 +37691,7 @@
 			creaturepack = FILTER_NOTHING
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = SKILL_SPACT_DISTANT_ATTACK7, SKILL_SPACT_DISTANT_ATTACK7, SKILL_SPACT_ACID_HURRICANE, SKILL_SPACT_ACID_HURRICANE, SKILL_SPACT_CLASH_RUSH
 			cdata(CDATA_ACT_INDEX, rc) = 5
-			cdata(CDATA_ACT_HEAL, rc) = 714
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_UNCONTROL
 			cdatan(CDATAN_NAME, rc) = lang("紅魔神兵", "crimson dark guardian")
 			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
@@ -37757,7 +37757,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPELL_SPEED
 			cdata(CDATA_ACT_INDEX, rc) = 11
-			cdata(CDATA_ACT_HEAL, rc) = 401
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPELL_HEAL_CRITICAL
 			cdatan(CDATAN_NAME, rc) = lang("ロングツインテールの『トーカ』", "<Talka> the long twintail")
 			cdata(CDATA_RELATION, rc) = RELATION_NEUTRAL
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_NEUTRAL
@@ -37824,7 +37824,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_SHINING_WAVE, SKILL_SPACT_THUNDERCLAP_KICK
 			cdata(CDATA_ACT_INDEX, rc) = 21
-			cdata(CDATA_ACT_HEAL, rc) = 763
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_MP_BREATH
 			cdatan(CDATAN_NAME, rc) = lang("闇の人造巨人", "dark artificial giant")
 			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
@@ -38977,7 +38977,7 @@
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
-			cdata(CDATA_ACT_HEAL, rc) = 677
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_SUPER_REGEN
 			cdatan(CDATAN_NAME, rc) = lang("家守竜『テルフレーザ』", "<Telhureza> the house guard")
 			cdata(CDATA_RELATION, rc) = RELATION_NEUTRAL
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_NEUTRAL
@@ -39092,7 +39092,7 @@
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
-			cdata(CDATA_ACT_HEAL, rc) = 403
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPELL_CURE_OF_JURE
 			cdatan(CDATAN_NAME, rc) = lang("異世界チーター", "another world cheatah")
 			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
@@ -39666,7 +39666,7 @@
 			cdata(CDATA_ACT_INDEX, rc) = 5
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
-			cdata(CDATA_ACT_HEAL, rc) = 744
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_CLOSE_SUICIDE
 			cdatan(CDATAN_NAME, rc) = lang("縋り死霊", "clinghost")
 			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
@@ -41257,7 +41257,7 @@
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
-			cdata(CDATA_ACT_HEAL, rc) = 760
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_CLASH_RUSH
 			cdatan(CDATAN_NAME, rc) = lang("《結束のミクラネシス》", "<Mikraanesis>")
 			cdata(CDATA_RELATION, rc) = RELATION_NEUTRAL
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_NEUTRAL
@@ -41713,7 +41713,7 @@
 			cdata(CDATA_ACT_INDEX, rc) = 25
 			cdata(CDATA_TXT, rc) += 1
 			cdata(CDATA_TXT, rc) += 1
-			cdata(CDATA_ACT_HEAL, rc) = 401
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPELL_HEAL_CRITICAL
 			cdatan(CDATAN_NAME, rc) = lang("クトゥルヒナ", "cthulhick")
 			cdata(CDATA_RELATION, rc) = RELATION_DISLIKE
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_DISLIKE
@@ -42738,7 +42738,7 @@
 			cdata(STARTING_CDATA_ACT_MAIN, rc) = SKILL_SPACT_EYE_OF_DIMNESS, SKILL_SPACT_DISTANT_ATTACK, SKILL_SPACT_DISTANT_ATTACK, SKILL_SPACT_DISTANT_ATTACK, SKILL_SPACT_MEMORY_POISON
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_SUMMON_CHAOS
 			cdata(CDATA_ACT_INDEX, rc) = 15
-			cdata(CDATA_ACT_HEAL, rc) = 401
+			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPELL_HEAL_CRITICAL
 			cdatan(CDATAN_NAME, rc) = lang("廃忘凶獣", "oblivion rude beast")
 			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
