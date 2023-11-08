@@ -23,14 +23,14 @@
 			c@tcg = clist@tcg(cnt, cl@tcg)
 			p@tcg = 0
 			p@tcg = rnd(40)
+			// Don't attack with 0 attack cards. (Occasionally to annoy you)
+			if ( card@tcg(TCG_CARD_ATTACK, c@tcg) <= 0 & rnd(40) > 0 ) { p@tcg = -100 }
 			// Do not attack using cards needed to be kept on field
 			if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_KEEPALIVE ) {
 				repeat clistmax@tcg(tl@tcg)
 					if ( cardcanblock(clist@tcg(cnt, tl@tcg))) { p@tcg = -100 }
 				loop 
 			}
-			// Don't attack with 0 attack cards. (Occasionally to annoy you)
-			if ( card@tcg(TCG_CARD_ATTACK, c@tcg) <= 0 & rnd(40) > 0 ) { p@tcg = -100 }
 			// Deathtouch card attack with some chance to annoy you.
 			if ( cdbit(TCG_BIT_DEATHTOUCH, c@tcg) ) { p@tcg = 0 + 40 * rnd(2) }
 			if ( cardcandeclareattack(c@tcg) ) {
@@ -48,18 +48,18 @@
 			if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_KEEPALIVE ) { p@tcg = -100 }
 			// Deathtouch card defend with some chance to annoy you.
 			if ( cdbit(TCG_BIT_DEATHTOUCH, c@tcg) ) { p@tcg = 0 + 40 * rnd(2) }
+			// Block attack with splitting creatures for profit.
+			if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) < card@tcg(TCG_CARD_HP, c@tcg) & cdbit(TCG_BIT_SPLIT, c@tcg) ) { p@tcg = 100 }
 			// Preferably, don't block first-attack cards.
 			if ( cdbit(TCG_BIT_FIRST_STRIKE, attackingcard@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, attackingcard@tcg) ) { 
-				if ( cdbit(TCG_BIT_FIRST_STRIKE, c@tcg) != TRUE & cdbit(TCG_BIT_DOUBLE_STRIKE, c@tcg)  != TRUE ) { 
+				if ( cdbit(TCG_BIT_FIRST_STRIKE, c@tcg) != TRUE & cdbit(TCG_BIT_DOUBLE_STRIKE, c@tcg) != TRUE & cdbit(TCG_BIT_ARMOR, c@tcg) != TRUE & card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) >= card@tcg(TCG_CARD_HP, c@tcg) ) { 
 					p@tcg = -100
 				}
 			}
 			// Don't block 0 attack cards.
 			if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) <= 0 & rnd(100) > 0 ) { p@tcg = -100 }
-			// Block attack with splitting creatures for profit.
-			if ( card@tcg(TCG_CARD_ATTACK, c@tcg) < card@tcg(TCG_CARD_HP, attackingcard@tcg) & cdbit(TCG_BIT_SPLIT, c@tcg) ) { p@tcg = 100 }
 			// Force a block if life in danger
-			if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) >= cpdata@tcg(TCG_PLAYER_LIFE, cp@tcg) - rnd(10) ) {
+			if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) >= cpdata@tcg(TCG_PLAYER_LIFE, cp@tcg) - rnd(10) - rnd(5) ) {
 				p@tcg = 40 + rnd(40)
 			}
 			if ( cardcanblock(c@tcg, attackingcard@tcg) ) {

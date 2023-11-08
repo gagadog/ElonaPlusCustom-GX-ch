@@ -1,3 +1,17 @@
+# 2.20.1.1
+
+## Added
+- Added a tweak to draw Day/Night cycles indoors.
+- Added a tweak to sort spells by type.
+- Added a tweak to increase Dojo EXP gain.
+
+## Fixed
+- Master/Servant status not increased when interrupting their eat, thanks to @CFWMagic
+- Fear and Confuse using wrong resist because I mixed up values during porting.
+- Some quest rewards spawing at wrong location due to Auto-Handin tweak having the wrong `cc` value.
+- Show NPC name tweak causing spell routing to fail due to using the same global variable.
+- TCG bug fixes.
+
 # 2.20.1.0
 
 ## Added
