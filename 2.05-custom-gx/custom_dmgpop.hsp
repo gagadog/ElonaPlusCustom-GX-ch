@@ -223,21 +223,21 @@
             if ( cdata(CDATA_QUALITY, cnt) == FIX_QUALITY_UNIQUE & DmgPopupR == ROLE_NONE ) { DmgPopupR = ROLE_SPECIAL }
             if ( cdata(CDATA_QUALITY, cnt) >= FIX_QUALITY_MIRACLE & DmgPopupR == ROLE_NONE ) { DmgPopupR = ROLE_ADVENTURER }
             DmgPopupR = DmgPopupR \ 50
-            dx = cdata(CDATA_X, cnt)
-            dy = cdata(CDATA_Y, cnt)
-			if ( dist(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx, dy) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
+            dx@DP = cdata(CDATA_X, cnt)
+            dy@DP = cdata(CDATA_Y, cnt)
+			if ( dist(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx@DP, dy@DP) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
 				continue
 			}
-			if ( fov_los(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx, dy) == 0 ) {
+			if ( fov_los(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx@DP, dy@DP) == 0 ) {
 				continue
 			}
-            s = cdatan(CDATAN_NAME, cnt) // + "("+cdata(CDATA_ROLE, cnt)+")"
+            s@DP = cdatan(CDATAN_NAME, cnt) // + "("+cdata(CDATA_ROLE, cnt)+")"
             DmgPopupP = cdata(CDATA_PIC, cnt) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cnt) * COLOR_TINT_MULT
             if ( cdata(CDATA_PIC, cnt) >= xy2pic(1, 21) & cdata(CDATA_PIC, cnt) <= xy2pic(31, 21) ) {
                 DmgPopupP = cdata(CDATA_PIC, cnt)
             }
-            DmgPopupX = (dx - scx) * inf_tiles + inf_screenx - strlen(s) * (2 + cfg_dmgfont + 1) / 2 / 2 + inf_tiles / 2
-            DmgPopupY = (dy - scy) * inf_tiles + inf_screeny - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
+            DmgPopupX = (dx@DP - scx) * inf_tiles + inf_screenx - strlen(s@DP) * (2 + cfg_dmgfont + 1) / 2 / 2 + inf_tiles / 2
+            DmgPopupY = (dy@DP - scy) * inf_tiles + inf_screeny - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
             DmgPopupX += (scx != scxbk) * sxfix
             DmgPopupY += (scy != scybk) * syfix
             if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver ) {
@@ -245,7 +245,7 @@
             }
             pos DmgPopupX, DmgPopupY
             color 0, 0, 0
-            bmes s, DmgPopupColorsNPCName(0, DmgPopupR), DmgPopupColorsNPCName(1, DmgPopupR), DmgPopupColorsNPCName(2, DmgPopupR)
+            bmes s@DP, DmgPopupColorsNPCName(0, DmgPopupR), DmgPopupColorsNPCName(1, DmgPopupR), DmgPopupColorsNPCName(2, DmgPopupR)
         loop
     }
     /********** CUSTOM - BEGINNING **********/
@@ -284,7 +284,7 @@
                 }
             loop
 
-            s = DmgPopupTexts(i@DP)
+            s@DP = DmgPopupTexts(i@DP)
 
             DmgPopFontInc = 0
             if ( DmgPopups(8, i@DP) != 9999 & ( DmgPopups(9, i@DP) == DMGPOPUP_NORMAL_DAMAGE | DmgPopups(9, i@DP) == DMGPOPUP_ELEM_DAMAGE ) ) {
@@ -293,7 +293,7 @@
                 }
             }
 
-            DmgPopupX = (cdata(CDATA_X, cc@DP) - scx) * inf_tiles + inf_screenx - strlen(s) * (2 + cfg_dmgfont + 1 + DmgPopFontInc) / 2 / 2 + inf_tiles / 2
+            DmgPopupX = (cdata(CDATA_X, cc@DP) - scx) * inf_tiles + inf_screenx - strlen(s@DP) * (2 + cfg_dmgfont + 1 + DmgPopFontInc) / 2 / 2 + inf_tiles / 2
             DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3 + DmgPopFontInc) - (t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1)
             if (DmgPopups(8, i@DP) == 9999) {
                 DmgPopupP = cdata(CDATA_PIC, cc@DP) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cc@DP) * COLOR_TINT_MULT
@@ -309,7 +309,7 @@
             DmgPopupY += (scy != scybk) * syfix
 
             // Disabled X axis out of bound continue because the dialogue pop up could be really long.
-            // if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver | DmgPopupX < 0 | DmgPopupX + strlen(s) * (2 + cfg_dmgfont + DmgPopFontInc + 1) > windoww) {
+            // if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver | DmgPopupX < 0 | DmgPopupX + strlen(s@DP) * (2 + cfg_dmgfont + DmgPopFontInc + 1) > windoww) {
             //     continue
             // }
 
@@ -324,7 +324,7 @@
 
             pos DmgPopupX, DmgPopupY
             color DmgPopups(5, i@DP), DmgPopups(6, i@DP), DmgPopups(7, i@DP)
-            bmes s, DmgPopups(2, i@DP), DmgPopups(3, i@DP), DmgPopups(4, i@DP)
+            bmes s@DP, DmgPopups(2, i@DP), DmgPopups(3, i@DP), DmgPopups(4, i@DP)
             color 0, 0, 0
         }
     loop
