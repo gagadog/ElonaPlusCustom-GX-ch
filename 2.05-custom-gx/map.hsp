@@ -12153,16 +12153,16 @@
 					// On quest map exit, teleport to quest giver.
 					if ( TweakData(TWEAK_CONVENIENCE_AUTO_HANDIN_QUESTS, TWEAK_CATEGORY_CONVENIENCE) == TRUE ) {
 						if ( qdata(QDATA_STATUS, p) == QUEST_STATE_SUCCESS & ( qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_ELIMINATE | qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_PERFORM | qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_CONQUER | qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_TRAP | qdata(QDATA_TYPE, p) == QUEST_SUBTYPE_CARRY ) ) {
-							ccbk = cc
+							ccbkqt = cc
 							cc = CHARA_PLAYER
 							tc = qdata(QDATA_CLIENT, p)
 							client = tc
 							efid = SKILL_SPACT_SHADOW_STEP
 							gosub *effect
-							cc = ccbk
 							cdata(CDATA_CONDITION_SLEEP, tc) = 0
 							cdata(CDATA_EMO_ICON, r1) = 0
 							gosub *chat
+							cc = ccbkqt
 						}
 					}
 				}

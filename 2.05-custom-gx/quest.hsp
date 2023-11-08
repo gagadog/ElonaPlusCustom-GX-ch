@@ -753,17 +753,17 @@
 		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 		if ( qdata(QDATA_PARAM1, rq) * 125 / 100 <= qdata(QDATA_PARAM2, rq) | qdata(QDATA_VAR, rq) == 1 ) {
 			flt
-			itemcreate -1, ITEM_ID_BRONZE_COIN, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 1
+			itemcreate -1, ITEM_ID_BRONZE_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
 		}
 		repeat limit(1 + qdata(QDATA_PARAM1, rq) / 15, 1, 5)
 			flt calcobjlv(qdata(QDATA_PARAM2, rq))
-			itemcreate -1, ITEM_ID_ANCIENT_BOOK, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 1
+			itemcreate -1, ITEM_ID_ANCIENT_BOOK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
 		loop
 	}
 	if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_HARVEST ) {
 		if ( qdata(QDATA_PARAM1, rq) * 125 / 100 < qdata(QDATA_PARAM2, rq) ) {
 			flt
-			itemcreate -1, ITEM_ID_BRONZE_COIN, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 1
+			itemcreate -1, ITEM_ID_BRONZE_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
 		}
 		/********** CUSTOM JOB QUESTS - BEGINNING **********/ // Custom Harvest Quest Rewards
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
@@ -809,7 +809,7 @@
 					itemcreate -1, ITEM_ID_HERB_SEED, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 3
 				}
 				else {
-					itemcreate -1, ITEM_ID_HERB_SEED, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 2
+					itemcreate -1, ITEM_ID_HERB_SEED, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 2
 				}
 			}
 			if ( seedp >= 70 & seedp < 90 ) {
@@ -817,7 +817,7 @@
 					itemcreate -1, ITEM_ID_UNKNOWN_SEED, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 3
 				}
 				else {
-					itemcreate -1, ITEM_ID_MAGICAL_SEED, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 4
+					itemcreate -1, ITEM_ID_MAGICAL_SEED, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 4
 				}
 			}
 			if ( seedp >= 50 & seedp < 70 ) {
@@ -828,7 +828,7 @@
 					itemcreate -1, ITEM_ID_FRUIT_SEED, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 5
 				}
 				else {
-					itemcreate -1, ITEM_ID_VEGETABLE_SEED, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 5
+					itemcreate -1, ITEM_ID_VEGETABLE_SEED, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 5
 				}
 			}
 			/********** ORIGINAL - ENDING **********/
