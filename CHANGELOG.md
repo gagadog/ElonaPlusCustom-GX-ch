@@ -1,3 +1,8 @@
+# Upcoming
+
+## Added
+- Added a Tweak that allows you to turn-in growing phase child for quests.
+
 # 2.20.1.1
 
 ## Added

@@ -5528,7 +5528,7 @@
 					txt_preciousally
 					goto *chat_end
 				}
-				if ( cbit(CHARA_BIT_BIRTHED_CHILD, rc) == TRUE ) {
+				if ( cbit(CHARA_BIT_BIRTHED_CHILD, rc) == TRUE & TweakData(TWEAK_GAMEPLAY_GO_CHILD, TWEAK_CATEGORY_GAMEPLAY) != TRUE ) {
 					snd SOUNDLIST_FAIL1
 					txt lang("それは成長が足りていない。", "It has not grown enough.")
 					goto *chat_end
@@ -6316,7 +6316,7 @@
 					txt_preciousally
 					goto *chat_end
 				}
-				if ( cbit(CHARA_BIT_BIRTHED_CHILD, rc) == TRUE ) {
+				if ( cbit(CHARA_BIT_BIRTHED_CHILD, rc) == TRUE & TweakData(TWEAK_GAMEPLAY_GO_CHILD, TWEAK_CATEGORY_GAMEPLAY) != TRUE ) {
 					snd SOUNDLIST_FAIL1
 					txt lang("それは成長が足りていない。", "It has not grown enough.")
 					goto *chat_end
@@ -6546,7 +6546,7 @@
 					txt_preciousally
 					goto *chat_end
 				}
-				if ( cbit(CHARA_BIT_BIRTHED_CHILD, rc) == TRUE ) {
+				if ( cbit(CHARA_BIT_BIRTHED_CHILD, rc) == TRUE & TweakData(TWEAK_GAMEPLAY_GO_CHILD, TWEAK_CATEGORY_GAMEPLAY) != TRUE ) {
 					snd SOUNDLIST_FAIL1
 					txt lang("それは成長が足りていない。", "It has not grown enough.")
 					goto *chat_end

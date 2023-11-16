@@ -64,6 +64,7 @@ TweakData(78, 2) = "Collect kits instead of socks in Urcaguary quest."
 TweakData(79, 2) = "Revert post-2.17 cooking result changes."
 TweakData(80, 2) = "Revert post-2.17 boss out-of-sight healing."
 TweakData(81, 2) = "Increase Dojo EXP gained."
+TweakData(82, 2) = "Child, you must go!"
 
 TweakData(x, 3) = "AI Tweaks"
 TweakData(0, 3) = "Change Zeome's AI."
@@ -575,7 +576,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 40
+    listmax = 41
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -625,7 +626,8 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 36) = "Revert post-2.17 cooking result changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES)
 	listn(0, 37) = "Revert post-2.17 boss out-of-sight healing." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING)
 	listn(0, 38) = "Increase Dojo EXP gain: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASED_DOJO_EXP) + "% increase."
-	listn(0, 39) = "Go back."
+	listn(0, 39) = "Child, you must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GO_CHILD)
+	listn(0, 40) = "Go back."
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -767,6 +769,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 				s = "Increase Dojo EXP gain. \nDojo EXP is gained by traveling on world map, at ~3.5 EXP per tile.\nWhile slightly higher than travel EXP, it may be underwhelming for \nthose who doesn't visit Dojo very often."
 			}
 			if ( p == 39 ) {
+				s = "Allow you to turn in quests using pets with child-bit-flag.\nNamely: Town Childs / Stray Cats / Little Sisters"
+			}
+			if ( p == 40 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -990,6 +995,11 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		gosub *IncrementTweak
 	}
 	if ( p == 39 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_GO_CHILD
+		gosub *ToggleTweak
+	}
+	if ( p == 40 ) {
 		snd SOUNDLIST_OK1
 		return
 	}
