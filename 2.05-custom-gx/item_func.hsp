@@ -491,6 +491,16 @@
 	}
 	return
 
+#defcfunc inv_checkiffreespace
+	inv_getheader -1
+	locvar_item_freespace_count = 0
+	repeat invrange, invhead
+		if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+			locvar_item_freespace_count++
+		}
+	loop
+	return locvar_item_freespace_count
+
 #defcfunc inv_getfreeid int inv_getfreeid_charid
 	inv_getheader inv_getfreeid_charid
 	locvar_item_exchange_p = -1

@@ -3,6 +3,9 @@
 ## Added
 - Added a Tweak that allows you to turn-in growing phase child for quests.
 
+## Fixed
+- Opening some containers when there's too many item on the map corrupts inventory.
+
 # 2.20.1.1
 
 ## Added

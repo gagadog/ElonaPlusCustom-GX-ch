@@ -3227,6 +3227,12 @@
 		_switch_val = inv(INV_ITEM_ID, ci)
 		if ( _switch_val == ITEM_ID_NEW_YEARS_GIFT | _switch_sw ) {
 			_switch_sw = 0
+			freespace_p = inv_checkiffreespace()
+			if ( freespace_p < 10 ) {
+				txtef COLOR_YELLOW
+				txt lang("アイテム情報が多すぎる！幾つかのアイテムは破壊された。", "There are too many items around! Items in this area may be destroyed if you continue.")
+				goto *act_open_SWEND1
+			}
 			gosub *open_newYear
 			goto *act_open_SWEND1
 		}
@@ -3237,6 +3243,12 @@
 		}
 		if ( _switch_val == ITEM_ID_MYSTERIOUS_ENVELOPE | _switch_sw ) {
 			_switch_sw = 0
+			freespace_p = inv_checkiffreespace()
+			if ( freespace_p < 10 ) {
+				txtef COLOR_YELLOW
+				txt lang("アイテム情報が多すぎる！幾つかのアイテムは破壊された。", "There are too many items around! Items in this area may be destroyed if you continue.")
+				goto *act_open_SWEND1
+			}
 			snd SOUNDLIST_BOOK1
 			txt lang("あなたは" + itemname(ci) + "を開けた。", "You open " + itemname(ci) + ".")
 			msg_halt
@@ -3249,6 +3261,12 @@
 		}
 		if ( _switch_val == ITEM_ID_CARD_PACK | _switch_sw ) {
 			_switch_sw = 0
+			freespace_p = inv_checkiffreespace()
+			if ( freespace_p < 10 ) {
+				txtef COLOR_YELLOW
+				txt lang("アイテム情報が多すぎる！幾つかのアイテムは破壊された。", "There are too many items around! Items in this area may be destroyed if you continue.")
+				goto *act_open_SWEND1
+			}
 			snd SOUNDLIST_CHEST1
 			txt lang("あなたは" + itemname(ci) + "を開けた。", "You open " + itemname(ci) + ".")
 			msg_halt
