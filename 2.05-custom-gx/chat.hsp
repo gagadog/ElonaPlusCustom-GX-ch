@@ -1458,7 +1458,8 @@
 				buff = lang("まだ、何か用があるのか？", "What?")
 				chatList 0, lang("何も", "Nothing.")
 			}
-			if ( TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
+			// TODO: This tweak check isn't really necessary anymore, so I'm just restoring it.
+			if ( TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) > 0 | TRUE ) {
 				if ( gdata(GDATA_FLAG_TUTORIAL) == 0 | gdata(GDATA_FLAG_TUTORIAL) == (-1) ) {
 					chatList 2, lang("そろそろ出発したら？", "You had better leave soon to Palmia.")
 				}
@@ -1514,6 +1515,7 @@
 			itemcreate -1, ITEM_ID_FILTRATION_BOTTLE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			inv(INV_ITEM_PARAM2, ci) = 5
 			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			gdata(GDATA_FLAG_MAIN) = 5
 		}
 		if ( chatval == 3 ) {
 			chatMore lang("…本当に食べてしまったのか？", "Err... you really ate that thing? Oh well..."), lang("えー", "What!")
