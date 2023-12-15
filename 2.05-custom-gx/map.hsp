@@ -497,6 +497,14 @@
 		gosub *del_userTemp
 		gosub *userNpc_update
 	}
+	if ( TweakData(TWEAK_GAMEPLAY_MOONGATE_LOOT, TWEAK_CATEGORY_GAMEPLAY) ) {
+		if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE & comctrl == 2 ) {
+			comctrl = 0
+			Party_End = 1
+			gosub *com_txtAdvQuit
+			Party_End = 0
+		}
+	}
 	if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE | gdata(GDATA_AREA) == AREA_ARENA | gdata(GDATA_AREA) == AREA_PET_ARENA ) {
 		usermapid = 0
 	}
@@ -1579,6 +1587,35 @@
 				refreshspeed cnt
 			}
 		loop
+		if ( TweakData(TWEAK_GAMEPLAY_MOONGATE_LOOT, TWEAK_CATEGORY_GAMEPLAY) ) {
+			map_has_enemy = 0
+			map_max_enemy_lvl = 1
+			repeat MAX_CHARA_TOTAL
+				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+					continue
+				}
+				if ( cdata(CDATA_RELATION, cnt) == (-3) ) {
+					map_has_enemy = 1
+					if ( cdata(CDATA_LEVEL, cnt) > map_max_enemy_lvl ) {
+						map_max_enemy_lvl = cdata(CDATA_LEVEL, cnt)
+					}
+				}
+			loop
+			if ( map_has_enemy & comctrl == 2 ) {
+				usermsg += lang("  …このフロアには運命を感じる…！", "  ...You sense fortune on this map...!")
+				inv_getheader -1
+				repeat invrange, invhead
+					if ( inv(INV_ITEM_NUM, cnt) > 0 ) {
+						if ( refitem(inv(INV_ITEM_ID, cnt), DBSPEC_TYPE) == FILTER_CONTAINER ) {
+							inv(INV_ITEM_PARAM1, ci) = limit(map_max_enemy_lvl, 2, 4000) / 2 + 5
+							inv(INV_ITEM_PROPERTY, cnt) = PROP_NPC
+						}
+					}
+				loop
+			} else {
+				comctrl = 0
+			}
+		}
 	}
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CAMP ) {
 		map_initcustom "camp"

@@ -2,9 +2,12 @@
 
 ## Added
 - Added a Tweak that allows you to turn-in growing phase child for quests.
+- Added a Tweak to have gold drop and openable containers in showrooms (only when visited using Moongate/Runes).
 
 ## Fixed
 - Opening some containers when there's too many item on the map corrupts inventory.
+- Tileset errors caused by ocean-tiles in old showroom maps (e.g. the Larnoel ones)
+- Elea-leaving event triggered twice caused by the tweak allowing you to nuke beginner cave.
 
 # 2.20.1.1
 

@@ -826,6 +826,42 @@
 		}
 	}
 	if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE ) {
+		if ( TweakData(TWEAK_GAMEPLAY_MOONGATE_LOOT, TWEAK_CATEGORY_GAMEPLAY) ) {
+			if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE & comctrl == 2 ) {
+				p = cdata(CDATA_LEVEL, rc) + rnd(cdata(CDATA_LEVEL, rc) * cdata(CDATA_LEVEL, rc))
+				p2 = rnd(3)
+				p3 = rnd(50)
+				if (cdata(CDATA_QUALITY, rc) == FIX_QUALITY_MIRACLE) {
+					p += rnd(p * 2)
+					p2 += 1 + rnd(3)
+					p3 = rnd(5)
+				}
+				if (cdata(CDATA_QUALITY, rc) == FIX_QUALITY_GODLY) {
+					p += 2 * p + rnd(p * 3)
+					p2 += 2 + rnd(3) + rnd(3) + rnd(3)
+					p3 = 0
+				}
+				if (p > 0) {
+					flt calcobjlv(cdata(CDATA_LEVEL, rc)), calcfixlv(FIX_QUALITY_GOOD)
+					flttypemajor = FILTER_GOLD
+					flttypeminor = FILTER_NOTHING
+					itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), p
+				}
+				if (p2 > 0) {
+					repeat p2
+						if (rnd(3) == 0) {
+							flt calcobjlv(cdata(CDATA_LEVEL, rc)), calcfixlv(FIX_QUALITY_GOOD)
+							flttypemajor = FILTER_ORE
+							flttypeminor = FILTER_NOTHING
+							itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
+						}
+					loop
+				}
+				if (p3 == 0) {
+					itemcreate -1, ITEM_ID_SCROLL_FAITH, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 1
+				}
+			}
+		}
 		cell_refresh cdata(CDATA_X, rc), cdata(CDATA_Y, rc)
 		return
 	}
