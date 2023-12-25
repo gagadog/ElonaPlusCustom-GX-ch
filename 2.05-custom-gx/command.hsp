@@ -7027,7 +7027,7 @@
 	page_check
 *com_userNpcExisting_loop
 	redraw 0
-	s = lang("カスタムNPC一覧", "Custom NPC"), lang("決定 [召喚]  ", "Enter [Details] ") + strhint2 + strhint3
+	s = lang("カスタムNPC一覧", "Custom NPC"), lang("決定 [召喚]  ", "Enter [Details] ") + strhint2 + strhint3 + "* [Eq-Lvl] "
 	display_window (windoww - 500) / 2 + inf_screenx, winposy(400), 500, 400
 	x = ww / 5 * 3
 	y = wh - 80
@@ -7072,11 +7072,17 @@
         custom_summon_text_color = 0
         color 10, 10, 10
         if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
-            if ( userdata(2, i) >= cdata(CDATA_LEVEL, CHARA_PLAYER) * 3 / 2 + 5 | custom_summon_cost >= cdata(CDATA_PIETY, CHARA_PLAYER) ) {
+			if ( userdata(2, i) >= cdata(CDATA_LEVEL, CHARA_PLAYER) * 3 / 2 + 5 | custom_summon_cost >= cdata(CDATA_PIETY, CHARA_PLAYER) ) {
                 color 160, 10, 10
                 custom_summon_text_color = 3
             }
-            mes "" + userdata(2, i) + "(" + custom_summon_cost + ")"
+			custom_summon_level = userdata(2, i)
+			if ( summonatplayerlevel ) {
+				custom_summon_level = summonatplayerlevel
+				custom_summon_text_color = 0
+				color 10, 10, 10
+			}
+            mes "" + custom_summon_level + "(" + custom_summon_cost + ")"
         } else {
             mes "" + userdata(2, i)
         }
@@ -7097,6 +7103,10 @@
 			break
 		}
 	loop
+	if ( key == key_mode2 ) {
+		summonatplayerlevel = (summonatplayerlevel <= 0) * limit(gdata(GDATA_DEEPEST_LEVEL), 1, 2000)
+		goto *com_userNpcExisting
+	}
 	pagebk_summon = page
 	csprev_summon = cs
 	pagesaved_summon = 1
@@ -7108,7 +7118,7 @@
 			p@NE = get_freeallysum()
 			if ( (0 < (15 - p@NE)) & mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
 				p@NE(1) = calccostcnpcsummon(knowCNPC)
-				if ( userdata(2, knowCNPC) < cdata(CDATA_LEVEL, CHARA_PLAYER) * 3 / 2 + 5 ) {
+				if ( userdata(2, knowCNPC) < cdata(CDATA_LEVEL, CHARA_PLAYER) * 3 / 2 + 5 | summonatplayerlevel ) {
 					if ( p@NE(1) <= cdata(CDATA_PIETY, CHARA_PLAYER) ) {
 						cdata(CDATA_PIETY, CHARA_PLAYER) -= p@NE(1)
 						initunid = findunid(userdatan(0, knowCNPC))
@@ -7126,6 +7136,10 @@
 							sux = cdata(CDATA_X, CHARA_PLAYER) - 1
 						}
 						flt
+						novoidlv = 1
+						if ( summonatplayerlevel ) {
+							initlv = summonatplayerlevel
+						}
 						characreate -1, CREATURE_ID_USER, sux, cdata(CDATA_Y, CHARA_PLAYER)
 						cbitmod CHARA_BIT_NECRO, rc, TRUE
 						cbitmod CHARA_BIT_SUMMONED, rc, TRUE
@@ -7238,6 +7252,7 @@
 
 #defcfunc calccostcnpcsummon int calccostcnpcsummon_arg1
 	locvar_calccostcnpcsummon_cost = userdata(2, calccostcnpcsummon_arg1) // Level
+	if ( summonatplayerlevel ) { locvar_calccostcnpcsummon_cost = summonatplayerlevel }
 	locvar_calccostcnpcsummon_multiplier = 3 // Base multiplier
 	// fixLv
 	if ( userdata(5, calccostcnpcsummon_arg1) == 1 ) { locvar_calccostcnpcsummon_multiplier = 2 }
