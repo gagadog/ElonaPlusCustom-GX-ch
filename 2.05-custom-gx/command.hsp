@@ -7069,24 +7069,24 @@
 		s = "" + listn(0, p)
 		pos wx + 380, wy + 66 + cnt * 19
 		custom_summon_cost = calccostcnpcsummon(i)
-        custom_summon_text_color = 0
-        color 10, 10, 10
-        if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
+		custom_summon_text_color = 0
+		color 10, 10, 10
+		if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & mdata(MDATA_TYPE) != MAP_TYPE_HOME ) {
 			if ( userdata(2, i) >= cdata(CDATA_LEVEL, CHARA_PLAYER) * 3 / 2 + 5 | custom_summon_cost >= cdata(CDATA_PIETY, CHARA_PLAYER) ) {
-                color 160, 10, 10
-                custom_summon_text_color = 3
-            }
+				color 160, 10, 10
+				custom_summon_text_color = 3
+			}
 			custom_summon_level = userdata(2, i)
 			if ( summonatplayerlevel ) {
 				custom_summon_level = summonatplayerlevel
 				custom_summon_text_color = 0
 				color 10, 10, 10
 			}
-            mes "" + custom_summon_level + "(" + custom_summon_cost + ")"
-        } else {
-            mes "" + userdata(2, i)
-        }
-        cs_list s, wx + 85, wy + 66 + cnt * 19 - 1, 19, 0, custom_summon_text_color
+			mes "" + custom_summon_level + "(" + custom_summon_cost + ")"
+		} else {
+			mes "" + userdata(2, i)
+		}
+		cs_list s, wx + 85, wy + 66 + cnt * 19 - 1, 19, 0, custom_summon_text_color
 	loop
 	if ( keyrange != 0 ) {
 		cs_bk = cs

@@ -14061,8 +14061,9 @@
 			eqbui = 1
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
-		cdata(444, cc) = limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1)
-		if ( TweakData(50, 4) > 0 & cdata(444, cc) >= cdata(CDATA_HP, tc) ) {
+		hokutoudmg = limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1)
+		if ( TweakData(50, 4) > 0 & hokutoudmg >= cdata(CDATA_HP, tc) ) {
+			cdata(CDATA_CHAIN_ATTACK_COUNT, cc) = 100
 			txtef COLOR_YELLOW
 			chatc@DP = cc
 			switch TweakData(50, 4)
@@ -14078,7 +14079,7 @@
 			swend
 			msg_halt
 		}
-		dmghp tc, cdata(444, cc), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
+		dmghp tc, hokutoudmg, cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
 				cdata(CDATA_GUARD_BREAK, tc) += 40

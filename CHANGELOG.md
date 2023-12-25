@@ -5,6 +5,7 @@
 - Added a Tweak to have gold drop and openable containers in showrooms (only when visited using Moongate/Runes).
 
 ## Fixed
+- Chain attack display overlap issue.
 - Opening some containers when there's too many item on the map corrupts inventory.
 - Tileset errors caused by ocean-tiles in old showroom maps (e.g. the Larnoel ones)
 - Elea-leaving event triggered twice caused by the tweak allowing you to nuke beginner cave.

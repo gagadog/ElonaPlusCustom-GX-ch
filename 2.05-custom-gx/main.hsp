@@ -2558,6 +2558,11 @@
 	}
 
 	/********** ANNA CUSTOM - ENDING **********/
+	
+	// Fix allied status accidentally set by *ai_turn, if Ano addressed this in other ways, remove this.
+	if ( cdata(CDATA_ALLIED, CHARA_PLAYER) != 0 ) {
+		cdata(CDATA_ALLIED, CHARA_PLAYER) = 0
+	}
 
 	procid = (procid + 1) \ 4
 	proclist(procid) = "pc_turn_init" + " ct:" + ct
