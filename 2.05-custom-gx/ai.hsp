@@ -564,13 +564,16 @@
 				}
 			}
 		}
+		if ( cdata(CDATA_ROW_ACT, cdata(CDATA_TARGET, cc)) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, cdata(CDATA_TARGET, cc)) == ACTION_DIVING_DRILL ) {
+			cdata(CDATA_TARGET, cc) = 0
+		}
 		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & cdata(CDATA_IMPRESSION, cc) <= 0 & cc != CHARA_PLAYER ) {
-			cdata(CDATA_RELATION, cc) = -1
+			cdata(CDATA_RELATION, cc) = RELATION_DISLIKE
 			cdata(CDATA_TARGET, cc) = 0
 			cdata(CDATA_AI_AGGRO, cc) = 5
 		}
 		if ( gdata(GDATA_AREA) != AREA_PET_ARENA & cdata(CDATA_CONDITION_BRAINWASH, cc) > 0 & cc != CHARA_PLAYER ) {
-			cdata(CDATA_RELATION, cc) = -1
+			cdata(CDATA_RELATION, cc) = RELATION_DISLIKE
 			cdata(CDATA_TARGET, cc) = 0
 			cdata(CDATA_AI_AGGRO, cc) = 25
 		}
@@ -3115,6 +3118,20 @@
 			}
 		}
 	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_JUMP_LANDMINE_GIRL | cdata(CDATA_ID, cc) == CREATURE_ID_SPEED_HACK_CHEATAH | cdata(CDATA_ID, cc) == CREATURE_ID_BLACK_HOPPER_X | cdata(CDATA_ID, cc) == CREATURE_ID_FLIGHT_FISH | cdata(CDATA_ID, cc) == CREATURE_ID_FLYING_LEECH | cdata(CDATA_ID, cc) == CREATURE_ID_SUZAKU | cdata(CDATA_ID, cc) == CREATURE_ID_STRIKE_EAGLE ) {
+		if ( cdata(CDATA_CONDITION_POISON, cc) == 0 & cdata(CDATA_CONDITION_BLEED, cc) == 0 & cdata(CDATA_CONDITION_SUFFOCATION, cc) == 0 ) {
+			if ( rnd(5) == 0 ) {
+				act = SKILL_SPACT_JUMPING_DROP
+			}
+		}
+	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_VINDALIAN_DEATHWORM | cdata(CDATA_ID, cc) == CREATURE_ID_WALL_HACK_CHEATAH | cdata(CDATA_ID, cc) == CREATURE_ID_SAND_WORM | cdata(CDATA_ID, cc) == CREATURE_ID_BAMBOO_SPROUT | cdata(CDATA_ID, cc) == CREATURE_ID_BUILDUP_OPATOS | cdata(CDATA_ID, cc) == CREATURE_ID_OPATOS | cdata(CDATA_ID, cc) == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
+		if ( cdata(CDATA_CONDITION_POISON, cc) == 0 & cdata(CDATA_CONDITION_BLEED, cc) == 0 & cdata(CDATA_CONDITION_SUFFOCATION, cc) == 0 ) {
+			if ( rnd(5) == 0 ) {
+				act = SKILL_SPACT_DIVING_DRILL
+			}
+		}
+	}
 	if ( cdata(CDATA_ID, cc) == CREATURE_ID_13TH_STEP_GHOST | cdata(CDATA_ID, cc) == CREATURE_ID_GHOST | cdata(CDATA_ID, cc) == CREATURE_ID_NINJA ) {
 		if ( cdata(CDATA_TARGET, cc) > (-1) ) {
 			if ( rnd(15) == 0 ) {
@@ -3158,7 +3175,7 @@
 			}
 		}
 	}
-	if ( cdata(CDATA_ID, cc) == CREATURE_ID_HELRAUNE | cdata(CDATA_ID, cc) == CREATURE_ID_DAGANOTOSUS ) {
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_HELRAUNE | cdata(CDATA_ID, cc) == CREATURE_ID_DAGANOTOSUS | cdata(CDATA_ID, cc) == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
 		if ( cdata(CDATA_POWER_GAUGE, cc) < 80 ) {
 			if ( cdata(CDATA_POWER_GAUGE, cc) >= 25 ) {
 				if ( rnd(10) == 0 ) {
@@ -3343,7 +3360,7 @@
 			}
 		}
 	}
-	if ( cdata(CDATA_ID, cc) == CREATURE_ID_MARY_THE_INSECT_MASTER | cdata(CDATA_ID, cc) == CREATURE_ID_ULTIMATE_GOLEM | cdata(CDATA_ID, cc) == CREATURE_ID_ARMA_THE_TOUR_GUIDE | cdata(CDATA_ID, cc) == CREATURE_ID_AJETALIO_THE_SEMINAR_LECTURER | cdata(CDATA_ID, cc) == CREATURE_ID_CURSE_GRAPPLER ) {
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_MARY_THE_INSECT_MASTER | cdata(CDATA_ID, cc) == CREATURE_ID_ULTIMATE_GOLEM | cdata(CDATA_ID, cc) == CREATURE_ID_ARMA_THE_TOUR_GUIDE | cdata(CDATA_ID, cc) == CREATURE_ID_AJETALIO_THE_SEMINAR_LECTURER | cdata(CDATA_ID, cc) == CREATURE_ID_CURSE_GRAPPLER | cdata(CDATA_ID, cc) == CREATURE_ID_VINDALIAN_DEATHWORM ) {
 		if ( cdata(CDATA_TARGET, cc) != 0 | cdata(CDATA_TARGET, cc) == 0 ) {
 			if ( rnd(3) ) {
 				if ( cbit(CHARA_BIT_VINDALIAN_JIUJITSU_ACTIVE, cc) == FALSE ) {

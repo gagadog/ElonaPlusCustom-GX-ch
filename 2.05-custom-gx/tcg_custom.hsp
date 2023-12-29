@@ -623,6 +623,11 @@
 
 #deffunc tcgreward
 	gdata(GDATA_MIN) += 5
+	if ( gdata(GDATA_TIME_LIMIT) > 0 & gdata(GDATA_AREA) == AREA_QUEST ) {
+		if ( gdata(GDATA_QUEST) != QUEST_TYPE_MINEFIELD ) {
+			gdata(GDATA_TIME_LIMIT) -= 5
+		}
+	}
 	if ( gameresult@tcg > 0) {
 		if ( gameresult@tcg \ 2 == 1 ) {
 			modimp tc, 7
@@ -4885,6 +4890,62 @@
 		return 1
 	}
 	// karune
+	if ( dbid == CREATURE_ID_ANTITANK_LANDMINE_GIRL ) {
+		cardrefrace = "karune"
+		cardrefclass = "gunner"
+		cardrefsex = "female"
+		cardreflvl = 95
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 5
+		cardrefattack = 7
+		cardrefhp = 7
+		cardrefskillid = TCG_EFF_DEATHRATTLE_DEALEVERYONE9DAMAGE
+		cardrefbits = "32,28"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_JUMP_LANDMINE_GIRL ) {
+		cardrefrace = "karune"
+		cardrefclass = "warrior"
+		cardrefsex = "female"
+		cardreflvl = 85
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 4
+		cardrefattack = 5
+		cardrefhp = 6
+		cardrefskillid = TCG_EFF_DEATHRATTLE_DEALEVERYONE3DAMAGE
+		cardrefbits = "32,28"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_SCATTER_LANDMINE_GIRL ) {
+		cardrefrace = "karune"
+		cardrefclass = "gunner"
+		cardrefsex = "female"
+		cardreflvl = 75
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 2
+		cardrefattack = 3
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_DEATHRATTLE_DEALEVERYONE1DAMAGE
+		cardrefbits = "32,28"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_LANDMINE_GIRL ) {
+		cardrefrace = "karune"
+		cardrefclass = "wizard"
+		cardrefsex = "female"
+		cardreflvl = 65
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 0
+		cardrefattack = 1
+		cardrefhp = 1
+		cardrefskillid = TCG_EFF_DEATHRATTLE_DRAW1CARD
+		cardrefbits = "32,28"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_S_BOY ) {
 		cardrefrace = "karune"
 		cardrefclass = "priest"
@@ -6493,6 +6554,72 @@
 		return 1
 	}
 	// worm
+	if ( dbid == CREATURE_ID_WORM_HOLER ) {
+		cardrefrace = "worm"
+		cardrefclass = "warmage"
+		cardreflvl = 191
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 3
+		cardrefcost = 7
+		cardrefattack = 9
+		cardrefhp = 9
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALEVERYONE9DAMAGE
+		cardrefbits = "29"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_VINDALIAN_DEATHWORM ) {
+		cardrefrace = "worm"
+		cardrefclass = "warrior"
+		cardreflvl = 172
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 3
+		cardrefcost = 4
+		cardrefattack = 2
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_BATTLECRY_MILLTARGETCARD
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_DEATH_WORDM ) {
+		cardrefrace = "worm"
+		cardrefclass = "pianist"
+		cardrefsex = "female"
+		cardreflvl = 110
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 3
+		cardrefcost = 3
+		cardrefattack = 5
+		cardrefhp = 1
+		cardrefskillid = TCG_EFF_TURN_START_DEATHWORDRANDOMENEMY
+		cardrefbits = "29"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_HEAL_WORM ) {
+		cardrefrace = "worm"
+		cardrefclass = "priest"
+		cardreflvl = 72
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 3
+		cardrefcost = 3
+		cardrefattack = 1
+		cardrefhp = 6
+		cardrefskillid = TCG_EFF_BATTLECRY_HEALPLAYER6DAMAGE
+		cardrefbits = "29"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_MEGA_GORDIAN_WORM ) {
+		cardrefrace = "worm"
+		cardrefclass = "predator"
+		cardreflvl = 43
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 3
+		cardrefcost = 20
+		cardrefattack = 3
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = "27,29"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_SEPA ) {
 		cardrefrace = "worm"
 		cardrefclass = "warmage"
@@ -6500,9 +6627,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
 		cardrefcost = 6
-		cardrefattack = 7
+		cardrefattack = 8
 		cardrefhp = 8
-		cardrefskillid = TCG_EFF_BATTLECRY_MILL3CARD
+		cardrefskillid = TCG_EFF_BATTLECRY_MILL6CARD
 		cardrefbits = ""
 		return 1
 	}
@@ -6512,11 +6639,11 @@
 		cardreflvl = 118
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 5
-		cardrefattack = 6
-		cardrefhp = 7
+		cardrefcost = 3
+		cardrefattack = 2
+		cardrefhp = 2
 		cardrefskillid = TCG_EFF_BATTLECRY_PARALYSECHOSENENEMY
-		cardrefbits = ""
+		cardrefbits = "29"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_GRAND_LEECH ) {
@@ -6528,8 +6655,8 @@
 		cardrefcost = 3
 		cardrefattack = 3
 		cardrefhp = 4
-		cardrefskillid = TCG_EFF_BATTLECRY_MILL2CARD
-		cardrefbits = "10"
+		cardrefskillid = TCG_EFF_BATTLECRY_HEALALLCARD
+		cardrefbits = "10,29"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_TENTACLE_WORM ) {
@@ -6542,7 +6669,7 @@
 		cardrefattack = 2
 		cardrefhp = 2
 		cardrefskillid = TCG_EFF_BATTLECRY_PARALYSERANDOMENEMY
-		cardrefbits = ""
+		cardrefbits = "29"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_DHOLE ) {
@@ -6551,11 +6678,11 @@
 		cardreflvl = 145
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 6
+		cardrefcost = 4
 		cardrefattack = 6
-		cardrefhp = 8
-		cardrefskillid = TCG_EFF_BATTLECRY_MILL2CARD
-		cardrefbits = ""
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = "8,29"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_ROCK_WORM ) {
@@ -6564,11 +6691,11 @@
 		cardreflvl = 136
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 6
-		cardrefattack = 10
-		cardrefhp = 4
-		cardrefskillid = TCG_EFF_BATTLECRY_MILL2CARD
-		cardrefbits = ""
+		cardrefcost = 3
+		cardrefattack = 3
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = "6,29"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_SAND_WORM ) {
@@ -6579,9 +6706,9 @@
 		cardrefdomain = 3
 		cardrefcost = 2
 		cardrefattack = 3
-		cardrefhp = 3
-		cardrefskillid = TCG_EFF_BATTLECRY_MILL2CARD
-		cardrefbits = ""
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = "29"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_DRAGON_CENTIPEDE ) {
@@ -6590,10 +6717,10 @@
 		cardreflvl = 93
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 4
-		cardrefattack = 4
-		cardrefhp = 6
-		cardrefskillid = TCG_EFF_BATTLECRY_MILL2CARD
+		cardrefcost = 3
+		cardrefattack = 3
+		cardrefhp = 5
+		cardrefskillid = TCG_EFF_BATTLECRY_MILL3CARD
 		cardrefbits = ""
 		return 1
 	}
@@ -6606,8 +6733,8 @@
 		cardrefcost = 3
 		cardrefattack = 3
 		cardrefhp = 5
-		cardrefskillid = TCG_EFF_BATTLECRY_MILL1CARD
-		cardrefbits = "10"
+		cardrefskillid = TCG_EFF_BATTLECRY_SILENCECHOSENENEMY
+		cardrefbits = "10,29"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_FLYING_LEECH ) {
@@ -6615,11 +6742,11 @@
 		cardreflvl = 20
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 1
-		cardrefattack = 1
-		cardrefhp = 2
-		cardrefskillid = TCG_EFF_BATTLECRY_MILL1CARD
-		cardrefbits = "10"
+		cardrefcost = 2
+		cardrefattack = 2
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = "7,10,29"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_CENTIPEDE ) {
@@ -6631,7 +6758,7 @@
 		cardrefattack = 1
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_BATTLECRY_MILL1CARD
-		cardrefbits = ""
+		cardrefbits = "29"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_FIRE_CENTIPEDE ) {
@@ -14872,6 +14999,19 @@
 		return 1
 	}
 	// spirit
+	if ( dbid == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
+		cardrefrace = "spirit"
+		cardrefclass = "predator"
+		cardreflvl = 70
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 1
+		cardrefattack = 1
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_BAMBOOSPIRIT
+		cardrefbits = ""
+		return 1
+	}
 	if ( dbid == CREATURE_ID_AIME_THE_STORY_TELLER ) {
 		cardrefrace = "spirit"
 		cardrefclass = "priest"
@@ -14879,7 +15019,7 @@
 		cardreflvl = 15
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 4
+		cardrefcost = 3
 		cardrefattack = 0
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_CHAOSSPIRIT

@@ -1,4 +1,134 @@
 *db_card
+	if ( dbid == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
+		cardreftype = 10
+		cardrefskill = lang("長い年月を経て竹が精霊化したもの。精霊化の際になんか３本に増えた。別名タケトリオ。たけのこ時代から暮らしていた里を旅立ち、人間の掘った穴を探して住み着く。普段は先端に毒や汚物を塗っていたりするが、１月に門松のバイトをする時は奇麗にしている。", "Bamboo that has been spiritualized over a long period of time. At the time of spiritualization, it has somehow increased to a trio, known as the Bamboo Trio. They leave the village where they have lived since the age of bamboo, and find a hole dug by humans to live in. They usually have poison or filth smeared on the tips, however they are clean and tidy when they work part-time on the kadomatsu in January.")
+		cardrefdomain = 6
+		cardrefrare = 50
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("竹槍の精霊", "bamboo spear spirit")
+		cardrefpic = xy2pic(12, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1101 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_ANTITANK_LANDMINE_GIRL ) {
+		cardreftype = 10
+		cardrefskill = lang("かわいそうな私アピールのためだけに地雷原に住んでいるメンヘラ。すぐ感情などを爆発させるし、一緒に死のうとしてくるので厄介。対戦車といっても人がぞんざいに扱って大丈夫というわけではない。", "Mentally ill girl who lives in a minefield just for the appeal of \"poor me\". They are troublesome because they can easily let their emotions go out and try to die together with you. Even though it is an anti-tank, it does not mean that people can treat it with care.")
+		cardrefdomain = 6
+		cardrefrare = 30
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("対戦車地雷系女子", "anti-tank landmine girl")
+		cardrefpic = xy2pic(13, 34) + COLOR_BROWN * COLOR_TINT_MULT
+		cardrefrace = "1100 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_JUMP_LANDMINE_GIRL ) {
+		cardreftype = 10
+		cardrefskill = lang("かわいそうな私アピールのためだけに地雷原に住んでいるメンヘラ。すぐ感情などを爆発させるし、一緒に死のうとしてくるので厄介。普段は大人しいが、油断した頃にいきなり飛びついて加害してくるので危険。", "Mentally ill girl who lives in a minefield just for the appeal of \"poor me\". They are troublesome because they can easily let their emotions go out and try to die together with you. They are usually quiet, but when they are caught off guard, they will suddenly jump on you and harm you, making them dangerous.")
+		cardrefdomain = 6
+		cardrefrare = 40
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("跳躍地雷系女子", "jump landmine girl")
+		cardrefpic = xy2pic(14, 34) + COLOR_BROWN * COLOR_TINT_MULT
+		cardrefrace = "1099 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_SCATTER_LANDMINE_GIRL ) {
+		cardreftype = 10
+		cardrefskill = lang("かわいそうな私アピールのためだけに地雷原に住んでいるメンヘラ。すぐ感情などを爆発させるし、一緒に死のうとしてくるので厄介。見えている地雷なのだが、扇状に散弾をぶちかましてくるので回避は困難。", "Mentally ill girl who lives in a minefield just for the appeal of \"poor me\". They are troublesome because they can easily let their emotions go out and try to die together with you. They use visible land mines normally, but it is difficult to avoid them because they spray bullets at you in a fan-like pattern.")
+		cardrefdomain = 6
+		cardrefrare = 50
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("指向性散弾地雷系女子", "scatter landmine girl")
+		cardrefpic = xy2pic(14, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1098 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_LANDMINE_GIRL ) {
+		cardreftype = 10
+		cardrefskill = lang("かわいそうな私アピールのためだけに地雷原に住んでいるメンヘラ。すぐ感情などを爆発させるし、一緒に死のうとしてくるので厄介。ピンクと黒の組み合わせが好き。", "Mentally ill girl who lives in a minefield just for the appeal of \"poor me\". They are troublesome because they can easily let their emotions go out and try to die together with you. Likes the combination of pink and black.")
+		cardrefdomain = 6
+		cardrefrare = 60
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("地雷系女子", "landmine girl")
+		cardrefpic = xy2pic(13, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1097 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_WORM_HOLER ) {
+		cardreftype = 10
+		cardrefskill = lang("異次元で増殖して暴れまわっている巨大ワーム。あまりの被害に困った異次元人が、ワームホールに捨てることで駆除を行っている。ワームホールを通っても死なないどころか適応変異し、こちら側の次元に現出した。", "Giant worms that are proliferating and rampaging in other dimensions. Troubled by the damage, interdimensional people have been exterminating them by dumping them into wormholes. The worms do not die even if they pass through the wormhole, they adapt and mutate, and materialize in our dimension.")
+		cardrefdomain = 6
+		cardrefrare = 5
+		cardrefcost = 0
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("ワームホーラー", "worm holer")
+		cardrefpic = xy2pic(1, 17) + COLOR_DARK_GREEN * COLOR_TINT_MULT
+		cardrefrace = "1096 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_VINDALIAN_DEATHWORM ) {
+		cardreftype = 10
+		cardrefskill = lang("異形の森の地中で育った巨大ミミズ。地震も起きないくらいゆっくりと動き、大地を耕してくれる存在なのだが、ギガモールに食われそうになると大慌てで地上に逃げてくる。", "A giant worm that grows underground in the Vindale Forest. They move so slowly that quakes don't even occur, and they are the ones who cultivate the earth, when they are about to be eaten by the Gigamoles, they flee underground in a panic.")
+		cardrefdomain = 6
+		cardrefrare = 8
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("ヴィンデリアンデスワーム", "vindalian deathworm")
+		cardrefpic = xy2pic(7, 35) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1095 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_DEATH_WORDM ) {
+		cardreftype = 10
+		cardrefskill = lang("めちゃくちゃ甘やかされて育った、ワーム界のお嬢様。家来の忠告もムシして危険なところへ外出しがち。高貴な心さえ持っていればどんな酷いことを言っても問題ない、と思っているワガママクソ虫。", "She is the young lady of the worm world who grew up extremely spoiled. She tends to go out to dangerous places without heeding the advice of her retainers. She is a selfish worm who thinks that it doesn't matter what terrible things she says as long as she has a noble heart.")
+		cardrefdomain = 6
+		cardrefrare = 10
+		cardrefcost = 0
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("ですわーむ", "death wordm")
+		cardrefpic = xy2pic(8, 7) + COLOR_YELLOW2 * COLOR_TINT_MULT
+		cardrefrace = "1094 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_HEAL_WORM ) {
+		cardreftype = 10
+		cardrefskill = lang("高い治癒能力と繁殖力を持つイモムシ。特にその肉は病気の治療に効果があるとされる。飼育されていた個体が脱走してしまい、環境破壊が懸念されていたが、野生動物や冒険者がバクバク食うのでそこまで増殖していない。", "Caterpillars with high healing and reproductive capacity. Its flesh, in particular, is believed to be effective in curing diseases. The captive population has escaped and there were concerns about environmental destruction, but they have not proliferated to that extent because wild animals and adventurers are eating them up.")
+		cardrefdomain = 6
+		cardrefrare = 20
+		cardrefcost = 0
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("ヒールワーム", "heal worm")
+		cardrefpic = xy2pic(8, 5) + COLOR_BLUE * COLOR_TINT_MULT
+		cardrefrace = "1093 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_MEGA_GORDIAN_WORM ) {
+		cardreftype = 10
+		cardrefskill = lang("極太に進化したハリガネムシ。巨人や巨大生物の消化器官に寄生して育つ。充分に育つと宿主の身体から出ていくがあまりにも太すぎ。それでも無理矢理出ようとするので宿主が裂けてしまう。", "Gordian worm that have evolved to be extremely thick. It grows as a parasite in the digestive organs of giants and giant creatures. When it grows enough, it emerges from the host's body, which is too thick. The host is then ripped open as it tries to force its way out.")
+		cardrefdomain = 6
+		cardrefrare = 30
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("極太ハリガネムシ", "mega gordian worm")
+		cardrefpic = xy2pic(7, 35) + COLOR_DARK_GRAY2 * COLOR_TINT_MULT
+		cardrefrace = "1092 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
 	if ( dbid == CREATURE_ID_ANABOLIC_RESISTANCE ) {
 		cardreftype = 10
 		cardrefskill = lang("全身が細菌に蝕まれて変貌した。正真正銘のバケモノであるが、素体が最後の根性で同化に抗っており、これでも本来の戦闘力は大きく抑制されている。", "Its entire body has been corrupted and transformed by Meshera. He is now a full-blown monster, but his base body is resisting assimilation with the last of its guts, thus greatly suppresses its fighting ability.")

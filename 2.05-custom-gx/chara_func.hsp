@@ -5934,7 +5934,13 @@
 		if ( dmghp_source >= DAMAGE_FROM_CHARA ) {
 			if ( locvar_dmghp_dmg > 0 ) {
 				if ( cdata(CDATA_HP, dmghp_charid) > 0 ) {
-					locvar_dmghp_healn = limit(rnd(locvar_dmghp_dmg * (150 + dmghp_element_power * 2) / 1000 + 10), 1, cdata(CDATA_HP, dmghp_source) / 15 + rnd(5))
+					locvar_dmghp_healn = limit(locvar_dmghp_dmg, 1, 100000) / 10 * (100 + limit(dmghp_element_power, 1, 10000)) / 100 + 10
+					if ( locvar_dmghp_healn > cdata(CDATA_HP, dmghp_source) / 15 + 1 ) {
+						locvar_dmghp_healn = cdata(CDATA_HP, dmghp_source) / 15 + 1
+					}
+					txtmore
+					txtef COLOR_BROWN
+					txt "(" + locvar_dmghp_healn + " drained)"
 					healhp dmghp_source, locvar_dmghp_healn
 					locvar_dmghp_healn = 0
 				}
@@ -5971,9 +5977,9 @@
 	if ( dmghp_source >= DAMAGE_FROM_CHARA ) {
 		if ( cdata(CDATA_GAUGE_COOLDOWN2, dmghp_charid) == 0 ) {
 			if ( cdata(CDATA_GUARD_BREAK, dmghp_charid) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, dmghp_charid) += 2
+				cdata(CDATA_GUARD_BREAK, dmghp_charid) += 3
 				if ( locvar_dmghp_ele == 64 ) {
-					cdata(CDATA_GUARD_BREAK, dmghp_charid) += 8
+					cdata(CDATA_GUARD_BREAK, dmghp_charid) += 3
 				}
 				if ( cdata(CDATA_GUARD_BREAK, dmghp_charid) >= 100 ) {
 					cdata(CDATA_GUARD_BREAK, dmghp_charid) = 120
@@ -6055,10 +6061,8 @@
 			}
 		}
 	}
-	if ( locvar_dmghp_dmg > 0 ) {
-		if ( cdata(CDATA_GAUGE_COOLDOWN2, dmghp_charid) == 0 ) {
-			cdata(CDATA_GAUGE_COOLDOWN2, dmghp_charid) = 1
-		}
+	if ( cdata(CDATA_GAUGE_COOLDOWN2, dmghp_charid) == 0 ) {
+		cdata(CDATA_GAUGE_COOLDOWN2, dmghp_charid) = 1
 	}
 	if ( cdata(CDATA_HP, dmghp_charid) < 0 ) {
 		locvar_dmghp_bakuretu = 0
@@ -7000,6 +7004,13 @@
 				if ( cbit(CHARA_BIT_LIVESTOCK, dmghp_charid) != 1 ) {
 					if ( dmghp_charid >= MAX_CHARA_FOLLOWER ) {
 						if ( cdata(CDATA_ALLIED, dmghp_charid) == 0 ) {
+							if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
+								if ( cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_ANTITANK_LANDMINE_GIRL | cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_JUMP_LANDMINE_GIRL | cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_SCATTER_LANDMINE_GIRL | cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_LANDMINE_GIRL ) {
+									qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF))++
+									txtef COLOR_GREEN
+									txt lang("現在ポイント", "Removal Point ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
+								}
+							}
 							if ( cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_LULWY ) {
 								evadd EVENT_GOD_INSIDE_LULWY, cdata(CDATA_X, dmghp_charid), cdata(CDATA_Y, dmghp_charid)
 							}
@@ -7727,18 +7738,27 @@
 	if ( dmgsp_charid != CHARA_PLAYER ) {
 		return
 	}
+	if ( findbuff(dmgsp_charid, BUFF_ENERGY_MAX) != (-1) ) {
+		return 1
+	}
 	if ( cdata(CDATA_SP, dmgsp_charid) >= (-100) ) {
 		cdata(CDATA_SP, dmgsp_charid) -= dmgsp_arg2
 	}
 	return 1
 
 #deffunc dmgspt int dmgspt_charid, int dmgspt_amount
+	if ( findbuff(dmgsp_charid, BUFF_ENERGY_MAX) != (-1) ) {
+		return 1
+	}
 	if ( cdata(CDATA_SP, dmgspt_charid) >= (-50) ) {
 		cdata(CDATA_SP, dmgspt_charid) -= dmgspt_amount
 	}
 	return 1
 
 #deffunc dmgsptalk int dmgsptalk_charid, int dmgsptalk_amount
+	if ( findbuff(dmgsp_charid, BUFF_ENERGY_MAX) != (-1) ) {
+		return 1
+	}
 	if ( cdata(CDATA_SP, dmgsptalk_charid) >= (-100) ) {
 		cdata(CDATA_SP, dmgsptalk_charid) -= dmgsptalk_amount
 	}

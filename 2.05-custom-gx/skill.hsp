@@ -300,7 +300,7 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_CASTING) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
 	skillname(SKILL_NORMAL_CASTING) = lang("詠唱", "Casting")
-	skilldesc(SKILL_NORMAL_CASTING) = lang("魔法詠唱の成功率をあげる", "Reduces the chance of casting failure.")
+	skilldesc(SKILL_NORMAL_CASTING) = lang("魔法の詠唱成功率と強度を高める", "Enhances casting success rate and spell power.")
 	skillencdesc(SKILL_NORMAL_CASTING) = lang("より高度な詠唱を可能にさせる", "enhances your casting ability.")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_EVASION) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 0, TARGET_TYPE_NONE, 0
@@ -906,27 +906,27 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_WEAKNESS) = SKILL_ATTR_MAG, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_WEAKNESS) = lang("弱体化の手", "Touch of Weakness")
-	skilldesc(SKILL_SPACT_TOUCH_OF_WEAKNESS) = lang("無属性攻撃＋弱体化", "Weaken target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_WEAKNESS) = lang("耐久属性攻撃＋弱体化", "Con-Attack&Weaken")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_HUNGER) = SKILL_ATTR_MAG, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_HUNGER) = lang("飢餓の手", "Touch of Hunger")
-	skilldesc(SKILL_SPACT_TOUCH_OF_HUNGER) = lang("無属性攻撃＋飢餓の呪い", "Starve target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_HUNGER) = lang("耐久属性攻撃＋飢餓の呪い", "Con-Attack&Starve")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_POISON) = SKILL_ATTR_DEX, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_POISON) = lang("毒の手", "Touch of Poison")
-	skilldesc(SKILL_SPACT_TOUCH_OF_POISON) = lang("無属性攻撃＋毒付与", "Poison target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_POISON) = lang("耐久属性攻撃＋毒付与", "Con-Attack&Poison")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_NERVE) = SKILL_ATTR_DEX, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_NERVE) = lang("麻痺の手", "Touch of Paralyze")
-	skilldesc(SKILL_SPACT_TOUCH_OF_NERVE) = lang("無属性攻撃＋麻痺付与", "Paralyze target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_NERVE) = lang("耐久属性攻撃＋麻痺付与", "Con-Attack&Paralyze")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_FEAR) = SKILL_ATTR_WIL, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_FEAR) = lang("恐怖の手", "Touch of Fear")
-	skilldesc(SKILL_SPACT_TOUCH_OF_FEAR) = lang("無属性攻撃＋恐怖付与", "Fear target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_FEAR) = lang("耐久属性攻撃＋恐怖付与", "Con-Attack&Fear")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_TOUCH_OF_SLEEP) = SKILL_ATTR_WIL, SKILL_TYPE_HAND, 5, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_TOUCH_OF_SLEEP) = lang("眠りの手", "Touch of Sleep")
-	skilldesc(SKILL_SPACT_TOUCH_OF_SLEEP) = lang("無属性攻撃＋睡眠付与", "Sleep target")
+	skilldesc(SKILL_SPACT_TOUCH_OF_SLEEP) = lang("耐久属性攻撃＋睡眠付与", "Con-Attack&Sleep")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_SHADOW_STEP) = SKILL_ATTR_WIL, SKILL_TYPE_TELEPORT, 27, TARGET_TYPE_ENEMY + SKILL_TYPE_FOV_BOLT, 0
 	skillname(SKILL_SPACT_SHADOW_STEP) = lang("シャドウステップ", "Shadow Step")
@@ -1588,9 +1588,9 @@
 	skillname(SKILL_SPACT_DATA_SCAN) = lang("データスキャン", "Data scan")
 	skilldesc(SKILL_SPACT_DATA_SCAN) = lang("分析力強化/毎ターン微疲労", "Increase analysis power/Uses SP each turn")
 
-	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_ADVANCED_CASTING) = SKILL_ATTR_LER, SKILL_TYPE_SP, 1, TARGET_TYPE_SELF_ONLY, 0
-	skillname(SKILL_SPACT_ADVANCED_CASTING) = lang("高度詠唱", "Advanced Casting")
-	skilldesc(SKILL_SPACT_ADVANCED_CASTING) = lang("魔法の詠唱難度・経験値が増加", "Increase casting difficulty and experience")
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_ADVANCED_CASTING) = SKILL_ATTR_LER, SKILL_TYPE_SP, 1, TARGET_TYPE_SELF + SKILL_TYPE_HAND, 0
+	skillname(SKILL_SPACT_ADVANCED_CASTING) = lang("高度詠唱陣", "Advanced Casting")
+	skilldesc(SKILL_SPACT_ADVANCED_CASTING) = lang("味方魔法の消費MP威力経験値を増加", "Increase casting MP and power and EXP")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_BLADE_STRINGS) = SKILL_ATTR_DEX, SKILL_TYPE_SP, 10, TARGET_TYPE_DIRECTION, 0
 	skillname(SKILL_SPACT_BLADE_STRINGS) = lang("ブレードストリングス", "Blade Strings")
@@ -1877,6 +1877,14 @@
 	skillname(SKILL_SPACT_SHADOW_JUMP) = lang("シャドウジャンプ", "Shadow Jump")
 	skilldesc(SKILL_SPACT_SHADOW_JUMP) = lang("視界外でも敵を追跡束縛", "Chase and bind target")
 
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_JUMPING_DROP) = SKILL_ATTR_PER, SKILL_TYPE_SP, 35, TARGET_TYPE_SELF, 0
+	skillname(SKILL_SPACT_JUMPING_DROP) = lang("飛跳殺法", "Jumping Drop")
+	skilldesc(SKILL_SPACT_JUMPING_DROP) = lang("5ターン後視界外でも強攻撃", "Chase pvdv atk after 5turns")
+	
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_DIVING_DRILL) = SKILL_ATTR_CON, SKILL_TYPE_SP, 35, TARGET_TYPE_SELF, 0
+	skillname(SKILL_SPACT_DIVING_DRILL) = lang("奇襲穿孔", "Diving Drill")
+	skilldesc(SKILL_SPACT_DIVING_DRILL) = lang("10ターン後視界外でも強攻撃", "Chase pvdv atk after 10turns")
+	
 	return
 
 #deffunc calcskill int calcskill_skillid, int calcskill_charid, int calcskill_spellpower_dice_y, int calcskill_spellpower_dice_x

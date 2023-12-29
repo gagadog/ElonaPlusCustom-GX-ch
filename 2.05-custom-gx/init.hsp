@@ -1149,7 +1149,9 @@ if instr(s,0,%1)!-1{	%c\
 			if ( cfg_msgaddtime ) {
 				/********** CUSTOM JOB QUESTS - BEGINNING **********/
 				if ( gdata(GDATA_TIME_LIMIT) > 0 & gdata(GDATA_AREA) == AREA_QUEST ) {
-					msgtemp = lang("[残り" + (gdata(GDATA_TIME_LIMIT) + 1) + "分] ", "(" + (gdata(GDATA_TIME_LIMIT) + 1) + " min left) ") + msgtemp
+					if ( gdata(GDATA_QUEST) != QUEST_TYPE_MINEFIELD ) {
+						msgtemp = lang("[残り" + (gdata(GDATA_TIME_LIMIT) + 1) + "分] ", "(" + (gdata(GDATA_TIME_LIMIT) + 1) + " min left) ") + msgtemp
+					}
 				}
 				/********** CUSTOM JOB QUESTS - ENDING **********/
 				msgtemp = "[" + gdata(GDATA_MIN) + "] " + msgtemp

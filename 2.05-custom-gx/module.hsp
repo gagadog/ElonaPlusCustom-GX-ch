@@ -1269,6 +1269,11 @@
 					}
 				}
 			}
+			if ( cdata(CDATA_ROW_ACT, locvar_cell_show_c) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, locvar_cell_show_c) == ACTION_DIVING_DRILL ) {
+				if ( gdata(GDATA_SENSE_OBJECT) != 10 ) {
+					locvar_cell_show_c = 0
+				}
+			}
 			if ( locvar_cell_show_c != 0 ) {
 				if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN & gdata(MDATA_TYPE) = MAP_TYPE_WORLD) & cdata(CDATA_RELATION, locvar_cell_draw_c) == RELATION_ALLY ) {
 					locvar_cell_show_c = 0
@@ -1344,6 +1349,11 @@
 								locvar_cell_show_c = 0
 							}
 						}
+					}
+				}
+				if ( cdata(CDATA_ROW_ACT, locvar_cell_show_c) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, locvar_cell_show_c) == ACTION_DIVING_DRILL ) {
+					if ( gdata(GDATA_SENSE_OBJECT) != 10 ) {
+						locvar_cell_show_c = 0
 					}
 				}
 				if ( locvar_cell_show_c != 0 ) {
@@ -2732,6 +2742,11 @@
 							}
 						}
 					}
+					if ( cdata(CDATA_ROW_ACT, locvar_cell_draw_c) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, locvar_cell_draw_c) == ACTION_DIVING_DRILL ) {
+						if ( gdata(GDATA_SENSE_OBJECT) != 10 ) {
+							locvar_cell_draw_c = 0
+						}
+					}
 					if ( locvar_cell_draw_c != CHARA_PLAYER ) {
 						if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > 0 & mdata(MDATA_TYPE) == MAP_TYPE_WORLD | (gdata(GDATA_FLAG_SHIP_TYPE) > 0 & gdata(GDATA_AREA) == AREA_OCEAN & gdata(MDATA_TYPE) = MAP_TYPE_WORLD) & cdata(CDATA_RELATION, locvar_cell_show_c) == RELATION_ALLY ) {
 							locvar_cell_draw_c = 0
@@ -3377,6 +3392,11 @@
 											locvar_cell_draw_c = CHARA_PLAYER
 										}
 									}
+								}
+							}
+							if ( cdata(CDATA_ROW_ACT, locvar_cell_draw_c) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, locvar_cell_draw_c) == ACTION_DIVING_DRILL ) {
+								if ( gdata(GDATA_SENSE_OBJECT) != 10 ) {
+									locvar_cell_draw_c = 0
 								}
 							}
 							if ( locvar_cell_draw_c != CHARA_PLAYER ) {

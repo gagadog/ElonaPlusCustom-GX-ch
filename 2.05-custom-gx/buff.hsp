@@ -278,6 +278,10 @@
 	bdataref(BDATAREF_BUFF_TYPE, BUFF_FLAME_OF_LIFE) = BUFF_TYPE_BUFF, 1, 0
 	buffname(BUFF_FLAME_OF_LIFE) = lang("偽命の灯", "Flame of Life")
 	bufftxt(0, BUFF_FLAME_OF_LIFE) = lang("の身体に生命力が満ち始めた。", "gained"), " life force temporarily."
+	
+	bdataref(BDATAREF_BUFF_TYPE, BUFF_ENERGY_MAX) = BUFF_TYPE_BUFF, 1, 0
+	buffname(BUFF_ENERGY_MAX) = lang("エナジーマックス", "Energy MAX")
+	bufftxt(0, BUFF_ENERGY_MAX) = lang("に労働エナジーがみなぎった。", "get"), " Toil-Energy."
 
 	return
 
@@ -548,8 +552,8 @@
 	}
 	if ( calcbuff_buffid == BUFF_GRAVITY_ACCEL ) {
 		locvar_calcbuff_p = calcbuff_power
-		if ( locvar_calcbuff_p > 200 ) {
-			locvar_calcbuff_p = 200
+		if ( locvar_calcbuff_p > 300 ) {
+			locvar_calcbuff_p = 300
 		}
 		dur = 8 + calcbuff_power / 20
 		if ( calcbuff_charid < CHARA_PLAYER ) {
@@ -707,6 +711,20 @@
 			}
 			else {
 				buffdesc = lang("能力低下効果を一部無効化/耐毒", "Partially invalidates reduction effects/RES+ poison")
+				return
+			}
+		}
+		return
+	}
+	if ( calcbuff_buffid == BUFF_ENERGY_MAX ) {
+		dur = 10
+		locvar_calcbuff_p = 10
+		if ( calcbuff_charid < CHARA_PLAYER ) {
+			if ( calcbuff_charid == CALCBUFF_DURATION ) {
+				return
+			}
+			else {
+				buffdesc = lang("スタミナの減少を無効化", "Cancels stamina reduction")
 				return
 			}
 		}

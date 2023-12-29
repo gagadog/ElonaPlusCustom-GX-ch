@@ -954,6 +954,8 @@
 			if ( p@tcg == TCG_BIT_RIDER ) { s@tcg += "Rider "}
 			if ( p@tcg == TCG_BIT_ASSASSIN ) { s@tcg += "[Starts in Opponent Deck] "}
 			if ( p@tcg == TCG_BIT_TEMPO ) { s@tcg += "[Drawn when Mana=Cost-1] "}
+			if ( p@tcg == TCG_BIT_CONSTANT ) { s@tcg += "[Starts in your Hand] "}
+			if ( p@tcg == TCG_BIT_MILLSUMMON ) { s@tcg += "[Summon itself when Sent to Graveyard from Deck] "}
 			
 			if ( p@tcg == TCG_BIT_DEATHWORD ) { s@tcg += "Deathword "}
 			if ( p@tcg == TCG_BIT_GRAVITY ) { s@tcg += "Gravity "}
@@ -1172,6 +1174,9 @@
 		gosub *card_action_choose_target
 		makecardlist
 	}
+	if ( cdbit(TCG_BIT_MILLSUMMON, gravecard_arg1) & cardorglocation@tcg == TCG_LOCATION_DECK ) {
+		putcard gravecard_arg1, card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
+	}
 	if ( card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTODECKWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTOHANDWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_GWEN | specialrulenoonedies@tcg ) {
 		returncard gravecard_arg1
 	}
@@ -1278,11 +1283,20 @@
 					ctempo@tcg(0) = cnt
 				}
 			}
-		} else { // This is the normal draw.
-			c@tcg(1)++
-			if ( rnd(c@tcg(1)) == 0 ) {
-				c@tcg(0) = cnt
+			continue
+		}
+		if ( cdbit(TCG_BIT_CONSTANT, cnt) == TRUE ) { // Constant Cards start in your hand, if possible.
+			if ( phase@tcg <= 1 & turn@tcg <= 0 ) {
+				ctempo@tcg(1)++
+				if ( rnd(ctempo@tcg(1)) == 0 ) {
+					ctempo@tcg(0) = cnt
+				}
 			}
+		}
+		// This is the normal draw.
+		c@tcg(1)++
+		if ( rnd(c@tcg(1)) == 0 ) {
+			c@tcg(0) = cnt
 		}
 	loop
 	if ( ctempo@tcg(0) >= 0 |  c@tcg(0) < 0 ) { c@tcg(0) = ctempo@tcg(0) }

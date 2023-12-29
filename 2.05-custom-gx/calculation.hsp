@@ -812,14 +812,7 @@
 		return 100
 	}
 	if ( calcspellpower_charid == CHARA_PLAYER ) {
-		if ( gdata(GDATA_TEMPORARY_FLAGS) == 666 ) {
-			if ( sdata(calcspellpower_skillid, calcspellpower_charid) * 10 + 50 < sdata(SKILL_NORMAL_CASTING, calcspellpower_charid) * 10 + 50 ) {
-				return sdata(SKILL_NORMAL_CASTING, calcspellpower_charid) * 10 + 50
-			}
-		}
-	}
-	if ( calcspellpower_charid == CHARA_PLAYER ) {
-		return sdata(calcspellpower_skillid, calcspellpower_charid) * 10 + 50
+		return sdata(calcspellpower_skillid, calcspellpower_charid) * 5 + sdata(SKILL_NORMAL_CASTING, calcspellpower_charid) * 5 + 50
 	}
 	if ( sdata(SKILL_NORMAL_CASTING, calcspellpower_charid) == 0 ) {
 		if ( calcspellpower_charid >= MAX_CHARA_FOLLOWER ) {
@@ -1310,6 +1303,12 @@
 	if ( cdata(CDATA_ID, r1) == CREATURE_ID_HELRAUNE ) {
 		skillinit SKILL_NORMAL_GENE_ENGINEER, r1, 4
 	}
+	if ( cdata(CDATA_ID, r1) == CREATURE_ID_JUMP_LANDMINE_GIRL | cdata(CDATA_ID, r1) == CREATURE_ID_SPEED_HACK_CHEATAH | cdata(CDATA_ID, r1) == CREATURE_ID_BLACK_HOPPER_X | cdata(CDATA_ID, r1) == CREATURE_ID_FLIGHT_FISH | cdata(CDATA_ID, r1) == CREATURE_ID_FLYING_LEECH | cdata(CDATA_ID, r1) == CREATURE_ID_SUZAKU | cdata(CDATA_ID, r1) == CREATURE_ID_STRIKE_EAGLE ) {
+		skillinit SKILL_NORMAL_WEIGHT_LIFTING, r1, 4
+	}
+	if ( cdata(CDATA_ID, r1) == CREATURE_ID_VINDALIAN_DEATHWORM | cdata(CDATA_ID, r1) == CREATURE_ID_WALL_HACK_CHEATAH | cdata(CDATA_ID, r1) == CREATURE_ID_SAND_WORM | cdata(CDATA_ID, r1) == CREATURE_ID_BAMBOO_SPROUT | cdata(CDATA_ID, r1) == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
+		skillinit SKILL_NORMAL_MINING, r1, 4
+	}
 	if ( necrop2 > 0 ) {
 		if ( necrop2 == ITEM_ID_BONE ) {
 			skillinit SKILL_NORMAL_TACTICS, r1, 2
@@ -1493,10 +1492,10 @@
 	return 0
 
 *calcTrap
-	if ( cc == CHARA_PLAYER | cdata(CDATA_RELATION, cc) == RELATION_ALLY & feat(FEAT_CELL_SUB_FEATURE_ID) > CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
+	if ( cc == CHARA_PLAYER | cdata(CDATA_RELATION, cc) == RELATION_ALLY & feat(FEAT_CELL_SUB_FEATURE_ID) >= CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS ) {
 		return 1
 	}
-	if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_MINE ) {
+	if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_MINE | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE_2 | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL_2 ) {
 		return 0
 	}
 	if ( cdata(CDATA_CONDITION_GRAVITY, cc) > 0 ) {
@@ -1524,7 +1523,13 @@
 	return
 
 *calcDisarm
-	if ( rnd(sdata(SKILL_NORMAL_DISARM_TRAP, cc) * 15 + 20 + sdata(SKILL_ATTR_DEX, cc)) > rnd(gdata(GDATA_LEVEL) * 12 + 100) ) {
+	if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL_2 | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE_2 ) {
+		dhosei = 10
+	}
+	else {
+		dhosei = 1
+	}
+	if ( rnd(sdata(SKILL_NORMAL_DISARM_TRAP, cc) * 15 + 20 + sdata(SKILL_ATTR_DEX, cc)) > rnd(gdata(GDATA_LEVEL) * 12 + gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) * 12 * dhosei + 100) ) {
 		gosub *expDisarm
 		return 1
 	}
@@ -1749,6 +1754,9 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_GRAVITY, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_GRAVITY, r1) > 1000 ) {
+			cdata(CDATA_CONDITION_GRAVITY, r1) = 1000
+		}
 		cdata(CDATA_CONDITION_GRAVITY, r1)--
 		if ( cdata(CDATA_CONDITION_GRAVITY, r1) == 0 ) {
 			if ( synccheck(r1, -1) ) {

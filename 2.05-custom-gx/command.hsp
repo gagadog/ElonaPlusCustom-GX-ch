@@ -92,7 +92,7 @@
 	}
 	if ( map(txttargetnpc_arg1, txttargetnpc_arg2, 1) != 0 ) {
 		locvar_txttargetnpc_i = map(txttargetnpc_arg1, txttargetnpc_arg2, 1) - 1
-		if ( cbit(CHARA_BIT_INVISIBLE, locvar_txttargetnpc_i) == 0 | cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) | cdata(CDATA_CONDITION_WET, locvar_txttargetnpc_i) ) {
+		if ( cbit(CHARA_BIT_INVISIBLE, locvar_txttargetnpc_i) == 0 | cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) | cdata(CDATA_CONDITION_WET, locvar_txttargetnpc_i) & cdata(CDATA_ROW_ACT, locvar_txttargetnpc_i) != ACTION_JUMPING_DROP & cdata(CDATA_ROW_ACT, locvar_txttargetnpc_i) != ACTION_DIVING_DRILL ) {
 			tc = locvar_txttargetnpc_i
 			txttargetlevel
 			color 0, 0, 0
@@ -519,7 +519,7 @@
 			if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, rc), cdata(CDATA_Y, rc)) == 0 ) {
 				break
 			}
-			if ( (cbit(CHARA_BIT_INVISIBLE, rc) == 0 | cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) | cdata(CDATA_CONDITION_WET, rc)) == 0 ) {
+			if ( cbit(CHARA_BIT_INVISIBLE, rc) == FALSE | cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) | cdata(CDATA_CONDITION_WET, rc) & cdata(CDATA_ROW_ACT, rc) != ACTION_JUMPING_DROP & cdata(CDATA_ROW_ACT, rc) != ACTION_DIVING_DRILL == 0 ) {
 				break
 			}
 			get_route cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, rc), cdata(CDATA_Y, rc)
@@ -9702,6 +9702,9 @@
 		if ( cdata(CDATA_EQUIP_WEIGHT, cc) < 35000 & cdata(CDATA_EQUIP_WEIGHT, cc) >= 15000 & findbuff(cc, BUFF_MAGIC_EQUIP) != (-1) ) {
 			hoseis = hoseis * 6 / 5
 		}
+		if ( cdata(CDATA_CUSTOM_TALK_LINE, CHARA_PLAYER) == 1 & (cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER) ) {
+			hoseis = hoseis * 6 / 5
+		}
 		attackskill = SKILL_WEAPON_MARTIAL_ARTS
 		evade = calcattackhit(2)
 		prot = calcattackdmg(2)
@@ -13567,6 +13570,22 @@
 				}
 				goto *com_inventory
 			}
+			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_SPLENDID_CHAIN ) {
+				snd SOUNDLIST_EQUIP1
+				txt lang("あなたは" + name(tc) + "に" + itemname(ci, 1) + "をプレゼントした。", "You give " + name(tc) + " " + itemname(ci, 1) + ".")
+				inv(INV_ITEM_NUM, ci)--
+				gosub *calcBurdenPc
+				if ( cdata(CDATA_MASTER_SERVANT, tc) >= 150 ) {
+					txt lang("「なんと立派な！」", cnvtalk("How splendid!"))
+					modimp2 tc, 15
+					modimp tc, 15
+					cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+				}
+				else {
+					txt lang("「趣味が悪い…」", cnvtalk("Poor taste..."))
+				}
+				goto *com_inventory
+			}
 			if ( inv(INV_ITEM_ID, ci) <= ITEM_ID_M01_GARNET & inv(INV_ITEM_ID, ci) >= ITEM_ID_M12_LAPIS_LAZULI ) {
 				snd SOUNDLIST_EQUIP1
 				txt lang("あなたは" + name(tc) + "に" + itemname(ci, 1) + "を渡した。", "You give " + name(tc) + " " + itemname(ci, 1) + ".")
@@ -13804,7 +13823,7 @@
 					}
 				}
 				if ( reftype == FILTER_JUNK ) {
-					if ( inv(INV_ITEM_ID, ci) != ITEM_ID_MAGATAMA & inv(INV_ITEM_ID, ci) != ITEM_ID_MAGAQUA & inv(INV_ITEM_ID, ci) != ITEM_ID_SKILL_TICKET & inv(INV_ITEM_ID, ci) != ITEM_ID_BIO_BATTERY & inv(INV_ITEM_ID, ci) != ITEM_ID_MAGAICE ) {
+					if ( inv(INV_ITEM_ID, ci) != ITEM_ID_MAGATAMA & inv(INV_ITEM_ID, ci) != ITEM_ID_MAGAQUA & inv(INV_ITEM_ID, ci) != ITEM_ID_SKILL_TICKET & inv(INV_ITEM_ID, ci) != ITEM_ID_BIO_BATTERY & inv(INV_ITEM_ID, ci) != ITEM_ID_MAGAICE & inv(INV_ITEM_ID, ci) != ITEM_ID_SPLENDID_CHAIN ) {
 						f = 3
 					}
 				}
@@ -15729,10 +15748,8 @@
 			if ( x == cdata(CDATA_X, cc) & y == cdata(CDATA_Y, cc) ) {
 				continue
 			}
-			if ( cc < MAX_CHARA_FOLLOWER ) {
-				if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), x, y) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
-					continue
-				}
+			if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), x, y) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
+				continue
 			}
 			if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), x, y) == 0 ) {
 				continue
@@ -15743,6 +15760,9 @@
 						continue
 					}
 				}
+			}
+			if ( cdata(CDATA_ROW_ACT, cnt) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, cnt) == ACTION_DIVING_DRILL ) {
+				continue
 			}
 			list(0, listmax) = cnt, x, y
 			listmax++

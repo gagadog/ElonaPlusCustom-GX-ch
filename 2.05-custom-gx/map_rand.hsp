@@ -664,7 +664,7 @@
 	return
 
 *map_createDungeonMinefield
-	gdata(GDATA_TIME_LIMIT) = 60
+	gdata(GDATA_TIME_LIMIT) = 500
 	gdata(GDATA_COUNT_NOTICE) = 9999
 	mdata(MDATA_FIELD) = 2
 	gdata(STARTING_GDATA_FLAG + 379) = qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF))
@@ -728,6 +728,44 @@
 	map_converttile
 	map_placeplayer
 	mdata(MDATA_MODERATE_CROWD) = 0
+	if ( qdata(QDATA_VAR, gdata(GDATA_QUEST_REF)) != 0 ) {
+		repeat 2 + rnd(2)
+			if ( gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) > 50 ) {
+				flt
+				initlv = gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) * 2 + 30
+				characreate -1, CREATURE_ID_ANTITANK_LANDMINE_GIRL, -3, 0
+				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+				cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+			}
+		loop
+		repeat 2 + rnd(3)
+			if ( gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) > 40 ) {
+				flt
+				initlv = gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) * 2 + 20
+				characreate -1, CREATURE_ID_JUMP_LANDMINE_GIRL, -3, 0
+				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+				cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+			}
+		loop
+		repeat 2 + rnd(4)
+			if ( gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) > 30 ) {
+				flt
+				initlv = gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) * 2 + 10
+				characreate -1, CREATURE_ID_SCATTER_LANDMINE_GIRL, -3, 0
+				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+				cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+			}
+		loop
+		repeat 2 + rnd(5)
+			if ( gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) > 20 ) {
+				flt
+				initlv = gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) * 2
+				characreate -1, CREATURE_ID_LANDMINE_GIRL, -3, 0
+				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+				cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+			}
+		loop
+	}
 	repeat 70 + rnd(20)
 		x = rnd(mdata(MDATA_WIDTH))
 		y = rnd(mdata(MDATA_HEIGHT))
@@ -753,12 +791,35 @@
 			}
 		}
 	loop
+	repeat gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) + 20
+		x = rnd(mdata(MDATA_WIDTH))
+		y = rnd(mdata(MDATA_HEIGHT))
+		if ( map(x, y, MAP_TILE_ID) != xy2pic(30, 0) & map(x, y, MAP_TILE_ID) != xy2pic(31, 0) ) {
+			if ( map(x, y, MAP_ITEM_CHIPS) == 0 ) {
+				if ( rnd(2) == 0 ) {
+					flt
+					flttypemajor = FILTER_ITEM_TOOL
+					itemcreate -1, ITEM_ID_DUMMY, x, y, 0
+				}
+			}
+		}
+	loop
 	repeat mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 20
 		if ( qdata(QDATA_VAR, gdata(GDATA_QUEST_REF)) == 0 ) {
-			map_trap 0, 0, qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)), 9
+			if ( rnd(10) == 0 ) {
+				map_trap 0, 0, qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)), 16
+			}
+			else {
+				map_trap 0, 0, qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)), 9
+			}
 		}
 		if ( qdata(QDATA_VAR, gdata(GDATA_QUEST_REF)) != 0 ) {
-			map_trap 0, 0, qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)), 7
+			if ( rnd(10) == 0 ) {
+				map_trap 0, 0, qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)), 15
+			}
+			else {
+				map_trap 0, 0, qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)), 7
+			}
 		}
 	loop
 	return 1

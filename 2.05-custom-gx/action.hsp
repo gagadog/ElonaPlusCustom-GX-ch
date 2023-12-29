@@ -1074,6 +1074,7 @@
 				txt lang(itemname(ti, in) + "を売った。", "You sell " + itemname(ti, in) + ".")
 				if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_TRADE ) {
 					if ( inv(INV_ITEM_PARAM3, ti) != gdata(GDATA_AREA) ) {
+						hantei = 0
 						repeat MAX_CHARA_TOTAL
 							if ( cdata(CDATA_ROLE, cnt) == ROLE_SHOP_TRADE ) {
 								continue
@@ -1082,7 +1083,16 @@
 								continue
 							}
 							cdata(CDATA_FAME, cnt) += sellgold
+							if ( cdata(CDATA_FAME, cnt) > 60000 ) {
+								cdata(CDATA_FAME, cnt) = 60000
+							}
+							hantei = limit(cdata(CDATA_FAME, cnt) / 3000, 0, 20)
 						loop
+						if ( hantei > 0 ) {
+							txtef COLOR_GREEN
+							snd SOUNDLIST_ENC
+							txt lang("地域の店が活性化した。[次回の各店仕入れ" + hantei + "増加]", "Local stores were revitalized. [Items restock at shops will increase by " + hantei + "]")
+						}
 					}
 				}
 			}
@@ -1733,7 +1743,7 @@
 	}
 	if ( cellchara != (-1) & cellchara != 0 ) {
 		tc = cellchara
-		if ( cdata(CDATA_RELATION, tc) >= 10 | (cdata(CDATA_RELATION, tc) == (-1) & cfg_ignoredislike != 0) | (cdata(CDATA_RELATION, tc) == 0 & (adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_MUSEUM | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_SHOP)) ) {
+		if ( cdata(CDATA_RELATION, tc) >= RELATION_ALLY | cdata(CDATA_ROW_ACT, tc) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, tc) == ACTION_DIVING_DRILL | (cdata(CDATA_RELATION, tc) == RELATION_DISLIKE & cfg_ignoredislike != 0) | (cdata(CDATA_RELATION, tc) == RELATION_NEUTRAL & (adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_MUSEUM | adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_SHOP)) ) {
 			if ( cbit(CHARA_BIT_SANDBAG, tc) == 0 ) {
 				if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
 					goto *move_skip
@@ -1748,8 +1758,10 @@
 					gosub *screen_scroll
 				}
 				cell_swap cc, tc
-				txt lang(name(tc) + "と入れ替わった。", "You displace " + name(tc) + ".")
-				txtmore
+				if ( cdata(CDATA_ROW_ACT, tc) != ACTION_JUMPING_DROP & cdata(CDATA_ROW_ACT, tc) != ACTION_DIVING_DRILL ) {
+					txt lang(name(tc) + "と入れ替わった。", "You displace " + name(tc) + ".")
+					txtmore
+				}
 				if ( cdata(CDATA_ID, tc) == CREATURE_ID_ROGUE ) {
 					if ( rnd(5) == 0 ) {
 						if ( cdata(CDATA_CONDITION_SLEEP, tc) == 0 ) {
@@ -1856,34 +1868,36 @@
 		if ( gdata(GDATA_RIDER) != 0 ) {
 			if ( cdata(CDATA_RELATION, tc) < (-1) ) {
 				if ( findbuff(CHARA_PLAYER, BUFF_HYPER_DASH) != (-1) ) {
-					cdata(CDATA_TARGET, CHARA_PLAYER) = tc
-					if ( cbit(CHARA_BIT_INVISIBLE, tc) == 1 ) {
-						if ( cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 ) {
-							if ( cdata(CDATA_CONDITION_WET, tc) == 0 ) {
-								cdata(CDATA_TARGET, CHARA_PLAYER) = 0
+					if ( cdata(CDATA_ROW_ACT, cnt) != ACTION_JUMPING_DROP & cdata(CDATA_ROW_ACT, cnt) != ACTION_DIVING_DRILL ) {
+						cdata(CDATA_TARGET, CHARA_PLAYER) = tc
+						if ( cbit(CHARA_BIT_INVISIBLE, tc) == 1 ) {
+							if ( cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 ) {
+								if ( cdata(CDATA_CONDITION_WET, tc) == 0 ) {
+									cdata(CDATA_TARGET, CHARA_PLAYER) = 0
+								}
 							}
 						}
+						if ( cfg_scroll ) {
+							cdata(CDATA_X_NEW, CHARA_PLAYER) = cdata(CDATA_X, tc)
+							cdata(CDATA_Y_NEW, CHARA_PLAYER) = cdata(CDATA_Y, tc)
+							gosub *screen_scroll
+						}
+						cell_swap cc, tc
+						snd SOUNDLIST_BASH1
+						txt lang(name(tc) + "を轢いた。", "You ran over " + name(tc) + ".")
+						txtmore
+						dmghp tc, (sdata(SKILL_ATTR_WIL, cc) / 5 + 5) * ((sdata(SKILL_ACTIVE_RIDING, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_ATTR_SPD, cc) + 5) + (limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30, cc, SKILL_RESDMG_CRUSH, 1000
+						if ( cdata(CDATA_CONDITION_WINCE, tc) <= 0 ) {
+							cdata(CDATA_CONDITION_WINCE, tc) = 10
+							txt lang(name(tc) + "は怯んだ。", name(tc) + " " + is(tc) + " faltered.")
+						}
+						if ( charaGivesExp(tc) & tc != CHARA_PLAYER ) {
+							skillexp SKILL_ACTIVE_RIDING, CHARA_PLAYER, 30
+							skillexp SKILL_ACTIVE_RIDING, gdata(GDATA_RIDER), 20
+						}
+						gosub *cell_info
+						goto *turn_end
 					}
-					if ( cfg_scroll ) {
-						cdata(CDATA_X_NEW, CHARA_PLAYER) = cdata(CDATA_X, tc)
-						cdata(CDATA_Y_NEW, CHARA_PLAYER) = cdata(CDATA_Y, tc)
-						gosub *screen_scroll
-					}
-					cell_swap cc, tc
-					snd SOUNDLIST_BASH1
-					txt lang(name(tc) + "を轢いた。", "You ran over " + name(tc) + ".")
-					txtmore
-					dmghp tc, (sdata(SKILL_ATTR_WIL, cc) / 5 + 5) * ((sdata(SKILL_ACTIVE_RIDING, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_ATTR_SPD, cc) + 5) + (limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30, cc, SKILL_RESDMG_CRUSH, 1000
-					if ( cdata(CDATA_CONDITION_WINCE, tc) <= 0 ) {
-						cdata(CDATA_CONDITION_WINCE, tc) = 10
-						txt lang(name(tc) + "は怯んだ。", name(tc) + " " + is(tc) + " faltered.")
-					}
-					if ( charaGivesExp(tc) & tc != CHARA_PLAYER ) {
-						skillexp SKILL_ACTIVE_RIDING, CHARA_PLAYER, 30
-						skillexp SKILL_ACTIVE_RIDING, gdata(GDATA_RIDER), 20
-					}
-					gosub *cell_info
-					goto *turn_end
 				}
 			}
 		}
@@ -1900,6 +1914,9 @@
 						cdata(CDATA_TARGET, CHARA_PLAYER) = 0
 					}
 				}
+			}
+			if ( cdata(CDATA_ROW_ACT, tc) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, tc) == ACTION_DIVING_DRILL ) {
+				cdata(CDATA_TARGET, CHARA_PLAYER) = 0
 			}
 			if ( keybd_attacking == 0 ) {
 				keybd_wait = 1
@@ -6145,7 +6162,17 @@
 	goto *turn_end
 
 *revealTrap
-	cell_featset refx, refy, tile_trap, -1, -1
+	if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
+		if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
+			cell_featset refx, refy, tile_trapq, -1, -1
+		}
+		if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE_2 | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL_2 ) {
+			cell_featset refx, refy, tile_trapqd, -1, -1
+		}
+	}
+	else {
+		cell_featset refx, refy, tile_trap, -1, -1
+	}
 	return
 
 *revealHiddenPath
@@ -14461,7 +14488,6 @@
 			if ( adata(ADATA_MIN_LEVEL, cnt) > 6666 ) {
 				adata(ADATA_MIN_LEVEL, cnt) = 6666
 			}
-			adata(ADATA_MAX_LEVEL, cnt) = adata(ADATA_MIN_LEVEL, cnt) + 3
 			txtef COLOR_BLUE
 			txt lang(mapname(cnt) + "は震えた。", mapname(cnt) + " vibrated.")
 		loop

@@ -2107,8 +2107,14 @@
 			locvar_itemowner_s += " (" + refchara(inv(INV_ITEM_SUB_NAME, itemname_itemid), DBSPEC_CHARA_NAME_ORG, 1) + ")"
 		}
 	}
-	if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_SMALL_GAMBLE_CHEST ) {
-		locvar_itemowner_s += lang(" Lv", " Lv. ") + inv(INV_ITEM_PARAM2, itemname_itemid)
+	if ( locvar_itemowner_a == FILTER_CONTAINER ) {
+		if ( inv(INV_ITEM_PARAM1, itemname_itemid) != 0 ) {
+			if ( inv(INV_ITEM_PARAM2, itemname_itemid) != 0 ) {
+				if ( inv(INV_ITEM_ID, itemname_itemid) != ITEM_ID_CARD_PACK & inv(INV_ITEM_ID, itemname_itemid) != ITEM_ID_MYSTERIOUS_ENVELOPE ) {
+					locvar_itemowner_s += lang(" Lock-Lv", " Lock-Lv. ") + inv(INV_ITEM_PARAM2, itemname_itemid)
+				}
+			}
+		}
 	}
 	if ( inv(INV_ITEM_KNOWN, itemname_itemid) == ITEM_KNOWN_QUALITY ) {
 		if ( locvar_itemowner_a < FILTER_ITEM_MIN ) {

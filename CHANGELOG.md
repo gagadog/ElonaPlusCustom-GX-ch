@@ -1,6 +1,8 @@
-# Upcoming
+# 2.21.1.0
 
 ## Added
+- Ported all changes from Elona+ 2.21.
+- Added some npc dialog (machine) translation.
 - Added a Tweak that allows you to turn-in growing phase child for quests.
 - Added a Tweak to have gold drop and openable containers in showrooms (only when visited using Moongate/Runes).
 

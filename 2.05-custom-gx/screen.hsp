@@ -699,6 +699,14 @@
 		mes _conmatou
 		sy -= 20
 	}
+	if ( cbit(CHARA_BIT_TOIL_ENERGY_DRINK, CHARA_PLAYER) == TRUE ) {
+		color 100, 100, 0
+		pos sx, sy
+		gcopy BUFFER_INF, 0 + en * 84, 416, 65 + en * 30, 15
+		pos sx + 6, sy + 1
+		mes _conroudou
+		sy -= 20
+	}
 	if ( cdata(CDATA_CONDITION_BLEED, CHARA_PLAYER) != 0 ) {
 		color 150, 0, 0
 		if ( cdata(CDATA_CONDITION_BLEED, CHARA_PLAYER) >= 20 ) {
@@ -1211,6 +1219,20 @@
 		}
 		if ( en ) {
 			bmes "Drifters-Limit < " + gdata(GDATA_FLAG_COLLECTED_WISHES) + "/" + maxship + " > ", 35, 235, 235
+		}
+	}
+	if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
+		if ( gdata(GDATA_TIME_LIMIT) > 0 ) {
+			if ( jp ) {
+				pos inf_clockw + 230, inf_clocky + 37
+				color 0, 0, 0
+				bmes "クエスト[残り" + (gdata(GDATA_TIME_LIMIT) + 1) + "ターン]", 235, 135, 235
+			}
+			if ( en ) {
+				pos inf_clockw + 230, inf_clocky + 37
+				color 0, 0, 0
+				bmes "Quest [turn " + (gdata(GDATA_TIME_LIMIT) + 1) + " left]", 235, 135, 235
+			}
 		}
 	}
 	if ( gdata(GDATA_AREA) == AREA_AMUR_CAGE ) {
@@ -2266,10 +2288,8 @@
 		/********** CUSTOM SPELL ANIMATION - ENDING **********/
 
 		snd SOUNDLIST_BALL1
-		if ( animeid == ANIMATION_BALL ) {
-			if ( ele == SKILL_RESDMG_CRUSH ) {
-				anicol = 21
-			}
+		if ( efid == SKILL_SPELL_BUBBLE_STORM ) {
+			anicol = 21
 		}
 		gsel 7
 		picload exedir + "graphic\\anime5.bmp"
@@ -2342,11 +2362,9 @@
 			gcopy 4, 0, 0, windoww, windowh
 			await cfg_animewait
 		loop
-		if ( animeid == ANIMATION_BALL ) {
-			if ( ele == SKILL_RESDMG_CRUSH ) {
-				snd SOUNDLIST_BUBLE
-				snd SOUNDLIST_MIZU
-			}
+		if ( efid == SKILL_SPELL_BUBBLE_STORM ) {
+			snd SOUNDLIST_BUBLE
+			snd SOUNDLIST_MIZU
 		}
 		if ( anisound ) {
 			snd anisound, 0, 1
@@ -2355,7 +2373,7 @@
 	}
 	if ( _switch_val == ANIMATION_BOLT | _switch_sw ) {
 		_switch_sw = 0
-		if ( ele == SKILL_RESDMG_CRUSH ) {
+		if ( efid == SKILL_SPELL_WATER_BOLT ) {
 			anicol = 21
 		}
 		if ( efid == SKILL_SPACT_BLOOD_STREAM ) {
@@ -2476,10 +2494,8 @@
 			}
 			redraw 1
 		loop
-		if ( ele == SKILL_RESDMG_CRUSH ) {
-			if ( zannku != 10 ) {
-				snd SOUNDLIST_MIZU
-			}
+		if ( efid == SKILL_SPELL_WATER_BOLT ) {
+			snd SOUNDLIST_MIZU
 		}
 		if ( zannku != 100 ) {
 			if ( anisound ) {
@@ -2656,7 +2672,7 @@
 		/********** CUSTOM SPELL ANIMATION - ENDING **********/
 
 		if ( animeid == ANIMATION_ARROW ) {
-			if ( ele == SKILL_RESDMG_CRUSH ) {
+			if ( efid == SKILL_SPELL_HYDRO_FANG ) {
 				anicol = 21
 			}
 		}
@@ -2905,6 +2921,9 @@
 				}
 			loop
 			kaiten = 0
+			if ( efid == SKILL_SPELL_HYDRO_FANG ) {
+				snd SOUNDLIST_MIZU
+			}
 		}
 		if ( anisound ) {
 			snd anisound, 0, 1
@@ -6085,12 +6104,13 @@
 	if ( tc != (-1) & charaGivesExp(tc) == FALSE ) {
 		return
 	}
-	if ( r1 == CHARA_PLAYER ) {
-		skillexp r2, r1, sdataref(SKILL_DATAREF_COST, r2) * 4 + 20, 4, 5
-		skillexp SKILL_NORMAL_CASTING, r1, sdataref(SKILL_DATAREF_COST, r2) + 10, 5
+	hoseib = 0
+	if ( r1 == 0 ) {
+		skillexp r2, r1, (sdataref(SKILL_DATAREF_COST, r2) + 10) * 2, 5
+		skillexp SKILL_NORMAL_CASTING, r1, (sdataref(SKILL_DATAREF_COST, r2) + 10) * 2 * (1 + hoseib), 5
 	}
 	else {
-		skillexp SKILL_NORMAL_CASTING, r1, sdataref(SKILL_DATAREF_COST, r2) + 10, 5
+		skillexp SKILL_NORMAL_CASTING, r1, (sdataref(SKILL_DATAREF_COST, r2) + 10) * 2 * (1 + hoseib), 5
 	}
 	return
 
@@ -6906,23 +6926,25 @@
 	}
 	else {
 		dmgfix = cdata(CDATA_DAMAGE, cc) + inv(INV_ITEM_DAMAGE, cw) + inv(INV_ITEM_LEVEL, cw) + (inv(INV_ITEM_STATUS, cw) == ITEM_STATUS_BLESSED) + sdata(SKILL_ATTR_WIL, cc) / 10 + sdata(SKILL_ATTR_STR, cc) / 30 + sdata(SKILL_ATTR_PER, cc) / 30 + limit((inv(INV_ITEM_WEIGHT, cw) + 1) / 5000, 0, 40)
-		if ( inv(INV_ITEM_SKILL_REF, cw) == SKILL_WEAPON_FIREARM | inv(INV_ITEM_SKILL_REF, cw) == SKILL_WEAPON_CROSSBOW | inv(INV_ITEM_SKILL_REF, cw) == SKILL_WEAPON_BOW ) {
-			if ( attackskill == SKILL_WEAPON_BLUNT ) {
-				dmgfix -= 10
-			}
-		}
 		dice1 = inv(INV_ITEM_DICE1, cw)
 		dice2 = inv(INV_ITEM_DICE2, cw)
-		if ( iequiploc(cw) == EQUIP_SLOT_SHOOT ) {
-			if ( attackskill == SKILL_WEAPON_BLUNT ) {
-				dice2 = inv(INV_ITEM_DICE2, cw) / 2
-			}
-		}
 		if ( dice1 <= 0 ) {
 			dice1 = 1
 		}
 		if ( dice2 <= 0 ) {
 			dice2 = 1
+		}
+		if ( iequiploc(cw) == 10 ) {
+			if ( attackskill == SKILL_WEAPON_BLUNT ) {
+				dice2 = inv(INV_ITEM_DICE2, cw) / 2
+			}
+		}
+		if ( iequiploc(cw) == 5 ) {
+			if ( attackskill == SKILL_WEAPON_THROWING ) {
+				if ( inv(INV_ITEM_ID, cw) != ITEM_ID_GO_RENGE & inv(INV_ITEM_ID, cw) != ITEM_ID_DGT_101 & inv(INV_ITEM_ID, cw) != ITEM_ID_KUNAI & inv(INV_ITEM_ID, cw) != ITEM_ID_TOMAHAWK ) {
+					dice2 = inv(INV_ITEM_DICE2, cw) / 2
+				}
+			}
 		}
 		if ( inv(INV_ITEM_DICE1, cw) == 0 ) {
 			dice1 = 4
@@ -6977,17 +6999,17 @@
 			}
 			else {
 				if ( cdata(CDATA_ROCK_THROWING, cc) != 0 & (inv(INV_ITEM_ID, cw) == ITEM_ID_STONE | inv(INV_ITEM_ID, cw) == ITEM_ID_VANILLA_ROCK) ) {
-					dmgmulti = dmgmulti * (rangemap(rangedist) / 2 + 150) / 100
+					dmgmulti = dmgmulti * (rangemap(rangedist) * 4 + 110) / 100
 					if ( encharge == 100 ) {
 						dmgmulti = dmgmulti2 * 3 / 2
 					}
 				}
 				else {
 					if ( gdata(GDATA_TEMPORARY_FLAGS3) != 0 ) {
-						dmgmulti = dmgmulti * (rangemap(rangedist) / 2 + 150) / 100
+						dmgmulti = dmgmulti * (rangemap(rangedist) * 4 + 110) / 100
 					}
 					else {
-						dmgmulti = dmgmulti * (rangemap(rangedist) / 2 + 100) / 100
+						dmgmulti = dmgmulti * (rangemap(rangedist) * 4 + 60) / 100
 					}
 					if ( encharge == 100 ) {
 						dmgmulti = dmgmulti2 * 3 / 2
@@ -7054,10 +7076,18 @@
 	if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
 		hoseipv = 0
 	}
+	dvfix = cdata(CDATA_DV_FIX, tc)
+	if ( cdata(CDATA_DV, tc) < 0 ) {
+		dvfix = 100
+	}
+	hoseidv = cdata(CDATA_DV, tc) * dvfix / 100 + dvfix - 100
+	if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
+		hoseidv = 0
+	}
 	prot = hoseipv + limit(sdata(carmor(tc), tc) / 4 - cdata(CDATA_PROT_PENALTY, tc) * 100, 0, 2000) + sdata(SKILL_ATTR_DEX, tc) / 10
 	if ( calcattackdmg_arg1 == 0 ) {
 		if ( cbit(CHARA_BIT_VINDALIAN_JIUJITSU_ACTIVE, cc) == TRUE ) {
-			prot = cdata(CDATA_DV, tc) + limit(limit(sdata(SKILL_NORMAL_LIGHT_ARMOR, tc), 0, 300) - cdata(CDATA_PROT_PENALTY, tc) * 100, 0, 300) + sdata(SKILL_ATTR_DEX, tc) / 10
+			prot = hoseidv + limit(sdata(carmor(tc), tc) / 4 - cdata(CDATA_PROT_PENALTY, tc) * 100, 0, 2000) + sdata(SKILL_ATTR_DEX, tc) / 10
 		}
 	}
 	if ( cbit(CHARA_BIT_AWAKE_NEAR_DEATH_EVASION, tc) ) {

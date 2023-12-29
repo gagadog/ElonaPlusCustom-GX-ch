@@ -117,8 +117,9 @@
 #define global	BUFF_LIFE_TASTING	67
 #define global	BUFF_CHAIN_OF_MANA	68
 #define global	BUFF_FLAME_OF_LIFE	69
+#define global	BUFF_ENERGY_MAX	70
 
-#define global	MAX_BUFF	(BUFF_FLAME_OF_LIFE + 1)
+#define global	MAX_BUFF	(BUFF_ENERGY_MAX + 1)
 
 // calcbuff information type
 #define global	CALCBUFF_DESCRIPTION	-2
@@ -604,8 +605,10 @@
 #define global	SKILL_SPACT_SHADOW_HOP	853
 #define global	SKILL_SPACT_ACCEL_NECRO	854
 #define global	SKILL_SPACT_GOD_CHARGE_ROD	855
+#define global	SKILL_SPACT_JUMPING_DROP	856
+#define global	SKILL_SPACT_DIVING_DRILL	857
 
-#define global	MAX_SKILL	(SKILL_SPACT_GOD_CHARGE_ROD + 1)
+#define global	MAX_SKILL	(SKILL_SPACT_DIVING_DRILL + 1)
 
 // Absolute skill limits
 #define global	MAX_SPACT_COUNT	500 // Maximum number of spact slots available in the array, beginning at STARTING_SKILL_SPACT, meaning the effective max skillid is 1099 (1100 if you really push it)
@@ -690,6 +693,7 @@
 #define global	SKILL_EFFECT_POTION_CALAMITY	SKILL_EFFECT_MIN + 77
 #define global	SKILL_EFFECT_POTION_PHYSICAL	SKILL_EFFECT_MIN + 78
 #define global	SKILL_EFFECT_SCROLL_OF_ATTRACT	SKILL_EFFECT_MIN + 79
+#define global	SKILL_EFFECT_ENERGY_MAX	SKILL_EFFECT_MIN + 80
 
 // Basic actions
 #define global	ACTION_MELEE	-1
@@ -736,6 +740,8 @@
 #define global	ACTION_WORK_B	27
 #define global	ACTION_WORK_C	28
 #define global	ACTION_BEGGING	29
+#define global	ACTION_JUMPING_DROP	30
+#define global	ACTION_DIVING_DRILL	31
 #define global	ACTION_SLAVE_SPINNER	107
 #define global	ACTION_SLAVE_WHEEL	108
 
@@ -1229,8 +1235,11 @@
 #define global	SOUNDLIST_HAWK1	303
 #define global	SOUNDLIST_UMINADO	304
 #define global	SOUNDLIST_MIZU2	305
+#define global	SOUNDLIST_BURST00	306
+#define global	SOUNDLIST_GORO05	307
+#define global	SOUNDLIST_MECHA15	308
 
-#define global	SOUNDLIST_MAX	(SOUNDLIST_MIZU2 + 1)
+#define global	SOUNDLIST_MAX	(SOUNDLIST_MECHA15 + 1)
 
 // Item effects
 #define global	EFFECT_NONE	0
@@ -1613,6 +1622,8 @@
 #define global	CELL_SUB_FEATURE_TRAP_QUEST_MINE	7
 #define global	CELL_SUB_FEATURE_TRAP_BLADE_STRINGS	8
 #define global	CELL_SUB_FEATURE_TRAP_QUEST_PITFALL	9
+#define global	CELL_SUB_FEATURE_TRAP_QUEST_MINE_2	15
+#define global	CELL_SUB_FEATURE_TRAP_QUEST_PITFALL_2	16
 #define global	CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS	20
 #define global	CELL_SUB_FEATURE_TRAP_PITFALL	21
 #define global	CELL_SUB_FEATURE_TRAP_MINE	22
@@ -2181,6 +2192,7 @@
 #define global	CHARA_BIT_HEARTLOCK_DANGEROUS	1039
 #define global	CHARA_BIT_LOCKED_UP	1040
 #define global	CHARA_BIT_LABOR_CAMP	1041
+#define global	CHARA_BIT_TOIL_ENERGY_DRINK	1042
 
 // Database modes
 #define global	DBMODE_NONE	0
@@ -5907,8 +5919,10 @@
 #define global	ITEM_ID_SLAVE_SPINNER	1294
 #define global	ITEM_ID_FLOAT_CAGE	1295
 #define global	ITEM_ID_DEED_CAMP	1296
+#define global	ITEM_ID_SPLENDID_CHAIN	1297
+#define global	ITEM_ID_TOIL_ENERGY_DRINK	1298
 
-#define global	MAX_ITEM_ID	(ITEM_ID_DEED_CAMP + 3)
+#define global	MAX_ITEM_ID	(ITEM_ID_TOIL_ENERGY_DRINK + 3)
 
 // Creatures
 #define global	CREATURE_ID_BUG	0 // Also doubles as RANDOM
@@ -7003,8 +7017,18 @@
 #define global	CREATURE_ID_MESHERA_UNFINISHED	1089
 #define global	CREATURE_ID_MONSTER_BACTERIA	1090
 #define global	CREATURE_ID_ANABOLIC_RESISTANCE	1091
+#define global	CREATURE_ID_MEGA_GORDIAN_WORM	1092
+#define global	CREATURE_ID_HEAL_WORM	1093
+#define global	CREATURE_ID_DEATH_WORDM	1094
+#define global	CREATURE_ID_VINDALIAN_DEATHWORM	1095
+#define global	CREATURE_ID_WORM_HOLER	1096
+#define global	CREATURE_ID_LANDMINE_GIRL	1097
+#define global	CREATURE_ID_SCATTER_LANDMINE_GIRL	1098
+#define global	CREATURE_ID_JUMP_LANDMINE_GIRL	1099
+#define global	CREATURE_ID_ANTITANK_LANDMINE_GIRL	1100
+#define global	CREATURE_ID_BAMBOO_SPEAR_SPIRIT	1101
 
-#define global	MAX_CREATURE_ID	(CREATURE_ID_ANABOLIC_RESISTANCE + 3)
+#define global	MAX_CREATURE_ID	(CREATURE_ID_BAMBOO_SPEAR_SPIRIT + 3)
 
 // Buffer
 #define global	BUFFER_SCREEN	0

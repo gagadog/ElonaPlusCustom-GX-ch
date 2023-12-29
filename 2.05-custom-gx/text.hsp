@@ -70,6 +70,7 @@
 	_conmpoison = lang("魔　漏", "MPoison"), lang("放　出", "Emission")
 	_condim = lang("朦　朧", "Dim"), lang("混　濁", "Muddled"), lang("気　絶", "Unconscious")
 	_conangry = lang("激　怒", "Fury"), lang("狂　乱", "Berserk")
+	_conroudou = lang("労　働", "T-Energy")
 	_conmatou = lang("メタル", "Metal")
 	_condupli = lang("杖複製", "Dupli")
 	_conmuteki = lang("無　敵", "Invulnerable")
@@ -129,7 +130,7 @@
 	strinteractfail = lang("その方向には、操作できる対象はない。", "There's no valid target in that direction.")
 	invtitle = "", lang("調べる", "Examine"), lang("置く", "Drop"), lang("拾う", "Pick Up"), "", lang("食べる", "Eat"), lang("装備する", "Wear"), lang("読む", "Read"), lang("飲む", "Drink"), lang("振る", "Zap"), lang("渡す", "Give"), lang("購入する", "Buy"), lang("売却する", "Sell"), lang("鑑定する", "Identify"), lang("使う", "Use"), lang("開く", "Open"), lang("料理する", "Cook"), lang("調合", "Mix"), lang("混ぜる対象", "Mix Target"), lang("捧げる", "Offer"), lang("交換する", "Trade"), lang("提示する", "Present"), lang("取る", "Take"), lang("対象の", "Target"), lang("入れる", "Put"), lang("もらう", "Take"), lang("投げる", "Throw"), lang("盗む", "Pickpocket"), lang("交換する", "Trade"), lang("予約する", "Reserve"), "", "", lang("画像付与", "Set Mark"), "", lang("種子", "Seeds")
 	bodyn = "", lang("頭", "Head"), lang("首", "Neck"), lang("背中", "Back"), lang("胴体", "Body"), lang("手", "Hand"), lang("指", "Ring"), lang("腕", "Arm"), lang("腰", "Waist"), lang("足", "Leg"), lang("遠隔", "Shoot"), lang("矢弾", "Ammo")
-	actlistn = lang("行動", "current action"), lang("食事", "eating"), lang("読書", "reading"), lang("移動", "moving"), lang("休息", "resting"), lang("採掘", "mining"), lang("演奏", "playing"), lang("釣り", "fishing"), lang("採取", "collecting materials"), lang("穴掘り", "digging hole"), lang("行動", "current action"), lang("行動", "current action"), lang("合成", "blend"), lang("チャージ", "charge"), lang("伐採", "felling"), lang("説法", "preaching"), lang("食事", "eating"), lang("舞", "dance"), lang("食事", "eating"), lang("説得", "persuasion"), lang("ギャグ", "joke"), lang("嘘", "lie"), lang("脅迫", "intimidation"), lang("歌", "song"), lang("", ""), lang("執筆", "writing"), lang("仕事", "work"), lang("仕事", "work"), lang("仕事", "work"), lang("物乞い", "begging")
+	actlistn = lang("行動", "current action"), lang("食事", "eating"), lang("読書", "reading"), lang("移動", "moving"), lang("休息", "resting"), lang("採掘", "mining"), lang("演奏", "playing"), lang("釣り", "fishing"), lang("採取", "collecting materials"), lang("穴掘り", "digging hole"), lang("行動", "current action"), lang("行動", "current action"), lang("合成", "blend"), lang("チャージ", "charge"), lang("伐採", "felling"), lang("説法", "preaching"), lang("食事", "eating"), lang("舞", "dance"), lang("食事", "eating"), lang("説得", "persuasion"), lang("ギャグ", "joke"), lang("嘘", "lie"), lang("脅迫", "intimidation"), lang("歌", "song"), lang("", ""), lang("執筆", "writing"), lang("仕事", "work"), lang("仕事", "work"), lang("仕事", "work"), lang("物乞い", "begging"), lang("飛跳殺法", "jumping drop"), lang("奇襲穿孔", "diving drill")
 	sdim _cast, 30, 10
 	_cast(0) = lang("魔法を詠唱した。", " casts a spell.")
 	_cast(1) = lang("糸を飛ばした。", " splits cobweb.")
@@ -1987,7 +1988,7 @@
 	return
 
 #deffunc txtsetwpoint int txtsetwpoint_count
-	repeat 9
+	repeat 11
 		i = cnt
 		p(cnt) = p(i)
 		p(i) = cnt
@@ -2015,9 +2016,15 @@
 			s(cnt) = lang("Suエクステンダー２種・・・・・・2000労働エナジー", "SurvivabilityEXtenderXandY <2000 Toil-Energy>")
 		}
 		if ( p(cnt) == 7 ) {
-			s(cnt) = lang("水２服・・・・・・・・・・・・・3000労働エナジー", "2 bottles of water <3000 Toil-Energy>")
+			s(cnt) = lang("立派な鎖３個・・・・・・・・・・2500労働エナジー", "3 splendid chains <2500 Toil-Energy>")
 		}
 		if ( p(cnt) == 8 ) {
+			s(cnt) = lang("水２服・・・・・・・・・・・・・3000労働エナジー", "2 bottles of water <3000 Toil-Energy>")
+		}
+		if ( p(cnt) == 9 ) {
+			s(cnt) = lang("労働エナジードリンク１０服・・・4000労働エナジー", "10 toil-energy drink <4000 Toil-Energy>")
+		}
+		if ( p(cnt) == 10 ) {
 			s(cnt) = lang("カジノチップ１０枚・・・・・・・1万労働エナジー", "10 Casino chips <10000 Toil-Energy>")
 		}
 	loop
@@ -9651,7 +9658,7 @@
 	if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_MINEFIELD ) {
 		s = "%TRAP," + qdata(QDATA_VAR, rq)
 		gosub *talk_quest_load
-		s(10) = "" + qdata(QDATA_PARAM1, rq) + lang("個", " places")
+		s(10) = "" + qdata(QDATA_PARAM1, rq) + lang("ポイント", " points")
 		s(11) = mapname(qdata(QDATA_MAP, rq))
 		s(4) = lang("" + s(10) + "の罠の撤去", "Remove trap at " + s(10) + ".")
 		if ( gdata(GDATA_QUEST_REF) == rq ) {

@@ -12271,7 +12271,7 @@
 		}
 		if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
 			txtef COLOR_SKY_BLUE
-			txt lang("" + gdata(GDATA_TIME_LIMIT) + "分以内に、罠を可能な限り撤去しよう。目標は" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + "ポイント。", "To complete the quest, you have to remove " + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + " traps within " + gdata(GDATA_TIME_LIMIT) + " minutes.")
+			txt lang("" + gdata(GDATA_TIME_LIMIT) + "ターン以内に、罠を可能な限り撤去しよう。目標は" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + "ポイント。", "To complete the quest, you have to remove " + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + " traps within " + gdata(GDATA_TIME_LIMIT) + " turns.")
 		}
 		if ( gdata(GDATA_QUEST) == QUEST_TYPE_CONQUER ) {
 			txtef COLOR_SKY_BLUE
@@ -12317,6 +12317,13 @@
 							continue
 						}
 						if ( cbit(CHARA_BIT_LABOR_CAMP, cnt) != TRUE ) {
+							continue
+						}
+						if ( cbit(CHARA_BIT_TOIL_ENERGY_DRINK, cnt) == TRUE ) {
+							txtmore
+							txtef COLOR_GREEN
+							txt lang(cdatan(CDATAN_NAME, cnt) + "は労働エナジーで疲労をこらえたようだ。", cdatan(CDATAN_NAME, cnt) + " seems to have endured the fatigue with Toil-Energy.")
+							cbitmod CHARA_BIT_TOIL_ENERGY_DRINK, cnt, FALSE
 							continue
 						}
 						if ( cost > 0 ) {

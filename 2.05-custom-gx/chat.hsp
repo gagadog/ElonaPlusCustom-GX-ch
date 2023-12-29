@@ -19726,10 +19726,8 @@
 				adata(ADATA_ARENA_MATCHES_FOUGHT, gdata(GDATA_AREA)) = 0
 			}
 			if ( adata(ADATA_ARENA_MATCHES_FOUGHT, gdata(GDATA_AREA)) >= petArenaMatchLimit ) {
-				if ( dbg_arena == 0 ) {
-					buff = lang("残念だが、今日の試合はもう終了し" + _ta(), "The game is over today. Come again tommorow.")
-					goto *chat_default
-				}
+				buff = lang("残念だが、今日の試合はもう終了し" + _ta(), "The game is over today. Come again tommorow.")
+				goto *chat_default
 			}
 			arenaop = 0, 1, (100 - gdata(GDATA_RANK_PET_ARENA) / 100) / 3 * 2 + 3
 			if ( arenaop(2) < adata(ADATA_PET_ARENA_WIN, gdata(GDATA_AREA)) ) {
@@ -21719,7 +21717,7 @@
 			chatMore lang("じゃあ次の仕事渡しとくから。まぁこれでも飲んで頑張れよ。", "Well, here's your next assignment. Take a swig of this, then get out there and make me proud.")
 			kaiwa = 0
 			flt
-			itemcreate -1, ITEM_ID_POTION_SOMA, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			itemcreate -1, ITEM_ID_TOIL_ENERGY_DRINK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			snd SOUNDLIST_COMPLETE1
 			txt_questitem
 			if ( gdata(GDATA_FLAG_SUB_MISSION_FROM_GARZIEM) \ 10 == 3 ) {
@@ -24255,7 +24253,11 @@
 			}
 		}
 		if ( cdata(CDATA_ROLE, tc) >= ROLE_SHOP_MIN & cdata(CDATA_ROLE, tc) < ROLE_GUEST_MIN | cdata(CDATA_ROLE, tc) == ROLE_GUEST_MERCHANT ) {
-			s += lang(" 店の規模:", " Shop Rank:") + cdata(CDATA_ROLE_SHOP_LEVEL, tc) + "\n     Restocks in: " + ( cdata(CDATA_ROLE_RESTOCK, tc) - (gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12)) + " hours"
+			s += lang(" 店の規模:", " Shop Rank:") + cdata(CDATA_ROLE_SHOP_LEVEL, tc)
+			if ( cdata(CDATA_ROLE, tc) != ROLE_SHIP_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER & cdata(CDATA_ROLE, tc) != ROLE_GUEST_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_STOKE & cdata(CDATA_ROLE, tc) != ROLE_SHOP_MOYER ) {
+				s += lang(" 活性度:" + cdata(CDATA_HIRE_DATE, tc) + " ", " Activity:" + cdata(CDATA_HIRE_DATE, tc) + " ")
+			}
+			s += "\n     Restocks in: " + ( cdata(CDATA_ROLE_RESTOCK, tc) - (gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12)) + " hours"
 		}
 		if ( gdata(GDATA_GOD_DETECT) ) {
 			s += " (" + godname(cdata(CDATA_GOD, tc)) + ")"
@@ -24475,6 +24477,7 @@
 	if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_MOYER ) {
 		p /= 4
 	}
+	cdata(CDATA_HIRE_DATE, tc) = 50
 	if ( cdata(CDATA_FAME, tc) > 0 ) {
 		if ( cdata(CDATA_ROLE, tc) != ROLE_SHIP_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER & cdata(CDATA_ROLE, tc) != ROLE_GUEST_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_STOKE & cdata(CDATA_ROLE, tc) != ROLE_SHOP_MOYER ) {
 			p += limit(cdata(CDATA_FAME, tc) / 3000, 0, 20)
@@ -25074,6 +25077,7 @@
 				continue
 			}
 		}
+		cdata(CDATA_HIRE_DATE, tc)++
 		itemcreate -1, dbid, -1, -1, 0
 		if ( stat == 0 ) {
 			break

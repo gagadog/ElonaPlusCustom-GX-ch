@@ -8,6 +8,8 @@
 
 *setCellObj
 	tile_trap = 234
+	tile_trapq = 254
+	tile_trapqd = 255
 	tile_doorclosed = 726
 	tile_doorclosed2 = 728
 	tile_doorclosed3 = 730

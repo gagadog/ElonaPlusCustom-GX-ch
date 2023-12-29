@@ -192,7 +192,7 @@
 	return
 
 *disarmTrap
-	if ( feat(2) != CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS & feat(2) != CELL_SUB_FEATURE_TRAP_PITFALL ) {
+	if ( feat(FEAT_CELL_SUB_FEATURE_ID) != CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS & feat(FEAT_CELL_SUB_FEATURE_ID) != CELL_SUB_FEATURE_TRAP_PITFALL ) {
 		skillexp SKILL_NORMAL_DISARM_TRAP, cc, 100
 	}
 	cell_featset movx, movy, 0
@@ -207,11 +207,30 @@
 		}
 	}
 	if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
-		if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_MINE | feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
+		if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
 			snd SOUNDLIST_DIG2
 			qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF))++
 			txtef COLOR_GREEN
-			txt lang("撤去済み", "Removed ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
+			txt lang("現在ポイント", "Removal Point ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
+		}
+		if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE_2 | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL_2 ) {
+			snd SOUNDLIST_DIG2
+			qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) += 10
+			txtef COLOR_GREEN
+			txt lang("現在ポイント", "Removal Point ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
+		}
+		if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL_2 ) {
+			if ( rnd(3) == 0 ) {
+				txtef COLOR_RED
+				txt lang("落とし穴から何かが飛び出してきた！", "Something jumped out of the pit!")
+				flt
+				initlv = gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) * 2
+				characreate -1, CREATURE_ID_BAMBOO_SPEAR_SPIRIT, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
+				cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+				cdata(CDATA_EMO_ICON, rc) = 18 + 100 * 2
+				cdata(CDATA_AI_AGGRO, rc) = 30
+				cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+			}
 		}
 	}
 	return
@@ -242,10 +261,23 @@
 	movy = cdata(CDATA_Y, cc)
 	if ( map(movx, movy, 6) != 0 ) {
 		cell_featread movx, movy
-		if ( feat(1) == CELL_FEATURE_TRAP ) {
-			if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_MINE ) {
-				if ( cbit(CHARA_BIT_FLOAT, cc) == 1 & cdata(CDATA_CONDITION_GRAVITY, cc) == 0 | cbit(CHARA_BIT_IMMUNE_MINE, cc) == 1 | findbuff(cc, BUFF_GRAVITY_ACCEL) != (-1) ) {
+		if ( feat(FEAT_CELL_FEATURE_ID) == CELL_FEATURE_TRAP ) {
+			if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE_2 ) {
+				if ( cbit(CHARA_BIT_IMMUNE_MINE, cc) == TRUE ) {
 					return
+				}
+				if ( cbit(CHARA_BIT_FLOAT, cc) == TRUE & cdata(CDATA_CONDITION_GRAVITY, cc) == 0 | findbuff(cc, BUFF_GRAVITY_ACCEL) != (-1) ) {
+					if ( sdata(SKILL_NORMAL_DISARM_TRAP, cc) != 0 ) {
+						gosub *calcDisarm
+						if ( stat == 1 ) {
+							gosub *disarmTrap
+							return
+						}
+						else {
+							txt lang("解除に失敗した。", "You fail to disarm the trap.")
+							return
+						}
+					}
 				}
 				if ( feat(3) != 0 ) {
 					if ( cc >= MAX_CHARA_FOLLOWER ) {
@@ -253,10 +285,20 @@
 					}
 				}
 			}
-			if ( feat(2) == CELL_SUB_FEATURE_TRAP_BLADE_STRINGS | feat(2) == CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS ) {
+			if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_BLADE_STRINGS | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS ) {
 				if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) != 2 ) {
 					if ( cbit(CHARA_BIT_FLOAT, cc) == TRUE & cdata(CDATA_CONDITION_GRAVITY, cc) == 0 | findbuff(cc, BUFF_GRAVITY_ACCEL) != (-1) ) {
-						return
+						if ( sdata(SKILL_NORMAL_DISARM_TRAP, cc) != 0 ) {
+							gosub *calcDisarm
+							if ( stat == 1 ) {
+								gosub *disarmTrap
+								return
+							}
+							else {
+								txt lang("解除に失敗した。", "You fail to disarm the trap.")
+								return
+							}
+						}
 					}
 				}
 				if ( feat(3) != 0 ) {
@@ -265,11 +307,21 @@
 					}
 				}
 			}
-			if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL | feat(2) == CELL_SUB_FEATURE_TRAP_PITFALL ) {
-				if ( cbit(CHARA_BIT_FLOAT, cc) == 1 & cdata(CDATA_CONDITION_GRAVITY, cc) == 0 | findbuff(cc, BUFF_GRAVITY_ACCEL) != (-1) ) {
-					return
+			if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_PITFALL | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL_2 ) {
+				if ( cbit(CHARA_BIT_FLOAT, cc) == TRUE & cdata(CDATA_CONDITION_GRAVITY, cc) == 0 | findbuff(cc, BUFF_GRAVITY_ACCEL) != (-1) ) {
+					if ( sdata(SKILL_NORMAL_DISARM_TRAP, cc) != 0 ) {
+						gosub *calcDisarm
+						if ( stat == 1 ) {
+							gosub *disarmTrap
+							return
+						}
+						else {
+							txt lang("解除に失敗した。", "You fail to disarm the trap.")
+							return
+						}
+					}
 				}
-				if ( feat(3) != 0 ) {
+				if ( feat(FEAT_CELL_PARAM_1) != 0 ) {
 					if ( cc >= MAX_CHARA_FOLLOWER ) {
 						return
 					}
@@ -284,9 +336,9 @@
 					feat(0) = tile_trap
 				}
 			}
-			refdiff = 100 + gdata(GDATA_LEVEL) * 3 + gdata(STARTING_GDATA_FLAG + 379) * 3
+			refdiff = 100 + gdata(GDATA_LEVEL) * 3 + gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) * 3
 			if ( feat(0) == tile_trap ) {
-				if ( cdata(CDATA_RELATION, cc) != RELATION_ALLY | feat(FEAT_CELL_SUB_FEATURE_ID) <= CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
+				if ( cdata(CDATA_RELATION, cc) != RELATION_ALLY | feat(FEAT_CELL_SUB_FEATURE_ID) < CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS ) {
 					refdiff = refdiff / 3
 					if ( sdata(SKILL_NORMAL_DISARM_TRAP, cc) != 0 ) {
 						gosub *calcDisarm
@@ -347,28 +399,28 @@
 						}
 					}
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_BLIND ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_BLIND ) {
 					if ( synccheck(cc, -1) ) {
 						txt lang("墨が噴き出した。", "Gallons of ink spreads.")
 					}
 					cell_featset movx, movy, 0
 					dmgcon cc, CONDITION_BLIND, 100 + gdata(GDATA_LEVEL) * 2
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_PARALYZE ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_PARALYZE ) {
 					if ( synccheck(cc, -1) ) {
 						txt lang("刺激的な匂いがただよう。", "Stimulative gas spreads.")
 					}
 					cell_featset movx, movy, 0
 					dmgcon cc, CONDITION_PARALYZE, 100 + gdata(GDATA_LEVEL) * 2
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_CONFUSION ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_CONFUSION ) {
 					if ( synccheck(cc, -1) ) {
 						txt lang("臭い匂いがたちこめた。", "Smelly gas spreads.")
 					}
 					cell_featset movx, movy, 0
 					dmgcon cc, CONDITION_CONFUSE, 100 + gdata(GDATA_LEVEL) * 2
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_TELEPORT ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_TELEPORT ) {
 					cell_featset movx, movy, 0
 					if ( encfind(cc, ENCHANT_PREVENT_TELEPORT) != (-1) ) {
 						if ( synccheck(cc, -1) ) {
@@ -393,7 +445,7 @@
 					loop
 					goto *procMove
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_IMPALEMENT ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_IMPALEMENT ) {
 					if ( synccheck(cc, -1) ) {
 						txt lang("槍が地面から飛び出した。", "Several spears fly out from the ground.")
 					}
@@ -408,21 +460,21 @@
 						dmghp cc, rnd(gdata(GDATA_LEVEL) * 2 + 10), DAMAGE_FROM_TRAP
 					}
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_POISON ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_POISON ) {
 					if ( synccheck(cc, -1) ) {
 						txt lang("毒ガスが噴き出した。", "Poisonous gas spreads.")
 					}
 					cell_featset movx, movy, 0
 					dmgcon cc, CONDITION_POISON, 100 + gdata(GDATA_LEVEL) * 2
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_SLEEP ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_SLEEP ) {
 					if ( synccheck(cc, -1) ) {
 						txt lang("催眠ガスが噴き出した。", "Sleeping gas spreads.")
 					}
 					cell_featset movx, movy, 0
 					dmgcon cc, CONDITION_SLEEP, 100 + gdata(GDATA_LEVEL) * 2
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_MINE | feat(2) == CELL_SUB_FEATURE_TRAP_MINE ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_MINE ) {
 					txtef COLOR_SKY_BLUE
 					txt lang(" *チュドーン！* ", " *kabooom* ")
 					aniref = 0
@@ -430,39 +482,83 @@
 					anix = movx
 					aniy = movy
 					gosub *anime
-					if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_MINE ) {
+					if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE ) {
 						dmghp cc, 50 + limit(rnd(gdata(GDATA_LEVEL) + gdata(STARTING_GDATA_FLAG + 379) + 1) * 5, 1, 99999), DAMAGE_FROM_TRAP
 					}
-					if ( feat(2) == CELL_SUB_FEATURE_TRAP_MINE ) {
+					if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_MINE ) {
 						dmghp cc, 50 + limit(rnd(gdata(GDATA_LEVEL) + 1) * 5, 1, 99999), DAMAGE_FROM_CHARA
 					}
 					if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
-						if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_MINE ) {
+						if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE ) {
 							qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF))++
 							txtef COLOR_GREEN
-							txt lang("撤去済み", "Removed ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
+							txt lang("現在ポイント", "Removal Point ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
 						}
 					}
 					cell_featset movx, movy, 0
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_BLADE_STRINGS | feat(2) == CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_MINE_2 ) {
+					txtef COLOR_SKY_BLUE
+					txt lang(" *チュドォォォーン！！！* ", "*Kaboooooom*")
+					aniref = 0
+					animeid = ANIMATION_BALL
+					anix = movx
+					aniy = movy
+					gosub *anime
+					dmghp cc, (50 + limit(rnd(gdata(GDATA_LEVEL) + gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) + 1) * 5, 1, 99999)) * 10, DAMAGE_FROM_TRAP
+					if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
+						qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) += 10
+						txtef COLOR_GREEN
+						txt lang("現在ポイント", "Removal Point ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
+					}
+					cell_featset movx, movy, 0
+				}
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_BLADE_STRINGS | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS ) {
 					txtef COLOR_SKY_BLUE
 					txt lang(name(cc) + "は鋭い糸に突っ込んだ。", name(cc) + " " + was(cc) + " torn up in the sharp strings.")
 					snd SOUNDLIST_STAB
-					if ( feat(2) == CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS ) {
+					if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS ) {
 						hostileaction CHARA_PLAYER, cc
 					}
 					cell_featset movx, movy, 0
 					dmghp cc, limit(sdata(SKILL_ATTR_SPD, cc) / 2 + limit(rnd(gdata(GDATA_LEVEL) + 1) * 2, 1, 9999) - cdata(CDATA_PV, cc), 1, 9999), DAMAGE_FROM_TRAP
 				}
-				if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL | feat(2) == CELL_SUB_FEATURE_TRAP_PITFALL ) {
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL_2 ) {
+					txtef COLOR_SKY_BLUE
+					txt lang(name(cc) + "は深い落とし穴に転がり落ちた。", name(cc) + " fell to the deep pitfall.")
+					snd SOUNDLIST_SNOW
+					dmghp cc, limit((gdata(GDATA_LEVEL) + gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL)) / 2 + limit(rnd(gdata(GDATA_LEVEL) + gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) + 1) * 2, 1, 9999) - cdata(CDATA_DV, cc), 2, 9999) * 10, DAMAGE_FROM_TRAP
+					if ( cdata(CDATA_EXIST, cc) == CHAR_STATE_ALIVE ) {
+						if ( cdata(CDATA_CONDITION_INVERT, cc) < 2 ) {
+							cdata(CDATA_CONDITION_INVERT, cc) = 2
+						}
+					}
+					if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
+						qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) += 10
+						txtef COLOR_GREEN
+						txt lang("現在ポイント", "Removed Point ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
+					}
+					cell_featset movx, movy, 0
+					if ( rnd(3) == 0 ) {
+						txtef COLOR_RED
+						txt lang("落とし穴から何かが飛び出してきた！", "Something jumped out of the pit!")
+						flt
+						initlv = gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) * 2
+						characreate -1, CREATURE_ID_BAMBOO_SPEAR_SPIRIT, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
+						cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+						cdata(CDATA_EMO_ICON, rc) = 18 + 100 * 2
+						cdata(CDATA_AI_AGGRO, rc) = 30
+						cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+					}
+				}
+				if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_PITFALL ) {
 					txtef COLOR_SKY_BLUE
 					txt lang(name(cc) + "は落とし穴に転がり落ちた。", name(cc) + " fell into the pitfall trap.")
 					snd SOUNDLIST_SNOW
-					if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
+					if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
 						dmghp cc, limit((gdata(GDATA_LEVEL) + gdata(STARTING_GDATA_FLAG + 379)) / 2 + limit(rnd(gdata(GDATA_LEVEL) + gdata(STARTING_GDATA_FLAG + 379) + 1) * 2, 1, 9999) - cdata(CDATA_DV, cc), 2, 9999), DAMAGE_FROM_TRAP
 					}
-					if ( feat(2) == CELL_SUB_FEATURE_TRAP_PITFALL ) {
+					if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_PITFALL ) {
 						dmghp cc, limit(gdata(GDATA_LEVEL) / 2 + limit(rnd(gdata(GDATA_LEVEL) + 1) * 2, 1, 9999) - cdata(CDATA_DV, cc), 2, 9999), DAMAGE_FROM_CHARA
 					}
 					if ( cdata(CDATA_EXIST, cc) == CHAR_STATE_ALIVE ) {
@@ -471,13 +567,24 @@
 						}
 					}
 					if ( gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
-						if ( feat(2) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
+						if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL ) {
 							qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF))++
 							txtef COLOR_GREEN
-							txt lang("撤去済み", "Removed ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
+							txt lang("現在ポイント", "Removal Point ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
 						}
 					}
 					cell_featset movx, movy, 0
+					if ( rnd(3) == 0 ) {
+						txtef COLOR_RED
+						txt lang("落とし穴から何かが飛び出してきた！", "Something jumped out of the pit!")
+						flt
+						initlv = gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) * 2
+						characreate -1, CREATURE_ID_BAMBOO_SPEAR_SPIRIT, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
+						cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+						cdata(CDATA_EMO_ICON, rc) = 18 + 100 * 2
+						cdata(CDATA_AI_AGGRO, rc) = 30
+						cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
+					}
 				}
 				efsource = 0
 			}
@@ -1806,6 +1913,108 @@
 	rowactend cc
 	return
 
+*skill_jumping_drop
+	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
+		cdata(CDATA_ROW_ACT, cc) = ACTION_JUMPING_DROP
+		cdata(CDATA_ACTION_PERIOD, cc) = 5
+		if ( synccheck(cc, -1) ) {
+			txt lang(name(cc) + "は空高く跳躍した。", name(cc) + " jumped high into the sky.")
+		}
+		return
+	}
+	if ( cdata(CDATA_ACTION_PERIOD, cc) > 0 ) {
+		if ( cdata(CDATA_ACTION_PERIOD, cc) \ 5 == 0 ) {
+			if ( synccheck(cc, -1) ) {
+				txt lang(name(cc) + "は空高く跳躍している。", name(cc) + " is flying high in the sky.")
+			}
+		}
+		return
+	}
+	snd SOUNDLIST_BURST00
+	tc = cdata(CDATA_TARGET, cc)
+	if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE & cdata(CDATA_ROW_ACT, tc) != ACTION_JUMPING_DROP ) {
+		telex = cdata(CDATA_X, tc)
+		teley = cdata(CDATA_Y, tc)
+		repeat 200
+			cdata(CDATA_X_NEW, cc) = telex + rnd(cnt / 8 + 2) - rnd(cnt / 8 + 2)
+			cdata(CDATA_Y_NEW, cc) = teley + rnd(cnt / 8 + 2) - rnd(cnt / 8 + 2)
+			cell_check cdata(CDATA_X_NEW, cc), cdata(CDATA_Y_NEW, cc)
+			if ( cellaccess == 1 ) {
+				if ( synccheck(cc, -1) ) {
+					txt lang(name(cc) + "は落下の勢いを乗せて" + cdatan(CDATAN_NAME, tc) + "に攻撃した。", name(cc) + " attacked " + cdatan(CDATAN_NAME, tc) + " with the force of fall!")
+				}
+				animeload 59, tc
+				dmghp tc, ((sdata(SKILL_ATTR_PER, cc) / 5 + 5) * ((sdata(SKILL_NORMAL_WEIGHT_LIFTING, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_NORMAL_WEIGHT_LIFTING, cc) * 2 + 5) + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) / 2) * 4, cc, SKILL_RESDMG_CRUSH, 1000
+				rowactend cc
+				if ( cdata(CDATA_IN_TAGTEAM, cc) != 0 ) {
+					tcc = cdata(CDATA_TAGTEAM_PARTNER, cc)
+					rowactend tcc
+				}
+				ccprev = cc
+				gosub *procMove
+				cc = ccprev
+				if ( cc == CHARA_PLAYER ) {
+					gosub *screen_draw
+				}
+				break
+			}
+		loop
+	}
+	rowactend cc
+	goto *turn_end
+	return
+
+*skill_diving_drill
+	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
+		cdata(CDATA_ROW_ACT, cc) = ACTION_DIVING_DRILL
+		cdata(CDATA_ACTION_PERIOD, cc) = 10
+		if ( synccheck(cc, -1) ) {
+			txt lang(name(cc) + "は地中に潜った。", name(cc) + " went underground.")
+		}
+		return
+	}
+	if ( cdata(CDATA_ACTION_PERIOD, cc) > 0 ) {
+		if ( cdata(CDATA_ACTION_PERIOD, cc) \ 5 == 0 ) {
+			if ( synccheck(cc, -1) ) {
+				txt lang(name(cc) + "は地中に潜っている。", name(cc) + " is underground.")
+			}
+		}
+		return
+	}
+	snd SOUNDLIST_MECHA15
+	tc = cdata(CDATA_TARGET, cc)
+	if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE & cdata(CDATA_ROW_ACT, tc) != ACTION_JUMPING_DROP ) {
+		telex = cdata(CDATA_X, tc)
+		teley = cdata(CDATA_Y, tc)
+		repeat 200
+			cdata(CDATA_X_NEW, cc) = telex + rnd(cnt / 8 + 2) - rnd(cnt / 8 + 2)
+			cdata(CDATA_Y_NEW, cc) = teley + rnd(cnt / 8 + 2) - rnd(cnt / 8 + 2)
+			cell_check cdata(CDATA_X_NEW, cc), cdata(CDATA_Y_NEW, cc)
+			if ( cellaccess == 1 ) {
+				if ( synccheck(cc, -1) ) {
+					txt lang(name(cc) + "は地中から飛び出し" + cdatan(CDATAN_NAME, tc) + "を奇襲した。", name(cc) + " jumped out of the ground and attacked " + cdatan(CDATAN_NAME, tc) + ".")
+				}
+				animeload 59, tc
+				dmghp tc, ((sdata(SKILL_ATTR_CON, cc) / 5 + 5) * ((sdata(SKILL_NORMAL_MINING, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_NORMAL_MINING, cc) * 2 + 5) + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) / 2) * 9, cc, SKILL_RESDMG_CRUSH, 1000
+				rowactend cc
+				if ( cdata(CDATA_IN_TAGTEAM, cc) != 0 ) {
+					tcc = cdata(CDATA_TAGTEAM_PARTNER, cc)
+					rowactend tcc
+				}
+				ccprev = cc
+				gosub *procMove
+				cc = ccprev
+				if ( cc == CHARA_PLAYER ) {
+					gosub *screen_draw
+				}
+				break
+			}
+		loop
+	}
+	rowactend cc
+	goto *turn_end
+	return
+		
 *skill_persuasion
 	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
 		powsel = 0
@@ -6344,11 +6553,19 @@
 			mp = calcspellcostmp(efid, cc)
 			if ( cc == CHARA_PLAYER ) {
 				if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_EHEKATL ) {
-					mp = rnd(mp * 140 / 100 + 1) + 1
+					mp = mp / 10 + rnd(mp + 1)
+					if ( mp < 1 ) {
+						mp = 1
+					}
 				}
 			}
 			if ( cdata(CDATA_ID, cc) != CREATURE_ID_ANOTHER_WORLD_CHEATAH ) {
-				dmgmp cc, mp
+				if ( cdata(CDATA_CUSTOM_TALK_LINE, CHARA_PLAYER) == 1 & (cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER) ) {
+					dmgmp cc, mp * 3
+				}
+				else {
+					dmgmp cc, mp
+				}
 			}
 			if ( cdata(CDATA_EXIST, cc) != CHAR_STATE_ALIVE ) {
 				efsource = 0
@@ -6516,6 +6733,9 @@
 	hoseim = limit(cdata(CDATA_ENHANCE_SPELL, cc) * 2 / 3, 0, 1000) / 10 + limit(sdata(SKILL_ATTR_MAG, cc) / 5, 0, 300)
 	efp = efp * (100 + hoseim) / 100
 	if ( cdata(CDATA_EQUIP_WEIGHT, cc) < EQUIP_WEIGHT_CLASS_HEAVY & cdata(CDATA_EQUIP_WEIGHT, cc) >= EQUIP_WEIGHT_CLASS_MEDIUM & findbuff(cc, BUFF_MAGIC_EQUIP) != (-1) ) {
+		efp = efp * 6 / 5
+	}
+	if ( cdata(CDATA_CUSTOM_TALK_LINE, CHARA_PLAYER) == 1 & (cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER) ) {
 		efp = efp * 6 / 5
 	}
 	gosub *effect
@@ -7192,6 +7412,9 @@
 			tlocx = cdata(CDATA_X, tc)
 			tlocy = cdata(CDATA_Y, tc)
 		}
+		if ( cdata(CDATA_ROW_ACT, tc) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, tc) == ACTION_DIVING_DRILL ) {
+			return 0
+		}
 		return 1
 	}
 	if ( tg == TARGET_TYPE_LOCATION | (tg == TARGET_TYPE_BOTH & tgloc == 1 & cc == CHARA_PLAYER) ) {
@@ -7514,6 +7737,9 @@
 										continue
 									}
 								}
+							}
+							if ( cdata(CDATA_ROW_ACT, tc) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, tc) == ACTION_DIVING_DRILL ) {
+								continue
 							}
 							dmg = role(dice1, dice2, bonus)
 							calcmagiccontrol cc, tc
@@ -9303,6 +9529,9 @@
 					if ( map(dx, dy, 1) != 0 ) {
 						tc = map(dx, dy, 1) - 1
 						if ( cc != tc ) {
+							if ( cdata(CDATA_ROW_ACT, tc) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, tc) == ACTION_DIVING_DRILL ) {
+								continue
+							}
 							if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 								if ( tc != CHARA_PLAYER ) {
 									if ( rnd(cdata(CDATA_HP, tc) + 1) < rnd(cdata(CDATA_HP, cdata(CDATA_TAGTEAM_PARTNER, tc)) + 1) ) {
@@ -11362,6 +11591,15 @@
 		r1 = tc
 		gosub *charaRefresh
 		goto *effect_end
+	}
+	if ( _switch_val == SKILL_EFFECT_ENERGY_MAX | _switch_sw ) {
+		_switch_sw = 0
+		addbuff tc, BUFF_ENERGY_MAX, 10, 10
+		if ( tc >= MAX_CHARA_FOLLOWER ) {
+			cbitmod CHARA_BIT_TOIL_ENERGY_DRINK, tc, TRUE
+		}
+		goto *effect_end
+		_switch_sw++
 	}
 	if ( _switch_val == SKILL_EFFECT_GAIN_SPEED | _switch_sw ) {
 		_switch_sw = 0
@@ -14449,6 +14687,12 @@
 		if ( i > 0 ) {
 			i = p(rnd(i))
 			valn = itemname(i, 1, 1)
+			if ( inv(INV_ITEM_STATUS, i) == ITEM_STATUS_BLESSED ) {
+				if ( synccheck(tc, -1) ) {
+					txt lang(name(tc) + "の" + valn + "は抵抗した。", name(tc) + your(tc) + " " + valn + " resisted the curse.")
+				}
+				goto *effect_end
+			}
 			if ( inv(INV_ITEM_STATUS, i) == ITEM_STATUS_CURSED ) {
 				inv(INV_ITEM_STATUS, i) = ITEM_STATUS_DOOMED
 			}
@@ -16033,10 +16277,11 @@
 			if ( findbuff(tc, BUFF_FEATHER) != (-1) ) {
 				continue
 			}
+			gra = 30 + limit(efp / 700, 0, 70)
 			if ( synccheck(tc, -1) ) {
-				txt lang(name(tc) + "は重力を感じた。", name(tc) + " feel" + _s(tc) + " gravity.")
+				txt lang(name(tc) + "は" + gra + "ターンの重力を感じた。", name(tc) + " feel" + _s(tc) + " gravity.")
 			}
-			cdata(CDATA_CONDITION_GRAVITY, tc) += 50 + rnd(50)
+			cdata(CDATA_CONDITION_GRAVITY, tc) += gra
 		loop
 		goto *effect_end
 	}
@@ -18179,6 +18424,24 @@
 		loop
 		homing = 0
 		goto *effect_end
+	}
+	if ( _switch_val == SKILL_SPACT_JUMPING_DROP | _switch_sw ) {
+		_switch_sw = 0
+		snd SOUNDLIST_SONIC
+		animeload 32, tc
+		cc = tc
+		gosub *skill_jumping_drop
+		goto *effect_end
+		_switch_sw++
+	}
+	if ( _switch_val == SKILL_SPACT_DIVING_DRILL | _switch_sw ) {
+		_switch_sw = 0
+		snd SOUNDLIST_GORO05
+		animeload 32, tc
+		cc = tc
+		gosub *skill_diving_drill
+		goto *effect_end
+		_switch_sw++
 	}
 	if ( _switch_val == SKILL_SPACT_CHARGE | _switch_sw ) {
 		_switch_sw = 0
@@ -24263,6 +24526,9 @@
 			txt lang(name(cc) + "は" + name(tc) + "に妖しい眼光を放った。", name(cc) + " gaze" + _s(cc) + " " + name(tc) + ".")
 		}
 		dmghp tc, (sdata(SKILL_ATTR_MAG, cc) / 5 + 5) * ((sdata(SKILL_ATTR_WIL, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_ATTR_WIL, cc) * 2 + 5) + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) / 2, cc, SKILL_RES_NERVE, sdata(SKILL_ATTR_MAG, cc) * 2 + 100
+		if ( cdata(CDATA_CONDITION_BIND, tc) < 3 ) {
+			cdata(CDATA_CONDITION_BIND, tc) = 3
+		}
 		cdata(CDATA_PROT_PENALTY, tc) = -3
 		if ( synccheck(tc, -1) ) {
 			txt lang(name(tc) + "の身体が石のように硬直した。", "Body of " + name(tc) + " was stiff like a stone.")

@@ -4258,6 +4258,14 @@
 	dmgcon cc, CONDITION_INSANE, 500
 	return
 
+*eatHealWorm
+	if ( synccheck(cc, -1) ) {
+		txtef COLOR_GREEN
+		txt lang(name(cc) + "の病気は軽くなった。", name(cc) + " feel" + _s(cc) + " less sick.")
+	}
+	healcon cc, CONDITION_SICK, 10
+	return
+
 *eatHorse
 	if ( synccheck(cc, -1) ) {
 		txtef COLOR_GREEN
