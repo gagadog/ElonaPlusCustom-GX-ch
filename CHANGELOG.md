@@ -2,11 +2,12 @@
 
 ## Added
 - Ported all changes from Elona+ 2.21.
-- Added some npc dialog (machine) translation.
+- Added npc dialog (machine) translation.
 - Added a Tweak that allows you to turn-in growing phase child for quests.
 - Added a Tweak to have gold drop and openable containers in showrooms (only when visited using Moongate/Runes).
 
 ## Fixed
+- Jumping drop / Diving drill bug when in a tag-team.
 - Chain attack display overlap issue.
 - Opening some containers when there's too many item on the map corrupts inventory.
 - Tileset errors caused by ocean-tiles in old showroom maps (e.g. the Larnoel ones)
