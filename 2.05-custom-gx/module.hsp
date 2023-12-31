@@ -5210,14 +5210,16 @@
 
 #defcfunc role int role_arg1, int role_arg2, int role_arg3
 	locvar_role_d = 0
-	if ( role_arg1 < 1 ) {
-		role_arg1 = 1
+	locvar_role_arg1 = role_arg1
+	locvar_role_arg2 = role_arg2
+	if ( locvar_role_arg1 < 1 ) {
+		locvar_role_arg1 = 1
 	}
-	if ( role_arg2 < 1 ) {
-		role_arg2 = 1
+	if ( locvar_role_arg2 < 1 ) {
+		locvar_role_arg2 = 1
 	}
-	repeat role_arg1
-		locvar_role_d += rnd(role_arg2) + 1
+	repeat locvar_role_arg1
+		locvar_role_d += rnd(locvar_role_arg2) + 1
 	loop
 	return locvar_role_d + role_arg3
 
