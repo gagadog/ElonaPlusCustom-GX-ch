@@ -626,6 +626,11 @@
 	if ( gdata(GDATA_TIME_LIMIT) > 0 & gdata(GDATA_AREA) == AREA_QUEST ) {
 		if ( gdata(GDATA_QUEST) != QUEST_TYPE_MINEFIELD ) {
 			gdata(GDATA_TIME_LIMIT) -= 5
+			if ( gdata(GDATA_TIME_LIMIT) <= 0 ) {
+				gdata(GDATA_TIME_LIMIT) = 0
+				qexit = 100
+				evadd EVENT_QUEST_TIMEOUT
+			}
 		}
 	}
 	if ( gameresult@tcg > 0) {
