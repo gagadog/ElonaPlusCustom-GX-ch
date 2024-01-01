@@ -6998,6 +6998,29 @@
 				}
 			}
 			else {
+				if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_220_RANGED_FORMULA, TWEAK_CATEGORY_GAMEPLAY) ) {
+					if ( cdata(CDATA_ROCK_THROWING, cc) != 0 & (inv(INV_ITEM_ID, cw) == ITEM_ID_STONE | inv(INV_ITEM_ID, cw) == ITEM_ID_VANILLA_ROCK) ) {
+						dmgmulti = dmgmulti * (rangemap(rangedist) / 2 + 150) / 100
+						if ( encharge == 100 ) {
+							dmgmulti = dmgmulti2 * 3 / 2
+						}
+					}
+					else {
+						if ( gdata(GDATA_TEMPORARY_FLAGS3) != 0 ) {
+							dmgmulti = dmgmulti * (rangemap(rangedist) / 2 + 150) / 100
+						}
+						else {
+							dmgmulti = dmgmulti * (rangemap(rangedist) / 2 + 100) / 100
+						}
+						if ( encharge == 100 ) {
+							dmgmulti = dmgmulti2 * 3 / 2
+						}
+					}
+					if ( gdata(GDATA_TEMPORARY_FLAGS3) != 0 ) {
+						dmgmulti += 0.03 * sdata(attackskill, cc)
+					}
+				} else {
+				/****** ORIGINAL ****/
 				if ( cdata(CDATA_ROCK_THROWING, cc) != 0 & (inv(INV_ITEM_ID, cw) == ITEM_ID_STONE | inv(INV_ITEM_ID, cw) == ITEM_ID_VANILLA_ROCK) ) {
 					dmgmulti = dmgmulti * (rangemap(rangedist) * 4 + 110) / 100
 					if ( encharge == 100 ) {
@@ -7017,6 +7040,8 @@
 				}
 				if ( gdata(GDATA_TEMPORARY_FLAGS3) != 0 ) {
 					dmgmulti += 0.03 * sdata(attackskill, cc)
+				}
+				/****** ORIGINAL ****/
 				}
 			}
 			if ( gdata(GDATA_TEMPORARY_FLAGS) == 100 ) {

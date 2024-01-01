@@ -18296,6 +18296,10 @@
 			txt lang("モンスターボールは空っぽだ。", "This ball is empty.")
 			goto *act_use_SWEND1
 		}
+		// Custom - prevent getting lvl 70 bamboo spirit early game.
+		if ( inv(INV_ITEM_SUB_NAME, ci) == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
+			initlv = 1
+		}
 		if ( get_freeally() == 0 ) {
 			txt lang("仲間はこれ以上増やせない。", "Your party is full.")
 			goto *act_use_SWEND1

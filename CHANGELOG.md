@@ -1,3 +1,14 @@
+# 2.21.1.1
+
+## Added
+- Added a Tweak to revert 2.21 ranged damage multiplier formula change. (causing ranged damage to increase by 3x-6x)
+
+## Fixed
+- Bamboo spirit spawning outside of the Minefield Quest. (Level 70 monster in puppy cave)
+- Monster Ball (Bamboo spirit) giving player level 70 monster at very low level.
+- Error 23 crash when weapon dice is 0.
+- Playing TCG during party time causing you to enter 'overtime'
+
 # 2.21.1.0
 
 ## Added

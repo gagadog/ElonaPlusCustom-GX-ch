@@ -66,6 +66,7 @@ TweakData(80, 2) = "Revert post-2.17 boss out-of-sight healing."
 TweakData(81, 2) = "Increase Dojo EXP gained."
 TweakData(82, 2) = "Child, you must go!"
 TweakData(82, 2) = "Enable moongate/rune loot."
+TweakData(83, 2) = "Revert post-2.20 ranged damage formula."
 
 TweakData(x, 3) = "AI Tweaks"
 TweakData(0, 3) = "Change Zeome's AI."
@@ -577,7 +578,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 42
+    listmax = 43
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -629,7 +630,8 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 38) = "Increase Dojo EXP gain: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASED_DOJO_EXP) + "% increase."
 	listn(0, 39) = "Child, you must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GO_CHILD)
 	listn(0, 40) = "Enable loot in Moongate/Rune maps." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_MOONGATE_LOOT)
-	listn(0, 41) = "Go back."
+	listn(0, 41) = "Revert post-2.20 ranged damage multiplier." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_220_RANGED_FORMULA)
+	listn(0, 42) = "Go back."
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -777,6 +779,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 				s = "Custom maps entered via Moongate/Runes now contains loot.\nEnemies drop gold and ores depend on their level.\nContainers can be opened.\nThis won't enable if you enter the Custom Map using Show House."
 			}
 			if ( p == 41 ) {
+				s = "Revert the ranged damage multiplier formula to the one in 2.20.\n2.20: dmgmulti = dmgmulti * (rangemap / 2 + 150) / 100\n2.21: dmgmulti = dmgmulti * (rangemap * 4 + 110) / 100\nThis does not revert the rangemap change (e.g. shotgun@range1: 100->200)."
+			}
+			if ( p == 42 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1010,6 +1015,11 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		gosub *ToggleTweak
 	}
 	if ( p == 41 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REVERT_POST_220_RANGED_FORMULA
+		gosub *ToggleTweak
+	}
+	if ( p == 42 ) {
 		snd SOUNDLIST_OK1
 		return
 	}

@@ -220,7 +220,8 @@
 			txt lang("現在ポイント", "Removal Point ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
 		}
 		if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_QUEST_PITFALL_2 ) {
-			if ( rnd(3) == 0 ) {
+			// Custom - prevent bamboo spear spirit from spawning outside of the quest.
+			if ( rnd(3) == 0 & gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
 				txtef COLOR_RED
 				txt lang("落とし穴から何かが飛び出してきた！", "Something jumped out of the pit!")
 				flt
@@ -539,7 +540,8 @@
 						txt lang("現在ポイント", "Removed Point ") + "(" + qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) + ") " + lang("撤去ノルマ", "Quota ") + "(" + qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)) + ")"
 					}
 					cell_featset movx, movy, 0
-					if ( rnd(3) == 0 ) {
+					// Custom - prevent bamboo spear spirit from spawning outside of the quest.
+					if ( rnd(3) == 0 & gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
 						txtef COLOR_RED
 						txt lang("落とし穴から何かが飛び出してきた！", "Something jumped out of the pit!")
 						flt
@@ -574,7 +576,8 @@
 						}
 					}
 					cell_featset movx, movy, 0
-					if ( rnd(3) == 0 ) {
+					// Custom - prevent bamboo spear spirit from spawning outside of the quest.
+					if ( rnd(3) == 0 & gdata(GDATA_QUEST) == QUEST_TYPE_MINEFIELD ) {
 						txtef COLOR_RED
 						txt lang("落とし穴から何かが飛び出してきた！", "Something jumped out of the pit!")
 						flt
