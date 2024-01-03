@@ -20,7 +20,7 @@
 
 #define global VARIANT_NAME "ElonaPlus Custom-GX 2.21.1.1"
 #define global VARIANT_TITLE "Elona+ Custom-GX 2.21.1.1"
-#define global VERSION_STRING "6.24"
+#define global VERSION_STRING "6.30"
 #define global VERSION_NUMBER int(double(VERSION_STRING) * 1000)
 #define global NET_VERSION	200000
 
