@@ -977,7 +977,7 @@ if instr(s,0,%1)!-1{	%c\
 		}
 	loop
 	color tcol@txtfunc(0), tcol@txtfunc(1), tcol@txtfunc(2)
-	pos msglen * inf_mesfont / 2 + inf_msgx + 6, (inf_msgline - 1) * inf_msgspace + inf_msgy + 6
+	pos msglen * (inf_mesfont / 2 + inf_mespad) + inf_msgx + 6, (inf_msgline - 1) * inf_msgspace + inf_msgy + 6
 	font lang(cfg_font1, cfg_font2), inf_mesfont - en * 2, 0
 	mes msg_write_arg1
 	return

@@ -48408,7 +48408,7 @@
 		if ( dbmode == DBMODE_FLAVOR_WELCOME ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			txt lang("「おかえりなさい、主」", cnvtalk("Welcome home, Master."))
+			txt lang("「おかえりなさい、主」", cnvtalk("Welcome home, boss."))
 			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_KILL ) {

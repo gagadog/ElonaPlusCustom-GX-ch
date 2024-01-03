@@ -1734,6 +1734,12 @@
 	}
 
 	ap3 = 0
+	if ( mdata(MDATA_WIDTH) >= 12 ) {
+		drawthingsonotherside = cdata(CDATA_X, CHARA_PLAYER) < ( 4 + drawthingsonotherside * (mdata(MDATA_WIDTH) - 4 * 2) )
+		othersidexshift = drawthingsonotherside * (windoww - 180)
+		othersideyshift = (inf_clocky + 105) * drawthingsonotherside
+		ap3 += drawthingsonotherside
+	}
 	repeat 15
 
 		/********** ORIGINAL - BEGINNING **********
@@ -1776,11 +1782,11 @@
 			}
 			continue
 		}
-		pos 16, inf_clocky + 105 + ap3 * 16
+		pos 16 + othersidexshift, inf_clocky + 105 - othersideyshift + ap3 * 16
 		color 0, 0, 0
 		bmes "" + strmid(skillname(ap), 0, 6), 255, 255, 255
 		skilltmps = "" + sdata(STARTING_SKILL_SPACT + ap, ap2) / 1000
-		pos 66, inf_clocky + 105 + ap3 * 16
+		pos 66 + othersidexshift, inf_clocky + 105 - othersideyshift + ap3 * 16
 		color 0, 0, 0
 		TrackerString = "" + sorg(ap, ap2) + "." + strmid(skilltmps, -1, 3)
 		if ( TweakData(TWEAK_UI_POTENTIALS_IN_SKILL_TRACKER, TWEAK_CATEGORY_UI) == 1 ) { // Add Potentials To Skill Tracker

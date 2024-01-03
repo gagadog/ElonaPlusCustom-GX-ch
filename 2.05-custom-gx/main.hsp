@@ -3110,6 +3110,7 @@
             txtef COLOR_YELLOW
 			txt_saving
 		}
+		await 300
 	}
 	getkey a, 119
 	if ( a ) {
