@@ -1734,12 +1734,6 @@
 	}
 
 	ap3 = 0
-	if ( mdata(MDATA_WIDTH) >= 12 ) {
-		drawthingsonotherside = cdata(CDATA_X, CHARA_PLAYER) < ( 4 + drawthingsonotherside * (mdata(MDATA_WIDTH) - 4 * 2) )
-		othersidexshift = drawthingsonotherside * (windoww - 180)
-		othersideyshift = (inf_clocky + 105) * drawthingsonotherside
-		ap3 += drawthingsonotherside
-	}
 	repeat 15
 
 		/********** ORIGINAL - BEGINNING **********
@@ -1782,11 +1776,11 @@
 			}
 			continue
 		}
-		pos 16 + othersidexshift, inf_clocky + 105 - othersideyshift + ap3 * 16
+		pos 16, inf_clocky + 105 + ap3 * 16
 		color 0, 0, 0
 		bmes "" + strmid(skillname(ap), 0, 6), 255, 255, 255
 		skilltmps = "" + sdata(STARTING_SKILL_SPACT + ap, ap2) / 1000
-		pos 66 + othersidexshift, inf_clocky + 105 - othersideyshift + ap3 * 16
+		pos 66, inf_clocky + 105 + ap3 * 16
 		color 0, 0, 0
 		TrackerString = "" + sorg(ap, ap2) + "." + strmid(skilltmps, -1, 3)
 		if ( TweakData(TWEAK_UI_POTENTIALS_IN_SKILL_TRACKER, TWEAK_CATEGORY_UI) == 1 ) { // Add Potentials To Skill Tracker
@@ -1802,11 +1796,84 @@
 
 	loop
 
-	/********** CUSTOM DAMAGE METER - BEGINNING **********/
+	/********** CUSTOM - BEGINNING **********/
+	othersidexshift@DP = (windoww - 180)
+	if ( mdata(MDATA_WIDTH) >= 12 ) {
+		drawthingsonotherside@DP = cdata(CDATA_X, CHARA_PLAYER) < ( 4 + drawthingsonotherside@DP * (mdata(MDATA_WIDTH) - 4 * 2) )
+	}
+	// Health bar.
+	apright@DP = 16
+	if ( cfg_showPetHealth ) {
+		repeat MAX_CHARA_TOTAL
+			if ( cnt == 0 ) { continue }
+			if ( cnt > 15 & cfg_showPetHealth < 2 ) { break }
+			if ( cnt > 15 & cdata(CDATA_RELATION, cnt) != RELATION_ALLY ) { continue }
+			if ((cdata(CDATA_EXIST, cnt) == CHAR_STATE_ALIVE | cdata(CDATA_EXIST, cnt) == CHAR_STATE_ALLY_DEAD) & (cbit(CHARA_BIT_STETHOSCOPE, cnt) | (cnt > 15 & cdata(CDATA_RELATION, cnt) == RELATION_ALLY))) {
+				s@DP = cdatan(CDATAN_NAME, cnt)
+				s@DP = strmid(s@DP, 0, 20)
+				pos 16 + othersidexshift@DP, apright@dp
+				color 0, 0, 0
+				bmes s@DP, 255, 35 + 220 * (cdata(CDATA_EXIST, cnt) == CHAR_STATE_ALIVE), 35 + 220 * (cdata(CDATA_EXIST, cnt) == CHAR_STATE_ALIVE)
+				if (cdata(CDATA_EXIST, cnt) == CHAR_STATE_ALIVE) {
+					hpval@DP = "" + cdata(CDATA_HP, cnt)
+					hpperc@DP = limit(int(1.0 * cdata(CDATA_HP, cnt) * 100 / cdata(CDATA_MAX_HP, cnt)), 0, 100)
+					hpgauge@DP = limit(int(1.0 * cdata(CDATA_HP, cnt) * 140 / cdata(CDATA_MAX_HP, cnt)), 0, 140)
+					mpgauge@DP = 0
+					guardgauge@DP = limit(int(1.0 * (100 - cdata(CDATA_GUARD_BREAK, cnt)) * 140 / 100), 0, 140)
+					if ( cbit(CHARA_BIT_AWAKE_MP_BARRIER, cnt) & cdata(CDATA_MP, cnt) >= cdata(CDATA_MAX_MP, cnt) / 3 ) {
+						hpval@DP += "(" + (cdata(CDATA_MP, cnt) - cdata(CDATA_MAX_MP, cnt) / 3) + ")"
+						hpperc@DP = limit(int(1.0 * (cdata(CDATA_HP, cnt) + cdata(CDATA_MP, cnt) - cdata(CDATA_MAX_MP, cnt) / 3) * 100 / cdata(CDATA_MAX_HP, cnt)), 0, 100000)
+						mpgauge@DP = limit(int(1.0 * (cdata(CDATA_MP, cnt) - cdata(CDATA_MAX_MP, cnt) / 3) * 140 / (cdata(CDATA_MAX_MP, cnt) * 2 / 3)), 0, 140)
+					}
+					hpval@DP = "[" + hpperc@DP + "%]" + hpval@DP
+
+					color 0, 0, 0
+					if ( guardgauge@DP <= 0 ) {
+						color 255, 125, 10
+					}
+					boxf 15 + othersidexshift@DP, apright@DP + 15 - 1, 17 + othersidexshift@DP + 140, apright@DP + 15 + 9 + jp * 2
+					if ( hpgauge@DP > 0 ) {
+						color 196, 31, 59
+						boxf 16 + othersidexshift@DP, apright@DP + 15, 16 + othersidexshift@DP + hpgauge@DP, apright@DP + 15 + 8 + jp * 2
+					}
+					if ( mpgauge@DP > 0 ) {
+						color 0, 112, 222
+						boxf 16 + othersidexshift@DP, apright@DP + 15, 16 + othersidexshift@DP + mpgauge@DP, apright@DP + 15 + 8 + jp * 2
+					}
+					if ( guardgauge@DP < 100 ) {
+						color 255, 125, 10
+						boxf 16 + othersidexshift@DP, apright@DP + 15 + 6 + jp * 2, 16 + othersidexshift@DP + guardgauge@DP, apright@DP + 15 + 8 + jp * 2
+					}
+					
+					pos 16 + othersidexshift@DP, apright@dp + 14 + jp * 2
+					if (hpperc@DP > 50) {
+						color 0, 0, 0
+						bmes hpval@DP, 255, 255, 255
+					} else {
+						if (hpperc@DP > 12) {
+							color 192, 192, 0
+							bmes hpval@DP, 255, 255, 192
+						} else {
+							color 192, 0, 0
+							bmes hpval@DP, 255, 192, 192
+						}
+					}
+					color 0, 0, 0
+					apright@DP += 24 + jp * 4
+				} else {
+					apright@DP += 14 + jp * 2
+				}
+			}
+		loop
+	}
+	
+	// Damage meter.
+    ap@DP = 0
 	if ( cfg_showDamageMeter > 0 ) {
 		gosub *DamageParsesDraw
 	}
-	/********** CUSTOM DAMAGE METER - ENDING **********/
+	gmode 0
+	/********** CUSTOM - ENDING **********/
 	
 	if ( evochat != 0 ) {
 		gsel selbufh

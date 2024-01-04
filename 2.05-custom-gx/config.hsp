@@ -294,6 +294,7 @@
 		cfgRead "dmgPopupSpeed.", cfg_dmgspeed = int(rtvaln)
 
 		cfgRead "showNpcName.", cfg_showNpcName = int(rtvaln)
+		cfgRead "showPetHealth.", cfg_showPetHealth = int(rtvaln)
 		cfgRead "showDamageMeter.", cfg_showDamageMeter = int(rtvaln)
 		cfgRead "showDamageMeterTurns.", cfg_showDamageMeterTurns = int(rtvaln)
 		if ( cfg_showDamageMeterTurns < 5 | cfg_showDamageMeterTurns > 60 ) { cfg_showDamageMeterTurns = 10 }
@@ -616,7 +617,7 @@
 	}
 	if ( submenu == 9 ) {
 		q = lang("拡張設定2(表示)", "EX Setting 2 (Display)")
-		s = lang("ダメージ表示", "Damage Popups"), lang("　HEX+バフ", "  Hexes/Buffs"), lang("　状態異常", "  Ailments"), lang("　回避", "  Evade"), lang("　会話", "  Chat"), lang("　フォントサイズ", "  Font Size"), lang("　表示速度", "  Display Duration"), lang("　表示NPC名前", "  Show NPC Name"), lang("　表示ダメージ測定", "  Show Damage Meter"), lang("　測定ターン", "  Meter Duration Turns"), ""
+		s = lang("ダメージ表示", "Damage Popups"), lang("　HEX+バフ", "  Hexes/Buffs"), lang("　状態異常", "  Ailments"), lang("　回避", "  Evade"), lang("　会話", "  Chat"), lang("　フォントサイズ", "  Font Size"), lang("　表示速度", "  Display Duration"), lang("　表示NPC名前", "  Show NPC Name"), lang("　ペットのHPゲージ表示", "  Show Pet HP gauge"), lang("　表示ダメージ測定", "  Show Damage Meter"), lang("　測定ターン", "  Meter Duration Turns"), ""
 		dx = 440
 		dy = 410
 	}
@@ -960,13 +961,17 @@
 				mes s(cfg_showNpcName)
 			}
 			if ( cnt == 8 ) {
+				s = lang("なし", "Don't show"), lang("あり", "Show pet"), lang("あり", "Show allies")
+				mes s(cfg_showPetHealth)
+			}
+			if ( cnt == 9 ) {
 				if ( cfg_showDamageMeter <= 0 ) {
 					mes lang("なし", "Don't show")
 				} else {
 					mes "" + cfg_showDamageMeter + lang("行", " rows")
 				}
 			}
-			if ( cnt == 9 ) {
+			if ( cnt == 10 ) {
 				mes "" + cfg_showDamageMeterTurns + lang("ターン", " turns")
 			}
 		}
@@ -1814,9 +1819,12 @@
 				setOption cfg_showNpcName, "showNpcName", 0, 3
 			}
 			if ( cs == 8 ) {
-				setOption cfg_showDamageMeter, "showDamageMeter", 0, 16
+				setOption cfg_showPetHealth, "showPetHealth", 0, 2
 			}
 			if ( cs == 9 ) {
+				setOption cfg_showDamageMeter, "showDamageMeter", 0, 16
+			}
+			if ( cs == 10 ) {
 				setOption cfg_showDamageMeterTurns, "showDamageMeterTurns", 5, 60
 			}
 		}

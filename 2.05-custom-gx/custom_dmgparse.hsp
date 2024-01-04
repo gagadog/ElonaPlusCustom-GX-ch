@@ -114,7 +114,6 @@
     if ( DmgParsesMax <= 0 | cfg_showDamageMeter <= 0 ) { 
         return 
     }
-    ap@DP = 0
     repeat cfg_showDamageMeter
         if ( DmgParsesResult(DmgParsesOrder(cnt)) <= 0 ) {
             break
@@ -122,18 +121,18 @@
 
         s = "" + (cnt + 1) + "." + cdatan(CDATAN_NAME, DmgParsesOrder(cnt))
         s = strmid(s, 0, 20)
-		pos 16 + othersidexshift, inf_clocky + 105 - othersideyshift + ap3 * 16 + ap@DP * (24 + jp * 4) + 2
+		pos 16, inf_clocky + 105 + ap3 * 16 + ap@DP * (24 + jp * 4) + 2
 		color 0, 0, 
         bmes s, 255, 255, 255
 
-        DmgParseX = 140 * DmgParsesResult(DmgParsesOrder(cnt)) / DmgParsesMax + othersidexshift
-        DmgParseY = inf_clocky + 105 - othersideyshift + ap3 * 16 + ap@DP * (24 + jp * 4) + 16
+        DmgParseX = 140 * DmgParsesResult(DmgParsesOrder(cnt)) / DmgParsesMax
+        DmgParseY = inf_clocky + 105 + ap3 * 16 + ap@DP * (24 + jp * 4) + 16
         color 0, 0, 0
-        boxf 15 + othersidexshift, DmgParseY - 1, DmgParseX + 17, DmgParseY + 9 + jp * 2
+        boxf 15, DmgParseY - 1, DmgParseX + 17, DmgParseY + 9 + jp * 2
         DamageParseGetClassColor DmgParsesOrder(cnt)
-        boxf 16 + othersidexshift, DmgParseY, DmgParseX + 16, DmgParseY + 8 + jp * 2
+        boxf 16, DmgParseY, DmgParseX + 16, DmgParseY + 8 + jp * 2
 
-        pos 16 + 1 + jp + othersidexshift, inf_clocky + 105 - othersideyshift + ap3 * 16 + ap@DP * (24 + jp * 4) + 14 + jp * 2
+        pos 16 + 1 + jp, inf_clocky + 105 + ap3 * 16 + ap@DP * (24 + jp * 4) + 14 + jp * 2
 		color 0, 0, 0
 		bmes "" + DmgParsesResult(DmgParsesOrder(cnt)), 255, 255, 255
 		ap@DP++
