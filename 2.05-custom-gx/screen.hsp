@@ -183,6 +183,7 @@
 		gosub *los_draw
 	}
 	screendrawhack = 10
+	screendrawextras@DP = 1
 	gosub *screen_drawStatus
 	if ( autoturn == 1 ) {
 		gosub *screen_drawAutoTurn
@@ -202,6 +203,7 @@
 	gmode 2
 	redraw 0
 	gosub *los_draw
+	screendrawextras@DP = 1
 	gosub *screen_drawStatus
 	redraw 1
 	screenupdate = 0
@@ -1733,6 +1735,27 @@
 		}
 	}
 
+	/********** CUSTOM - BEGINNING **********/
+	// Skip extra UI when in town board / world map / auto turn. These causes performance / graphic issues
+	if ( screendrawextras@DP != 1 | mode == MODELIST_TXT_ADV | mdata(MDATA_TYPE) == MAP_TYPE_WORLD | cdata(CDATA_ROW_ACT, CHARA_PLAYER) != ACTION_NONE ) {
+		screendrawextras@DP = 0	
+		goto *skip_custom_UI
+	}
+	screendrawextras@DP = 0
+	// Hide extra UI when player is on edge of the screen.
+	xshift@DP = 0
+	othersidexshift@DP = (windoww - 180)
+	if ( cfg_autoHideUI ) {
+		screentilewidth@DP = mdata(MDATA_WIDTH)
+		if (mdata(MDATA_WIDTH) < inf_screenw) { 
+			screentilewidth@DP = inf_screenw 
+		}
+		xshift@DP -= limit(4 - cdata(CDATA_X, CHARA_PLAYER), 0, 4) * 48
+		othersidexshift@DP += limit(cdata(CDATA_X, CHARA_PLAYER) - screentilewidth@DP + 5, 0, 4) * 48
+		// drawthingsonotherside@DP = cdata(CDATA_X, CHARA_PLAYER) < ( 4 + drawthingsonotherside@DP * (mdata(MDATA_WIDTH) - 4 * 2) )
+	}
+	/********** CUSTOM - ENDING **********/
+
 	ap3 = 0
 	repeat 15
 
@@ -1776,11 +1799,11 @@
 			}
 			continue
 		}
-		pos 16, inf_clocky + 105 + ap3 * 16
+		pos 16 + xshift@DP, inf_clocky + 105 + ap3 * 16
 		color 0, 0, 0
 		bmes "" + strmid(skillname(ap), 0, 6), 255, 255, 255
 		skilltmps = "" + sdata(STARTING_SKILL_SPACT + ap, ap2) / 1000
-		pos 66, inf_clocky + 105 + ap3 * 16
+		pos 66 + xshift@DP, inf_clocky + 105 + ap3 * 16
 		color 0, 0, 0
 		TrackerString = "" + sorg(ap, ap2) + "." + strmid(skilltmps, -1, 3)
 		if ( TweakData(TWEAK_UI_POTENTIALS_IN_SKILL_TRACKER, TWEAK_CATEGORY_UI) == 1 ) { // Add Potentials To Skill Tracker
@@ -1797,14 +1820,11 @@
 	loop
 
 	/********** CUSTOM - BEGINNING **********/
-	othersidexshift@DP = (windoww - 180)
-	if ( mdata(MDATA_WIDTH) >= 12 ) {
-		drawthingsonotherside@DP = cdata(CDATA_X, CHARA_PLAYER) < ( 4 + drawthingsonotherside@DP * (mdata(MDATA_WIDTH) - 4 * 2) )
-	}
 	// Health bar.
 	apright@DP = 16
-	if ( cfg_showPetHealth ) {
+	if ( cfg_showPetHealth > 0 ) {
 		repeat MAX_CHARA_TOTAL
+			if ( apright@DP > (windowh - inf_verh - 60) ) { break }
 			if ( cnt == 0 ) { continue }
 			if ( cnt > 15 & cfg_showPetHealth < 2 ) { break }
 			if ( cnt > 15 & cdata(CDATA_RELATION, cnt) != RELATION_ALLY ) { continue }
@@ -1831,26 +1851,26 @@
 					if ( guardgauge@DP <= 0 ) {
 						color 255, 125, 10
 					}
-					boxf 15 + othersidexshift@DP, apright@DP + 15 - 1, 17 + othersidexshift@DP + 140, apright@DP + 15 + 9 + jp * 2
+					boxf 15 + othersidexshift@DP, apright@DP + 14 - 1, 17 + othersidexshift@DP + 140, apright@DP + 14 + 9 + jp * 2
 					if ( hpgauge@DP > 0 ) {
 						color 196, 31, 59
-						boxf 16 + othersidexshift@DP, apright@DP + 15, 16 + othersidexshift@DP + hpgauge@DP, apright@DP + 15 + 8 + jp * 2
+						boxf 16 + othersidexshift@DP, apright@DP + 14, 16 + othersidexshift@DP + hpgauge@DP, apright@DP + 14 + 8 + jp * 2
 					}
 					if ( mpgauge@DP > 0 ) {
 						color 0, 112, 222
-						boxf 16 + othersidexshift@DP, apright@DP + 15, 16 + othersidexshift@DP + mpgauge@DP, apright@DP + 15 + 8 + jp * 2
+						boxf 16 + othersidexshift@DP, apright@DP + 14 + 3, 16 + othersidexshift@DP + mpgauge@DP, apright@DP + 14 + 8 + jp * 2
 					}
 					if ( guardgauge@DP < 100 ) {
 						color 255, 125, 10
-						boxf 16 + othersidexshift@DP, apright@DP + 15 + 6 + jp * 2, 16 + othersidexshift@DP + guardgauge@DP, apright@DP + 15 + 8 + jp * 2
+						boxf 16 + othersidexshift@DP, apright@DP + 14 + 6 + jp * 2, 16 + othersidexshift@DP + guardgauge@DP, apright@DP + 14 + 8 + jp * 2
 					}
 					
-					pos 16 + othersidexshift@DP, apright@dp + 14 + jp * 2
-					if (hpperc@DP > 50) {
+					pos 16 + othersidexshift@DP, apright@dp + 12 + jp
+					if (hpperc@DP >= 60) {
 						color 0, 0, 0
 						bmes hpval@DP, 255, 255, 255
 					} else {
-						if (hpperc@DP > 12) {
+						if (hpperc@DP >= 25) {
 							color 192, 192, 0
 							bmes hpval@DP, 255, 255, 192
 						} else {
@@ -1872,21 +1892,11 @@
 	if ( cfg_showDamageMeter > 0 ) {
 		gosub *DamageParsesDraw
 	}
-	gmode 0
 	/********** CUSTOM - ENDING **********/
-	
-	if ( evochat != 0 ) {
-		gsel selbufh
-		pos 0, 0
-		picload exedir + "graphic\\bg33.bmp", 1
-		pos 0, 0
-		gzoom windoww, windowh - 88, selbufh, 0, 0, 640, 480
-		gsel 0
-	}
 
 	/********** RUIN0X11 CUSTOM - BEGINNING **********/
 
-	if ( cfg_dmgpopups == 1 ) {
+	if ( cfg_dmgpopups > 0 ) {
 		gosub *DamagePopupsDraw
 	}
 
@@ -1897,6 +1907,16 @@
     }
 
 	/********** RUIN0X11 CUSTOM - ENDING **********/
+
+	*skip_custom_UI
+	if ( evochat != 0 ) {
+		gsel selbufh
+		pos 0, 0
+		picload exedir + "graphic\\bg33.bmp", 1
+		pos 0, 0
+		gzoom windoww, windowh - 88, selbufh, 0, 0, 640, 480
+		gsel 0
+	}
 
 	return
 
@@ -1928,6 +1948,7 @@
 		gosub *los_draw
 		msgtemp = ""
 	}
+	screendrawextras@DP = 1
 	gosub *screen_drawStatus
 	if ( cdata(CDATA_ROW_ACT, CHARA_PLAYER) == ACTION_FISH ) {
 		if ( rowactre == 0 ) {
@@ -5559,6 +5580,7 @@
 		pos 0, windowh - inf_verh
 		gcopy 4, 0, 0, windoww, inf_tiles
 		gmode 2
+		screendrawextras@DP = 1
 		gosub *screen_drawStatus
 		gmode 2
 		redraw 1

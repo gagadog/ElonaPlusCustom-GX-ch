@@ -5886,7 +5886,7 @@
 					txt "The damage is absorbed by the mana barrier (" + locvar_dmghp_manabar + ")."
 					DamagePopupAdd "" + locvar_dmghp_dmg + " (" + locvar_dmghp_manabar + " Absorbed)", dmghp_charid, DMGPOPUP_ELEM_DAMAGE, locvar_dmghp_ele
 					if ( cfg_showDamageMeter > 0 ) {
-						DamageParsesAdd dmghp_source, cnt, locvar_dmghp_manabar, locvar_dmghp_ele
+						DamageParsesAdd dmghp_source, dmghp_charid, locvar_dmghp_manabar, locvar_dmghp_ele
 					}
 					/********** CUSTOM DAMAGE METER - ENDING **********/
 				}
@@ -5924,7 +5924,7 @@
     }
 	/********** CUSTOM DAMAGE METER - BEGINNING **********/
 	if ( cfg_showDamageMeter > 0 & locvar_dmghp_dmg > 0 ) {
-		DamageParsesAdd dmghp_source, cnt, locvar_dmghp_dmg, locvar_dmghp_ele
+		DamageParsesAdd dmghp_source, dmghp_charid, locvar_dmghp_dmg, locvar_dmghp_ele
 	}
 	/********** CUSTOM DAMAGE METER - ENDING **********/
 

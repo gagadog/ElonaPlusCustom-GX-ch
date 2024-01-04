@@ -65,16 +65,20 @@
     return
 
 #deffunc DamageParsesAdd int dmg_parses_add_cc, int dmg_parses_add_tc, int dmg_parses_add_amount, int dmg_parses_add_type
-    if ( dmg_parses_add_cc < 0 | dmg_parses_add_amount < 0 ) { return }
+    if ( dmg_parses_add_cc < 0 | dmg_parses_add_cc >= MAX_CHARA_TOTAL | dmg_parses_add_amount < 0 ) { 
+        return 
+    }
     p@DP = dmg_parses_add_amount
-    if ( dmg_parses_add_type == SKILL_SPACT_DECAPITATION ) { p@DP /= 10 }
+    if ( cbit(CHARA_BIT_SANDBAG, dmg_parses_add_tc) != 0 ) { 
+        p@DP = limitmax(p@DP, cdata(CDATA_HP, dmg_parses_add_cc))
+    }
     DmgParses(0, DmgParsesNext) = gdata(GDATA_TURN), dmg_parses_add_cc, dmg_parses_add_tc, p@DP, dmg_parses_add_type
     DmgParsesNext = (DmgParsesNext + 1) \ length2(DmgParses)
     return
 
 #deffunc DamageParsesRefresh
     DmgParsesMax = 0
-    repeat MAX_CHARA_FOLLOWER
+    repeat MAX_CHARA_TOTAL
         DmgParsesResult(cnt) = 0
         DmgParsesOrder(cnt) = cnt
     loop
@@ -84,23 +88,20 @@
         if ( DmgParses(0, cnt2) < gdata(GDATA_TURN) - cfg_showDamageMeterTurns ) {
             break
         }
-        if ( DmgParses(1, cnt2) >= MAX_CHARA_FOLLOWER | DmgParses(1, cnt2) < 0 ) {
+        if ( ( DmgParses(1, cnt2) >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION, DmgParses(1, cnt2)) != 10 ) | DmgParses(1, cnt2) < 0 ) {
             continue
         }
         DmgParsesResult(DmgParses(1, cnt2)) += DmgParses(3, cnt2)
-        if ( DmgParsesMax < DmgParsesResult(DmgParses(1, cnt2)) ) {
-            DmgParsesMax = DmgParsesResult(DmgParses(1, cnt2))
-        }
     loop
 
-    repeat MAX_CHARA_FOLLOWER
+    repeat MAX_CHARA_TOTAL
         if ( DmgParsesMax < DmgParsesResult(cnt) ) {
             DmgParsesMax = DmgParsesResult(cnt)
         }
     loop
 
-    repeat MAX_CHARA_FOLLOWER - 1
-        repeat MAX_CHARA_FOLLOWER - 1 - cnt
+    repeat MAX_CHARA_TOTAL - 1
+        repeat MAX_CHARA_TOTAL - 1 - cnt
             if ( DmgParsesResult(DmgParsesOrder(cnt)) < DmgParsesResult(DmgParsesOrder(cnt + 1)) ) {
                 p@DP = DmgParsesOrder(cnt)
                 DmgParsesOrder(cnt) = DmgParsesOrder(cnt + 1)
@@ -114,25 +115,29 @@
     if ( DmgParsesMax <= 0 | cfg_showDamageMeter <= 0 ) { 
         return 
     }
+    xshiftmove@DP = limit(xshift@DP+130,-200,0)
     repeat cfg_showDamageMeter
         if ( DmgParsesResult(DmgParsesOrder(cnt)) <= 0 ) {
             break
         }
 
+        // Draw Pet Name, xshift@DP is the UI shift when player is on the left side of the map.
         s = "" + (cnt + 1) + "." + cdatan(CDATAN_NAME, DmgParsesOrder(cnt))
-        s = strmid(s, 0, 20)
-		pos 16, inf_clocky + 105 + ap3 * 16 + ap@DP * (24 + jp * 4) + 2
+        s = strmid(s, 0, 20 + limit(xshift@DP*2/inf_mesfont,-15,0))
+		pos 16 + xshiftmove@DP, inf_clocky + 105 + ap3 * 16 + ap@DP * (24 + jp * 4) + 2
 		color 0, 0, 
         bmes s, 255, 255, 255
 
-        DmgParseX = 140 * DmgParsesResult(DmgParsesOrder(cnt)) / DmgParsesMax
+        // Draw the bar
+        DmgParseX = (140 + limit(xshift@DP,-96,0)) * DmgParsesResult(DmgParsesOrder(cnt)) / DmgParsesMax
         DmgParseY = inf_clocky + 105 + ap3 * 16 + ap@DP * (24 + jp * 4) + 16
         color 0, 0, 0
-        boxf 15, DmgParseY - 1, DmgParseX + 17, DmgParseY + 9 + jp * 2
+        boxf 15 + xshiftmove@DP, DmgParseY - 1, DmgParseX + 17 + xshiftmove@DP, DmgParseY + 9 + jp * 2
         DamageParseGetClassColor DmgParsesOrder(cnt)
-        boxf 16, DmgParseY, DmgParseX + 16, DmgParseY + 8 + jp * 2
+        boxf 16 + xshiftmove@DP, DmgParseY, DmgParseX + 16 + xshiftmove@DP, DmgParseY + 8 + jp * 2
 
-        pos 16 + 1 + jp, inf_clocky + 105 + ap3 * 16 + ap@DP * (24 + jp * 4) + 14 + jp * 2
+        // Draw the damage counter
+        pos 16 + xshiftmove@DP + 1 + jp, inf_clocky + 105 + ap3 * 16 + ap@DP * (24 + jp * 4) + 14 + jp * 2
 		color 0, 0, 0
 		bmes "" + DmgParsesResult(DmgParsesOrder(cnt)), 255, 255, 255
 		ap@DP++

@@ -889,8 +889,8 @@
 						file = "bg_re6"
 						buff = lang("あなたはまだ、あなたの家のエレアたちに別れを告げていない。本当にヴェルニースに入るのですか？", "You haven't said goodbye to the Eleas in your home yet. Are you sure to enter Vernis?")
 						listmax = 0
-						chatList 1, lang("当然だ", "Of course I'd sneak out.")
-						chatList 2, lang("彼らにはそう言うよ。", "I will them I'm leaving.")
+						chatList 1, lang("当然だ", "I will enter Vernis.")
+						chatList 2, lang("彼らにはそう言うよ。", "Maybe later.")
 						gosub *re_select
 						if ( rtval == 1 ) {
 							TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) = (-1)

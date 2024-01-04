@@ -1988,7 +1988,7 @@
 									file = "bg_re20"
 									buff = lang("エレアは君の命を救ってくれたんだ。本当に黙って出て行くの？(初心者の方にはお勧めしません)", "The Eleas just saved your life, you should tell them you are leaving. Are you sure to sneak out without telling them? (Not recommended for new players)")
 									listmax = 0
-									chatList 1, lang("当然だ", "Of course.")
+									chatList 1, lang("当然だ", "Of course I'd sneak out.")
 									chatList 2, lang("彼らにはそう言うよ。", "I will tell them I'm leaving.")
 									gosub *re_select
 									if ( rtval == 1 ) {
@@ -3269,6 +3269,7 @@
 			snd SOUNDLIST_BOOK1
 			txt lang("あなたは" + itemname(ci) + "を開けた。", "You open " + itemname(ci) + ".")
 			msg_halt
+			ri = ci
 			museum = inv(INV_ITEM_PARAM1, ci)
 			inv(INV_ITEM_PARAM1, ci) = 0
 			flt

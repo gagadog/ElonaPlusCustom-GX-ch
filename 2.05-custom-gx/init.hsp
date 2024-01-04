@@ -406,9 +406,12 @@ if instr(s,0,%1)!-1{	%c\
 		}
 	loop
 	if ( locvar_getunid_f == 0 ) {
-		cdata(CDATA_PIC, getunid_charid) = COLOR_DEFAULT * COLOR_TINT_MULT + 1
 		cdata(CDATA_USERNPC_ID, getunid_charid) = usernpcmax
-		cdatan(CDATAN_NAME, getunid_charid) = lang("残りカス", "a garbage")
+		cdata(CDATA_PIC, getunid_charid) = xy2pic(1, 33) + ( cdata(CDATA_SEX, getunid_charid) == 1 ) + COLOR_DEFAULT * COLOR_TINT_MULT
+		// Like, why. Just change the image to vestige and not change the name.
+		// I don't even know what got removed.
+		; cdata(CDATA_PIC, getunid_charid) = COLOR_DEFAULT * COLOR_TINT_MULT + 1
+		; cdatan(CDATAN_NAME, getunid_charid) = lang("残りカス", "a garbage")
 	}
 	return locvar_getunid_f
 

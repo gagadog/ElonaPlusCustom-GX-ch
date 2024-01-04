@@ -4811,8 +4811,8 @@
 			if ( gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) > 0 & gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) \ 25 == 0 ) {
 				snd SOUNDLIST_DING2
 				chatc@DP = (-1)
-				txtef COLOR_SKY_BLUE
-				txt lang("いいアイデアだ！", "*You got some ideas.*") + "(" + gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) + "/100)"
+				txtef COLOR_YELLOW
+				txt lang("いいアイデアだ！", "While travelling, you accumulated some ideas for writing a book. ") + "(" + gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) + "/100)"
 			}
 			/********** CUSTOM - MANUSCRIPT HINT - ENDING **********/
 		}
@@ -6586,7 +6586,9 @@
 		else {
 			if ( synccheck(cc, -1) ) {
 				if ( cc == CHARA_PLAYER ) {
-					txt lang(name(cc) + "は" + skillname(efid) + "の" + _cast(cdata(CDATA_CAST_STYLE, cc)), name(cc) + " cast " + skillname(efid) + ".")
+					stemp = _castplayer(cdata(CDATA_CAST_STYLE, cc))
+					sreplace stemp, stemp, "{}", skillname(efid)
+					txt lang(name(cc) + "は" + skillname(efid) + "の" + _cast(cdata(CDATA_CAST_STYLE, cc)), name(cc) + stemp)
 					txtmore
 				}
 				else {
@@ -8541,7 +8543,9 @@
 					if ( cdata(CDATA_CAST_STYLE, cc) != 0 ) {
 						if ( synccheck(cc, -1) ) {
 							if ( cc == CHARA_PLAYER ) {
-								txt lang(name(cc) + "は" + skillname(efid) + "の" + _cast(cdata(CDATA_CAST_STYLE, cc)), name(cc) + " cast " + skillname(efid) + ".")
+								stemp = _castplayer(cdata(CDATA_CAST_STYLE, cc))
+								sreplace stemp, stemp, "{}", skillname(efid)
+								txt lang(name(cc) + "は" + skillname(efid) + "の" + _cast(cdata(CDATA_CAST_STYLE, cc)), name(cc) + stemp)
 								txtmore
 							}
 							else {

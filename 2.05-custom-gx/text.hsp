@@ -133,7 +133,7 @@
 	actlistn = lang("行動", "current action"), lang("食事", "eating"), lang("読書", "reading"), lang("移動", "moving"), lang("休息", "resting"), lang("採掘", "mining"), lang("演奏", "playing"), lang("釣り", "fishing"), lang("採取", "collecting materials"), lang("穴掘り", "digging hole"), lang("行動", "current action"), lang("行動", "current action"), lang("合成", "blend"), lang("チャージ", "charge"), lang("伐採", "felling"), lang("説法", "preaching"), lang("食事", "eating"), lang("舞", "dance"), lang("食事", "eating"), lang("説得", "persuasion"), lang("ギャグ", "joke"), lang("嘘", "lie"), lang("脅迫", "intimidation"), lang("歌", "song"), lang("", ""), lang("執筆", "writing"), lang("仕事", "work"), lang("仕事", "work"), lang("仕事", "work"), lang("物乞い", "begging"), lang("飛跳殺法", "jumping drop"), lang("奇襲穿孔", "diving drill")
 	sdim _cast, 30, 10
 	_cast(0) = lang("魔法を詠唱した。", " casts a spell.")
-	_cast(1) = lang("糸を飛ばした。", " splits cobweb.")
+	_cast(1) = lang("糸を飛ばした。", " spits cobweb.")
 	_cast(2) = lang("体液を飛ばした。", " spreads body fluid.")
 	_cast(3) = lang("触手を伸ばした。", " puts out a tentacle.")
 	_cast(4) = lang("視線を飛ばした。", " gazes.")
@@ -142,6 +142,17 @@
 	_cast(7) = lang("魔法陣を展開した。", " expands a magical circle.")
 	_cast(8) = lang("粉を散布した。", " sprays the powder.")
 	_cast(9) = lang("思念を放った。", " shoots the vicious mind.")
+	sdim _castplayer, 30, 10
+	_castplayer(0) = lang("魔法を詠唱した。", " casts {}.")
+	_castplayer(1) = lang("糸を飛ばした。", " shoot webs of {}.")
+	_castplayer(2) = lang("体液を飛ばした。", " discharge the {} fluid.")
+	_castplayer(3) = lang("触手を伸ばした。", " put out a {} tentacle.")
+	_castplayer(4) = lang("視線を飛ばした。", " gaze with {}.")
+	_castplayer(5) = lang("胞子を飛ばした。", " scatter {} spores.")
+	_castplayer(6) = lang("振動を起こした。", "r {} vibrates.")
+	_castplayer(7) = lang("魔法陣を展開した。", " expand a magical circle of {}.")
+	_castplayer(8) = lang("粉を散布した。", " spray the {} powder.")
+	_castplayer(9) = lang("思念を放った。", " use the {} mind.")
 	sdim _melee, 20, 3, 13
 	_melee(0, 0) = lang("殴って", "punch"), lang("殴られた。", "punch"), lang("手", "hand")
 	_melee(0, 3) = lang("噛んで", "bite"), lang("噛みつかれた。", "bite"), lang("牙", "fang")

@@ -1105,15 +1105,15 @@ still the Second Prince of Zanan.
 
 {txt}
 The country of Zanan which had led the attack on Vindale split,
-and the community of Rosuria, ruled by Barius, was born.
+and the community of Lothria, ruled by Barius, was born.
 
-Rosuria would cultivate the Forest, promote
+Lothria would cultivate the Forest, promote
 peace, and without regard for borders allow
 people to visit the Forest and be cured of
 their disease.
 
 {txt}
-The promised land of Rosuria was expected
+The promised land of Lothria was expected
 to become the utopia of Ylva.
 
 {txt}
@@ -1134,14 +1134,14 @@ and the people have forgotten the nightmare,
 or at least behave as if they have.
 
 {txt}
-Rosuria has become corrupted.
+Lothria has become corrupted.
 
 With the salvation they offered, Rosura attracted
 great wealth as well as the interest of many countries
-like the Yerles, and Rosuria was left at their mercy.
+like the Yerles, and Lothria was left at their mercy.
 
 Even with the world headed towards destruction,
-Ylva could not be united under Rosuria. With
+Ylva could not be united under Lothria. With
 each country plotting and planning, new dark
 clouds of dispute have begun to cover Ylva.
 
@@ -1196,13 +1196,13 @@ from the fact that the world is headed towards inevitable destruction,
 the situation of the counties of the world has changed.
 
 {txt}
-Barius, the ruler of Rosuria, has been overthrown. His
-commitment to the stance of an independent and neutral Rosuria
+Barius, the ruler of Lothria, has been overthrown. His
+commitment to the stance of an independent and neutral Lothria
 was nothing but a thorn in the sides of the other nations.
 When his previously concealed connection with Saimore was brought
 to light by spies from other countries, he quickly lost his standing.
 
-Many of the Elea have abandoned Rosuria after its fall
+Many of the Elea have abandoned Lothria after its fall
 and have spread across the world as refugees.
 After having been persecuted for so long and losing their
 homes, radical sentiment among the Elea is on the rise.
@@ -2018,7 +2018,7 @@ Sir, there's one more piece of information I'd like to share with you.
 {actor_5}	"Elea Extremist,28"
 {actor_6}	"Elea Extremist,22"
 {actor_7}	"Elea Extremist,5"
-{actor_8}	"<Alfred> The Blue Wind of Rosuria,58"
+{actor_8}	"<Alfred> the Cangnan Wind of Lothria,58"
 
 {mc} "mcDungeon9"
 {pic}	"bg1"
@@ -2082,13 +2082,13 @@ Hmmm... seems we are out of time.
 That's more than enough, my foolish countrymen.
 
 {chat_2}
-W-where did that army come from?! And... Isn't that the crest of Rosuria?
+W-where did that army come from?! And... Isn't that the crest of Lothria?
 
 {chat_1}
 You're Barius' subordinate...
 
 {chat_8}
-It's been a while. Lord Barius was able to reclaim power in Rosuria just a few days ago. We received an order to protect his accomplice - Saimore.
+It's been a while. Lord Barius was able to reclaim power in Lothria just a few days ago. We received an order to protect his accomplice - Saimore.
 
 {chat_4}
 This isn't good... we've lost our troop advantage. Halion, I know this is frustrating, but as things stand...
@@ -2103,7 +2103,7 @@ If you're going to leave, do it.
 Uoooo!
 
 {chat_8}
-"I haven't given up on Rosuria. One day I'll unite all of Ylva."...That's what Lord Barius wanted me to tell you.
+"I haven't given up on Lothria. One day I'll unite all of Ylva."...That's what Lord Barius wanted me to tell you.
 
 {chat_1}
 ...Barius is still plotting, is he? Let him know that I don't care what he does, but if he tries to involve my younger brother, I will show him no mercy.
@@ -2577,7 +2577,7 @@ How... Even Bethel? ...Don't worry, Liana. We'll look for Bethel together.
 
 {124}
 {actor_1}	"<Orphe> The Apostle of Chaos,51"
-{actor_2}	"<Alfred> The Blue Wind of Rosuria,58"
+{actor_2}	"<Alfred> the Cangnan Wind of Lothria,58"
 {actor_3}	"<Minea> The Puppeteer,152"
 
 {mc}	"mcLonely2"
@@ -2757,7 +2757,7 @@ U-uwaaaaaaah!
 
 {128}
 {actor_1}	"<Orphe> The Apostle of Chaos,51"
-{actor_2}	"<Alfred> The Blue Wind of Rosuria,58"
+{actor_2}	"<Alfred> the Cangnan Wind of Lothria,58"
 {actor_3}	"<Minea> The Puppeteer,152"
 {actor_4}	"Archmage,83"
 {actor_5}	"Eulderna Citizen,17"
@@ -3085,7 +3085,7 @@ Yeah. If I return to Vindale, I'd love to help...
 {actor_1}	"????,159"
 {actor_2}	"<Barius> The Blue Haired,48"
 {actor_3}	"<Orphe> The Apostle of Chaos,51"
-{actor_4}	"<Alfred> The Blue Wind of Rosuria,58"
+{actor_4}	"<Alfred> the Cangnan Wind of Lothria,58"
 {actor_5}	"<Minea> The Puppeteer,152"
 {mc}	"mcUnrest2"
 {pic}	"bg6"
@@ -3147,7 +3147,7 @@ No no, I made it this far. I'll make it to the end...
 
 {135}
 {actor_1}	"<Orphe> The Apostle of Chaos,51"
-{actor_2}	"<Alfred> The Blue Wind of Rosuria,58"
+{actor_2}	"<Alfred> the Cangnan Wind of Lothria,58"
 {actor_3}	"<Minea> The Puppeteer,152"
 {actor_4}	"<Minea> The Puppeteer,159"
 
@@ -3219,7 +3219,7 @@ I found it strange that he couldn't recognize it, seeing as he was a senior wiza
 Oh. What was this made with?
 
 {chat_2}
-It's made using precious tea leaves from Rosuria. I've put in a little extra sugar for you, since it's the style in Rosuria to drink it all in one gulp.
+It's made using precious tea leaves from Lothria. I've put in a little extra sugar for you, since it's the style in Lothria to drink it all in one gulp.
 
 {chat_3}
 I'll try it... So sweet! The sugar didn't finish dissolving though, so it was a bit coarse. Let's see. Right, after being thrown out with no place to go, I became an adventurer. With my "disappointing" magic, I didn't have any problems making money. I roamed about all over the world. But no matter how famous I became, I wasn't satisfied.
@@ -3317,7 +3317,7 @@ Perhaps I'll take a look into exactly where each of these demons originated from
 
 {305}
 {actor_1}	"<Orphe> The Apostle of Chaos,51"
-{actor_2}	"<Alfred> The Blue Wind of Rosuria,58"
+{actor_2}	"<Alfred> the Cangnan Wind of Lothria,58"
 {actor_3}	"????,159"
 {actor_4}	"<Orphe> Prince of the Ruined Nation,51"
 
@@ -3920,13 +3920,13 @@ Stop! This floor is now under our occupation. Leave now or regret it.
 H-hey, be calm, I'm not going to do anything. By the looks of it, you guys are Elea... Nah, that one over there is from Zanan. A mixed force of Elea and Zanan, then... Wonder if that was part of the plan...
 
 {chat_5}
-I heard about Rosuria's special forces from an info broker, but you guys sure aren't what I was expecting.
+I heard about Lothria's special forces from an info broker, but you guys sure aren't what I was expecting.
 
 {chat_1}
 So our info has already leaked to information brokers. We need to hurry then.
 
 {chat_5}
-What's the rush? Just what you people from Rosuria hope to do in this ruin of Nefia is beyond an old man like me.
+What's the rush? Just what you people from Lothria hope to do in this ruin of Nefia is beyond an old man like me.
 
 {chat_3}
 Be quiet, outsider! Your only option is to leave!
@@ -4477,16 +4477,16 @@ Operation Chaos Spirit Eradicator? A joint effort by all member countries?
 That's right. Everyone, please take a look at the documents before you.
 
 {chat_3}
-"The spirits of Chaos, after they have consumed enough people and grown sufficiently, gather in one place to merge and multiply. It has been confirmed that more than 30,000 of them have already gathered in the Rosurian mountains." ...I thought that the number of attacks had been decreasing recently.
+"The spirits of Chaos, after they have consumed enough people and grown sufficiently, gather in one place to merge and multiply. It has been confirmed that more than 30,000 of them have already gathered in the Lothrian mountains." ...I thought that the number of attacks had been decreasing recently.
 
 {chat_1}
-Well... it's hard to wipe them all out when there are so many of them. And they're located right between the Rosurian capital and the port. We can't just drop gravity bombs on them. And even if we use conventional methods, it would be a catastrophe if the targets were to scatter all around the surrounding area.
+Well... it's hard to wipe them all out when there are so many of them. And they're located right between the Lothrian capital and the port. We can't just drop gravity bombs on them. And even if we use conventional methods, it would be a catastrophe if the targets were to scatter all around the surrounding area.
 
 {chat_2}
 Exactly. Look at Figure 2, the anticipated combat zone. Frankly, it's spread out too wide. Even with all our skilled adventurers and Yerleswood units, there's no way we can cover it all.
 
 {chat_3}
-So, a joint operation made up of forces from each country. Sounds like a reasonable plan. If the intel provided by Rosuria is true, that is. After all, there was the previous incident where everyone but the Yerles were deceived into attacking the 'Heretical Forest'.
+So, a joint operation made up of forces from each country. Sounds like a reasonable plan. If the intel provided by Lothria is true, that is. After all, there was the previous incident where everyone but the Yerles were deceived into attacking the 'Heretical Forest'.
 
 {chat_2}
 To be certain, Figure 3 was taken via satellite.
@@ -4495,7 +4495,7 @@ To be certain, Figure 3 was taken via satellite.
 What's with all these red dots... Wait. Those are their eyes glowing!
 
 {chat_1}
-General, a word. According to the plan, are we to set up a frontline base near the capital of Rosuria, and build a secondary base for transit in Melugas as well?
+General, a word. According to the plan, are we to set up a frontline base near the capital of Lothria, and build a secondary base for transit in Melugas as well?
 
 {chat_2}
 Yes. Dimensional distortion navigation saves a significant amount of time and effort in transporting forces from different countries. And since it is possible to complete the entire trip in a day, we can easily gather a wide range of talented personnel.
@@ -4628,7 +4628,7 @@ I'll have to talk to him. If we don't find the Origin soon, then we will have to
 {pic}	"bg32"
 {mc}	"mcTown10"
 {txt}
- - Rosurian Mountains -
+ - Lothrian Mountains -
 
 {chat_6}
 Hmmm... So this is dimension shifting. I never dreamed the Yerles had such a method of transportation.
@@ -4712,7 +4712,7 @@ You've got one freaky sense of imagination. Just what in the world is going on o
 {pic}	"bg32"
 {mc}	"mcLastBoss"
 {txt}
- - Rosurian Mountains -
+ - Lothrian Mountains -
 
 {chat_1}
 The mercenaries are in place. We're ready when you are.
@@ -4799,7 +4799,7 @@ This is a crossroads. Norne... what will the descendant of the Goddess of Destin
 {pic}	"bg32"
 {mc}	"mcMarch2"
 {txt}
- - Rosurian Mountains -
+ - Lothrian Mountains -
 
 {chat_8}
 So this is the damage report. After all was said and done, there were surprisingly few human casualties.
@@ -4988,7 +4988,7 @@ Though it was not spoken aloud, everyone could sense it was so...
 {actor_1}	"<Melget> the informer,125"
 {actor_2}	"<Barius> The Blue Haired,48"
 {actor_3}	"Barius' entourage,9"
-{actor_4}	"Rosurian Agent,6"
+{actor_4}	"Lothrian Agent,6"
 
 {mc}	"mcUnrest2"
 {pic}	"bg8"

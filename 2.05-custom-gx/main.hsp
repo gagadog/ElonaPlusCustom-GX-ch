@@ -1913,7 +1913,7 @@
 	tc = cc
 	if ( map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 8) != 0 ) {
 		ef = map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 8) - 1
-		if ( mef(MEF_TYPE, ef) >= MEF_TYPE_OCEAN_SHIP & mef(MEF_TYPE, ef) <= MEF_TYPE_OCEAN_BIG_CATCH ) {
+		if ( mef(MEF_TYPE, ef) >= MEF_TYPE_OCEAN_SHIP & mef(MEF_TYPE, ef) <= MEF_TYPE_OCEAN_BIG_CATCH & tc == CHARA_PLAYER ) {
 			shipevent = mef(MEF_TYPE, ef)
 			delmef ef
 			gosub *random_event

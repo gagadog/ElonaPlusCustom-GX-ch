@@ -116347,7 +116347,7 @@
 		if ( dbmode == DBMODE_FLAVOR_KILL ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			txt lang("「怖いのはいや…」", cnvtalk("I don’t want to be scared…"))
+			txt lang("「怖いのはいや…」", cnvtalk("I don't want to be scared..."))
 			return 1
 		}
 		if ( dbmode == DBMODE_REF_SPEC ) {

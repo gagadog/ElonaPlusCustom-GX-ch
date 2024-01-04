@@ -209,7 +209,7 @@
 	}
 	if ( dbid == CREATURE_ID_INSTIGATOR_OF_ELEA ) {
 		cardreftype = 10
-		cardrefskill = lang("エレアを扇動しているジューア。サウスティリスの風土に疎いエレア達を、支援するという名目で利用しているならずものだ。エレア迫害を盾にして強引に金や物資を募るが、その全てを着服しており困っているエレアたちには金貨一枚届かない。バレそうになる前に行方をくらます予定。", "Juere, who is instigating Elea. He is a rogue who takes advantage of the Elea, who are unfamiliar with the climate of South Tirith, under the guise of providing support. He uses the persecution of the Elea as a shield to forcefully solicit money and supplies, but he has embezzled all of it and not a single gold coin has reached the Elea in need. He plans to disappear before he is about to be discovered.")
+		cardrefskill = lang("エレアを扇動しているジューア。サウスティリスの風土に疎いエレア達を、支援するという名目で利用しているならずものだ。エレア迫害を盾にして強引に金や物資を募るが、その全てを着服しており困っているエレアたちには金貨一枚届かない。バレそうになる前に行方をくらます予定。", "Juere, who is instigating Elea. He is a rogue who takes advantage of the Elea, who are unfamiliar with the climate of South Tyris, under the guise of providing support. He uses the persecution of the Elea as a shield to forcefully solicit money and supplies, but he has embezzled all of it and not a single gold coin has reached the Elea in need. He plans to disappear before he is about to be discovered.")
 		cardrefdomain = 6
 		cardrefrare = 25
 		cardrefcost = 1
