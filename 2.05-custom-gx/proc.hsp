@@ -6659,7 +6659,6 @@
 		hoseim = limit(cdata(CDATA_ENHANCE_SPELL, cc) * 2 / 3, 0, 1000) / 10 + limit(sdata(SKILL_ATTR_MAG, cc) / 10, 0, 150)
 	}
 	efp = efp * (100 + hoseim) / 100
-	efpori = efp
 	if ( cdata(CDATA_EQUIP_WEIGHT, cc) < 35000 & cdata(CDATA_EQUIP_WEIGHT, cc) >= 15000 & findbuff(cc, BUFF_MAGIC_EQUIP) != (-1) ) {
 		efp = efp * 6 / 5
 	}
@@ -7111,6 +7110,7 @@
 		}
 	}
 	efp = sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 4 + efp + limit(cdata(CDATA_LEVEL, cc) * 8, 0, 8000)
+	efpori = efp
 	hoseim = limit(cdata(CDATA_ENHANCE_SPELL, cc) * 2 / 3, 0, 1000) / 10 + limit(sdata(SKILL_ATTR_MAG, cc) / 5, 0, 300)
 	efp = efp * (100 + hoseim) / 100
 	if ( cdata(CDATA_EQUIP_WEIGHT, cc) < 35000 & cdata(CDATA_EQUIP_WEIGHT, cc) >= 15000 & findbuff(cc, BUFF_MAGIC_EQUIP) != (-1) ) {
