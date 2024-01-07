@@ -65,12 +65,15 @@
     return
 
 #deffunc DamageParsesAdd int dmg_parses_add_cc, int dmg_parses_add_tc, int dmg_parses_add_amount, int dmg_parses_add_type
-    if ( dmg_parses_add_cc < 0 | dmg_parses_add_cc >= MAX_CHARA_TOTAL | dmg_parses_add_amount < 0 ) { 
+    if ( dmg_parses_add_cc < 0 | dmg_parses_add_cc >= MAX_CHARA_TOTAL | dmg_parses_add_tc < 0 | dmg_parses_add_tc >= MAX_CHARA_TOTAL ) { 
         return 
     }
     p@DP = dmg_parses_add_amount
-    if ( cbit(CHARA_BIT_SANDBAG, dmg_parses_add_tc) != 0 ) { 
+    if ( cbit(CHARA_BIT_SANDBAG, dmg_parses_add_tc) != TRUE ) { 
         p@DP = limitmax(p@DP, cdata(CDATA_HP, dmg_parses_add_tc))
+    }
+    if ( p@DP < 0 ) { 
+        return 
     }
     DmgParses(0, DmgParsesNext) = gdata(GDATA_TURN), dmg_parses_add_cc, dmg_parses_add_tc, p@DP, dmg_parses_add_type
     DmgParsesNext = (DmgParsesNext + 1) \ length2(DmgParses)
