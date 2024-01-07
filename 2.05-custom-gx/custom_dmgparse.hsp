@@ -70,7 +70,7 @@
     }
     p@DP = dmg_parses_add_amount
     if ( cbit(CHARA_BIT_SANDBAG, dmg_parses_add_tc) != 0 ) { 
-        p@DP = limitmax(p@DP, cdata(CDATA_HP, dmg_parses_add_cc))
+        p@DP = limitmax(p@DP, cdata(CDATA_HP, dmg_parses_add_tc))
     }
     DmgParses(0, DmgParsesNext) = gdata(GDATA_TURN), dmg_parses_add_cc, dmg_parses_add_tc, p@DP, dmg_parses_add_type
     DmgParsesNext = (DmgParsesNext + 1) \ length2(DmgParses)

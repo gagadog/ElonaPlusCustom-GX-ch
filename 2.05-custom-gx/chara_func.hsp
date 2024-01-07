@@ -5901,6 +5901,13 @@
 			}
 		}
 	}
+	
+	/********** CUSTOM DAMAGE METER - BEGINNING **********/
+	if ( cfg_showDamageMeter > 0 & locvar_dmghp_dmg > 0 ) {
+		DamageParsesAdd dmghp_source, dmghp_charid, locvar_dmghp_dmg, locvar_dmghp_ele
+	}
+	/********** CUSTOM DAMAGE METER - ENDING **********/
+
 	cdata(CDATA_HP, dmghp_charid) -= locvar_dmghp_dmg
 	if ( cfg_dhyouji == 1 ) {
 		if ( dmghp_source != DAMAGE_FROM_PERSUASION_HIGH & dmghp_source != DAMAGE_FROM_PERSUASION_LOW ) {
@@ -5922,11 +5929,6 @@
             DamagePopupAdd "" + locvar_dmghp_dmg, dmghp_charid, DMGPOPUP_ELEM_DAMAGE, locvar_dmghp_ele
         }
     }
-	/********** CUSTOM DAMAGE METER - BEGINNING **********/
-	if ( cfg_showDamageMeter > 0 & locvar_dmghp_dmg > 0 ) {
-		DamageParsesAdd dmghp_source, dmghp_charid, locvar_dmghp_dmg, locvar_dmghp_ele
-	}
-	/********** CUSTOM DAMAGE METER - ENDING **********/
 
     /********** RUIN0X11 CUSTOM - ENDING **********/
 
