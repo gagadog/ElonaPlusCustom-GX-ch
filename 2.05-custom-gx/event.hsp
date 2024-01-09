@@ -2014,9 +2014,7 @@
 		gosub *convert_word
 		if ( gdata(GDATA_CUSTOM_TALK) == 100 ) {
 			txtef COLOR_SKY_BLUE
-			if ( jp ) {
-				txt "「むにゃ…もう食べられない…」", "「怖い夢、見ちゃった…」", "「お邪魔してます」", "…" + cdatan(CDATAN_NAME, tc) + "はすやすやと寝息をたてている。"
-			}
+			txt lang("「むにゃ…もう食べられない…」", cnvtalk("Mmmm... can't eat any more...")), lang("「怖い夢、見ちゃった…」", cnvtalk("I had a scary dream...")), lang("「お邪魔してます」", cnvtalk("Sorry to bother you.")), lang("…" + cdatan(CDATAN_NAME, tc) + "はすやすやと寝息をたてている。", "..." + cdatan(CDATAN_NAME, tc) + " is sleeping peacefully.")
 		}
 		customtalk tc, DBMODE_FLAVOR_EX_ACT
 		if ( iroiro == "" ) {
@@ -2628,14 +2626,10 @@
 		file = "bg_re22"
 		buff = lang("悲鳴のような轟音、身体をゆさぶる波の振動…まるで悪魔がもたらしたような突風の中であなたは呟いた。", "The sound of sky-shattering thunder and violent waves slam you... You mutter a faint curse under your breath.")
 		if ( gdata(GDATA_WEATHER) != WEATHER_ETHER ) {
-			list(0, listmax) = 1
-			listn(0, listmax) = lang("ひどい雷雨だ", "The hard rain descends upon us...")
-			listmax++
+			chatlist 1, lang("ひどい雷雨だ", "The hard rain descends upon us...")
 		}
 		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
-			list(0, listmax) = 1
-			listn(0, listmax) = lang("エーテルの風だ", "The ether wind descends upon us...")
-			listmax++
+			chatlist 1, lang("エーテルの風だ", "The ether wind descends upon us...")
 		}
 		gosub *re_select
 		snd SOUNDLIST_BOLT1
@@ -2839,30 +2833,19 @@
 		s = lang("流される者", "Swept Away")
 		file = "bg_re4"
 		buff = lang("波間にもがいている漂流者を発見した。「高波にさらわれてこんなところまで流されてしまったよ！」", "You found a drifter drowning in the waves.")
-		list(0, listmax) = 1
-		listn(0, listmax) = lang("見捨てる", "(Abandon)")
-		listmax++
+		chatlist 1, lang("見捨てる", "(Abandon)")
 		if ( gdata(GDATA_FLAG_COLLECTED_WISHES) < maxship ) {
-			list(0, listmax) = 2
-			listn(0, listmax) = lang("乗せてあげる", "(Put on your ship)")
-			listmax++
+			chatlist 2, lang("乗せてあげる", "(Put on your ship)")
 		}
 		if ( tabikate == 1 ) {
-			list(0, listmax) = 3
-			listn(0, listmax) = lang("浮き輪を１つ投げて去る", "(Throw 1 inner tube and leave)")
-			listmax++
+			chatlist 3, lang("浮き輪を１つ投げて去る", "(Throw 1 life buoy and leave)")
 		}
 		chatesc = -1
 		gosub *re_select
 		msg_clear
 		chatc@DP = (-1)
 		if ( rtval == 1 ) {
-			if ( jp ) {
-				txt "「そんなぁ…」", "「ごぼぼぼぼ…」", "「乗せてよー！」"
-			}
-			if ( en ) {
-				txt cnvtalk("You are terrible..."), cnvtalk("Drown!"), cnvtalk("Get me on your ship...!")
-			}
+			txt lang("「そんなぁ…」", cnvtalk("You are terrible...")), lang("「ごぼぼぼぼ…」", "*grlbg!brlbgrlb*"), lang("「乗せてよー！」", cnvtalk("Let me on! Let me onnnn!!!"))
 			snd SOUNDLIST_ATK_DARK
 			modkarma 0, -1
 		}
@@ -2893,30 +2876,19 @@
 		s = lang("脱出、その後", "After Escape")
 		file = "bg_re4"
 		buff = lang("小さなイカダに乗った漂流者を発見した。「無人島から自力で脱出してきたけれど、もう限界…」", "You found a drifter on a small raft that escaped from an uninhabited island.")
-		list(0, listmax) = 1
-		listn(0, listmax) = lang("見捨てる", "(Abandon)")
-		listmax++
+		chatlist 1, lang("見捨てる", "(Abandon)")
 		if ( gdata(GDATA_FLAG_COLLECTED_WISHES) < maxship ) {
-			list(0, listmax) = 2
-			listn(0, listmax) = lang("乗せてあげる", "(Put on your ship)")
-			listmax++
+			chatlist 2, lang("乗せてあげる", "(Put on your ship)")
 		}
 		if ( tabikate == 1 ) {
-			list(0, listmax) = 3
-			listn(0, listmax) = lang("旅糧を１つ投げて去る", "(Throw 1 traveler's food and leave)")
-			listmax++
+			chatlist 3, lang("旅糧を１つ投げて去る", "(Throw 1 traveler's food and leave)")
 		}
 		chatesc = -1
 		gosub *re_select
 		msg_clear
 		chatc@DP = (-1)
 		if ( rtval == 1 ) {
-			if ( jp ) {
-				txt "「ひ、ひどい」", "「おーい！？」", "「乗せてぇえ…！」"
-			}
-			if ( en ) {
-				txt cnvtalk("You are cruel..."), cnvtalk("Help!"), cnvtalk("Get me on your ship!!!")
-			}
+			txt lang("「ひ、ひどい」", cnvtalk("How cruel...")), lang("「おーい！？」", cnvtalk("Help!")), lang("「乗せてぇえ…！」", cnvtalk("Get me on your ship!!!"))
 			snd SOUNDLIST_ATK_DARK
 			modkarma 0, -1
 		}
@@ -2947,18 +2919,12 @@
 		s = lang("漂流者たち", "Drifters")
 		file = "bg_re4"
 		buff = lang("漂流者複数名を発見した。「船が沈んでこのザマです…」", "You found drifters thrown out of the wrecked ship.")
-		list(0, listmax) = 1
-		listn(0, listmax) = lang("まとめて見捨てる", "(Abandon collectively)")
-		listmax++
+		chatlist 1, lang("まとめて見捨てる", "(Abandon all)")
 		if ( gdata(GDATA_FLAG_COLLECTED_WISHES) < maxship ) {
-			list(0, listmax) = 2
-			listn(0, listmax) = lang("乗せられるだけ乗せる", "(Put on your ship as much as you can)")
-			listmax++
+			chatlist 2, lang("乗せられるだけ乗せる", "(Put on your ship as much as you can)")
 		}
 		if ( tabikate == 1 ) {
-			list(0, listmax) = 3
-			listn(0, listmax) = lang("浮き輪を１つ投げて去る", "(Throw 1 inner tube and leave)")
-			listmax++
+			chatlist 3, lang("浮き輪を１つ投げて去る", "(Throw 1 inner tube and leave)")
 		}
 		chatesc = -1
 		gosub *re_select
@@ -2966,17 +2932,12 @@
 		kazu = 3 + rnd(8)
 		chatc@DP = (-1)
 		if ( rtval == 1 ) {
-			if ( jp ) {
-				txt "「鬼だ…」", "「ウソだろ！？」", "「子供だけでも乗せてやってくれー！」"
-			}
-			if ( en ) {
-				txt cnvtalk("You are a demon!"), cnvtalk("It's a lie, right!?"), cnvtalk("Please put even just children on your ship!")
-			}
+			txt lang("「鬼だ…」", cnvtalk("You.. demon!")), lang("「ウソだろ！？」", cnvtalk("You're kidding..")), lang("「子供だけでも乗せてやってくれー！」", cnvtalk("At least you can do is save the kids!!?"))
 			snd SOUNDLIST_ATK_DARK
 			modkarma 0, -kazu
 		}
 		if ( rtval == 2 ) {
-			txt lang("「ありがとう！ありがとう！」", cnvtalk("Thanks! Thanks!!"))
+			txt lang("「ありがとう！ありがとう！」", cnvtalk("Thank you! Thank you!!"))
 			if ( kazu > maxship - gdata(GDATA_FLAG_COLLECTED_WISHES) ) {
 				txt lang("「これ以上は乗れないか…残念だ」", cnvtalk("It looks like I can't get on this ship..."))
 			}
@@ -2985,7 +2946,7 @@
 			txt lang("無事に陸まで連れて行ってあげよう。", "You should get drifters to shore safely.")
 		}
 		if ( rtval == 3 ) {
-			txt lang("「どけ！俺のだ！」「子供もいるのよ！？」", cnvtalk("Only I use that inner tube! Give up you guys!"))
+			txt lang("「どけ！俺のだ！」「子供もいるのよ！？」", "\"That life buoy is mine!!\" \"What about the kids!?\"")
 			snd SOUNDLIST_THROW1
 			inv(INV_ITEM_NUM, ci) -= 1
 		}
@@ -2997,12 +2958,8 @@
 		s = lang("上空の脅威", "Aerial Threat")
 		file = "bg_re5"
 		buff = lang("急に空が薄暗くなり、船が何度も衝撃を受ける…。外を見たあなたの視界に飛び込んできたのは…海鳥だ。巨大な海鳥達が、群れをなして船を襲ってきたのだ！", "The sky suddenly darkens, and your ship receives repeated shocks... When you look outside, what jumps into your sight is...seabirds. A flock of giant seabirds is attacking your ship!")
-		list(0, listmax) = 1
-		listn(0, listmax) = lang("うむっ、緊急離脱だ", "(Emergency withdrawal)")
-		listmax++
-		list(0, listmax) = 2
-		listn(0, listmax) = lang("やさしく迎えてくれ", "(Drive away)")
-		listmax++
+		chatlist 1, lang("うむっ、緊急離脱だ", "(Emergency withdrawal)")
+		chatlist 2, lang("やさしく迎えてくれ", "(Drive away)")
 		chatesc = -1
 		gosub *re_select
 		msg_clear
@@ -3046,12 +3003,8 @@
 		s = lang("海中の脅威", "Undersea Threat")
 		file = "bg_re23"
 		buff = lang("突如、海中から突き上げられるように船が大きく揺れた…。何事かと海中に目を凝らしたあなたは、サメが船底に体当たりしているのを目撃した！", "Suddenly, your ship shook violently as if it was pushed up from the sea... As you peek into the sea, you see a shark ramming the bottom of the ship!")
-		list(0, listmax) = 1
-		listn(0, listmax) = lang("シャクだが逃げよう", "(Emergency withdrawal)")
-		listmax++
-		list(0, listmax) = 2
-		listn(0, listmax) = lang("フカヒレにしてやりたい", "(Kill the shark)")
-		listmax++
+		chatlist 1, lang("シャクだが逃げよう", "(Emergency withdrawal)")
+		chatlist 2, lang("フカヒレにしてやりたい", "(Kill the shark)")
 		chatesc = -1
 		gosub *re_select
 		msg_clear

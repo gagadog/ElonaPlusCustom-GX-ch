@@ -292,7 +292,7 @@
 							if ( synccheck(tc, -1) ) {
 								txtmore
 								txtef COLOR_PURPLE
-								txt lang(name(tc) + "は戦慄した。", name(tc) + " was overwhelmed.")
+								txt lang(name(tc) + "は戦慄した。", name(tc) + " " + was(tc) + " overwhelmed.")
 							}
 						}
 						inv(INV_ITEM_NUM, ci)--
@@ -326,7 +326,7 @@
 						if ( synccheck(tc, -1) ) {
 							txtef COLOR_YELLOW
 							chatc@DP = tc
-							txt lang(name(tc) + "は香ばしいバターまみれになった。「べちゃべちゃする…」", name(tc) + " was covered in savory butter." + cnvtalk("It's gooey..."))
+							txt lang(name(tc) + "は香ばしいバターまみれになった。「べちゃべちゃする…」", name(tc) + " " + was(tc) + " covered in savory butter." + cnvtalk("It's gooey..."))
 						}
 						if ( cdata(CDATA_BRUSH_LEVEL, tc) <= 1 ) {
 							cdata(CDATA_BRUSH_LEVEL, tc)++
@@ -349,7 +349,7 @@
 					if ( inv(INV_ITEM_ID, ci) == ITEM_ID_MOLOTOV ) {
 						if ( synccheck(tc, -1) ) {
 							txtef COLOR_BLUE
-							txt lang(name(tc) + "は、燃料まみれになった。", name(tc) + " was covered in oil.")
+							txt lang(name(tc) + "は、燃料まみれになった。", name(tc) + " " + was(tc) + " covered in oil.")
 						}
 						cdata(CDATA_CONDITION_OIL, tc) += 5
 					}
@@ -5158,7 +5158,7 @@
 								if ( cdata(CDATA_EVASION_PENALTY, tc) < 2 ) {
 									cdata(CDATA_EVASION_PENALTY, tc) = 2
 									txtef COLOR_PURPLE
-									txt lang(name(tc) + "は体勢を崩した。", name(tc) + " was knocked off balance.")
+									txt lang(name(tc) + "は体勢を崩した。", name(tc) + " " + was(tc) + " knocked off balance.")
 								}
 								snd SOUNDLIST_PUNISH1
 								if ( cfg_attackanime ) {
@@ -5440,7 +5440,7 @@
 				txt lang(aln(tc) + name(cc) + "の攻撃を盾で弾いた。", name(tc) + " parry" + _s(tc) + " " + name(cc) + ".")
 			}
 			else {
-				txt lang(aln(cc) + "攻撃を盾で弾かれた。", name(cc) + " was parry" + _s(cc, 1) + " by shield.")
+				txt lang(aln(cc) + "攻撃を盾で弾かれた。", name(cc) + " " + was(cc) + " parry" + _s(cc, 1) + " by shield.")
 			}
 			dmgcon cc, CONDITION_INVERT, 2
 		}
@@ -10246,7 +10246,7 @@
 				continue
 			}
 			if ( cdata(CDATA_ENVIRONMENT_EFFECT, cnt) == ENVIRONMENT_EFFECT_FIRE ) {
-				txt lang(name(cnt) + "は炎に包まれた。", name(cnt) + " was surrounded by flames.")
+				txt lang(name(cnt) + "は炎に包まれた。", name(cnt) + " " + was(cnt) + " surrounded by flames.")
 				cdata(CDATA_ENVIRONMENT_EFFECT, cnt) = ENVIRONMENT_EFFECT_NONE
 				hostileaction cc, cnt
 				dmghp cnt, rnd(efp / 10 + 1) + efp / 2 + 1, DAMAGE_FROM_FIRE, SKILL_RES_FIRE, efp
@@ -12064,7 +12064,7 @@
 					goto *pc_turn
 				}
 				if ( cdata(CDATA_IMPRESSION, tc) < 200 ) {
-					txt lang(name(tc) + "に拒絶された。", name(tc) + " was rejected.")
+					txt lang(name(tc) + "に拒絶された。", name(tc) + " " + was(tc) + " rejected.")
 					goto *pc_turn
 				}
 				astink = limit(cdata(CDATA_LEVEL, tc) / 10, 1, 200)

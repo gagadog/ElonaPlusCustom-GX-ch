@@ -1261,12 +1261,7 @@
 	if ( ibit(ITEM_BIT_ALIVE, itemname_itemid) == TRUE ) {
 		if ( inv(INV_ITEM_PARAM1, itemname_itemid) < 15 ) {
 			if ( inv(INV_ITEM_PARAM2, itemname_itemid) >= inv(INV_ITEM_PARAM1, itemname_itemid) * 100 ) {
-				if ( jp ) {
-					locvar_itemowner_s += "[成長可能な]"
-				}
-				else {
-					locvar_itemowner_s += "[Growable] "
-				}
+				locvar_itemowner_s += lang("[成長可能な]", "[Growable] ")
 			}
 		}
 	}
@@ -1912,7 +1907,7 @@
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_AWAKE_DESTONE ) {
 			locvar_itemname_init = (inv(INV_ITEM_PARAM2, itemname_itemid) + inv(INV_ITEM_PARAM3, itemname_itemid) + inv(INV_ITEM_AMUR_CAGE, itemname_itemid)) / 10
-			locvar_itemowner_s += "(LV." + locvar_itemname_init + ")"
+			locvar_itemowner_s += " (LV." + locvar_itemname_init + ")"
 		}
 		if ( ibit(ITEM_BIT_CHARGE_ITEM, itemname_itemid) == 1 ) {
 			locvar_itemowner_s += lang("(残り" + inv(INV_ITEM_CHARGE, itemname_itemid) + "回)", " (Charges: " + inv(INV_ITEM_CHARGE, itemname_itemid) + ")")
@@ -1939,80 +1934,80 @@
 			}
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_SUPER_POTIOMAN ) {
-			locvar_itemowner_s += lang("(装弾数" + inv(INV_ITEM_PARAM2, itemname_itemid) + ")", "(Bullets: " + inv(INV_ITEM_PARAM2, itemname_itemid) + ")")
+			locvar_itemowner_s += lang("(装弾数" + inv(INV_ITEM_PARAM2, itemname_itemid) + ")", " (Bullets: " + inv(INV_ITEM_PARAM2, itemname_itemid) + ")")
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_FILTRATION_BOTTLE ) {
-			locvar_itemowner_s += lang("(残り" + inv(INV_ITEM_PARAM2, itemname_itemid) + "/5)", "(Remain: " + inv(INV_ITEM_PARAM2, itemname_itemid) + "/5)")
+			locvar_itemowner_s += lang("(残り" + inv(INV_ITEM_PARAM2, itemname_itemid) + "/5)", " (Remain: " + inv(INV_ITEM_PARAM2, itemname_itemid) + "/5)")
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_JADE_DARK_ORB ) {
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 0 ) {
-				locvar_itemowner_s += lang("(アブラツボ)", "(oil pot)")
+				locvar_itemowner_s += lang("(アブラツボ)", " (oil pot)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 1 ) {
-				locvar_itemowner_s += lang("(ギロチンフォール)", "(guillotine fall)")
+				locvar_itemowner_s += lang("(ギロチンフォール)", " (guillotine fall)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 2 ) {
-				locvar_itemowner_s += lang("(ハンマーペンデュラム)", "(hammer pendulum)")
+				locvar_itemowner_s += lang("(ハンマーペンデュラム)", " (hammer pendulum)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 3 ) {
-				locvar_itemowner_s += lang("(レインロック)", "(rock rain)")
+				locvar_itemowner_s += lang("(レインロック)", " (rock rain)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 4 ) {
-				locvar_itemowner_s += lang("(マジンビーム)", "(Mazin beam)")
+				locvar_itemowner_s += lang("(マジンビーム)", " (Mazin beam)")
 			}
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_AZURE_DARK_ORB ) {
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 0 ) {
-				locvar_itemowner_s += lang("(トラバサミ)", "(torabasami)")
+				locvar_itemowner_s += lang("(トラバサミ)", " (torabasami)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 1 ) {
-				locvar_itemowner_s += lang("(エレキホース)", "(electric horse)")
+				locvar_itemowner_s += lang("(エレキホース)", " (electric horse)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 2 ) {
-				locvar_itemowner_s += lang("(デンジカタパルト)", "(electromagnetic)")
+				locvar_itemowner_s += lang("(デンジカタパルト)", " (electromagnetic)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 3 ) {
-				locvar_itemowner_s += lang("(ガスフロア)", "(gas floor)")
+				locvar_itemowner_s += lang("(ガスフロア)", " (gas floor)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 4 ) {
-				locvar_itemowner_s += lang("(マジンパンチ)", "(Mazin punch)")
+				locvar_itemowner_s += lang("(マジンパンチ)", " (Mazin punch)")
 			}
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_CRIMSON_DARK_ORB ) {
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 0 ) {
-				locvar_itemowner_s += lang("(スプラッシュ)", "(splash)")
+				locvar_itemowner_s += lang("(スプラッシュ)", " (splash)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 1 ) {
-				locvar_itemowner_s += lang("(フレイムアロー)", "(flame Arrow)")
+				locvar_itemowner_s += lang("(フレイムアロー)", " (flame Arrow)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 2 ) {
-				locvar_itemowner_s += lang("(インパクトウォール)", "(impact wall)")
+				locvar_itemowner_s += lang("(インパクトウォール)", " (impact wall)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 3 ) {
-				locvar_itemowner_s += lang("(メガバズソー)", "(mega buzzsaw)")
+				locvar_itemowner_s += lang("(メガバズソー)", " (mega buzzsaw)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 4 ) {
-				locvar_itemowner_s += lang("(マジンファイヤー)", "(Mazin fire)")
+				locvar_itemowner_s += lang("(マジンファイヤー)", " (Mazin fire)")
 			}
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_WHITE_DARK_ORB ) {
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 0 ) {
-				locvar_itemowner_s += lang("(バイブロスピア)", "(vibrating spear)")
+				locvar_itemowner_s += lang("(バイブロスピア)", " (vibrating spear)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 1 ) {
-				locvar_itemowner_s += lang("(ポイズンスピア)", "(poison spear)")
+				locvar_itemowner_s += lang("(ポイズンスピア)", " (poison spear)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 2 ) {
-				locvar_itemowner_s += lang("(サイミンスピア)", "(sleepy spear)")
+				locvar_itemowner_s += lang("(サイミンスピア)", " (sleepy spear)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 3 ) {
-				locvar_itemowner_s += lang("(インクスピア)", "(ink spear)")
+				locvar_itemowner_s += lang("(インクスピア)", " (ink spear)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 4 ) {
-				locvar_itemowner_s += lang("(スメリースピア)", "(smelly spear)")
+				locvar_itemowner_s += lang("(スメリースピア)", " (smelly spear)")
 			}
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 5 ) {
-				locvar_itemowner_s += lang("(シビレスピア)", "(paralyze spear)")
+				locvar_itemowner_s += lang("(シビレスピア)", " (paralyze spear)")
 			}
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_COFFIN_OF_NECROMANCY ) {
@@ -2120,12 +2115,7 @@
 		if ( locvar_itemowner_a < FILTER_ITEM_MIN ) {
 			locvar_itemowner_s += " (" + cnven(_quality(inv(INV_ITEM_QUALITY, itemname_itemid))) + ")"
 			if ( inv(INV_ITEM_PARAM4, itemname_itemid) == 0 ) {
-				if ( jp ) {
-					locvar_itemowner_s += "[" + mtname(0, inv(INV_ITEM_MATERIAL, itemname_itemid)) + "製]"
-				}
-				else {
-					locvar_itemowner_s += "[" + cnven(mtname(0, inv(INV_ITEM_MATERIAL, itemname_itemid))) + "]"
-				}
+				locvar_itemowner_s += lang("[" + mtname(0, inv(INV_ITEM_MATERIAL, itemname_itemid)) + "製]", "[" + cnven(mtname(0, inv(INV_ITEM_MATERIAL, itemname_itemid))) + "]")
 			}
 			if ( inv(INV_ITEM_STATUS, itemname_itemid) == ITEM_STATUS_CURSED ) {
 				locvar_itemowner_s += lang("(恐ろしい)", " (Scary)")
@@ -2211,7 +2201,7 @@
 	}
 	locvar_itemowner_skip = 0
 	itemnamehack = 0
-	return locvar_itemowner_s
+	return capitalize(locvar_itemowner_s)
 
 #deffunc remain_make int remain_make_itemid, int remain_make_arg2
 	inv(INV_ITEM_SUB_NAME, remain_make_itemid) = cdata(CDATA_ID, remain_make_arg2)

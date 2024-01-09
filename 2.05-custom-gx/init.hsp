@@ -205,6 +205,91 @@ if instr(s,0,%1)!-1{	%c\
 	}
 	return locvar_cnven_s
 
+#defcfunc cnvcase str cnvcase_str
+	if ( jp ) {
+		return cnvcase_str
+	}
+	locvar_cnven_s = cnvcase_str
+	repeat strlen(locvar_cnven_s)
+		locvar_cnven_p = peek(locvar_cnven_s, cnt)
+		if ( locvar_cnven_p >= 97 & locvar_cnven_p <= 122 & (cfg_capitalizeItemName == 2 | (cfg_capitalizeItemName >= 4 & rnd(2) == 0)) ) {
+			poke locvar_cnven_s, cnt, locvar_cnven_p - 32
+		} else {
+			if ( locvar_cnven_p >= 65 & locvar_cnven_p <= 90 & (cfg_capitalizeItemName == 3 | (cfg_capitalizeItemName >= 4 & rnd(2) == 0)) ) {
+				poke locvar_cnven_s, cnt, locvar_cnven_p + 32
+			}
+		}
+	loop
+	return locvar_cnven_s
+
+#deffunc _ioriginalnameref int ioriginalnameref_input
+	return capitalize(ioriginalnameref(ioriginalnameref_input))
+
+#defcfunc capitalize str capitalize_org_str
+	if ( jp | cfg_capitalizeItemName == 0 ) {
+		return capitalize_org_str
+	}
+	cap_str_org@txtfunc = capitalize_org_str
+	if ( strlen(cap_str_org@txtfunc) == 0 ) {
+		return capitalize_org_str
+	}
+	if ( cfg_capitalizeItemName == 4 ) { randomize gdata(GDATA_DAY) }
+	tokens@txtfunc = "(", ")", "<", ">", "[", "]", "-"
+	repeat length(tokens@txtfunc)
+		if ( instr(cap_str_org@txtfunc, 0, tokens@txtfunc(cnt)) != (-1) ) {
+			sreplace cap_str_org@txtfunc, cap_str_org@txtfunc, tokens@txtfunc(cnt), " " + tokens@txtfunc(cnt) + " "
+		}
+	loop
+	cap_str_org@txtfunc = _capitalize(cap_str_org@txtfunc, " ")
+	repeat length(tokens@txtfunc)
+		if ( instr(cap_str_org@txtfunc, 0, tokens@txtfunc(cnt)) != (-1) ) {
+			sreplace cap_str_org@txtfunc, cap_str_org@txtfunc, " " + tokens@txtfunc(cnt) + " ", tokens@txtfunc(cnt)
+		}
+	loop
+	if ( cfg_capitalizeItemName == 4 ) { randomize }
+	return cap_str_org@txtfunc
+
+#defcfunc _capitalize str capitalize_str, str capitalize_token
+	cap_str@txtfunc = capitalize_str
+	cap_tok@txtfunc = capitalize_token
+	if ( jp | cfg_capitalizeItemName == 0 | strlen(cap_str@txtfunc) == 0 ) {
+		return capitalize_str
+	}
+	// append@txtfunc = peek(cap_str@txtfunc, strlen(cap_str@txtfunc) - 1) == peek(cap_tok@txtfunc, 0)
+	// prepend@txtfunc = peek(cap_str@txtfunc, 0) == peek(cap_tok@txtfunc, 0)
+	cap_out@txtfunc = ""
+    sdim lines@txtfunc
+	split cap_str@txtfunc, capitalize_token, lines@txtfunc
+	repeat length(lines@txtfunc)
+		if ( cap_out@txtfunc != "" ) { 
+			cap_out@txtfunc += capitalize_token
+		}
+		skip@txtfunc = 0
+		switch lines@txtfunc(cnt)
+			case "the"
+			case "of"
+			case "an"
+			case "a"
+				skip@txtfunc = 1
+				swbreak
+			default
+				swbreak
+		swend
+		if ( skip@txtfunc | (cap_tok@txtfunc != " " & instr(lines@txtfunc(cnt), 0, " ") != (-1) ) ) { 
+			cap_out@txtfunc += lines@txtfunc(cnt)
+			continue
+		}
+		if ( cfg_capitalizeItemName == 1 ) {
+			cap_out@txtfunc += cnven(lines@txtfunc(cnt))
+		}
+		if ( cfg_capitalizeItemName >= 2 ) {
+			cap_out@txtfunc += cnvcase(lines@txtfunc(cnt))
+		}
+	loop
+	// if ( append@txtfunc ) { cap_out@txtfunc += capitalize_token }
+	// if ( prepend@txtfunc ) { cap_out@txtfunc = capitalize_token + cap_out@txtfunc }
+	return  cap_out@txtfunc
+
 #defcfunc cbit int cbit_bit, int cbit_charid
 	HMMBITCHECK cdata(STARTING_CDATA_CHARA_BIT + cbit_bit / 32, cbit_charid), cbit_bit \ 32
 	return abs(stat)

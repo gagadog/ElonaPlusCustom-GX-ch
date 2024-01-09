@@ -1432,7 +1432,8 @@
 		gsel 9
 		memfile bmpbuff
 		picload "MEM:temp.bmp"
-		if ( ginfo(13) > 50 ) {
+		// times the 48 limit by high DPI modifier, so 48x48 CNPC's don't get treated like height 96 CNPCs
+		if ( ginfo(13) > (50 * cfg_highdpi_scaling) ) {
 			chipc(CHIPC_X, SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + tg) = tg \ SPRITE_SHEET_COLS_CHARA * inf_tiles, SPRITE_SHEET_ROWS_CHARA * inf_tiles + tg / SPRITE_SHEET_COLS_CHARA * inf_tiles * 2, inf_tiles, inf_tiles * 2, inf_tiles + 8
 		}
 		else {
@@ -4246,6 +4247,20 @@
 			}
 		}
 
+		if ( instr(buff, 0, "spawn_set_item") != (-1) ) {
+			if ( instr(buff, 0, " ") != (-1) ) {
+				locvar_dbid = int(strmid(buff, instr(buff, 0, " "), strlen(buff) - instr(buff, 0, " ")))
+				repeat 100
+					itemcreate -1, locvar_dbid * 100 + cnt, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+				loop
+				noteadd "Done. (" + ci + ")"
+				goto *console_write
+			}
+			else {
+				noteadd "Must add an item ID e.g. spawn_set_item 2"
+				goto *console_write
+			}
+		}
 		/********** RUIN0X11 CUSTOM - ENDING **********/
 
 		/********** RUIN0X11 CUSTOM - BEGINNING **********/ // Add ally command

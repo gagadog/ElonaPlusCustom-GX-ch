@@ -300,6 +300,8 @@
 		if ( cfg_showDamageMeterTurns < 5 | cfg_showDamageMeterTurns > 60 ) { cfg_showDamageMeterTurns = 10 }
 		cfgRead "autoHideUI.", cfg_autoHideUI = int(rtvaln)
 
+		cfgRead "capitalizeItemName.", cfg_capitalizeItemName = int(rtvaln)
+
 		// Autopickup options
 
 		cfgRead "autopick.", cfg_autopick = int(rtvaln)
@@ -600,7 +602,7 @@
 	}
 	if ( submenu == 6 ) {
 		q = lang("メッセージとログ", "Message&Log")
-		s = lang("ﾒｯｾｰｼﾞに分表示追加", "Add time info"), lang("過去のﾒｯｾｰｼﾞの透過", "Transparency"), lang("起動時の注意書き", "Disclaimer at startup"), ""
+		s = lang("ﾒｯｾｰｼﾞに分表示追加", "Add time info"), lang("過去のﾒｯｾｰｼﾞの透過", "Transparency"), lang("起動時の注意書き", "Disclaimer at startup"), "Capitalize item names", ""
 		dx = 440
 		dy = 300
 	}
@@ -898,16 +900,20 @@
 			}
 		}
 		if ( submenu == 6 ) {
-			if ( cnt == 2 ) {
-				s = lang("非表示", "No"), lang("表示", "Yes")
-				mes s(cfg_titledialog)
-			}
 			if ( cnt == 0 ) {
 				s = lang("しない", "No"), lang("する", "Yes")
 				mes s(cfg_msgaddtime)
 			}
 			if ( cnt == 1 ) {
 				mes "" + cfg_msgtrans * 10 + " %"
+			}
+			if ( cnt == 2 ) {
+				s = lang("非表示", "No"), lang("表示", "Yes")
+				mes s(cfg_titledialog)
+			}
+			if ( cnt == 3 ) {
+				s = lang("非表示", "No"), lang("表示", "Capitalize"), lang("表示", "Uppercase"), lang("表示", "Lowercase"), lang("表示", "Spongebob"), lang("表示", "Schizophrenic")
+				mes s(cfg_capitalizeItemName)
 			}
 		}
 		if ( submenu == 7 ) {
@@ -1766,6 +1772,9 @@
 				valn = "title_dialog.", str(cfg_titledialog)
 				gosub *cfg_write
 				goto *com_config_loop
+			}
+			if ( cs == 3 ) {
+				setOption cfg_capitalizeItemName, "capitalizeItemName", 0, 5
 			}
 		}
 		if ( submenu == 7 ) {

@@ -1743,6 +1743,10 @@
 		cpdata@tcg(TCG_PLAYER_EXTRACARD, cnt) = 0
 		if ( rp@tcg == 0 ) {
 			gosub *card_loadplayerdeck
+			if ( cardsize@tcg < MIN_CARD_DECK ) {
+				gameresult@tcg = -2
+				break
+			}
 		} else {
 			gosub *card_generateopponentdeck
 		}
@@ -1755,6 +1759,19 @@
 			loop
 		}
 	loop
+	if ( gameresult@tcg == -2 ) {
+		s = lang("適切なデッキ", "a Proper Deck")
+		file = "bg_re8"
+		buff = lang("デュエルする前に、自分のデッキが少なくとも30枚はあることを確認する必要があるね。デッキに入れるカードを増やすべきかもしれないね。", "I should make sure my deck has at least 30 cards before a duel. May be I should get more cards to put them in my deck. ")
+		listmax = 0
+		if ( card(0, CREATURE_ID_USER) <= 0 ) {
+			buff += "Miches from Vernis loves to play all sorts of boardgames, maybe I should ask her about this,"
+		}
+		chatList 1, lang("また今度ね", "Maybe next time.")
+		gameresult@tcg = 0
+		gosub *re_select
+		return
+	}
 	calcdomain
 	repeat maxcard@tcg
 		if ( cdbit(TCG_BIT_ASSASSIN, cnt) == TRUE ) {
@@ -1823,40 +1840,64 @@
 	}
 	goto *tcgmain_WHILE1
 	*tcgmain_WEND1
-	promptmax = 0
+		
+	listmax = 0
 	if ( gameresult@tcg == -1 ) {
-		promptAdd "Surrendered!", "a"
+		s = "Surrendered!"
+		file = "bg_re12"
+		chatList 1, lang("また今度ね", "Maybe next time.")
 	}
 	if ( gameresult@tcg == -2 ) {
-		promptAdd "Escaped!", "a"
+		s = "Escaped!"
+		file = "bg_re9"
+		chatList 1, lang("また今度ね", "Maybe next time.")
 	}
 	if ( gameresult@tcg > 0 & gameresult@tcg \ 2 == 1 ) {
-		promptAdd "You Win!", "a"
-	} else {
-		promptAdd "You Lose!", "a"
+		s = "You Win!"
+		file = "bg_re15"
+		chatList 1, lang("また今度ね", "To the Amur-cage you go!")
 	}
-	if ( gameresult@tcg == 1 ) { promptAdd "Opponent's health is reduced to 0.", "b" }
-	if ( gameresult@tcg == 2 ) { promptAdd "Your health is reduced to 0.", "b" }
-	if ( gameresult@tcg == 3 ) { promptAdd "Opponent can't draw any cards.", "b" }
-	if ( gameresult@tcg == 4 ) { promptAdd "You can't draw any cards.", "b" }
-	if ( gameresult@tcg == 5 ) { promptAdd "You won using Zeome's effect.", "b" }
-	if ( gameresult@tcg == 6 ) { promptAdd "You lose due to Zeome's effect.", "b" }
-	if ( gameresult@tcg == 7 ) { promptAdd "You won using Meshera's effect.", "b" }
-	if ( gameresult@tcg == 8 ) { promptAdd "You lose due to Meshera's effect.", "b" }
-	if ( gameresult@tcg == 9 ) { promptAdd "You won using Unitdeads' effect.", "b" }
-	if ( gameresult@tcg == 10 ) { promptAdd "You lose due to Unitdeads' effect.", "b" }
-	if ( gameresult@tcg == 11 ) { promptAdd "You opponent is BANNED.", "b" }
-	if ( gameresult@tcg == 12 ) { promptAdd "You are BANNED!", "b" }
-	if ( gameresult@tcg == 13 ) { promptAdd "You've been playing for too long!", "b" }
-	if ( gameresult@tcg == 14 ) { promptAdd "You've been playing for too long!", "b" }
-	if ( gameresult@tcg == 15 ) { promptAdd "You won due to Jaldabaoth' effect.", "b" }
-	if ( gameresult@tcg == 16 ) { promptAdd "You lose due to Jaldabaoth' effect.", "b" }
-	val = promptx, prompty, 320, 1
-	gosub *prompt_key
+	if ( gameresult@tcg > 0 & gameresult@tcg \ 2 == 0 ) {
+		s = "You Lose!"
+		file = "bg_re7"
+		chatList 1, lang("また今度ね", "Noooooooooooooo!")
+	}
+	buff = "Unexpected outcome, report to developer."
+	if ( gameresult@tcg == -1 ) { buff = "You flipped the table and leave the game." }
+	if ( gameresult@tcg == -2 ) { buff = "You flipped the table in a hurry and leave the game." }
+	if ( gameresult@tcg == 1 ) { buff = "Opponent's health is reduced to 0." }
+	if ( gameresult@tcg == 2 ) { buff = "Your health is reduced to 0." }
+	if ( gameresult@tcg == 3 ) { buff = "Opponent can't draw any cards." }
+	if ( gameresult@tcg == 4 ) { buff = "You can't draw any cards." }
+	if ( gameresult@tcg == 5 ) { buff = "You won using Zeome's effect." }
+	if ( gameresult@tcg == 6 ) { buff = "You lose due to Zeome's effect." }
+	if ( gameresult@tcg == 7 ) { buff = "You won using Meshera's effect." }
+	if ( gameresult@tcg == 8 ) { buff = "You lose due to Meshera's effect." }
+	if ( gameresult@tcg == 9 ) { buff = "You won using Unitdeads' effect." }
+	if ( gameresult@tcg == 10 ) { buff = "You lose due to Unitdeads' effect." }
+	if ( gameresult@tcg == 11 ) { buff = "You opponent is BANNED." }
+	if ( gameresult@tcg == 12 ) { buff = "You are BANNED!" }
+	if ( gameresult@tcg == 13 ) { buff = "You've been playing for too long!" }
+	if ( gameresult@tcg == 14 ) { buff = "You've been playing for too long!" }
+	if ( gameresult@tcg == 15 ) { buff = "You won due to Jaldabaoth' effect." }
+	if ( gameresult@tcg == 16 ) { buff = "You lose due to Jaldabaoth' effect." }
+	gosub *re_select
+    gsel 3
+    pos 960, 96
+    picload exedir + "graphic\\deco_card.bmp", 1
+    gsel 7
+    picload exedir + "graphic\\interface2.bmp"
+    gsel 2
+    pos 0, 0
+    picload exedir + "graphic\\card0.bmp", 1
+    gsel 4
+    pos 0, 0
+    picload exedir + "graphic\\bg_card.bmp", 1
+    gosub *tcg_effect_define
+    gosub *tcg_initBg
+    tcgdrawbg
 	gosub *tcg_drawInterface
-	if ( key == key_enter | key == key_cancel | key == key_escape ) {
-		return
-	}
+	tcgdraw
 	*tcgmain_WEND2
 	cardhelp lang("ゲームオーバー！Enterキーで退出。", "Game Over! Press Enter to leave."), 40
 	tcgdraw

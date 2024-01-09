@@ -635,6 +635,8 @@
 	}
 	if ( gameresult@tcg > 0) {
 		if ( gameresult@tcg \ 2 == 1 ) {
+			cdata(CDATA_EMO_ICON, cc) = 6 + 100 * 3
+			cdata(CDATA_EMO_ICON, tc) = 13 + 100 * 3
 			modimp tc, 7
 			cdata(CDATA_INTEREST, tc) -= 80
 			cdata(CDATA_INTEREST_RENEW, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 12
@@ -659,8 +661,16 @@
 			}
 			cell_refresh cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
 		} else {
+			cdata(CDATA_EMO_ICON, cc) = 7 + 100 * 3
+			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
+			cdata(CDATA_INTEREST, tc) -= 10
+			cdata(CDATA_INTEREST_RENEW, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 12
 			winconsecutive@tcg = 0
 		}
+	} else {
+		cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		cdata(CDATA_INTEREST, tc) = 0
+		cdata(CDATA_INTEREST_RENEW, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 12
 	}
 	return
 

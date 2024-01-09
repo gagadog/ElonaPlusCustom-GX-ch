@@ -2643,7 +2643,7 @@
 						dmghp tc, 10, DAMAGE_FROM_PERSUASION_LOW
 						if ( cdata(CDATA_EXIST, tc) != CHAR_STATE_ALIVE ) {
 							txtef COLOR_GREEN
-							txt lang(name(tc) + "はすっかり騙されて去っていった。", name(tc) + " was completely fooled and left in a hurry.")
+							txt lang(name(tc) + "はすっかり騙されて去っていった。", name(tc) + " " + was(tc) + " completely fooled and left in a hurry.")
 						}
 						snd SOUNDLIST_EXITMAP1
 						check_talk cc, tc
@@ -2814,7 +2814,7 @@
 					cdata(CDATA_POWER_GAUGE, tc) = 0
 				}
 				if ( rnd(50) == 0 ) {
-					txt lang(name(tc) + "は恐怖した。", name(tc) + " was frightened.")
+					txt lang(name(tc) + "は恐怖した。", name(tc) + " " + was(tc) + " frightened.")
 					if ( cdata(CDATA_CONDITION_FEAR, tc) == 0 ) {
 						cdata(CDATA_CONDITION_FEAR, tc) = 1
 					}
@@ -3042,7 +3042,7 @@
 					cdata(CDATA_POWER_GAUGE, tc) = 0
 				}
 				if ( rnd(50) == 0 ) {
-					txt lang(name(tc) + "は感激した。", name(tc) + " was deeply impressed.")
+					txt lang(name(tc) + "は感激した。", name(tc) + " " + was(tc) + " deeply impressed.")
 					if ( cdata(CDATA_CONDITION_PARALYZE, tc) == 0 ) {
 						cdata(CDATA_CONDITION_PARALYZE, tc) = 1
 					}
@@ -15088,13 +15088,13 @@
 				continue
 			}
 			if ( cdata(CDATA_ENVIRONMENT_EFFECT, cnt) == ENVIRONMENT_EFFECT_ACID ) {
-				txt lang(name(cnt) + "は大量の酸を浴びた。", name(cnt) + " was showered by a large amount of acid.")
+				txt lang(name(cnt) + "は大量の酸を浴びた。", name(cnt) + " " + was(cnt) + " showered by a large amount of acid.")
 				cdata(CDATA_ENVIRONMENT_EFFECT, cnt) = ENVIRONMENT_EFFECT_NONE
 				hostileaction cc, cnt
 				dmghp cnt, rnd(efp / 10 + 5) + efp / 10 + 1, DAMAGE_FROM_ACID, SKILL_RESDMG_ACID, efp
 			}
 			if ( cdata(CDATA_ENVIRONMENT_EFFECT, cnt) == ENVIRONMENT_EFFECT_FIRE ) {
-				txt lang(name(cnt) + "は炎に包まれた。", name(cnt) + " was surrounded by flames.")
+				txt lang(name(cnt) + "は炎に包まれた。", name(cnt) + " " + was(cnt) + " surrounded by flames.")
 				cdata(CDATA_ENVIRONMENT_EFFECT, cnt) = ENVIRONMENT_EFFECT_NONE
 				hostileaction cc, cnt
 				dmghp cnt, rnd(efp / 3 + 5) + efp / 3 + 1, DAMAGE_FROM_FIRE, SKILL_RES_FIRE, efp
@@ -17810,7 +17810,7 @@
 		}
 		else {
 			if ( synccheck(tc, -1) ) {
-				txt lang(name(tc) + "は畏縮した。", name(tc) + " was daunted by the browbeat.")
+				txt lang(name(tc) + "は畏縮した。", name(tc) + " " + was(tc) + " daunted by the browbeat.")
 			}
 			cdata(CDATA_CONDITION_ATROPHY, tc) += 5
 			animeload ANIMATION_FIZZLE, tc
@@ -18017,7 +18017,7 @@
 		else {
 			snd SOUNDLIST_EAT1
 			if ( synccheck(tc, -1) ) {
-				txt lang(name(tc) + "は束縛された。", name(tc) + " was bound.")
+				txt lang(name(tc) + "は束縛された。", name(tc) + " " + was(tc) + " bound.")
 			}
 			cdata(CDATA_CONDITION_BIND, tc) += 10
 			animeload ANIMATION_ARROW_RAIN, tc
@@ -18253,10 +18253,10 @@
 	if ( _switch_val == SKILL_SPACT_PSYCHIC_WAVE | _switch_sw ) {
 		_switch_sw = 0
 		txtef COLOR_PURPLE
-		txt lang(name(cc) + "は強烈な精神波を放った！", name(cc) + " was overwhelmed.")
+		txt lang(name(cc) + "は強烈な精神波を放った！", name(cc) + " " + was(cc) + " overwhelmed.")
 		snd SOUNDLIST_ATK_MIND
 		animeload ANIMATION_GARDEN, tc
-		repeat MAX_CHARA_TOTAL
+		repeat MAX_CHARA_TOTALt
 			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 				continue
 			}
@@ -18970,7 +18970,7 @@
 			snd SOUNDLIST_ATK_FIRE
 			animeload ANIMATION_GENE, cc
 			txtef COLOR_RED
-			txt lang(name(cc) + "は覚悟を決めた！", name(cc) + " was ready!")
+			txt lang(name(cc) + "は覚悟を決めた！", name(cc) + " " + was(cc) + " ready!")
 			cdata(CDATA_POWER_GAUGE, cc) -= 25
 			sutemi = 100
 		}
@@ -20184,7 +20184,7 @@
 			ens3++
 		loop
 		if ( ens3 == 0 ) {
-			txt lang(name(cc) + "はひとりぼっちだ…。", name(cc) + " was all alone.")
+			txt lang(name(cc) + "はひとりぼっちだ…。", name(cc) + " " + was(cc) + " all alone.")
 			goto *effect_end
 		}
 		dmgcon cc, CONDITION_BLEED, 1000
@@ -20451,7 +20451,7 @@
 						}
 					}
 					if ( cbit(CHARA_BIT_BRUSHED, tc) == 1 ) {
-						txt lang("最近ブラッシングしたばかりなので効果はない。", name(tc) + " was already brushed recently.")
+						txt lang("最近ブラッシングしたばかりなので効果はない。", name(tc) + " " + was(tc) + " already brushed recently.")
 						goto *effect_end
 					}
 					cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
@@ -21593,7 +21593,7 @@
 			}
 			if ( synccheck(tc, -1) ) {
 				txtef COLOR_PURPLE
-				txt lang(name(tc) + "は怯えた。", name(tc) + " was overwhelmed.")
+				txt lang(name(tc) + "は怯えた。", name(tc) + " " + was(tc) + " overwhelmed.")
 			}
 			cdata(CDATA_POWER_GAUGE, tc) -= 50
 			if ( cdata(CDATA_POWER_GAUGE, tc) < 0 ) {
@@ -21631,7 +21631,7 @@
 			}
 			if ( synccheck(tc, -1) ) {
 				txtef COLOR_PURPLE
-				txt lang(name(tc) + "は戦慄した。", name(tc) + " was overwhelmed.")
+				txt lang(name(tc) + "は戦慄した。", name(tc) + " " + was(tc) + " overwhelmed.")
 			}
 			if ( cdata(CDATA_CONDITION_ATROPHY, tc) == 0 ) {
 				cdata(CDATA_CONDITION_ATROPHY, tc) += 3
@@ -21867,7 +21867,7 @@
 					cdata(CDATA_CONDITION_BIND, tc) += 1
 				}
 				if ( synccheck(tc, -1) ) {
-					txt lang(name(tc) + "は蔓に束縛された。", name(tc) + " was bound.")
+					txt lang(name(tc) + "は蔓に束縛された。", name(tc) + " " + was(tc) + " bound.")
 				}
 			}
 		loop
@@ -22051,7 +22051,7 @@
 			snd SOUNDLIST_BASH1
 			cdata(CDATA_CONDITION_BIND, tc) += 1
 			if ( synccheck(tc, -1) ) {
-				txt lang(name(tc) + "は束縛された。", name(tc) + " was bound.")
+				txt lang(name(tc) + "は束縛された。", name(tc) + " " + was(tc) + " bound.")
 			}
 			await 100
 		}
@@ -23768,7 +23768,7 @@
 		snd SOUNDLIST_BOLT1
 		animeload ANIMATION_PARTICLE_CANNON, tc
 		if ( synccheck(tc, -1) ) {
-			txt lang(name(tc) + "は重力の球に押しつぶされた。", name(tc) + " was pressed by super Gravity.")
+			txt lang(name(tc) + "は重力の球に押しつぶされた。", name(tc) + " " + was(tc) + " pressed by super Gravity.")
 		}
 		if ( TweakData(TWEAK_GAMEPLAY_CG_REVERT_SKILL_NERFS, TWEAK_CATEGORY_GAMEPLAY) == TRUE ) {
 			dmg = sdata(SKILL_ATTR_CON, cc) * sdata(SKILL_ATTR_CON, cc) / 50 + limit(gdata(GDATA_LEVEL) * (gdata(GDATA_LEVEL) + 100) / 50, 1, 29999) + rnd(gdata(GDATA_LEVEL) + 5) + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) / 3
@@ -23980,7 +23980,7 @@
 		}
 		if ( synccheck(tc, -1) ) {
 			txtef COLOR_BLUE
-			txt lang(name(cc) + "はダメージに備えた。", name(cc) + " was watching out for the damage.")
+			txt lang(name(cc) + "はダメージに備えた。", name(cc) + " " + was(cc) + " watching out for the damage.")
 		}
 		cdata(CDATA_CONDITION_METAL, cc) = 6
 		goto *effect_end
@@ -24234,7 +24234,7 @@
 						inv(INV_ITEM_EQUIP, p) = 0
 						cdata(cnt, CHARA_PLAYER) = cdata(cnt, CHARA_PLAYER) / EXT_EQUIP_SLOTS * EXT_EQUIP_SLOTS
 						txtef COLOR_PURPLE
-						txt lang(name(CHARA_PLAYER) + "は" + name(cc) + "に言われるがまま、装備を外してしまった。", name(tc) + " was brainwashed into removing " + his(tc) + " equipment.")
+						txt lang(name(CHARA_PLAYER) + "は" + name(cc) + "に言われるがまま、装備を外してしまった。", name(tc) + " " + was(tc) + " brainwashed into removing " + his(tc) + " equipment.")
 					}
 				loop
 				cdata(CDATA_CONDITION_BRAINWASH, CHARA_PLAYER) = limit(sdata(SKILL_ATTR_CHA, cc) / 5 - sdata(SKILL_ATTR_WIL, CHARA_PLAYER) / 5, 10, 50)
@@ -24609,7 +24609,7 @@
 		}
 		cdata(CDATA_PROT_PENALTY, tc) = -3
 		if ( synccheck(tc, -1) ) {
-			txt lang(name(tc) + "の身体が石のように硬直した。", "Body of " + name(tc) + " was stiff like a stone.")
+			txt lang(name(tc) + "の身体が石のように硬直した。", "Body of " + name(tc) + " " + was(tc) + " stiff like a stone.")
 		}
 		if ( findbuff(cc, BUFF_ABYSS_IN_THE_EYE) != (-1) ) {
 			snd SOUNDLIST_OFFER1

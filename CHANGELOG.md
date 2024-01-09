@@ -4,15 +4,26 @@
 - Added a EX setting 2 config to draw pet HP bars on screen.
 - Added a EX setting 2 config to auto hide extra UI elements.
 - Added a "fontWSHPad." for fonts that looks weird when not in 1:2 ratio
+- Added a Message/Log setting to capitalize/uppercase/lowercase item names.
 
 # Changed
 - F1 saving now has a 0.3 second pause.
-- Extra UI elements (skill tracker / DPS meter / HP bar) now hides if player is too close.
+- Potion is added to ally feed menu, cargo is removed.
+- Fixes Custom's squeeze/magic-kiss/drain-blood behavior.
+  - High impression pets can use them safely on each-other/you.
+  - Pets using them on enemy is treated as an attack.
+- You can't play the Card Game without a proper deck now.
 
-# Fixed
+# Fixed (Ano's Plus)
+- Ship tax not resetting each month, thanks to @Mirarara.
+- Pet triggering Ocean Map Events (causing player's allied flag set to 100)
 - Player's magic style not shown when casting or using touch skills.
-- [Opening mysterious envelope] + [Auto-drop chest] dropping the wrong item.
-- Replaced some CJK glyphs from english text.
+
+# Fixed (CGX)
+- HighDPI causing wrong readings of CNPC image height. (White box below CNPC bug)
+- Rod effect power `efpori` pasted to wrong place, thanks to members of the Elona QQ group.
+- [Opening mysterious envelope] + [Auto-drop chest] dropping the wrong item, thanks to @Mirarara.
+- Some translation / display issues thanks to @lIllIIlI and other memebers of the Elona Discord group.
 
 # 2.21.1.1
 

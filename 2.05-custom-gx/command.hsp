@@ -5709,8 +5709,8 @@
 	
 	/********** CUSTOM TCG - BEGINNING **********/
 	if ( tc > CHARA_PLAYER ) {
-		if ( cdata(CDATA_INTEREST, tc) >= 80 ) {
-			promptAdd lang("決闘!", "Duel! (CGX beta)"), "null", 69100
+		if ( cdata(CDATA_INTEREST, tc) >= 80 & cdata(CDATA_CONDITION_SLEEP, tc) == 0 ) {
+			promptAdd lang("決闘!", "a Game of Cards!"), "null", 69100
 		}
 	}
 	/********** CUSTOM TCG - ENDING **********/
@@ -6562,7 +6562,7 @@
 				txt name(tc) + "の顔が引きつっている。", "「えっ」", name(tc) + "は二度見した後に固まってしまった…。"
 			}
 			else {
-				txt name(tc) + "'s face twitches.", cnvtalk("Eh."), name(tc) + " was stupefied after doing a double take..."
+				txt name(tc) + "'s face twitches.", cnvtalk("Eh."), name(tc) + " " + was(tc) + " stupefied after doing a double take..."
 			}
 		}
 		if ( cdata(CDATA_IMPRESSION, tc) >= 150 & cdata(CDATA_IMPRESSION, tc) < 200 ) {
@@ -6571,7 +6571,7 @@
 				txt name(tc) + "は苦笑いしている…。", name(tc) + "は困惑しながらも、早く体を洗ってくるよう勧めた。"
 			}
 			else {
-				txt name(tc) + " smiled wryly...", "While " + name(tc) + " was bewildered, I urged them to quickly wash their body."
+				txt name(tc) + " smiled wryly...", "While " + name(tc) + " " + was(tc) + " bewildered, I urged them to quickly wash their body."
 			}
 		}
 		if ( cdata(CDATA_IMPRESSION, tc) >= 200 ) {
@@ -12066,7 +12066,7 @@
 			/********** ANNA CUSTOM - BEGINNING **********/
 
 			if ( invctrl == 5 | (invctrl == 10 & Filter_Food == 1) ) {
-				if ( reftype != FILTER_ITEM_FOOD & reftype != FILTER_CARGO_FOOD & inv(INV_ITEM_MATERIAL, cnt) != ITEM_MATERIAL_RAW ) {
+				if ( reftype != FILTER_ITEM_POTION & reftype != FILTER_ITEM_FOOD & inv(INV_ITEM_MATERIAL, cnt) != ITEM_MATERIAL_RAW ) {
 					continue
 				}
 			}
