@@ -7271,8 +7271,8 @@
 	if ( userdatan(2, calccostcnpcsummon_arg1) == "mushroom" ) { locvar_calccostcnpcsummon_multiplier -= 3 }
 	if ( userdatan(2, calccostcnpcsummon_arg1) == "kobolt" ) { locvar_calccostcnpcsummon_multiplier -= 2 }
 	if ( userdatan(2, calccostcnpcsummon_arg1) == "orc" ) { locvar_calccostcnpcsummon_multiplier -= 2 }
-	if ( userdatan(2, calccostcnpcsummon_arg1) == "dragon" ) { locvar_calccostcnpcsummon_multiplier += 2 }
-	if ( userdatan(2, calccostcnpcsummon_arg1) == "yith" ) { locvar_calccostcnpcsummon_multiplier += 5 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "dragon" ) { locvar_calccostcnpcsummon_multiplier += 8 }
+	if ( userdatan(2, calccostcnpcsummon_arg1) == "yith" ) { locvar_calccostcnpcsummon_multiplier += 10 }
 	if ( userdatan(2, calccostcnpcsummon_arg1) == "quickling" ) { locvar_calccostcnpcsummon_multiplier += 20 }
 	if ( userdatan(2, calccostcnpcsummon_arg1) == "metal" ) { locvar_calccostcnpcsummon_multiplier += 30 }
 	if ( userdatan(2, calccostcnpcsummon_arg1) == "god" ) { locvar_calccostcnpcsummon_multiplier += 40 }
@@ -7289,6 +7289,15 @@
 			locvar_calccostcnpcsummon_multiplier += int(unres(cnt * 2 + 1)) / 2
 		loop
 	}
+	// Skills - tot has a minimum of 4500
+	locvar_calccostcnpcsummon_act_tot = 0
+	locvar_calccostcnpcsummon_act_base = 0
+	locvar_calccostcnpcsummon_act_sub = 0
+	repeat 5
+		locvar_calccostcnpcsummon_act_base += 8 + calccostcnpcskillcost(userdata(15 + cnt, calccostcnpcsummon_arg1))
+		locvar_calccostcnpcsummon_act_sub += 8 + calccostcnpcskillcost(userdata(20 + cnt, calccostcnpcsummon_arg1))
+	loop
+	locvar_calccostcnpcsummon_act_tot = (5 + calccostcnpcskillcost(userdata(10, calccostcnpcsummon_arg1))) * 100 + locvar_calccostcnpcsummon_act_base * (100 - unaiactsubfreq(calccostcnpcsummon_arg1))  + locvar_calccostcnpcsummon_act_sub * unaiactsubfreq(calccostcnpcsummon_arg1)
 	// Bits
 	repeat 35
 		HMMBITCHECK userdata(40 + cnt / 32, calccostcnpcsummon_arg1), cnt \ 32
@@ -7311,7 +7320,92 @@
 	if ( gdata(GDATA_FLAG_MAIN) >= 180 ) { locvar_calccostcnpcsummon_multiplier = limit(locvar_calccostcnpcsummon_multiplier * 2 / 3, 1, 300) }
 	if ( gdata(GDATA_FLAG_MAIN) >= 340 ) { locvar_calccostcnpcsummon_multiplier = limit(locvar_calccostcnpcsummon_multiplier * 2 / 3, 1, 300) }
 	if ( gdata(GDATA_FLAG_MAIN) >= 720 ) { locvar_calccostcnpcsummon_multiplier = limit(locvar_calccostcnpcsummon_multiplier * 2 / 3, 1, 300) }
-	return limit(limit(locvar_calccostcnpcsummon_cost, 1, 2000) * limit(locvar_calccostcnpcsummon_multiplier, 1, 300) / 10, 1, 100000)
+	locvar_calccostcnpcsummon_final = limit(locvar_calccostcnpcsummon_cost, 1, 2000)
+	locvar_calccostcnpcsummon_final = limit(locvar_calccostcnpcsummon_final * limit(locvar_calccostcnpcsummon_act_tot, 1, 1000000) / 6000, 1, 2000000)
+	locvar_calccostcnpcsummon_final = limit(locvar_calccostcnpcsummon_final * limit(locvar_calccostcnpcsummon_multiplier, 1, 1000), 1, 2000000000)
+	return locvar_calccostcnpcsummon_final
+
+#defcfunc calccostcnpcskillcost int calccostcnpcskillcost_arg1
+	if ( calccostcnpcskillcost_arg1 < -10 ) { return 1 }
+	if ( calccostcnpcskillcost_arg1 == SKILL_SPACT_DO_NOTHING ) { return -2 }
+	if ( calccostcnpcskillcost_arg1 < 400 ) { return 0 }
+	locvar_costbase = 2
+	if ( calccostcnpcskillcost_arg1 < 600 ) { 
+		locvar_costbase = limit(sdataref(SKILL_DATAREF_COST, calccostcnpcskillcost_arg1) / 10, 1, 1000)
+	}
+	if ( calccostcnpcskillcost_arg1 >= 600 ) { 
+		locvar_costbase = limit(sdataref(SKILL_DATAREF_COST, calccostcnpcskillcost_arg1) / 4, 2, 1000)
+	}
+	switch calccostcnpcskillcost_arg1
+		// Meta-ish skills?
+		case SKILL_SPACT_SHADOW_STEP
+		case SKILL_SPACT_SHADOW_JUMP
+		case SKILL_SPACT_DANCING_WIRE
+		case SKILL_SPACT_SQUEEZE
+		case SKILL_SPELL_HYDRO_FANG
+		case SKILL_SPELL_WATER_BOLT
+		case SKILL_SPELL_BUBBLE_STORM
+			locvar_costbase += 1
+			swbreak
+		case SKILL_SPACT_KIJIN_SHIBARI
+		case SKILL_SPACT_PRAYER_OF_JURE
+		case SKILL_SPACT_LULWYS_TRICK
+		case SKILL_SPACT_SAND_CANNON
+		case SKILL_SPACT_THUNDERCLAP_KICK
+		case SKILL_SPACT_JUMPING_DROP
+		case SKILL_SPACT_DIVING_DRILL
+		case SKILL_SPACT_LIQUID_MANIPULATION
+		case SKILL_SPACT_DOWNPOUR_SPORE
+		case SKILL_SPACT_GROUP_HYPNOSIS
+			locvar_costbase += 2
+    		swbreak
+		// Questionably powerful, or bugged
+		case SKILL_SPELL_SUMMON_MONSTERS
+		case SKILL_SPELL_SUMMON_WILD
+		case SKILL_SPELL_SUMMON_SPIRIT
+		case SKILL_SPACT_SUMMON_CATS
+		case SKILL_SPACT_SUMMON_YEEK
+		case SKILL_SPACT_SUMMON_PAWN
+		case SKILL_SPACT_SUMMON_FIRE
+		case SKILL_SPACT_SUMMON_SISTER
+		case SKILL_SPACT_SUMMON_CHAOS
+		case SKILL_SPELL_4DIM_POCKET
+		case SKILL_SPELL_MAGIC_MAP
+		case SKILL_SPELL_SENSE_OBJECT
+		case SKILL_SPACT_EYE_OF_MANA
+		case SKILL_SPACT_HOUZANHA
+		case SKILL_SPACT_MANA_BURST
+		case SKILL_SPACT_SHADOW_HOP
+		case SKILL_SPACT_ALCHEMICAL_RAIN
+		case SKILL_SPACT_MULTIPLE_GATHER
+			locvar_costbase += 5
+    		swbreak
+		// CONTRABAND, you know you are cheating, right?
+		case SKILL_SPELL_WISH
+		case SKILL_SPELL_RESURRECTION
+		case SKILL_SPELL_DOMINATE
+		case SKILL_SPELL_WIZARDS_HARVEST
+		case SKILL_SPELL_METEOR
+		case SKILL_SPACT_PUNISHMENT
+		case SKILL_SPACT_MEWMEWMEW
+		case SKILL_SPACT_MANIS_DISASSEMBLY
+		case SKILL_SPACT_INSANE_WAVE
+		case SKILL_SPACT_SUPER_VIBRATING_FIST
+		case SKILL_SPACT_TEMPEST_ARROW
+		case SKILL_SPACT_EXCESSIVE_HEAL
+		case SKILL_SPACT_SHINE_SNAIL
+		case SKILL_SPACT_ELEMENTIA
+		case SKILL_SPACT_GOLD_RUSH
+		case SKILL_SPACT_SMOKE_MIRROR
+		case SKILL_SPACT_KAMUI
+		case SKILL_SPACT_WIN
+		case SKILL_SPACT_PURGE
+			locvar_costbase = 1000
+    		swbreak
+		default
+			swbreak
+	swend
+	return locvar_costbase	
 
 *com_knowCNPC
 	listmaxbk = listmax
@@ -7387,6 +7481,7 @@
 	buff += "<title1>*Actions(" + (100 - unaiactsubfreq(knowCNPC)) + "%)<def>\n"
 	repeat 5
 		// buff += " (" + userdata(15+cnt, knowCNPC) + ")"
+		buff += "["+calccostcnpcskillcost(userdata(15+cnt, knowCNPC))+"]"
 		if ( userdata(15+cnt, knowCNPC) == 0 ) { buff += "Do Nothing\n" }
 		if ( userdata(15+cnt, knowCNPC) == (-1) ) { buff += "Melee Attack\n" }
 		if ( userdata(15+cnt, knowCNPC) == (-2) ) { buff += "Ranged Attack\n" }
@@ -7401,6 +7496,7 @@
 	buff += "<title1>*Subactions(" + (unaiactsubfreq(knowCNPC)) + "%)<def>\n"
 	repeat 5
 		// buff += "(" + userdata(20+cnt, knowCNPC) + ")"
+		buff += "["+calccostcnpcskillcost(userdata(20+cnt, knowCNPC))+"]"
 		if ( userdata(20+cnt, knowCNPC) == 0 ) { buff += "Do Nothing\n" }
 		if ( userdata(20+cnt, knowCNPC) == (-1) ) { buff += "Melee Attack\n" }
 		if ( userdata(20+cnt, knowCNPC) == (-2) ) { buff += "Ranged Attack\n" }
@@ -7415,6 +7511,7 @@
 	if ( userdata(10, knowCNPC) != 0 ) {
 		buff += "<title1>*Emergency Action<def>\n"
 		// buff += "(" + userdata(10, knowCNPC) + ")"
+		buff += "["+calccostcnpcskillcost(userdata(10, knowCNPC))+"]"
 		if ( userdata(10, knowCNPC) == (-1) ) { buff += "Melee Attack\n" }
 		if ( userdata(10, knowCNPC) == (-2) ) { buff += "Ranged Attack\n" }
 		if ( userdata(10, knowCNPC) == (-3) ) { buff += "Melee Attack\n" }
@@ -12053,24 +12150,18 @@
 				}
 			}
 
-			/********** ORIGINAL - BEGINNING **********
-
 			if ( invctrl == 5 ) {
 				if ( reftype != FILTER_ITEM_FOOD & reftype != FILTER_CARGO_FOOD & inv(INV_ITEM_MATERIAL, cnt) != ITEM_MATERIAL_RAW ) {
 					continue
 				}
 			}
 
-			 ********** ORIGINAL - ENDING **********/
-
 			/********** ANNA CUSTOM - BEGINNING **********/
-
-			if ( invctrl == 5 | (invctrl == 10 & Filter_Food == 1) ) {
+			if ( invctrl == 10 & Filter_Food == 1 ) {
 				if ( reftype != FILTER_ITEM_POTION & reftype != FILTER_ITEM_FOOD & inv(INV_ITEM_MATERIAL, cnt) != ITEM_MATERIAL_RAW ) {
 					continue
 				}
 			}
-
 			/********** ANNA CUSTOM - ENDING **********/
 
 			if ( invctrl == 6 ) {

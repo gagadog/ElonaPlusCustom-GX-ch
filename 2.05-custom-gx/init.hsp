@@ -1978,6 +1978,8 @@ if instr(s,0,%1)!-1{	%c\
 	/********** CUSTOM DAMAGE METER - BEGINNING **********/
     gosub *DamageParsesInit
 	/********** CUSTOM DAMAGE METER - ENDING **********/
+	sdim atxinfon, 80, 5 // Custom - Fix sleeping crashes caused by uninitiated atxinfon (type mismatch).
+	atxinfon(0) = ""
 	HIGHDPI_Initialize cfg_highdpi_scaling, cfg_highdpi_smoothing
 	if ( cfg_fullscreen ) {
 		chgdisp 1, windoww, windowh

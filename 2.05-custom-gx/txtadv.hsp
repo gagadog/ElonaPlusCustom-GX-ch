@@ -67,6 +67,7 @@
 	atxbg = "bg13"
 	atxbgbk = ""
 	sdim atxinfon, 80, 5
+	atxinfon(0) = "" // Custom - Fix sleeping crashes caused by uninitiated atxinfon (type mismatch).
 	redraw 0
 	if ( atxid == 2 ) {
 		goto *atx_RE
@@ -822,7 +823,7 @@
 			opencard2 stat
 			p = ikasama
 			ikasamalv++
-			if ( rnd(sdata(SKILL_ATTR_DEX, CHARA_PLAYER)) < rnd(p) ) {
+			if ( rnd(sdata(SKILL_ATTR_DEX, CHARA_PLAYER)) < rnd(p + 1) ) {
 				atxinit
 				noteadd lang("イカサマだ！", "Cheater!")
 				atxinfon(1) = lang("カジノチップ残り " + mat(1) + "枚\n", "Casino chips left: " + mat(1) + "\n")

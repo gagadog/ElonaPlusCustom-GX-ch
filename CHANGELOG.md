@@ -3,7 +3,7 @@
 # Added
 - Added a EX setting 2 config to draw pet HP bars on screen.
 - Added a EX setting 2 config to auto hide extra UI elements.
-- Added a "fontWSHPad." for fonts that looks weird when not in 1:2 ratio
+- Added a "fontWSHPad." for fonts with bad spacing when not in 1:2 ratio
 - Added a Message/Log setting to capitalize/uppercase/lowercase item names.
 
 # Changed
@@ -14,11 +14,13 @@
   - Pets using them on enemy is treated as an attack.
 - You can't play the Card Game without a proper deck now.
 
-# Fixed (Ano's Plus)
-- Ship tax not resetting each month, thanks to @Mirarara.
-- Pet triggering Ocean Map Events (causing player's allied flag set to 100)
-- Player's magic style not shown when casting or using touch skills.
-
+# Fixed (Recreatable in Original Plus)
+- Ship tax not resetting each month (on land), thanks to @Mirarara.
+- Txtadv screen draw error 6 crash during sleep+werewolf event due to uninitialized `atxinfon`.
+- Pet triggering Ocean Map Events causing player's allied flag `cdata(58,0)` set to 100, refill thirst upon map change.
+- Blackjack cheating with 0 `ikasama` level crashes the game.
+- (Fixed in 2.18.1.0, discovered to be +bug) Pets not showing up during ship battles due to missing `mdata(6)` check.
+- (EN) Player's magic style not shown when casting or using touch skills.
 # Fixed (CGX)
 - HighDPI causing wrong readings of CNPC image height. (White box below CNPC bug)
 - Rod effect power `efpori` pasted to wrong place, thanks to members of the Elona QQ group.
