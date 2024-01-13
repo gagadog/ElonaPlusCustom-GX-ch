@@ -953,7 +953,7 @@
 			if ( p@tcg == TCG_BIT_ENEMY ) { s@tcg += "[Summoned on Opponent Field] "}
 			if ( p@tcg == TCG_BIT_RIDER ) { s@tcg += "Rider "}
 			if ( p@tcg == TCG_BIT_ASSASSIN ) { s@tcg += "[Starts in Opponent Deck] "}
-			if ( p@tcg == TCG_BIT_TEMPO ) { s@tcg += "[Drawn when Mana=Cost-1] "}
+			if ( p@tcg == TCG_BIT_TEMPO ) { s@tcg += "[Drawn when Mana=Cost] "}
 			if ( p@tcg == TCG_BIT_CONSTANT ) { s@tcg += "[Starts in your Hand] "}
 			if ( p@tcg == TCG_BIT_MILLSUMMON ) { s@tcg += "[Summon itself when Sent to Graveyard from Deck] "}
 			
@@ -1276,8 +1276,8 @@
 	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_DECK ) { continue }
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getrandomcard_arg1 ) { continue }
-		if ( cdbit(TCG_BIT_TEMPO, cnt) == TRUE ) { // Tempo Cards with satisfied condition are drawn with higher priority
-			if ( phase@tcg <= 1 & card@tcg(TCG_CARD_COST, cnt) == cpdata@tcg(TCG_PLAYER_MANA, getrandomcard_arg1) + 1 ) {
+		if ( cdbit(TCG_BIT_TEMPO, cnt) == TRUE | specialrulenextdrawtempo@tcg > 0 ) { // Tempo Cards with satisfied condition are drawn with higher priority
+			if ( phase@tcg <= 1 & card@tcg(TCG_CARD_COST, cnt) == cpdata@tcg(TCG_PLAYER_MANA, getrandomcard_arg1) ) {
 				ctempo@tcg(1)++
 				if ( rnd(ctempo@tcg(1)) == 0 ) {
 					ctempo@tcg(0) = cnt
@@ -1299,19 +1299,18 @@
 			c@tcg(0) = cnt
 		}
 	loop
-	if ( ctempo@tcg(0) >= 0 |  c@tcg(0) < 0 ) { c@tcg(0) = ctempo@tcg(0) }
-	if ( c@tcg(0) < 0 ) { // Tempo Cards with unsatisfied draw condition are drawn with lower priority
+	if ( ctempo@tcg(0) >= 0 | c@tcg(0) < 0 ) { c@tcg(0) = ctempo@tcg(0) }
+	if ( c@tcg(0) < 0 ) { // If draw fails, draw from deck without tempo limit
 		repeat maxcard@tcg
 			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_DECK ) { continue }
 			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getrandomcard_arg1 ) { continue }
-			if ( cdbit(TCG_BIT_TEMPO, cnt) == TRUE & ( card@tcg(TCG_CARD_COST, cnt) != cpdata@tcg(TCG_PLAYER_MANA, getrandomcard_arg1) + 1 | phase@tcg > 1 ) ) {
-				c@tcg(1)++
-				if ( rnd(c@tcg(1)) == 0 ) {
-					c@tcg(0) = cnt
-				}
+			c@tcg(1)++
+			if ( rnd(c@tcg(1)) == 0 ) {
+				c@tcg(0) = cnt
 			}
 		loop
 	}
+	specialrulenextdrawtempo@tcg--
 	if ( c@tcg(0) < 0 ) { return }
 	card@tcg(TCG_CARD_LOCATION, c@tcg) = TCG_LOCATION_HAND, getrandomcard_arg1, deckix@tcg(getrandomcard_arg1), deckiy@tcg(getrandomcard_arg1), holderix@tcg(getrandomcard_arg1) + p@tcg * holderspace@tcg, holderiy@tcg(getrandomcard_arg1), 0, 0
 	cpdata@tcg(TCG_PLAYER_DECK, getrandomcard_arg1)--
@@ -1497,14 +1496,14 @@
 	if ( card@tcg(TCG_CARD_LOCATION, putcard_arg1) == TCG_LOCATION_HAND ) {
 		if ( putcardfree@tcg == 0 ) {
 			if ( cdbit(TCG_BIT_ENEMY, putcard_arg1) ) {
-				card@tcg(TCG_CARD_CONTROLLER, putcard_arg1) = 1 - card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)
-				if ( getspotsum(card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)) >= 8 ) {
+				if ( getspotsum(1 - card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)) >= 8 ) {
 					if ( 1 - card@tcg(TCG_CARD_CONTROLLER, putcard_arg1) == player@tcg ) {
 						snd SOUNDLIST_FAIL1
 						cardhelp lang("これ以上は場に出せない。", "Your opponent's field is full."), 40
 					}
 					return -1
 				}
+				card@tcg(TCG_CARD_CONTROLLER, putcard_arg1) = 1 - card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)
 			}
 			if ( card@tcg(TCG_CARD_COST, putcard_arg1) > cpdata@tcg(TCG_PLAYER_MANA, putcard_arg2) ) {
 				if ( putcard_arg2 == player@tcg ) {
@@ -1999,6 +1998,7 @@
 	}
 	if ( cp@tcg == 1 & getspotsum(0) >= getspotsum(1) + 1 + rnd(6) ) { // Give AI extra cards because they suck
 		await 50
+		specialrulenextdrawtempo@tcg++
 		getrandomcard cp@tcg
 	}
 	if ( dbg_tcg & cp@tcg == 0 ) {

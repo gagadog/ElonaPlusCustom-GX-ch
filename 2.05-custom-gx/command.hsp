@@ -5710,7 +5710,7 @@
 	/********** CUSTOM TCG - BEGINNING **********/
 	if ( tc > CHARA_PLAYER ) {
 		if ( cdata(CDATA_INTEREST, tc) >= 80 & cdata(CDATA_CONDITION_SLEEP, tc) == 0 ) {
-			promptAdd lang("決闘!", "a Game of Cards!"), "null", 69100
+			promptAdd lang("決闘!", "Play TCG!"), "null", 69100
 		}
 	}
 	/********** CUSTOM TCG - ENDING **********/
@@ -14732,7 +14732,8 @@
 			}
 			else {
 				locvar_trimdesc_p = instr(locvar_trimdesc_q, 0, ",")
-				if ( locvar_trimdesc_p != (-1) ) {
+				// CGX 2.21, don't replace comma, it is needed
+				if ( locvar_trimdesc_p != (-1) & en != TRUE ) {
 					locvar_trimdesc_q = strmid(locvar_trimdesc_q, 0, locvar_trimdesc_p) + "." + strmid(locvar_trimdesc_q, locvar_trimdesc_p + 1, 999)
 					continue
 				}
@@ -15552,12 +15553,14 @@
 							p(1) = 61, 0
 
 							repeat strlen(q) / p(1) + 1
-								if ( cnt == 0 ) {
-									p(1) = 61
-								}
-								else {
-									p(1) = 70
-								}
+								// Remove first line limit because the \t is trimmed
+								p(1) = 70
+								; if ( cnt == 0 ) {
+								; 	p(1) = 61
+								; }
+								; else {
+								; 	p(1) = 70
+								; }
 
 								repeat 15
 									if ( strmid(q, p(2) + p(1)-cnt, 1) == " " | strmid(q, p(2) + p(1)-cnt, 1) == "," | strmid(q, p(2) + p(1)-cnt, 1) == "." ) {

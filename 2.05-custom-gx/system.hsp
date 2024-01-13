@@ -4251,6 +4251,7 @@
 			if ( instr(buff, 0, " ") != (-1) ) {
 				locvar_dbid = int(strmid(buff, instr(buff, 0, " "), strlen(buff) - instr(buff, 0, " ")))
 				repeat 100
+					flt
 					itemcreate -1, locvar_dbid * 100 + cnt, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				loop
 				noteadd "Done. (" + ci + ")"

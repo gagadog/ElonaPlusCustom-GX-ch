@@ -1,31 +1,37 @@
 # Upcoming
 
 # Added
+- Added translation for most of the item description.
 - Added a EX setting 2 config to draw pet HP bars on screen.
 - Added a EX setting 2 config to auto hide extra UI elements.
-- Added a "fontWSHPad." for fonts with bad spacing when not in 1:2 ratio
 - Added a Message/Log setting to capitalize/uppercase/lowercase item names.
+- Added a "fontWSHPad." for fonts with bad spacing when not in 1:2 ratio.
 
 # Changed
 - F1 saving now has a 0.3 second pause.
 - Potion is added to ally feed menu, cargo is removed.
-- Fixes Custom's squeeze/magic-kiss/drain-blood behavior.
-  - High impression pets can use them safely on each-other/you.
-  - Pets using them on enemy is treated as an attack.
+- Fixes Custom's pet squeeze/magic-kiss/drain-blood behavior.
 - You can't play the Card Game without a proper deck now.
+- Card Game AI is a little bit better on attacking/blocking.
+- CNPC with no file no longer change name into `garbage`, image is changed to a vestige's.
+- CNPC summon tweak now check their skills for calculating cost.
 
-# Fixed (Recreatable in Original Plus)
-- Ship tax not resetting each month (on land), thanks to @Mirarara.
-- Txtadv screen draw error 6 crash during sleep+werewolf event due to uninitialized `atxinfon`.
-- Pet triggering Ocean Map Events causing player's allied flag `cdata(58,0)` set to 100, refill thirst upon map change.
-- Blackjack cheating with 0 `ikasama` level crashes the game.
-- (Fixed in 2.18.1.0, discovered to be +bug) Pets not showing up during ship battles due to missing `mdata(6)` check.
-- (EN) Player's magic style not shown when casting or using touch skills.
-# Fixed (CGX)
+# Fixed 
+- These are bugs Ano plan to fix in 2.22:
+  - Ship tax not resetting each month (on land), thanks to @Mirarara.
+  - Blackjack cheating with 0 `ikasama` level crashes the game, thanks to jlinBE.
+- These are bugs recreatable in Ano's plus but there are not fixes planned:
+  - Txtadv screen draw error 6 crash during [sleep]+[werewolf event] due to uninitialized `atxinfon`.
+  - Pets not showing up during ship battles / showing up on ocean world map due to missing `mdata(6)` check.
+  - Pet triggering Ocean Map Events, causing `cc` and `ct` inconsistency, thanks to Bayu R. Jati.
+  - (EN translation) Player's magic style not shown when casting or using touch skills.
 - HighDPI causing wrong readings of CNPC image height. (White box below CNPC bug)
-- Rod effect power `efpori` pasted to wrong place, thanks to members of the Elona QQ group.
+- Rod effect power `efpori` calc pasted to wrong place, thanks to members of the Elona QQ group.
 - [Opening mysterious envelope] + [Auto-drop chest] dropping the wrong item, thanks to @Mirarara.
 - Some translation / display issues thanks to @lIllIIlI and other memebers of the Elona Discord group.
+- Ships not colored because I misread Ruin0x11's code during porting.
+
+NPC/Deed bug is not fixed because it's funny.
 
 # 2.21.1.1
 

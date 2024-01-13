@@ -127,147 +127,125 @@
 	_switch_val@tcg = act@tcg
 	if ( _switch_val@tcg == TCG_ACTION_ATTACKING | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
-		tc@tcg = attacktarget@tcg
-		if ( tc@tcg != (-1) ) {
-			if ( cdbit(TCG_BIT_VIGILANCE, tc@tcg) | cdbit(TCG_BIT_DEFENDER, tc@tcg) ) {
-				card@tcg(TCG_CARD_STATUS, tc@tcg) = TCG_ACTION_NONE
+		if ( attacktarget@tcg != (-1) ) {
+			if ( cdbit(TCG_BIT_VIGILANCE, attacktarget@tcg) | cdbit(TCG_BIT_DEFENDER, attacktarget@tcg) ) {
+				card@tcg(TCG_CARD_STATUS, attacktarget@tcg) = TCG_ACTION_NONE
 			} else {
-				card@tcg(TCG_CARD_STATUS, tc@tcg) = TCG_ACTION_DEFENDING
-				cdbitmod TCG_BIT_EXHAUSTED, tc@tcg, 1
+				card@tcg(TCG_CARD_STATUS, attacktarget@tcg) = TCG_ACTION_DEFENDING
+				cdbitmod TCG_BIT_EXHAUSTED, attacktarget@tcg, 1
 			}
 			if ( cp@tcg == TCG_CONTROLLER_PLAYER ) {
-				card@tcg(TCG_CARD_Y_MOVETO, tc@tcg) += 25
+				card@tcg(TCG_CARD_Y_MOVETO, attacktarget@tcg) += 25
 			}
 			else {
-				card@tcg(TCG_CARD_Y_MOVETO, tc@tcg) -= 25
+				card@tcg(TCG_CARD_Y_MOVETO, attacktarget@tcg) -= 25
 			}
 			tcgdraw
-			if ( cdbit(TCG_BIT_FIRST_STRIKE, ac@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, ac@tcg) ) {
-				if ( (cdbit(TCG_BIT_TRAMPLE, ac@tcg)|specialrulelifeordeathcombat@tcg) & card@tcg(TCG_CARD_ATTACK, ac@tcg) > card@tcg(TCG_CARD_HP, tc@tcg) ) {
-					dmgplayer card@tcg(TCG_CARD_CONTROLLER, tc@tcg), card@tcg(TCG_CARD_ATTACK, ac@tcg) - card@tcg(TCG_CARD_HP, tc@tcg)
+			attacktargetatk@tcg = card@tcg(TCG_CARD_ATTACK, attacktarget@tcg)
+			attackingcardatk@tcg = card@tcg(TCG_CARD_ATTACK, attackingcard@tcg)
+			if ( cdbit(TCG_BIT_FIRST_STRIKE, attackingcard@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, attackingcard@tcg) ) {
+				if ( (cdbit(TCG_BIT_TRAMPLE, attackingcard@tcg) | specialrulelifeordeathcombat@tcg) & attackingcardatk@tcg > card@tcg(TCG_CARD_HP, attacktarget@tcg) ) {
+					dmgplayer card@tcg(TCG_CARD_CONTROLLER, attacktarget@tcg), attackingcardatk@tcg - card@tcg(TCG_CARD_HP, attacktarget@tcg)
 				}
-				if ( cdbit(TCG_BIT_LIFELINK, ac@tcg) ) {
-					dmgplayer card@tcg(TCG_CARD_CONTROLLER, ac@tcg), (-1) * limit(card@tcg(TCG_CARD_ATTACK, ac@tcg), 0, card@tcg(TCG_CARD_HP, tc@tcg))
+				if ( cdbit(TCG_BIT_LIFELINK, attackingcard@tcg) ) {
+					dmgplayer card@tcg(TCG_CARD_CONTROLLER, attackingcard@tcg), (-1) * limit(attackingcardatk@tcg, 0, card@tcg(TCG_CARD_HP, attacktarget@tcg))
 				}
-				dmgcard tc@tcg, card@tcg(TCG_CARD_ATTACK, ac@tcg) + cdbit(TCG_BIT_DEATHTOUCH, ac@tcg) * 999
-				tc@tcg = attacktarget@tcg
-				ac@tcg = attackingcard@tcg
+				dmgcard attacktarget@tcg, attackingcardatk@tcg + cdbit(TCG_BIT_DEATHTOUCH, attackingcard@tcg) * 999
 			}
-			if ( cdbit(TCG_BIT_FIRST_STRIKE, tc@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, tc@tcg) ) {
-				if ( cdbit(TCG_BIT_LIFELINK, tc@tcg) ) {
-					dmgplayer card@tcg(TCG_CARD_CONTROLLER, tc@tcg), (-1) * limit(card@tcg(TCG_CARD_ATTACK, tc@tcg), 0, card@tcg(TCG_CARD_HP, ac@tcg))
+			if ( cdbit(TCG_BIT_FIRST_STRIKE, attacktarget@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, attacktarget@tcg) ) {
+				if ( cdbit(TCG_BIT_LIFELINK, attacktarget@tcg) ) {
+					dmgplayer card@tcg(TCG_CARD_CONTROLLER, attacktarget@tcg), (-1) * limit(attacktargetatk@tcg, 0, card@tcg(TCG_CARD_HP, attackingcard@tcg))
 				}
-				dmgcard ac@tcg, card@tcg(TCG_CARD_ATTACK, tc@tcg) + cdbit(TCG_BIT_DEATHTOUCH, tc@tcg) * 999
-				tc@tcg = attacktarget@tcg
-				ac@tcg = attackingcard@tcg
+				dmgcard attackingcard@tcg, attacktargetatk@tcg + cdbit(TCG_BIT_DEATHTOUCH, attacktarget@tcg) * 999
 			}
-			if ( card@tcg(TCG_CARD_LOCATION, ac@tcg) == TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, tc@tcg) == TCG_LOCATION_FIELD ) {
-				if ( cdbit(TCG_BIT_FIRST_STRIKE, ac@tcg) != TRUE ) {
-					if ( (cdbit(TCG_BIT_TRAMPLE, ac@tcg)|specialrulelifeordeathcombat@tcg) & card@tcg(TCG_CARD_ATTACK, ac@tcg) > card@tcg(TCG_CARD_HP, tc@tcg) ) {
-						dmgplayer card@tcg(TCG_CARD_CONTROLLER, tc@tcg), card@tcg(TCG_CARD_ATTACK, ac@tcg) - card@tcg(TCG_CARD_HP, tc@tcg)
+			if ( card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) == TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) == TCG_LOCATION_FIELD ) {
+				if ( cdbit(TCG_BIT_FIRST_STRIKE, attackingcard@tcg) != TRUE ) {
+					if ( (cdbit(TCG_BIT_TRAMPLE, attackingcard@tcg) | specialrulelifeordeathcombat@tcg) & attackingcardatk@tcg > card@tcg(TCG_CARD_HP, attacktarget@tcg) ) {
+						dmgplayer card@tcg(TCG_CARD_CONTROLLER, attacktarget@tcg), attackingcardatk@tcg - card@tcg(TCG_CARD_HP, attacktarget@tcg)
 					}
-					if ( cdbit(TCG_BIT_LIFELINK, ac@tcg) ) {
-						dmgplayer card@tcg(TCG_CARD_CONTROLLER, ac@tcg), (-1) * limit(card@tcg(TCG_CARD_ATTACK, ac@tcg), 0, card@tcg(TCG_CARD_HP, tc@tcg))
+					if ( cdbit(TCG_BIT_LIFELINK, attackingcard@tcg) ) {
+						dmgplayer card@tcg(TCG_CARD_CONTROLLER, attackingcard@tcg), (-1) * limit(attackingcardatk@tcg, 0, card@tcg(TCG_CARD_HP, attacktarget@tcg))
 					}
-					dmgcard tc@tcg, card@tcg(TCG_CARD_ATTACK, ac@tcg) + cdbit(TCG_BIT_DEATHTOUCH,ac@tcg) * 999
-					tc@tcg = attacktarget@tcg
-					ac@tcg = attackingcard@tcg
+					dmgcard attacktarget@tcg, attackingcardatk@tcg + cdbit(TCG_BIT_DEATHTOUCH,attackingcard@tcg) * 999
 				}
-				if ( cdbit(TCG_BIT_FIRST_STRIKE, tc@tcg) != TRUE ) {
-					if ( cdbit(TCG_BIT_LIFELINK, tc@tcg) ) {
-						dmgplayer card@tcg(TCG_CARD_CONTROLLER, tc@tcg), (-1) * limit(card@tcg(TCG_CARD_ATTACK, tc@tcg), 0, card@tcg(TCG_CARD_HP, ac@tcg))
+				if ( cdbit(TCG_BIT_FIRST_STRIKE, attacktarget@tcg) != TRUE ) {
+					if ( cdbit(TCG_BIT_LIFELINK, attacktarget@tcg) ) {
+						dmgplayer card@tcg(TCG_CARD_CONTROLLER, attacktarget@tcg), (-1) * limit(attacktargetatk@tcg, 0, card@tcg(TCG_CARD_HP, attackingcard@tcg))
 					}
-					dmgcard ac@tcg, card@tcg(TCG_CARD_ATTACK, tc@tcg) + cdbit(TCG_BIT_DEATHTOUCH,tc@tcg) * 999
-					tc@tcg = attacktarget@tcg
-					ac@tcg = attackingcard@tcg
+					dmgcard attackingcard@tcg, attacktargetatk@tcg + cdbit(TCG_BIT_DEATHTOUCH,attacktarget@tcg) * 999
 				}
 			}
-			tc@tcg = attacktarget@tcg
-			ac@tcg = attackingcard@tcg
-			if ( card@tcg(TCG_CARD_LOCATION, tc@tcg) == TCG_LOCATION_FIELD ) {
+			if ( card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) == TCG_LOCATION_FIELD ) {
 				if ( cp@tcg == TCG_CONTROLLER_PLAYER ) {
-					card@tcg(TCG_CARD_Y_MOVETO, tc@tcg) -= 25
+					card@tcg(TCG_CARD_Y_MOVETO, attacktarget@tcg) -= 25
 				}
 				else {
-					card@tcg(TCG_CARD_Y_MOVETO, tc@tcg) += 25
+					card@tcg(TCG_CARD_Y_MOVETO, attacktarget@tcg) += 25
 				}
 			}
 		}
 		else {
-			dmgplayer tp@tcg, card@tcg(TCG_CARD_ATTACK, ac@tcg)
+			dmgplayer tp@tcg, card@tcg(TCG_CARD_ATTACK, attackingcard@tcg)
+			if ( cdbit(TCG_BIT_DOUBLE_STRIKE, attackingcard@tcg) ) {
+				dmgplayer tp@tcg, card@tcg(TCG_CARD_ATTACK, attackingcard@tcg)
+			}
 		}
-		tc@tcg = attacktarget@tcg
-		ac@tcg = attackingcard@tcg
-		if ( cdbit(TCG_BIT_EXHAUSTED, ac@tcg) != TRUE ) {
-			card@tcg(TCG_CARD_STATUS, ac@tcg) = TCG_ACTION_NONE
+		if ( cdbit(TCG_BIT_EXHAUSTED, attackingcard@tcg) != TRUE ) {
+			card@tcg(TCG_CARD_STATUS, attackingcard@tcg) = TCG_ACTION_NONE
 		}
-		if ( card@tcg(TCG_CARD_LOCATION, ac@tcg) == TCG_LOCATION_FIELD ) {
+		if ( card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) == TCG_LOCATION_FIELD ) {
 			if ( cp@tcg == TCG_CONTROLLER_PLAYER ) {
-				card@tcg(TCG_CARD_Y_MOVETO, ac@tcg) += 25
+				card@tcg(TCG_CARD_Y_MOVETO, attackingcard@tcg) += 25
 			}
 			else {
-				card@tcg(TCG_CARD_Y_MOVETO, ac@tcg) -= 25
+				card@tcg(TCG_CARD_Y_MOVETO, attackingcard@tcg) -= 25
 			}
 		}
 		cardpos 0, -1
 		cardpos 1, -1
 		tcgdraw
-		tc@tcg = attacktarget@tcg
-		ac@tcg = attackingcard@tcg
 		if ( dbg_tcg ) { dialog "" + attackingcard@tcg + "/" + attacktarget@tcg }
-		if ( tc@tcg != (-1) ) {
-			tc@tcg = attacktarget@tcg
-			ac@tcg = attackingcard@tcg
-			if ( card@tcg(TCG_CARD_LOCATION, ac@tcg) == TCG_LOCATION_FIELD & card@tcg(TCG_CARD_ATTACK, tc@tcg) > 0 & cdbit(TCG_BIT_SPLIT, ac@tcg) == TRUE ) {
-				effac@tcg = ac@tcg
-				eff@tcg = card@tcg(TCG_CARD_EFFECT, ac@tcg)
-				cardstack@tcg(TCG_STACK, stack@tcg) = ac@tcg, TCG_SKILL_EFF_SPLITSELF, card@tcg(TCG_CARD_CONTROLLER, ac@tcg), 1, 0, 0
+		if ( attacktarget@tcg != (-1) ) {
+			if ( card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) == TCG_LOCATION_FIELD & card@tcg(TCG_CARD_ATTACK, attacktarget@tcg) > 0 & cdbit(TCG_BIT_SPLIT, attackingcard@tcg) == TRUE ) {
+				effac@tcg = attackingcard@tcg
+				eff@tcg = card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)
+				cardstack@tcg(TCG_STACK, stack@tcg) = attackingcard@tcg, TCG_SKILL_EFF_SPLITSELF, card@tcg(TCG_CARD_CONTROLLER, attackingcard@tcg), 1, 0, 0
 				stack@tcg++
 				actionproc
 				makecardlist
 			}
-			tc@tcg = attacktarget@tcg
-			ac@tcg = attackingcard@tcg
-			if ( card@tcg(TCG_CARD_LOCATION, tc@tcg) == TCG_LOCATION_FIELD & card@tcg(TCG_CARD_ATTACK, ac@tcg) > 0 & cdbit(TCG_BIT_SPLIT, tc@tcg) == TRUE ) {
-				effac@tcg = tc@tcg
-				eff@tcg = card@tcg(TCG_CARD_EFFECT, tc@tcg)
-				cardstack@tcg(TCG_STACK, stack@tcg) = tc@tcg, TCG_SKILL_EFF_SPLITSELF, card@tcg(TCG_CARD_CONTROLLER, tc@tcg), 1, 0, 0
+			if ( card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) == TCG_LOCATION_FIELD & card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) > 0 & cdbit(TCG_BIT_SPLIT, attacktarget@tcg) == TRUE ) {
+				effac@tcg = attacktarget@tcg
+				eff@tcg = card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)
+				cardstack@tcg(TCG_STACK, stack@tcg) = attacktarget@tcg, TCG_SKILL_EFF_SPLITSELF, card@tcg(TCG_CARD_CONTROLLER, attacktarget@tcg), 1, 0, 0
 				stack@tcg++
 				actionproc
 				makecardlist
 			}
-			tc@tcg = attacktarget@tcg
-			ac@tcg = attackingcard@tcg
-			if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, ac@tcg)) == TCG_SKILL_TYPE_AFTERCOMBAT ) {
-				// dialog "" + ac@tcg + "/" + card@tcg(TCG_CARD_EFFECT, ac@tcg) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, ac@tcg))
-				effac@tcg = ac@tcg
-				eff@tcg = card@tcg(TCG_CARD_EFFECT, ac@tcg)
+			if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)) == TCG_SKILL_TYPE_AFTERCOMBAT ) {
+				// dialog "" + attackingcard@tcg + "/" + card@tcg(TCG_CARD_EFFECT, attackingcard@tcg) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attackingcard@tcg))
+				effac@tcg = attackingcard@tcg
+				eff@tcg = card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)
 				gosub *card_action_choose_target
 			}
-			tc@tcg = attacktarget@tcg
-			ac@tcg = attackingcard@tcg
-			if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, tc@tcg)) == TCG_SKILL_TYPE_AFTERCOMBAT ) {
-				// dialog "" + tc@tcg + "/" + card@tcg(TCG_CARD_EFFECT, tc@tcg) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, tc@tcg))
-				effac@tcg = tc@tcg
-				eff@tcg = card@tcg(TCG_CARD_EFFECT, tc@tcg)
+			if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)) == TCG_SKILL_TYPE_AFTERCOMBAT ) {
+				// dialog "" + attacktarget@tcg + "/" + card@tcg(TCG_CARD_EFFECT, attacktarget@tcg) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attacktarget@tcg))
+				effac@tcg = attacktarget@tcg
+				eff@tcg = card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)
 				gosub *card_action_choose_target
 			}
-			tc@tcg = attacktarget@tcg
-			ac@tcg = attackingcard@tcg
-			// dialog "" + ac@tcg + "/" + card@tcg(TCG_CARD_EFFECT, ac@tcg) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, ac@tcg))
-			if ( card@tcg(TCG_CARD_LOCATION, tc@tcg) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, ac@tcg) == TCG_LOCATION_FIELD ) {
-				effac@tcg = ac@tcg
-				eff@tcg = card@tcg(TCG_CARD_EFFECT, ac@tcg)
+			// dialog "" + attackingcard@tcg + "/" + card@tcg(TCG_CARD_EFFECT, attackingcard@tcg) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attackingcard@tcg))
+			if ( card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) == TCG_LOCATION_FIELD ) {
+				effac@tcg = attackingcard@tcg
+				eff@tcg = card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)
 				if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_ONKILL ) {
 					gosub *card_action_choose_target
 				}
 			}
-			tc@tcg = attacktarget@tcg
-			ac@tcg = attackingcard@tcg
-			// dialog "" + tc@tcg + "/" + card@tcg(TCG_CARD_EFFECT, tc@tcg) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, tc@tcg))
-			if ( card@tcg(TCG_CARD_LOCATION, ac@tcg) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, tc@tcg) == TCG_LOCATION_FIELD ) {
-				effac@tcg = tc@tcg
-				eff@tcg = card@tcg(TCG_CARD_EFFECT, tc@tcg)
+			// dialog "" + attacktarget@tcg + "/" + card@tcg(TCG_CARD_EFFECT, attacktarget@tcg) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attacktarget@tcg))
+			if ( card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) == TCG_LOCATION_FIELD ) {
+				effac@tcg = attacktarget@tcg
+				eff@tcg = card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)
 				if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_ONKILL ) {
 					gosub *card_action_choose_target
 				}
@@ -428,16 +406,19 @@
 		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
 			if ( cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) >= 9 ) {
 				cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) -= 9
+				effac@tcg = ac@tcg
 				eff@tcg = TCG_EFF_BATTLECRY_DEALEVERYONE9DAMAGE
 				gosub *card_action_choose_target
 			}
 			if ( cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) >= 3 ) {
 				cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) -= 3
+				effac@tcg = ac@tcg
 				eff@tcg = TCG_EFF_BATTLECRY_DEALEVERYONE3DAMAGE
 				gosub *card_action_choose_target
 			}
 			if ( cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) >= 1 ) {
 				cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) -= 1
+				effac@tcg = ac@tcg
 				eff@tcg = TCG_EFF_BATTLECRY_DEALEVERYONE1DAMAGE
 				gosub *card_action_choose_target
 			}
@@ -2273,6 +2254,7 @@
 		_switch_sw@tcg = 0
 		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
 			if ( getspotsum(aeft@tcg) == 1 ) {
+				effac@tcg = ac@tcg
 				eff@tcg = TCG_EFF_DARKARTIFICIALGIANT
 				gosub *card_action_choose_target
 			}

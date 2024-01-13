@@ -112913,7 +112913,7 @@
 		if ( dbmode == DBMODE_FLAVOR_KILL ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			txt lang("少女は服のほこりをはらった。", "The little girl brushes dust off her clothes."), lang("少女はあなたを見てにっこり笑った。", "The little girl looks at you and smiles."), lang("あなたは少女に見とれた。", "You look admiringly at the little girl."), lang("「うふふ♪」", cnvtalk("♪Another death. *grin*"))
+			txt lang("少女は服のほこりをはらった。", "The little girl brushes dust off her clothes."), lang("少女はあなたを見てにっこり笑った。", "The little girl looks at you and smiles."), lang("あなたは少女に見とれた。", "You look admiringly at the little girl."), lang("「うふふ♪」", cnvtalk("Another death. *grin*"))
 			return 1
 		}
 		if ( dbmode == DBMODE_REF_SPEC ) {
@@ -113587,7 +113587,7 @@
 		if ( dbmode == DBMODE_FLAVOR_KILL ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			txt lang("嬢は服のほこりをはらった。", "The young lady brushes dust off her clothes."), lang("嬢はあなたを見てにっこり笑った。", "The young lady smiles at the sight of you."), lang("あなたは嬢に見とれた。", "You look admiringly at the young lady."), lang("「うふふ♪」", cnvtalk("♪Another death. *grin*"))
+			txt lang("嬢は服のほこりをはらった。", "The young lady brushes dust off her clothes."), lang("嬢はあなたを見てにっこり笑った。", "The young lady smiles at the sight of you."), lang("あなたは嬢に見とれた。", "You look admiringly at the young lady."), lang("「うふふ♪」", cnvtalk("Another death. *grin*"))
 			return 1
 		}
 		if ( dbmode == DBMODE_REF_SPEC ) {

@@ -12672,11 +12672,11 @@
 		if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
 			cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) = 1
 			txtef COLOR_GREEN
-			txt lang(name(cc) + "は次の攻撃に意識を集中させた！", name(cc) + " put" + _s(cc) + " all of " + your(cc) + " strength into the next blow!")
+			txt lang(name(cc) + "は次の攻撃に意識を集中させた！", name(cc) + " put" + _s(cc) + " all of " + his(cc) + " strength into the next blow!")
 		}
 		else {
 			cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) = 0
-			txt lang(name(cc) + "は次の攻撃に意識を集中させていたが、やっぱりやめた。", name(cc) + " decide" + _s(cc) + " not to put all of " + your(cc) + " strength into the next blow.")
+			txt lang(name(cc) + "は次の攻撃に意識を集中させていたが、やっぱりやめた。", name(cc) + " decide" + _s(cc) + " not to put all of " + his(cc) + " strength into the next blow.")
 		}
 		snd SOUNDLIST_ENC
 		animeload ANIMATION_CHAOS_CHILD, cc

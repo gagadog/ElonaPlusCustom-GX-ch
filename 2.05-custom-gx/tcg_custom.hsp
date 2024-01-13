@@ -264,6 +264,9 @@
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_BETHEL ) {
 					if ( card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_WHOM_DWELL_IN_THE_VANITY & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_BETHEL_THE_WHITE_HAWK ) { continue }
 				}
+				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_UNDEAD ) {
+					if (effref@tcg(TCG_SKILL_EFF, card@tcg(TCG_CARD_EFFECT, cnt)) != TCG_SKILL_EFF_RESURRECT ) { continue }
+				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_BATTLECRY ) {
 					if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, cnt)) != TCG_SKILL_TYPE_BATTLECRY ) { continue }
 				}
@@ -4045,7 +4048,7 @@
 		cardrefcost = 4
 		cardrefattack = 5
 		cardrefhp = 4
-		cardrefskillid = TCG_EFF_BATTLECRY_MILLTARGETCARD
+		cardrefskillid = TCG_EFF_BATTLECRY_MILLTARGETUNDEAD
 		cardrefbits = ""
 		return 1
 	}
@@ -5363,7 +5366,7 @@
 		cardrefattack = 2
 		cardrefhp = 2
 		cardrefskillid = TCG_EFF_SACRIFICE_DRAW1CARD
-		cardrefbits = "27"
+		cardrefbits = "28"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_SECURITY_OFFICER_ORVILLE ) {
@@ -6603,7 +6606,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
 		cardrefcost = 3
-		cardrefattack = 5
+		cardrefattack = 4
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_TURN_START_DEATHWORDRANDOMENEMY
 		cardrefbits = "29"
@@ -6617,8 +6620,8 @@
 		cardrefdomain = 3
 		cardrefcost = 3
 		cardrefattack = 1
-		cardrefhp = 6
-		cardrefskillid = TCG_EFF_BATTLECRY_HEALPLAYER6DAMAGE
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_BATTLECRY_HEALALLCARD
 		cardrefbits = "29"
 		return 1
 	}
@@ -6642,8 +6645,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
 		cardrefcost = 6
-		cardrefattack = 8
-		cardrefhp = 8
+		cardrefattack = 5
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_BATTLECRY_MILL6CARD
 		cardrefbits = ""
 		return 1
@@ -6668,9 +6671,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
 		cardrefcost = 3
-		cardrefattack = 3
-		cardrefhp = 4
-		cardrefskillid = TCG_EFF_BATTLECRY_HEALALLCARD
+		cardrefattack = 2
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_BATTLECRY_HEALPLAYER6DAMAGE
 		cardrefbits = "10,29"
 		return 1
 	}
@@ -6694,7 +6697,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
 		cardrefcost = 4
-		cardrefattack = 6
+		cardrefattack = 3
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "8,29"
@@ -6706,7 +6709,7 @@
 		cardreflvl = 136
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 3
+		cardrefcost = 4
 		cardrefattack = 3
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_NONE
@@ -6719,7 +6722,7 @@
 		cardreflvl = 49
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 2
+		cardrefcost = 3
 		cardrefattack = 3
 		cardrefhp = 4
 		cardrefskillid = TCG_EFF_NONE
@@ -6732,9 +6735,9 @@
 		cardreflvl = 93
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 3
+		cardrefcost = 4
 		cardrefattack = 3
-		cardrefhp = 5
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_BATTLECRY_MILL3CARD
 		cardrefbits = ""
 		return 1
@@ -6745,7 +6748,7 @@
 		cardreflvl = 60
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 3
+		cardrefcost = 4
 		cardrefattack = 3
 		cardrefhp = 5
 		cardrefskillid = TCG_EFF_BATTLECRY_SILENCECHOSENENEMY
@@ -6759,7 +6762,7 @@
 		cardrefdomain = 3
 		cardrefcost = 2
 		cardrefattack = 2
-		cardrefhp = 3
+		cardrefhp = 2
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "7,10,29"
 		return 1
@@ -12187,8 +12190,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
 		cardrefcost = 3
-		cardrefattack = 3
-		cardrefhp = 2
+		cardrefattack = 0
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_ELDER
 		cardrefbits = "78"
 		return 1

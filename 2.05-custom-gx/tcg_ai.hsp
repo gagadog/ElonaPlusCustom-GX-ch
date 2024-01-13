@@ -21,19 +21,31 @@
 	if ( aiblock@tcg == 0 ) {
 		repeat clistmax@tcg(cl@tcg)
 			c@tcg = clist@tcg(cnt, cl@tcg)
-			p@tcg = 0
-			p@tcg = rnd(40)
-			// Don't attack with 0 attack cards. (Occasionally to annoy you)
-			if ( card@tcg(TCG_CARD_ATTACK, c@tcg) <= 0 & rnd(40) > 0 ) { p@tcg = -100 }
-			// Do not attack using cards needed to be kept on field
-			if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_KEEPALIVE ) {
-				repeat clistmax@tcg(tl@tcg)
-					if ( cardcanblock(clist@tcg(cnt, tl@tcg))) { p@tcg = -100 }
-				loop 
-			}
-			// Deathtouch card attack with some chance to annoy you.
-			if ( cdbit(TCG_BIT_DEATHTOUCH, c@tcg) ) { p@tcg = 0 + 40 * rnd(2) }
 			if ( cardcandeclareattack(c@tcg) ) {
+				p@tcg = 20 + rnd(10)
+				// These cards attack later
+				if ( cdbit(TCG_BIT_TRAMPLE, c@tcg) ) { p@tcg -= 10 }
+				if ( cdbit(TCG_BIT_FLYING, c@tcg) ) { p@tcg -= 5 }
+				if ( cdbit(TCG_BIT_INTIMIDATE, c@tcg) ) { p@tcg -= 5 }
+				// Don't attack with 0 attack cards. (Occasionally to annoy you)
+				if ( card@tcg(TCG_CARD_ATTACK, c@tcg) <= 0 & rnd(40) > 0 ) { p@tcg = -100 }
+				// Do not attack using cards needed to be kept on field
+				if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_KEEPALIVE ) {
+					repeat clistmax@tcg(tl@tcg)
+						if ( cardcanblock(clist@tcg(cnt, tl@tcg))) { 
+							cardcankill@tcg = card@tcg(TCG_CARD_ATTACK, clist@tcg(cnt, tl@tcg)) + 50 * cdbit(TCG_BIT_DEATHTOUCH, clist@tcg(cnt, tl@tcg)) >= card@tcg(TCG_CARD_HP, c@tcg) + 100 * cdbit(TCG_BIT_ARMOR, c@tcg) + 100 * (card@tcg(TCG_CARD_HP, c@tcg) > 2) * cdbit(TCG_BIT_RIDER, c@tcg)
+							if ( cardcankill@tcg ) {
+								p@tcg = -101
+							}
+						}
+					loop 
+				}
+				// Deathtouch card attack with some chance to annoy you.
+				if ( cdbit(TCG_BIT_DEATHTOUCH, c@tcg) ) { p@tcg = 0 + 40 * rnd(2) }
+
+				// Below line visualized defend weight, enable if you want to debug
+				// efllistadd 1 + (p@tcg > 0), p@tcg, card@tcg(TCG_CARD_X, c@tcg), card@tcg(TCG_CARD_Y, c@tcg), card@tcg(TCG_CARD_X, c@tcg), card@tcg(TCG_CARD_Y, c@tcg)
+
 				elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_ATTACKING
 				emax@tcg++
 			}
@@ -42,27 +54,45 @@
 	else {
 		repeat clistmax@tcg(cl@tcg)
 			c@tcg = clist@tcg(cnt, cl@tcg)
-			p@tcg = 0
-			p@tcg = rnd(40)
-			// Do not defend using cards needed to be kept on field
-			if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_KEEPALIVE ) { p@tcg = -100 }
-			// Deathtouch card defend with some chance to annoy you.
-			if ( cdbit(TCG_BIT_DEATHTOUCH, c@tcg) ) { p@tcg = 0 + 40 * rnd(2) }
-			// Block attack with splitting creatures for profit.
-			if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) < card@tcg(TCG_CARD_HP, c@tcg) & cdbit(TCG_BIT_SPLIT, c@tcg) ) { p@tcg = 100 }
-			// Preferably, don't block first-attack cards.
-			if ( cdbit(TCG_BIT_FIRST_STRIKE, attackingcard@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, attackingcard@tcg) ) { 
-				if ( cdbit(TCG_BIT_FIRST_STRIKE, c@tcg) != TRUE & cdbit(TCG_BIT_DOUBLE_STRIKE, c@tcg) != TRUE & cdbit(TCG_BIT_ARMOR, c@tcg) != TRUE & card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) >= card@tcg(TCG_CARD_HP, c@tcg) ) { 
-					p@tcg = -100
-				}
-			}
-			// Don't block 0 attack cards.
-			if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) <= 0 & rnd(100) > 0 ) { p@tcg = -100 }
-			// Force a block if life in danger
-			if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) >= cpdata@tcg(TCG_PLAYER_LIFE, cp@tcg) - rnd(10) - rnd(5) ) {
-				p@tcg = 40 + rnd(40)
-			}
 			if ( cardcanblock(c@tcg, attackingcard@tcg) ) {
+				// Initial weight being HP - attack diff. block with highest possible HP and lowest possible attack diff.
+				p@tcg = limit(card@tcg(TCG_CARD_HP, c@tcg) - limit(card@tcg(TCG_CARD_ATTACK, c@tcg) - card@tcg(TCG_CARD_ATTACK, attackingcard@tcg), -10, 10) * 3, -20, 20)
+				// Surplus basic merit flying/lifelink:
+				if ( cdbit(TCG_BIT_LIFELINK, attackingcard@tcg) ) { p@tcg -= card@tcg(TCG_CARD_HP, attackingcard@tcg) }
+				if ( cdbit(TCG_BIT_TRAMPLE, attackingcard@tcg) ) { p@tcg += card@tcg(TCG_CARD_HP, c@tcg) }
+				if ( cdbit(TCG_BIT_FLYING, attackingcard@tcg) ) { p@tcg += 10 }
+				if ( cdbit(TCG_BIT_INTIMIDATE, attackingcard@tcg) ) { p@tcg += 20 }
+				// Get basic combat predictions
+				cardsurvive@tcg = card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) + 50 * cdbit(TCG_BIT_DEATHTOUCH, attackingcard@tcg) < card@tcg(TCG_CARD_HP, c@tcg) + 100 * cdbit(TCG_BIT_ARMOR, c@tcg) + 100 * (card@tcg(TCG_CARD_HP, c@tcg) > 2) * cdbit(TCG_BIT_RIDER, c@tcg)
+				cardcankill@tcg = card@tcg(TCG_CARD_ATTACK, c@tcg) + 50 * cdbit(TCG_BIT_DEATHTOUCH, c@tcg) >= card@tcg(TCG_CARD_HP, attackingcard@tcg) + 100 * cdbit(TCG_BIT_ARMOR, attackingcard@tcg) + 100 * (card@tcg(TCG_CARD_HP, attackingcard@tcg) > 2) * cdbit(TCG_BIT_RIDER, attackingcard@tcg)
+				cardvantage@tcg = (cdbit(TCG_BIT_FIRST_STRIKE, c@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, c@tcg)) - (cdbit(TCG_BIT_FIRST_STRIKE, attackingcard@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, attackingcard@tcg))
+				// Basic card advantage calcs
+				if ( cardvantage@tcg < 0 & cardsurvive@tcg == 0 ) { cardcankill@tcg = 0 }
+				if ( cardsurvive@tcg & card@tcg(TCG_CARD_ATTACK, c@tcg) == 0 ) { p@tcg += 5 }
+				if ( cardsurvive@tcg == 0 & cardcankill@tcg == 0 ) { p@tcg -= limit(12 - card@tcg(TCG_CARD_ATTACK, c@tcg) * (cardvantage@tcg > 0) - getspotsum(1) * 2, 0, 20) }
+				if ( cardsurvive@tcg ) { p@tcg += 10 }
+				if ( cardcankill@tcg ) { p@tcg += 10 }
+				if ( cardcankill@tcg & cardvantage@tcg ) { p@tcg += 10 }
+				if ( cardsurvive@tcg & cdbit(TCG_BIT_REGENERATION, c@tcg) ) { p@tcg += 5 }
+				if ( cardsurvive@tcg & cdbit(TCG_BIT_REGENERATION, c@tcg) & cdbit(TCG_BIT_VIGILANCE, c@tcg) ) { p@tcg += 5 }
+				// Do not defend using cards needed to be kept on field
+				if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_KEEPALIVE & cardsurvive@tcg == 0 ) { p@tcg = -101 }
+				// Deathtouch card defend with some chance to annoy you.
+				if ( cdbit(TCG_BIT_DEATHTOUCH, c@tcg) & cardvantage@tcg >= 0 ) { p@tcg = 10 + (-40) * (cardsurvive@tcg == 0) + 40 * rnd(2) }
+				// Block attack with splitting creatures for profit.
+				if ( cardsurvive@tcg & cdbit(TCG_BIT_SPLIT, c@tcg) ) { p@tcg = 101 }
+				// Preferably, don't block first-attack cards.
+				if ( cardvantage@tcg < 0 & cardsurvive@tcg == 0 ) { p@tcg = -102 }
+				// Don't block 0 attack cards.
+				if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) <= 0 & rnd(100) > 0 ) { p@tcg = -103 }
+				// Force a block if life in danger
+				if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) >= cpdata@tcg(TCG_PLAYER_LIFE, cp@tcg) - rnd(5) - rnd(5) ) {
+					p@tcg = 102
+				}
+				// Below line visualized defend weight, enable if you want to debug
+				// efllistadd 1 + (p@tcg > 0), p@tcg, card@tcg(TCG_CARD_X, c@tcg), card@tcg(TCG_CARD_Y, c@tcg), card@tcg(TCG_CARD_X, c@tcg), card@tcg(TCG_CARD_Y, c@tcg)
+				if ( p@tcg >= 100 | p@tcg <= -100 ) { p@tcg += 5 - rnd(10) }
+				
 				elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_DEFENDING
 				emax@tcg++
 			}
@@ -126,6 +156,9 @@
 
 *card_ai
 	spellused@tcg = 0
+	aievacycle@tcg = 0
+	*card_ai_RETRY
+	aievacycle@tcg++
 	if ( debug ) {
 		await
 		getkey a@tcg, 32
@@ -168,7 +201,7 @@
 		if ( card@tcg(TCG_CARD_COST, cc@tcg) <= cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) ) {
 			putcard cc@tcg, cp@tcg
 			if ( stat == -1 ) {
-				goto *card_ai_WEND1
+				goto *card_ai_CARDSKIP
 			}
 			if ( gameover() ) {
 				goto *card_ai_WEND1
@@ -201,6 +234,7 @@
 		attacktarget@tcg = cc@tcg
 		goto *card_ai_WEND1
 	}
+	*card_ai_CARDSKIP
 	ec@tcg++
 	goto *card_ai_WHILE1
 	*card_ai_WEND1
@@ -210,6 +244,9 @@
 			if ( stat == 1 ) {
 				goto *card_ai
 			}
+		}
+		if ( aievacycle@tcg < 3 ) {
+			goto *card_ai_RETRY
 		}
 	}
 	if ( gameover() ) {
