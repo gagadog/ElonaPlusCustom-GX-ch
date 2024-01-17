@@ -68,13 +68,16 @@
 				cardvantage@tcg = (cdbit(TCG_BIT_FIRST_STRIKE, c@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, c@tcg)) - (cdbit(TCG_BIT_FIRST_STRIKE, attackingcard@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, attackingcard@tcg))
 				// Basic card advantage calcs
 				if ( cardvantage@tcg < 0 & cardsurvive@tcg == 0 ) { cardcankill@tcg = 0 }
-				if ( cardsurvive@tcg & card@tcg(TCG_CARD_ATTACK, c@tcg) == 0 ) { p@tcg += 5 }
-				if ( cardsurvive@tcg == 0 & cardcankill@tcg == 0 ) { p@tcg -= limit(12 - card@tcg(TCG_CARD_ATTACK, c@tcg) * (cardvantage@tcg > 0) - getspotsum(1) * 2, 0, 20) }
+				if ( cardsurvive@tcg == 0 & cardcankill@tcg == 0 ) { p@tcg -= 2 }
 				if ( cardsurvive@tcg ) { p@tcg += 10 }
 				if ( cardcankill@tcg ) { p@tcg += 10 }
 				if ( cardcankill@tcg & cardvantage@tcg ) { p@tcg += 10 }
 				if ( cardsurvive@tcg & cdbit(TCG_BIT_REGENERATION, c@tcg) ) { p@tcg += 5 }
 				if ( cardsurvive@tcg & cdbit(TCG_BIT_REGENERATION, c@tcg) & cdbit(TCG_BIT_VIGILANCE, c@tcg) ) { p@tcg += 5 }
+				// Block with zombie/fodder with higher prio
+				if ( card@tcg(TCG_CARD_ATTACK, c@tcg) == 0 ) { p@tcg += 5 }
+				if ( card@tcg(TCG_CARD_EFFECT, c@tcg) == TCG_EFF_RETURNTOHANDWHENKILLED ) { p@tcg += 10 }
+				if ( effref@tcg(TCG_SKILL_EFF, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_EFF_RESURRECT ) { p@tcg += 10 }
 				// Do not defend using cards needed to be kept on field
 				if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_KEEPALIVE & cardsurvive@tcg == 0 ) { p@tcg = -101 }
 				// Deathtouch card defend with some chance to annoy you.
