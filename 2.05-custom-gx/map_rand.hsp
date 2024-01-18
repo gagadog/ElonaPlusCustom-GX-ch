@@ -259,7 +259,7 @@
 			return
 		}
 	}
-	/********** CUSTOM NEFIA TYPES - BEGINNING **********/
+	/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
 	if ( TweakData(TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES, TWEAK_CATEGORY_GAMEPLAY) > rnd(100) & adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
 		if ( adata(ADATA_TYPE, gdata(GDATA_AREA)) == MAP_TYPE_DUNGEON ) {
 			mdata(MDATA_TILESET) = 0
@@ -291,7 +291,9 @@
 			if ( rnd(5) == 0 ) { mdata(MDATA_TILESET) = 96 }
 			if ( rnd(1) == 0 ) { rdtype = 69223 }
 			if ( rnd(3) == 0 ) { rdtype = 69242 }
-			if ( rnd(20) == 0 ) { rdtype = 69233 }
+			if ( rnd(5) == 0 ) { rdtype = 69201 }
+			if ( rnd(8) == 0 ) { rdtype = 69274 }
+			if ( gdata(GDATA_LEVEL) == adata(ADATA_MAX_LEVEL, gdata(GDATA_AREA)) & rnd(20) == 0 ) { rdtype = 69233 }
 		}
 		if ( adata(ADATA_TYPE, gdata(GDATA_AREA)) == MAP_TYPE_FORT ) {
 			mdata(MDATA_TILESET) = 200
@@ -299,8 +301,8 @@
 			if ( rnd(5) == 0 ) { mdata(MDATA_TILESET) = 98 }
 			if ( rnd(1) == 0 ) { rdtype = 69231 }
 			if ( rnd(2) == 0 ) { rdtype = 69232 }
-			if ( rnd(3) == 0 ) { rdtype = 69233 }
-			if ( rnd(10) == 0 ) { rdtype = 69234 }
+			if ( rnd(5) == 0 ) { rdtype = 69234 }
+			if ( rnd(20) == 0 ) { rdtype = 69233 }
 			if ( gdata(GDATA_LEVEL) == adata(ADATA_MIN_LEVEL, gdata(GDATA_AREA)) & rnd(3) == 0) { rdtype = 69233 }
 		}
 		if ( adata(ADATA_TYPE, gdata(GDATA_AREA)) == MAP_TYPE_NEST ) {
@@ -339,8 +341,8 @@
 		}
 		roomtypegroup@NT = adata(ADATA_TYPE, gdata(GDATA_AREA)) * 10
 	}
+	furniturecount@NT = 0
 	mapseed@NT = 50000 + rnd(150000)
-	rdtype@NT = rdtype
 	randomize mapseed@NT
 	if ( rdtype == 69000 ) { gosub *map_createDungeonDebug }
 	if ( rdtype == (-1) ) { gosub *map_createDungeonSample }
@@ -367,7 +369,7 @@
 	if ( rdtype == 69273 ) { gosub *map_createDungeonLakeviewCabin }
 	if ( rdtype == 69274 ) { gosub *map_createDungeonLakeTunnelOfLove }
 	if ( rdtype == 69275 ) { gosub *map_createDungeonLakeBeachWalk }
-	/********** CUSTOM NEFIA TYPES - ENDING **********/
+	/********** JAMES CUSTOM - NEFIA LAYOUT - ENDING **********/
 	if ( rdtype == 2 ) {
 		gosub *map_createDungeonWide
 	}
@@ -414,15 +416,22 @@
 		ry = roomy(cnt) + 1
 		rh = roomheight(cnt) - 2
 		rdsize = rw * rh
-		/********** CUSTOM NEFIA TYPES - BEGINNING **********/
+		/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
-			if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
+			if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON & rdtype >= 69000 ) {
 				currentroomcount@NT = cnt
 				map_room_populate_custom
 				continue
 			}
 		}
-		/********** CUSTOM NEFIA TYPES - ENDING **********/
+		/********** JAMES CUSTOM - NEFIA LAYOUT - ENDING **********/
+		/********** JAMES CUSTOM - MOB DENSITY - BEGINNING **********/
+		if ( TweakData(TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY, TWEAK_CATEGORY_GAMEPLAY) > 0 ) {
+			if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
+				rdsize = rdsize * (100 + limit(TweakData(TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY, TWEAK_CATEGORY_GAMEPLAY), 0, 500)) / 100
+			}
+		}
+		/********** JAMES CUSTOM - MOB DENSITY - ENDING **********/
 		repeat rnd(rdsize / 8 + 2)
 			if ( gdata(STARTING_GDATA_FLAG + 353) == 100 & adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
 				flt calcobjlv(gdata(GDATA_LEVEL) * 3 / 2), calcfixlv(FIX_QUALITY_GOOD)
@@ -489,6 +498,41 @@
 	loop
 	mobdensity = mdata(MDATA_MODERATE_CROWD) / 4
 	itemdensity = mdata(MDATA_MODERATE_CROWD) / 4
+	/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
+	// Balancing monster density is too choresome, so I just put a 1/20 density here.
+	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
+		if ( ( TweakData(TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES, TWEAK_CATEGORY_GAMEPLAY) > 0 & rdtype >= 69000 ) | TweakData(TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY, TWEAK_CATEGORY_GAMEPLAY) > 0 ) {
+			empty@NT = 0
+			monstercount@NT = 0
+			repeat mdata(MDATA_WIDTH)
+				dx@NT = cnt
+				repeat mdata(MDATA_HEIGHT)
+					dy@NT = cnt
+					if ( chipm(CHIPM_ATTRIB, map(dx@NT, dy@NT, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
+						continue
+					}
+					empty@NT++
+				loop
+			loop
+			repeat MAX_CHARA_TOTAL - MAX_CHARA_SAVE, MAX_CHARA_SAVE
+				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+					continue
+				}
+				monstercount@NT++
+			loop
+			if ( empty@NT > 0 ) {
+				mdata(MDATA_MODERATE_CROWD) = empty@NT / 16
+				mdata(MDATA_MODERATE_CROWD) -= monstercount@NT * 2
+			}
+			mdata(MDATA_MODERATE_CROWD) = limit(mdata(MDATA_MODERATE_CROWD) - 5 + rnd(11), 50 + rnd(11), 260 + rnd(41))
+			mobdensity = mdata(MDATA_MODERATE_CROWD) / 4
+			itemdensity = mdata(MDATA_MODERATE_CROWD) / 4
+			if ( furniturecount@NT < 20 ) { itemdensity = mdata(MDATA_MODERATE_CROWD) / 3 }
+			if ( furniturecount@NT > 50 ) { itemdensity = mdata(MDATA_MODERATE_CROWD) / 6 }
+			if ( furniturecount@NT > 100 ) { itemdensity = mdata(MDATA_MODERATE_CROWD) / 10 }
+		}
+	}
+	/********** JAMES CUSTOM - NEFIA LAYOUT - ENDING **********/
 	if ( rdtype == 3 ) {
 		flt
 		flttypemajor = fsetwear(rnd(length(fsetwear)))
@@ -514,6 +558,13 @@
 		mobdensity = mdata(MDATA_MODERATE_CROWD) / 3
 		itemdensity = mdata(MDATA_MODERATE_CROWD) / 10
 	}
+	/********** JAMES CUSTOM - MOB DENSITY - BEGINNING **********/
+	if ( TweakData(TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY, TWEAK_CATEGORY_GAMEPLAY) > 0 ) {
+		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
+			mobdensity = mobdensity * (100 + limit(TweakData(TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY, TWEAK_CATEGORY_GAMEPLAY), 0, 500)) / 100
+		}
+	}
+	/********** JAMES CUSTOM - MOB DENSITY - ENDING **********/
 	repeat mobdensity
 		gosub *fltChara
 		characreate -1, CREATURE_ID_BUG, -3, 0
@@ -531,7 +582,7 @@
 			itemcreate -1, ITEM_ID_DUMMY, -1, -1, 0
 		}
 	loop
-	cibk = ci // CUSTOM fixes big daddy + DESTINY bug
+	cibk = ci /********** JAMES CUSTOM - fixes big daddy + DESTINY bug **********/
 	if ( adata(ADATA_WAKEUP_NEFIA, gdata(GDATA_AREA)) != WAKEUP_NEFIA_NONE & gdata(GDATA_LEVEL) - gdata(GDATA_LEVEL) / 10 * 10 == 8 ) {
 		repeat mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 5
 			map_trap 0, 0, gdata(GDATA_LEVEL)
@@ -547,12 +598,12 @@
 		if ( rnd(5) == 0 ) {
 			p = rnd(mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 5)
 		}
-		/********** CUSTOM NEFIA TYPES - BEGINNING **********/
+		/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
 		if ( no_spider_web@NT != 0 ) {
 			p = 0
 		}
 		no_spider_web@NT = 0
-		/********** CUSTOM NEFIA TYPES - ENDING **********/
+		/********** JAMES CUSTOM - NEFIA LAYOUT - ENDING **********/
 		repeat p
 			map_web 0, 0, gdata(GDATA_LEVEL) * 10 + 100
 		loop
@@ -577,7 +628,7 @@
 			itemcreate -1, ITEM_ID_DERNEFIA, -1, -1, 0
 		}
 	}
-	ci = cibk // CUSTOM fixes big daddy + DESTINY bug
+	ci = cibk /********** JAMES CUSTOM - fixes big daddy + DESTINY bug **********/
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
 		if ( gdata(GDATA_LEVEL) != adata(ADATA_MIN_LEVEL, gdata(GDATA_AREA)) ) {
 			if ( gdata(STARTING_GDATA_FLAG + 353) == 100 ) {
@@ -612,6 +663,47 @@
 			}
 		}
 	}
+	/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
+	// DEBUG: Output some map info
+	if ( gdata(GDATA_WIZARD) ) {
+		monstercount@NT = 0
+		itemcount = 0
+		repeat MAX_CHARA_TOTAL - MAX_CHARA_SAVE, MAX_CHARA_SAVE
+			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+				continue
+			}
+			monstercount@NT++
+		loop
+		repeat MAX_MAP_INV, RANGE_INV2
+			if ( inv(INV_ITEM_NUM, cnt) <= 0 ) {
+				continue
+			}
+			itemcount++
+		loop
+		title "atype["+adata(ADATA_TYPE, gdata(GDATA_AREA))+"];\n" + "Rdtype["+rdtype+"];\n" + "Mapseed["+mapseed@NT+"];\n" + "monstercount["+monstercount@NT+"];\n"  + "itemcount["+itemcount+"];\n"  + "furniturecount["+furniturecount@NT+"];\n"  + "mobdensity["+mobdensity+"];\n"  + "itemdensity["+itemdensity+"];\n"
+		if ( FALSE ) {
+			repeat 999999
+				locvar_outputmapimage_filename = exedir + strf("mapinfo_%06d.txt", cnt)
+				exist locvar_outputmapimage_filename
+				if ( strsize == (-1) ) {
+					buff = ""
+					notesel buff
+					noteadd "atype["+adata(ADATA_TYPE, gdata(GDATA_AREA))+"];" 
+					noteadd "area["+mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT)+"];" 
+					noteadd "Rdtype["+rdtype+"];" 
+					noteadd "mobdensity["+mobdensity+"];"  
+					noteadd "monstercount["+monstercount@NT+"];"  
+					noteadd "itemdensity["+itemdensity+"];"
+					noteadd "itemcount["+itemcount+"];"  
+					noteadd "furniturecount["+furniturecount@NT+"];"  
+					noteadd "Mapseed["+mapseed@NT+"];" 
+					notesave locvar_outputmapimage_filename
+					break
+				}
+			loop
+		}
+	}
+	/********** JAMES CUSTOM - NEFIA LAYOUT - ENDING **********/
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_LESIMAS ) {
 		if ( gdata(GDATA_LEVEL) == 3 | gdata(GDATA_LEVEL) == 17 | gdata(GDATA_LEVEL) == 25 | gdata(GDATA_LEVEL) == 44 ) {
 			x = mdata(MDATA_DOWNSTAIRS_POS) \ 1000
@@ -885,11 +977,11 @@
 			}
 		}
 		size = limit(dist(dx, dy, mdata(MDATA_WIDTH) / 2, mdata(MDATA_HEIGHT) / 2) / 8, 0, 8)
-		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			size = limit(size + rnd(1 + rnd(1 + qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)) / 10)), 0, 8)
 		}
-		/********** CUSTOM JOB QUESTS - ENDIG **********/
+		/********** JAMES CUSTOM - JOB QUESTS - ENDIG **********/
 		crop = isetcrop(rnd(length(isetcrop)))
 		repeat h, dy
 			y = cnt
@@ -1690,17 +1782,17 @@
 		cdata(CDATA_RELATION, rc) = -3
 		cdata(CDATA_RELATION_ORG, rc) = -3
 		qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) = rc
-		/********** CUSTOM JOB QUESTS - BEGINNING **********/ // Conquer quest enemy have breath attack
+		/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/ // Conquer quest enemy have breath attack
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			cdata(CDATA_AI_SUB, rc) = 30
 			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_VARIABLE_BREATH
 			cdata(CDATA_ACT_INDEX, rc) = cdata(CDATA_ACT_INDEX, rc) \ 10 + 10
 			cdata(CDATA_ACT_HEAL, rc) = SKILL_SPACT_EXTERMINATION_BREATH
 		}
-		/********** CUSTOM JOB QUESTS - ENDING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 	}
 	if ( gdata(GDATA_QUEST) == QUEST_TYPE_HUNTEX ) {
-		/********** CUSTOM JOB QUESTS - BEGINNING **********/  // Spawn enemies in a group
+		/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/  // Spawn enemies in a group
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			flt
 			initlv = qdata(QDATA_LEVEL, gdata(GDATA_QUEST_REF)) * 3 / 2
@@ -1731,9 +1823,9 @@
 			loop
 			/********** ORIGINAL - ENDING **********/
 		}
-		/********** CUSTOM JOB QUESTS - ENDING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 	}
-	/********** CUSTOM JOB QUESTS - BEGINNING **********/
+	/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 	if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 		repeat 30 + rnd(30)
 			dbid = CREATURE_ID_CITIZEN
@@ -1765,7 +1857,7 @@
 			}
 		loop 
 	}
-	/********** CUSTOM JOB QUESTS - ENDING **********/
+	/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 	inv_getheader -1
 	repeat invrange, invhead
 		if ( inv(INV_ITEM_NUM, cnt) == 0 ) {

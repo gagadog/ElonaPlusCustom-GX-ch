@@ -1735,7 +1735,7 @@
 		}
 	}
 
-	/********** CUSTOM - BEGINNING **********/
+	/********** JAMES CUSTOM - BEGINNING **********/
 	// Skip extra UI when in town board / world map / auto turn. These causes performance / graphic issues
 	if ( screendrawextras@DP != 1 | mode == MODELIST_TXT_ADV | mdata(MDATA_TYPE) == MAP_TYPE_WORLD | cdata(CDATA_ROW_ACT, CHARA_PLAYER) != ACTION_NONE ) {
 		screendrawextras@DP = 0	
@@ -1754,7 +1754,7 @@
 		othersidexshift@DP += limit(cdata(CDATA_X, CHARA_PLAYER) - screentilewidth@DP + 5, 0, 4) * 48
 		// drawthingsonotherside@DP = cdata(CDATA_X, CHARA_PLAYER) < ( 4 + drawthingsonotherside@DP * (mdata(MDATA_WIDTH) - 4 * 2) )
 	}
-	/********** CUSTOM - ENDING **********/
+	/********** JAMES CUSTOM - ENDING **********/
 
 	ap3 = 0
 	repeat 15
@@ -1819,7 +1819,7 @@
 
 	loop
 
-	/********** CUSTOM - BEGINNING **********/
+	/********** JAMES CUSTOM - BEGINNING **********/
 	// Health bar.
 	apright@DP = 16
 	if ( cfg_showPetHealth > 0 ) {
@@ -1892,7 +1892,7 @@
 	if ( cfg_showDamageMeter > 0 ) {
 		gosub *DamageParsesDraw
 	}
-	/********** CUSTOM - ENDING **********/
+	/********** JAMES CUSTOM - ENDING **********/
 
 	/********** RUIN0X11 CUSTOM - BEGINNING **********/
 
@@ -2372,14 +2372,14 @@
 	if ( _switch_val == ANIMATION_BALL | _switch_sw ) {
 		_switch_sw = 0
 
-		/********** CUSTOM SPELL ANIMATION - BEGINNING **********/
+		/********** JAMES CUSTOM - SPELL ANIMATION - BEGINNING **********/
 		if ( TweakData(TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS, TWEAK_CATEGORY_MISC) != 0 & animeid == ANIMATION_BALL ) {
 			if ( efid == SKILL_SPELL_FIRE_BALL | efid == SKILL_SPELL_ICE_BALL | efid == SKILL_SPELL_THUNDER_VORTEX | efid == SKILL_SPELL_ECLIPSE | efid == SKILL_SPELL_ILLUSION_ROAR | efid == SKILL_SPELL_POISON_STORM | efid == SKILL_SPELL_NETHER_WAVE | efid == SKILL_SPELL_RAGING_ROAR | efid == SKILL_SPELL_ANGUISH_JAIL | efid == SKILL_SPELL_CHAOS_BALL | efid == SKILL_SPELL_MAGIC_STORM | efid == SKILL_SPELL_BUBBLE_STORM ) {
 				gosub *custom_spell_animation_ball
 				goto *anime_SWEND1
 			}
 		}
-		/********** CUSTOM SPELL ANIMATION - ENDING **********/
+		/********** JAMES CUSTOM - SPELL ANIMATION - ENDING **********/
 
 		snd SOUNDLIST_BALL1
 		if ( efid == SKILL_SPELL_BUBBLE_STORM ) {
@@ -2476,14 +2476,14 @@
 
 		preparePicItem 3, anicol
 
-		/********** CUSTOM SPELL ANIMATION - BEGINNING **********/
+		/********** JAMES CUSTOM - SPELL ANIMATION - BEGINNING **********/
 		if ( TweakData(TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS, TWEAK_CATEGORY_MISC) != 0 ) {
 			if ( efid == SKILL_SPELL_FIRE_BOLT | efid == SKILL_SPELL_ICE_BOLT | efid == SKILL_SPELL_LIGHTNING_BOLT | efid == SKILL_SPELL_DARKNESS_BOLT | efid == SKILL_SPELL_MIND_BOLT | efid == SKILL_SPELL_POISON_BOLT | efid == SKILL_SPELL_NETHER_BOLT | efid == SKILL_SPELL_SOUND_BOLT | efid == SKILL_SPELL_NERVE_BOLT | efid == SKILL_SPELL_CHAOS_BOLT | efid == SKILL_SPELL_CRYSTAL_SPEAR | efid == SKILL_SPELL_WATER_BOLT ) {
 				gosub *custom_spell_animation_bolt
 				goto *anime_SWEND1
 			}
 		}
-		/********** CUSTOM SPELL ANIMATION - ENDING **********/
+		/********** JAMES CUSTOM - SPELL ANIMATION - ENDING **********/
 
 
 		if ( zannku != 100 ) {
@@ -2756,14 +2756,14 @@
 			goto *anime_SWEND1
 		}
 		
-		/********** CUSTOM SPELL ANIMATION - BEGINNING **********/
+		/********** JAMES CUSTOM - SPELL ANIMATION - BEGINNING **********/
 		if ( TweakData(TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS, TWEAK_CATEGORY_MISC) != 0 & animeid == ANIMATION_ARROW ) {
 			if ( efid == SKILL_SPELL_FIRE_CLAW | efid == SKILL_SPELL_COLD_BLADE | efid == SKILL_SPELL_LIGHTNING_SPEAR | efid == SKILL_SPELL_DARK_EYE | efid == SKILL_SPELL_MIND_THORN | efid == SKILL_SPELL_POISON_MUCUS | efid == SKILL_SPELL_NETHER_ARROW | efid == SKILL_SPELL_SOUND_CANNONBALL | efid == SKILL_SPELL_NERVE_ARROW | efid == SKILL_SPELL_CHAOS_EYE | efid == SKILL_SPELL_MAGIC_DART | efid == SKILL_SPELL_HYDRO_FANG ) {
 				gosub *custom_spell_animation_dart
 				goto *anime_SWEND1
 			}
 		}
-		/********** CUSTOM SPELL ANIMATION - ENDING **********/
+		/********** JAMES CUSTOM - SPELL ANIMATION - ENDING **********/
 
 		if ( animeid == ANIMATION_ARROW ) {
 			if ( efid == SKILL_SPELL_HYDRO_FANG ) {

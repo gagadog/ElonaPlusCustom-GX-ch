@@ -408,11 +408,11 @@
 		if ( i != (-1) ) {
 			p = qdata(QDATA_MAP, i)
 			rewardfix = 70 + dist(adata(ADATA_X, gdata(GDATA_AREA)), adata(ADATA_Y, gdata(GDATA_AREA)), adata(ADATA_X, p), adata(ADATA_Y, p)) * 2
-			/********** CUSTOM JOB QUESTS - BEGINNING **********/
+			/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 			if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 				rewardfix += limit(rnd(gdata(GDATA_DEEPEST_LEVEL) + sdata(SKILL_ATTR_CHA, CHARA_PLAYER) / 10 + 10), int(1.5 * sqrt(gdata(GDATA_DEEPEST_LEVEL) + 4)) + 10, cdata(CDATA_FAME, CHARA_PLAYER) / 1000 + 10)
 			}
-			/********** CUSTOM JOB QUESTS - ENDING **********/
+			/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 			if ( p == AREA_NOYEL | gdata(GDATA_AREA) == AREA_NOYEL ) {
 				rewardfix = rewardfix * 175 / 100
 			}
@@ -765,7 +765,7 @@
 			flt
 			itemcreate -1, ITEM_ID_BRONZE_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
 		}
-		/********** CUSTOM JOB QUESTS - BEGINNING **********/ // Custom Harvest Quest Rewards
+		/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/ // Harvest Quest Rewards
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			seedp2 = ( sdata(SKILL_NORMAL_GARDENING, CHARA_PLAYER) * qdata(QDATA_PARAM2, rq) ) / ( 5 * qdata(QDATA_PARAM1, rq) )
 			seedp = qdata(QDATA_PARAM2, rq) / 1000
@@ -833,7 +833,7 @@
 			}
 			/********** ORIGINAL - ENDING **********/
 		}
-		/********** CUSTOM JOB QUESTS - ENDING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 	}
 	if ( qdata(QDATA_REWARD_ITEM, rq) != QUEST_REWARD_NONE ) {
 		p = rnd(rnd(4) + 1) + 1

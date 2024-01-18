@@ -115,7 +115,7 @@
 				locvar_txttargetnpc_dy++
 				bmes s, 255, 2552, 255
 			loop
-			/********** CUSTOM - BEGINNING **********/ // more status display
+			/********** JAMES CUSTOM - BEGINNING **********/ // more status display
 			displaystates = CDATA_CONDITION_GRAVITY, CDATA_CONDITION_INVERT, CDATA_CONDITION_OIL, CDATA_CONDITION_WET, CDATA_CONDITION_ANGRY, CDATA_CONDITION_BIND, CDATA_CONDITION_INSANE, CDATA_CONDITION_SUFFOCATION, CDATA_CONDITION_MPOISON, CDATA_CONDITION_BLEED, CDATA_CONDITION_SLEEP, CDATA_CONDITION_ATROPHY, CDATA_CONDITION_BRAINWASH, CDATA_CONDITION_FEAR, CDATA_CONDITION_DIM, CDATA_CONDITION_POISON, CDATA_CONDITION_CONFUSE, CDATA_CONDITION_BLIND, CDATA_CONDITION_PARALYZE, CDATA_CONDITION_CHILLS, CDATA_CONDITION_WINCE
 			displaytexts  = _congravity, _coninvert, _conoil, _conwet, _conangry, _conbind, _coninsane, _conmochi, _conmpoison, _conbleed, _consleep, _conbrowbeat, _conwash, _confear, _condim, _conpoison, _conconfuse, _conblind, _conparalyze, _conreiki, _conkaen
 			repeat length(displaystates)
@@ -133,9 +133,9 @@
 				locvar_txttargetnpc_dy++
 				bmes "Target: " + cdatan(CDATAN_NAME, cdata(CDATA_TARGET, locvar_txttargetnpc_i)) + "(" + cdata(CDATA_AI_AGGRO, locvar_txttargetnpc_i) + ")", 255, 2552, 255
 			}
-			/********** CUSTOM - ENDING **********/
+			/********** JAMES CUSTOM - ENDING **********/
 			if ( cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i) > 0 ) {
-				/********** CUSTOM - BEGINNING **********/ // more status display
+				/********** JAMES CUSTOM - BEGINNING **********/ // more status display
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
@@ -144,19 +144,19 @@
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
 				bmes "" + name(locvar_txttargetnpc_i) + ": " + cdata(CDATA_HP, locvar_txttargetnpc_i) + "/" + cdata(CDATA_MAX_HP, locvar_txttargetnpc_i), 255, 2552, 255
-				/********** CUSTOM - ENDING **********/
+				/********** JAMES CUSTOM - ENDING **********/
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
 				bmes lang("現在のターゲットは", "You are targeting ") + cdatan(CDATAN_NAME, locvar_txttargetnpc_i) + lang(" ＋ ", " + ") + cdatan(CDATAN_NAME, cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)) + lang(" (距離 ", ".(Distance ") + dist(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), cdata(CDATA_X, locvar_txttargetnpc_i), cdata(CDATA_Y, locvar_txttargetnpc_i)) + ")", 255, 2552, 255
 			}
 			else {
-				/********** CUSTOM - BEGINNING **********/ // more status display
+				/********** JAMES CUSTOM - BEGINNING **********/ // more status display
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
 				bmes "" + name(locvar_txttargetnpc_i) + ": " + cdata(CDATA_HP, locvar_txttargetnpc_i) + "/" + cdata(CDATA_MAX_HP, locvar_txttargetnpc_i), 255, 2552, 255
-				/********** CUSTOM - ENDING **********/
+				/********** JAMES CUSTOM - ENDING **********/
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
@@ -5707,13 +5707,13 @@
 
 	/********** BLOODYSHADE CUSTOM - ENDING **********/
 	
-	/********** CUSTOM TCG - BEGINNING **********/
+	/********** JAMES CUSTOM - TCG - BEGINNING **********/
 	if ( tc > CHARA_PLAYER ) {
 		if ( cdata(CDATA_INTEREST, tc) >= 80 & cdata(CDATA_CONDITION_SLEEP, tc) == 0 ) {
 			promptAdd lang("決闘!", "Play TCG!"), "null", 69100
 		}
 	}
-	/********** CUSTOM TCG - ENDING **********/
+	/********** JAMES CUSTOM - TCG - ENDING **********/
 
 	val = promptx, prompty, 225, 1
 	gosub *prompt_key
@@ -6116,7 +6116,7 @@
 		goto *pc_turn
 	}
 	
-	/********** CUSTOM TCG - BEGINNING **********/
+	/********** JAMES CUSTOM - TCG - BEGINNING **********/
 	if ( p == 69100 ) {
 		tcgmain
 		gosub *map_prepareTile
@@ -6126,7 +6126,7 @@
 		tcgreward
 		goto *pc_turn
 	}
-	/********** CUSTOM TCG - ENDING **********/
+	/********** JAMES CUSTOM - TCG - ENDING **********/
 
 	if ( p == 998 ) {
 		snd SOUNDLIST_OK1
@@ -6279,12 +6279,12 @@
 				txtef COLOR_RED
 				txt lang(cdatan(CDATAN_NAME, tc) + "は気持ち悪そうにあなたを見ている…。", cdatan(CDATAN_NAME, tc) + " is looking at you like you're some kind of creep.")
 			}
-			/********** CUSTOM - BEGINNING **********/ // Pets should (normally) be happy after you tell them how you feel.
+			/********** JAMES CUSTOM - BEGINNING **********/ // Pets should (normally) be happy after you tell them how you feel.
 			cdata(CDATA_EVOCHAT_POINTS, tc) += 2
 			if ( cdata(CDATA_EVOCHAT_POINTS, tc) > 10 ) {
 				cdata(CDATA_EVOCHAT_POINTS, tc) = 10
 			}
-			/********** CUSTOM - ENDING **********/
+			/********** JAMES CUSTOM - ENDING **********/
 		}
 		if ( rtval >= 4 & rtval <= 6 ) {
 			snd SOUNDLIST_DING2
@@ -6292,12 +6292,12 @@
 			txt lang(cdatan(CDATAN_NAME, tc) + "はまんざらでもないようだ。", cdatan(CDATAN_NAME, tc) + " doesn't seem to be very happy about that.")
 			modimp tc, 7
 			cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 3
-			/********** CUSTOM - BEGINNING **********/ // Pets should (normally) be happy after you tell them how you feel.
+			/********** JAMES CUSTOM - BEGINNING **********/ // Pets should (normally) be happy after you tell them how you feel.
 			cdata(CDATA_EVOCHAT_POINTS, tc) += 1
 			if ( cdata(CDATA_EVOCHAT_POINTS, tc) > 10 ) {
 				cdata(CDATA_EVOCHAT_POINTS, tc) = 10
 			}
-			/********** CUSTOM - ENDING **********/
+			/********** JAMES CUSTOM - ENDING **********/
 		}
 		if ( rtval >= 7 & rtval <= 9 ) {
 			if ( cdata(CDATA_IMPRESSION, tc) >= 150 ) {
@@ -6311,12 +6311,12 @@
 			if ( cdata(CDATA_IMPRESSION, tc) < 75 ) {
 				txt lang(cdatan(CDATAN_NAME, tc) + "はやれやれと肩をすくめた。", cdatan(CDATAN_NAME, tc) + " shrugged " + his(tc) + " shoulders in relief.")
 			}
-			/********** CUSTOM - BEGINNING **********/
+			/********** JAMES CUSTOM - BEGINNING **********/
 			cdata(CDATA_EVOCHAT_POINTS, tc) -= 1
 			if ( cdata(CDATA_EVOCHAT_POINTS, tc) < 0 ) {
 				cdata(CDATA_EVOCHAT_POINTS, tc) = 0
 			}
-			/********** CUSTOM - ENDING **********/
+			/********** JAMES CUSTOM - ENDING **********/
 		}
 		if ( rtval == 10 ) {
 			if ( cbit(CHARA_BIT_MARRIED, tc) != FALSE ) {
@@ -6571,7 +6571,7 @@
 				txt name(tc) + "は苦笑いしている…。", name(tc) + "は困惑しながらも、早く体を洗ってくるよう勧めた。"
 			}
 			else {
-				txt name(tc) + " smiled wryly...", "While " + name(tc) + " " + was(tc) + " bewildered, I urged them to quickly wash their body."
+				txt name(tc) + " smiled wryly...", "While " + name(tc) + " " + was(tc) + " bewildered, and urged you to quickly wash your body."
 			}
 		}
 		if ( cdata(CDATA_IMPRESSION, tc) >= 200 ) {
@@ -6991,7 +6991,7 @@
 	}
 	goto *com_tone_loop
 
-/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+/********** JAMES CUSTOM - CNPC SUMMON - BEGINNING **********/
 *com_userNpcExisting
 	snd SOUNDLIST_CHARA
 	gsel 4
@@ -7626,7 +7626,7 @@
 		}
 	}
 	goto *com_knowCNPC_loop
-/********** CUSTOM NPC SUMMONING - ENDING **********/
+/********** JAMES CUSTOM - CNPC SUMMON - ENDING **********/
 
 *com_userNpc
 	snd SOUNDLIST_CHARA
@@ -7716,7 +7716,7 @@
 		}
 	loop
 	if ( p != (-1) ) {
-		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+		/********** JAMES CUSTOM - CNPC SUMMON - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			pbk = p
 			p = user_npc_index(p)
@@ -7726,7 +7726,7 @@
 			}
 			p = pbk
 		}
-		/********** CUSTOM NPC SUMMONING - ENDING **********/
+		/********** JAMES CUSTOM - CNPC SUMMON - ENDING **********/
 		listmax = p
 		snd SOUNDLIST_PRAY1
 		txt listn(0, listmax) + lang("は、あなたの世界に召喚された！", " has been summoned to your world!")
@@ -9666,12 +9666,12 @@
 		color 0, 0, 0
 		if ( cdata(CDATA_ROLE, cc) != ROLE_ADVENTURER ) {
 			growrate = gdata(GDATA_FLAG_MAIN) + 100
-			/********** CUSTOM - BEGINNING **********/
+			/********** JAMES CUSTOM - BEGINNING **********/
 			growrate = ( gdata(GDATA_FLAG_MAIN) + 100 )
 			if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
 				growrate = 400
 			}
-			/********** CUSTOM - ENDING **********/
+			/********** JAMES CUSTOM - ENDING **********/
 			if ( cc < MAX_CHARA_FOLLOWER ) {
 				s = "" + cdata(CDATA_LEVEL, cc), "" + cdata(CDATA_EXP_TO_NEXT_LVL, cc), godname(cdata(CDATA_GOD, cc)), guildname(), "" + growrate + "" + lang("%", " %")
 			}
@@ -12254,7 +12254,7 @@
 				}
 			}
 			if ( invctrl == 14 ) {
-				if ( TweakData(50,1) == 0 ) {
+				if ( TweakData(TWEAK_CONVENIENCE_THROW_POTION_AT_SELF, TWEAK_CATEGORY_CONVENIENCE) == FALSE ) {
 					if ( inv(INV_ITEM_EFFECT, cnt) == EFFECT_NONE & refitem(inv(INV_ITEM_ID, cnt), DBSPEC_CAN_USE) == 0 & ibit(ITEM_BIT_ALIVE, cnt) == 0 & ibit(ITEM_BIT_ULTIMATE, cnt) == 0 ) {
 						continue
 					}
@@ -14277,7 +14277,7 @@
 						txt lang("まだ納税する必要はない。", "You don't have to pay your tax yet.")
 						goto *com_inventory
 					}
-					/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+					/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
 					if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 						if ( inv(INV_ITEM_SUB_NAME, ci) == 0 ) {
 							txtef COLOR_RED
@@ -14288,7 +14288,7 @@
 							}
 						}
 					}
-					/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
+					/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 					cdata(CDATA_GOLD, CHARA_PLAYER) -= inv(INV_ITEM_SUB_NAME, ci)
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_1_2_MILLION_TAX_CERTIFICATE ) {
@@ -14301,7 +14301,7 @@
 				txtef COLOR_GREEN
 				txt lang(itemname(ci) + "を支払った。", "You pay " + itemname(ci) + ".")
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_BILL ) {
-					/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+					/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
 					if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 						if ( inv(INV_ITEM_SUB_NAME, ci) == 0 ) {
 							txtmore
@@ -14323,7 +14323,7 @@
 							gosub *re_select
 						}
 					}
-					/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
+					/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 					gdata(GDATA_BILL)--
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_1_2_MILLION_TAX_CERTIFICATE ) {
@@ -14777,7 +14777,7 @@
 	dbmode = DBMODE_DESC
 	gosub *db_item
 
-	/********** CUSTOM - BEGINNING **********/ // Shows creature card info on corpses, cards, and figures
+	/********** JAMES CUSTOM - BEGINNING **********/ // Shows creature card info on corpses, cards, and figures
 
 	if ( inv(INV_ITEM_SUB_NAME, ci) != 0 ) {
 		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_CORPSE | inv(INV_ITEM_ID, ci) == ITEM_ID_CARD | inv(INV_ITEM_ID, ci) == ITEM_ID_FIGURINE ) {
@@ -14790,7 +14790,7 @@
 		}
 	}
 
-	/********** CUSTOM - ENDING **********/
+	/********** JAMES CUSTOM - ENDING **********/
 
 	/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Shows item sell price if the item quality is known
 

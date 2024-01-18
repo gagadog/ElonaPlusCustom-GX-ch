@@ -2740,17 +2740,15 @@
 	livestock = 0
 	ooitama = 0
 	ooititi = 0
-	if (TweakData(54, 2) == 1) {
-		sickp = 0
-		inv_getheader -1
-		repeat invrange, invhead
-			if ( inv(INV_ITEM_NUM, cnt) != 0 ) {
-				if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_SHIT ) {
-					sicp += 100
-				}
+	sickp = 0
+	inv_getheader -1
+	repeat invrange, invhead
+		if ( inv(INV_ITEM_NUM, cnt) != 0 ) {
+			if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_SHIT ) {
+				sicp += 100
 			}
-		loop
-	}
+		}
+	loop
 	repeat MAX_CHARA_TOTAL
 		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 			continue
@@ -2758,7 +2756,7 @@
 		if ( cbit(CHARA_BIT_LIVESTOCK, cnt) == 0 ) {
 			continue
 		}
-		if ( TweakData(54, 2) == 1 & cdata(CDATA_CONDITION_SICK, cnt) > 0) {
+		if ( cdata(CDATA_CONDITION_SICK, cnt) > 0) {
 			sicp += 500
 		}
 		if ( cdata(CDATA_LIVESTOCK_PRODUCE_QUALITY, cnt) >= 7 & cdata(CDATA_LIVESTOCK_PRODUCE_QUALITY, cnt) <= 9 ) {
@@ -2986,14 +2984,18 @@
 		if ( stat != 0 ) {
 			cbitmod CHARA_BIT_LIVESTOCK, rc, 1
 			cdata(CDATA_AGE, rc) = gdata(GDATA_YEAR)
-			if (TweakData(54, 2) == 1){
-				cdata(CDATA_SPRITE_SIZE_MILK, rc) = -5
+			cdata(CDATA_SPRITE_SIZE_MILK, rc) = -5
+			if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE ) {
+				cdata(CDATA_SPRITE_SIZE_MILK, rc) = 0
 			}
 			cdata(CDATA_LIVESTOCK_QUALITY, rc) = keisitu
 			cdata(CDATA_LIVESTOCK_PRODUCE_QUALITY, rc) = keisitu2
 			livestock++
 		}
 *skipBreeder
+		if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE ) {
+			sickp = -1
+		}
 		egg = 0
 		if ( getworker(gdata(GDATA_AREA)) != (-1) ) {
 			wtc = getworker(gdata(GDATA_AREA))
@@ -3005,7 +3007,7 @@
 			if ( cbit(CHARA_BIT_LIVESTOCK, cnt) == 0 & cnt != wtc ) {
 				continue
 			}
-			if ( TweakData(54, 2) == 1 & cnt != wtc ) {
+			if ( cnt != wtc ) {
 				if ( findbuff(cnt, BUFF_DISINFECTION) == (-1) ) {
 					if ( rnd(10000) <= sickp ) {
 						if ( cdata(CDATA_CONDITION_SICK, cnt) < 100 ) {
@@ -3079,7 +3081,7 @@
 					continue
 				}
 			}
-			if ( TweakData(54, 2) == 1 & cdata(CDATA_CONDITION_SICK, cnt) > 0 ) {
+			if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == FALSE & cdata(CDATA_CONDITION_SICK, cnt) > 0 ) {
 				p = 2
 			}
 			if ( p == 0 ) {
@@ -3089,11 +3091,9 @@
 						itemcreate -1, ITEM_ID_EGG, x, y, 0
 						if ( stat ) {
 							inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
-							if (TweakData(54, 2) == 1) {
-								inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 40, 20, 10000)
-								inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, cnt) + 2400) / 4, 600, 3000)
-							}
-							else {
+							inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 40, 20, 10000)
+							inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, cnt) + 2400) / 4, 600, 3000)
+							if (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 								inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) * 10 + 250, 100, 100000)
 								inv(INV_ITEM_VALUE, ci) = limit((cdata(CDATA_WEIGHT, cnt) * cdata(CDATA_WEIGHT, cnt) + 1) / 10000, 200, 40000)
 							}
@@ -3129,11 +3129,9 @@
 					itemcreate -1, ITEM_ID_EGG, x, y, 0
 					if ( stat ) {
 						inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
-						if (TweakData(54, 2) == 1) {
-							inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 40, 20, 10000)
-							inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, cnt) + 2400) / 4, 600, 3000)
-						}
-						else {
+						inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 40, 20, 10000)
+						inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, cnt) + 2400) / 4, 600, 3000)
+						if (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 							inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) * 10 + 250, 100, 100000)
 							inv(INV_ITEM_VALUE, ci) = limit((limit(cdata(CDATA_WEIGHT, cnt) * 10 + 250, 100, 100000) + 13000) / 14, 1000, 8000)
 						}
@@ -3220,11 +3218,9 @@
 					itemcreate -1, ITEM_ID_SHIT, x, y, 0
 					if ( stat ) {
 						inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
-						if (TweakData(54, 2) == 1) {
-							inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 150, 30, 15000)
-							inv(INV_ITEM_VALUE, ci) = limit((cdata(CDATA_WEIGHT, cnt) + 3600) / 4, 900, 4500)
-						}
-						else {
+						inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 150, 30, 15000)
+						inv(INV_ITEM_VALUE, ci) = limit((cdata(CDATA_WEIGHT, cnt) + 3600) / 4, 900, 4500)
+						if (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 							inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) * 40 + 300, 100, 100000)
 							inv(INV_ITEM_VALUE, ci) = limit((limit(cdata(CDATA_WEIGHT, cnt) * 40 + 300, 100, 100000) + 3500) / 15, 300, 6000)
 						}

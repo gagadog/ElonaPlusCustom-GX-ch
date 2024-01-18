@@ -35325,13 +35325,13 @@
 	dbmax++
 *db_creature_usernpc
 	repeat usernpcmax
-		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+		/********** JAMES CUSTOM - CNPC SUMMONING - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			if ( gdata(GDATA_AREA) != AREA_MELKAWN & gdata(GDATA_AREA) != AREA_DERPHY ) {
 				break
 			}
 		}
-		/********** CUSTOM NPC SUMMONING - ENDING **********/
+		/********** JAMES CUSTOM - CNPC SUMMONING - ENDING **********/
 		if ( cmshade ) {
 			break
 		}
@@ -46744,7 +46744,7 @@
 		if ( dbmode == DBMODE_FLAVOR_PASSIVE ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			txt lang("ロイター「…情けないな！」", "Loyter grumbles incessantly. \"How he sounds so miserable...\""), lang("誰かが呟く声が聞こえる。", "You hear someone muttering sulfurously somewhere"), lang("ロイター「俺は何を忘れている？」", "Loyter mutters to himself. \"Why are you still attached to him...\"")
+			txt lang("ロイター「…情けないな！」", "Loyter grumbles incessantly. \"How he sounds so miserable...\""), lang("誰かが呟く声が聞こえる。", "You hear someone muttering sulfurously somewhere"), lang("ロイター「俺は何を忘れている？」", "Loyter mutters to himself. \"Did I forgot something...\"")
 			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_ANGERED ) {
@@ -94815,7 +94815,7 @@
 		if ( dbmode == DBMODE_FLAVOR_PASSIVE ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			txt lang("ロイター「…情けないな！」", "Loyter grumbles incessantly. \"How he sounds so miserable...\""), lang("誰かが呟く声が聞こえる。", "You hear someone muttering sulfurously somewhere"), lang("ロイター「まだあの男に未練があるのか？」", "Loyter mutters to himself. \"Why are you still attached to him...\"")
+			txt lang("ロイター「…情けないな！」", "Loyter grumbles incessantly. \"How he sounds so miserable...\""), lang("誰かが呟く声が聞こえる。", "You hear someone muttering sulfurously somewhere"), lang("ロイター「まだあの男に未練があるのか？」", "Loyter mutters to himself. \"Why are you still attached to that girl...\"")
 			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_ANGERED ) {

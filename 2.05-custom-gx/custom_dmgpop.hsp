@@ -186,8 +186,8 @@
     t@DP = timeGetTime()
     font lang(cfg_font1, cfg_font2), 2 + cfg_dmgfont - en * 2, 0
     
-    /********** CUSTOM - BEGINNING **********/ // Show npc name in town.
-    if ( cfg_showNpcName > 0 & mode == MODELIST_MAIN & evochat == 0 & ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE | mdata(MDATA_TYPE) == MAP_TYPE_HOME | (cfg_showNpcName == 3 & mdata(MDATA_TYPE) != MAP_TYPE_WORLD) ) ) {
+    /********** JAMES CUSTOM - BEGINNING **********/ // Show npc name in town.
+    if ( cfg_showNpcName > 0 & mdata(MDATA_TYPE) != MAP_TYPE_WORLD & mode == MODELIST_MAIN & evochat == 0 & ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE | mdata(MDATA_TYPE) == MAP_TYPE_HOME | (cfg_showNpcName == 3 & mdata(MDATA_TYPE) != MAP_TYPE_WORLD) ) ) {
 		repeat MAX_CHARA_TOTAL
 			if ( cnt < MAX_CHARA_FOLLOWER ) {
 				continue
@@ -202,6 +202,9 @@
                 if ( cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, cnt) == 0 ) {
                     continue
                 }
+            }
+            if ( cdata(CDATA_ROW_ACT, cnt) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, cnt) == ACTION_DIVING_DRILL ) {
+                continue
             }
             DmgPopupR = cdata(CDATA_ROLE, cnt)
             if ( DmgPopupR == ROLE_NONE ) {
@@ -248,7 +251,7 @@
             bmes s@DP, DmgPopupColorsNPCName(0, DmgPopupR), DmgPopupColorsNPCName(1, DmgPopupR), DmgPopupColorsNPCName(2, DmgPopupR)
         loop
     }
-    /********** CUSTOM - BEGINNING **********/
+    /********** JAMES CUSTOM - BEGINNING **********/
     repeat length2(DmgPopups)
         i@DP = (DmgPopupNext + length2(DmgPopups) - cnt - 1) \ length2(DmgPopups)
         if (DmgPopups(0, i@DP) + cfg_dmgspeed * 150 <= t@DP ) {

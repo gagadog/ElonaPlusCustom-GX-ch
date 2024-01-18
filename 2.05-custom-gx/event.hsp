@@ -3401,17 +3401,17 @@
 		else {
 			locvar_event_income_is_taxed = gdata(GDATA_YEAR) > 517
 		}
-		/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+		/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
 		if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 & locvar_event_income_is_taxed == FALSE ) {
 			locvar_event_income_is_taxed = TRUE
 			txtmore
 			txtef COLOR_RED
 			txt lang("冒険者になれば、誰もが税金を払う。", "Everyone will pay for their taxes, you become an adventurer, you become the one who pays.")
 		}
-		/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
+		/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 		if ( locvar_event_income_is_taxed ) {
 			autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
-			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+			/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
 			remainingtaxes = 0
 			if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 				remainingtaxes = gdata(GDATA_COST_HIRE) + calccostbuilding() + calccosttax()
@@ -3438,7 +3438,7 @@
 					}
 				}
 			}
-			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
+			/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 			if ( gdata(STARTING_GDATA_FLAG + 359) <= 0 ) {
 				gdata(STARTING_GDATA_FLAG + 359) = 0
 				inv_getheader -1
@@ -3456,11 +3456,11 @@
 				itemcreate -1, ITEM_ID_BILL, -1, -1, 0
 				inv(INV_ITEM_SUB_NAME, ci) = gdata(GDATA_COST_HIRE) + calccostbuilding() + calccosttax()
 				inv(INV_ITEM_SUB_NAME, ci) = inv(INV_ITEM_SUB_NAME, ci) * (100 + rnd(20)) / 100
-				/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+				/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
 				if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 & remainingtaxes > 0 ) {
 					inv(INV_ITEM_SUB_NAME, ci) = remainingtaxes
 				}
-				/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
+				/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 				mode = MODELIST_MAIN
 				gdata(GDATA_BILL)++
 				txtmore
@@ -3480,14 +3480,14 @@
 				}
 			}
 			if ( gdata(GDATA_BILL) > 1 ) {
-				/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+				/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
 				if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 					txtmore
 					txtef COLOR_RED
 					txt "YOU COMMITED TAX EVASION."
 					TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) = (-1)
 				}
-				/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
+				/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 				if ( gdata(GDATA_BILL) <= 4 ) {
 					txtmore
 					txtef COLOR_RED

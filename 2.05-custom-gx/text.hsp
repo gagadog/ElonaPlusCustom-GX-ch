@@ -2745,11 +2745,6 @@
 	if ( adata(ADATA_ID, mapname_mapid) == areatestworld ) {
 		s = lang("テストワールド", "Test World")
 	}
-	/********** CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
-	if ( adata(ADATA_ID, mapname_mapid) == 0 ) {
-		s = lang("野外", "Wilderness")
-	}
-	/********** CUSTOM - ENDING **********/
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_TW_NORTH_BORDER ) {
 		s = lang("テストワールド北関所", "Test World north border")
 	}
@@ -7402,7 +7397,7 @@
 			p = instr(buff, 0, "%ALLY_DEFAULT," + lang("JP", "EN"))
 			break
 		}
-		if ( cbit(CHARA_BIT_LIVESTOCK, tc) == 1 & TweakData(54, 2) == 1 ) {
+		if ( cbit(CHARA_BIT_LIVESTOCK, tc) == 1 ) {
 			p = instr(buff, 0, "%ALLY_DEFAULT," + lang("JP", "EN"))
 			break
 		}
@@ -9176,11 +9171,11 @@
 	if ( val == 0 ) {
 		if ( p == gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) * (gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) < 33) + (gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) == 0) + (gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) == 1) ) {
 			s1 = lang("オルドランにいるウリカグアルから靴下30枚の調達を頼まれている。あと" + (32 - gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)) + "枚の靴下を届ける必要がある。", "Urcaguary in Ol-Dran has asked me to provide her with 30 socks. I still need to deliver " + (32 - gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)) + " more.")
-			/********** CUSTOM - BEGINNING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
+			/********** JAMES CUSTOM - BEGINNING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
 			if ( TweakData(TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST, TWEAK_CATEGORY_GAMEPLAY) != 0 & gdata(GDATA_FLAG_SUB_SOCKS_THIEF) >= 100 ) {
 				s1 = lang("オルドランにいるウリカグアルからリペアキット30枚の調達を頼まれている。あと" + (32 - gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)) + "枚のリペアキットを届ける必要がある。", "Urcaguary in Ol-Dran has asked me to provide her with about 30 kits. I still need to deliver " + (32 - gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM)) + " more.")
 			}
-			/********** CUSTOM - ENDING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
+			/********** JAMES CUSTOM - ENDING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
 			talk_conv s1, 40 - en * 4
 			buff += "(" + s + ")\n" + s1
 			noteadd ""
@@ -9705,7 +9700,7 @@
 		s = "%SUPPLY"
 		gosub *talk_quest_load
 		s(4) = cnvarticle(cnvitemname(qdata(QDATA_DEST_ITEM, rq)))
-		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 		if ( iorgweight(qdata(QDATA_DEST_ITEM, rq)) > 50000 ) {
 			s(4) += lang("(凄く重い)", "(Heavy!)")
 		}
@@ -9724,7 +9719,7 @@
 		if ( supply > (-1) ) {
 			s(4) += lang("(既に持ち)", "(You have it)")
 		}
-		/********** CUSTOM JOB QUESTS - ENDING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 		s(6) = lang(s(4) + "の納入", "Give " + s(4) + " to the client.")
 	}
 	if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_DELIVER ) {
@@ -9746,7 +9741,7 @@
 		}
 		gosub *talk_quest_load
 		s(4) = cnvarticle(foodname(qdata(QDATA_PARAM1, rq), "", qdata(QDATA_PARAM2, rq)))
-		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 		p = qdata(QDATA_DEST_ITEM, rq)
 		supply = -1
 		inv_getheader 0
@@ -9766,7 +9761,7 @@
 		if ( supply > (-1) ) {
 			s(4) += lang("(既に持ち)", "(You have it)")
 		}
-		/********** CUSTOM JOB QUESTS - ENDING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 		s(6) = lang(s(4) + "の納入", "Give " + s(4) + " to the client.")
 	}
 	if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_CONQUER ) {
@@ -9800,7 +9795,7 @@
 		if ( iorgweight(qdata(QDATA_DEST_ITEM, rq)) > 50000 ) {
 			s(10) += lang("(凄く重い)", "(Heavy!)")
 		}
-		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 		p = qdata(QDATA_DEST_ITEM, rq)
 		supply = -1
 		inv_getheader 0
@@ -9816,7 +9811,7 @@
 		if ( supply > (-1) ) {
 			s(10) += lang("(既に持ち)", "(You have it)")
 		}
-		/********** CUSTOM JOB QUESTS - ENDING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 		s(4) = lang("依頼人のために" + s(12) + "から" + s(10), "Acquire " + s(10) + " from " + s(12) + " for the client.")
 		s(6) = s(4) + lang("を調達", "")
 	}

@@ -978,10 +978,12 @@
 				flt
 				itemcreate -1, ITEM_ID_CORPSE, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
 				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH & cbit(CHARA_BIT_LIVESTOCK, rc) == 1 ) {
-					if (TweakData(54, 2) == 1) {
+					if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
+						// New formula since 1.89
 						inv(INV_ITEM_LEVEL, ci) += limit(rnd((sdata(SKILL_NORMAL_ANATOMY, CHARA_PLAYER) + 1) / 40 + 2) + situ, 0, 5) + 5 + cdata(CDATA_SPRITE_SIZE_MILK, rc) + cdata(CDATA_BRUSH_LEVEL, rc)
 					}
 					else {
+						// Old formula, do not touch.
 						inv(INV_ITEM_LEVEL, ci) += limit(rnd((sdata(SKILL_NORMAL_ANATOMY, CHARA_PLAYER) + 1) / 20 + 2) + situ, 1, 10) + cdata(CDATA_BRUSH_LEVEL, rc)
 					}
 				}
@@ -1053,10 +1055,12 @@
 				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH & cbit(CHARA_BIT_LIVESTOCK, rc) == 1 ) {
 					flt
 					itemcreate -1, ITEM_ID_SKIN, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
-					if (TweakData(54, 2) == 1) {
+					if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
+						// New formula since 1.89
 						inv(INV_ITEM_LEVEL, ci) += limit(rnd((sdata(SKILL_NORMAL_ANATOMY, CHARA_PLAYER) + 1) / 40 + 2) + situ2, 0, 5) + 5 + cdata(CDATA_SPRITE_SIZE_MILK, rc) + cdata(CDATA_BRUSH_LEVEL, rc)
 					}
 					else {
+						// Old formula, do not touch.
 						inv(INV_ITEM_LEVEL, ci) += limit(rnd((sdata(SKILL_NORMAL_ANATOMY, CHARA_PLAYER) + 1) / 20 + 2) + situ2, 1, 10) + cdata(CDATA_BRUSH_LEVEL, rc)
 					}
 					inv(INV_ITEM_NUM, ci) = 1 + rnd(1 + (sdata(SKILL_NORMAL_ANATOMY, CHARA_PLAYER) > cdata(CDATA_LEVEL, rc))) + ryou2
@@ -1640,7 +1644,7 @@
 			flt
 			itemcreate -1, ITEM_ID_SOCKS2, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 3
 		}
-		/********** CUSTOM - BEGINNING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
+		/********** JAMES CUSTOM - BEGINNING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
 		if ( TweakData(TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST, TWEAK_CATEGORY_GAMEPLAY) != 0 & gdata(GDATA_FLAG_SUB_SOCKS_THIEF) >= 11 & gdata(GDATA_FLAG_SUB_SOCKS_THIEF) < 100 ) {
 			flt
 			itemcreate -1, ITEM_ID_SOCKS2, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 3
@@ -1651,7 +1655,7 @@
 			flt
 			itemcreate -1, ITEM_ID_SOCKS2, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 3
 		}
-		/********** CUSTOM - ENDING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
+		/********** JAMES CUSTOM - ENDING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
 	}
 	if ( cdata(CDATA_ID, rc) == CREATURE_ID_ARKHAI ) {
 		if ( cdata(CDATA_ROLE, rc) != ROLE_CITIZEN & cdata(CDATA_ROLE, rc) != ROLE_SPECIAL ) {
@@ -2729,11 +2733,13 @@
 		itemcreate -1, ITEM_ID_EGG, cdata(CDATA_X, lovemiracle_arg1), cdata(CDATA_Y, lovemiracle_arg1), 0
 		if ( stat ) {
 			inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, lovemiracle_arg1)
-			if (TweakData(54, 2) == 1) {
+			if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
+				// New formula since 1.89
 				inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, lovemiracle_arg1) / 10 * 40, 20, 10000)
 				inv(INV_ITEM_VALUE, ci) = limit((cdata(CDATA_WEIGHT, lovemiracle_arg1) + 2400) / 4, 600, 3000)
 			}
 			else {
+				// Old formula, do not touch.
 				inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, lovemiracle_arg1) * 10 + 250, 100, 100000)
 				inv(INV_ITEM_VALUE, ci) = limit((limit(cdata(CDATA_WEIGHT, lovemiracle_arg1) * 10 + 250, 100, 100000) + 13000) / 14, 1000, 8000)
 			}

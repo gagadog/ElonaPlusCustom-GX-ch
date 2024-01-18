@@ -578,7 +578,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 42
+    listmax = 43
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -600,7 +600,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 8) = "Disable Deep-Sea Castle persistance." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE)
 	listn(0, 9) = "Sandbag training." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SANDBAG_TRAINING)
 	listn(0, 10) = "No naps while traveling." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING)
-	listn(0, 11) = "Harvest Moon Mode for ranches." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_HARVEST_MOON_RANCH)
+	listn(0, 11) = "Disable Harvest Moon Mode for ranches." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH)
 	listn(0, 12) = "Revert post-1.90 weapon skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_190_EXP_CHANGES)
 	listn(0, 13) = "Disable study days. (triple skill exp)" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_STUDY_DAYS)
 	listn(0, 14) = "Disable DESTINY." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DESTINY)
@@ -630,7 +630,8 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 38) = "Increase Dojo EXP gain: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASED_DOJO_EXP) + "% increase."
 	listn(0, 39) = "Child, you must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GO_CHILD)
 	listn(0, 40) = "Enable loot in Moongate/Rune maps." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_MOONGATE_LOOT)
-	listn(0, 41) = "Go back."
+	listn(0, 41) = "Increase mob density in Random Nefias:" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY) + "% increase."
+	listn(0, 42) = "Go back."
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -688,7 +689,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 				s = "Removes the chance to automatically take a nap when traveling while sleepy."
 			}
 			if ( p == 11 ) {
-				s = "Livestock can randomly become sick, are born unable to be milked, etc."
+				s = "Revert Ano's ranch content after version 1.89. Example: \nLivestock can randomly become sick, are born unable to be milked, etc.\n\nIt is disabled by default before CGX 2.21.2.0."
 			}
 			if ( p == 12 ) {
 				s = "Reverts changes to the weapon skill experience formula after version 1.90.\nThis mainly addresses the three-fold increase in player weapon skill exp gain.\nIt does not change the study day triple exp bonus."
@@ -739,7 +740,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 				s = "Prevents characters from urinating when they are afflicted with fear."
 			}
 			if ( p == 28 ) {
-				s = "Uses Custom Map Layouts in Nefia. \nThis replaces the existing mapgen algorithm with the given percentage chance. \nLayouts with unreachable exits may be generated."
+				s = "Uses Custom Map Layouts in Nefia. \nThis replaces the existing mapgen algorithm with the given percentage chance. \nLayouts with no clear path to exit may be generated, you might need to dig walls. \nMob density is 1 mob every 64 tile, +10~20 per monster-room/packs"
 			}
 			if ( p == 29 ) {
 				s = "Delivery quests now marks the item and makes it heavier, but rewards more PP.\nEliminate quests now spawn targets in a group, civilians will also be spawned.\nHarvest quests now reward seeds based on your performance instead.\nPeople throw more music tickets at you during Party Quest."
@@ -778,6 +779,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 				s = "Custom maps entered via Moongate/Runes now contains loot.\nEnemies drop gold and ores depend on their level.\nContainers can be opened.\nThis won't enable if you enter the Custom Map using Show House."
 			}
 			if ( p == 41 ) {
+				s = "Increase density in random Nefia, result may vary due to mob-room/pack.\n  Default population of low density dungeon (rdtype1): 5~60 average: 23\n  Default population of high density dungeon (rdtype5): 25~110 average: 59\nThis also enforces a 1/64 mob density, +10~30 from mob-room/pack."
+			}
+			if ( p == 42 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -853,7 +857,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	}
 	if ( p == 11 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_HARVEST_MOON_RANCH
+		tn = TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH
 		gosub *ToggleTweak
 	}
 	if ( p == 12 ) {
@@ -1011,6 +1015,13 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		gosub *ToggleTweak
 	}
 	if ( p == 41 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY
+		ts = 25 // Increments by
+		tm = 500 // Max
+		gosub *IncrementTweak
+	}
+	if ( p == 42 ) {
 		snd SOUNDLIST_OK1
 		return
 	}

@@ -2248,7 +2248,7 @@
 	}
 	cdata(CDATA_QUALITY, rc) = fixlv
 	gosub *cm_finish
-	/********** CUSTOM ENEMY EVOLUTION - BEGINNING **********/
+	/********** JAMES CUSTOM - ENEMY EVOLUTION - BEGINNING **********/
 	if ( rc >= MAX_CHARA_FOLLOWER ) {
 		f@PE = 0
 		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
@@ -2268,7 +2268,7 @@
 			}
 		}
 	}
-	/********** CUSTOM ENEMY EVOLUTION - ENDING **********/
+	/********** JAMES CUSTOM - ENEMY EVOLUTION - ENDING **********/
 	rtval = rc
 	return 1
 

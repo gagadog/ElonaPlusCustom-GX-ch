@@ -593,7 +593,7 @@
 	if ( locvar_calccosthire_cost >= 100000 ) {
 		locvar_calccosthire_cost = 100000
 	}
-	/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+	/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
 	if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) > 1 ) {
 		repeat TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) - 1
 			if ( locvar_calccosthire_cost < 0 | locvar_calccosthire_cost > 1000000000 ) {
@@ -603,7 +603,7 @@
 			locvar_calccosthire_cost *= 2
 		loop
 	}
-	/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
+	/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 	locvar_calccosthire_cost = abs(locvar_calccosthire_cost * limit(100 - limit(cdata(CDATA_KARMA, CHARA_PLAYER) / 2, 0, 50) - 7 * trait(TRAIT_NORMAL_OTHER_ACCOUNTANT) - (cdata(CDATA_KARMA, CHARA_PLAYER) >= 20) * 5, 25, 200) / 100)
 	return locvar_calccosthire_cost
 

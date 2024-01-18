@@ -94,29 +94,29 @@ if instr(s,0,%1)!-1{	%c\
 
 /********** RUIN0X11 CUSTOM - ENDING **********/
 
-/********** CUSTOM NEFIA TYPES - BEGINNING **********/
+/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
 
 #include "custom_nefiatypes.hsp"
 
-/********** CUSTOM NEFIA TYPES - ENDING **********/
+/********** JAMES CUSTOM - NEFIA LAYOUT - ENDING **********/
 
-/********** CUSTOM SPELL ANIMATION - BEGINNING **********/
+/********** JAMES CUSTOM - SPELL ANIMATION - BEGINNING **********/
 
 #include "custom_spellanimations.hsp"
 
-/********** CUSTOM SPELL ANIMATION - ENDING **********/
+/********** JAMES CUSTOM - SPELL ANIMATION - ENDING **********/
 
-/********** CUSTOM DAMAGE METER - BEGINNING **********/
+/********** JAMES CUSTOM - DAMAGE METER - BEGINNING **********/
 
 #include "custom_dmgparse.hsp"
 
-/********** CUSTOM DAMAGE METER - ENDING **********/
+/********** JAMES CUSTOM - DAMAGE METER - ENDING **********/
 
-/********** CUSTOM ENEMY EVOLUTION - BEGINNING **********/
+/********** JAMES CUSTOM - ENEMY EVOLUTION - BEGINNING **********/
 
 #include "custom_enemyevolution.hsp"
 
-/********** CUSTOM ENEMY EVOLUTION - ENDING **********/
+/********** JAMES CUSTOM - ENEMY EVOLUTION - ENDING **********/
 
 #defcfunc hantozen str hantozen_arg1, var hantozen_arg2, int hantozen_arg3
 	return LCMapStringA(GetUserDefaultLCID(), 8388608, hantozen_arg1, -1, hantozen_arg2, hantozen_arg3)
@@ -205,17 +205,17 @@ if instr(s,0,%1)!-1{	%c\
 	}
 	return locvar_cnven_s
 
-#defcfunc cnvcase str cnvcase_str
+#defcfunc cnvcase str cnvcase_str, int cnvcase_type
 	if ( jp ) {
 		return cnvcase_str
 	}
 	locvar_cnven_s = cnvcase_str
 	repeat strlen(locvar_cnven_s)
 		locvar_cnven_p = peek(locvar_cnven_s, cnt)
-		if ( locvar_cnven_p >= 97 & locvar_cnven_p <= 122 & (cfg_capitalizeItemName == 2 | (cfg_capitalizeItemName >= 4 & rnd(2) == 0)) ) {
+		if ( locvar_cnven_p >= 97 & locvar_cnven_p <= 122 & (cnvcase_type == 2 | (cnvcase_type >= 4 & rnd(2) == 0)) ) {
 			poke locvar_cnven_s, cnt, locvar_cnven_p - 32
 		} else {
-			if ( locvar_cnven_p >= 65 & locvar_cnven_p <= 90 & (cfg_capitalizeItemName == 3 | (cfg_capitalizeItemName >= 4 & rnd(2) == 0)) ) {
+			if ( locvar_cnven_p >= 65 & locvar_cnven_p <= 90 & (cnvcase_type == 3 | (cnvcase_type >= 4 & rnd(2) == 0)) ) {
 				poke locvar_cnven_s, cnt, locvar_cnven_p + 32
 			}
 		}
@@ -223,36 +223,36 @@ if instr(s,0,%1)!-1{	%c\
 	return locvar_cnven_s
 
 #deffunc _ioriginalnameref int ioriginalnameref_input
-	return capitalize(ioriginalnameref(ioriginalnameref_input))
+	return capitalize(ioriginalnameref(ioriginalnameref_input), cfg_capitalizeItemName)
 
-#defcfunc capitalize str capitalize_org_str
-	if ( jp | cfg_capitalizeItemName == 0 ) {
+#defcfunc capitalize str capitalize_org_str, int capitalize_type_org_int
+	if ( jp | capitalize_type_org_int == 0 ) {
 		return capitalize_org_str
 	}
 	cap_str_org@txtfunc = capitalize_org_str
 	if ( strlen(cap_str_org@txtfunc) == 0 ) {
 		return capitalize_org_str
 	}
-	if ( cfg_capitalizeItemName == 4 ) { randomize gdata(GDATA_DAY) }
+	if ( capitalize_type_org_int == 4 ) { randomize gdata(GDATA_DAY) }
 	tokens@txtfunc = "(", ")", "<", ">", "[", "]", "-"
 	repeat length(tokens@txtfunc)
 		if ( instr(cap_str_org@txtfunc, 0, tokens@txtfunc(cnt)) != (-1) ) {
 			sreplace cap_str_org@txtfunc, cap_str_org@txtfunc, tokens@txtfunc(cnt), " " + tokens@txtfunc(cnt) + " "
 		}
 	loop
-	cap_str_org@txtfunc = _capitalize(cap_str_org@txtfunc, " ")
+	cap_str_org@txtfunc = _capitalize(cap_str_org@txtfunc, " ", capitalize_type_org_int)
 	repeat length(tokens@txtfunc)
 		if ( instr(cap_str_org@txtfunc, 0, tokens@txtfunc(cnt)) != (-1) ) {
 			sreplace cap_str_org@txtfunc, cap_str_org@txtfunc, " " + tokens@txtfunc(cnt) + " ", tokens@txtfunc(cnt)
 		}
 	loop
-	if ( cfg_capitalizeItemName == 4 ) { randomize }
+	if ( capitalize_type_org_int == 4 ) { randomize }
 	return cap_str_org@txtfunc
 
-#defcfunc _capitalize str capitalize_str, str capitalize_token
+#defcfunc _capitalize str capitalize_str, str capitalize_token, int capitalize_type_int
 	cap_str@txtfunc = capitalize_str
 	cap_tok@txtfunc = capitalize_token
-	if ( jp | cfg_capitalizeItemName == 0 | strlen(cap_str@txtfunc) == 0 ) {
+	if ( jp | capitalize_type_int == 0 | strlen(cap_str@txtfunc) == 0 ) {
 		return capitalize_str
 	}
 	// append@txtfunc = peek(cap_str@txtfunc, strlen(cap_str@txtfunc) - 1) == peek(cap_tok@txtfunc, 0)
@@ -279,11 +279,11 @@ if instr(s,0,%1)!-1{	%c\
 			cap_out@txtfunc += lines@txtfunc(cnt)
 			continue
 		}
-		if ( cfg_capitalizeItemName == 1 ) {
+		if ( capitalize_type_int == 1 ) {
 			cap_out@txtfunc += cnven(lines@txtfunc(cnt))
 		}
-		if ( cfg_capitalizeItemName >= 2 ) {
-			cap_out@txtfunc += cnvcase(lines@txtfunc(cnt))
+		if ( capitalize_type_int >= 2 ) {
+			cap_out@txtfunc += cnvcase(lines@txtfunc(cnt), capitalize_type_int)
 		}
 	loop
 	// if ( append@txtfunc ) { cap_out@txtfunc += capitalize_token }
@@ -492,9 +492,13 @@ if instr(s,0,%1)!-1{	%c\
 	loop
 	if ( locvar_getunid_f == 0 ) {
 		cdata(CDATA_USERNPC_ID, getunid_charid) = usernpcmax
+		/********** JAMES CUSTOM - BEGINNING **********/
+		// locvar_getunid_f == 0 means cnpc file not found, therefore the cnpc doesn't have a valid image
+		// Image index reset is needed, but changing name to "a garbage" doesn't make much sense.
+		// Change the image to that of vestige's and keep the name.
 		cdata(CDATA_PIC, getunid_charid) = xy2pic(1, 33) + ( cdata(CDATA_SEX, getunid_charid) == 1 ) + COLOR_DEFAULT * COLOR_TINT_MULT
-		// Like, why. Just change the image to vestige and not change the name.
-		// I don't even know what got removed.
+		/********** JAMES CUSTOM - ENDING **********/
+		// Original:
 		; cdata(CDATA_PIC, getunid_charid) = COLOR_DEFAULT * COLOR_TINT_MULT + 1
 		; cdatan(CDATAN_NAME, getunid_charid) = lang("残りカス", "a garbage")
 	}
@@ -1193,7 +1197,7 @@ if instr(s,0,%1)!-1{	%c\
 
 #deffunc txt_conv
 	redraw 0
-	/********** CUSTOM DIALOG POP UPS - BEGINNING **********/
+	/********** JAMES CUSTOM - DIALOG POP UPS - BEGINNING **********/
 	if ( chatc@DP != 0) {
 		if ( chatc@DP < 0 ) { 
 			chatc@DP = CHARA_PLAYER
@@ -1203,7 +1207,7 @@ if instr(s,0,%1)!-1{	%c\
 		}
 	}
 	chatc@DP = 0
-	/********** CUSTOM DIALOG POP UPS - ENDING **********/
+	/********** JAMES CUSTOM - DIALOG POP UPS - ENDING **********/
 	if ( msgtemp == "" ) {
 		return
 	}
@@ -1235,13 +1239,13 @@ if instr(s,0,%1)!-1{	%c\
 			msg_newline
 			tnew = 0
 			if ( cfg_msgaddtime ) {
-				/********** CUSTOM JOB QUESTS - BEGINNING **********/
+				/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 				if ( gdata(GDATA_TIME_LIMIT) > 0 & gdata(GDATA_AREA) == AREA_QUEST ) {
 					if ( gdata(GDATA_QUEST) != QUEST_TYPE_MINEFIELD ) {
 						msgtemp = lang("[残り" + (gdata(GDATA_TIME_LIMIT) + 1) + "分] ", "(" + (gdata(GDATA_TIME_LIMIT) + 1) + " min left) ") + msgtemp
 					}
 				}
-				/********** CUSTOM JOB QUESTS - ENDING **********/
+				/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 				msgtemp = "[" + gdata(GDATA_MIN) + "] " + msgtemp
 			}
 			else {
@@ -1975,11 +1979,13 @@ if instr(s,0,%1)!-1{	%c\
 	gosub *config_load
 	gosub *screen_init
     gosub *DamagePopupsInit
-	/********** CUSTOM DAMAGE METER - BEGINNING **********/
+	/********** JAMES CUSTOM - DAMAGE METER - BEGINNING **********/
     gosub *DamageParsesInit
-	/********** CUSTOM DAMAGE METER - ENDING **********/
-	sdim atxinfon, 80, 5 // Custom - Fix sleeping crashes caused by uninitiated atxinfon (type mismatch).
+	/********** JAMES CUSTOM - DAMAGE METER - ENDING **********/
+	/********** JAMES CUSTOM - BEGINNING **********/ // Fix sleeping crashes caused by uninitiated atxinfon (type mismatch).
+	sdim atxinfon, 80, 5
 	atxinfon(0) = ""
+	/********** JAMES CUSTOM - ENDING **********/ // Fix sleeping crashes
 	HIGHDPI_Initialize cfg_highdpi_scaling, cfg_highdpi_smoothing
 	if ( cfg_fullscreen ) {
 		chgdisp 1, windoww, windowh

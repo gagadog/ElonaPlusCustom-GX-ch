@@ -76,14 +76,14 @@
 	return
 
 #deffunc map_converttile
-	/********** CUSTOM NEFIA TYPES - BEGINNING **********/
+	/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
 	if ( TweakData(TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
 			map_converttile_custom
 			return
 		}
 	}
-	/********** CUSTOM NEFIA TYPES - ENDING **********/
+	/********** JAMES CUSTOM - NEFIA LAYOUT - ENDING **********/
 	repeat mdata(MDATA_HEIGHT)
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
@@ -419,13 +419,13 @@
 	}
 	procid = (procid + 1) \ 4
 	proclist(procid) = "map_tileSet:End" + " ct:" + ct
-	/********** CUSTOM NEFIA TYPES - BEGINNING **********/
+	/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
 	if ( TweakData(TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
 			map_tileset_custom map_tileset_arg1
 		}
 	}
-	/********** CUSTOM NEFIA TYPES - ENDING **********/
+	/********** JAMES CUSTOM - NEFIA LAYOUT - ENDING **********/
 	return
 
 #deffunc map_initcustom str map_initcustom_mapname
@@ -525,9 +525,9 @@
 	repeat 30
 		roomexist(cnt) = 0
 	loop
-	/********** CUSTOM NEFIA TYPES - BEGINNING **********/
+	/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
 	map_initialize_custom
-	/********** CUSTOM NEFIA TYPES - ENDING **********/
+	/********** JAMES CUSTOM - NEFIA LAYOUT - ENDING **********/
 	dim map, mdata(MDATA_WIDTH), mdata(MDATA_HEIGHT), 10
 	dim mapsync, mdata(MDATA_WIDTH), mdata(MDATA_HEIGHT)
 	dim mef, 9, 200

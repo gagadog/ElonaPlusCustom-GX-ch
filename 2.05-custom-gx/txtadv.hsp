@@ -67,7 +67,9 @@
 	atxbg = "bg13"
 	atxbgbk = ""
 	sdim atxinfon, 80, 5
-	atxinfon(0) = "" // Custom - Fix sleeping crashes caused by uninitiated atxinfon (type mismatch).
+	/********** JAMES CUSTOM - BEGINNING **********/ // Fix sleeping crashes caused by uninitiated atxinfon (type mismatch).
+	atxinfon(0) = ""
+	/********** JAMES CUSTOM - ENDING **********/ // Fix sleeping crashes
 	redraw 0
 	if ( atxid == 2 ) {
 		goto *atx_RE

@@ -145,7 +145,7 @@
 	}
 	if ( cdata(CDATA_RELATION, tc) <= (-1) ) {
 		if ( evnum == 0 ) {
-			if ( TweakData(54, 2) == 0 | cbit(CHARA_BIT_LIVESTOCK, tc) != 1 ) {
+			if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE | cbit(CHARA_BIT_LIVESTOCK, tc) != 1 ) {
 				txt lang(name(tc) + "は耳を貸さない。", name(tc) + " won't listen.")
 				questteleport = 0
 				gosub *screen_draw
@@ -1142,7 +1142,7 @@
 	if ( _switch_val == CREATURE_ID_MICHES_THE_APPRENTICE | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_FLAG_SUB_SLIME) == 1000 ) {
-			/********** CUSTOM TCG - BEGINNING **********/
+			/********** JAMES CUSTOM - TCG - BEGINNING **********/
 			// if ( gdata(GDATA_HOUR) >= 8 & gdata(GDATA_HOUR) <= 20 ) { // Uncomment this line if Ano added Miches event
 			if ( TRUE ) {
 				chatList 2, lang("挨拶する", "Let's Talk.")
@@ -1175,7 +1175,7 @@
 					goto *chat_end
 				}
 			}
-			/********** CUSTOM TCG - ENDING **********/
+			/********** JAMES CUSTOM - TCG - ENDING **********/
 			chatMore lang("あら、冒険者さん♪ お茶でもいかが？", "Hi there adventurer! Would you like some tea?"), strbye
 			goto *chat_end
 		}
@@ -1458,11 +1458,8 @@
 				buff = lang("まだ、何か用があるのか？", "What?")
 				chatList 0, lang("何も", "Nothing.")
 			}
-			// TODO: This tweak check isn't really necessary anymore, so I'm just restoring it.
-			if ( TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) > 0 | TRUE ) {
-				if ( gdata(GDATA_FLAG_TUTORIAL) == 0 | gdata(GDATA_FLAG_TUTORIAL) == (-1) ) {
-					chatList 2, lang("そろそろ出発したら？", "You had better leave soon to Palmia.")
-				}
+			if ( gdata(GDATA_FLAG_TUTORIAL) == 0 | gdata(GDATA_FLAG_TUTORIAL) == (-1) ) {
+				chatList 2, lang("そろそろ出発したら？", "You had better leave soon to Palmia.")
 			}
 			gosub *chat_select
 		}
@@ -11713,7 +11710,7 @@
 	}
 	if ( _switch_val == CREATURE_ID_URCAGUARY | _switch_sw ) {
 		_switch_sw = 0
-		/********** CUSTOM - BEGINNING **********/ // Deliver Craft Repair Kits and Material Kits instead of socks
+		/********** JAMES CUSTOM - Deliver Craft Repair Kits and Material Kits instead of socks - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST, TWEAK_CATEGORY_GAMEPLAY) != 0 & gdata(GDATA_FLAG_SUB_SOCKS_THIEF) >= 100 ) {
 			if ( gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) >= 32 ) {
 				chatMore lang("我が黄金騎士団はハードなトレーニングを積んできた。トレーニング用具のほとんどを壊してしまったので、リペアキットや素材槌がまだまだ必要だ。", "Our Golden Knights has been training hard, a bit too hard to be honest. We broke most of our training equipments, so we still need more Craft Repair Kits and Material Kits to fix all the mess here.")
@@ -11807,7 +11804,7 @@
 				}
 			}
 		}
-		/********** CUSTOM - ENDING **********/
+		/********** JAMES CUSTOM - Deliver Craft Repair Kits and Material Kits instead of socks - ENDING **********/
 		if ( gdata(GDATA_FLAG_SUB_URCAGUARY_THE_TENACIOUS_GEM) >= 32 ) {
 			chatMore lang("おかしい…少し目を離した隙にまた靴下が全部無くなっているぞ。", "That's funny... All the socks disappeared again when I wasn't looking.")
 			chatMore lang("備品調達係、仕事だよ。また靴下30枚集めてきな。…そう嫌な顔をするなって。また褒美はやるよ。", "Time to work, Procurement Officer. Collect another 30 socks... Don't give me that look. You'll get another reward.")
@@ -18989,11 +18986,11 @@
 						}
 						if ( inv(INV_ITEM_ID, cnt) == p ) {
 							deliver(1) = cnt
-							/********** CUSTOM JOB QUESTS - BEGINNING **********/
+							/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 							if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 & ibit(ITEM_BIT_HANDMADE, cnt)) {
 								deliver(2) = cnt
 							}
-							/********** CUSTOM JOB QUESTS - ENDING **********/
+							/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 							continue
 						}
 					loop
@@ -19812,7 +19809,7 @@
 		goto *chat_quest
 	}
 	if ( chatval == 25 ) {
-		/********** CUSTOM JOB QUESTS - BEGINNING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			if ( deliver(2) == (-1) ) {
 				chatList 1, lang("これ、あげ" + _ru(2), "Here's YOUR delivery!")
@@ -19832,7 +19829,7 @@
 				itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
 			}
 		}
-		/********** CUSTOM JOB QUESTS - ENDING **********/
+		/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 		gosub *chara_adjustInv
 		ti = stat
 		item_copy deliver(1), ti
@@ -21370,12 +21367,12 @@
 		goto *chat_end
 	}
 	if ( chatval == 43 ) {
-		/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+		/********** JAMES CUSTOM - CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
 		if ( TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 			buff = lang("冷やかし" + _ka(1), "You kidding?")
 			goto *chat_default
 		}
-		/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
+		/********** JAMES CUSTOM - CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 		chatMore lang("悪天候時はシェルターを無料で開放している" + _nda() + "すみやかに避難して" + _kure(), "The shelter is free to use for anyone. Here, come in.")
 		if ( gdata(GDATA_FLAG_DUEL_TARGET) > 0 ) {
 			snd SOUNDLIST_FAIL1
@@ -23330,18 +23327,18 @@
 	}
 	chatList 0, lang("やめる", "Never mind.")
 	chatesc = 1
-	/********** CUSTOM - BEGINNING **********/ // Show slave image
+	/********** JAMES CUSTOM - BEGINNING **********/ // Show slave image
 	tcbk = tc
 	mcpbk = cdata(CDATA_PORTRAIT, MAX_CHARA_NC)
 	cdata(CDATA_PORTRAIT, MAX_CHARA_NC) = -1
 	tc = MAX_CHARA_NC
-	/********** CUSTOM - ENDING **********/
+	/********** JAMES CUSTOM - ENDING **********/
 	gosub *chat_select
-	/********** CUSTOM - BEGINNING **********/ // Show slave image
+	/********** JAMES CUSTOM - BEGINNING **********/ // Show slave image
 	tc = tcbk
 	cdata(CDATA_PORTRAIT, MAX_CHARA_NC) = mcpbk
 	gosub *chat_refresh
-	/********** CUSTOM - ENDING **********/
+	/********** JAMES CUSTOM - ENDING **********/
 	if ( chatval == 1 ) {
 		txt lang(cdatan(CDATAN_NAME, MAX_CHARA_NC) + "を買い取った。", "You buy " + cnven(cdatan(CDATAN_NAME, MAX_CHARA_NC)) + ".")
 		snd SOUNDLIST_PAYGOLD1
@@ -23459,12 +23456,12 @@
 			qdata(QDATA_QUEST_TARGET, qdata(QDATA_DEST_CLIENT, rq))++
 			flt
 			itemcreate 0, qdata(QDATA_DEST_ITEM, rq), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
-			/********** CUSTOM JOB QUESTS - BEGINNING **********/
+			/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/
 			if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 				inv(INV_ITEM_WEIGHT, ci) += (rnd(11) + 5) * 400 * qdata(QDATA_LEVEL, rq)
 				ibitmod ITEM_BIT_HANDMADE, ci, 1
 			}
-			/********** CUSTOM JOB QUESTS - ENDING **********/
+			/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 			txt lang(itemname(ci, 1) + "をバックパックに入れた。", "You put " + itemname(ci, 1) + " in your backpack.")
 			snd SOUNDLIST_INV
 			gosub *calcBurdenPc

@@ -36,40 +36,62 @@
 		}
 		calccosthire
 	}
-	/********** CUSTOM DAMAGE METER - BEGINNING **********/
+	/********** JAMES CUSTOM - DAMAGE METER - BEGINNING **********/
 	if ( cfg_showDamageMeter > 0 ) {
 		DamageParsesReset
 	}
-	/********** CUSTOM DAMAGE METER - ENDING **********/
+	/********** JAMES CUSTOM - DAMAGE METER - ENDING **********/
 	gdata(GDATA_TEMPORARY_FLAGS2) = 0
 	return
 
-*fixTweakData6190
-	// TODO this is here because I expanded tweaks from 5x100 to 5x500 entries. And data got shifted in the process.
-	// Remove this if it causes problem in the future.
-	f = 0
-	repeat 100
-		f += 1 * (TweakData(cnt + 100, 0) != 0) + 1 * (TweakData(cnt + 200, 0) != 0) + 1 * (TweakData(cnt + 300, 0) != 0) + 1 * (TweakData(cnt + 400, 0) != 0)
-	loop
-	if ( f > 0 ) {
-		txt "Tweak Data is expanded to 2500 entries."
+*initTweakDataVersion
+	TweakData(499, 4) = VERSION_NUMBER
+	return
+
+*fixTweakData
+	// In 2.18, tweaks data are expanded from 5x100 to 5x500 entries. And data got shifted in the process.
+	if ( TweakData(499, 4) < 6190 ) { 
+		f = 0
 		repeat 100
-			TweakData(cnt, 4) = TweakData(cnt + 400, 0)
-			TweakData(cnt, 3) = TweakData(cnt + 300, 0)
-			TweakData(cnt, 2) = TweakData(cnt + 200, 0)
-			TweakData(cnt, 1) = TweakData(cnt + 100, 0)
-			TweakData(cnt + 400, 0) = 0
-			TweakData(cnt + 300, 0) = 0
-			TweakData(cnt + 200, 0) = 0
-			TweakData(cnt + 100, 0) = 0
+			f += 1 * (TweakData(cnt + 100, 0) != 0) + 1 * (TweakData(cnt + 200, 0) != 0) + 1 * (TweakData(cnt + 300, 0) != 0) + 1 * (TweakData(cnt + 400, 0) != 0)
 		loop
-		TweakData(TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS, TWEAK_CATEGORY_MISC) = TweakData(TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN, TWEAK_CATEGORY_GAMEPLAY)
-		TweakData(TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN, TWEAK_CATEGORY_GAMEPLAY) = TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY)
+		repeat 500
+			f -= (500 * (TweakData(cnt, 1) != 0) + 500 * (TweakData(cnt, 2) != 0) + 500 * (TweakData(cnt, 3) != 0) + 500 * (TweakData(cnt, 4) != 0))
+		loop
+		if ( f > 0 ) {
+			dialog "Updating Tweak Data from pre-2.18 version. \nTweak entry is expanded to 2500 entries. \nCheck your tweak menu to see if your tweaks are correct."
+			repeat 100
+				TweakData(cnt, 4) = TweakData(cnt + 400, 0)
+				TweakData(cnt, 3) = TweakData(cnt + 300, 0)
+				TweakData(cnt, 2) = TweakData(cnt + 200, 0)
+				TweakData(cnt, 1) = TweakData(cnt + 100, 0)
+				TweakData(cnt + 400, 0) = 0
+				TweakData(cnt + 300, 0) = 0
+				TweakData(cnt + 200, 0) = 0
+				TweakData(cnt + 100, 0) = 0
+			loop
+			TweakData(TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS, TWEAK_CATEGORY_MISC) = TweakData(TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN, TWEAK_CATEGORY_GAMEPLAY)
+			TweakData(TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN, TWEAK_CATEGORY_GAMEPLAY) = TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY)
+		}
+		TweakData(499, 4) = 6190
+	}
+	// In 2.21, I reverted the 1.89 harvest moon change, it should be enabled by default.
+	//  - New character / first time cgx user: f == 0. No changes.
+	//  - Save from older cgx, and used tweaks: f == 1, revert selection.
+	if ( TweakData(499, 4) < 6300 ) { 
+		f = 0
+		repeat 100
+			f += 1 * (TweakData(cnt, 0) != 0) + 1 * (TweakData(cnt, 1) != 0) + 1 * (TweakData(cnt, 2) != 0) + 1 * (TweakData(cnt, 3) != 0) + 1 * (TweakData(cnt, 4) != 0)
+		loop
+		if ( f > 0 ) {
+			TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) = 1 * (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == FALSE)
+		}
+		TweakData(499, 4) = 6300
 	}
 	return
 
 *fixSave
-	gosub *fixTweakData6190
+	gosub *fixTweakData
 	if ( gdata(GDATA_VERSION) != VERSION_NUMBER ) {
 		dialog lang("Ver." + gdata(GDATA_VERSION) + "のセーブデータをアップデートします。", "Updating your save data from Ver." + gdata(GDATA_VERSION) + " now.")
 	}
@@ -4170,8 +4192,8 @@
 	
 	/********** JIANMENGYU CUSTOM - BEGINNING **********/
 
-	if ( instr(buff, 0, "fix_tweak_6190") != (-1) ) {
-		gosub *fixTweakData6190
+	if ( instr(buff, 0, "fix_tweak") != (-1) ) {
+		gosub *fixTweakData
 		buff = ""
 		notesel buff
 		noteadd "Done."
@@ -4301,7 +4323,7 @@
 
 		/********** RUIN0X11 CUSTOM - ENDING **********/
 	
-		/********** CUSTOM TCG - BEGINNING **********/
+		/********** JAMES CUSTOM - TCG - BEGINNING **********/
 		if ( instr(buff, 0, "unlock_all_cards") != (-1) ) {
 			repeat MAX_CREATURE_ID - 3
 				card(0, cnt + 1) = 99
@@ -4311,7 +4333,7 @@
 			noteadd "Done."
 			goto *console_write
 		}
-		/********** CUSTOM TCG - BEGINNING **********/ 
+		/********** JAMES CUSTOM - TCG - ENDING **********/ 
 
 		if ( instr(buff, 0, "gain_spell") != (-1) ) {
 			repeat MAX_SPELL - STARTING_SKILL_SPELL, STARTING_SKILL_SPELL

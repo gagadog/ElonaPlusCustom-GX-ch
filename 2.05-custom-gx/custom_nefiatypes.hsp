@@ -61,14 +61,21 @@
 	return
 
 #deffunc map_room_populate_custom
-	monsterhouselimit@NT = 3
+	monsterhousepop@NT = 20 - 10 * (rdmonsterhouse > 0)  // limit monster room monster count
+	monsterhouselimit@NT = 3  // limit max amount of monster rooms
+	vaultroom_monster_limit@NT = limit(rh * rw / 2, 5 + rnd(5), 15)
+	/********** JAMES CUSTOM - MOB DENSITY - BEGINNING **********/
+	if ( TweakData(TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY, TWEAK_CATEGORY_GAMEPLAY) > 0 ) {
+		monsterhousepop@NT = monsterhousepop@NT * (100 + limit(TweakData(TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY, TWEAK_CATEGORY_GAMEPLAY), 0, 500)) / 100
+		vaultroom_monster_limit@NT = vaultroom_monster_limit@NT * (100 + limit(TweakData(TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY, TWEAK_CATEGORY_GAMEPLAY), 0, 500)) / 100
+	}
+	/********** JAMES CUSTOM - MOB DENSITY - ENDING **********/
 	if ( rdsize < 0 ) {
 		return
 	}
 	// Custom - Vaultroom
 	if ( currentroomcount@NT == vaultroom@NT - 1 ) {
 		rdmonsterhouse++
-		vaultroom_monster_limit@NT = limit(rh * rw/2, 10+rnd(20), 70)
 		repeat rh, ry
 			rdy3 = cnt
 			repeat rw, rx
@@ -143,15 +150,15 @@
 	if ( currentroomcount@NT == rdroomupstair ) {
 		return
 	}
-	if ( rdmonsterhouse < monsterhouselimit@NT | rdtype == 2 ) {
+	if ( rdmonsterhouse < monsterhouselimit@NT ) {
 		if ( rnd(8) == 0 ) {
-			if ( rw * rh < 40 ) {
+			if ( rw * rh < 40 & rw * rh >= 1 ) {
 				rdmonsterhouse++
 				repeat rh, ry
 					rdy3 = cnt
 					repeat rw, rx
 						rdx3 = cnt
-						if ( rnd(rw * rh) > 20 ) { continue } // limit monster room monster count
+						if ( rnd(rw * rh) > monsterhousepop@NT ) { continue }
 						gosub *fltChara
 						characreate -1, CREATURE_ID_BUG, rdx3, rdy3
 					loop
@@ -1763,9 +1770,11 @@
 					map(mfx@NT, mfy@NT, 0) = 99
 					map_fur_set_prop@NT = 1
 				}
+				flt
 				nooracle = 1
 				itemcreate -1, fur_place@NT, mfx@NT, mfy@NT + mfdy@NT, 0
-				if ( refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_FURNITURE | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_CONTAINER | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ENVIRONMENT ) {
+				furniturecount@NT++
+				if ( refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_FURNITURE | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_CONTAINER | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ENVIRONMENT | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_JUNK ) {
 					inv(INV_ITEM_PROPERTY, ci) = PROP_NPC
 				}
 				if ( map_fur_set_prop@NT > 0 ) { 
@@ -1800,8 +1809,10 @@
             cell_featread mfx@NT, mfy@NT
             if ( map(mfx@NT, mfy@NT, 4) == 0 & rnd(100) < map_furniture_chance ) {
                 fur_place@NT = map_furniture_group(rnd(length(map_furniture_group)))
+				flt
 				nooracle = 1
                 itemcreate -1, fur_place@NT, mfx@NT, mfy@NT, 0
+				furniturecount@NT++
                 if ( refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_FURNITURE | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_CONTAINER | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ENVIRONMENT ) {
                     inv(INV_ITEM_PROPERTY, ci) = PROP_NPC
                 }
@@ -2487,8 +2498,8 @@
 	return
 
 *map_createDungeonCaveHobbit
-	mdata(MDATA_WIDTH) = 50
-	mdata(MDATA_HEIGHT) = 50
+	mdata(MDATA_WIDTH) = 30 + rnd(11)
+	mdata(MDATA_HEIGHT) = 30 + rnd(11)
 	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
 	map_initialize
 
@@ -2497,12 +2508,14 @@
 	map_makesimpleroom2 3, 3, 44, 44, 0, 0
 
     repeat count@NT
-        map_furniture_setgroup 911
+		map_furniture_setgroup 911
+		if ( mdata(MDATA_TILESET) == 300 ) {  map_furniture_setgroup 221 }
+		if ( mdata(MDATA_TILESET) == 96 ) {  map_furniture_setgroup 251 }
         map_createroom_circular matrix_pt@NT(0,cnt), matrix_pt@NT(1,cnt), 2+rnd(2), 2+rnd(2), 3, 3
     loop
 	repeat count@NT
 		dighole_directiondrunk matrix_pt@NT(0,cnt), matrix_pt@NT(1,cnt), matrix_pt@NT(0,matrix_pt@NT(2,cnt)), matrix_pt@NT(1,matrix_pt@NT(2,cnt)), 1, 1+rnd(2), 100
-		if ( rnd(2) == 0 ) {
+		if ( rnd(4) == 0 ) {
 			p@NT = ( cnt + count@NT / 2 ) \ count@NT
 			dighole_directiondrunk matrix_pt@NT(0,cnt), matrix_pt@NT(1,cnt), matrix_pt@NT(0,p@NT), matrix_pt@NT(1,p@NT), 1, 1+rnd(2), 100
 		}
@@ -2510,20 +2523,31 @@
 	
 	repeat 6
 		map_furniture_setgroup 112
+		if ( mdata(MDATA_TILESET) == 300 ) {  map_furniture_setgroup 221 }
+		if ( mdata(MDATA_TILESET) == 96 ) {  map_furniture_setgroup 251 }
 		map_createroom_adjacent 5 + rnd(3), 5 + rnd(3), 3, 1
 	loop
 	repeat 3
 		map_furniture_setgroup 112 + rnd(3)
 		map_createroom_adjacent 4 + rnd(2), 4 + rnd(2), 92, 82
 	loop
+	
+	if ( mdata(MDATA_TILESET) == 300 ) {
+		dighole_diffusion_limited_aggregation 100, 3
+		map_furniture_scatter map_fur_siteforest@NT, 10, 100
+	}
+	if ( mdata(MDATA_TILESET) == 96 ) {
+		dighole_diffusion_limited_aggregation 100, 3
+		map_furniture_scatter map_fur_siteforestdead@NT, 5, 100
+	}
 
     map_placetwostairs_on_point 50
 	map_validate_and_clean
 	return
 
 *map_createDungeonCaveSlums
-	mdata(MDATA_WIDTH) = 40 + rnd(11)
-	mdata(MDATA_HEIGHT) = 40 + rnd(11)
+	mdata(MDATA_WIDTH) = 30 + rnd(11)
+	mdata(MDATA_HEIGHT) = 30 + rnd(11)
 	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
 	map_initialize
 
@@ -2577,7 +2601,7 @@
 *map_createDungeonNestDragon
 	mdata(MDATA_WIDTH) = 50
 	mdata(MDATA_HEIGHT) = 50
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
+	mdata(MDATA_MODERATE_CROWD) = 80 + rnd(61)
 	map_initialize
 	
 	tile_default = 468
@@ -2624,7 +2648,7 @@
 *map_createDungeonNestSpider
 	mdata(MDATA_WIDTH) = 40
 	mdata(MDATA_HEIGHT) = 40
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 24
 	map_initialize
 
 	dighole_voronoi_diagram 1, 1, 38, 38, 100, 8, 1, 3
@@ -2648,7 +2672,7 @@
 *map_createDungeonCaveSpiral
 	mdata(MDATA_WIDTH) = 40
 	mdata(MDATA_HEIGHT) = 40
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 12
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 20
 	map_initialize
 
 	map_createroom_circular 20, 20, 4, 4, 100, 100
@@ -2672,7 +2696,7 @@
 *map_createDungeonFortKnightCastle
 	mdata(MDATA_WIDTH) = 60
 	mdata(MDATA_HEIGHT) = 40
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 12
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 24
 	map_initialize
 
 	if ( rnd(2) == 0 | gdata(GDATA_LEVEL) == adata(ADATA_MIN_LEVEL, gdata(GDATA_AREA)) ) {
@@ -2807,7 +2831,7 @@
 *map_createDungeonFortHeroQuest
 	mdata(MDATA_WIDTH) = 27
 	mdata(MDATA_HEIGHT) = 39
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 24
 	map_initialize
 
 	dighole_custom 1, 1, 3, 5, 1, 1, 11, 8, 100
@@ -2851,7 +2875,7 @@
 *map_createDungeonFortPalaceGrounds
 	mdata(MDATA_WIDTH) = 45
 	mdata(MDATA_HEIGHT) = 45
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 12
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 24
 	map_initialize
 
 	repeat 3
@@ -2934,7 +2958,7 @@
 *map_createDungeonFortComplex
 	mdata(MDATA_WIDTH) = 40
 	mdata(MDATA_HEIGHT) = 30
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 32
 	map_initialize
 
 	map_furniture_setgroup 10
@@ -3005,7 +3029,7 @@
 	minetunneldepth@NT = 4 + rnd(3)
 	mdata(MDATA_WIDTH) = 36
 	mdata(MDATA_HEIGHT) = 12 + 7 * minetunneldepth@NT
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 32
 	map_initialize
 	
 	repeat mdata(MDATA_WIDTH) - 2
@@ -3070,7 +3094,7 @@
 *map_createDungeonMineDeposit
 	mdata(MDATA_WIDTH) = 30
 	mdata(MDATA_HEIGHT) = 60 + rnd(30)
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 32
 	map_initialize
 
 	tile_default = 468
@@ -3104,7 +3128,7 @@
 *map_createDungeonMineTunnelSnake
 	mdata(MDATA_WIDTH) = 40
 	mdata(MDATA_HEIGHT) = 40
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 24
 	map_initialize
 
 	tile_doorclosed = 733
@@ -3154,7 +3178,7 @@
 *map_createDungeonMineMoltenCore
 	mdata(MDATA_WIDTH) = 40
 	mdata(MDATA_HEIGHT) = 40
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 24
 	map_initialize
 
 	map_makesimpleroom2 5, 5, 30, 30, 3, 3
@@ -3199,17 +3223,24 @@
 
 	dighole_diffusion_limited_aggregation 300, 100
 	
-	if ( mdata(MDATA_TILESET) == 300 ) {
-		repeat 15 + rnd(10)
+	if ( mdata(MDATA_TILESET) == 300 | mdata(MDATA_TILESET) == 96  ) {
+		if ( mdata(MDATA_TILESET) == 300 ) {
+			dighole_diffusion_limited_aggregation 100, 3
+		}
+		if ( mdata(MDATA_TILESET) == 96 ) {
+			dighole_diffusion_limited_aggregation 100, 3
+		}
+		repeat 5 + rnd(3)
 			map_make_plug 6 + rnd(5), 6 + rnd(5), 84
 		loop
-
-		repeat count@NT
-			dighole_directiondrunk matrix_pt@NT(0,cnt), matrix_pt@NT(1,cnt), matrix_pt@NT(0,matrix_pt@NT(2,cnt)), matrix_pt@NT(1,matrix_pt@NT(2,cnt)), 0, 0, 100
-			map_makesimpleroom_circular matrix_pt@NT(0,cnt), matrix_pt@NT(1,cnt), 1+rnd(2), 1+rnd(2), 3, 3
-		loop
-
-		map_furniture_scatter map_fur_siteforest@NT, 20, 3
+		if ( mdata(MDATA_TILESET) == 300 ) {
+			map_furniture_scatter map_fur_siteforest@NT, 20, 100
+			map_furniture_scatter map_fur_siteforest@NT, 10, 3
+		}
+		if ( mdata(MDATA_TILESET) == 96 ) {
+			map_furniture_scatter map_fur_siteforestdead@NT, 15, 100
+			map_furniture_scatter map_fur_siteforestdead@NT, 5, 3
+		}
 	}
 
     map_placetwostairs_on_point 50
@@ -3423,9 +3454,9 @@
 	return
 
 *map_createDungeonTowerBubbles
-	mdata(MDATA_WIDTH) = 50
-	mdata(MDATA_HEIGHT) = 50
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 24
+	mdata(MDATA_WIDTH) = 40 + rnd(11)
+	mdata(MDATA_HEIGHT) = 40 + rnd(11)
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 36
 	map_initialize
 
 	tile_doorclosed = 733
@@ -3502,7 +3533,7 @@
 *map_createDungeonTowerMickeyMouse
 	mdata(MDATA_WIDTH) = 40
 	mdata(MDATA_HEIGHT) = 40
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 20
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 24
 	map_initialize
 
 	centerx@NT = mdata(MDATA_WIDTH) / 2
@@ -3747,10 +3778,10 @@
     return
 	
 *map_createDungeonTowerLadder
-	floors@NT = 10 + rnd(5) 
+	floors@NT = 5 + rnd(5) 
 	mdata(MDATA_WIDTH) = 18
 	mdata(MDATA_HEIGHT) = floors@NT * 5 - 2
-	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 16
+	mdata(MDATA_MODERATE_CROWD) = mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 20
 	map_initialize
 
 	tile_doorclosed = 733

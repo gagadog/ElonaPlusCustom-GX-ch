@@ -1352,7 +1352,7 @@
 	locvar_get_freeally_np = 0
 	return locvar_get_freechara_f
 
-/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+/********** JAMES CUSTOM - CNPC SUMMON - BEGINNING **********/
 #defcfunc get_freeallysum
 	locvar_get_freeally_np = 0
 	repeat MAX_CHARA_TOTAL
@@ -1372,7 +1372,7 @@
 		}
 	loop
 	return locvar_get_freeally_np
-/********** CUSTOM NPC SUMMONING - ENDING **********/
+/********** JAMES CUSTOM - CNPC SUMMON - ENDING **********/
 
 #deffunc del_chara int del_chara_arg1
 	if ( gdata(STARTING_GDATA_FLAG + 301) == 0 ) {
@@ -5790,7 +5790,7 @@
 				chatc@DP = cnt
 				txt lang("＊絶対防衛＊", "*Absolute protect*")
 				cdata(CDATA_HP, cnt) -= locvar_dmghp_dmgpro
-				/********** CUSTOM DAMAGE METER - BEGINNING **********/
+				/********** JAMES CUSTOM - DAMAGE METER - BEGINNING **********/
 				txtmore
 				txtef COLOR_BLUE
 				txt "(" + locvar_dmghp_dmgpro + ")."
@@ -5799,7 +5799,7 @@
 				if ( cfg_showDamageMeter > 0 ) {
 					DamageParsesAdd dmghp_source, cnt, locvar_dmghp_dmgpro, locvar_dmghp_ele
 				}
-				/********** CUSTOM DAMAGE METER - ENDING **********/
+				/********** JAMES CUSTOM - DAMAGE METER - ENDING **********/
 				break
 			}
 		loop
@@ -5880,7 +5880,7 @@
 					locvar_dmghp_manabar = locvar_dmghp_dmg
 					cdata(CDATA_MP, dmghp_charid) -= locvar_dmghp_manabar
 					locvar_dmghp_dmg = 0
-					/********** CUSTOM DAMAGE METER - BEGINNING **********/
+					/********** JAMES CUSTOM - DAMAGE METER - BEGINNING **********/
 					txtmore
 					txtef COLOR_BLUE
 					txt "The damage is absorbed by the mana barrier (" + locvar_dmghp_manabar + ")."
@@ -5888,7 +5888,7 @@
 					if ( cfg_showDamageMeter > 0 ) {
 						DamageParsesAdd dmghp_source, dmghp_charid, locvar_dmghp_manabar, locvar_dmghp_ele
 					}
-					/********** CUSTOM DAMAGE METER - ENDING **********/
+					/********** JAMES CUSTOM - DAMAGE METER - ENDING **********/
 				}
 			}
 		}
@@ -5902,11 +5902,11 @@
 		}
 	}
 	
-	/********** CUSTOM DAMAGE METER - BEGINNING **********/
+	/********** JAMES CUSTOM - DAMAGE METER - BEGINNING **********/
 	if ( cfg_showDamageMeter > 0 & locvar_dmghp_dmg > 0 ) {
 		DamageParsesAdd dmghp_source, dmghp_charid, locvar_dmghp_dmg, locvar_dmghp_ele
 	}
-	/********** CUSTOM DAMAGE METER - ENDING **********/
+	/********** JAMES CUSTOM - DAMAGE METER - ENDING **********/
 
 	cdata(CDATA_HP, dmghp_charid) -= locvar_dmghp_dmg
 	if ( cfg_dhyouji == 1 ) {

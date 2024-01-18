@@ -883,7 +883,7 @@
 				gdata(GDATA_LEVEL) = 1
 				if ( feat(2) != 0 | feat(3) != 0 ) {
 					gdata(GDATA_AREA) = feat(2) + feat(3) * 100
-					/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - BEGINNING **********/
+					/********** JAMES CUSTOM - CHALLENGE - NUKE THE BEGGAR CAVE - BEGINNING **********/
 					if ( gdata(GDATA_FLAG_MAIN) < 5 & adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_VERNIS & TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) == 1 ) {
 						s = lang("ヴェルニースに入る。", "Entering Vernis.")
 						file = "bg_re6"
@@ -898,7 +898,7 @@
 							gdata(GDATA_AREA) = AREA_WILDERNESS
 						}
 					}
-					/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - ENDING **********/
+					/********** JAMES CUSTOM - CHALLENGE - NUKE THE BEGGAR CAVE - ENDING **********/
 					if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_VOID ) {
 						if ( itemfind(CHARA_PLAYER, ITEM_ID_LICENCE_THE_VOID_EXPLORER) == (-1) ) {
 							txt lang("あなたはこの洞窟の探索を許可されていない。", "You are not permitted to explore this dungeon.")
@@ -11973,7 +11973,7 @@
 				cdata(CDATA_RELATION, cnt) = -1
 				cdata(CDATA_RELATION_ORG, cnt) = -1
 			}
-			if ( TweakData(54, 2) == 1 & adata(ADATA_MAX_LEVEL, gdata(GDATA_AREA)) == 1 ) {
+			if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == FALSE & adata(ADATA_MAX_LEVEL, gdata(GDATA_AREA)) == 1 ) {
 				if ( cbit(CHARA_BIT_LIVESTOCK, cnt) == 1 ) {
 					cdata(CDATA_SPRITE_SIZE_MILK, cnt) = -5
 				}
@@ -12176,7 +12176,7 @@
 			gdata(GDATA_TRAVEL_DISTANCE) = 0
 		}
 	}
-	/********** CUSTOM JOB QUESTS - BEGINNING **********/ //Set Emote icon for quest as soon as you enter the map
+	/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/ //Set Emote icon for quest as soon as you enter the map
 	if ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | gdata(GDATA_AREA) == AREA_HOME | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE ) {
 		repeat MAX_CHARA_TOTAL
 			r1 = cnt
@@ -12206,7 +12206,7 @@
 			}
 		loop
 	}
-	/********** CUSTOM JOB QUESTS - ENDING **********/ 
+	/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/ 
 	if ( gdata(GDATA_AREA) == AREA_DOJO & gdata(GDATA_DOJO_TURNS) >= 100 & gdata(GDATA_PETS_IN_DOJO) != 0 ) {
 		gdata(GDATA_DOJO_TURNS) += limit(TweakData(TWEAK_GAMEPLAY_INCREASED_DOJO_EXP, TWEAK_CATEGORY_GAMEPLAY),0,2000)
 		repeat MAX_CHARA_TOTAL
@@ -12513,10 +12513,8 @@
 		}
 		if ( mdata(MDATA_RENEW_MINOR) != 0 ) {
 			if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH ) {
-				if ( TweakData(54, 2) == 1 ) {
-					renewmulti = limit((gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 - mdata(MDATA_RENEW_MINOR)) / 24 + 1, 1, 30) * 5
-				}
-				else {
+				renewmulti = limit((gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 - mdata(MDATA_RENEW_MINOR)) / 24 + 1, 1, 30) * 5
+				if (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 					renewmulti = ((gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 - mdata(MDATA_RENEW_MINOR)) / 24 + 1) * 4
 				}
 			}

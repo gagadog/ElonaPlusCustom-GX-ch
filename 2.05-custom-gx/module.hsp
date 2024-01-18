@@ -411,13 +411,13 @@
 			}
 		}
 
-		/********** CUSTOM - BEGINNING **********/
+		/********** JAMES CUSTOM - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 			if ( locvar_skillmod_exp > 0 ) {
 				locvar_skillmod_exp = locvar_skillmod_exp / 4 * (gdata(GDATA_FLAG_MAIN) + 100) / 100
 			}
 		}
-		/********** CUSTOM - ENDING **********/
+		/********** JAMES CUSTOM - ENDING **********/
 
 		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_PURGE ) {
 			if ( locvar_skillmod_exp == 0 ) {

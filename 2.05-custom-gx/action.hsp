@@ -1982,7 +1982,7 @@
 						}
 						if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
 							if ( gdata(GDATA_FLAG_MAIN) < 5 ) {
-								/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - BEGINNING **********/
+								/********** JAMES CUSTOM - CHALLENGE - NUKE THE BEGGAR CAVE - BEGINNING **********/
 								if ( TweakData(TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, TWEAK_CATEGORY_CHALLENGE) == 0 ) {
 									s = lang("洞窟からこっそり抜け出そう。", "Sneak out of your house.")
 									file = "bg_re20"
@@ -2007,7 +2007,7 @@
 										goto *turn_end
 									}
 								}
-								/********** CUSTOM CHALLENGE - NUKE THE BEGGAR CAVE - ENDING **********/
+								/********** JAMES CUSTOM - CHALLENGE - NUKE THE BEGGAR CAVE - ENDING **********/
 								; gdata(GDATA_FLAG_MAIN) = 5
 								; evadd EVENT_LEAVING_BEGGAR_CAVE
 								; goto *turn_end
@@ -3293,9 +3293,9 @@
 			ri = ci
 			cc = CHARA_PLAYER
 			inv(INV_ITEM_PARAM1, ri) = 0
-			/********** CUSTOM TCG - BEGINNING **********/
+			/********** JAMES CUSTOM - TCG - BEGINNING **********/
 			goto *card_pack_custom
-			/********** CUSTOM TCG - ENDING **********/
+			/********** JAMES CUSTOM - TCG - ENDING **********/
 			if ( gdata(GDATA_FLAG_MAIN) < 200 ) {
 				cardno = rnd(347) + 1
 				if ( cardno <= CREATURE_ID_ZEOME_THE_FALSE_PROPHET ) {
@@ -6553,7 +6553,7 @@
 	tc = cc
 	tlocx = cdata(CDATA_X, cc)
 	tlocy = cdata(CDATA_Y, cc)
-	if ( refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ITEM_POTION & TweakData(50,1) == 1 ) {
+	if ( refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ITEM_POTION & TweakData(TWEAK_CONVENIENCE_THROW_POTION_AT_SELF, TWEAK_CONVENIENCE_THROW_POTION_AT_SELF) == TRUE & inv(INV_ITEM_ID, ci) != ITEM_ID_ENCOUNTER_CANCELLER ) {
 		kakeru = 100
 		goto *act_throw
 	}
@@ -10481,7 +10481,8 @@
 				}
 				else {
 					if ( cbit(CHARA_BIT_LEASHED, tc) == 0 ) {
-						// CUSTOM - Allow leashing temporary allies
+						/********** JAMES CUSTOM - Allow leashing temporary allies **********/
+						// if ( tc >= MAX_CHARA_FOLLOWER ) {
 						if ( tc >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION_ORG, tc) < 10 ) {
 							if ( rnd(5) == 0 ) {
 								txt lang(name(tc) + "が激しく抵抗したため紐は切れた。", "The leash is cut as " + name(tc) + " resists.")
@@ -13669,7 +13670,7 @@
 	}
 	if ( _switch_val == EFFECT_SUMMONING_CRYSTAL | _switch_sw ) {
 		_switch_sw = 0
-		/********** CUSTOM NPC SUMMONING - BEGINNING **********/
+		/********** JAMES CUSTOM - CNPC SUMMON - BEGINNING **********/
 		if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 			if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
 				if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
@@ -13680,7 +13681,7 @@
 				goto *act_use_SWEND1
 			}
 		}
-		/********** CUSTOM NPC SUMMONING - ENDING **********/
+		/********** JAMES CUSTOM - CNPC SUMMON - ENDING **********/
 		if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
 			txt lang("それは鈍く輝いた。", "It glows dully.")
 			goto *act_use_SWEND1
@@ -13844,7 +13845,7 @@
 					p += cdata(CDATA_PIETY, CHARA_PLAYER) / 10
 				}
 			}
-			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
+			/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - BEGINNING **********/
 			if ( TweakData(TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, TWEAK_CATEGORY_CHALLENGE) >= 1 ) {
 				remainingtaxes = gdata(GDATA_COST_HIRE) + calccostbuilding() + calccosttax()
 				if ( p < remainingtaxes / 20 ) {
@@ -13852,7 +13853,7 @@
 				}
 				remainingtaxes = 0
 			}
-			/********** CUSTOM CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
+			/********** JAMES CUSTOM - CHALLENGE - DOUBLE TAX EACH MONTH - ENDING **********/
 			if ( cnt == 2 ) {
 				if ( gdata(GDATA_FLAG_STATUE_OF_YACATECT) \ 12 == 0 ) {
 					dbid = ITEM_ID_PLATINUM_COIN
@@ -13910,7 +13911,7 @@
 		snd SOUNDLIST_PRAY1
 		txtef COLOR_YELLOW
 		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
-			/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+			/********** JAMES CUSTOM - CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
 			if ( TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 				gdata(GDATA_WEATHER) = WEATHER_CLEAR
 				gdata(GDATA_NEXT_WEATHER) = 12 + rnd(12)
@@ -13920,7 +13921,7 @@
 				gosub *music_play
 				goto *act_use_SWEND1
 			}
-			/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
+			/********** JAMES CUSTOM - CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 			txt lang("ルルウィ「あさはかね。エーテルの風を止めてあげるとでも思ったの？」", "Lulwy: \"Listen my little slave. Did you really think I would turn a hand in this filthy wind for you?\"")
 			goto *act_use_SWEND1
 		}
@@ -18297,10 +18298,11 @@
 			txt lang("モンスターボールは空っぽだ。", "This ball is empty.")
 			goto *act_use_SWEND1
 		}
-		// Custom - prevent getting lvl 70 bamboo spirit early game.
+		/********** JAMES CUSTOM - prevent getting lvl 70 bamboo spirit early game. - BEGINNING **********/
 		if ( inv(INV_ITEM_SUB_NAME, ci) == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
 			initlv = 1
 		}
+		/********** JAMES CUSTOM - prevent getting lvl 70 bamboo spirit early game. - ENDING **********/
 		if ( get_freeally() == 0 ) {
 			txt lang("仲間はこれ以上増やせない。", "Your party is full.")
 			goto *act_use_SWEND1

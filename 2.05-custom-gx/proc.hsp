@@ -881,12 +881,12 @@
 												dbid = ITEM_ID_ALUD
 											}
 										}
-										/********** CUSTOM JOB QUESTS - BEGINNING **********/ // More music tickets during party
+										/********** JAMES CUSTOM - JOB QUESTS - BEGINNING **********/ // More music tickets during party
 										if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS, TWEAK_CATEGORY_GAMEPLAY) != 0 & rnd(5) == 0 ) {
 											dbid = ITEM_ID_MUSIC_TICKET
 											p = cdata(CDATA_LEVEL, tc) * 5
 										}
-										/********** CUSTOM JOB QUESTS - ENDING **********/
+										/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
 									}
 									else {
 										if ( rnd(10) == 0 ) {
@@ -3715,11 +3715,11 @@
 					if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME | mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE ) {
 						p = 5
 						gdata(GDATA_MIN) += 30
-						/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
+						/********** JAMES CUSTOM - CHALLENGE - PERMANENT ETHERWIND - BEGINNING **********/
 						if ( gdata(GDATA_WEATHER) == WEATHER_ETHER & TweakData(TWEAK_CHALLENGE_ALWAYS_ETHERWIND, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 							gdata(GDATA_MIN) -= 30
 						}
-						/********** CUSTOM CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
+						/********** JAMES CUSTOM - CHALLENGE - PERMANENT ETHERWIND - ENDING **********/
 					}
 				}
 			}
@@ -4807,14 +4807,14 @@
 	if ( gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) < 100 & (TweakData(TWEAK_CHALLENGE_HARCORE_TRAVELLING, TWEAK_CATEGORY_CHALLENGE) <= 0 | gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) <= 0) ) {
 		if ( rnd(10000) > rnd(sdata(SKILL_NORMAL_TRAVELING, CHARA_PLAYER) + 1000) ) {
 			gdata(GDATA_FLAG_MANUSCRIPT_IDEAS)++
-			/********** CUSTOM - MANUSCRIPT HINT - BEGINNING **********/
+			/********** JAMES CUSTOM - MANUSCRIPT HINT - BEGINNING **********/
 			if ( gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) > 0 & gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) \ 25 == 0 ) {
 				snd SOUNDLIST_DING2
 				chatc@DP = (-1)
 				txtef COLOR_YELLOW
 				txt lang("いいアイデアだ！", "While travelling, you accumulated some ideas for writing a book. ") + "(" + gdata(GDATA_FLAG_MANUSCRIPT_IDEAS) + "/100)"
 			}
-			/********** CUSTOM - MANUSCRIPT HINT - ENDING **********/
+			/********** JAMES CUSTOM - MANUSCRIPT HINT - ENDING **********/
 		}
 	}
 	if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
@@ -4826,7 +4826,7 @@
 		traveldone = 1
 		gdata(GDATA_TRAVEL_DISTANCE) += 4
 		gdata(GDATA_FLAG_MILES_TRAVELED) += 4
-		/********** CUSTOM CHALLENGE - HARDCORE TRAVELLING - BEGINNING **********/
+		/********** JAMES CUSTOM - CHALLENGE - HARDCORE TRAVELLING - BEGINNING **********/
 		if ( TweakData(TWEAK_CHALLENGE_HARCORE_TRAVELLING, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 			if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) <= 0 ) {
 				TweakData(TWEAK_CHALLENGE_HARCORE_TRAVELLING, TWEAK_CATEGORY_CHALLENGE) += 4
@@ -4838,7 +4838,7 @@
 				gdata(GDATA_FLAG_MILES_TRAVELED) -= 4
 			}
 		}
-		/********** CUSTOM CHALLENGE - HARDCORE TRAVELLING - BEGINNING **********/
+		/********** JAMES CUSTOM - CHALLENGE - HARDCORE TRAVELLING - ENDING **********/
 	}
 	if ( gdata(GDATA_FLAG_MILES_TRAVELED) >= 1000000000 ) {
 		gdata(GDATA_FLAG_MILES_TRAVELED) = 0
@@ -4982,7 +4982,7 @@
 			txt lang("釣りを切り上げた。", "You stop fishing...")
 			rowactend cc
 		}
-		/********** CUSTOM FISHING_ANIMATIONS - BEGINNING **********/
+		/********** JAMES CUSTOM - FISHING_ANIMATIONS - BEGINNING **********/
 		if ( TweakData(TWEAK_MISC_FASTER_FISHING, TWEAK_CATEGORY_MISC ) != 0) {
 			if ( rnd(3) == 0 ) {
 				fishstat = 1
@@ -5087,7 +5087,7 @@
 			}
 			return
 		}
-		/********** CUSTOM FISHING_ANIMATIONS - ENDING **********/
+		/********** JAMES CUSTOM - FISHING_ANIMATIONS - ENDING **********/
 		if ( rnd(3) == 0 ) {
 			fishstat = 1
 			gosub *choose_fish
@@ -9032,7 +9032,7 @@
 						continue cnt
 					}
 
-					/********** CUSTOM NPC SUMMONING - BEGINNING **********/ // Make spell summons friendly (like necromancy)
+					/********** JAMES CUSTOM - CNPC SUMMON - BEGINNING **********/ // Make spell summons friendly (like necromancy)
 					if ( TweakData(TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 						if ( cc < MAX_CHARA_FOLLOWER & (cnt < (15 - p@NE)) & ( efid == SKILL_SPELL_SUMMON_MONSTERS | efid == SKILL_SPELL_SUMMON_WILD | efid == SKILL_SPELL_SUMMON_SPIRIT ) ) {
 							cbitmod CHARA_BIT_NECRO, rc, TRUE
@@ -9045,7 +9045,7 @@
 							cdata(CDATA_CHARACTER_TIER, rc) = CHARACTER_TIER_SUMMONED_NORMAL
 						}
 					}
-					/********** CUSTOM NPC SUMMONING - ENDING **********/
+					/********** JAMES CUSTOM - CNPC SUMMON - ENDING **********/
 				loop
 				if ( synccheck(cc, -1) ) {
 					if ( efid == SKILL_SPACT_TEMPEST_ARROW ) {
@@ -19067,7 +19067,7 @@
 		}
 		txt lang("亜空釣りを始めた。", "You start fishing.")
 		snd SOUNDLIST_FISH_CAST
-		/********** CUSTOM FISHING_ANIMATIONS - BEGINNING **********/
+		/********** JAMES CUSTOM - FISHING_ANIMATIONS - BEGINNING **********/
 		if ( TweakData(TWEAK_MISC_FASTER_FISHING, TWEAK_CATEGORY_MISC ) != 0) {
 			item_find ITEM_ID_SUPER_LURE, 3
 			if ( stat != (-1) ) {
@@ -19130,7 +19130,7 @@
 			map(fishx, fishy, 0) = chipbk
 			goto *effect_end
 		}
-		/********** CUSTOM FISHING_ANIMATIONS - ENDING **********/
+		/********** JAMES CUSTOM - FISHING_ANIMATIONS - ENDING **********/
 		fishstat = 1
 		if ( fishstat == 1 ) {
 			repeat 4 + rnd(4)
@@ -21123,7 +21123,7 @@
 				txt lang("まだ乳が溜まってない。", name(tc) + " has not accumulated milk yet.")
 				goto *effect_end
 			}
-			if ( TweakData(54, 2) == 1 & cdata(CDATA_SPRITE_SIZE_MILK, tc) != 0 ) {
+			if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == FALSE & cdata(CDATA_SPRITE_SIZE_MILK, tc) != 0 ) {
 				txt lang("乳を搾れるほど成長していない。", name(tc) + " " + is(tc) + " not old enough to produce milk.")
 				goto *effect_end
 			}
@@ -21148,10 +21148,8 @@
 				itemcreate -1, ITEM_ID_BOTTLE_MILK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				if ( stat ) {
 					inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, tc)
-					if ( TweakData(54, 2) == 1 ) {
-						inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + milkp + 5 + cdata(CDATA_SPRITE_SIZE_MILK, tc) + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 100, 0, 2) + 1)
-					}
-					else {
+					inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + milkp + 5 + cdata(CDATA_SPRITE_SIZE_MILK, tc) + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 100, 0, 2) + 1)
+					if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 						inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + 2 + milkp + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 50, 0, 5) + 1)
 					}
 				}
@@ -21173,10 +21171,8 @@
 			itemcreate -1, ITEM_ID_BOTTLE_MILK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			if ( stat ) {
 				inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, tc)
-				if ( TweakData(54, 2) == 1 ) {
-					inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + milkp + 5 + cdata(CDATA_SPRITE_SIZE_MILK, tc) + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 100, 0, 2) + 1)
-				}
-				else {
+				inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + milkp + 5 + cdata(CDATA_SPRITE_SIZE_MILK, tc) + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 100, 0, 2) + 1)
+				if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 					inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + 2 + milkp + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 50, 0, 5) + 1)
 				}
 			}
