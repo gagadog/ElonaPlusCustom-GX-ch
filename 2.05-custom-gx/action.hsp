@@ -8846,61 +8846,8 @@
 		}
 		if ( cdata(CDATA_AP_CURRENT, cc) < 2000 ) {
 			init = 0
-			aspd = cdata(CDATA_INIT_SPEED, cc)
-			if ( inv(INV_ITEM_PARAM2, ci) + inv(INV_ITEM_PARAM3, ci) >= 1000 ) {
-				if ( inv(INV_ITEM_PARAM2, ci) + inv(INV_ITEM_AMUR_CAGE, ci) > cdata(CDATA_INIT_ATTR, cc) + cdata(CDATA_INIT_LIFEMANA, cc) + aspd + (cdata(CDATA_AP_TOTAL, cc) + 1) / 5 ) {
-					if ( inv(INV_ITEM_AMUR_CAGE, ci) > aspd * 5 ) {
-						cdata(CDATA_AP_CURRENT, cc) += 5
-						cdata(CDATA_AP_TOTAL, cc) += 5
-						if ( cc != CHARA_PLAYER ) {
-							cdata(CDATA_AP_CURRENT, cc) += 5
-							cdata(CDATA_AP_TOTAL, cc) += 5
-						}
-					}
-					if ( inv(INV_ITEM_AMUR_CAGE, ci) > aspd * 4 ) {
-						cdata(CDATA_AP_CURRENT, cc) += 10
-						cdata(CDATA_AP_TOTAL, cc) += 10
-						if ( cc != CHARA_PLAYER ) {
-							cdata(CDATA_AP_CURRENT, cc) += 10
-							cdata(CDATA_AP_TOTAL, cc) += 10
-						}
-					}
-					if ( inv(INV_ITEM_AMUR_CAGE, ci) > aspd * 3 ) {
-						cdata(CDATA_AP_CURRENT, cc) += 10
-						cdata(CDATA_AP_TOTAL, cc) += 10
-						if ( cc != CHARA_PLAYER ) {
-							cdata(CDATA_AP_CURRENT, cc) += 10
-							cdata(CDATA_AP_TOTAL, cc) += 10
-						}
-					}
-					if ( inv(INV_ITEM_AMUR_CAGE, ci) > aspd * 2 ) {
-						cdata(CDATA_AP_CURRENT, cc) += 10
-						cdata(CDATA_AP_TOTAL, cc) += 10
-						if ( cc != CHARA_PLAYER ) {
-							cdata(CDATA_AP_CURRENT, cc) += 10
-							cdata(CDATA_AP_TOTAL, cc) += 10
-						}
-					}
-					if ( inv(INV_ITEM_AMUR_CAGE, ci) > aspd ) {
-						init = 1
-						cdata(CDATA_AP_CURRENT, cc) += 5
-						cdata(CDATA_AP_TOTAL, cc) += 5
-						snd SOUNDLIST_ENC
-						animeload 36, cc
-						if ( cc != CHARA_PLAYER ) {
-							cdata(CDATA_AP_CURRENT, cc) += 5
-							cdata(CDATA_AP_TOTAL, cc) += 5
-						}
-					}
-					if ( cdata(CDATA_AP_CURRENT, cc) > 2000 ) {
-						cdata(CDATA_AP_TOTAL, cc) -= cdata(CDATA_AP_CURRENT, cc) - 2000
-						cdata(CDATA_AP_CURRENT, cc) = 2000
-					}
-					if ( cdata(CDATA_AP_TOTAL, cc) < 0 ) {
-						cdata(CDATA_AP_TOTAL, cc) = 2000
-					}
-				}
-			}
+			gain_ap "destone", cc, inv(INV_ITEM_PARAM2, ci), inv(INV_ITEM_PARAM3, ci), inv(INV_ITEM_AMUR_CAGE, ci), 0,   5, 10, 10, 10, 5,   5, 10, 10, 10, 5
+			init = stat
 			if ( init == 0 ) {
 				txt lang("" + name(cc) + "には何の経験にもならないようだ…。", name(cc) + " seems to get no AP from it...")
 				goto *act_use_SWEND1
