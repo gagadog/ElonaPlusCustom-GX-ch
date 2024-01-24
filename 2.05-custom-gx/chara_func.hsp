@@ -7587,11 +7587,11 @@
 							gain_ap (gain_ap_source + " of yours"), gdata(GDATA_RIDER), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 2, 2, 2, 1,   1, 2, 2, 2, 1
 						}
 						if ( gain_ap_chara_id == gdata(GDATA_RIDER) ) {
-							gain_ap (gain_ap_source + " of your mount, " + name(gain_ap_chara_id)), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 2, 2, 2, 1,   1, 2, 2, 2, 1
+							gain_ap (gain_ap_source + " of your mount"), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 2, 2, 2, 1,   1, 2, 2, 2, 1
 						}
 					}
 					if ( cdata(CDATA_IN_TAGTEAM, gain_ap_chara_id) != 0 ) {
-						gain_ap (gain_ap_source + " of " + his(cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id)) + " tag-team partner, " + his(gain_ap_chara_id)), cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd,  1, 1, 1, 1, 1,   1, 1, 1, 1, 1
+						gain_ap (gain_ap_source + " of " + his(cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id)) + " tag-team partner"), cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd,  1, 1, 1, 1, 1,   1, 1, 1, 1, 1
 					}
 				}
 				if ( gain_ap_source == "kill" ) {
@@ -7606,11 +7606,11 @@
 							gain_ap (gain_ap_source + " of yours"), gdata(GDATA_RIDER), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 1, 1, 1, 1,   1, 1, 1, 1, 1
 						}
 						if ( gain_ap_chara_id == gdata(GDATA_RIDER) ) {
-							gain_ap (gain_ap_source + " of your mount, " + name(gain_ap_chara_id)), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 1, 1, 1, 1,   1, 1, 1, 1, 1
+							gain_ap (gain_ap_source + " of your mount"), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 1, 1, 1, 1,   1, 1, 1, 1, 1
 						}
 					}
 					if ( cdata(CDATA_IN_TAGTEAM, gain_ap_chara_id) != 0 ) {
-						gain_ap (gain_ap_source + " of " + his(cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id)) + " tag-team partner, " + name(gain_ap_chara_id)), cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1
+						gain_ap (gain_ap_source + " of " + his(cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id)) + " tag-team partner"), cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1
 					}
 				}
 				return TRUE

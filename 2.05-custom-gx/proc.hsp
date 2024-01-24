@@ -100,6 +100,33 @@
 	if ( feat(1) == CELL_FEATURE_SAMPLING_SPOT_GARDENING ) {
 		atxspot = ATX_BUSH1
 	}
+	/********** JAMES CUSTOM - TXTADV - BEGINNING **********/
+	if ( TweakData(TWEAK_GAMEPLAY_GATHER_TEXT_ADVENTURE, TWEAK_CATEGORY_GAMEPLAY) > 0 ) {
+		atxid = 2, atxspot - 8
+		gosub *com_txtadv
+		autosave2 = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
+		s = lang("もう何もない。", "You can't find anything else.")
+		if ( feat(1) == CELL_FEATURE_SAMPLING_SPOT_FISHING ) {
+			snd SOUNDLIST_WATER
+			snd SOUNDLIST_FISH_CAST
+			s = lang("泉は干上がった。", "The spring has dried up.")
+		}
+		if ( feat(1) == CELL_FEATURE_SAMPLING_SPOT_MINING ) {
+			snd SOUNDLIST_DIG1
+			s = lang("鉱石を掘りつくした。", "There's no more ore around.")
+		}
+		if ( feat(1) == CELL_FEATURE_SAMPLING_SPOT_GARDENING ) {
+			snd SOUNDLIST_BUSH1
+			s = lang("もう目ぼしい植物は見当たらない。", "There are no more plants around.")
+		}
+		await 300
+		txt s
+		if ( feat(1) != CELL_FEATURE_DOWNSTAIRS & feat(1) != CELL_FEATURE_UPSTAIRS ) {
+			map(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 6) = 0
+		}
+		return
+	}
+	/********** JAMES CUSTOM - TXTADV - ENDING **********/
 	repeat 12
 		if ( atxspot == ATX_MINE1 ) {
 			if ( sdata(SKILL_NORMAL_MINING, CHARA_PLAYER) * 2 + 5 > rnd(atxlv + 1) | rnd(10) == 0 ) {

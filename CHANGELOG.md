@@ -1,3 +1,23 @@
+# Upcoming
+
+# Added
+- Added a tweak to increase random Nefia monster density.
+- Added a tweak to enable Noa's material gathering minigame.
+- Added pop-up and text for AP-gains.
+
+# Changed
+- Added some variety to Custom Layouts.
+- Lowered Custom Layout's monster density. (to around 15~25, +10x(0~5) due to monster rooms.)
+- Ano's harvest moon ranch is now enabled by default, you need to enable tweak to disable it.
+- Werewolves are no longer renamed outside of towns.
+
+# Fixed
+- Show NPC name: enemies using Jumping-Drop/Diving-Drill now have their names hidden.
+- Encounter canceller can be used with 't' to throw potion at self tweak now.
+- Some translation / display issues thanks to @lIllIIlI.
+- Auto-pickup config renamed, so it no longer affect sound settings in Ano's Plus.
+
+
 # 2.21.2.0
 
 # Added

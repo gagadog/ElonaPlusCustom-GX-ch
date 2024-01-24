@@ -93,7 +93,7 @@
 		font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 		color 250, 250, 250
 		if ( cnt == 0 ) {
-			sx = 265
+			sx = 265 + en * 40
 			sy = 8
 			pos sx - 30, 5
 			gcopy 3, 192, 360, 24, 16
@@ -101,7 +101,7 @@
 			gcopy 3, 216, 360, 24, 16
 		}
 		else {
-			sx = 220
+			sx = 220 + en * 40
 			sy = 10 + cnt * 14
 		}
 		pos sx, sy

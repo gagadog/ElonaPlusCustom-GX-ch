@@ -188,6 +188,7 @@
 	gosub *com_adv_animeSub
 	if ( mattile != (-1) ) {
 		mattile = rnd(mattile(2)) + mattile(1)
+		if ( mattile == 496 ) { mattile = 424 } // Ano moved rock, like why.
 	}
 	repeat 12
 		x = 170, 300
@@ -221,7 +222,7 @@
 			if ( atxpic == 2 ) {
 				p(1) = 5
 			}
-			grotate p(1), atxpic(1) \ 33 * 32, atxpic(1) / 33 * 32, p_double, cnt * (atxpic(2) / 10), cnt * (atxpic(3) / 10)
+			grotate p(1), atxpic(1) \ 33 * 48, atxpic(1) / 33 * 48, p_double, cnt * (atxpic(2) / 10), cnt * (atxpic(3) / 10)
 		}
 		if ( mattile != (-1) ) {
 			cnt2 = cnt
@@ -233,7 +234,7 @@
 				gcopy 2, x, y, x(1), y(1)
 				pos x + x(1) / 2, y + y(1) / 2
 				gmode 2, inf_tiles, inf_tiles
-				grotate 1, mattile \ 33 * 32, mattile / 33 * 32, 0, cnt2 * (96 / 10), cnt2 * (96 / 10)
+				grotate 1, mattile \ 33 * 48, mattile / 33 * 48, 0, cnt2 * (96 / 10), cnt2 * (96 / 10)
 			loop
 		}
 		await 20
@@ -323,6 +324,7 @@
 	return
 
 *atx_RE
+	casino = 1
 	atxap = 10
 	atxspot = ATX_GENERAL1
 	atxinfon(0) = lang("ランダムサイト", "Random Site")
@@ -359,11 +361,13 @@
 			}
 		}
 	}
+	atxbg = "bg21"
+	mattile = 0, 495, 3
 	if ( atxid(1) == ATX_REMAIN ) {
 		atxbg = "bg21"
 		mattile = 0, 495, 3
 		atxspot = ATX_REMAIN1
-		noteadd lang("この辺りは残骸やら遺品やらでごちゃごちゃだ。", "You see a jumble of debris and articles left by the dead.")
+		noteadd lang("この辺りは残骸やら遺品やらでごちゃごちゃだ。", "You see a jumble of debris and remains left by the dead.")
 	}
 	if ( atxid(1) == ATX_BUSH ) {
 		atxbg = "bg20"
@@ -408,10 +412,12 @@
 		goto *atx_RE_end
 	}
 	atxinit
-	noteadd "何をしよう？"
-	chatList 1, "探索"
-	chatList 3, "去る"
-	atxinfon(1) = "行動回数残り " + atxap + "回\n"
+	noteadd lang("何をしよう？", "What will you do?")
+	chatList 1, lang("探索", "Search")
+	chatList 3, lang("去る", "Leave")
+	atxinfon(1) = lang("行動回数残り " + atxap + "回\n", "Remaining Actions: " + atxap + "\n")
+	atxinfon(2) = ""
+	atxinfon(3) = lang(" 危険Lv" + atxlv + "　", " Danger-Lv: " + atxlv + "")
 	chatesc = 3
 	txtadvmsgfix = 0
 	txtadvscreenupdate = 1
@@ -430,74 +436,134 @@
 *atx_RE_search
 	atxap--
 	atxinit
-	if ( rnd(1) == 0 ) {
+	if ( rnd(2) == 0 ) {
+		atxtype = atxid(1)
+		if ( rnd(5) == 0 | atxtype == ATX_RANDOM ) { atxtype = 1 + rnd(8) }
 		atxrefval1 = -1
-		if ( atxid(1) == ATX_BUSH ) {
+		atxskillcheck1 = SKILL_ATTR_STR
+		atxskillcheck2 = SKILL_ATTR_PER
+		if ( atxtype == ATX_BUSH ) {
 			atxpic = 1, 171, 96, 96
-			noteadd "茂みを見つけた。"
-			chatList 1, "調べる"
-			chatList 2, "採取する" + "(" + skillname(SKILL_NORMAL_GARDENING) + ": " + sdata(SKILL_NORMAL_GARDENING, CHARA_PLAYER) + ")"
-			atxrefval1 = 7
+			atxskillcheck1 = SKILL_NORMAL_DETECTION
+			atxskillcheck2 = SKILL_NORMAL_GARDENING
+			noteadd lang("茂みを見つけた。", "You found a bush.")
+			chatList 1, lang("調べる", "Investigate ") + "(" + skillname(atxskillcheck1) + ": " + sdata(atxskillcheck1, CHARA_PLAYER) + ")"
+			chatList 2, lang("採取する", "Harvest ") + "(" + skillname(atxskillcheck2) + ": " + sdata(atxskillcheck2, CHARA_PLAYER) + ")"
+			atxrefval1 = 3
 		}
-		if ( atxid(1) == ATX_MINE ) {
+		if ( atxtype == ATX_MINE ) {
 			atxpic = 1, 219, 96, 96
-			noteadd "鉱石の岩がある。"
-			chatList 1, "調べる"
-			chatList 2, "掘る" + "(" + skillname(SKILL_NORMAL_MINING) + ": " + sdata(SKILL_NORMAL_MINING, CHARA_PLAYER) + ")"
-			atxrefval1 = 7
+			atxskillcheck1 = SKILL_NORMAL_JEWELER
+			atxskillcheck2 = SKILL_NORMAL_MINING
+			noteadd lang("鉱石の岩がある。", "You see a vein of ore in the rocks.")
+			chatList 1, lang("調べる", "Investigate ") + "(" + skillname(atxskillcheck1) + ": " + sdata(atxskillcheck1, CHARA_PLAYER) + ")"
+			chatList 2, lang("掘る", "Dig ") + "(" + skillname(atxskillcheck2) + ": " + sdata(atxskillcheck2, CHARA_PLAYER) + ")"
+			atxrefval1 = 1
 		}
-		if ( atxid(1) == ATX_WATER ) {
+		if ( atxtype == ATX_WATER ) {
 			atxpic = 1, 439, 96, 96
-			noteadd "泉がある。"
-			chatList 1, "飲む"
-			chatList 2, "釣る" + "(" + skillname(SKILL_NORMAL_FISHING) + ": " + sdata(SKILL_NORMAL_FISHING, CHARA_PLAYER) + ")"
-			atxrefval1 = 7
+			atxskillcheck1 = SKILL_ATTR_LUC
+			atxskillcheck2 = SKILL_NORMAL_ANATOMY
+			noteadd lang("泉がある。", "You found a spring of water.")
+			chatList 1, lang("飲む", "Drink") + "(" + skillname(atxskillcheck1) + ": " + sdata(atxskillcheck1, CHARA_PLAYER) + ")"
+			chatList 2, lang("釣る", "Fish ") + "(" + skillname(atxskillcheck2) + ": " + sdata(atxskillcheck2, CHARA_PLAYER) + ")"
+			atxrefval1 = 2
 		}
-		if ( atxid(1) == ATX_REMAIN ) {
+		if ( atxtype == ATX_REMAIN ) {
 			atxpic = 1, 199, 96, 96
-			noteadd "残骸を見つけた。"
-			chatList 1, "あさる"
-			chatList 2, "解剖する" + "(" + skillname(SKILL_NORMAL_ANATOMY) + ": " + sdata(SKILL_NORMAL_ANATOMY, CHARA_PLAYER) + ")"
-			atxrefval1 = 7
+			atxskillcheck1 = SKILL_NORMAL_GENE_ENGINEER
+			atxskillcheck2 = SKILL_NORMAL_ANATOMY
+			noteadd lang("残骸を見つけた。", "You found some remains.")
+			chatList 1, lang("あさる", "Scavenge ") + "(" + skillname(atxskillcheck1) + ": " + sdata(atxskillcheck1, CHARA_PLAYER) + ")"
+			chatList 2, lang("解剖する", "Dissect ") + "(" + skillname(atxskillcheck2) + ": " + sdata(atxskillcheck2, CHARA_PLAYER) + ")"
+			atxrefval1 = 4
+		}
+		if ( atxtype == ATX_FOREST ) {
+			atxpic = 1, 239, 96, 96
+			atxskillcheck1 = SKILL_NORMAL_CARPENTRY
+			atxskillcheck2 = SKILL_NORMAL_WEIGHT_LIFTING
+			noteadd lang("残骸を見つけた。", "You found heavy wood blocking the path.")
+			chatList 1, lang("あさる", "Chop ") + "(" + skillname(atxskillcheck1) + ": " + sdata(atxskillcheck1, CHARA_PLAYER) + ")"
+			chatList 2, lang("解剖する", "Lift ") + "(" + skillname(atxskillcheck2) + ": " + sdata(atxskillcheck2, CHARA_PLAYER) + ")"
+			atxrefval1 = 5
+		}
+		if ( atxtype == ATX_DUNGEON ) {
+			atxpic = 2, 378, 96, 96
+			atxskillcheck1 = SKILL_NORMAL_TACTICS
+			atxskillcheck2 = SKILL_NORMAL_STEALTH
+			noteadd lang("カミカゼを見つけたね。", "You found some kamikaze-yeeks ahead.")
+			chatList 1, lang("接近", "Approach ") + "(" + skillname(atxskillcheck1) + ": " + sdata(atxskillcheck1, CHARA_PLAYER) + ")"
+			chatList 2, lang("解剖する", "Sneak attack ") + "(" + skillname(atxskillcheck2) + ": " + sdata(atxskillcheck2, CHARA_PLAYER) + ")"
+			atxrefval1 = 5
+		}
+		if ( atxtype == ATX_BUILDING ) {
+			atxpic = 1, 470, 96, 96
+			atxskillcheck1 = SKILL_NORMAL_LITERACY
+			atxskillcheck2 = SKILL_NORMAL_MEMORIZATION
+			noteadd lang("残骸を見つけた。", "You found some familiar magical inscriptions.")
+			chatList 1, lang("あさる", "Just read it ") + "(" + skillname(atxskillcheck1) + ": " + sdata(atxskillcheck1, CHARA_PLAYER) + ")"
+			chatList 2, lang("解剖する", "Try to recall ") + "(" + skillname(atxskillcheck2) + ": " + sdata(atxskillcheck2, CHARA_PLAYER) + ")"
+			atxrefval1 = 5
 		}
 		if ( atxrefval1 == (-1) ) {
-			noteadd "壁に何やら怪しいひび割れがある…"
-			chatList 1, "叩く(筋力)"
-			chatList 2, "調べる(感知)"
+			noteadd lang("壁に何やら怪しいひび割れがある…", "There is some kind of suspicious crack on the wall...")
+			chatList 1, lang("叩く", "Whack") + "(" + skillname(atxskillcheck1) + ": " + sdata(atxskillcheck1, CHARA_PLAYER) + ")"
+			chatList 2, lang("調べる", "Investigate") + "(" + skillname(atxskillcheck2) + ": " + sdata(atxskillcheck2, CHARA_PLAYER) + ")"
+			atxrefval1 = 1 + rnd(5)
 		}
-		atxinfon(1) = "行動回数残り " + atxap + "回\n"
+		chatList 3, lang("去る", "Leave")
+		atxinfon(1) = lang("行動回数残り " + atxap + "回\n", "Remaining Actions: " + atxap + "\n")
 		chatesc = 1
 		txtadvmsgfix = 0
 		txtadvscreenupdate = 1
 		gosub *com_txtadv_loop
 		atxinit
+		if ( rtval == 2 ) {
+			atxskillcheck1 = atxskillcheck2
+			rtval = 1
+		}
 		if ( rtval == 1 ) {
-			repeat 3
-				p = random_material(atxlv)
-				atxpic = 1, matref(MATREF_PIC, p), 96, 96
+			if ( rnd(limit(atxlv, 1, 2000)) > rnd(limit(sdata(atxskillcheck1, CHARA_PLAYER), 1, 2000) * 2 + 5) & rnd(10) != 0 ) {
+				skillexp atxskillcheck1, CHARA_PLAYER, 100
+				noteadd lang("うっ！その過程で自分を傷つけた。", "Ugh! You hurt yourself during the process.")
+				snd SOUNDLIST_ATK1
+				dmghp CHARA_PLAYER, cdata(CDATA_MAX_HP, CHARA_PLAYER) * 5 / 100, DAMAGE_FROM_ATX
+				atxthrough = 1
+				goto *atx_RE_main
+			}
+			skillexp atxskillcheck1, CHARA_PLAYER, 50
+			repeat 6
+				if ( cnt >= 3 & rnd(limit(atxlv, 1, 2000)) > rnd(limit(sdata(atxskillcheck1, CHARA_PLAYER) * cnt / 2, 1, 2000)) ) {
+					continue
+				}
+				p = random_material(atxlv, 0)
+				matgetmain p, 1, 5
+				if ( rnd(limit(atxlv, 1, 2000)) > rnd(limit(sdata(atxskillcheck1, CHARA_PLAYER) / 2, 1, 2000)) ) {
+					matgetmain p, 1, 5
+				}
 				snd SOUNDLIST_GET3
-				mat(p) += 1
-				noteadd lang("@BL" + matname(p) + "を" + 1 + "個手に入れた！(所持数:" + mat(p) + "個)", "@BLYou get " + 1 + " " + matname(p) + "(s)! (Total:" + mat(p) + ")")
+				atxpic = 1, matref(MATREF_PIC, p), 96, 96
+				noteadd "@BL" + locvar_matgetmain_s
 			loop
 			atxthrough = 1
 			goto *atx_RE_main
 		}
-		if ( rtval == 2 ) {
+		if ( rtval == 3 ) {
 			atxthrough = 1
 			goto *atx_RE_main
 		}
 	}
 	if ( rnd(8) == 0 ) {
 		if ( rnd(4) == 0 ) {
-			noteadd "あれ…？"
-			noteadd "道に迷った！ (行動回数-2)"
+			noteadd lang("あれ…？", "Wait.. what?")
+			noteadd lang("道に迷った！ (行動回数-2)", "You got lost! (Actions -2)")
 			atxap -= 2
 			atxthrough = 1
 			goto *atx_RE_main
 		}
 		if ( rnd(2) == 0 ) {
 			atxpic = 2, 205, 96, 96
-			noteadd "幽霊に脅かされた！ (行動回数-1)"
+			noteadd lang("幽霊に脅かされた！ (行動回数-1)", "You got spooked by a ghost! (Actions -1)")
 			snd SOUNDLIST_TRAP1
 			atxap -= 1
 			atxthrough = 1
@@ -505,7 +571,7 @@
 		}
 		if ( rnd(2) == 0 ) {
 			atxpic = 1, 424, 96, 96
-			noteadd "小石につまづいてころんでしまった！ (行動回数-1)"
+			noteadd lang("小石につまづいてころんでしまった！ (行動回数-1)", "You tripped and fell on a pebble! (Actions -1)")
 			snd SOUNDLIST_TRAP1
 			atxap -= 1
 			atxthrough = 1
@@ -515,41 +581,41 @@
 	if ( rnd(8) == 0 ) {
 		if ( rnd(4) == 0 ) {
 			atxpic = 1, 200, 96, 96
-			noteadd "ふかふかの藁を見つけた。"
-			noteadd "ふかふかして気持ちいい。（行動回数+3)"
+			noteadd lang("ふかふかの藁を見つけた。", "I found a pile of fluffy straw.")
+			noteadd lang("ふかふかして気持ちいい。（行動回数+3)", "Fluffy, mmmm, fluffy. (Actions +3)")
 			atxap += 2
 			atxthrough = 1
 			goto *atx_RE_main
 		}
 		if ( rnd(2) == 0 ) {
 			atxpic = 1, 294, 96, 96
-			noteadd "切り株がある。"
-			noteadd "腰を下ろして疲れを癒した。（行動回数+2)"
+			noteadd lang("切り株がある。", "You found a stump.")
+			noteadd lang("腰を下ろして疲れを癒した。（行動回数+2)", "You sat back and relaxed from the fatigue. (Actions +2)")
 			atxap += 2
 			atxthrough = 1
 			goto *atx_RE_main
 		}
 		if ( rnd(2) == 0 ) {
 			atxpic = 1, 127, 96, 96
-			noteadd "綺麗な花を見つけた。"
-			noteadd "心がなごんだ…（行動回数+2)"
+			noteadd lang("綺麗な花を見つけた。", "You found a beautiful flower.")
+			noteadd lang("心がなごんだ…（行動回数+2)", "Your heart is comforted. (Actions +2)")
 			atxap += 2
 			atxthrough = 1
 			goto *atx_RE_main
 		}
 	}
-	if ( rnd(7) == 0 ) {
+	if ( rnd(7) == 0 & cdata(CDATA_MAX_HP, CHARA_PLAYER) > cdata(CDATA_HP, CHARA_PLAYER) ) {
 		if ( rnd(3) ) {
-			atxpic = 2, 210, 96, 96
-			noteadd "痛っ！蚊に刺された。"
+			atxpic = 1, 185, 96, 96
+			noteadd lang("ああ、癒しのハーブだ。", "Aha! Some healing herbs.")
 			snd SOUNDLIST_ATK1
-			dmghp CHARA_PLAYER, cdata(CDATA_MAX_HP, CHARA_PLAYER) * 5 / 100, DAMAGE_FROM_ATX
+			healhp CHARA_PLAYER, cdata(CDATA_MAX_HP, CHARA_PLAYER) * 5 / 100, 0
 		}
 		else {
-			atxpic = 2, 216, 96, 96
-			noteadd "うっ！ヘビに噛まれた。"
+			atxpic = 1, 171, 96, 96
+			noteadd lang("あっ！包帯用のつるだ。", "Oh! Vines for bandaging.")
 			snd SOUNDLIST_ATK1
-			dmghp CHARA_PLAYER, cdata(CDATA_MAX_HP, CHARA_PLAYER) * 10 / 100, DAMAGE_FROM_ATX
+			healhp CHARA_PLAYER, cdata(CDATA_MAX_HP, CHARA_PLAYER) * 10 / 100, 0
 		}
 		atxthrough = 1
 		goto *atx_RE_main
@@ -557,13 +623,13 @@
 	if ( rnd(3) == 0 ) {
 		if ( rnd(3) ) {
 			atxpic = 2, 210, 96, 96
-			noteadd "痛っ！蚊に刺された。"
+			noteadd lang("痛っ！蚊に刺された。", "Ouch! Mosquito bites.")
 			snd SOUNDLIST_ATK1
 			dmghp CHARA_PLAYER, cdata(CDATA_MAX_HP, CHARA_PLAYER) * 5 / 100, DAMAGE_FROM_ATX
 		}
 		else {
 			atxpic = 2, 216, 96, 96
-			noteadd "うっ！ヘビに噛まれた。"
+			noteadd lang("うっ！ヘビに噛まれた。", "Ugh! Snake bite.")
 			snd SOUNDLIST_ATK1
 			dmghp CHARA_PLAYER, cdata(CDATA_MAX_HP, CHARA_PLAYER) * 10 / 100, DAMAGE_FROM_ATX
 		}
@@ -572,15 +638,82 @@
 	}
 	if ( rnd(2) == 0 ) {
 		atxpic = 1, 220, 96, 96
-		noteadd "宝箱がある。"
-		chatList 1, "錠を解体する" + "(" + skillname(SKILL_NORMAL_LOCK_PICKING) + ": " + sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + ")"
-		chatList 3, "叩き割る" + "(筋力: " + sdata(SKILL_ATTR_STR, CHARA_PLAYER) + ")"
-		atxinfon(1) = "行動回数残り " + atxap + "回\n"
+		noteadd lang("宝箱がある。", "You found a chest!")
+		chatList 1, lang("錠を解体する", "Dismantle the lock. ") + "(" + skillname(SKILL_NORMAL_LOCK_PICKING) + ": " + sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER) + ")"
+		chatList 2, lang("叩き割る(筋力: ", "Smash it. ") + "(" + skillname(SKILL_ATTR_STR) + ": " + sdata(SKILL_ATTR_STR, CHARA_PLAYER) + ")"
+		chatList 3, lang("去る", "Leave")
+		atxinfon(1) = lang("行動回数残り " + atxap + "回\n", "Remaining actions: " + atxap + "\n")
+		keihin = rnd(30) + 2
+		nannido = keihin * keihin
+		atxinfon(3) = lang(" 景品Lv" + keihin + "　", " Chest-Rank: " + keihin + "")
 		chatesc = 1
 		txtadvmsgfix = 0
 		txtadvscreenupdate = 1
 		gosub *com_txtadv_loop
 		atxinit
+		if ( rtval == 1 ) {
+			item_find ITEM_ID_LOCKPICK, 3
+			if ( stat == (-1) ) {
+				noteadd lang("ロックピックを所持していない。", "You don't have lockpicks.")
+				atxthrough = 1
+				goto *atx_RE_main
+			}
+			if ( rnd(nannido) > rnd(limit(sdata(SKILL_NORMAL_LOCK_PICKING, CHARA_PLAYER), 1, 2000)) ) {
+				noteadd lang("開錠に失敗した。", "You fail to unlock it.")
+				atxthrough = 1
+				goto *atx_RE_main
+			}
+			skillexp SKILL_NORMAL_LOCK_PICKING, cc, 100 + limit(nannido * 2, 1, 400)
+			repeat 1
+				i = 2
+				if ( keihin >= 7 ) { i = 3 }
+				if ( keihin >= 14 ) { i = 4 }
+				if ( keihin >= 21 ) { i = 4 }
+				if ( keihin >= 28 ) { i = 5 }
+				flt calcobjlv(rnd(keihin + 1) + keihin), i
+				flttypemajor = fsetwear(rnd(length(fsetwear)))
+				itemcreate -1, ITEM_ID_DUMMY, -1, -1, 0
+				if ( inv(INV_ITEM_NUM, ci) == 0 ) {
+					continue cnt
+				}
+			loop
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			noteadd lang("開錠に成功した。", "You successfully unlock it.")
+			atxthrough = 1
+			goto *atx_RE_main
+		}
+		if ( rtval == 2 ) {
+			if ( rnd(nannido) > rnd(limit(sdata(SKILL_ATTR_STR, CHARA_PLAYER), 1, 2000)) ) {
+				noteadd lang("筋肉を痛めた。", "You hurt your muscles.")
+				atxthrough = 1
+				goto *atx_RE_main
+			}
+			skillexp SKILL_ATTR_STR, CHARA_PLAYER, nannido
+			if ( rnd(2) == 0 ) {
+				noteadd lang("体当たりして破壊した。", "You bash up chest. The content is destroyed.")
+				atxthrough = 1
+				goto *atx_RE_main
+			}
+			repeat 1
+				i = 2
+				if ( keihin >= 7 ) { i = 3 }
+				if ( keihin >= 14 ) { i = 4 }
+				if ( keihin >= 21 ) { i = 4 }
+				if ( keihin >= 28 ) { i = 5 }
+				flt calcobjlv(rnd(keihin + 1) + keihin), i
+				flttypemajor = fsetwear(rnd(length(fsetwear)))
+				itemcreate -1, ITEM_ID_DUMMY, -1, -1, 0
+				if ( inv(INV_ITEM_NUM, ci) == 0 ) {
+					continue cnt
+				}
+			loop
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			noteadd lang("開錠に成功した。", "You successfully unlock it.")
+			atxthrough = 1
+			goto *atx_RE_main
+		}
 		goto *atx_RE_main
 	}
 	if ( rnd(2) == 0 ) {
@@ -593,11 +726,11 @@
 		goto *atx_RE_main
 	}
 	if ( rnd(3) == 0 ) {
-		noteadd "何も見つからなかった…"
+		noteadd lang("何も見つからなかった…", "You found nothing...")
 		atxthrough = 1
 		goto *atx_RE_main
 	}
-	noteadd "何も見つからなかった…"
+	noteadd lang("何も見つからなかった…", "You found nothing...")
 	atxthrough = 1
 	goto *atx_RE_main
 
@@ -608,7 +741,7 @@
 		chatList 0, lang("戻る", "Return")
 	}
 	else {
-		noteadd lang("ぐふ…", "Ugh...")
+		noteadd lang("ぐふ…", "Aieeeeeeeee...")
 		chatList 0, lang("(断末魔の叫び)", "(Death Cry)")
 	}
 	atxinfon(1) = lang("行動回数残り " + atxap + "回\n", "Remaining actions: " + atxap + "\n")

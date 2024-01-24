@@ -305,8 +305,8 @@
 		// Autopickup options
 
 		cfgRead "autopick.", cfg_autopick = int(rtvaln)
-		cfgRead "autopick_sound.", cfg_autopicksound = int(rtvaln)
-		cfgRead "autodestroy_sound.", cfg_autodestroysound = int(rtvaln)
+		cfgRead "autopickSound.", cfg_autopicksound = int(rtvaln)
+		cfgRead "autodestroySound.", cfg_autodestroysound = int(rtvaln)
 
         // Other options
 
