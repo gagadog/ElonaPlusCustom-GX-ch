@@ -12278,6 +12278,7 @@
 			txt lang("" + gdata(GDATA_TIME_LIMIT) + "分以内に、" + refchara(qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)), DBSPEC_CHARA_NAME_ORG, 1) + "を討伐しなければならない。", "You have to slay " + refchara(qdata(QDATA_PARAM1, gdata(GDATA_QUEST_REF)), DBSPEC_CHARA_NAME_ORG, 1) + " within " + gdata(GDATA_TIME_LIMIT) + " minutes.")
 		}
 	}
+	refreshspeed CHARA_PLAYER // CUSTOM Vehicle/Cargo speed to local speed fix, because speed stack calculation happens in 'main_init', before player speed reset in 'game_main'.
 	goto *main_init
 
 *check_renew

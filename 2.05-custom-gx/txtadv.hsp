@@ -791,8 +791,8 @@
 	chatList 0, lang("店を出る", "Later.")
 	chatList 1, lang("ブラックジャック", "I want to play Blackjack.")
 	/********** JAMES CUSTOM - SLOTS - BEGINNING **********/
-	atxci = ci
-	if ( atxci == ITEM_ID_SLOT_MACHINE ) {
+	atxci = inv(INV_ITEM_ID, limit(ci,0,MAX_INV_DATA-1))
+	if ( atxci == ITEM_ID_SLOT_MACHINE | atxci == ITEM_ID_PACHISURO_MACHINE ) {
 		listmax = 0
 		chatList 0, lang("店を出る", "Later.")
 		chatList 1, lang("ブラックジャック", "I want to play Slots.")
@@ -807,7 +807,7 @@
 	}
 	if ( rtval == 1 ) {
 		/********** JAMES CUSTOM - SLOTS - BEGINNING **********/
-		if ( atxci == ITEM_ID_SLOT_MACHINE ) {
+		if ( atxci == ITEM_ID_SLOT_MACHINE | atxci == ITEM_ID_PACHISURO_MACHINE ) {
 			goto *adv_casinoSlots
 		}
 		/********** JAMES CUSTOM - SLOTS - ENDING **********/

@@ -866,10 +866,10 @@
 	goto *map_init
 
 *main_init
-#ifdef CUSTOM_GX_MOCK
-	#include "mock.hsp"
-	stop
-#endif
+	#ifdef CUSTOM_GX_MOCK
+		#include "mock.hsp"
+		stop
+	#endif
 	procid = (procid + 1) \ 4
 	proclist(procid) = "main_init:Begin" + " ct:" + ct
 	sound = SOUNDLIST_NONE
@@ -987,7 +987,7 @@
 		}
 		cdata(CDATA_SPEED_SUM, cnt) += spd * turncost
 	loop
-*spdSkip
+	*spdSkip
  	if ( gdata(GDATA_AREA) == AREA_VALM & gdata(GDATA_LEVEL) == 3 ) {
 		gdata(GDATA_SEC) += limit(turncost / 5 + 1, 3000, 9000)
  	}
@@ -1721,7 +1721,7 @@
 		ct++
 		goto *game_main
 	}
-*game_main_redo
+	*game_main_redo
 	cc = ct
 	cdata(CDATA_TIME_SCALE, cc) = cdata(CDATA_SPEED_FIX, cc)
 	cdata(CDATA_TURN, cc)++
@@ -1789,7 +1789,7 @@
 			}
 		loop
 		if ( gdata(GDATA_RETURN) != 0 ) {
-*game_main_redo_WHILE1
+			*game_main_redo_WHILE1
 			gdata(GDATA_RETURN)--
 			if ( mdata(MDATA_TYPE) == MAP_TYPE_QUEST | gdata(GDATA_AREA) == AREA_SHELTER | gdata(GDATA_AREA) == AREA_JAIL | (gdata(GDATA_AREA) == AREA_AMUR_CAGE & gdata(GDATA_LEVEL) >= 10) ) {
 				gdata(GDATA_RETURN) = 0
@@ -1878,7 +1878,7 @@
 			}
 			goto *game_main_redo_WEND1
 		}
-*game_main_redo_WEND1
+		*game_main_redo_WEND1
 		gosub *mapEvent
 		if ( cdata(CDATA_EXIST, CHARA_PLAYER) != CHAR_STATE_ALIVE ) {
 			goto *pc_dead

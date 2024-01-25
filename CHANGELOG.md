@@ -13,6 +13,7 @@
 - Werewolves are no longer renamed outside of towns.
 
 # Fixed
+- Player speed are reset after entering a map, and before "main_init"
 - Show NPC name: enemies using Jumping-Drop/Diving-Drill now have their names hidden.
 - Encounter canceller can be used with 't' to throw potion at self tweak now.
 - Some translation / display issues thanks to @lIllIIlI.
