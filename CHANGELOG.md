@@ -1,8 +1,9 @@
 # Upcoming
 
 # Added
-- Added a tweak to increase random Nefia monster density.
+- Added slot machine minigame for slot machines.
 - Added a tweak to enable Noa's material gathering minigame.
+- Added a tweak to increase random Nefia monster density.
 - Added pop-up and text for AP-gains.
 
 # Changed

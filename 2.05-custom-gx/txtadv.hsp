@@ -38,6 +38,23 @@
 		window2 windoww - 208, 0, 208, 98, 0, 0
 		pos windoww - 204, 4
 		gzoom 200, 90, 0, 120, 88, windoww - 120, windowh - inf_verh - 112, 1
+		
+		/********** JAMES CUSTOM - SLOTS - BEGINNING **********/
+		gsel 7
+		picload exedir + "graphic\\interface2.bmp"
+		b@txtadv = 5,   5,   1,   5,   5,   1,   5,   1
+		p@txtadv = 168, 596, 113, 211, 345, 971, 334, 561
+		ys@txtadv =12,  8,   0,   16,  0,   0,   0,   0
+		repeat 8
+			gmode 2
+			pos cnt * 48, 96
+			gzoom 48, 48, 7, 0 + 72 * (1+cnt), 0, 72, 96 
+			gcopy b@txtadv(cnt), p@txtadv(cnt) \ 33 * 48, p@txtadv(cnt) / 33 * 48 + ys@txtadv(cnt), 48, 48
+			gcopy 3, 0, 240, 48, 48
+		loop
+        gmode 0
+		/********** JAMES CUSTOM - SLOTS - ENDING **********/
+
 		gsel 0
 	}
 	return
@@ -135,7 +152,7 @@
 		keyrange++
 	loop
 	gosub *com_adv_anime1
-*com_txtadv_loop_WHILE1
+	*com_txtadv_loop_WHILE1
 	redraw 0
 	x = 170, 400
 	y = noteinfo(0) * 20 + 120 + txtadvmsgfix + 16, 20 * listmax
@@ -773,6 +790,14 @@
 	atxinfon(2) = ""
 	chatList 0, lang("店を出る", "Later.")
 	chatList 1, lang("ブラックジャック", "I want to play Blackjack.")
+	/********** JAMES CUSTOM - SLOTS - BEGINNING **********/
+	atxci = ci
+	if ( atxci == ITEM_ID_SLOT_MACHINE ) {
+		listmax = 0
+		chatList 0, lang("店を出る", "Later.")
+		chatList 1, lang("ブラックジャック", "I want to play Slots.")
+	}
+	/********** JAMES CUSTOM - SLOTS - ENDING **********/
 	chatesc = 0
 	txtadvmsgfix = 0
 	txtadvscreenupdate = 1
@@ -781,6 +806,11 @@
 		goto *com_txtAdvQuit
 	}
 	if ( rtval == 1 ) {
+		/********** JAMES CUSTOM - SLOTS - BEGINNING **********/
+		if ( atxci == ITEM_ID_SLOT_MACHINE ) {
+			goto *adv_casinoSlots
+		}
+		/********** JAMES CUSTOM - SLOTS - ENDING **********/
 		goto *adv_casinoBlackJack
 	}
 	goto *adv_casinoCard
@@ -1146,3 +1176,361 @@
 	}
 	goto *adv_casinoBlackJack
 
+/********** JAMES CUSTOM - SLOTS - BEGINNING **********/ // Why not?
+*adv_casinoSlots
+	ikasama = 0
+	atxinit
+	noteadd lang("ブラックジャックは、カードの合計を21に近づけるゲームです。", "In Slots, stop the spinning at right time to connect patterns.")
+	noteadd lang("チップが多いほど、景品の質があがります。", "How many tips would you like to bet?")
+	atxinfon(1) = lang("カジノチップ残り " + mat(1) + "枚\n", "Casino chips left: " + mat(1) + "\n")
+	atxinfon(2) = ""
+	atxinfon(3) = ""
+	if ( mat(1) <= 0 ) {
+		noteadd ""
+		noteadd lang("お客様はチップをもっていません。", "Sorry sir, you don't seem to have casino chips.")
+	}
+	if ( mat(1) >= 1 ) {
+		chatList 1, lang("" + 1 + "枚賭ける", "Use " + 1 + " chips.")
+	}
+	chatList 0, lang("やめる", "I quit.")
+	chatesc = 0
+	txtadvmsgfix = 0
+	txtadvscreenupdate = 1
+	gosub *com_txtadv_loop
+	if ( rtval == 0 ) {
+		goto *adv_casinoCard
+	}
+	stake = rtval
+	autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
+	// Init roulette
+	mat(1) -= stake
+	atxinit
+	slotcount@txtadv = 30
+	dim slotarray@txtadv, slotcount@txtadv * 3
+	repeat slotcount@txtadv * 3
+		slotarray@txtadv(cnt) = (rnd(4) + 7) \ 8 // 7, 0, 1, 2
+	loop
+	repeat 3
+		cnt2 = cnt
+		repeat 5
+			slotarray@txtadv(rnd(slotcount@txtadv) + cnt2 * 30) = 3
+		loop
+		repeat 3
+			slotarray@txtadv(rnd(slotcount@txtadv) + cnt2 * 30) = 6
+		loop
+		repeat 2
+			slotarray@txtadv(rnd(slotcount@txtadv) + cnt2 * 30) = 4
+		loop
+		repeat 1
+			slotarray@txtadv(rnd(slotcount@txtadv) + cnt2 * 30) = 5
+		loop
+	loop
+	slotindex@txtadv = 0
+	slotresult@txtadv = -1, -1, -1, -1, -1, -1, -1, -1, -1
+	slotoffset@txtadv = rnd(10000), rnd(10000), rnd(10000)
+	// Init cheat, and check if player can cheat.
+	sandevistan@txtadv = 0
+	sandevistanci@txtadv = -1
+	sandevistandur@txtadv = 5000 / 3
+	repeat MAX_EQUIP_SLOT_TOTAL, CDATA_STARTING_EQUIP_SLOTS
+		if ( sandevistanci@txtadv >= 0 ) { break }
+		if ( cdata(cnt, CHARA_PLAYER) == 0 ) { continue }
+
+		ci = cdata(cnt, CHARA_PLAYER) \ EXT_EQUIP_SLOTS - 1
+		if ( ci < 0 | ci >= MAX_INV_DATA ) { continue }
+		repeat RANGE_INV_ITEM_ENCHANT
+			if ( inv(STARTING_INV_ITEM_ENCHANT + cnt * 2, ci) == 0 ) { break }
+
+			enc = inv(STARTING_INV_ITEM_ENCHANT + cnt * 2, ci)
+			if ( enc == ENCHANT_TIME_STOP ) {
+				sandevistanci@txtadv = ci
+				break
+			}
+		loop
+	loop
+	if ( sandevistanci@txtadv >= MAX_INV_DATA ) { sandevistanci@txtadv = -1 }
+	// Init UI - draw the options but don't refresh them.
+	noteadd lang("何をしよう？", "Wheel of Fortune")
+	chatList 1, lang("探索", "Pull")
+	if ( sandevistanci@txtadv >= 0 ) {
+		chatList 2, lang("探索", "(Cheat) Slow time using " + itemname(sandevistanci@txtadv) + "!")
+	}
+	redraw 0
+	x = 170, 400
+	y = noteinfo(0) * 20 + 120 + txtadvmsgfix + 16, 20 * listmax
+	gmode 0
+	pos x, y
+	gcopy 2, x, y, x(1), y(1)
+	gmode 2
+	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	cs_listbk
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
+		i = list(0, p)
+		display_key 170, noteinfo(0) * 20 + 120 + txtadvmsgfix + 16 + cnt * 20, cnt
+		s = listn(0, p)
+		cs_list s, 170 + 30, noteinfo(0) * 20 + 120 + txtadvmsgfix + 16 + cnt * 20, 19, 0, 2
+	loop
+	if ( keyrange != 0 ) {
+		cs_bk = cs
+	}
+	redraw 1
+	*adv_casinoSlots_WHILE
+	// Render the wheel
+	ima = (int(gettime(7)) + int(gettime(6)) * 1000 + int(gettime(5)) * 1000 * 60 + int(gettime(4)) * 1000 * 60 * 60)
+	if ( sandevistan@txtadv != 0 ) {
+		if ( ima > sandevistan@txtadv ) {
+			sandevistan@txtadv = 0
+		} else {
+			ima = (sandevistan@txtadv - sandevistandur@txtadv) + (ima - (sandevistan@txtadv - sandevistandur@txtadv)) / 20
+		}
+	}
+	x = 200
+	y = 200
+	repeat 3
+		cnt2 = cnt
+		if ( slotresult@txtadv(cnt2 * 3) != -1) {
+			repeat 3
+				cp@txtadv = slotresult@txtadv(cnt2 * 3 + cnt)
+				pos x + 48 * cnt2, y + 48 * (2-cnt)
+				gcopy 7, 48 * cp@txtadv, 96, 48, 48
+			loop
+		} else {
+			currentoffset@txtadv = slotoffset@txtadv(cnt2) + ima
+			repeat 4
+				co@txtadv = (currentoffset@txtadv + 48 * cnt) \ (slotcount@txtadv * 48)
+				cp@txtadv = slotarray@txtadv(co@txtadv / 48 + cnt2 * 30)
+				cy@txtadv = co@txtadv \ 48
+				pos x + 48 * cnt2, y + limit(48 * (3-cnt) - 48 + cy@txtadv, 0, 48 * 3)
+				gcopy 7, 48 * cp@txtadv, 96 + (cnt==3) * (48 - cy@txtadv), 48, 48 - (cnt==3) * (48 - cy@txtadv) - (cnt == 0) * cy@txtadv
+			loop
+		}
+	loop
+	// Check the keys
+	await cfg_wait1
+	key_check
+	if ( key == "b" & sandevistanci@txtadv >= 0 ) {
+		if ( ikasama >= 2 ) {
+			sandevistan@txtadv = 0
+			atxinit
+			noteadd lang("イカサマだ！", "Cheater!")
+			txt lang("イカサマが見つかってしまった…", "You are caught cheating...")
+			modkarma CHARA_PLAYER, -5
+			chatList 0, lang("濡れ衣だ！", "I didn't do it!")
+			chatesc = -1
+			txtadvmsgfix = 0
+			txtadvscreenupdate = 1
+			gosub *com_txtadv_loop
+			goto *adv_casinoCard
+		}
+		sandevistan@txtadv = ima + sandevistandur@txtadv
+		ikasama++
+		key = ""
+	}
+	if ( key != "" ) {
+		if (slotindex@txtadv < 3) {
+			co@txtadv = (slotoffset@txtadv(slotindex@txtadv) + ima + 24) \ (slotcount@txtadv * 48)
+			slotresult@txtadv(slotindex@txtadv * 3) = slotarray@txtadv(co@txtadv / 48 + slotindex@txtadv * 30), slotarray@txtadv((co@txtadv / 48 + 1)\slotcount@txtadv + slotindex@txtadv * 30), slotarray@txtadv((co@txtadv / 48 + 2)\slotcount@txtadv + slotindex@txtadv * 30)
+		}
+		slotindex@txtadv++
+		if ( slotindex@txtadv >= 4 ) {
+			goto *adv_casinoSlots_WHILE_END
+		}
+	}
+	goto *adv_casinoSlots_WHILE
+	*adv_casinoSlots_WHILE_END
+	atxinit
+	checklanes@txtadv = 147, 159, 258, 357, 369
+	noteadd lang("チェックする", "Checking the wheel...")
+	nothing@txtadv = 0
+	repeat 5
+		keihin = rnd(15)
+		checkresult@txtadv = slotresult@txtadv((checklanes@txtadv(cnt)/100)-1) + 1, slotresult@txtadv((checklanes@txtadv(cnt)/10\10)-1) + 1, slotresult@txtadv((checklanes@txtadv(cnt)\10)-1) + 1, -1, -1, -1, -1, -1
+		checkresult@txtadv(3) = (checkresult@txtadv(0) == checkresult@txtadv(1)) * checkresult@txtadv(0)
+		checkresult@txtadv(4) = (checkresult@txtadv(1) == checkresult@txtadv(2)) * checkresult@txtadv(1)
+		checkresult@txtadv(5) = (checkresult@txtadv(0) == checkresult@txtadv(2)) * checkresult@txtadv(0)
+		checkresult@txtadv(6) = (checkresult@txtadv(3) == checkresult@txtadv(4)) * checkresult@txtadv(3) // 3 same
+		checkresult@txtadv(7) = (checkresult@txtadv(6) == 0) * (checkresult@txtadv(3) + checkresult@txtadv(4) + checkresult@txtadv(5)) // 2 same
+		// dialog("//0:"+checkresult@txtadv(0)+"//1:"+checkresult@txtadv(1)+"//2:"+checkresult@txtadv(2)+"//3:"+checkresult@txtadv(3)+"//4:"+checkresult@txtadv(4)+"//5:"+checkresult@txtadv(5)+"//6:"+checkresult@txtadv(6)+"//7:"+checkresult@txtadv(7))
+		if ( checkresult@txtadv(6) == 1 ) { // 3 putits
+			noteadd "3 putits!"
+			repeat 1
+				flt
+				flttypemajor = fsetincome(rnd(length(fsetincome)))
+				itemcreate -1, ITEM_ID_DUMMY, -1, -1, 0
+				if ( inv(INV_ITEM_NUM, ci) == 0 ) {
+					continue cnt
+				}
+			loop
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(6) == 2 ) { // 3 dogs, gives you a FURNITURE!
+			noteadd "3 dogs!"
+			repeat 1
+				flt
+				flttypemajor = FILTER_FURNITURE
+				p@txtadv = ITEM_ID_DUMMY
+				if ( rnd(1000) == 0 ) { p@txtadv = 1115 }
+				itemcreate -1, p@txtadv, -1, -1, 0
+				if ( inv(INV_ITEM_NUM, ci) == 0 ) {
+					continue cnt
+				}
+			loop
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(6) == 3 ) { // 3 breads, give a herb.
+			noteadd "3 breads!"
+			if (rnd(1)==0) { p@txtadv = ITEM_ID_STOMAFILLIA }
+			if (rnd(2)==0) { p@txtadv = ITEM_ID_CURARIA }
+			if (rnd(3)==0) {
+				if (rnd(1)==0) { p@txtadv = ITEM_ID_MORGIA }
+				if (rnd(2)==0) { p@txtadv = ITEM_ID_MAREILON }
+				if (rnd(3)==0) { p@txtadv = ITEM_ID_SPENSEWEED }
+				if (rnd(4)==0) { p@txtadv = ITEM_ID_ALRAUNIA }
+			}
+			flt
+			itemcreate -1, p@txtadv, -1, -1, 0
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(6) == 4 ) { // 3 cats, minor gift
+			noteadd "3 cats!"
+			flt
+			itemcreate -1, isetgiftminor(rnd(length(isetgiftminor))), -1, -1, 1
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(6) == 7 ) { // 3 bethels, gives major gift
+			noteadd "3 bethels!"
+			flt
+			itemcreate -1, isetgiftmajor(rnd(length(isetgiftmajor))), -1, -1, 1
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(6) == 5 ) { // 3 larnneires, gives grand gift
+			noteadd "3 larnneires!"
+			flt
+			itemcreate -1, isetgiftgrand(rnd(length(isetgiftgrand))), -1, -1, 1
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(6) == 6 ) { // 3 ehekatls, artifcat
+			noteadd "3 ehekatls!"
+			snd SOUNDLIST_OFFER2
+			kaiwa = rnd(22)
+			if ( kaiwa == 0 ) { id = ITEM_ID_GO_RENGE }
+			if ( kaiwa == 1 ) { id = ITEM_ID_EPECLAIR }
+			if ( kaiwa == 2 ) { id = ITEM_ID_GOUTEN }
+			if ( kaiwa == 3 ) { id = ITEM_ID_DGT_101 }
+			if ( kaiwa == 4 ) { id = ITEM_ID_NUMENIUS }
+			if ( kaiwa == 5 ) { id = ITEM_ID_ENGOKU }
+			if ( kaiwa == 6 ) { id = ITEM_ID_POWER_TRIANGLE }
+			if ( kaiwa == 7 ) { id = ITEM_ID_CROSS_RAIL }
+			if ( kaiwa == 8 ) { id = ITEM_ID_NAZUNAS_SOX }
+			if ( kaiwa == 9 ) { id = ITEM_ID_SCORPIERCE }
+			if ( kaiwa == 10 ) { id = ITEM_ID_YOMI_TO }
+			if ( kaiwa == 11 ) { id = ITEM_ID_RINKHALS }
+			if ( kaiwa == 12 ) { id = ITEM_ID_LINGS_BOW }
+			if ( kaiwa == 13 ) { id = ITEM_ID_BEETLE_CYBORG }
+			if ( kaiwa == 14 ) { id = ITEM_ID_ASSAULT_GOLD }
+			if ( kaiwa == 15 ) { id = ITEM_ID_DOKURO_MIKADUKI }
+			if ( kaiwa == 16 ) { id = ITEM_ID_BLOODY_TEARS }
+			if ( kaiwa == 17 ) { id = ITEM_ID_NIGHTMARE }
+			if ( kaiwa == 18 ) { id = ITEM_ID_GEMINI }
+			if ( kaiwa == 19 ) { id = ITEM_ID_HIRYU_TO }
+			if ( kaiwa == 20 ) { id = ITEM_ID_BAMBNIR }
+			if ( kaiwa == 21 ) { id = ITEM_ID_ZANTETSUKEN }
+			flt
+			itemcreate -1, id, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(6) == 8 ) { // 3 crimberries, gives 2 casino chip
+			noteadd "3 crimberries!"
+			p@txtadv = 1
+			matgetmain p@txtadv, 2, 5
+			noteadd "@BL" + locvar_matgetmain_s
+			continue
+		}
+		if ( checkresult@txtadv(7) == 3 ) { // 2 breads, give some food.
+			noteadd "2 breads!"
+			if (rnd(1)==0) { p@txtadv = ITEM_ID_POP_CORN }
+			if (rnd(2)==0) { p@txtadv = ITEM_ID_FRIED_POTATO }
+			if (rnd(3)==0) { p@txtadv = ITEM_ID_CYBER_SNACK }
+			if (rnd(20)==0){
+				if (rnd(1)==0) { p@txtadv = ITEM_ID_YITH_YAKI }
+				if (rnd(2)==0) { p@txtadv = ITEM_ID_MOCHI }
+				if (rnd(10)==0) { p@txtadv = ITEM_ID_KAGAMI_MOCHI }
+			}
+			flt
+			itemcreate -1, p@txtadv, -1, -1, 0
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(7) == 5 ) { // 2 larnneires, gives something blessed
+			noteadd "2 larnneires!"
+			repeat 1
+				i = limit(keihin/7+2 , 2, 4)
+				flt calcobjlv(rnd(keihin + 1) + keihin), i
+				flttypemajor = fsetwear(rnd(length(fsetwear)))
+				itemcreate -1, ITEM_ID_DUMMY, -1, -1, 0
+				if ( inv(INV_ITEM_NUM, ci) == 0 ) {
+					continue cnt
+				}
+			loop
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_BLESSED
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(7) == 7 ) { // 2 bethels, gives something cursed.
+			noteadd "2 bethels!"
+			repeat 1
+				i = limit(keihin/7+2 , 2, 4)
+				flt calcobjlv(rnd(keihin + 1) + keihin), i
+				flttypemajor = fsetwear(rnd(length(fsetwear)))
+				itemcreate -1, ITEM_ID_DUMMY, -1, -1, 0
+				if ( inv(INV_ITEM_NUM, ci) == 0 ) {
+					continue cnt
+				}
+			loop
+			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_CURSED
+			if (rnd(3) == 0) { inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_DOOMED }
+			snd SOUNDLIST_GET3
+			noteadd lang("@GRアイテム：" + itemname(ci, inv(INV_ITEM_NUM, ci)) + "を戦利品に加えた！", "@GR" + itemname(ci, inv(INV_ITEM_NUM, ci)) + " has been added to your loot list!")
+			continue
+		}
+		if ( checkresult@txtadv(7) == 8 ) { // 2 crimberries, give 1 casino chip
+			noteadd "2 crimberries!"
+			p@txtadv = 1
+			matgetmain p@txtadv, 1, 5
+			noteadd "@BL" + locvar_matgetmain_s
+			continue
+		}
+		nothing@txtadv++
+	loop
+	if ( nothing@txtadv == 5 ) {
+		noteadd lang("何もない...", "Nothing... scut!")
+	}
+	chatList 0, lang("戻る", "Great.")
+	chatesc = 0
+	txtadvmsgfix = 0
+	txtadvscreenupdate = 1
+	gosub *com_txtadv_loop
+	goto *adv_casinoSlots
+
+/********** JAMES CUSTOM - SLOTS - ENDING **********/ 
