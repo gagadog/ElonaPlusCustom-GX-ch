@@ -4155,44 +4155,7 @@
 	attackskill = SKILL_WEAPON_MARTIAL_ARTS
 	ammo = -1
 	ele = SKILL_NONE
-	powsel = 0
-	if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-		if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-			powsel = 100
-		}
-	}
-	if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-		if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-			powsel = 100
-		}
-	}
-	if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-		powsel = 100
-	}
-	if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-		powsel = 100
-	}
-	if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-		if ( exgauge != 100 ) {
-			powsel = 0
-		}
-	}
-	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-		powsel = 0
-	}
-	if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-		if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-			powsel = 0
-		}
-	}
-	if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-		powsel = 0
-	}
-	if ( cc == CHARA_PLAYER ) {
-		if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-			powsel = 0
-		}
-	}
+	powsel = charaCanGauge(cc)
 	if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 		if ( powsel == 100 ) {
 			if ( cdata(CDATA_SHIELD_STYLE_TYPE, cc) == SHIELD_STYLE_NORMAL ) {
@@ -5237,44 +5200,7 @@
 				bakucut = 100
 				bakuretu = 0
 			}
-			powsel = 0
-			if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-				if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-					powsel = 100
-				}
-			}
-			if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-				if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-					powsel = 100
-				}
-			}
-			if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-				powsel = 100
-			}
-			if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-				powsel = 100
-			}
-			if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-				if ( exgauge != 100 ) {
-					powsel = 0
-				}
-			}
-			if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-				powsel = 0
-			}
-			if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-				if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-					powsel = 0
-				}
-			}
-			if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-				powsel = 0
-			}
-			if ( cc == CHARA_PLAYER ) {
-				if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-					powsel = 0
-				}
-			}
+			powsel = charaCanGauge(cc)
 			if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 				if ( powsel == 100 ) {
 					if ( cdata(CDATA_SHIELD_STYLE_TYPE, cc) == 0 | cdata(CDATA_SHIELD_STYLE_TYPE, cc) == SHIELD_STYLE_TONFA ) {
@@ -5612,47 +5538,7 @@
 			}
 		}
 	}
-	powsel = 0
-	if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-		if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-			powsel = 100
-		}
-	}
-	if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-		if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-			powsel = 100
-		}
-	}
-	if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-		powsel = 100
-	}
-	if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-		powsel = 100
-	}
-	if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-		if ( exgauge != 100 ) {
-			powsel = 0
-		}
-	}
-	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-		powsel = 0
-	}
-	if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-		if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-			powsel = 0
-		}
-	}
-	if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-		powsel = 0
-	}
-	if ( cc == CHARA_PLAYER ) {
-		if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-			powsel = 0
-		}
-	}
-	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 1200 ) {
-		powsel = 0
-	}
+	powsel = charaCanGauge(cc)
 	if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			if ( powsel == 100 ) {
@@ -9801,44 +9687,7 @@
 			}
 		}
 		inv(INV_ITEM_LEVEL, ci) = 0
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == 1 ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != 0 ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 			if ( powsel == 100 ) {
 				if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {

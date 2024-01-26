@@ -3041,6 +3041,7 @@
 	/********** BLOODYSHADE/ANNA CUSTOM - ENDING **********/
 
 	if ( gdata(GDATA_WIZARD) ) {
+		// Wizard F2. loads save.
 		getkey a, 113
 		if ( a ) {
 			msg_newline
@@ -3050,6 +3051,7 @@
 			mode = MODELIST_CONTINUE
 			goto *map_init
 		}
+		// Wizard F3. Triggers event.
 		getkey a, 114
 		if ( a ) {
 			buffer 3, 1440, 800
@@ -3057,6 +3059,7 @@
 			gsel 0
 			gosub *random_event
 		}
+		// Wizard F4 event.
 		getkey a, 115
 		if ( a ) {
 			repeat RANGE_CDATA_FOOD_EXP, RANGE_CDATA_FOOD_EXP
@@ -3071,11 +3074,13 @@
 				cdatan(CDATAN_NAME, rc) += "" + cdata(CDATA_USERNPC_ID, rc)
 			loop
 		}
+		// Wizard F5 event
 		getkey a, 116
 		if ( a ) {
 			gosub *com_wish
 			goto *turn_end
 		}
+		// Wizard F6 advance hour
 		getkey a, 117
 		if ( a ) {
 			dbg_skipevent = 1
@@ -3085,6 +3090,7 @@
 			mode = MODELIST_MAIN
 			goto *turn_end
 		}
+		// Wizard F7 reload/regen map
 		getkey a, 118
 		if ( a ) {
 			if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN ) {

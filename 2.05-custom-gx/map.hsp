@@ -1624,7 +1624,7 @@
 		mdata(MDATA_WALL) = 0
 		flt
 		itemcreate -1, ITEM_ID_RED_BOOK, 22, 18, 0
-		inv(INV_ITEM_PARAM1, ci) = 32
+		inv(INV_ITEM_BOOK_ID, ci) = 32
 		mdata(MDATA_MAX_INV) = 100
 	}
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_MUSEUM ) {
@@ -1634,9 +1634,9 @@
 		mdata(MDATA_WALL) = 0
 		flt
 		itemcreate -1, ITEM_ID_RED_BOOK, 15, 17, 0
+		inv(INV_ITEM_BOOK_ID, ci) = 4
 		flt
 		itemcreate -1, ITEM_ID_REGISTER, 18, 17, 0
-		inv(INV_ITEM_BOOK_ID, ci) = 4
 	}
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_SHOP ) {
 		map_initcustom "shop_1"

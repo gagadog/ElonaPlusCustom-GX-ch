@@ -448,6 +448,7 @@
 	cdata(CDATA_RELATION, rc) = -3
 	cdata(CDATA_RELATION_ORG, rc) = -3
 	cbitmod CHARA_BIT_PRECIOUS, rc, 1
+	if ( cdata(CDATA_ID, rc) == CREATURE_ID_IMARITUKA_THE_ZASIKI_WARAI ) { cdata(CDATA_ID, rc) = CREATURE_ID_SHADE }
 	bossrc@NT = rc
 	bosscnt@NT = 1
 
@@ -519,14 +520,10 @@
 	dim voidboss@NT, 29, 50
 	voidboss_count@NT = 0
 	
-	voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_CRIMSON_DARK_GUARDIAN, CREATURE_ID_BLUE_DARK_GUARDIAN, (-1), CREATURE_ID_GREEN_DARK_GUARDIAN, (-1)
-	voidboss_count@NT++
-	voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_UNITDEAD_KING, CREATURE_ID_UNITDEAD_QUEEN, (-1), CREATURE_ID_UNITDEAD_JACK, (-1), CREATURE_ID_UNITDEAD_JOKER, (-1)
-	voidboss_count@NT++
 	voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_AT_SIGN, CREATURE_ID_QUANTUM_CREATURE, 3
 	voidboss_count@NT++
-	// voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_IMARITUKA_THE_ZASIKI_WARAI, CREATURE_ID_WAR_SPIRIT, 6, CREATURE_ID_GUN_SPIRIT, 6, CREATURE_ID_MAGIC_SPIRIT, 6
-	// voidboss_count@NT++
+	voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_IMARITUKA_THE_ZASIKI_WARAI, CREATURE_ID_WAR_SPIRIT, 6, CREATURE_ID_GUN_SPIRIT, 6, CREATURE_ID_MAGIC_SPIRIT, 6
+	voidboss_count@NT++
 	voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_SCARD_THE_HAPPY_SWALLOW, CREATURE_ID_YOUNG_SWALLOW, 20
 	voidboss_count@NT++
 	voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_OXODE_THE_QUEEN_BEE, CREATURE_ID_MAGIC_BEE, 20
@@ -550,17 +547,17 @@
 		voidboss_count@NT++
 	}
 
-	if ( gdata(GDATA_FLAG_MAIN) >= 100 ) {
+	if ( gdata(GDATA_FLAG_MAIN) >= 90 ) {
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_XABI_THE_KING_OF_PALMIA, CREATURE_ID_SLAN_THE_SHADOW_OF_PALMIA, 1, CREATURE_ID_KARAM_THE_LONELY_WOLF_OF_KARUNE, 1, CREATURE_ID_ZANAN_ASSASSIN, 8, CREATURE_ID_ZANAN_OLD_SOLDIER, 5, CREATURE_ID_ZANAN_HEAVILY_ARMED, 5, CREATURE_ID_ZANAN_ENHANCED_SOLDIER, 2
 		voidboss_count@NT++
 	}
 	if ( gdata(GDATA_FLAG_MAIN_FOOL) = 1 ) {
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ISSIZZLE_THE_DARK_ABOMINATION
-		if ( gdata(GDATA_FLAG_MAIN) <= 180 ) {
+		if ( npcmemory(0, CREATURE_ID_AZZRSSIL_THE_IMPURE) ) {
 			voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ISSIZZLE_THE_DARK_ABOMINATION, CREATURE_ID_AZZRSSIL_THE_IMPURE, (-1)
-		}
-		if ( gdata(GDATA_FLAG_MAIN) <= 350 ) {
-			voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ISSIZZLE_THE_DARK_ABOMINATION, CREATURE_ID_AZZRSSIL_THE_IMPURE, (-1), CREATURE_ID_ULZASSIL_THE_DEAD_EMPEROR, (-1)
+			if ( npcmemory(0, CREATURE_ID_ULZASSIL_THE_DEAD_EMPEROR) ) {
+				voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ISSIZZLE_THE_DARK_ABOMINATION, CREATURE_ID_AZZRSSIL_THE_IMPURE, (-1), CREATURE_ID_ULZASSIL_THE_DEAD_EMPEROR, (-1)
+			}
 		}
 		voidboss_count@NT++
 	}
@@ -573,24 +570,18 @@
 		voidboss_count@NT++
 	}
 	if ( gdata(GDATA_FLAG_MAIN) >= 180 ) {
-		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ORPHE_THE_CHAOS_CHILD
-		if ( gdata(GDATA_FLAG_MAIN) <= 269 ) {
-			voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ORPHE_THE_CHAOS_CHILD, CREATURE_ID_ORPHE_THE_CHAOS_FOLLOWER, (-1)
-		}
-		if ( gdata(GDATA_FLAG_MAIN) <= 845 ) {
-			voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ORPHE_THE_CHAOS_CHILD, CREATURE_ID_ORPHE_THE_CHAOS_FOLLOWER, (-1), CREATURE_ID_ORPHE_THE_CHAOS_DISCPLE, (-1)
-		}
-		voidboss_count@NT++
-	}
-	if ( gdata(GDATA_FLAG_MAIN) >= 180 ) {
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ZEOME_THE_FALSE_PROPHET
 		voidboss_count@NT++
-	}
-	if ( gdata(GDATA_FLAG_MAIN) >= 180 ) {
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_WHOM_DWELL_IN_THE_VANITY
 		voidboss_count@NT++
-	}
-	if ( gdata(GDATA_FLAG_MAIN) >= 180 ) {
+		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ORPHE_THE_CHAOS_CHILD
+		if ( gdata(GDATA_FLAG_MAIN) >= 269 ) {
+			voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ORPHE_THE_CHAOS_CHILD, CREATURE_ID_ORPHE_THE_CHAOS_FOLLOWER, (-1)
+			if ( gdata(GDATA_FLAG_MAIN) >= 845 ) {
+				voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ORPHE_THE_CHAOS_CHILD, CREATURE_ID_ORPHE_THE_CHAOS_FOLLOWER, (-1), CREATURE_ID_ORPHE_THE_CHAOS_DISCPLE, (-1)
+			}
+		}
+		voidboss_count@NT++
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_VESDA_THE_FIRE_DRAGON
 		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
 			voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_VESDA_THE_FIRE_DRAGON, CREATURE_ID_METAL_VESDA_THE_FIRE_MACHINE, (-1)
@@ -604,23 +595,11 @@
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_MOBILE_COMMUNICATION_EQUIPMENT, CREATURE_ID_YERLES_MORTAR, 8, CREATURE_ID_XEREN_ELECTRIC_TANK, 8, CREATURE_ID_BLADE_KING, 8, CREATURE_ID_XEREN_SATELLITE_UNIT, 6, CREATURE_ID_METAL_ZILLA, 2
 		voidboss_count@NT++
 	}
-	if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_UTIMA_THE_DESTROYER_OF_XEREN, CREATURE_ID_XEREN_AUTO_TANK, 10, CREATURE_ID_XEREN_ELECTRIC_TANK, 10, CREATURE_ID_XEREN_SATELLITE_UNIT, 5
-		voidboss_count@NT++
-	}
-	if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_SIVA_THE_DESTRUCTION, CREATURE_ID_HOUND, 30
-		voidboss_count@NT++
-	}
-	if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_YERLESWOOD_THE_SAVAGE_MACHINE, CREATURE_ID_YERLES_COMBAT_PLANE, 8, CREATURE_ID_YERLES_MORTAR, 8, CREATURE_ID_YERLES_CYBORG_SOLDIER, 4, CREATURE_ID_YERLES_LATEST_OUTFIT_SOLDIER, 4, CREATURE_ID_YERLESWOOD_TYPE_M, 8
-		voidboss_count@NT++
-	}
 	if ( gdata(GDATA_FLAG_MAIN) >= 390 ) {
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_AIKAGE_THE_SHINOBI_MASK, CREATURE_ID_CHAOS_SHAMAN, 8, CREATURE_ID_CHAOS_PALADIN, 8, CREATURE_ID_CHAOS_HUNTER, 8
 		voidboss_count@NT++
 	}
-	if ( gdata(GDATA_FLAG_MAIN) = 640 ) {
+	if ( gdata(GDATA_FLAG_MAIN) >= 640 ) {
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ALFRED_THE_CANGNAN_WIND, CREATURE_ID_LANKATA_THE_LIGHTNING_OF_BLUE, 1, CREATURE_ID_LOTHRIAN_AGENT, 8, CREATURE_ID_ZANAN_ENHANCED_SOLDIER, 8
 		voidboss_count@NT++
 	}
@@ -629,10 +608,29 @@
 		voidboss_count@NT++
 	}
 	if ( gdata(GDATA_FLAG_MAIN) >= 1000 ) { 
+		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_CRIMSON_DARK_GUARDIAN, CREATURE_ID_BLUE_DARK_GUARDIAN, (-1), CREATURE_ID_GREEN_DARK_GUARDIAN, (-1)
+		voidboss_count@NT++
+		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_UNITDEAD_KING, CREATURE_ID_UNITDEAD_QUEEN, (-1), CREATURE_ID_UNITDEAD_JACK, (-1), CREATURE_ID_UNITDEAD_JOKER, (-1)
+		voidboss_count@NT++
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_ORPHE_THE_PRINCE_OF_LOST_KINGDOM, CREATURE_ID_MERCENARY_WARRIOR, 8, CREATURE_ID_MERCENARY_ARCHER, 8, CREATURE_ID_MERCENARY_WIZARD, 8
 		voidboss_count@NT++
 	}
-
+	if ( gdata(GDATA_FLAG_AMUR_CAGE_FRISIA) ) {
+		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_FRISIA_THE_CAT_QUEEN, CREATURE_ID_LION, 20, CREATURE_ID_CARBUNCLE, 15, CREATURE_ID_STRAY_CAT, 10
+		voidboss_count@NT++
+	}
+	if ( gdata(GDATA_FLAG_AMUR_CAGE_UTIMA) ) {
+		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_UTIMA_THE_DESTROYER_OF_XEREN, CREATURE_ID_XEREN_AUTO_TANK, 10, CREATURE_ID_XEREN_ELECTRIC_TANK, 10, CREATURE_ID_XEREN_SATELLITE_UNIT, 5
+		voidboss_count@NT++
+	}
+	if ( gdata(GDATA_FLAG_AMUR_CAGE_SIVA) ) {
+		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_SIVA_THE_DESTRUCTION, CREATURE_ID_HOUND, 30
+		voidboss_count@NT++
+	}
+	if ( gdata(GDATA_FLAG_AMUR_CAGE_YERLESWOOD) ) {
+		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_YERLESWOOD_THE_SAVAGE_MACHINE, CREATURE_ID_YERLES_COMBAT_PLANE, 8, CREATURE_ID_YERLES_MORTAR, 8, CREATURE_ID_YERLES_CYBORG_SOLDIER, 4, CREATURE_ID_YERLES_LATEST_OUTFIT_SOLDIER, 4, CREATURE_ID_YERLESWOOD_TYPE_M, 8
+		voidboss_count@NT++
+	}
 	if ( gdata(GDATA_FLAG_SUB_YEEK) >= 1000 ) {
 		voidboss@NT(0, voidboss_count@NT) = CREATURE_ID_RODLOB_THE_YEEK_CHIEF, CREATURE_ID_YEEK, 30
 		voidboss_count@NT++
@@ -692,6 +690,7 @@
 	}
 	return
 
+// DLA but it creates a little room at the point it hits.
 #deffunc dighole_dla_explosion int dighole_count, int dla_explosion_count, int dla_explosion_size, int dla_explosion_minsquare, int map_makesimpleroom_arg5, int map_makesimpleroom_arg6, int map_furniture_roomtype_input
 	p@NT = 0
 	p2@NT = 0
@@ -738,6 +737,7 @@
 	loop
 	return
 
+// Start from random point, shoot at random direction, destroy the hit wall.
 #deffunc dighole_diffusion_limited_aggregation int dighole_count, int dighole_tile
 	p@NT = 0
 	repeat 10000
@@ -786,6 +786,7 @@
 	perlin_dx@NT = perlin_ix - perlin_cx
 	perlin_dy@NT = perlin_iy - perlin_cy
 	return (perlin_dx@NT * perlin_gx + perlin_dy@NT * perlin_gy)
+// Digs a perlin noise dungeon, have 2 thresholds for 3 tile types, for dungeons that need both walls/mountains and pits/pools.
 #deffunc dighole_perlin_noise int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4, int perlin_ratio, int perlin_threshold1, int perlin_threshold2, int perlin_tile1, int perlin_tile2, int perlin_tile3
 	pnx@NT = map_makesimpleroom_arg3 / perlin_ratio + 5
 	pny@NT = map_makesimpleroom_arg4 / perlin_ratio + 5
@@ -838,6 +839,7 @@
 	loop
 	return
 
+// Dig a L-shaped path from a point to another point. You can add fake walls.
 #deffunc dighole_dogleg int dighole_beginx, int dighole_beginy, int dighole_endx, int dighole_endy, int dighole_tile, int dighole_hiddenchance
 	diffx@NT = abs(dighole_beginx - dighole_endx)
 	diffy@NT = abs(dighole_beginy - dighole_endy)
@@ -881,6 +883,7 @@
 	loop
 	return
 
+// Dig a irregular path from a point to another point. You can configure expand width.
 #deffunc dighole_directiondrunk int dighole_beginx, int dighole_beginy, int dighole_endx, int dighole_endy, int dighole_digmin, int dighole_digmax, int dighole_tile
 	dighole_stepmax = 6
 	dighole_drunk = 3
@@ -938,6 +941,7 @@
 	loop
 	return 
 
+// Dig a straight path from a point to another point. You can configure clockwise/anticlockwise expand width.
 #deffunc dighole_direction int dighole_beginx, int dighole_beginy, int dighole_dir, int dighole_distance, int dighole_shift, int dighole_cdigmin, int dighole_cdigmax, int dighole_adigmin, int dighole_adigmax, int dighole_tile
 	digref@NT = 0,0,0,0
 	if (dighole_dir == 0) { digref@NT = 0,-1,1,0 }
@@ -985,6 +989,7 @@
 	loop
 	return
 
+// Draws a voronoi diagram with vd_points and vd_mindist. (1 block width path.)
 #deffunc dighole_voronoi_diagram int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4, int vd_points, int vd_mindist, int map_makesimpleroom_arg5, int map_makesimpleroom_arg6
 	matrix_w@NT = map_makesimpleroom_arg3 + 1
 	matrix_h@NT = map_makesimpleroom_arg4 + 1
@@ -1052,6 +1057,7 @@
 
 	return
 
+// Use cellular automata to generate natural looking dungeon. Warning: may have unreachable area.
 #deffunc dighole_cellular_automata int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4, int ca_chance, int ca_limit_birth, int ca_limit_death, int ca_steps, int map_makesimpleroom_arg5, int map_makesimpleroom_arg6
 	matrix_w@NT = map_makesimpleroom_arg3
 	matrix_h@NT = map_makesimpleroom_arg4
@@ -1125,6 +1131,7 @@
 	loop
 	return stat
 
+// Custom version of `dighole`, which is a depth-first maze making algorithm. (example: minotaur's nest)
 #deffunc dighole_custom int dighole_beginx, int dighole_beginy, int dighole_classx, int dighole_classy, int dighole_pathx, int dighole_pathy, int dighole_blockx, int dighole_blocky, int dighole_tile
 	dighole_maxwidth = dighole_beginx + dighole_classx * dighole_pathx + (dighole_classx - 1) * dighole_blockx + 1
 	dighole_maxheight = dighole_beginy + dighole_classy * dighole_pathy + (dighole_classy - 1) * dighole_blocky + 1
@@ -1989,6 +1996,7 @@
 
 	return
 
+// Makes a very specific beach map of designated x,y,w,h. Utilizes the beach tiles. 
 #deffunc map_make_beach int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4
 	beginx1@NT = map_makesimpleroom_arg3 * 0 / 6 + rnd(3) - 1
 	beginx2@NT = map_makesimpleroom_arg3 * 2 / 6 + rnd(3) - 1
@@ -2036,6 +2044,7 @@
 	loop
 	return
 
+// Look for a rectangular area of arg3xarg4, fill inside tile marked as arg6. Does not block paths
 #deffunc map_make_plug int map_makesimpleroom_arg3, int map_makesimpleroom_arg4, int map_makesimpleroom_arg6
 	mapx@NT = mdata(MDATA_WIDTH) - map_makesimpleroom_arg3
 	mapy@NT = mdata(MDATA_HEIGHT) - map_makesimpleroom_arg4
@@ -2076,6 +2085,7 @@
 	loop
 	return 
 
+// Make a irregular, rectangular room. Does not mark the room.
 #deffunc map_makesimpleroom_randomwalk int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4, int rw_percent, int rw_connect, int map_makesimpleroom_arg5
 	if ( map_makesimpleroom_arg1 + map_makesimpleroom_arg3 > mdata(MDATA_WIDTH) | map_makesimpleroom_arg1 < 0 | map_makesimpleroom_arg3 < 1 | map_makesimpleroom_arg2 + map_makesimpleroom_arg4 > mdata(MDATA_HEIGHT) | map_makesimpleroom_arg2 < 0 | map_makesimpleroom_arg4 < 1 ) {
 		return 
@@ -2153,6 +2163,7 @@
 	loop
 	return
 
+// Make a square room. Does not mark the room. Unlike `map_makesimpleroom`, it continues to dig even if room is invalid.
 #deffunc map_makesimpleroom2 int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4, int map_makesimpleroom_arg5, int map_makesimpleroom_arg6
 	repeat map_makesimpleroom_arg4
 		locvar_map_line_ty = cnt + map_makesimpleroom_arg2
@@ -2177,6 +2188,7 @@
 	loop
 	return
 
+// Make a circular room. Does not mark the room.
 #deffunc map_makesimpleroom_circular int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4, int map_makesimpleroom_arg5, int map_makesimpleroom_arg6
 	map_makesimpleroom_radp1 = (map_makesimpleroom_arg3+1) * (map_makesimpleroom_arg3+1) * (map_makesimpleroom_arg4+1) * (map_makesimpleroom_arg4+1)
 	map_makesimpleroom_rad = map_makesimpleroom_arg3 * map_makesimpleroom_arg3 * map_makesimpleroom_arg4 * map_makesimpleroom_arg4
@@ -2214,6 +2226,7 @@
 	loop
 	return
 
+// Mark the area as a monster room. Does not dig.
 #deffunc map_createroom_there int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4
 	if ( map_makesimpleroom_arg1 + map_makesimpleroom_arg3 >= mdata(MDATA_WIDTH) - 1 | map_makesimpleroom_arg2 + map_makesimpleroom_arg4 >= mdata(MDATA_HEIGHT) - 1 | map_makesimpleroom_arg1 < 1 | map_makesimpleroom_arg2 < 1 ) {
 		return
@@ -2226,6 +2239,7 @@
 	roomsum++
 	return
 
+// Make a circular room. Mark the room and populate the furnitures
 #deffunc map_createroom_circular int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4, int map_makesimpleroom_arg5, int map_makesimpleroom_arg6
 	roomwidth(roomsum) = map_makesimpleroom_arg3 * 2 + 1
 	roomheight(roomsum) = map_makesimpleroom_arg4 * 2 + 1
@@ -2236,7 +2250,8 @@
 	roomsum++
 	map_furniture_populate
 	return 
-
+	
+// Make a irregular, rectangular room. Mark the room and populate the furnitures
 #deffunc map_createroom_randomwalk int map_makesimpleroom_arg1, int map_makesimpleroom_arg2, int map_makesimpleroom_arg3, int map_makesimpleroom_arg4, int rw_percent, int map_makesimpleroom_arg5, int map_makesimpleroom_arg6
 	if ( map_makesimpleroom_arg6 > (-1) ) {
 		repeat map_makesimpleroom_arg3
@@ -2261,6 +2276,7 @@
 	map_furniture_populate
 	return 1
 
+// Try to find a rectangular block of wall (that is adjacent to a empty space), and dig a room there.
 #deffunc map_createroom_adjacent int roomposw, int roomposh, int map_makesimpleroom_arg5, int map_makesimpleroom_arg6
 	if ( roomposw > mdata(MDATA_WIDTH) | roomposh > mdata(MDATA_HEIGHT) | roomposw < 3 | roomposh < 3 ) {
 		return
@@ -2301,6 +2317,7 @@
 	if (stat == 1) {return 1}
 	return 0
 
+// Mark a square room, and dig a square room.
 #deffunc map_createroom_specific int roomposx, int roomposy, int roomposw, int roomposh, int map_makesimpleroom_arg5, int map_makesimpleroom_arg6
 	roomwidth(roomsum) = roomposw
 	roomheight(roomsum) = roomposh
@@ -2313,6 +2330,7 @@
 	}
 	return 1
 
+// Dig the designated rectangular room, and create doors on each side, and populate furnitures.
 #deffunc map_createroom_custom int map_makesimpleroom_arg5, int map_makesimpleroom_arg6
 	cr = roomsum
 	f = 0
@@ -2372,6 +2390,7 @@
 	roominterconnect = 0
 	return 1
 
+// Create doors on all 4 sides of the `cr` designated room
 #deffunc map_createroomdoor_surround
 	roomdoor = 2
 	repeat 4
@@ -2379,6 +2398,8 @@
 		map_createroomdoor_custom
 	loop
 
+// Create doors on `rdpos` sides of the `cr` designated room.
+// 0: top,  1: right,  2: left,  3: bottom
 #deffunc map_createroomdoor_custom
 	if ( rdpos == 3 | rdpos == 0 ) {
 		if ( roomwidth(cr) < 3 ) {
@@ -2449,6 +2470,8 @@
 	loop
 	return
 
+// This layout is used to visualize different block.
+// Use `save_map_image` command to print it.
 *map_createDungeonSample
 	mdata(MDATA_WIDTH) = 100
 	mdata(MDATA_HEIGHT) = 30
@@ -2487,6 +2510,7 @@
 
 	return
 
+// This layout is used for debugging.
 *map_createDungeonDebug
 	mdata(MDATA_WIDTH) = 40
 	mdata(MDATA_HEIGHT) = 40

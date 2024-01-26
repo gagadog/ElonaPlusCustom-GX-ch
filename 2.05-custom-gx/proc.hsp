@@ -2044,44 +2044,7 @@
 		
 *skill_persuasion
 	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == 1 ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != 0 ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		gosub *findTarget
 		if ( stat == 0 ) {
 			powsel = 0
@@ -2257,44 +2220,7 @@
 
 *skill_peculiar_joke
 	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == 1 ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != 0 ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		gosub *findTarget
 		if ( stat == 0 ) {
 			powsel = 0
@@ -2461,44 +2387,7 @@
 
 *skill_blended_lie
 	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == 1 ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != 0 ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		gosub *findTarget
 		if ( stat == 0 ) {
 			powsel = 0
@@ -2689,44 +2578,7 @@
 
 *skill_intimidation
 	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == 1 ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != 0 ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		gosub *findTarget
 		if ( stat == 0 ) {
 			powsel = 0
@@ -2917,44 +2769,7 @@
 
 *skill_mysterious_song
 	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == 1 ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != 0 ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		gosub *findTarget
 		if ( stat == 0 ) {
 			powsel = 0
@@ -4998,7 +4813,7 @@
 			rowactend cc
 			return
 		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == 1 ) {
+		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
 			if ( inv_sum(CHARA_PLAYER) > 20 ) {
 				txt_invfull
 				rowactend cc
@@ -6467,41 +6282,7 @@
 		r1 = cc
 		r2 = spellbk
 		gosub *expCasting
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		if ( powsel == 100 ) {
 			if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 				if ( sdataref(SKILL_DATAREF_TYPE, efid) == SKILL_TYPE_BOLT | sdataref(SKILL_DATAREF_TYPE, efid) == SKILL_TYPE_ARROW | (sdataref(SKILL_DATAREF_TYPE, efid) == SKILL_TYPE_BALL & efid != SKILL_SPACT_RAIN_OF_SANITY & efid != SKILL_SPELL_HEALING_RAIN) ) {
@@ -7364,44 +7145,7 @@
 	if ( sdataref(SKILL_DATAREF_TYPE, efid) == SKILL_TYPE_HAND ) {
 		if ( cbit(CHARA_BIT_BLUE_SPIRIT, cc) ) {
 			if ( efid != SKILL_SPACT_VORACITY_FANG & efid != SKILL_SPACT_DRAIN_BLOOD & efid != SKILL_SPACT_MEMORY_POISON ) {
-				powsel = 0
-				if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-					if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-						powsel = 100
-					}
-				}
-				if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-					if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-						powsel = 100
-					}
-				}
-				if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-					powsel = 100
-				}
-				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-					powsel = 100
-				}
-				if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-					if ( exgauge != 100 ) {
-						powsel = 0
-					}
-				}
-				if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-					powsel = 0
-				}
-				if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-					if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-						powsel = 0
-					}
-				}
-				if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-					powsel = 0
-				}
-				if ( cc == CHARA_PLAYER ) {
-					if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-						powsel = 0
-					}
-				}
+				powsel = charaCanGauge(cc)
 				if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 					if ( powsel == 100 ) {
 						tg = 2000
@@ -8485,44 +8229,7 @@
 				}
 				if ( cbit(CHARA_BIT_BLUE_SPIRIT, cc) ) {
 					if ( efid != SKILL_SPACT_VORACITY_FANG & efid != SKILL_SPACT_DRAIN_BLOOD ) {
-						powsel = 0
-						if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-							if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-								powsel = 100
-							}
-						}
-						if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-							if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-								powsel = 100
-							}
-						}
-						if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-							powsel = 100
-						}
-						if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-							powsel = 100
-						}
-						if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-							if ( exgauge != 100 ) {
-								powsel = 0
-							}
-						}
-						if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-							powsel = 0
-						}
-						if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-							if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-								powsel = 0
-							}
-						}
-						if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-							powsel = 0
-						}
-						if ( cc == CHARA_PLAYER ) {
-							if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-								powsel = 0
-							}
-						}
+						powsel = charaCanGauge(cc)
 						if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 							if ( powsel == 100 ) {
 								if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -8746,44 +8453,7 @@
 						}
 					}
 					if ( efid != SKILL_SPACT_VORACITY_FANG & efid != SKILL_SPACT_DRAIN_BLOOD ) {
-						powsel = 0
-						if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-							if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-								powsel = 100
-							}
-						}
-						if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-							if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-								powsel = 100
-							}
-						}
-						if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-							powsel = 100
-						}
-						if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-							powsel = 100
-						}
-						if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-							if ( exgauge != 100 ) {
-								powsel = 0
-							}
-						}
-						if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-							powsel = 0
-						}
-						if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-							if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-								powsel = 0
-							}
-						}
-						if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-							powsel = 0
-						}
-						if ( cc == CHARA_PLAYER ) {
-							if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-								powsel = 0
-							}
-						}
+						powsel = charaCanGauge(cc)
 						if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 							if ( powsel == 100 ) {
 								if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -9444,44 +9114,7 @@
 			}
 			if ( _switch_val == SKILL_TYPE_BREATH | _switch_sw ) {
 				_switch_sw = 0
-				powsel = 0
-				if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-					if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-						powsel = 100
-					}
-				}
-				if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-					if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-						powsel = 100
-					}
-				}
-				if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-					powsel = 100
-				}
-				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-					powsel = 100
-				}
-				if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-					if ( exgauge != 100 ) {
-						powsel = 0
-					}
-				}
-				if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-					if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-						powsel = 0
-					}
-				}
-				if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-					powsel = 0
-				}
-				if ( cc == CHARA_PLAYER ) {
-					if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-						powsel = 0
-					}
-				}
-				if ( gdata(GDATA_ACTIVATE_PROC) == 100 ) {
-					powsel = 0
-				}
+				powsel = charaCanGauge(cc)
 				if ( powsel == 100 ) {
 					if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 						kouiki = 0
@@ -9674,44 +9307,7 @@
 				cdata(CDATA_POWER_GAUGE, cc) = 200
 			}
 		}
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 			if ( powsel == 100 ) {
 				if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -11927,21 +11523,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit((weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap * 2 + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 30
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 30
 		gdata(GDATA_ABSORB_CHARGE) += 10
 		txt lang("充填用魔力を10獲得した(魔力の貯蓄：" + gdata(GDATA_ABSORB_CHARGE) + ")", "You get 10 recharge powers. (Total:" + gdata(GDATA_ABSORB_CHARGE) + ")")
 		eqlv = 0
@@ -12022,21 +11604,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit((weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap * 2 + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 30
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 30
 		healhp cc, (limit((weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap * 2 + 1)) / 5
 		healmp cc, (limit((weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap * 2 + 1)) / 5
 		eqlv = 0
@@ -12662,21 +12230,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 60
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 60
 		if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_THROWING, cc, 400
@@ -12766,21 +12320,7 @@
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmgmp tc, limit(limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) / 5, 1, cdata(CDATA_MAX_MP, tc) / 2)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 40
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 40
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_SCYTHE, cc, 400
@@ -12850,21 +12390,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 40
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 40
 		eqlv = 0
 		eqbui = 0
 		if ( charaGivesExp(tc) ) {
@@ -12945,21 +12471,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 40
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 40
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_SHORTSWORD, cc, 400
@@ -13031,21 +12543,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 40
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 40
 		if ( charaGivesExp(tc) ) {
 			if ( cdata(CDATA_WEAPON_STYLE_TYPE, cc) == WEAPON_STYLE_LONGSWORD2 ) {
 				skillexp SKILL_NORMAL_TACTICS, cc, 400
@@ -13232,21 +12730,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 30
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 30
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 			skillexp SKILL_WEAPON_CROSSBOW, cc, 400
@@ -13326,21 +12810,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 30
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 30
 		if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE ) {
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
@@ -13416,21 +12886,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 30
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 30
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 			skillexp SKILL_WEAPON_FIREARM, cc, 400
@@ -13504,21 +12960,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 30
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 30
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 			skillexp SKILL_WEAPON_FIREARM, cc, 400
@@ -13994,21 +13436,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 40
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 40
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_BLUNT, cc, 400
@@ -14078,21 +13506,7 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 40
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 40
 		if ( charaGivesExp(tc) ) {
 			if ( cdata(CDATA_WEAPON_STYLE_TYPE, cc) == WEAPON_STYLE_POLEARM ) {
 				skillexp SKILL_NORMAL_TACTICS, cc, 400
@@ -14176,21 +13590,7 @@
 			snd SOUNDLIST_ATK2
 			dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 16, 2500) / 16 * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap / 10 + 1), cc, SKILL_SPACT_DANCE_OF_BLOW
 		loop
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 40
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 40
 		eqlv = 0
 		eqbui = 0
 		if ( charaGivesExp(tc) ) {
@@ -14256,21 +13656,7 @@
 			}
 			eqlv = limit(eqlv / eqbui * 3, 3, 30)
 			dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) / 2 * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-			if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-				if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) += 40
-					if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-						cdata(CDATA_GUARD_BREAK, tc) = 120
-						waitbk = cfg_animewait
-						if ( cfg_animewait < 50 ) {
-							cfg_animewait = 50
-						}
-						animeload 87, tc
-						snd SOUNDLIST_CRASH14
-						cfg_animewait = waitbk
-					}
-				}
-			}
+			chara_guardbreak tc, 40
 			dmgcon tc, CONDITION_DIM, 50 + int(sqrt(sdata(SKILL_NORMAL_SHIELD, cc))) * 15 + cbit(CHARA_BIT_BREAK_WALLS, cc) * 30
 			if ( cdata(CDATA_CONDITION_PARALYZE, tc) == 0 ) {
 				cdata(CDATA_CONDITION_PARALYZE, tc) += rnd(2) + cbit(CHARA_BIT_BREAK_WALLS, cc)
@@ -14364,21 +13750,7 @@
 			msg_halt
 		}
 		dmghp tc, hokutoudmg, cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 40
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 40
 		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_MARTIAL_ARTS, cc, 400
@@ -20093,21 +19465,7 @@
 			gosub *anime
 		}
 		dmghp tc, dmg, cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 30
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 30
 		if ( charaGivesExp(tc) ) {
 			repeat MAX_CHARA_TOTAL
 				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
@@ -20264,23 +19622,7 @@
 	}
 	if ( _switch_val == SKILL_SPACT_DISTURBANCE | _switch_sw ) {
 		_switch_sw = 0
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, tc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, tc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( tc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, tc) == 100 | tc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-			powsel = 100
-		}
+		powsel = charaHasGauge(tc)
 		if ( powsel == 0 ) {
 			goto *effect_end
 		}
@@ -23818,47 +23160,7 @@
 		cdata(CDATA_CONDITION_GRAVITY, tc) += limit(gdata(GDATA_LEVEL) / 10, 1, 50) + 10 + rnd(10)
 		dmghp tc, dmg, cc, SKILL_RESDMG_CONSTITUTION, 1000
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			powsel = 0
-			if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-				if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-					powsel = 100
-				}
-			}
-			if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-				if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-					powsel = 100
-				}
-			}
-			if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-				powsel = 100
-			}
-			if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-				powsel = 100
-			}
-			if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-				if ( exgauge != 100 ) {
-					powsel = 0
-				}
-			}
-			if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-				powsel = 0
-			}
-			if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-				if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-					powsel = 0
-				}
-			}
-			if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-				powsel = 0
-			}
-			if ( cc == CHARA_PLAYER ) {
-				if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-					powsel = 0
-				}
-			}
-			if ( gdata(GDATA_ACTIVATE_PROC) == 100 ) {
-				powsel = 0
-			}
+			powsel = charaCanGauge(cc)
 			if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 				if ( powsel == 100 ) {
 					if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -24100,44 +23402,7 @@
 				cdata(CDATA_POWER_GAUGE, cc) = 200
 			}
 		}
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == 1 ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != 0 ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 			if ( powsel == 100 ) {
 				if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -24178,44 +23443,7 @@
 				cdata(CDATA_POWER_GAUGE, cc) = 200
 			}
 		}
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 			if ( powsel == 100 ) {
 				if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -24301,44 +23529,7 @@
 				cdata(CDATA_POWER_GAUGE, cc) = 200
 			}
 		}
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 			if ( powsel == 100 ) {
 				if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -24420,44 +23611,7 @@
 					cdata(CDATA_POWER_GAUGE, cc) = 200
 				}
 			}
-			powsel = 0
-			if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-				if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-					powsel = 100
-				}
-			}
-			if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-				if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-					powsel = 100
-				}
-			}
-			if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-				powsel = 100
-			}
-			if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-				powsel = 100
-			}
-			if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-				if ( exgauge != 100 ) {
-					powsel = 0
-				}
-			}
-			if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-				powsel = 0
-			}
-			if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-				if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-					powsel = 0
-				}
-			}
-			if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-				powsel = 0
-			}
-			if ( cc == CHARA_PLAYER ) {
-				if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-					powsel = 0
-				}
-			}
+			powsel = charaCanGauge(cc)
 			if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 				if ( powsel == 100 ) {
 					if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -24498,44 +23652,7 @@
 				cdata(CDATA_POWER_GAUGE, cc) = 200
 			}
 		}
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 			if ( powsel == 100 ) {
 				if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -24573,44 +23690,7 @@
 				cdata(CDATA_POWER_GAUGE, cc) = 200
 			}
 		}
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 			if ( powsel == 100 ) {
 				if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -24655,44 +23735,7 @@
 				cdata(CDATA_POWER_GAUGE, cc) = 200
 			}
 		}
-		powsel = 0
-		if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 130 ) {
-				powsel = 100
-			}
-		}
-		if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-			if ( cdata(CDATA_LEVEL, cc) >= 50 ) {
-				powsel = 100
-			}
-		}
-		if ( cc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, cc) == 100 | cc == CHARA_PLAYER ) {
-			powsel = 100
-		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-			powsel = 100
-		}
-		if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, cc) > FIX_QUALITY_GREAT & cdata(CDATA_HP, cc) > cdata(CDATA_MAX_HP, cc) / 2 & cdata(CDATA_POWER_GAUGE, cc) < 200 ) {
-			if ( exgauge != 100 ) {
-				powsel = 0
-			}
-		}
-		if ( gdata(GDATA_TEMPORARY_FLAGS2) == 888 ) {
-			powsel = 0
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_TEMPORARY ) {
-			if ( cdata(CDATA_DIRECTIVE_MODE_ORG, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
-				powsel = 0
-			}
-		}
-		if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-			powsel = 0
-		}
-		if ( cc == CHARA_PLAYER ) {
-			if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-				powsel = 0
-			}
-		}
+		powsel = charaCanGauge(cc)
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 100 ) {
 			if ( powsel == 100 ) {
 				if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -24763,21 +23806,7 @@
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			dmghp tc, (sdata(SKILL_ATTR_MAG, cc) / 10 + 1) * sqrt(sdata(SKILL_ATTR_WIL, cc)) * eqlv, cc, SKILL_RES_MIND, sdata(SKILL_ATTR_MAG, cc) + 100
 		}
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 30
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 30
 		eqlv = 0
 		eqbui = 0
 		if ( charaGivesExp(tc) ) {
@@ -24971,21 +24000,7 @@
 		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
 			dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
 		}
-		if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
-			if ( cdata(CDATA_GUARD_BREAK, tc) < 100 ) {
-				cdata(CDATA_GUARD_BREAK, tc) += 30
-				if ( cdata(CDATA_GUARD_BREAK, tc) >= 100 ) {
-					cdata(CDATA_GUARD_BREAK, tc) = 120
-					waitbk = cfg_animewait
-					if ( cfg_animewait < 50 ) {
-						cfg_animewait = 50
-					}
-					animeload 87, tc
-					snd SOUNDLIST_CRASH14
-					cfg_animewait = waitbk
-				}
-			}
-		}
+		chara_guardbreak tc, 30
 		eqlv = 0
 		eqbui = 0
 		if ( charaGivesExp(tc) ) {

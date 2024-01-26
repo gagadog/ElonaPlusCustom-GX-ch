@@ -5636,9 +5636,9 @@
 	}
 	promptAdd lang("立ち姿を変える", "Change Tachi-e"), "null", "" + 27
 	promptAdd lang("アイテム画像の付与", "Item mark set"), "null", 23
-	if ( cdata(CDATA_MARK_ITEM_PIC, tc) > 0 ) {
-		promptAdd lang("アイテム画像の調整", "Item mark adjust"), "null", 26
-	}
+	; if ( cdata(CDATA_MARK_ITEM_PIC, tc) > 0 ) {
+	; 	promptAdd lang("アイテム画像の調整", "Item mark adjust"), "null", 26
+	; }
 	if ( cdata(CDATA_MARK_ITEM_PIC, tc) > 0 ) {
 		promptAdd lang("アイテム画像の移動", "Item mark move"), "null", 25
 	}
@@ -10435,10 +10435,19 @@
 *com_item_mark
 	bkitemx = cdata(CDATA_MARK_ITEM_X, tc)
 	bkitemy = cdata(CDATA_MARK_ITEM_Y, tc)
+	bkiteml = cdata(CDATA_MARK_ITEM_ADJUST_L, tc)
+	bkitemw = cdata(CDATA_MARK_ITEM_ADJUST_W, tc)
+	bkitemr = cdata(CDATA_MARK_ITEM_ADJUST_R, tc)
 	n = 0
 	txtnew
+	txtef COLOR_YELLOW2
+	txt lang("上下キーで縦サイズ調整、左右キーで横サイズ調整、zxキーで角度調整、Enterキーで決定、キャンセルキーで終了。", "Item Mark: W and S to adjust length, A and D to adjust width, Z and X to adjust angle.")
+	txtnew
+	txtef COLOR_YELLOW
+	txt lang("移動キーでマーク移動、Back spaceキーで前後切替。", "           ARROW keys to move, BACKSPACE key to switch front/behind.")
+	txtnew
 	txtef COLOR_GREEN
-	txt lang("移動キーでマーク移動、Back spaceキーで前後切替、Enterキーで決定、キャンセルキーで終了。", "Movement keys to move the item mark, back space key to move behind, hit the enter key to decide the position, hit the cancel key to exit.")
+	txt lang("Enterキーで決定、キャンセルキーで終了。", "           ENTER key to save, SHIFT key to cancel and exit.")
 	windowshadow = 1
 	await 1000
 	p = 0
@@ -10450,7 +10459,7 @@
 		gosub *screen_draw
 		n = 0
 		txtnew
-		txt lang("移動を終えた。", "You finished the movement.")
+		txt lang("移動を終えた。", "You finished the adjustment.")
 		await 1000
 		return
 	}
@@ -10458,11 +10467,52 @@
 		snd SOUNDLIST_EQUIP1
 		cdata(CDATA_MARK_ITEM_X, tc) = bkitemx
 		cdata(CDATA_MARK_ITEM_Y, tc) = bkitemy
+		cdata(CDATA_MARK_ITEM_ADJUST_L, tc) = bkiteml
+		cdata(CDATA_MARK_ITEM_ADJUST_W, tc) = bkitemw
+ 		cdata(CDATA_MARK_ITEM_ADJUST_R, tc) = bkitemr
 		gosub *screen_draw
 		n = 0
 		txtnew
-		txt lang("移動をやめた。", "You quit movement.")
+		txt lang("移動をやめた。", "You stopped the adjustment.")
 		return
+	}
+	if ( key == key_wear ) {
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_L, tc) < 36 ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_L, tc)++
+		}
+		snd SOUNDLIST_CURSOR1
+	}
+	if ( key == key_search ) {
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_L, tc) >= (-11) ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_L, tc)--
+		}
+		snd SOUNDLIST_CURSOR1
+	}
+	if ( key == key_drop ) {
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_W, tc) < 36 ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_W, tc)++
+		}
+		snd SOUNDLIST_CURSOR1
+	}
+	if ( key == key_skill ) {
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_W, tc) >= (-11) ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_W, tc)--
+		}
+		snd SOUNDLIST_CURSOR1
+	}
+	getkey p, 90
+	if ( p ) {
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_R, tc) < 18 ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_R, tc)++
+		}
+		snd SOUNDLIST_CURSOR1
+	}
+	getkey p, 88
+	if ( p ) {
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_R, tc) > (-18) ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_R, tc)--
+		}
+		snd SOUNDLIST_CURSOR1
 	}
 	getkey p, 8
 	if ( p ) {
@@ -13600,7 +13650,13 @@
 			snd SOUNDLIST_ENC
 			cdata(CDATA_MARK_ITEM_PIC, tc) = inv(INV_ITEM_PIC, ci)
 			cdata(CDATA_MARK_ITEM_COL, tc) = inv(INV_ITEM_COL, ci)
+			if ( cdata(CDATA_MARK_ITEM_X, tc) == 0 ) { cdata(CDATA_MARK_ITEM_X, tc) == 12 }
+			if ( cdata(CDATA_MARK_ITEM_Y, tc) == 0 ) { cdata(CDATA_MARK_ITEM_Y, tc) == (-10) }
+			if ( cdata(CDATA_MARK_ITEM_ADJUST_W, tc) == 0 ) { cdata(CDATA_MARK_ITEM_ADJUST_W, tc) == 12 }
+			if ( cdata(CDATA_MARK_ITEM_ADJUST_L, tc) == 0 ) { cdata(CDATA_MARK_ITEM_ADJUST_L, tc) == 12 }
 			txt lang(name(tc) + "にアイテム画像を付与した。", "You attached an item mark to " + name(tc) + ".")
+			gosub *screen_draw
+			gosub *com_item_mark
 			gosub *screen_draw
 			goto *pc_turn
 		}

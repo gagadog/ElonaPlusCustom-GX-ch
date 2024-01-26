@@ -2161,31 +2161,7 @@
 	if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
 		gosub *ai_useShiftCore
 	}
-	powai = 0
-	if ( gdata(GDATA_FLAG_MAIN) < 350 ) {
-		if ( cdata(CDATA_LEVEL, tc) >= 130 ) {
-			powai = 100
-		}
-	}
-	if ( gdata(GDATA_FLAG_MAIN) >= 350 ) {
-		if ( cdata(CDATA_LEVEL, tc) >= 50 ) {
-			powai = 100
-		}
-	}
-	if ( tc < MAX_CHARA_FOLLOWER | cdata(CDATA_ALLIED, tc) == 100 | tc == CHARA_PLAYER ) {
-		powai = 100
-	}
-	if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
-		powai = 100
-	}
-	if ( cdata(CDATA_DIRECTIVE_MODE, tc) == DIRECTIVE_MODE_TEMPORARY ) {
-		if ( cdata(CDATA_DIRECTIVE_MODE_ORG, tc) != DIRECTIVE_MODE_OFFENSIVE ) {
-			powai = 0
-		}
-	}
-	if ( cdata(CDATA_DIRECTIVE_MODE, tc) == DIRECTIVE_MODE_DEFENSIVE | cdata(CDATA_DIRECTIVE_MODE, tc) == DIRECTIVE_MODE_INTERCEPT ) {
-		powai = 0
-	}
+	powai = charaCanGauge(tc)
 	if ( cbit(CHARA_BIT_AWAKE_PROXIMITY_ATTACK, cc) ) {
 		act = ACTION_MELEE
 	}
