@@ -1455,7 +1455,7 @@
 		memfile bmpbuff
 		picload "MEM:temp.bmp"
 		// times the 48 limit by high DPI modifier, so 48x48 CNPC's don't get treated like height 96 CNPCs
-		if ( ginfo(13) > (50 * cfg_highdpi_scaling) ) {
+		if ( ginfo(13) > (double(50) * cfg_highdpi_scaling) ) {
 			chipc(CHIPC_X, SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + tg) = tg \ SPRITE_SHEET_COLS_CHARA * inf_tiles, SPRITE_SHEET_ROWS_CHARA * inf_tiles + tg / SPRITE_SHEET_COLS_CHARA * inf_tiles * 2, inf_tiles, inf_tiles * 2, inf_tiles + 8
 		}
 		else {

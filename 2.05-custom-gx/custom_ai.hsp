@@ -14,20 +14,21 @@
 	dim AIData, 125, MAX_CHARA_TOTAL - 1
 
 	dim TweakData, 500, 5
-	sdim AITextData, 30, 15, 7
+	sdim AITextData, 30, 15, 8
 	dim PlaceholderMoveList, 20
 	sdim AIStatusNames, 30, 25, 2
 	dim StatusOffsets, 25
 
 	AIStatusNames(0, 0) = "Afraid", "Atrophy", "Bind", "Bleeding", "Blind", "Brainwash", "Chills", "Confused", "Dim", "Fury", "Gravity", "Insane", "Jiu-Jitsu", "Metal", "MPoison", "Oil", "Paralyzed", "Poisoned", "Sleep", "Wet", "Wince", "NULL"
 	StatusOffsets(0) = CDATA_CONDITION_FEAR, CDATA_CONDITION_ATROPHY, CDATA_CONDITION_BIND, CDATA_CONDITION_BLEED, CDATA_CONDITION_BLIND, CDATA_CONDITION_BRAINWASH, CDATA_CONDITION_CHILLS, CDATA_CONDITION_CONFUSE, CDATA_CONDITION_DIM, CDATA_CONDITION_ANGRY, CDATA_CONDITION_GRAVITY, CDATA_CONDITION_INSANE, CDATA_CONDITION_JIU_JITSU, CDATA_CONDITION_METAL, CDATA_CONDITION_MPOISON, CDATA_CONDITION_OIL, CDATA_CONDITION_PARALYZE, CDATA_CONDITION_POISON, CDATA_CONDITION_SLEEP, CDATA_CONDITION_WET, CDATA_CONDITION_WINCE
-	AITextData(0, 0) = "Not Set", "Attack (Melee)", "Attack (Ranged)", "Move (Away)", "Move (Forward)", "And", "Do Nothing", "Use Shift Core", "NULL"
-	AITextData(0, 1) = "Not Set", "Self", "Target", "Ally", "Player", "NULL"
-	AITextData(0, 2) = "Not Set", "HP", "MP", "Distance", "Buff", "Gauge", "Class", "Status", "Percent Chance", "NULL"
+	AITextData(0, 0) = "Not Set", "Attack (Melee)", "Attack (Ranged)", "Move (Away)", "Move (Forward)", "And", "Do Nothing", "Use Shift Core", "Do as You Please", "NULL"
+	AITextData(0, 1) = "Not Set", "Self", "Target", "Ally", "Player", "Enemy", "NULL"
+	AITextData(0, 2) = "Not Set", "HP", "MP", "Distance", "Buff", "Gauge", "Class", "Status", "Percent Chance", "Count", "Quality", "NULL"
 	AITextData(0, 3) = "Not Set", "<", ">", "=", "!=", ">=", "<=", "NULL"
 	AITextData(0, 4) = "10", "20", "25", "30", "40", "50", "60", "70", "75", "80", "90", "100", "NULL"
 	AITextData(0, 5) = "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "NULL"
 	AITextData(0, 6) = "warrior", "thief", "wizard", "farmer", "predator", "archer", "warmage", "tourist", "pianist", "gunner", "priest", "claymore", "NULL"
+	AITextData(0, 7) = "None", "Bad", "Good", "Great", "Miracle", "Godly", "Unique", "NULL"
 
 	return
 
@@ -42,24 +43,33 @@
 	ActionTarget = -10
 	LoopCount = 0
 	ContinueTactic = 0
+	TargetType = -1
+	TargetCount = 0
+	dim TargetList, MAX_CHARA_TOTAL
 	TrueTarget = 0
 	PreservedTarget = -1
 	TriedLearnedSkill = 0
 	gosub *IncrementFatigue
 	repeat CUSTOM_AI_MAX_TACTICS
 		PassTactic = 0
-		if ( ContinueTactic == 2 ) {
-			if ( CAIAction(cnt, cc) != 5 ) {
+		if ( ContinueTactic == 2 ) { // And condition failed, no enemies found. Skip following lines.
+			if ( CAIAction(cnt, cc) != CUSTOM_AI_ACTION_AND ) {
 				ContinueTactic = 0
 			}
 			continue
 		}
-		if ( ContinueTactic == 0 ) {
+		if ( ContinueTactic == 0 ) { // Entering a new group of line-checks, reset continuous variables.
+			TargetType = CAIEntity(cnt, cc) \ 1000
+			TargetCount = 0
 			HoldTarget = 0
 			PreservedTarget = -1
 		}
+		if ( ContinueTactic == 1 & CAIComparator(cnt, cc) != CUSTOM_AI_CONDITION_COUNT & (TargetType != CAIEntity(cnt, cc) \ 1000 | CAIEntity(cnt, cc) / 1000 <= 0) ) { // If target group changed, or preserve target is not in new line, reset target list
+			TargetType = CAIEntity(cnt, cc) \ 1000
+			TargetCount = 0
+		}
 		if ( CAIEntity(cnt, cc) \ 1000 != 0 & CAIComparator(cnt, cc) != 0 & CAIComparatorFix(cnt, cc) != 0 & CAIValue(cnt, cc) != 0 & CAIAction(cnt, cc) != 0 ) { ; Check that tactic has no "not set" parts
-			if ( CAIAction(cnt, cc) == 5 ) { ; Processed
+			if ( CAIAction(cnt, cc) == CUSTOM_AI_ACTION_AND ) { ; And condition Default 2 for failure, 1 for success.
 				ContinueTactic = 2
 			}
 			else {
@@ -74,13 +84,18 @@
 				case 2 ; Target
 					ActionTarget = tc
 					swbreak
-				case 3 ; Ally - Has to be handled separately in each section
+				case 3 ; Ally - Has to be handled separately with TargetList in each section
 					if ( HoldTarget != 1 ) {
 						ActionTarget = -2
 					}
 					swbreak
 				case 4 ; Player
 					ActionTarget = 0
+					swbreak
+				case 5 ; Enemy - Has to be handled separately with TargetList in each section
+					if ( HoldTarget != 1 ) {
+						ActionTarget = -2
+					}
 					swbreak
 			swend
 
@@ -92,52 +107,86 @@
 				}
 			}
 			HoldTarget = CAIEntity(cnt, cc) / 1000
+			
+			; Initialize target array, so multiple conditions can use same target set (enemy < 50%HP & distance <= 1)
+			if ( TargetCount <= 0 ) {
+				TargetCount = 0
+				if ( CAIEntity(cnt, cc) \ 1000 != 2 & CAIEntity(cnt, cc) \ 1000 != 5 ) {
+					TargetCount = 1
+					TargetList(0) = ActionTarget
+				}
+				if ( TargetCount == 0 ) {
+					LoopCount = 0
+					LoopMax = MAX_CHARA_TOTAL
+					while ( LoopCount < LoopMax )
+						LoopTarget = LoopCount
+						if ( cdata(CDATA_EXIST, LoopTarget) != CHAR_STATE_ALIVE ) {
+							LoopCount++
+							_continue
+						}
+						if ( LoopTarget == cc ) {
+							LoopCount++
+							_continue
+						}
+						if ( CAIEntity(cnt, cc) \ 1000 == 2 ) {
+							if ( (cdata(CDATA_RELATION, cc) \ 10) != (cdata(CDATA_RELATION, LoopTarget) \ 10) ) {
+								LoopCount++
+								_continue
+							}
+						} else {
+							if ( (cdata(CDATA_RELATION, cc) <= (-3)) == (cdata(CDATA_RELATION, LoopTarget) <= (-3)) ) {
+								LoopCount++
+								_continue
+							}
+						}
+						dx = cdata(CDATA_X, LoopTarget)
+						dy = cdata(CDATA_Y, LoopTarget)
+						if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 & (CAIAction(cnt, cc) != 3 & CAIAction(cnt, cc) != 4) ) {
+							LoopCount++
+							_continue
+						}
+						TargetList(TargetCount) = LoopTarget
+						TargetCount++
+						LoopCount++
+					wend
+				}
+				if ( TargetCount == 0 ) {
+					continue
+				}
+			}
 
 			; HP Condition Handling
 			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_HP ) { ; If condition is equal to "HP"
 				if ( CAIValue(cnt, cc) > 99 & CAIValue(cnt, cc) - 100 < 100 ) { ; If value is a percentage
-					if ( ActionTarget == -2 ) {
-						if ( cc < MAX_CHARA_FOLLOWER ) {
-							LoopCount = 0
-							LoopMax = MAX_CHARA_FOLLOWER
-						}
-						else {
-							LoopCount = MAX_CHARA_SAVE
-							LoopMax = MAX_CHARA_TOTAL
-						}
+					if ( ActionTarget == -2 & TargetCount > 0 ) {
+						LoopCount = 0
+						LoopMax = TargetCount
+						TargetCount = 0
 						while ( LoopCount < LoopMax )
-							if ( cdata(CDATA_EXIST, LoopCount) != CHAR_STATE_ALIVE ) {
+							LoopTarget = TargetList(LoopCount)
+							if ( (((cdata(CDATA_HP, LoopTarget) * 100) / cdata(CDATA_MAX_HP, LoopTarget)) == AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
 							}
-							if ( LoopCount == cc ) {
+							if ( (((cdata(CDATA_HP, LoopTarget) * 100) / cdata(CDATA_MAX_HP, LoopTarget)) > AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
 							}
-							if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION_ORG, LoopCount) > RELATION_ENEMY ) {
+							if ( (((cdata(CDATA_HP, LoopTarget) * 100) / cdata(CDATA_MAX_HP, LoopTarget)) < AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
-							}
-							dx = cdata(CDATA_X, LoopCount)
-							dy = cdata(CDATA_Y, LoopCount)
-							if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 & (CAIAction(cnt, cc) != 3 & CAIAction(cnt, cc) != 4) ) {
-								LoopCount++
-								_continue
-							}
-							if ( (((cdata(CDATA_HP, LoopCount) * 100) / cdata(CDATA_MAX_HP, LoopCount)) == AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
-								ActionTarget = LoopCount
-								_break
-							}
-							if ( (((cdata(CDATA_HP, LoopCount) * 100) / cdata(CDATA_MAX_HP, LoopCount)) > AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
-								ActionTarget = LoopCount
-								_break
-							}
-							if ( (((cdata(CDATA_HP, LoopCount) * 100) / cdata(CDATA_MAX_HP, LoopCount)) < AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
-								ActionTarget = LoopCount
-								_break
 							}
 							LoopCount++
 						wend
+						if ( TargetCount > 0 ) {
+							ActionTarget = TargetList(0)
+						}
 					}
 					if ( ActionTarget == -2 ) {
 						continue
@@ -178,48 +227,35 @@
 			; MP Condition Handling
 			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_MP ) { ; If condition is equal to "MP"
 				if ( CAIValue(cnt, cc) > 99 & CAIValue(cnt, cc) - 100 < 100 ) { ; If value is a percentage
-					if ( ActionTarget == -2 ) {
-						if ( cc < MAX_CHARA_FOLLOWER ) {
-							LoopCount = 0
-							LoopMax = MAX_CHARA_FOLLOWER
-						}
-						else {
-							LoopCount = MAX_CHARA_SAVE
-							LoopMax = MAX_CHARA_TOTAL
-						}
+					if ( ActionTarget == -2 & TargetCount > 0 ) {
+						LoopCount = 0
+						LoopMax = TargetCount
+						TargetCount = 0
 						while ( LoopCount < LoopMax )
-							if ( cdata(CDATA_EXIST, LoopCount) != CHAR_STATE_ALIVE ) {
+							LoopTarget = TargetList(LoopCount)
+							if ( (((cdata(CDATA_MP, LoopTarget)*100) / cdata(CDATA_MAX_MP, LoopTarget)) == AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
 							}
-							dx = cdata(CDATA_X, LoopCount)
-							dy = cdata(CDATA_Y, LoopCount)
-							if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 & (CAIAction(cnt, cc) != 3 & CAIAction(cnt, cc) != 4) ) {
+							if ( (((cdata(CDATA_MP, LoopTarget)*100) / cdata(CDATA_MAX_MP, LoopTarget)) > AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
 							}
-							if ( LoopCount == cc ) {
+							if ( (((cdata(CDATA_MP, LoopTarget)*100) / cdata(CDATA_MAX_MP, LoopTarget)) < AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
-							}
-							if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION_ORG, LoopCount) > RELATION_ENEMY ) {
-								LoopCount++
-								_continue
-							}
-							if ( (((cdata(CDATA_MP, LoopCount)*100) / cdata(CDATA_MAX_MP, LoopCount)) == AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
-								ActionTarget = LoopCount
-								_break
-							}
-							if ( (((cdata(CDATA_MP, LoopCount)*100) / cdata(CDATA_MAX_MP, LoopCount)) > AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
-								ActionTarget = LoopCount
-								_break
-							}
-							if ( (((cdata(CDATA_MP, LoopCount)*100) / cdata(CDATA_MAX_MP, LoopCount)) < AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
-								ActionTarget = LoopCount
-								_break
 							}
 							LoopCount++
 						wend
+						if ( TargetCount > 0 ) {
+							ActionTarget = TargetList(0)
+						}
 					}
 					if ( ActionTarget == -2 ) {
 						continue
@@ -260,55 +296,52 @@
 			; Distance Condition Handling
 			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_DISTANCE ) { ; If condition is equal to "distance"
 				if ( CAIValue(cnt, cc) > 99 & CAIValue(cnt, cc) - 200 < 100 & CAIValue(cnt, cc) - 200 >= 0 ) { ; If value is a distance
-					if ( ActionTarget == -2 ) {
-						if ( cc < MAX_CHARA_FOLLOWER ) {
-							LoopCount = 0
-							LoopMax = MAX_CHARA_FOLLOWER
-						}
-						else {
-							LoopCount = MAX_CHARA_SAVE
-							LoopMax = MAX_CHARA_TOTAL
-						}
+					if ( ActionTarget == -2 & TargetCount > 0 ) {
+						LoopCount = 0
+						LoopMax = TargetCount
+						TargetCount = 0
 						while ( LoopCount < LoopMax )
-							if ( cdata(CDATA_EXIST, LoopCount) != CHAR_STATE_ALIVE ) {
+							LoopTarget = TargetList(LoopCount)
+							dx = cdata(CDATA_X, LoopTarget)
+							dy = cdata(CDATA_Y, LoopTarget)
+							EffectiveDistance = dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy)
+							if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 ) {
+								EffectiveDistance += 9
+							}
+							if ( (EffectiveDistance == AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
 							}
-							if ( LoopCount == cc ) {
+							if ( (EffectiveDistance > AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
 							}
-							if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION_ORG, LoopCount) > RELATION_ENEMY ) {
+							if ( (EffectiveDistance < AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
-							}
-							dx = cdata(CDATA_X, LoopCount)
-							dy = cdata(CDATA_Y, LoopCount)
-							if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 & (CAIAction(cnt, cc) != 3 & CAIAction(cnt, cc) != 4) ) {
-								LoopCount++
-								_continue
-							}
-							if ( (dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
-								ActionTarget = LoopCount
-								_break
-							}
-							if ( (dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) > AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
-								ActionTarget = LoopCount
-								_break
-							}
-							if ( (dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) < AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
-								ActionTarget = LoopCount
-								_break
 							}
 							LoopCount++
 						wend
+						if ( TargetCount > 0 ) {
+							ActionTarget = TargetList(0)
+						}
 					}
 					if ( ActionTarget == -2 ) {
 						continue
 					}
 					dx = cdata(CDATA_X, ActionTarget)
 					dy = cdata(CDATA_Y, ActionTarget)
-					if ( (dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
+					EffectiveDistance = dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy)
+					if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 ) {
+						EffectiveDistance += 9
+					}
+					if ( (EffectiveDistance == AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
 						act = CAIAction(cnt, cc)
 						gosub *ProcessTactic
 						if ( ContinueTactic == 1 | PassTactic == 1 ) {
@@ -318,7 +351,7 @@
 							break
 						}
 					}
-					if ( (dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) > AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
+					if ( (EffectiveDistance > AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
 						act = CAIAction(cnt, cc)
 						gosub *ProcessTactic
 						if ( ContinueTactic == 1 | PassTactic == 1 ) {
@@ -328,7 +361,7 @@
 							break
 						}
 					}
-					if ( (dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) < AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
+					if ( (EffectiveDistance < AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
 						act = CAIAction(cnt, cc)
 						gosub *ProcessTactic
 						if ( ContinueTactic == 1 | PassTactic == 1 ) {
@@ -344,40 +377,23 @@
 			; Buff Condition Handling
 			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_BUFF ) { ; If condition is equal to "buff"
 				if ( CAIValue(cnt, cc) < MAX_BUFF ) { ; If value is a valid buff ID
-					if ( ActionTarget == -2 ) {
-						if ( cc < MAX_CHARA_FOLLOWER ) {
-							LoopCount = 0
-							LoopMax = MAX_CHARA_FOLLOWER
-						}
-						else {
-							LoopCount = MAX_CHARA_SAVE
-							LoopMax = MAX_CHARA_TOTAL
-						}
+					if ( ActionTarget == -2 & TargetCount > 0 ) {
+						LoopCount = 0
+						LoopMax = TargetCount
+						TargetCount = 0
 						while ( LoopCount < LoopMax )
-							if ( cdata(CDATA_EXIST, LoopCount) != CHAR_STATE_ALIVE ) {
-								LoopCount++
-								_continue
-							}
-							if ( LoopCount == cc ) {
-								LoopCount++
-								_continue
-							}
-							if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION_ORG, LoopCount) > RELATION_ENEMY ) {
-								LoopCount++
-								_continue
-							}
-							dx = cdata(CDATA_X, LoopCount)
-							dy = cdata(CDATA_Y, LoopCount)
-							if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 & (CAIAction(cnt, cc) != 3 & CAIAction(cnt, cc) != 4) ) {
-								LoopCount++
-								_continue
-							}
+							LoopTarget = TargetList(LoopCount)
 							if ( (findbuff(LoopCount, CAIValue(cnt, cc)) == (-1) & CAIComparatorFix(cnt, cc) == (4)) | (findbuff(LoopCount, CAIValue(cnt, cc)) != (-1) & CAIComparatorFix(cnt, cc) == (3)) ) {
-								ActionTarget = LoopCount
-								_break
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
+								LoopCount++
+								_continue
 							}
 							LoopCount++
 						wend
+						if ( TargetCount > 0 ) {
+							ActionTarget = TargetList(0)
+						}
 					}
 					if ( ActionTarget == -2 ) {
 						continue
@@ -398,48 +414,35 @@
 			; Gauge Condition Handling
 			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_GAUGE ) { ; If condition is equal to "Gauge"
 				if ( CAIValue(cnt, cc) > 99 & CAIValue(cnt, cc) - 100 < 100 ) { ; If value is a percentage
-					if ( ActionTarget == -2 ) {
-						if ( cc < MAX_CHARA_FOLLOWER ) {
-							LoopCount = 0
-							LoopMax = MAX_CHARA_FOLLOWER
-						}
-						else {
-							LoopCount = MAX_CHARA_SAVE
-							LoopMax = MAX_CHARA_TOTAL
-						}
+					if ( ActionTarget == -2 & TargetCount > 0 ) {
+						LoopCount = 0
+						LoopMax = TargetCount
+						TargetCount = 0
 						while ( LoopCount < LoopMax )
-							if ( cdata(CDATA_EXIST, LoopCount) != CHAR_STATE_ALIVE ) {
+							LoopTarget = TargetList(LoopCount)
+							if ( (cdata(CDATA_POWER_GAUGE, LoopTarget) == AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
 							}
-							dx = cdata(CDATA_X, LoopCount)
-							dy = cdata(CDATA_Y, LoopCount)
-							if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 & (CAIAction(cnt, cc) != 3 & CAIAction(cnt, cc) != 4) ) {
+							if ( (cdata(CDATA_POWER_GAUGE, LoopTarget) > AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
 							}
-							if ( LoopCount == cc ) {
+							if ( (cdata(CDATA_POWER_GAUGE, LoopTarget) < AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
-							}
-							if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION_ORG, LoopCount) > RELATION_ENEMY ) {
-								LoopCount++
-								_continue
-							}
-							if ( (cdata(CDATA_POWER_GAUGE, LoopCount) == AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
-								ActionTarget = LoopCount
-								_break
-							}
-							if ( (cdata(CDATA_POWER_GAUGE, LoopCount) > AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
-								ActionTarget = LoopCount
-								_break
-							}
-							if ( (cdata(CDATA_POWER_GAUGE, LoopCount) < AITextData(CAIValue(cnt, cc) - 100, 4)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
-								ActionTarget = LoopCount
-								_break
 							}
 							LoopCount++
 						wend
+						if ( TargetCount > 0 ) {
+							ActionTarget = TargetList(0)
+						}
 					}
 					if ( ActionTarget == -2 ) {
 						continue
@@ -480,40 +483,23 @@
 			; Class Handling
 			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_CLASS ) { ; If condition is equal to "Class"
 				if ( CAIValue(cnt, cc) > 99 & CAIValue(cnt, cc) - 300 < 100 & CAIValue(cnt, cc) - 300 >= 0 ) { ; If value is a percentage
-					if ( ActionTarget == -2 ) {
-						if ( cc < MAX_CHARA_FOLLOWER ) {
-							LoopCount = 0
-							LoopMax = MAX_CHARA_FOLLOWER
-						}
-						else {
-							LoopCount = MAX_CHARA_SAVE
-							LoopMax = MAX_CHARA_TOTAL
-						}
+					if ( ActionTarget == -2 & TargetCount > 0 ) {
+						LoopCount = 0
+						LoopMax = TargetCount
+						TargetCount = 0
 						while ( LoopCount < LoopMax )
-							if ( cdata(CDATA_EXIST, LoopCount) != CHAR_STATE_ALIVE ) {
+							LoopTarget = TargetList(LoopCount)
+							if ( (cdatan(CDATAN_CLASS, LoopTarget) == AITextData(CAIValue(cnt, cc) - 300, 6) & CAIComparatorFix(cnt, cc) == (3)) | (cdatan(CDATAN_CLASS, LoopTarget) != AITextData(CAIValue(cnt, cc) - 300, 6) & CAIComparatorFix(cnt, cc) == (4)) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
-							}
-							dx = cdata(CDATA_X, LoopCount)
-							dy = cdata(CDATA_Y, LoopCount)
-							if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 & (CAIAction(cnt, cc) != 3 & CAIAction(cnt, cc) != 4) ) {
-								LoopCount++
-								_continue
-							}
-							if ( LoopCount == cc ) {
-								LoopCount++
-								_continue
-							}
-							if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION_ORG, LoopCount) > RELATION_ENEMY ) {
-								LoopCount++
-								_continue
-							}
-							if ( (cdatan(CDATAN_CLASS, LoopCount) == AITextData(CAIValue(cnt, cc) - 300, 6) & CAIComparatorFix(cnt, cc) == (3)) | (cdatan(CDATAN_CLASS, LoopCount) != AITextData(CAIValue(cnt, cc) - 300, 6) & CAIComparatorFix(cnt, cc) == (4)) ) {
-								ActionTarget = LoopCount
-								_break
 							}
 							LoopCount++
 						wend
+						if ( TargetCount > 0 ) {
+							ActionTarget = TargetList(0)
+						}
 					}
 					if ( ActionTarget == -2 ) {
 						continue
@@ -534,40 +520,23 @@
 			; Status Handling
 			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_STATUS ) {; If condition is equal to "Status"
 				if ( CAIValue(cnt, cc) > 99 & CAIValue(cnt, cc) - 400 < 100 & CAIValue(cnt, cc) - 400 >= 0 ) { ; Ensure value is a status
-					if ( ActionTarget == -2 ) {
-						if ( cc < MAX_CHARA_FOLLOWER ) {
-							LoopCount = 0
-							LoopMax = MAX_CHARA_FOLLOWER
-						}
-						else {
-							LoopCount = MAX_CHARA_SAVE
-							LoopMax = MAX_CHARA_TOTAL
-						}
+					if ( ActionTarget == -2 & TargetCount > 0 ) {
+						LoopCount = 0
+						LoopMax = TargetCount
+						TargetCount = 0
 						while ( LoopCount < LoopMax )
-							if ( cdata(CDATA_EXIST, LoopCount) != CHAR_STATE_ALIVE ) {
+							LoopTarget = TargetList(LoopCount)
+							if ( (cdata(StatusOffsets(CAIValue(cnt, cc) \ 100), LoopTarget) > 0 & CAIComparatorFix(cnt, cc) == (3)) | (cdata(StatusOffsets(CAIValue(cnt, cc) \ 100), LoopTarget) == 0 & CAIComparatorFix(cnt, cc) == (4)) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
 								LoopCount++
 								_continue
-							}
-							dx = cdata(CDATA_X, LoopCount)
-							dy = cdata(CDATA_Y, LoopCount)
-							if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 & (CAIAction(cnt, cc) != 3 & CAIAction(cnt, cc) != 4) ) {
-								LoopCount++
-								_continue
-							}
-							if ( LoopCount == cc ) {
-								LoopCount++
-								_continue
-							}
-							if ( cc >= MAX_CHARA_FOLLOWER & cdata(CDATA_RELATION_ORG, LoopCount) > RELATION_ENEMY ) {
-								LoopCount++
-								_continue
-							}
-							if ( (cdata(StatusOffsets(CAIValue(cnt, cc) \ 100), LoopCount) > 0 & CAIComparatorFix(cnt, cc) == (3)) | (cdata(StatusOffsets(CAIValue(cnt, cc) \ 100), LoopCount) == 0 & CAIComparatorFix(cnt, cc) == (4)) ) {
-								ActionTarget = LoopCount
-								_break
 							}
 							LoopCount++
 						wend
+						if ( TargetCount > 0 ) {
+							ActionTarget = TargetList(0)
+						}
 					}
 					if ( ActionTarget == -2 ) {
 						continue
@@ -584,6 +553,75 @@
 					}
 				}; End value verification
 			}; End Status Handling
+
+			; Quality Handling
+			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_QUALITY ) { ; If condition is equal to "Quality"
+				if ( CAIValue(cnt, cc) > 99 & CAIValue(cnt, cc) - 500 < 100 & CAIValue(cnt, cc) - 500 >= 0 ) { ; If value is a Quality set
+					if ( ActionTarget == -2 & TargetCount > 0 ) {
+						LoopCount = 0
+						LoopMax = TargetCount
+						TargetCount = 0
+						while ( LoopCount < LoopMax )
+							LoopTarget = TargetList(LoopCount)
+							if ( (cdata(CDATA_QUALITY, LoopTarget) == AITextData(CAIValue(cnt, cc) - 500, 7)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
+								LoopCount++
+								_continue
+							}
+							if ( (cdata(CDATA_QUALITY, LoopTarget) > AITextData(CAIValue(cnt, cc) - 500, 7)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
+								LoopCount++
+								_continue
+							}
+							if ( (cdata(CDATA_QUALITY, LoopTarget) < AITextData(CAIValue(cnt, cc) - 500, 7)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
+								TargetList(TargetCount) = LoopTarget
+								TargetCount++
+								LoopCount++
+								_continue
+							}
+							LoopCount++
+						wend
+						if ( TargetCount > 0 ) {
+							ActionTarget = TargetList(0)
+						}
+					}
+					if ( ActionTarget == -2 ) {
+						continue
+					}
+					if ( (cdata(CDATA_QUALITY, ActionTarget) == AITextData(CAIValue(cnt, cc) - 500, 7)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
+						act = CAIAction(cnt, cc)
+						gosub *ProcessTactic
+						if ( ContinueTactic == 1 | PassTactic == 1 ) {
+							continue
+						}
+						else {
+							break
+						}
+					}
+					if ( (cdata(CDATA_QUALITY, ActionTarget) > AITextData(CAIValue(cnt, cc) - 500, 7)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
+						act = CAIAction(cnt, cc)
+						gosub *ProcessTactic
+						if ( ContinueTactic == 1 | PassTactic == 1 ) {
+							continue
+						}
+						else {
+							break
+						}
+					}
+					if ( (cdata(CDATA_QUALITY, ActionTarget) < AITextData(CAIValue(cnt, cc) - 500, 7)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
+						act = CAIAction(cnt, cc)
+						gosub *ProcessTactic
+						if ( ContinueTactic == 1 | PassTactic == 1 ) {
+							continue
+						}
+						else {
+							break
+						}
+					}
+				} ; End check for class
+			} ; End Class Handling
 			
 			; Chance Handling
 			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_CHANCE ) {; If condition is equal to "Chance"
@@ -600,6 +638,48 @@
 					}
 				}; End value verification
 			}; End Chance Handling
+
+			; Count Handling
+			if ( CAIComparator(cnt, cc) == CUSTOM_AI_CONDITION_COUNT ) { ; If condition is equal to "Count"
+				if ( CAIValue(cnt, cc) > 99 & CAIValue(cnt, cc) - 200 < 100 & CAIValue(cnt, cc) - 200 >= 0 ) { ; If value is a count number
+					if ( ActionTarget == -2 & TargetCount > 0 ) {
+						ActionTarget = TargetList(0)
+					}
+					if ( ActionTarget == -2 ) {
+						continue
+					}
+					if ( (TargetCount == AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 3 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 6) ) {
+						act = CAIAction(cnt, cc)
+						gosub *ProcessTactic
+						if ( ContinueTactic == 1 | PassTactic == 1 ) {
+							continue
+						}
+						else {
+							break
+						}
+					}
+					if ( (TargetCount > AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 2 | CAIComparatorFix(cnt, cc) == 5 | CAIComparatorFix(cnt, cc) == 4) ) {
+						act = CAIAction(cnt, cc)
+						gosub *ProcessTactic
+						if ( ContinueTactic == 1 | PassTactic == 1 ) {
+							continue
+						}
+						else {
+							break
+						}
+					}
+					if ( (TargetCount < AITextData(CAIValue(cnt, cc) - 200, 5)) & (CAIComparatorFix(cnt, cc) == 1 | CAIComparatorFix(cnt, cc) == 6 | CAIComparatorFix(cnt, cc) == 4) ) {
+						act = CAIAction(cnt, cc)
+						gosub *ProcessTactic
+						if ( ContinueTactic == 1 | PassTactic == 1 ) {
+							continue
+						}
+						else {
+							break
+						}
+					}
+				} ; End check for count
+			} ; End Count Handling
 		}
 	loop
 
@@ -802,7 +882,12 @@
 				goto *turn_end
 			}
 		}
-    }
+	}
+	
+    ; Do their own thing.
+    if ( act == CUSTOM_AI_ACTION_DO_AS_YOU_PLEASE ) {
+		goto *CustomAI_SKIP
+	}
 
 	; Failure
 	if ( CAIQuiet(cc) == 0 ) {
@@ -934,6 +1019,9 @@
 			act = -10
 		}
 	}
+	if ( act == CUSTOM_AI_ACTION_DO_AS_YOU_PLEASE ) {
+		PassTactic = 1
+	}
 	if ( PassTactic == 1 ) {
 		return
 	}
@@ -1018,6 +1106,9 @@
 	gosub *PrintAIInfo
 	repeat CAIAvailableSlots(tc)
 	s = AITextData(CAIEntity(cnt, tc) \ 1000, 1)
+	if ( CAIEntity(cnt, tc) / 1000 ) {
+		s += "(P)"
+	}
 	pos wx + 48, wy + 60 + cnt * 19 + 2
 	mes s
 	s = AITextData(CAIComparator(cnt, tc), 2)
@@ -1447,6 +1538,9 @@
 		p = 0
 		if (cnt == HeldTactic) { p = 10 }
 		s = AITextData(CAIEntity(cnt, tc) \ 1000, 1)
+		if ( CAIEntity(cnt, tc) / 1000 ) {
+			s += "(P)"
+		}
 		pos wx + 48 + p, wy + 60 + cnt * 19 + 2
 		mes s
 		s = AITextData(CAIComparator(cnt, tc), 2)
@@ -1577,10 +1671,10 @@
 	gosub *GetActionName
 	listn(0, 4) = "Modify Action. (Current: " + ActionName + ")"
 	if ( CAIEntity(CurrentTactic, tc) / 1000 == 1 ) {
-		listn(0, 5) = "Toggle Preserve Entity As Target. (Currently: On)"
+		listn(0, 5) = "Toggle Preserve Entity As Target / Keep Target Group. (Currently: On)"
 	}
 	else {
-		listn(0, 5) = "Toggle Preserve Entity As Target. (Currently: Off)"
+		listn(0, 5) = "Toggle Preserve Entity As Target / Keep Target Group. (Currently: Off)"
 	}
 	listn(0, 6) = "Back"
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -2911,7 +3005,7 @@
 			}
 		loop
 	}
-	if ( CAIComparator(CurrentTactic, tc) == 3 ) {
+	if ( CAIComparator(CurrentTactic, tc) == 3 | CAIComparator(CurrentTactic, tc) == 9 ) {
 		repeat length(AITextData)
 			if ( AITextData(cnt, 5) != "NULL" ) {
 				listn(0, NumActions) = AITextData(cnt, 5)
@@ -2954,6 +3048,18 @@
 			}
 		loop
 	}
+	if ( CAIComparator(CurrentTactic, tc) == 10 ) {
+		repeat length(AITextData)
+			if ( AITextData(cnt, 7) != "NULL" ) {
+				listn(0, NumActions) = AITextData(cnt, 7)
+				key_list(NumActions) = 500+cnt
+				NumActions++
+			}
+			else {
+				break
+			}
+		loop
+	}
 	listn(0, NumActions) = "Back"
 	key_list(NumActions) = 999
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -2972,7 +3078,7 @@
 	key_check
 	cursor_check
 
-	repeat 500
+	repeat 600
 		if ( key == cnt ) {
 			snd SOUNDLIST_OK1
 			CAIValue(CurrentTactic, tc) = key
@@ -3013,6 +3119,9 @@
 	}
 	if ( CAIValue(SlotID, tc) >= 400 & CAIValue(SlotID, tc) < 500 ) {
 		ValueName = AIStatusNames(CAIValue(SlotID, tc) \ 400, 0)
+	}
+	if ( CAIValue(SlotID, tc) >= 500 & CAIValue(SlotID, tc) < 600 ) {
+		ValueName = AITextData(CAIValue(SlotID, tc) \ 500, 7)
 	}
 	return
 
@@ -3274,10 +3383,10 @@
 				if ( p(2) < 0 ) {
 					continue
 				}
-				if ( cnt == 0 & (p(2) \ 1000) <= 4 ) {
+				if ( cnt == 0 & (p(2) \ 1000) <= 5 ) {
 					CAIEntity(cnt2, tc) = (p(2) \ 1000) + (p(2) >= 1000) * 1000
 				}
-				if ( cnt == 1 & p(2) <= 8 ) {
+				if ( cnt == 1 & p(2) <= 10 ) {
 					CAIComparator(cnt2, tc) = p(2)
 				}
 				if ( cnt == 2 & p(2) <= 6 ) {
@@ -3290,7 +3399,7 @@
 					if ( p(2)/100 == 1 & p(2)\100 <= 11 ) {
 						CAIValue(cnt2, tc) = p(2)\100 + 100
 					}
-					if ( p(2)/100 == 2 & p(2)\100 <= 9 ) {
+					if ( p(2)/100 == 2 & p(2)\100 <= 10 ) {
 						CAIValue(cnt2, tc) = p(2)\100 + 200
 					}
 					if ( p(2)/100 == 3 & p(2)\100 <= 11 ) {
@@ -3298,6 +3407,9 @@
 					}
 					if ( p(2)/100 == 4 & p(2)\100 <= 20 ) {
 						CAIValue(cnt2, tc) = p(2)\100 + 400
+					}
+					if ( p(2)/100 == 5 & p(2)\100 <= 6 ) {
+						CAIValue(cnt2, tc) = p(2)\100 + 500
 					}
 				}
 				if ( cnt == 4 ) {

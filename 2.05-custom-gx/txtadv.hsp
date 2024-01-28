@@ -87,6 +87,7 @@
 	/********** JAMES CUSTOM - BEGINNING **********/ // Fix sleeping crashes caused by uninitiated atxinfon (type mismatch).
 	atxinfon(0) = ""
 	/********** JAMES CUSTOM - ENDING **********/ // Fix sleeping crashes
+	atxci = inv(INV_ITEM_ID, limit(ci,0,MAX_INV_DATA-1))
 	redraw 0
 	if ( atxid == 2 ) {
 		goto *atx_RE
@@ -791,7 +792,6 @@
 	chatList 0, lang("店を出る", "Later.")
 	chatList 1, lang("ブラックジャック", "I want to play Blackjack.")
 	/********** JAMES CUSTOM - SLOTS - BEGINNING **********/
-	atxci = inv(INV_ITEM_ID, limit(ci,0,MAX_INV_DATA-1))
 	if ( atxci == ITEM_ID_SLOT_MACHINE | atxci == ITEM_ID_PACHISURO_MACHINE ) {
 		listmax = 0
 		chatList 0, lang("店を出る", "Later.")

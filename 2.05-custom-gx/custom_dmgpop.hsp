@@ -198,12 +198,7 @@
 			if ( cbit(CHARA_BIT_NECRO, cnt) == 1 ) {
 				continue
             }
-            if ( cbit(CHARA_BIT_INVISIBLE, cnt) == 1 ) {
-                if ( cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, cnt) == 0 ) {
-                    continue
-                }
-            }
-            if ( cdata(CDATA_ROW_ACT, cnt) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, cnt) == ACTION_DIVING_DRILL ) {
+            if ( charaIsVisible(cnt) == 0 | charaIsMimic(cnt) == 100 ) {
                 continue
             }
             DmgPopupR = cdata(CDATA_ROLE, cnt)

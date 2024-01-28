@@ -1160,6 +1160,7 @@
 		if ( cdata(CDATA_ID, cc) == CREATURE_ID_ZEOME_THE_FALSE_PROPHET & gdata(GDATA_AREA) == AREA_LESIMAS & gdata(GDATA_LEVEL) == adata(ADATA_MAX_LEVEL, gdata(GDATA_AREA)) & cc >= MAX_CHARA_FOLLOWER & TweakData(TWEAK_AI_ZEOME, TWEAK_CATEGORY_AI) == 1 ) {
 			goto *ZeomeCustomAI
 		}
+		*CustomAI_SKIP
 
 		/********** ANNA CUSTOM - ENDING **********/
 

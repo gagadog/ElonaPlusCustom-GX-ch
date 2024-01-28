@@ -7,18 +7,28 @@
 - Added pop-up and text for AP-gains.
 
 # Changed
+- Player's tag-team partner now scroll as well, tag-team partner is drawn behind tag leader.
+- Combined Item-mark set and Item-mark adjust together. Setting item mark immediately enters edit mode.
+- Werewolves are no longer renamed outside of towns.
+
+- Custom AI changes:
+  - Added "Enemy" Target entity, it now uses a target list like "ally"
+  - Added "Count" condition, always uses the target list of previous line. 
+  - Target list of previous line is used if "Preserve Target" is enabled.
+  - Added "Quality" condition (like <> {} brackets).
+  - Added "Do as You Please" action, exits custom AI and uses the default offensive mode AI. 
+  - Distant check: If enemy not in sight: distance+9 (Prevent confusion due to walls.)
 - Added some variety to Custom Layouts.
 - Lowered Custom Layout's monster density. (to around 15~25, +10x(0~5) due to monster rooms.)
 - Ano's harvest moon ranch is now enabled by default, you need to enable tweak to disable it.
-- Werewolves are no longer renamed outside of towns.
 
 # Fixed
 - Player speed are reset after entering a map, and before "main_init"
 - Show NPC name: enemies using Jumping-Drop/Diving-Drill now have their names hidden.
 - Encounter canceller can be used with 't' to throw potion at self tweak now.
-- Some translation / display issues thanks to @lIllIIlI.
 - Auto-pickup config renamed, so it no longer affect sound settings in Ano's Plus.
-
+- Enabling savescumming not changing rare loot trigger immediately.
+- Some translation / display issues thanks to @lIllIIlI.
 
 # 2.21.2.0
 

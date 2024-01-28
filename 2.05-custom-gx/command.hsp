@@ -10441,13 +10441,13 @@
 	n = 0
 	txtnew
 	txtef COLOR_YELLOW2
-	txt lang("上下キーで縦サイズ調整、左右キーで横サイズ調整、zxキーで角度調整、Enterキーで決定、キャンセルキーで終了。", "Item Mark: W and S to adjust length, A and D to adjust width, Z and X to adjust angle.")
+	txt lang("W/Sキーで縦サイズ調整、A/Dキーで横サイズ調整、Z/Xキーで角度調整。", "Item Mark: W/S: adjust length, A/D: adjust width, Z/X: rotate angle, Q/E: adjust size.")
 	txtnew
 	txtef COLOR_YELLOW
-	txt lang("移動キーでマーク移動、Back spaceキーで前後切替。", "           ARROW keys to move, BACKSPACE key to switch front/behind.")
+	txt lang("移動キーでマーク移動、Back spaceキーで前後切替、RキーでReset。", "           ARROW keys to move, BACKSPACE key to switch front/behind, R to reset position.")
 	txtnew
 	txtef COLOR_GREEN
-	txt lang("Enterキーで決定、キャンセルキーで終了。", "           ENTER key to save, SHIFT key to cancel and exit.")
+	txt lang("Enterキーで決定、キャンセルキーで終了、Kキーで削除し終了。", "           ENTER key to save, SHIFT key to cancel and exit, K to delete and exit.")
 	windowshadow = 1
 	await 1000
 	p = 0
@@ -10463,21 +10463,61 @@
 		await 1000
 		return
 	}
-	if ( key == key_cancel ) {
+	if ( key == "r" ) {
 		snd SOUNDLIST_EQUIP1
-		cdata(CDATA_MARK_ITEM_X, tc) = bkitemx
-		cdata(CDATA_MARK_ITEM_Y, tc) = bkitemy
-		cdata(CDATA_MARK_ITEM_ADJUST_L, tc) = bkiteml
-		cdata(CDATA_MARK_ITEM_ADJUST_W, tc) = bkitemw
- 		cdata(CDATA_MARK_ITEM_ADJUST_R, tc) = bkitemr
+		cdata(CDATA_MARK_ITEM_X, tc) = 12
+		cdata(CDATA_MARK_ITEM_Y, tc) = (-10)
+		cdata(CDATA_MARK_ITEM_ADJUST_L, tc) = 12
+		cdata(CDATA_MARK_ITEM_ADJUST_W, tc) = 12
+		cdata(CDATA_MARK_ITEM_ADJUST_R, tc) = 0
+	}
+	if ( key == "k" ) {
+		snd SOUNDLIST_EQUIP1
+		cdata(CDATA_MARK_ITEM_X, tc) = 0
+		cdata(CDATA_MARK_ITEM_Y, tc) = 0
+		cdata(CDATA_MARK_ITEM_ADJUST_L, tc) = 0
+		cdata(CDATA_MARK_ITEM_ADJUST_W, tc) = 0
+		cdata(CDATA_MARK_ITEM_ADJUST_R, tc) = 0
+		cdata(CDATA_MARK_ITEM_PIC, tc) = 0
 		gosub *screen_draw
 		n = 0
 		txtnew
 		txt lang("移動をやめた。", "You stopped the adjustment.")
 		return
 	}
+	if ( key == key_cancel ) {
+		snd SOUNDLIST_EQUIP1
+		cdata(CDATA_MARK_ITEM_X, tc) = bkitemx
+		cdata(CDATA_MARK_ITEM_Y, tc) = bkitemy
+		cdata(CDATA_MARK_ITEM_ADJUST_L, tc) = bkiteml
+		cdata(CDATA_MARK_ITEM_ADJUST_W, tc) = bkitemw
+		cdata(CDATA_MARK_ITEM_ADJUST_R, tc) = bkitemr
+		gosub *screen_draw
+		n = 0
+		txtnew
+		txt lang("移動をやめた。", "You stopped the adjustment.")
+		return
+	}
+	if ( key == "q" ) {
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_L, tc) >= (-11) ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_L, tc)--
+		}
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_W, tc) >= (-11) ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_W, tc)--
+		}
+		snd SOUNDLIST_CURSOR1
+	}
+	if ( key == "e" ) {
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_L, tc) < 36 + 48 * (chipi(CHIPI_HEIGHT, cdata(CDATA_MARK_ITEM_PIC, tc)) > 48) ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_L, tc)++
+		}
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_W, tc) < 36 ) {
+			cdata(CDATA_MARK_ITEM_ADJUST_W, tc)++
+		}
+		snd SOUNDLIST_CURSOR1
+	}
 	if ( key == key_wear ) {
-		if ( cdata(CDATA_MARK_ITEM_ADJUST_L, tc) < 36 ) {
+		if ( cdata(CDATA_MARK_ITEM_ADJUST_L, tc) < 36 + 48 ) {
 			cdata(CDATA_MARK_ITEM_ADJUST_L, tc)++
 		}
 		snd SOUNDLIST_CURSOR1
@@ -10528,25 +10568,25 @@
 		}
 	}
 	if ( key == key_north ) {
-		if ( cdata(CDATA_MARK_ITEM_Y, tc) > (-62) ) {
+		if ( cdata(CDATA_MARK_ITEM_Y, tc) > (-62) - 24 ) {
 			cdata(CDATA_MARK_ITEM_Y, tc)--
 		}
 		snd SOUNDLIST_CURSOR1
 	}
 	if ( key == key_south ) {
-		if ( cdata(CDATA_MARK_ITEM_Y, tc) <= 0 ) {
+		if ( cdata(CDATA_MARK_ITEM_Y, tc) <= 0 + 24 ) {
 			cdata(CDATA_MARK_ITEM_Y, tc)++
 		}
 		snd SOUNDLIST_CURSOR1
 	}
 	if ( key == key_pageup ) {
-		if ( cdata(CDATA_MARK_ITEM_X, tc) < 22 ) {
+		if ( cdata(CDATA_MARK_ITEM_X, tc) < 22 + 24 ) {
 			cdata(CDATA_MARK_ITEM_X, tc)++
 		}
 		snd SOUNDLIST_CURSOR1
 	}
 	if ( key == key_pagedown ) {
-		if ( cdata(CDATA_MARK_ITEM_X, tc) > 0 ) {
+		if ( cdata(CDATA_MARK_ITEM_X, tc) > 0 - 24 ) {
 			cdata(CDATA_MARK_ITEM_X, tc)--
 		}
 		snd SOUNDLIST_CURSOR1
