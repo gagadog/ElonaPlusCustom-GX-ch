@@ -1309,12 +1309,8 @@
 		if ( cnt < MAX_CHARA_FOLLOWER ) {
 			locvar_get_freeally_np++
 		}
-		if ( cdata(CDATA_ID, cnt) == CREATURE_ID_CAT_ZOMBIE | cdata(CDATA_ID, cnt) == CREATURE_ID_ZOMBIE | cdata(CDATA_ID, cnt) == CREATURE_ID_MUMMY | cdata(CDATA_ID, cnt) == CREATURE_ID_SKELETON_WARRIOR | cdata(CDATA_ID, cnt) == CREATURE_ID_LICH | cdata(CDATA_ID, cnt) == CREATURE_ID_NECRO_DOLL | cdata(CDATA_ID, cnt) == CREATURE_ID_DRAGON_ZOMBIE | cdata(CDATA_ID, cnt) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-			if ( cbit(CHARA_BIT_LIVESTOCK, cnt) != 1 ) {
-				if ( cbit(CHARA_BIT_NECRO, cnt) == 1 ) {
-					locvar_get_freeally_np++
-				}
-			}
+		if ( charaIsNecromancyZombie(cnt) ) {
+			locvar_get_freeally_np++
 		}
 	loop
 	if ( locvar_get_freeally_np >= 15 ) {
@@ -1335,12 +1331,8 @@
 		if ( cnt < MAX_CHARA_FOLLOWER ) {
 			locvar_get_freeally_np++
 		}
-		if ( cdata(CDATA_ID, cnt) == CREATURE_ID_CAT_ZOMBIE | cdata(CDATA_ID, cnt) == CREATURE_ID_ZOMBIE | cdata(CDATA_ID, cnt) == CREATURE_ID_MUMMY | cdata(CDATA_ID, cnt) == CREATURE_ID_SKELETON_WARRIOR | cdata(CDATA_ID, cnt) == CREATURE_ID_LICH | cdata(CDATA_ID, cnt) == CREATURE_ID_NECRO_DOLL | cdata(CDATA_ID, cnt) == CREATURE_ID_DRAGON_ZOMBIE | cdata(CDATA_ID, cnt) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-			if ( cbit(CHARA_BIT_LIVESTOCK, cnt) != 1 ) {
-				if ( cbit(CHARA_BIT_NECRO, cnt) == 1 ) {
-					locvar_get_freeally_np++
-				}
-			}
+		if ( charaIsNecromancyZombie(cnt) ) {
+			locvar_get_freeally_np++
 		}
 	loop
 	if ( locvar_get_freeally_np >= 15 ) {
@@ -7796,6 +7788,32 @@
 		}
 	}
 	return
+
+#defcfunc charaIsNecromancyZombie int charaIsNecromancyZombie_charidx
+	if ( cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_CAT_ZOMBIE | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_ZOMBIE | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_MUMMY | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_SKELETON_WARRIOR | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_LICH | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_NECRO_DOLL | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_DRAGON_ZOMBIE | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
+		if ( cbit(CHARA_BIT_LIVESTOCK, charaIsNecromancyZombie_charidx) != TRUE ) {
+			if ( cbit(CHARA_BIT_SHADOW_CLONE, charaIsNecromancyZombie_charidx) != TRUE ) {
+				if ( charaIsNecromancyZombie_charidx >= MAX_CHARA_FOLLOWER ) {
+					if ( cbit(CHARA_BIT_NECRO, charaIsNecromancyZombie_charidx) == TRUE ) {
+						return TRUE
+					}
+				}
+			}
+		}
+	}
+	return FALSE
+
+#defcfunc charaIsShadowhopSummon int charaIsNecromancyZombie_charidx
+	if ( cbit(CHARA_BIT_LIVESTOCK, charaIsNecromancyZombie_charidx) != TRUE ) {
+		if ( cbit(CHARA_BIT_SHADOW_CLONE, charaIsNecromancyZombie_charidx) == TRUE ) {
+			if ( charaIsNecromancyZombie_charidx >= MAX_CHARA_FOLLOWER ) {
+				if ( cbit(CHARA_BIT_NECRO, charaIsNecromancyZombie_charidx) == TRUE ) {
+					return TRUE
+				}
+			}
+		}
+	}
+	return FALSE
 
 #defcfunc charaIsVisible int charaIsVisible_charidx
 	if ( charaIsVisible_charidx < 0 | charaIsVisible_charidx >= MAX_CHARA_TOTAL) {

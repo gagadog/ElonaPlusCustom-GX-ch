@@ -2040,24 +2040,7 @@
 			if ( inv(INV_ITEM_PARAM1, itemname_itemid) == 9 ) {
 				locvar_itemowner_s += lang("(デッドアイズ)", " (dead-eyes)")
 			}
-			if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
-				inv(INV_ITEM_PARAM2, ci) = 0
-			}
-			if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
-				inv(INV_ITEM_PARAM2, ci) = 0
-			}
-			if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
-				inv(INV_ITEM_PARAM2, ci) = 0
-			}
-			if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
-				inv(INV_ITEM_PARAM2, ci) = 0
-			}
-			if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
-				inv(INV_ITEM_PARAM2, ci) = 0
-			}
-			if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
-				inv(INV_ITEM_PARAM2, ci) = 0
-			}
+			necromancyParam2Fix ci
 			if ( inv(INV_ITEM_PARAM2, itemname_itemid) >= 12000 & inv(INV_ITEM_PARAM2, itemname_itemid) < 18000 ) {
 				locvar_itemowner_s += lang("-欺繕", "-Deceive")
 			}
@@ -2450,3 +2433,240 @@
 	loop
 	return
 
+/********** JAMES CUSTOM - BEGINNING *********/
+#deffunc necromancyParam2Fix int necromancy_ci
+	if ( inv(INV_ITEM_PARAM2, necromancy_ci) == ITEM_ID_BONE ) {
+		inv(INV_ITEM_PARAM2, necromancy_ci) = 0
+	}
+	if ( inv(INV_ITEM_PARAM2, necromancy_ci) == ITEM_ID_HEART ) {
+		inv(INV_ITEM_PARAM2, necromancy_ci) = 0
+	}
+	if ( inv(INV_ITEM_PARAM2, necromancy_ci) == ITEM_ID_EYE ) {
+		inv(INV_ITEM_PARAM2, necromancy_ci) = 0
+	}
+	if ( inv(INV_ITEM_PARAM2, necromancy_ci) == ITEM_ID_BLOOD ) {
+		inv(INV_ITEM_PARAM2, necromancy_ci) = 0
+	}
+	if ( inv(INV_ITEM_PARAM2, necromancy_ci) == ITEM_ID_SKIN ) {
+		inv(INV_ITEM_PARAM2, necromancy_ci) = 0
+	}
+	if ( inv(INV_ITEM_PARAM2, necromancy_ci) >= 18000 ) {
+		inv(INV_ITEM_PARAM2, necromancy_ci) = 0
+	}
+	return
+
+#defcfunc necromancyHaveDDCemeteryKey
+	item_find ITEM_ID_DD_CEMETERY_KEY, 3, 1
+	if ( stat != (-1) ) {
+		ci = stat
+		if ( inv(INV_ITEM_NUM, ci) >= 1 ) {
+			return TRUE
+		}
+	}
+	return FALSE
+
+#deffunc necromancyZombieToCoffin int necromancy_rc, str necromancy_returnmode
+	if ( charaIsNecromancyZombie(necromancy_rc) != TRUE ) {
+		return
+	}
+	necromancy_return_index = -1 // -1 on the invbuffer(ground/ddcemetery), 0 in player inventory
+	necromancy_return_locx = cdata(CDATA_X, necromancy_rc)
+	necromancy_return_locy = cdata(CDATA_Y, necromancy_rc)
+	necromancy_return_count = 0
+	necromancy_return_charge = 6666
+	if ( necromancy_returnmode == "push" ) {
+		txt lang(name(necromancy_rc) + "を棺に戻した。", "You push " + name(necromancy_rc) + " back into the coffin.")
+		necromancy_return_charge = 1
+	}
+	if ( necromancy_returnmode == "killed" ) {
+		txt lang(name(necromancy_rc) + "を棺に戻した。", "You push " + name(necromancy_rc) + " back into the coffin.")
+		necromancy_return_charge = 24
+	}
+	if ( necromancy_returnmode == "fusion" ) { // Necro-fusion, basically killed and put under player's foot
+		necromancy_return_locx = cdata(CDATA_X, CHARA_PLAYER)
+		necromancy_return_locy = cdata(CDATA_Y, CHARA_PLAYER)
+		necromancy_return_charge = 24
+	}
+	if ( necromancy_returnmode == "fail" ) { // Used when no valid space on the map, shove in player inv.
+		necromancy_return_index = 0
+		necromancy_return_charge = 0
+	}
+	if ( necromancy_returnmode == "inventory" ) { // Normal DD cemetery transfer, shove in player inventory.
+		necromancy_return_index = 0
+	}
+	if ( necromancy_returnmode == "DDCemetery" ) { // Used when player inventory full, placed in DDCemetery.
+		necromancy_return_count = 1
+		file = "shoptmp.s2"
+		fmode = 4
+		gosub *game_ctrlFile
+		invfile = ITEM_ROLE_FILE_DD_CEMETERY_KEY
+		file = "shop" + ITEM_ROLE_FILE_DD_CEMETERY_KEY + ".s2"
+		existwrapper exedir + "tmp\\" + file
+		if ( strsize != (-1) ) {
+			fmode = 3
+			gosub *game_ctrlFile
+		}
+		else {
+			inv_getheader -1
+			repeat invrange, invhead
+				inv(INV_ITEM_NUM, cnt) = 0
+			loop
+		}
+		mode = MODELIST_SHOP
+	}
+	necrop = 0
+	if ( cdata(CDATA_ID, necromancy_rc) == CREATURE_ID_CAT_ZOMBIE ) {
+		necrop = 2
+	}
+	if ( cdata(CDATA_ID, necromancy_rc) == CREATURE_ID_ZOMBIE ) {
+		necrop = 3
+	}
+	if ( cdata(CDATA_ID, necromancy_rc) == CREATURE_ID_MUMMY ) {
+		necrop = 4
+	}
+	if ( cdata(CDATA_ID, necromancy_rc) == CREATURE_ID_SKELETON_WARRIOR ) {
+		necrop = 5
+	}
+	if ( cdata(CDATA_ID, necromancy_rc) == CREATURE_ID_LICH ) {
+		necrop = 6
+	}
+	if ( cdata(CDATA_ID, necromancy_rc) == CREATURE_ID_NECRO_DOLL ) {
+		necrop = 7
+	}
+	if ( cdata(CDATA_ID, necromancy_rc) == CREATURE_ID_DRAGON_ZOMBIE ) {
+		necrop = 8
+	}
+	if ( cdata(CDATA_ID, necromancy_rc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
+		necrop = 9
+	}
+	necrop2 = cdata(CDATA_FORM_SHIFT_PIC, necromancy_rc)
+	necrop3 = cdata(CDATA_CHARA_PIC, necromancy_rc)
+	flt
+	itemcreate necromancy_return_index, ITEM_ID_COFFIN_OF_NECROMANCY, necromancy_return_locx, necromancy_return_locy, necromancy_return_count
+	inv(INV_ITEM_PARAM1, ci) = necrop
+	inv(INV_ITEM_PARAM2, ci) = necrop2
+	inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
+	inv(INV_ITEM_CHARGE, ci) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + inv(INV_ITEM_PARAM3, ci) * necromancy_return_charge
+	if ( necromancy_return_charge == 6666 ) { 
+		inv(INV_ITEM_CHARGE, ci) = 6666
+	}
+	inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+	inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
+	inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+	necromancyParam2Fix ci
+	if ( necromancy_returnmode == "DDCemetery" ) { // Close DD cemetery file after it's done.
+		invfile = ITEM_ROLE_FILE_DD_CEMETERY_KEY
+		file = "shop" + ITEM_ROLE_FILE_DD_CEMETERY_KEY + ".s2"
+		fmode = 4
+		gosub *game_ctrlFile
+		file = "shoptmp.s2"
+		fmode = 3
+		gosub *game_ctrlFile
+		mode = MODELIST_MAIN
+	}
+	// dialog "Necro to Coffin: " + necromancy_returnmode + "\nrc:" + rc + "\nci:" + ci
+	chara_vanquish necromancy_rc
+	return
+
+#deffunc necromancyCoffinToZombie int necromancy_ciorg, str necromancy_returnmode
+	necromancy_ci = necromancy_ciorg
+	if ( necromancy_returnmode == "inventory" ) {
+		necromancy_inv = 1
+		item_find ITEM_ID_COFFIN_OF_NECROMANCY, 5, necromancy_inv
+		if ( stat != (-1) ) {
+			necromancy_ci = stat
+		}
+	}
+	if ( necromancy_ci < 0 ) {
+		return
+	}
+	if ( get_freeallyne() == 0 ) {
+		return
+	}
+	p = CREATURE_ID_CAT_ZOMBIE
+	if ( inv(INV_ITEM_PARAM1, necromancy_ci) == 3 ) {
+		p = CREATURE_ID_ZOMBIE
+	}
+	if ( inv(INV_ITEM_PARAM1, necromancy_ci) == 4 ) {
+		p = CREATURE_ID_MUMMY
+	}
+	if ( inv(INV_ITEM_PARAM1, necromancy_ci) == 5 ) {
+		p = CREATURE_ID_SKELETON_WARRIOR
+	}
+	if ( inv(INV_ITEM_PARAM1, necromancy_ci) == 6 ) {
+		p = CREATURE_ID_LICH
+	}
+	if ( inv(INV_ITEM_PARAM1, necromancy_ci) == 7 ) {
+		p = CREATURE_ID_NECRO_DOLL
+	}
+	if ( inv(INV_ITEM_PARAM1, necromancy_ci) == 8 ) {
+		p = CREATURE_ID_DRAGON_ZOMBIE
+	}
+	if ( inv(INV_ITEM_PARAM1, necromancy_ci) == 9 ) {
+		p = CREATURE_ID_DEAD_EYES_BLOOD_DRAGON
+	}
+	necrop2 = inv(INV_ITEM_PARAM2, necromancy_ci)
+	necrop3 = (inv(INV_ITEM_CHARA_PIC, necromancy_ci) == xy2pic(1, 0))
+	necrolv = (sdata(SKILL_NORMAL_ANATOMY, CHARA_PLAYER) + sdata(SKILL_NORMAL_ALCHEMY, CHARA_PLAYER)) * (inv(INV_ITEM_PARAM1, necromancy_ci) + 5) / 14
+	if ( necrolv > gdata(GDATA_DEEPEST_LEVEL) * 3 / 2 ) {
+		necrolv = gdata(GDATA_DEEPEST_LEVEL) * 3 / 2
+	}
+	if ( inv(INV_ITEM_PARAM2, necromancy_ci) != 0 ) {
+		necrolv += 5
+	}
+	inv(INV_ITEM_NUM, necromancy_ci)--
+	hitugi = 100
+	placefail = 0
+	flt
+	initlv = necrolv
+	novoidlv = 1
+	fixlv = FIX_QUALITY_GOOD
+	characreate -1, p, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
+	cdata(CDATA_RELATION, rc) = 10
+	cdata(CDATA_RELATION_ORG, rc) = 10
+	cbitmod CHARA_BIT_NECRO, rc, 1
+	cdata(CDATA_FORM_SHIFT_PIC, rc) = necrop2
+	cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
+	if ( necrop3 == 0 ) {
+		if ( necrop2 >= 1800 ) {
+			cdata(CDATA_PIC, rc) = necrop2
+		}
+		if ( necrop2 >= 12000 & necrop2 < 18000 ) {
+			cdata(CDATA_PIC, rc) = necrop2 - 12000
+		}
+	}
+	else {
+		if ( necrop2 >= 2800 ) {
+			cdata(CDATA_PIC, rc) = necrop2
+			cdata(CDATA_CHARA_PIC, rc) = xy2pic(1, 0)
+		}
+		if ( necrop2 > 13000 & necrop2 < 19000 ) {
+			cdata(CDATA_PIC, rc) = necrop2 - 13000
+			cdata(CDATA_CHARA_PIC, rc) = xy2pic(1, 0)
+		}
+	}
+	necrop2 = 0
+	// dialog "Coffin to Necro: " + necromancy_returnmode + "\nrc:" + rc + "\nci:" + necromancy_ci  + "\ncdata(CDATA_X,rc):" + cdata(CDATA_X,rc) + "\ncdata(CDATA_Y,rc):" + cdata(CDATA_Y,rc)
+	hitugi = 0
+	if ( cdata(CDATA_EXIST, rc) == CHAR_STATE_DEAD ) {
+		necromancyZombieToCoffin rc, "fail"
+		return
+	}
+	if ( necromancy_returnmode == "coffin" ) {
+		snd SOUNDLIST_CURSE3
+		txt lang("闇と共に棺からアンデッドが這いずり出てきた。", "An undead monster creeps out from the coffin.")
+		if ( spact(SKILL_SPACT_NECRO_FORCE - STARTING_SKILL_SPACT) == 0 ) {
+			spact(SKILL_SPACT_NECRO_FORCE - STARTING_SKILL_SPACT) = 1
+			txtmore
+			txtef COLOR_YELLOW
+			txt lang("あなたは「" + skillname(SKILL_SPACT_NECRO_FORCE) + "」の能力を得た。", "You have learned a new ability, " + skillname(SKILL_SPACT_NECRO_FORCE) + ".")
+		}
+	}
+	if ( necromancy_returnmode == "inventory" ) {
+		if ( get_freeallyne() ) {
+			necromancyCoffinToZombie -1, "inventory"
+			return
+		}
+	}
+	return
+/********** JAMES CUSTOM - ENDING **********/

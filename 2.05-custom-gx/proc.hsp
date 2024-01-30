@@ -18985,19 +18985,12 @@
 			if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 ) {
 				continue
 			}
-			if ( cbit(CHARA_BIT_SHADOW_CLONE, tc) == TRUE ) {
-				continue
-			}
-			if ( cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE ) {
-				if ( tc >= MAX_CHARA_FOLLOWER ) {
-					if ( cbit(CHARA_BIT_NECRO, tc) == TRUE ) {
-						addbuff tc, BUFF_GRAVITY_ACCEL, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_WIL, CHARA_PLAYER)) / 4 + 1, 50
-						addbuff tc, BUFF_SPEED, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_WIL, CHARA_PLAYER)) / 2 + 1, 50
-						addbuff tc, BUFF_BOOST, 20, 50
-						nelv = cdata(CDATA_MAX_SP, CHARA_PLAYER) / 20 + 1
-						skillexp SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER, 100
-					}
-				}
+			if ( charaIsNecromancyZombie(tc) ) {
+				addbuff tc, BUFF_GRAVITY_ACCEL, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_WIL, CHARA_PLAYER)) / 4 + 1, 50
+				addbuff tc, BUFF_SPEED, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_WIL, CHARA_PLAYER)) / 2 + 1, 50
+				addbuff tc, BUFF_BOOST, 20, 50
+				nelv = cdata(CDATA_MAX_SP, CHARA_PLAYER) / 20 + 1
+				skillexp SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER, 100
 			}
 		loop
 		dmgsp CHARA_PLAYER, nelv
@@ -19077,95 +19070,32 @@
 				if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 ) {
 					continue
 				}
-				if ( cbit(CHARA_BIT_SHADOW_CLONE, tc) == TRUE ) {
-					continue
-				}
-				if ( cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE ) {
-					if ( tc >= MAX_CHARA_FOLLOWER ) {
-						if ( cbit(CHARA_BIT_NECRO, tc) == TRUE ) {
-							if ( rtval == 1 ) {
-								necrop = 0
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_CAT_ZOMBIE ) {
-									necrop = 2
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_ZOMBIE ) {
-									necrop = 3
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_MUMMY ) {
-									necrop = 4
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_SKELETON_WARRIOR ) {
-									necrop = 5
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_LICH ) {
-									necrop = 6
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_NECRO_DOLL ) {
-									necrop = 7
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_DRAGON_ZOMBIE ) {
-									necrop = 8
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-									necrop = 9
-								}
-								necrop3 = cdata(CDATA_CHARA_PIC, tc)
-								if ( necrop != 0 ) {
-									txt lang(name(tc) + "を棺に戻した。", "You push " + name(tc) + " back into the coffin.")
-									flt
-									itemcreate -1, ITEM_ID_COFFIN_OF_NECROMANCY, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0
-									inv(INV_ITEM_PARAM1, ci) = necrop
-									inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, tc)
-									inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
-									inv(INV_ITEM_CHARGE, ci) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + inv(INV_ITEM_PARAM3, ci)
-									inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
-									inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
-									inv(INV_ITEM_CHARA_PIC, ci) = necrop3
-									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
-										inv(INV_ITEM_PARAM2, ci) = 0
-									}
-									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
-										inv(INV_ITEM_PARAM2, ci) = 0
-									}
-									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
-										inv(INV_ITEM_PARAM2, ci) = 0
-									}
-									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
-										inv(INV_ITEM_PARAM2, ci) = 0
-									}
-									if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
-										inv(INV_ITEM_PARAM2, ci) = 0
-									}
-									if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
-										inv(INV_ITEM_PARAM2, ci) = 0
-									}
-									chara_vanquish tc
-									gosub *screen_draw
-								}
-							}
-							if ( rtval == 2 ) {
-								addbuff tc, BUFF_CHAIN_OF_MANA, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_MAG, CHARA_PLAYER)) / 4 + 1, 100
-								cdata(CDATA_MP, CHARA_PLAYER) -= cdata(CDATA_LEVEL, tc) + cdata(CDATA_MAX_MP, CHARA_PLAYER) / 33 + 1
-								skillexp SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER, 100
-							}
-							if ( rtval == 3 ) {
-								addbuff tc, BUFF_FLAME_OF_LIFE, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_MAG, CHARA_PLAYER)) / 4 + 1, 100
-								cdata(CDATA_HP, CHARA_PLAYER) -= cdata(CDATA_LEVEL, tc) + cdata(CDATA_MAX_HP, CHARA_PLAYER) / 33 + 1
-								skillexp SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER, 100
-							}
-							if ( rtval == 4 ) {
-								if ( cdata(CDATA_NECRO_FORCE, tc) == 10 ) {
-									cdata(CDATA_NECRO_FORCE, tc) = 0
-									txt lang(name(tc) + "の眼が元に戻った。", name(tc) + "'s eyes come back to normal.")
-									continue
-								}
-								txtef COLOR_RED
-								txt lang(name(tc) + "の眼が不気味に光り出した。", name(tc) + "'s eyes began to shine omniously.")
-								cdata(CDATA_NECRO_FORCE, tc) = 10
-								cdata(CDATA_TARGET, tc) = cdata(CDATA_TARGET, cc)
-								cdata(CDATA_AI_AGGRO, tc) = 30
-							}
+				if ( charaIsNecromancyZombie(tc) ) {
+					if ( rtval == 1 ) {
+						necromancyZombieToCoffin tc, "push"
+						gosub *screen_draw
+					}
+					if ( rtval == 2 ) {
+						addbuff tc, BUFF_CHAIN_OF_MANA, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_MAG, CHARA_PLAYER)) / 4 + 1, 100
+						cdata(CDATA_MP, CHARA_PLAYER) -= cdata(CDATA_LEVEL, tc) + cdata(CDATA_MAX_MP, CHARA_PLAYER) / 33 + 1
+						skillexp SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER, 100
+					}
+					if ( rtval == 3 ) {
+						addbuff tc, BUFF_FLAME_OF_LIFE, (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + sdata(SKILL_ATTR_MAG, CHARA_PLAYER)) / 4 + 1, 100
+						cdata(CDATA_HP, CHARA_PLAYER) -= cdata(CDATA_LEVEL, tc) + cdata(CDATA_MAX_HP, CHARA_PLAYER) / 33 + 1
+						skillexp SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER, 100
+					}
+					if ( rtval == 4 ) {
+						if ( cdata(CDATA_NECRO_FORCE, tc) == 10 ) {
+							cdata(CDATA_NECRO_FORCE, tc) = 0
+							txt lang(name(tc) + "の眼が元に戻った。", name(tc) + "'s eyes come back to normal.")
+							continue
 						}
+						txtef COLOR_RED
+						txt lang(name(tc) + "の眼が不気味に光り出した。", name(tc) + "'s eyes began to shine omniously.")
+						cdata(CDATA_NECRO_FORCE, tc) = 10
+						cdata(CDATA_TARGET, tc) = cdata(CDATA_TARGET, cc)
+						cdata(CDATA_AI_AGGRO, tc) = 30
 					}
 				}
 			loop
@@ -19199,10 +19129,7 @@
 					if ( cdata(CDATA_ALLIED, cnt) == 100 ) {
 						continue
 					}
-					if ( cbit(CHARA_BIT_SHADOW_CLONE, cnt) == TRUE ) {
-						continue
-					}
-					if ( cbit(CHARA_BIT_NECRO, cnt) != TRUE ) {
+					if ( charaIsNecromancyZombie(cnt) != TRUE ) {
 						continue
 					}
 				}

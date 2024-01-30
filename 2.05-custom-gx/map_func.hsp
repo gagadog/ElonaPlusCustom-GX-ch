@@ -766,84 +766,8 @@
 	}
 	if ( gdata(GDATA_AREA) != AREA_PET_ARENA & gdata(GDATA_AREA) != AREA_ARENA ) {
 		if ( exgauge != 10 ) {
-			item_find ITEM_ID_DD_CEMETERY_KEY, 3, 1
-			if ( stat != (-1) ) {
-				cic = stat
-				if ( inv(INV_ITEM_NUM, cic) >= 1 ) {
-					repeat 15
-						item_find ITEM_ID_COFFIN_OF_NECROMANCY, 5, 1
-						if ( stat != (-1) ) {
-							ci = stat
-							if ( inv(INV_ITEM_NUM, ci) >= 1 ) {
-								p = CREATURE_ID_CAT_ZOMBIE
-								if ( inv(INV_ITEM_PARAM1, ci) == 3 ) {
-									p = CREATURE_ID_ZOMBIE
-								}
-								if ( inv(INV_ITEM_PARAM1, ci) == 4 ) {
-									p = CREATURE_ID_MUMMY
-								}
-								if ( inv(INV_ITEM_PARAM1, ci) == 5 ) {
-									p = CREATURE_ID_SKELETON_WARRIOR
-								}
-								if ( inv(INV_ITEM_PARAM1, ci) == 6 ) {
-									p = CREATURE_ID_LICH
-								}
-								if ( inv(INV_ITEM_PARAM1, ci) == 7 ) {
-									p = CREATURE_ID_NECRO_DOLL
-								}
-								if ( inv(INV_ITEM_PARAM1, ci) == 8 ) {
-									p = CREATURE_ID_DRAGON_ZOMBIE
-								}
-								if ( inv(INV_ITEM_PARAM1, ci) == 9 ) {
-									p = CREATURE_ID_DEAD_EYES_BLOOD_DRAGON
-								}
-								necrolv = (sdata(SKILL_NORMAL_ANATOMY, CHARA_PLAYER) + sdata(SKILL_NORMAL_ALCHEMY, CHARA_PLAYER)) * (inv(INV_ITEM_PARAM1, ci) + 5) / 14
-								if ( necrolv > gdata(GDATA_DEEPEST_LEVEL) * 3 / 2 ) {
-									necrolv = gdata(GDATA_DEEPEST_LEVEL) * 3 / 2
-								}
-								if ( inv(INV_ITEM_PARAM2, ci) != 0 ) {
-									necrolv += 5
-								}
-								necrop3 = 0
-								if ( inv(INV_ITEM_CHARA_PIC, ci) == xy2pic(1, 0) ) {
-									necrop3 = 1
-								}
-								necrop2 = inv(INV_ITEM_PARAM2, ci)
-								inv(INV_ITEM_NUM, ci)--
-								hitugi = 100
-								flt
-								initlv = necrolv
-								novoidlv = 1
-								fixlv = FIX_QUALITY_GOOD
-								characreate -1, p, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
-								cdata(CDATA_RELATION, rc) = 10
-								cdata(CDATA_RELATION_ORG, rc) = 10
-								cbitmod CHARA_BIT_NECRO, rc, 1
-								cdata(CDATA_FORM_SHIFT_PIC, rc) = necrop2
-								cdatan(CDATAN_NAME, rc) += " Lv" + cdata(CDATA_LEVEL, rc)
-								if ( necrop3 == 0 ) {
-									if ( necrop2 >= 1800 ) {
-										cdata(CDATA_PIC, rc) = necrop2
-									}
-									if ( necrop2 >= 12000 & necrop2 < 18000 ) {
-										cdata(CDATA_PIC, rc) = necrop2 - 12000
-									}
-								}
-								else {
-									if ( necrop2 >= 2800 ) {
-										cdata(CDATA_PIC, rc) = necrop2
-										cdata(CDATA_CHARA_PIC, rc) = xy2pic(1, 0)
-									}
-									if ( necrop2 > 13000 & necrop2 < 19000 ) {
-										cdata(CDATA_PIC, rc) = necrop2 - 13000
-										cdata(CDATA_CHARA_PIC, rc) = xy2pic(1, 0)
-									}
-								}
-								necrop2 = 0
-							}
-						}
-					loop
-				}
+			if ( necromancyHaveDDCemeteryKey() ) {
+				necromancyCoffinToZombie -1, "inventory"
 			}
 		}
 	}

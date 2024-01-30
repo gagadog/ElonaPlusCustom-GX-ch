@@ -525,14 +525,8 @@
 		if ( cnt != CHARA_PLAYER ) {
 			cdata(CDATA_CAN_REVIVE, cnt) = 1
 		}
-		if ( cbit(CHARA_BIT_LIVESTOCK, cnt) != TRUE ) {
-			if ( cbit(CHARA_BIT_SHADOW_CLONE, cnt) == TRUE ) {
-				if ( cnt >= 16 ) {
-					if ( cbit(CHARA_BIT_NECRO, cnt) == TRUE ) {
-						chara_vanquish cnt
-					}
-				}
-			}
+		if ( charaIsShadowhopSummon(cnt) ) {
+			chara_vanquish cnt
 		}
 		cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = 0
 		cbitmod CHARA_BIT_SHADOW_CLONE, cnt, FALSE
@@ -569,140 +563,20 @@
 	loop
 	gdata(GDATA_SENSE_OBJECT) = 0
 	gdata(GDATA_FLAG_DUEL_TARGET) = -1
-	item_find ITEM_ID_DD_CEMETERY_KEY, 3, 1
-	if ( stat != (-1) ) {
-		ci = stat
-		if ( inv(INV_ITEM_NUM, ci) >= 1 ) {
-			invfile = 9
-			file = "shoptmp.s2"
-			fmode = 4
-			gosub *game_ctrlFile
-			file = "shop" + 9 + ".s2"
-			existwrapper exedir + "tmp\\" + file
-			if ( strsize != (-1) ) {
-				fmode = 3
-				gosub *game_ctrlFile
+	if ( necromancyHaveDDCemeteryKey() ) {
+		repeat MAX_CHARA_TOTAL - MAX_CHARA_SAVE, MAX_CHARA_SAVE
+			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+				continue
 			}
-			else {
-				inv_getheader -1
-				repeat invrange, invhead
-					inv(INV_ITEM_NUM, cnt) = 0
-				loop
+			tc = cnt
+			if ( charaIsNecromancyZombie(tc) ) {
+				if ( inv_getspace(CHARA_PLAYER) != 0 ) {
+					necromancyZombieToCoffin tc, "inventory"
+				} else {
+					necromancyZombieToCoffin tc, "DDCemetery"
+				}
 			}
-			mode = MODELIST_SHOP
-			repeat MAX_CHARA_TOTAL
-				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
-					continue
-				}
-				if ( cnt == CHARA_PLAYER ) {
-					continue
-				}
-				tc = cnt
-				if ( cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE ) {
-					if ( cbit(CHARA_BIT_SHADOW_CLONE, tc) != TRUE ) {
-						if ( tc >= MAX_CHARA_FOLLOWER ) {
-							if ( cbit(CHARA_BIT_NECRO, tc) == TRUE ) {
-								necrop = 0
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_CAT_ZOMBIE ) {
-									necrop = 2
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_ZOMBIE ) {
-									necrop = 3
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_MUMMY ) {
-									necrop = 4
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_SKELETON_WARRIOR ) {
-									necrop = 5
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_LICH ) {
-									necrop = 6
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_NECRO_DOLL ) {
-									necrop = 7
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_DRAGON_ZOMBIE ) {
-									necrop = 8
-								}
-								if ( cdata(CDATA_ID, tc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-									necrop = 9
-								}
-								necrop3 = cdata(CDATA_CHARA_PIC, tc)
-								if ( necrop != 0 ) {
-									if ( inv_getspace(CHARA_PLAYER) != 0 ) {
-										flt
-										itemcreate 0, ITEM_ID_COFFIN_OF_NECROMANCY, -1, -1, 0
-										inv(INV_ITEM_PARAM1, ci) = necrop
-										inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, tc)
-										inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
-										inv(INV_ITEM_CHARGE, ci) = 6666
-										inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
-										inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
-										inv(INV_ITEM_CHARA_PIC, ci) = necrop3
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										item_stack CHARA_PLAYER, ci, 1
-									}
-									else {
-										flt
-										itemcreate -1, ITEM_ID_COFFIN_OF_NECROMANCY, -1, -1, 1
-										inv(INV_ITEM_PARAM1, ci) = necrop
-										inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, tc)
-										inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
-										inv(INV_ITEM_CHARGE, ci) = 6666
-										inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
-										inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
-										inv(INV_ITEM_CHARA_PIC, ci) = necrop3
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-										if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
-											inv(INV_ITEM_PARAM2, ci) = 0
-										}
-									}
-								}
-								chara_vanquish tc
-							}
-						}
-					}
-				}
-			loop
-			file = "shop" + invfile + ".s2"
-			fmode = 4
-			gosub *game_ctrlFile
-			file = "shoptmp.s2"
-			fmode = 3
-			gosub *game_ctrlFile
-			mode = MODELIST_MAIN
-		}
+		loop
 	}
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_SHOP & adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_RANCH & adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_CAMP ) {
 		adata(ADATA_SHOP_SALE_RESTRICTION, gdata(GDATA_AREA)) = 0

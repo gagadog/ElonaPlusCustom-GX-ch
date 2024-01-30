@@ -2077,40 +2077,7 @@
 		break
 	loop
 	if ( placefail == 1 ) {
-		if ( cdata(CDATA_ID, rc) == CREATURE_ID_CAT_ZOMBIE ) {
-			necrop = 2
-		}
-		if ( cdata(CDATA_ID, rc) == CREATURE_ID_ZOMBIE ) {
-			necrop = 3
-		}
-		if ( cdata(CDATA_ID, rc) == CREATURE_ID_MUMMY ) {
-			necrop = 4
-		}
-		if ( cdata(CDATA_ID, rc) == CREATURE_ID_SKELETON_WARRIOR ) {
-			necrop = 5
-		}
-		if ( cdata(CDATA_ID, rc) == CREATURE_ID_LICH ) {
-			necrop = 6
-		}
-		if ( cdata(CDATA_ID, rc) == CREATURE_ID_NECRO_DOLL ) {
-			necrop = 7
-		}
-		if ( cdata(CDATA_ID, rc) == CREATURE_ID_DRAGON_ZOMBIE ) {
-			necrop = 8
-		}
-		if ( cdata(CDATA_ID, rc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-			necrop = 9
-		}
-		necrop3 = cdata(CDATA_CHARA_PIC, rc)
-		flt
-		itemcreate 0, ITEM_ID_COFFIN_OF_NECROMANCY, -1, -1, 0
-		inv(INV_ITEM_PARAM1, ci) = necrop
-		inv(INV_ITEM_PARAM2, ci) = necrop2
-		inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
-		inv(INV_ITEM_CHARGE, ci) = 6666
-		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
-		inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
-		inv(INV_ITEM_CHARA_PIC, ci) = necrop3
+		// Return to coffin event moved inside necromancyCoffinToZombie
 		chara_vanquish rc
 	}
 	return

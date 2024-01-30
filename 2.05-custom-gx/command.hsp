@@ -5687,16 +5687,8 @@
 			promptAdd lang("自分をプレゼント", "Offer yourself as a gift"), "null", 15
 		}
 	}
-	if ( cdata(CDATA_ID, tc) == CREATURE_ID_CAT_ZOMBIE | cdata(CDATA_ID, tc) == CREATURE_ID_ZOMBIE | cdata(CDATA_ID, tc) == CREATURE_ID_MUMMY | cdata(CDATA_ID, tc) == CREATURE_ID_SKELETON_WARRIOR | cdata(CDATA_ID, tc) == CREATURE_ID_LICH | cdata(CDATA_ID, tc) == CREATURE_ID_NECRO_DOLL | cdata(CDATA_ID, tc) == CREATURE_ID_DRAGON_ZOMBIE | cdata(CDATA_ID, tc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-		if ( cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE ) {
-			if ( cbit(CHARA_BIT_SHADOW_CLONE, tc) != TRUE ) {
-				if ( tc >= MAX_CHARA_FOLLOWER ) {
-					if ( cbit(CHARA_BIT_NECRO, tc) == TRUE ) {
-						promptAdd lang("棺に戻す", "Return to the coffin"), "null", 13
-					}
-				}
-			}
-		}
+	if ( charaIsNecromancyZombie(tc) ) {
+		promptAdd lang("棺に戻す", "Return to the coffin"), "null", 13
 	}
 
 	/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Add option to collect materials from all pets at once.
@@ -6466,61 +6458,7 @@
 		gdata(GDATA_FLAG_CAN_RECEIVE_CHOCOLATE) = 0
 	}
 	if ( p == 13 ) {
-		if ( cdata(CDATA_ID, tc) == CREATURE_ID_CAT_ZOMBIE ) {
-			necrop = 2
-		}
-		if ( cdata(CDATA_ID, tc) == CREATURE_ID_ZOMBIE ) {
-			necrop = 3
-		}
-		if ( cdata(CDATA_ID, tc) == CREATURE_ID_MUMMY ) {
-			necrop = 4
-		}
-		if ( cdata(CDATA_ID, tc) == CREATURE_ID_SKELETON_WARRIOR ) {
-			necrop = 5
-		}
-		if ( cdata(CDATA_ID, tc) == CREATURE_ID_LICH ) {
-			necrop = 6
-		}
-		if ( cdata(CDATA_ID, tc) == CREATURE_ID_NECRO_DOLL ) {
-			necrop = 7
-		}
-		if ( cdata(CDATA_ID, tc) == CREATURE_ID_DRAGON_ZOMBIE ) {
-			necrop = 8
-		}
-		if ( cdata(CDATA_ID, tc) == CREATURE_ID_DEAD_EYES_BLOOD_DRAGON ) {
-			necrop = 9
-		}
-		necrop3 = cdata(CDATA_CHARA_PIC, tc)
-		txt lang(name(tc) + "を棺に戻した。", "You push " + name(tc) + " into the coffin.")
-		flt
-		itemcreate -1, ITEM_ID_COFFIN_OF_NECROMANCY, cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 0
-		inv(INV_ITEM_PARAM1, ci) = necrop
-		inv(INV_ITEM_PARAM2, ci) = cdata(CDATA_FORM_SHIFT_PIC, tc)
-		inv(INV_ITEM_WEIGHT, ci) += necrop * 1000
-		inv(INV_ITEM_CHARGE, ci) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + inv(INV_ITEM_PARAM3, ci)
-		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
-		inv(INV_ITEM_KNOWN, ci) = ITEM_KNOWN_NECRO
-		inv(INV_ITEM_CHARA_PIC, ci) = necrop3
-		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BONE ) {
-			inv(INV_ITEM_PARAM2, ci) = 0
-		}
-		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_HEART ) {
-			inv(INV_ITEM_PARAM2, ci) = 0
-		}
-		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_EYE ) {
-			inv(INV_ITEM_PARAM2, ci) = 0
-		}
-		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_BLOOD ) {
-			inv(INV_ITEM_PARAM2, ci) = 0
-		}
-		if ( inv(INV_ITEM_PARAM2, ci) == ITEM_ID_SKIN ) {
-			inv(INV_ITEM_PARAM2, ci) = 0
-		}
-		if ( inv(INV_ITEM_PARAM2, ci) >= 18000 ) {
-			inv(INV_ITEM_PARAM2, ci) = 0
-		}
-		snd SOUNDLIST_CURSE3
-		chara_vanquish tc
+		necromancyZombieToCoffin tc, "push"
 		gosub *screen_draw
 		goto *pc_turn
 	}
