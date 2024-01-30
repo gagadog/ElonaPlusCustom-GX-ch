@@ -11364,20 +11364,12 @@
 			txt_nothinghappens
 			goto *act_use_SWEND1
 		}
-		np = 0
-		repeat MAX_CHARA_TOTAL
-			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
-				continue
-			}
-			if ( cdata(CDATA_RELATION, cnt) == 10 ) {
-				np++
-			}
-		loop
-		if ( np > 15 ) {
+		if ( get_freeallysum() > 15 ) {
 			txt lang("これ以上は同時に使役できない。", "You can not control more than 15 monsters.")
 			goto *act_use_SWEND1
 		}
 		necromancyCoffinToZombie ci, "coffin"
+		cell_refresh cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
 		goto *act_use_SWEND1
 	}
 	if ( _switch_val == EFFECT_DD_CEMETERY_KEY | _switch_sw ) {

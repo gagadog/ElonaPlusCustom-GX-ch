@@ -578,7 +578,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 44
+    listmax = 45
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -632,7 +632,8 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 40) = "Enable loot in Moongate/Rune maps." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_MOONGATE_LOOT)
 	listn(0, 41) = "Increase mob density in Random Nefias:" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY) + "% increase."
 	listn(0, 42) = "Enable Noa's unused gathering text adventure." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GATHER_TEXT_ADVENTURE)
-	listn(0, 43) = "Go back."
+	listn(0, 43) = "Necromancy zombies goes inside DD-Cemetry when they die." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NECROMANCY_DD_AUTOSTORE)
+	listn(0, 44) = "Go back."
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -786,6 +787,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 				s = "Enable the unused text adventure made by Noa. \nThis affects the material-spot gathering mechanics. \nMaterial/EXP gain is increased compare to Vanilla. \nBut lowered compared to Plus (If your skill is insufficient.)"
 			}
 			if ( p == 43 ) {
+				s = "Necromancy zombies goes into DD-Cemetery when they return.\nThis only activates if you are holding a DD-Cemetery Key.\nThis includes: Pushback/Undead-Return/Killed/Necro-Fusion/Placement-Failure.\nAlso gives Necro-Force a Summon-From-DD-Cemetery option."
+			}
+			if ( p == 44 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1033,6 +1037,11 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		gosub *ToggleTweak
 	}
 	if ( p == 43 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_NECROMANCY_DD_AUTOSTORE
+		gosub *ToggleTweak
+	}
+	if ( p == 44 ) {
 		snd SOUNDLIST_OK1
 		return
 	}

@@ -767,7 +767,15 @@
 	if ( gdata(GDATA_AREA) != AREA_PET_ARENA & gdata(GDATA_AREA) != AREA_ARENA ) {
 		if ( exgauge != 10 ) {
 			if ( necromancyHaveDDCemeteryKey() ) {
-				necromancyCoffinToZombie -1, "inventory"
+				repeat 15
+					item_find ITEM_ID_COFFIN_OF_NECROMANCY, 5, 1
+					if ( stat != (-1) ) {
+						ci = stat
+						if ( inv(INV_ITEM_NUM, ci) >= 1 ) {
+							necromancyCoffinToZombie ci, "inventory"
+						}
+					}
+				loop
 			}
 		}
 	}

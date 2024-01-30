@@ -1344,27 +1344,20 @@
 	locvar_get_freeally_np = 0
 	return locvar_get_freechara_f
 
-/********** JAMES CUSTOM - CNPC SUMMON - BEGINNING **********/
+/********** JAMES CUSTOM - BEGINNING **********/
+// Used by necromancy and CNPC summoning.
 #defcfunc get_freeallysum
 	locvar_get_freeally_np = 0
-	repeat MAX_CHARA_TOTAL
+	repeat 245
 		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 			continue
 		}
-		if ( cnt == CHARA_PLAYER ) {
-			continue
-		}
-		if ( cnt < MAX_CHARA_FOLLOWER ) {
+		if ( cdata(CDATA_RELATION, cnt) == RELATION_ALLY ) {
 			locvar_get_freeally_np++
-		}
-		if ( cbit(CHARA_BIT_LIVESTOCK, cnt) != 1 ) {
-			if ( cbit(CHARA_BIT_NECRO, cnt) == 1 ) {
-				locvar_get_freeally_np++
-			}
 		}
 	loop
 	return locvar_get_freeally_np
-/********** JAMES CUSTOM - CNPC SUMMON - ENDING **********/
+/********** JAMES CUSTOM - ENDING **********/
 
 #deffunc del_chara int del_chara_arg1
 	if ( gdata(STARTING_GDATA_FLAG + 301) == 0 ) {

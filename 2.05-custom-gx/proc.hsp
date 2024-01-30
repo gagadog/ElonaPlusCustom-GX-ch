@@ -19004,6 +19004,13 @@
 			repeat 6
 				promptAdd s(cnt), key_select(cnt)
 			loop
+
+			/********** JAMES CUSTOM - BEGINNING *********/
+			if ( necromancyHaveDDCemeteryKey() & TweakData(TWEAK_GAMEPLAY_NECROMANCY_DD_AUTOSTORE, TWEAK_CATEGORY_GAMEPLAY) > 0 ) {
+				promptAdd lang("異界墓地アンデッド召喚", "Undead Summon"), "null", 6666
+			}
+			/********** JAMES CUSTOM - ENDING **********/
+
 			val = promptx, prompty, 250, 1
 			gosub *prompt_key
 			if ( stat == 0 | rtval == 0 ) {
@@ -19035,6 +19042,70 @@
 				txtef COLOR_YELLOW
 				txt lang(" *コールアンデッド*　", " *Convocation* ")
 			}
+			/********** JAMES CUSTOM - BEGINNING *********/
+			if ( rtval == 6666 ) {
+				locvar_necromancy_ti = inv_getspace(CHARA_PLAYER)
+				if ( necromancyHaveDDCemeteryKey() & locvar_necromancy_ti != 0 ) {
+					// Save current map inventory and open key.
+					file = "shoptmp.s2"
+					fmode = 4
+					gosub *game_ctrlFile
+					invfile = ITEM_ROLE_FILE_DD_CEMETERY_KEY
+					file = "shop" + ITEM_ROLE_FILE_DD_CEMETERY_KEY + ".s2"
+					existwrapper exedir + "tmp\\" + file
+					if ( strsize != (-1) ) {
+						fmode = 3
+						gosub *game_ctrlFile
+					}
+					else {
+						inv_getheader -1
+						repeat invrange, invhead
+							inv(INV_ITEM_NUM, cnt) = 0
+						loop
+					}
+					mode = MODELIST_SHOP
+
+					// Find a random coffin that is summonable.
+					inv_getheader -1
+					locvar_necromancy_ci = -1
+					locvar_necromancy_count = 0
+					repeat invrange, invhead
+						if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_COFFIN_OF_NECROMANCY & inv(INV_ITEM_NUM, cnt) > 0 ) {
+							if ( inv(INV_ITEM_CHARGE, cnt) <= gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 ) {
+								locvar_necromancy_count++
+								if ( rnd(locvar_necromancy_count) == 0 ) {
+									locvar_necromancy_ci = cnt
+								}
+							}
+						}
+					loop
+					// Copy the item to player inventory. (Summoning before map load inventory can have issues.)
+					if ( locvar_necromancy_ci != (-1) ) {
+						item_copy locvar_necromancy_ci, locvar_necromancy_ti
+						inv(INV_ITEM_NUM, locvar_necromancy_ci)--
+						inv(INV_ITEM_NUM, locvar_necromancy_ti) = 1
+						inv(INV_ITEM_X, locvar_necromancy_ti) = cdata(CDATA_X, CHARA_PLAYER)
+						inv(INV_ITEM_Y, locvar_necromancy_ti) = cdata(CDATA_Y, CHARA_PLAYER)
+						locvar_necromancy_ci = locvar_necromancy_ti
+					}
+					
+					invfile = ITEM_ROLE_FILE_DD_CEMETERY_KEY
+					file = "shop" + ITEM_ROLE_FILE_DD_CEMETERY_KEY + ".s2"
+					fmode = 4
+					gosub *game_ctrlFile
+					file = "shoptmp.s2"
+					fmode = 3
+					gosub *game_ctrlFile
+					mode = MODELIST_MAIN
+					
+					// Put the zombie out.
+					if ( locvar_necromancy_ci != (-1) ) {
+						necromancyCoffinToZombie locvar_necromancy_ci, "coffin"
+						cell_refresh cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER)
+					}
+				}
+			}
+			/********** JAMES CUSTOM - ENDING **********/
 			if ( rtval == 5 ) {
 				snd SOUNDLIST_CURSE3
 				repeat MAX_CHARA_TOTAL
