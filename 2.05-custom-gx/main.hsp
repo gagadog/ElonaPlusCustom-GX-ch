@@ -2917,14 +2917,7 @@
 			}
 		}
 	}
-	if ( cbit(CHARA_BIT_INVISIBLE, cdata(CDATA_TARGET, CHARA_PLAYER)) == 1 ) {
-		if ( cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 ) {
-			if ( cdata(CDATA_CONDITION_WET, cdata(CDATA_TARGET, CHARA_PLAYER)) == 0 ) {
-				cdata(CDATA_TARGET, CHARA_PLAYER) = 0
-			}
-		}
-	}
-	if ( cdata(CDATA_ROW_ACT, cdata(CDATA_TARGET, CHARA_PLAYER)) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, cdata(CDATA_TARGET, CHARA_PLAYER)) == ACTION_DIVING_DRILL ) {
+	if ( charaIsVisible(cdata(CDATA_TARGET, CHARA_PLAYER)) == 0 ) {
 		cdata(CDATA_TARGET, CHARA_PLAYER) = 0
 	}
 	t = 1

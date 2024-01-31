@@ -516,7 +516,7 @@
 			if ( cdata(CDATA_IMPRESSION, cnt) < 150 ) {
 				continue
 			}
-			if ( cbit(CHARA_BIT_INVISIBLE, cnt) == 1 & cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, cnt) == 0 ) {
+			if ( charaIsVisible(cnt) == 0 ) {
 				continue
 			}
 			if ( sdata(SKILL_NORMAL_COOKING, cnt) < 1 ) {
@@ -574,7 +574,7 @@
 				if ( cdata(CDATA_IMPRESSION, cnt) < 150 ) {
 					continue
 				}
-				if ( cbit(CHARA_BIT_INVISIBLE, cnt) == 1 & cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, cnt) == 0 ) {
+				if ( charaIsVisible(cnt) == 0 ) {
 					continue
 				}
 				if ( sdata(SKILL_NORMAL_COOKING, cnt) < 1 ) {
@@ -656,7 +656,7 @@
 			if ( cdata(CDATA_IMPRESSION, cnt) < 200 ) {
 				continue
 			}
-			if ( cbit(CHARA_BIT_INVISIBLE, cnt) == 1 & cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, cnt) == 0 ) {
+			if ( charaIsVisible(cnt) == 0 ) {
 				continue
 			}
 			if ( sdata(SKILL_NORMAL_CARPENTRY, cnt) < 1 ) {
@@ -697,7 +697,7 @@
 			if ( cdata(CDATA_IMPRESSION, cnt) < 200 ) {
 				continue
 			}
-			if ( cbit(CHARA_BIT_INVISIBLE, cnt) == 1 & cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, cnt) == 0 ) {
+			if ( charaIsVisible(cnt) == 0 ) {
 				continue
 			}
 			if ( cnt == tc ) {
@@ -791,7 +791,7 @@
 			if ( cdata(CDATA_IMPRESSION, cnt) < 200 ) {
 				continue
 			}
-			if ( cbit(CHARA_BIT_INVISIBLE, cnt) == 1 & cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, cnt) == 0 ) {
+			if ( charaIsVisible(cnt) == 0 ) {
 				continue
 			}
 			if ( sdata(SKILL_NORMAL_TAILORING, cnt) < 1 ) {
@@ -832,7 +832,7 @@
 			if ( cdata(CDATA_IMPRESSION, cnt) < 200 ) {
 				continue
 			}
-			if ( cbit(CHARA_BIT_INVISIBLE, cnt) == 1 & cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, cnt) == 0 ) {
+			if ( charaIsVisible(cnt) == 0 ) {
 				continue
 			}
 			if ( cnt == tc ) {

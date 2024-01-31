@@ -447,6 +447,9 @@
 		list(0, listmax) = cnt, cdata(CDATA_VOTES_RECEIVED, cnt)
 		listmax++
 	loop
+	if ( mdata(MDATA_WEREWOLF_STAGE) == 1 ) { // JAMES CUSTOM - Werewolves have bigger IDs, so sort the list.
+		gosub *sort_list
+	} 
 	mdata(MDATA_WEREWOLF_STAGE) = 2
 	if ( gdata(GDATA_NEXT_VOTE) > gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 ) {
 		comctrl = 0

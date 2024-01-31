@@ -7809,7 +7809,7 @@
 	return FALSE
 
 #defcfunc charaIsVisible int charaIsVisible_charidx
-	if ( charaIsVisible_charidx < 0 | charaIsVisible_charidx >= MAX_CHARA_TOTAL) {
+	if ( charaIsVisible_charidx < 0 | charaIsVisible_charidx >= MAX_CHARA_TOTAL | cdata(CDATA_CONDITION_BLIND, CHARA_PLAYER) > 0 ) {
 		return 0
 	}
 	if ( cbit(CHARA_BIT_INVISIBLE, charaIsVisible_charidx) == 1 ) {

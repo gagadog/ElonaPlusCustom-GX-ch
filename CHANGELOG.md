@@ -4,13 +4,14 @@
 - Added slot machine minigame for slot machines.
 - Added a tweak to enable Noa's material gathering minigame.
 - Added a tweak to increase random Nefia monster density.
+- Added a tweak to return Necromancy Coffins into DD-Cemetery automatically.
 - Added pop-up and text for AP-gains.
 
 # Changed
 - Player's tag-team partner now scroll as well, tag-team partner is drawn behind tag leader.
 - Combined Item-mark set and Item-mark adjust together. Setting item mark immediately enters edit mode.
 - Werewolves are no longer renamed outside of towns.
-
+- Town NPC no longer have HP/power-level shown when 'l'ooking at them.
 - Custom AI changes:
   - Added "Enemy" Target entity, it now uses a target list like "ally"
   - Added "Count" condition, always uses the target list of previous line. 

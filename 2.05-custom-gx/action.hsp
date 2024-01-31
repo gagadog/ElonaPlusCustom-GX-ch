@@ -1870,12 +1870,8 @@
 				if ( findbuff(CHARA_PLAYER, BUFF_HYPER_DASH) != (-1) ) {
 					if ( cdata(CDATA_ROW_ACT, cnt) != ACTION_JUMPING_DROP & cdata(CDATA_ROW_ACT, cnt) != ACTION_DIVING_DRILL ) {
 						cdata(CDATA_TARGET, CHARA_PLAYER) = tc
-						if ( cbit(CHARA_BIT_INVISIBLE, tc) == 1 ) {
-							if ( cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 ) {
-								if ( cdata(CDATA_CONDITION_WET, tc) == 0 ) {
-									cdata(CDATA_TARGET, CHARA_PLAYER) = 0
-								}
-							}
+						if ( charaIsVisible(tc) == 0 ) {
+							cdata(CDATA_TARGET, CHARA_PLAYER) = 0
 						}
 						if ( cfg_scroll ) {
 							cdata(CDATA_X_NEW, CHARA_PLAYER) = cdata(CDATA_X, tc)
@@ -1908,14 +1904,7 @@
 		}
 		if ( cdata(CDATA_RELATION, tc) <= (-1) ) {
 			cdata(CDATA_TARGET, CHARA_PLAYER) = tc
-			if ( cbit(CHARA_BIT_INVISIBLE, tc) == 1 ) {
-				if ( cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 ) {
-					if ( cdata(CDATA_CONDITION_WET, tc) == 0 ) {
-						cdata(CDATA_TARGET, CHARA_PLAYER) = 0
-					}
-				}
-			}
-			if ( cdata(CDATA_ROW_ACT, tc) == ACTION_JUMPING_DROP | cdata(CDATA_ROW_ACT, tc) == ACTION_DIVING_DRILL ) {
+			if ( charaIsVisible(tc) == 0 ) {
 				cdata(CDATA_TARGET, CHARA_PLAYER) = 0
 			}
 			if ( keybd_attacking == 0 ) {

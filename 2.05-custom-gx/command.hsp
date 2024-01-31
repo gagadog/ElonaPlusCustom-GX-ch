@@ -92,7 +92,7 @@
 	}
 	if ( map(txttargetnpc_arg1, txttargetnpc_arg2, 1) != 0 ) {
 		locvar_txttargetnpc_i = map(txttargetnpc_arg1, txttargetnpc_arg2, 1) - 1
-		if ( cbit(CHARA_BIT_INVISIBLE, locvar_txttargetnpc_i) == 0 | cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) | cdata(CDATA_CONDITION_WET, locvar_txttargetnpc_i) & cdata(CDATA_ROW_ACT, locvar_txttargetnpc_i) != ACTION_JUMPING_DROP & cdata(CDATA_ROW_ACT, locvar_txttargetnpc_i) != ACTION_DIVING_DRILL ) {
+        if ( charaIsVisible(locvar_txttargetnpc_i) ) {
 			tc = locvar_txttargetnpc_i
 			txttargetlevel
 			color 0, 0, 0
@@ -136,14 +136,16 @@
 			/********** JAMES CUSTOM - ENDING **********/
 			if ( cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i) > 0 ) {
 				/********** JAMES CUSTOM - BEGINNING **********/ // more status display
-				color 0, 0, 0
-				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
-				locvar_txttargetnpc_dy++
-				bmes "" + name(cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)) + ": " + cdata(CDATA_HP, cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)) + "/" + cdata(CDATA_MAX_HP, cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)), 255, 2552, 255
-				color 0, 0, 0
-				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
-				locvar_txttargetnpc_dy++
-				bmes "" + name(locvar_txttargetnpc_i) + ": " + cdata(CDATA_HP, locvar_txttargetnpc_i) + "/" + cdata(CDATA_MAX_HP, locvar_txttargetnpc_i), 255, 2552, 255
+				if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE ) {
+					color 0, 0, 0
+					pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+					locvar_txttargetnpc_dy++
+					bmes "" + name(cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)) + ": " + cdata(CDATA_HP, cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)) + "/" + cdata(CDATA_MAX_HP, cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i)), 255, 2552, 255
+					color 0, 0, 0
+					pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+					locvar_txttargetnpc_dy++
+					bmes "" + name(locvar_txttargetnpc_i) + ": " + cdata(CDATA_HP, locvar_txttargetnpc_i) + "/" + cdata(CDATA_MAX_HP, locvar_txttargetnpc_i), 255, 2552, 255
+				}
 				/********** JAMES CUSTOM - ENDING **********/
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
@@ -152,10 +154,12 @@
 			}
 			else {
 				/********** JAMES CUSTOM - BEGINNING **********/ // more status display
-				color 0, 0, 0
-				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
-				locvar_txttargetnpc_dy++
-				bmes "" + name(locvar_txttargetnpc_i) + ": " + cdata(CDATA_HP, locvar_txttargetnpc_i) + "/" + cdata(CDATA_MAX_HP, locvar_txttargetnpc_i), 255, 2552, 255
+				if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE ) {
+					color 0, 0, 0
+					pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+					locvar_txttargetnpc_dy++
+					bmes "" + name(locvar_txttargetnpc_i) + ": " + cdata(CDATA_HP, locvar_txttargetnpc_i) + "/" + cdata(CDATA_MAX_HP, locvar_txttargetnpc_i), 255, 2552, 255
+				}
 				/********** JAMES CUSTOM - ENDING **********/
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
@@ -519,7 +523,7 @@
 			if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, rc), cdata(CDATA_Y, rc)) == 0 ) {
 				break
 			}
-			if ( cbit(CHARA_BIT_INVISIBLE, rc) == FALSE | cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) | cdata(CDATA_CONDITION_WET, rc) & cdata(CDATA_ROW_ACT, rc) != ACTION_JUMPING_DROP & cdata(CDATA_ROW_ACT, rc) != ACTION_DIVING_DRILL == 0 ) {
+			if ( charaIsVisible(rc) ) {
 				break
 			}
 			get_route cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, rc), cdata(CDATA_Y, rc)

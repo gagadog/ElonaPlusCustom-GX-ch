@@ -245,6 +245,47 @@
 	return "?"
 
 #deffunc txttargetlevel
+	/********** JAMES CUSTOM - BEGINNING **********/ // Werewolf anti-cheat, also flavor
+	if ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN | mdata(MDATA_TYPE) == MAP_TYPE_VILLAGE ) {
+		s = lang("相手が市民は。", cnven(he(tc, 1)) + " " + is(tc) + " a lawful citizen of this peaceful town.")
+		if ( cdata(CDATA_ROLE, tc) >= 5 & cdata(CDATA_ROLE, tc) <= 30 ) {
+			s = lang("相手がサービスを提供する人である。", cnven(he(tc, 1)) + " " + is(tc) + " a hard-working citizen who provides specialty services.")
+		}
+		if ( cdata(CDATA_ROLE, tc) == ROLE_ADVENTURER ) {
+			s = lang("相手が冒険者は。", cnven(he(tc, 1)) + " " + is(tc) + " a fellow adventurer.")
+		}
+		if ( cdata(CDATA_ROLE, tc) == ROLE_GUARD | cdata(CDATA_ROLE, tc) == ROLE_BOUNTY_HUNTER | cdata(CDATA_ID, tc) == CREATURE_ID_CLEANER ) {
+			s = lang("相手がこの町の安全を守っている。", cnven(he(tc, 1)) + " " + is(tc) + " keeping this town safe and clean.")
+		}
+		if ( cdata(CDATA_ROLE, tc) >= 1000 & cdata(CDATA_ROLE, tc) < 2000 ) {
+			s = lang("相手が各種商品の販売業者。", cnven(he(tc, 1)) + " " + is(tc) + " a hard-working vender of assorted goods.")
+		}
+		if ( cdata(CDATA_QUALITY, tc) > FIX_QUALITY_MIRACLE ) {
+			s = lang("相手が有名な市民は。", cnven(he(tc, 1)) + " " + is(tc) + " a well-known local citizen.")
+		}
+		if ( cdata(CDATA_QUALITY, tc) == FIX_QUALITY_UNIQUE ) {
+			s = lang("相手が地元で有名な人物。", cnven(he(tc, 1)) + " " + is(tc) + " a well-known figure of sorts.")
+		}
+		if ( cdata(CDATA_ID, tc) == CREATURE_ID_DETECTIVE | cdata(CDATA_ID, tc) == CREATURE_ID_WEREWOLF_DETECTIVE ) {
+			s = lang("相手が偽者がいると思っている。", cnven(he(tc, 1)) + " thinks there's an imposter among us.")
+		}
+		if ( cdata(CDATA_ROLE, tc) == ROLE_KING ) {
+			s = lang("相手が王国の王族は。", cnven(he(tc, 1)) + " " + is(tc) + " royalty of this kingdom.")
+		}
+		if ( cdata(CDATA_RELATION, tc) == RELATION_ALLY ) {
+			s = lang("相手が君の友達。", cnven(he(tc, 1)) + " " + is(tc) + " a friend of yours.")
+		}
+		if ( cdata(CDATA_RELATION, tc) == RELATION_DISLIKE ) {
+			s = lang("相手が市民権を持たない旅行者。", cnven(he(tc, 1)) + " " + is(tc) + " a traveller without citizenship.")
+		}
+		if ( cdata(CDATA_RELATION, tc) == RELATION_HATE | cdata(CDATA_RELATION, tc) == RELATION_ENEMY ) {
+			s = lang("相手が敵であり、彼の目には憎しみが宿っている。", cnven(he(tc, 1)) + " hates you.")
+		}
+		if ( cdata(CDATA_RELATION_ORG, tc) != RELATION_ENEMY ) {
+			return
+		}
+	}
+	/********** JAMES CUSTOM - ENDING **********/
 	if ( cdata(CDATA_LEVEL, cc) * 20 < cdata(CDATA_LEVEL, tc) ) {
 		s = lang("相手が巨人だとすれば、あなたは蟻のフン以下だ。", "If " + he(tc, 1) + " is a giant, you are less than a dropping of an ant.")
 		return

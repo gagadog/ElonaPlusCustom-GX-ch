@@ -1374,7 +1374,7 @@ if instr(s,0,%1)!-1{	%c\
 	if ( synccheck(name_arg1, -1) == 0 ) {
 		return lang("何か", "something")
 	}
-	if ( cdata(CDATA_CONDITION_BLIND, CHARA_PLAYER) != 0 | (cbit(CHARA_BIT_INVISIBLE, name_arg1) == 1 & cbit(CHARA_BIT_SEE_INVISIBLE, CHARA_PLAYER) == 0 & cdata(CDATA_CONDITION_WET, name_arg1) == 0) ) {
+	if ( charaIsVisible(name_arg1) == 0 ) {
 		return lang("何か", "something")
 	}
 	if ( en ) {
