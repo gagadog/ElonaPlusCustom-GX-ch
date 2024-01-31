@@ -219,7 +219,7 @@
 		return lang("霊的な", "psychic")
 	}
 	if ( elename_ele == SKILL_RES_NERVE ) {
-		return lang("痺れる", "numb")
+		return lang("痺れる", "numbing")
 	}
 	if ( elename_ele == SKILL_RES_SOUND ) {
 		return lang("震える", "shivering")
@@ -237,12 +237,27 @@
 		return lang("暗黒の", "gloomy")
 	}
 	if ( elename_ele == SKILL_RESDMG_CUT ) {
-		return lang("出血の", "cut")
+		return lang("出血の", "cutting")
 	}
 	if ( elename_ele == SKILL_RESDMG_ETHER ) {
-		return lang("エーテルの", "ether")
+		return lang("エーテルの", "ether infused")
 	}
-	return "?"
+	if ( elename_ele == SKILL_RES_MAGIC ) {
+        return lang("魔力の", "magical")
+    }
+    if ( elename_ele == SKILL_RESDMG_ACID ) {
+        return lang("酸の", "acidic")
+    }
+    if ( elename_ele == SKILL_RESDMG_CRUSH ) {
+        return lang("衝撃の", "impacting")
+    }
+    if ( elename_ele == SKILL_RESDMG_BRAIN ) {
+        return lang("霊的な", "psychic")
+    }
+    if ( elename_ele == SKILL_RESDMG_TOFU ) {
+        return lang("暗黒の", "gloomy")
+    }
+    return lang("魔力?の", "magical?")
 
 #deffunc txttargetlevel
 	/********** JAMES CUSTOM - BEGINNING **********/ // Werewolf anti-cheat, also flavor

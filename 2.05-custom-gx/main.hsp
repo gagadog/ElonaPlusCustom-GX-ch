@@ -228,7 +228,7 @@
 			gdata(STARTING_GDATA_RANK + cnt) = 5000
 		loop
 		gdata(GDATA_VERSION) = VERSION_NUMBER
-		gosub *initTweakDataVersion
+		gosub *initTweakData
 		gdata(STARTING_GDATA_SHORTCUT + 1) = 424
 		gdata(STARTING_GDATA_SHORTCUT + 2) = 300
 		gdata(STARTING_GDATA_SHORTCUT + 3) = 631
@@ -842,7 +842,7 @@
 		gdata(GDATA_LEVEL) = 1
 		gdata(GDATA_LEVEL_START_ON) = 4
 		gdata(GDATA_VERSION) = VERSION_NUMBER
-		gosub *initTweakDataVersion
+		gosub *initTweakData
 		gdata(GDATA_WEATHER) = WEATHER_RAIN, 6
 		repeat 20
 			gdata(STARTING_GDATA_RANK + cnt) = 10000
@@ -1309,7 +1309,7 @@
 		if ( rnd(3) == 0 & TweakData(TWEAK_CHALLENGE_HARCORE_TRAVELLING, TWEAK_CATEGORY_CHALLENGE) <= 0 ) {
 			gdata(GDATA_SLEEP)++
 		}
-		if ( TweakData(53, 2) == 0 & rnd(15) == 0 ) {
+		if ( TweakData(TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING, TWEAK_CATEGORY_GAMEPLAY) == 0 & rnd(15) == 0 ) {
 			if ( gdata(GDATA_SLEEP) >= 13 ) {
 				if ( TweakData(TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION, TWEAK_CATEGORY_GAMEPLAY) == TRUE | gdata(GDATA_FLAG_SLEEP_PREVENTION) <= 0 ) {
 					if ( mode == MODELIST_MAIN ) {
@@ -2567,18 +2567,7 @@
 
 	/********** ANNA CUSTOM - BEGINNING **********/ // Initialize tweak variable
 
-	if ( TweakData(99, 0) == 0 ) {
-		repeat 5
-			LoopCount = 0
-
-			while ( LoopCount < 100 )
-				TweakData(LoopCount, cnt) = 0
-				LoopCount++
-			wend
-		loop
-
-		TweakData(99, 0) = 1
-	}
+	gosub *initTweakData
 
 	/********** ANNA CUSTOM - ENDING **********/
 	
@@ -3009,8 +2998,12 @@
 		getkey a, 113
 
 		if ( a ) {
-			if ( ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_LOSS | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_NATURAL ) & TweakData(TWEAK_MISC_CONFIRM_RELOAD_F2, TWEAK_CATEGORY_MISC) == 1 ) {
-				dialog "Perform a quickload? You are playing in a mode where no-save penalties apply.", 3
+			if ( TweakData(TWEAK_MISC_CONFIRM_RELOAD_F2, TWEAK_CATEGORY_MISC) == 1 ) {
+				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_LOSS | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_NATURAL ) {
+					dialog "Perform a quickload? You are playing in a mode where no-save penalties apply.", 3
+				} else {
+					dialog "Perform a quickload?", 3
+				}
 				if ( stat == 6 ) {
 					msg_newline
 					msgtemp = "  "
@@ -4144,8 +4137,12 @@
 		goto *exit_game
 	}
 	if ( rtval == 3 ) {
-		if ( ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_LOSS | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_NATURAL ) & TweakData(TWEAK_MISC_CONFIRM_RELOAD_F2, TWEAK_CATEGORY_MISC) == 1 ) {
-			dialog "Perform a quickload? You are playing in a mode where no-save penalties apply.", 3
+		if ( TweakData(TWEAK_MISC_CONFIRM_RELOAD_F2, TWEAK_CATEGORY_MISC) == 1 ) {
+			if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_LOSS | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_NATURAL ) {
+				dialog "Perform a quickload? You are playing in a mode where no-save penalties apply.", 3
+			} else {
+				dialog "Perform a quickload?", 3
+			}
 			if ( stat == 6 ) {
 				msg_newline
 				msgtemp = "  "

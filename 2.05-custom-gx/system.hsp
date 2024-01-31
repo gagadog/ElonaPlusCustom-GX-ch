@@ -44,8 +44,19 @@
 	gdata(GDATA_TEMPORARY_FLAGS2) = 0
 	return
 
-*initTweakDataVersion
-	TweakData(499, 4) = VERSION_NUMBER
+*initTweakData
+	if ( TweakData(99, 0) == 0 ) {
+		repeat 5
+			LoopCount = 0
+			while ( LoopCount < 100 )
+				TweakData(LoopCount, cnt) = 0
+				LoopCount++
+			wend
+		loop
+
+		TweakData(99, 0) = 1
+		TweakData(499, 4) = VERSION_NUMBER
+	}
 	return
 
 *fixTweakData
@@ -988,6 +999,9 @@
 	if ( TweakData(TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING, TWEAK_CATEGORY_GAMEPLAY) == 1 | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_PURGE ) {
 		deru = 0
 		dbg_noautosave = 1
+	}
+
+	if ( TweakData(TWEAK_GAMEPLAY_DISABLE_RARE_LOOT_TRIGGER, TWEAK_CATEGORY_GAMEPLAY) == 1 | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_PURGE ) {
 		gdata(GDATA_FLAG_RARE_DROP) = 100
 	}
 

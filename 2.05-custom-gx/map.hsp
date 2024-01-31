@@ -1101,7 +1101,7 @@
 
 	/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Re-enable save-scumming.
 
-	if ( TweakData(TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING, TWEAK_CATEGORY_GAMEPLAY) == 1 | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_PURGE ) {
+	if ( TweakData(TWEAK_GAMEPLAY_DISABLE_RARE_LOOT_TRIGGER, TWEAK_CATEGORY_GAMEPLAY) == 1 | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_PURGE ) {
 		gdata(GDATA_FLAG_RARE_DROP) = 100
 	}
 
@@ -1464,31 +1464,47 @@
 		if ( TweakData(TWEAK_GAMEPLAY_MOONGATE_LOOT, TWEAK_CATEGORY_GAMEPLAY) ) {
 			map_has_enemy = 0
 			map_max_enemy_lvl = 1
-			repeat MAX_CHARA_TOTAL
-				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
-					continue
-				}
-				if ( cdata(CDATA_RELATION, cnt) == (-3) ) {
-					map_has_enemy = 1
-					if ( cdata(CDATA_LEVEL, cnt) > map_max_enemy_lvl ) {
-						map_max_enemy_lvl = cdata(CDATA_LEVEL, cnt)
+			if ( comctrl == 2 ) {
+				repeat MAX_CHARA_TOTAL
+					if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+						continue
 					}
-				}
-			loop
-			if ( map_has_enemy & comctrl == 2 ) {
-				usermsg += lang("  …このフロアには運命を感じる…！", "  ...You sense fortune on this map...!")
-				inv_getheader -1
-				repeat invrange, invhead
-					if ( inv(INV_ITEM_NUM, cnt) > 0 ) {
-						if ( refitem(inv(INV_ITEM_ID, cnt), DBSPEC_TYPE) == FILTER_CONTAINER ) {
-							inv(INV_ITEM_PARAM1, ci) = limit(map_max_enemy_lvl, 2, 4000) / 2 + 5
-							inv(INV_ITEM_PROPERTY, cnt) = PROP_NPC
+					if ( cdata(CDATA_RELATION, cnt) == (-3) ) {
+						map_has_enemy = 1
+						if ( cdata(CDATA_LEVEL, cnt) > map_max_enemy_lvl ) {
+							map_max_enemy_lvl = cdata(CDATA_LEVEL, cnt)
 						}
 					}
 				loop
-			} else {
+				if ( map_has_enemy ) {
+					usermsg += lang("  …このフロアには運命を感じる…！", "  ...You sense fortune on this map...!")
+				}
+			}
+			if ( map_has_enemy == 0 ) {
 				comctrl = 0
 			}
+			inv_getheader -1
+			repeat invrange, invhead
+				if ( inv(INV_ITEM_NUM, cnt) > 0 ) {
+					showrromitemreftype = refitem(inv(INV_ITEM_ID, cnt), DBSPEC_TYPE)
+					if ( map_has_enemy & showrromitemreftype == FILTER_CONTAINER ) {
+						inv(INV_ITEM_PARAM1, ci) = limit(map_max_enemy_lvl, 2, 4000) / 2 + 5
+						inv(INV_ITEM_PROPERTY, cnt) = PROP_NPC
+					}
+					if ( showrromitemreftype == FILTER_FURNITURE & inv(INV_ITEM_ID, cnt) < ITEM_ID_BISQUE_DOLL ) {
+						inv(INV_ITEM_PROPERTY, cnt) = PROP_NPC
+					}
+					if ( showrromitemreftype == FILTER_TOOL & inv(INV_ITEM_EFFECT, cnt) >= 1 & inv(INV_ITEM_EFFECT, cnt) <= 6 ) {
+						inv(INV_ITEM_PROPERTY, cnt) = PROP_NPC
+					}
+					if ( showrromitemreftype == FILTER_ITEM_FOOD & inv(INV_ITEM_PARAM1, cnt) \1000 == 0 & inv(INV_ITEM_PARAM1, cnt) / 1000 > 0 ) {
+						if ( map_has_enemy == 0 ) {
+							ibitmod ITEM_BIT_HERBED_IN, cnt, 0
+						}
+						inv(INV_ITEM_PROPERTY, cnt) = PROP_NPC
+					}
+				}
+			loop
 		}
 	}
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CAMP ) {
@@ -11284,7 +11300,7 @@
 					cdata(CDATA_PORTRAIT, tc) = 35
 				}
 			}
-			if ( TweakData(51, 2) == 0 ) {
+			if ( TweakData(TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE, TWEAK_CATEGORY_GAMEPLAY) == 0 ) {
 				gdata(GDATA_FLAG_INSIDE_DEEP_SEA_CASTLE) = 100
 			}
 		}

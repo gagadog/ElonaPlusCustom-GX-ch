@@ -92,6 +92,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     pagebk = 0
 *TweakMenu_loop
 	pagesize = 0
+    listmax = 8
     pagemax = 0
     page = pagebk
 	redraw 0
@@ -100,16 +101,17 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	s = "Configure Tweaks"
 	gosub *screen_drawMsg2
 
-	listn(0, TWEAK_CATEGORY_UI) = "UI Tweaks"
-	listn(0, TWEAK_CATEGORY_CONVENIENCE) = "Convenience Tweaks"
-	listn(0, TWEAK_CATEGORY_GAMEPLAY) = "Gameplay Tweaks"
-	listn(0, TWEAK_CATEGORY_AI) = "AI Tweaks"
-	listn(0, TWEAK_CATEGORY_MISC) = "Miscellaneous Tweaks"
-	listn(0, TWEAK_CATEGORY_MAX) = "Challenge Tweaks"
-	listn(0, TWEAK_CATEGORY_MAX + 1) = "Exit"
+	listn(0, 0) = "UI Tweaks"
+	listn(0, 1) = "Convenience Tweaks"
+	listn(0, 2) = "AI Tweaks"
+	listn(0, 3) = "Gameplay Tweaks"
+	listn(0, 4) = "Extra Gameplay Tweaks"
+	listn(0, 5) = "Challenge Tweaks"
+	listn(0, 6) = "Miscellaneous Tweaks"
+	listn(0, 7) = "Exit"
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat TWEAK_CATEGORY_MAX+2
+	repeat listmax
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
@@ -119,27 +121,30 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat TWEAK_CATEGORY_MAX+2
+	repeat listmax
 		if ( listn(0, cs) == listn(0, cnt) ) {
-			if ( cnt == TWEAK_CATEGORY_UI ) {
+			if ( cnt == 0 ) {
 				s = "Toggle tweaks that target UI functions."
 			}
-			if ( cnt == TWEAK_CATEGORY_CONVENIENCE ) {
+			if ( cnt == 1 ) {
 				s = "Toggle tweaks that make things more convenient."
 			}
-			if ( cnt == TWEAK_CATEGORY_GAMEPLAY ) {
-				s = "Toggle tweaks that alter parts of the gameplay."
+			if ( cnt == 2 ) {
+				s = "Toggle tweaks that modify the AI of NPCs."
 			}
-			if ( cnt == TWEAK_CATEGORY_AI ) {
-				s = "Toggle tweaks that modify the AI of certain enemies."
+			if ( cnt == 3 ) {
+				s = "Toggle tweaks that reverts some of the gameplay mechanics."
 			}
-			if ( cnt == TWEAK_CATEGORY_MISC ) {
-				s = "Toggle tweaks that don't fall into any other category."
+			if ( cnt == 4 ) {
+				s = "Toggle tweaks that introduces extra game options."
 			}
-			if ( cnt == TWEAK_CATEGORY_MAX ) {
+			if ( cnt == 5 ) {
 				s = "Toggle tweaks that makes your life harder."
 			}
-			if ( cnt == TWEAK_CATEGORY_MAX + 1) {
+			if ( cnt == 6 ) {
+				s = "Toggle tweaks that don't fall into any other category."
+			}
+			if ( cnt == 7 ) {
 				s = "Exit the menu."
 			}
 			pos wx + 38, wy + 343
@@ -154,50 +159,64 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	await cfg_wait1
 	key_check
 	cursor_check
+	p = -1
+	repeat keyrange
+		if ( key == key_select(cnt) ) {
+			p = pagesize * page + cnt
+			break
+		}
+	loop
     repeat
-        if ( key == key_select(TWEAK_CATEGORY_UI) ) {
+        if ( p == 0 ) {
             snd SOUNDLIST_OK1
             gosub *UITweakMenu
             cs = cs_bk2
             keyhalt = 1
             break
         }
-        if ( key == key_select(TWEAK_CATEGORY_CONVENIENCE) ) {
+        if ( p == 1 ) {
             snd SOUNDLIST_OK1
             gosub *ConvenienceTweakMenu
             cs = cs_bk2
             keyhalt = 1
             break
         }
-        if ( key == key_select(TWEAK_CATEGORY_GAMEPLAY) ) {
-            snd SOUNDLIST_OK1
-            gosub *GameplayTweakMenu
-            cs = cs_bk2
-            keyhalt = 1
-            break
-        }
-        if ( key == key_select(TWEAK_CATEGORY_AI) ) {
+        if ( p == 2 ) {
             snd SOUNDLIST_OK1
             gosub *AITweakMenu
             cs = cs_bk2
             keyhalt = 1
             break
         }
-        if ( key == key_select(TWEAK_CATEGORY_MISC) ) {
+        if ( p == 3 ) {
             snd SOUNDLIST_OK1
-            gosub *MiscTweakMenu
+            gosub *GameplayTweakMenu
             cs = cs_bk2
             keyhalt = 1
             break
         }
-        if ( key == key_select(TWEAK_CATEGORY_MAX) ) {
+        if ( p == 4 ) {
+            snd SOUNDLIST_OK1
+            gosub *GameplayExtraTweakMenu
+            cs = cs_bk2
+            keyhalt = 1
+            break
+        }
+        if ( p == 5 ) {
             snd SOUNDLIST_OK1
             gosub *ChallengeTweakMenu
             cs = cs_bk2
             keyhalt = 1
             break
         }
-        if ( key == key_select(TWEAK_CATEGORY_MAX+1) ) {
+        if ( p == 6 ) {
+            snd SOUNDLIST_OK1
+            gosub *MiscTweakMenu
+            cs = cs_bk2
+            keyhalt = 1
+            break
+        }
+        if ( p == 7 ) {
             snd SOUNDLIST_OK1
             gosub *screen_draw
             goto *pc_turn
@@ -212,6 +231,12 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 
 *UITweakMenu
     cs = 0
+	page = 0
+	pagesize = 16
+	listmax = 10
+*UITweakMenu_pgchk
+	redraw 0
+	page_check
 *UITweakMenu_loop
 	redraw 0
 	s = "Tweak Setup", strhint3b
@@ -219,54 +244,67 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	s = "Configure Tweaks"
 	gosub *screen_drawMsg2
 
-	listn(0, TWEAK_UI_SHOW_ENCHANT_STRENGTH) = "Show Enchant Strength With Objet of Heart. (Currently: " + TweakData(TWEAK_UI_SHOW_ENCHANT_STRENGTH, TWEAK_CATEGORY_UI) + ")"
-	listn(0, TWEAK_UI_SPELL_TRACKING) = "Allow Spell Tracking." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_SPELL_TRACKING)
-	listn(0, TWEAK_UI_POTENTIALS_IN_SKILL_TRACKER) = "Add Potentials To Skill Tracker." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_POTENTIALS_IN_SKILL_TRACKER)
-	listn(0, TWEAK_UI_FILTER_SKILL_TRACKER_BY_POTENTIAL) = "Filter Skill Tracker By Potential." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_FILTER_SKILL_TRACKER_BY_POTENTIAL)
-	listn(0, TWEAK_UI_SHOW_SPELLSTOCK_IN_SKILL_TRACKER) = "Show Spell Stock In Tracker." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_SHOW_SPELLSTOCK_IN_SKILL_TRACKER)
-	listn(0, 5) = "Display Pickpocket shortcut." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_DISPLAY_PICKPOCKET_SHORTCUT)
-	listn(0, 6) = "Report museum duplicates." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_REPORT_MUSEUM_DUPLICATES)
-	listn(0, 7) = "Draw stamina bar." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_DRAW_STAMINA_BAR)
-	listn(0, 8) = "Return."
-	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	listn(0, 0) = "Show Enchant Strength With Objet of Heart. (Currently: " + TweakData(TWEAK_UI_SHOW_ENCHANT_STRENGTH, TWEAK_CATEGORY_UI) + ")"
+	listn(0, 1) = "Allow Spell Tracking." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_SPELL_TRACKING)
+	listn(0, 2) = "Add Potentials To Skill Tracker." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_POTENTIALS_IN_SKILL_TRACKER)
+	listn(0, 3) = "Filter Skill Tracker By Potential." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_FILTER_SKILL_TRACKER_BY_POTENTIAL)
+	listn(0, 4) = "Show Spell Stock In Tracker." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_SHOW_SPELLSTOCK_IN_SKILL_TRACKER)
+	listn(0, 5) = "Highlight/Filter Items. (Currently: " + TweakData(TWEAK_CONVENIENCE_HIGHLIGHT_FILTER, TWEAK_CATEGORY_CONVENIENCE) + ")"
+	listn(0, 6) = "Re-parse ItemList.txt."
+	listn(0, 7) = "Report museum duplicates." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_REPORT_MUSEUM_DUPLICATES)
+	listn(0, 8) = "Draw stamina bar." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_DRAW_STAMINA_BAR)
 
-	repeat 9
+	listn(0, listmax - 1) = "Return."
+	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
 		gcopy 3, cnt * 24 + 72, 30, 24, 18
-		cs_list listn(0, cnt), wx + 64, wy + 40 + cnt * 19 - 1, 19
+		cs_list listn(0, p), wx + 64, wy + 40 + cnt * 19 - 1, 19
 	loop
-
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat 8
-		if ( listn(0, cs) == listn(0, cnt) ) {
-			if ( cnt == TWEAK_UI_SHOW_ENCHANT_STRENGTH ) {
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
+		if ( cs == cnt ) {
+			s = ""
+			if ( p == 0 ) {
 				s = "When examining items while holding the Objet of Heart, the strength\nof enchantments on the item will be shown.\n0 = Don't Show, 1 = Show For Enchants w/Level, 2 = Show All"
 			}
-			if ( cnt == TWEAK_UI_SPELL_TRACKING ) {
+			if ( p == 1 ) {
 				s = "Spells can be added to the skill tracker in the same manner as skills."
 			}
-			if ( cnt == TWEAK_UI_POTENTIALS_IN_SKILL_TRACKER ) {
+			if ( p == 2 ) {
 				s = "All items in the skill tracker will also display their current potential."
 			}
-			if ( cnt == TWEAK_UI_FILTER_SKILL_TRACKER_BY_POTENTIAL ) {
+			if ( p == 3 ) {
 				s = "Tracked skills/abilities will not display unless their potential is\nequal to or below a certain threshold."
 			}
-			if ( cnt == TWEAK_UI_SHOW_SPELLSTOCK_IN_SKILL_TRACKER ) {
+			if ( p == 4 ) {
 				s = "Tracked spells will also display their spell stock."
 			}
-			if ( cnt == 5 ) {
-				s = "Adds a \"Yes/No\" dialogue box when attempting to pick up items that do\nnot belong to you outside of quests and moongates."
+			if ( p == 5 ) {
+				s = "Configure your highlighting/filtering choice.\n0 = No Highlight, 1 = Highlight and Mark Items, 2 = Only Show Highlighted Items"
 			}
-			if ( cnt == 6 ) {
+			if ( p == 6 ) {
+				s = "Reload the ItemList.txt file, used to enable highlighting and filtering for items."
+			}
+			if ( p == 7 ) {
 				s = "Reports x/y positions of duplicated cards and figurines when the museum updates."
 			}
-			if ( cnt == 7 ) {
+			if ( p == 8 ) {
 				s = "Draw stamina bar instead of just displaying like Sp 12/23.\nIt's using the yellow (gauge) bar below health in interface.bmp.\nIf it looks weird check if your beautify does anything to that."
 			}
-			if ( cnt == 8 ) {
+
+			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -278,54 +316,70 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	await cfg_wait1
 	key_check
 	cursor_check
-	if ( key == key_select(TWEAK_UI_SHOW_ENCHANT_STRENGTH) ) {
+	p = -1
+	repeat keyrange
+		if ( key == key_select(cnt) ) {
+			p = pagesize * page + cnt
+			break
+		}
+	loop
+	if ( p == 0 ) {
 		tc = TWEAK_CATEGORY_UI
 		tn = TWEAK_UI_SHOW_ENCHANT_STRENGTH
 		ts = 1
 		tm = 2
 		gosub *IncrementTweak
 	}
-	if ( key == key_select(TWEAK_UI_SPELL_TRACKING) ) {
+	if ( p == 1 ) {
 		tc = TWEAK_CATEGORY_UI
 		tn = TWEAK_UI_SPELL_TRACKING
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(TWEAK_UI_POTENTIALS_IN_SKILL_TRACKER) ) {
+	if ( p == 2 ) {
 		tc = TWEAK_CATEGORY_UI
 		tn = TWEAK_UI_POTENTIALS_IN_SKILL_TRACKER
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(TWEAK_UI_FILTER_SKILL_TRACKER_BY_POTENTIAL) ) {
+	if ( p == 3 ) {
 		tc = TWEAK_CATEGORY_UI
 		tn = TWEAK_UI_FILTER_SKILL_TRACKER_BY_POTENTIAL
 		ts = 10 // Increments by
 		tm = 400 // Max
 		gosub *IncrementTweak
 	}
-	if ( key == key_select(TWEAK_UI_SHOW_SPELLSTOCK_IN_SKILL_TRACKER) ) {
+	if ( p == 4 ) {
 		tc = TWEAK_CATEGORY_UI
 		tn = TWEAK_UI_SHOW_SPELLSTOCK_IN_SKILL_TRACKER
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(5) ) {
-		tc = TWEAK_CATEGORY_UI
-		tn = TWEAK_UI_DISPLAY_PICKPOCKET_SHORTCUT
-		gosub *ToggleTweak
+	if ( p == 5 ) {
+		tc = TWEAK_CATEGORY_CONVENIENCE
+		tn = TWEAK_CONVENIENCE_HIGHLIGHT_FILTER
+		ts = 1 // Increments by
+		tm = 2 // Max (0, 1, 2)
+		gosub *IncrementTweak
 	}
-	if ( key == key_select(6) ) {
+	if ( p == 6 ) {
+		tc = TWEAK_CATEGORY_CONVENIENCE
+		tn = TWEAK_CONVENIENCE_REPARSE_ITEMLIST
+		gosub *Load_Item_Highlights
+	}
+	if ( p == 7 ) {
 		tc = TWEAK_CATEGORY_UI
 		tn = TWEAK_UI_REPORT_MUSEUM_DUPLICATES
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(7) ) {
+	if ( p == 8 ) {
 		tc = TWEAK_CATEGORY_UI
 		tn = TWEAK_UI_DRAW_STAMINA_BAR
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(8) ) {
+	
+	if ( p == listmax - 1 ) {
 		snd SOUNDLIST_OK1
 		return
 	}
+	page_change *UITweakMenu_pgchk
 	if ( key == key_cancel ) {
 		return
 	}
@@ -420,7 +474,12 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 
 *ConvenienceTweakMenu
     cs = 0
-    listmax = 13
+	page = 0
+	pagesize = 16
+    listmax = 18
+*ConvenienceTweakMenu_pgchk
+	redraw 0
+	page_check
 *ConvenienceTweakMenu_loop
 	redraw 0
 	s = "Tweak Setup", strhint3b
@@ -428,70 +487,99 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	s = "Configure Tweaks"
 	gosub *screen_drawMsg2
 
-	listn(0, TWEAK_CONVENIENCE_FEED_OPTION_PETS) = "Add Feed Option For Pets." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_FEED_OPTION_PETS)
-	listn(0, TWEAK_CONVENIENCE_CHANGE_ITEM_SPRITE_HOME) = "Can Change Item Sprites In Home." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_CHANGE_ITEM_SPRITE_HOME)
-	listn(0, TWEAK_CONVENIENCE_HIGHLIGHT_FILTER) = "Highlight/Filter Items. (Currently: " + TweakData(TWEAK_CONVENIENCE_HIGHLIGHT_FILTER, TWEAK_CATEGORY_CONVENIENCE) + ")"
-	listn(0, TWEAK_CONVENIENCE_REPARSE_ITEMLIST) = "Re-parse ItemList.txt."
-	listn(0, 4) = "Throw potion at self with [t]." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_THROW_POTION_AT_SELF)
-	listn(0, 5) = "Allow running in world map." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_ALLOW_RUNNING_IN_WORLD_MAP)
-	listn(0, 6) = "Option to reload last save after death." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_RELOAD_AFTER_DEATH_OPTION)
-	listn(0, 7) = "Skip skill training confirmation." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_SKIP_SKILL_TRAINING_CONFIRMATION)
-	listn(0, 8) = "Auto-drop opened chests." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_AUTODROP_OPENED_CHESTS)
-	listn(0, 9) = "Remove spell over-cast confirmation." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_REMOVE_SPELL_OVER_CAST_CONFIRMATION)
-	listn(0, 10) = "Auto Hand-in quests." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_AUTO_HANDIN_QUESTS)
-	listn(0, 11) = "Sort spells by spell type." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_SORT_SPELL_BY_TYPE)
-	listn(0, 12) = "Return."
-	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	listn(0, 0) = "Add Feed Option For Pets." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_FEED_OPTION_PETS)
+	listn(0, 1) = "Can Change Item Sprites In Home." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_CHANGE_ITEM_SPRITE_HOME)
+	listn(0, 2) = "Display Pickpocket shortcut." + GetTStatus(TWEAK_CATEGORY_UI, TWEAK_UI_DISPLAY_PICKPOCKET_SHORTCUT)
+	listn(0, 3) = "Gather Items At End Of Party Time." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GATHER_ITEM_PARTYTIME)
+	listn(0, 4) = "Share Gold For Group Performance." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SHARED_PERFORMANCE_GOLD)
+	listn(0, 5) = "Bash all fruit." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_BASH_ALL_FRUIT)
+	listn(0, 6) = "Organize ranch produce." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ORGANIZE_RANCH)
+	listn(0, 7) = "Everything must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_EVERYTHING_MUST_GO)
+	listn(0, 8) = "Throw potion at self with [t]." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_THROW_POTION_AT_SELF)
+	listn(0, 9) = "Allow running in world map." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_ALLOW_RUNNING_IN_WORLD_MAP)
+	listn(0, 10) = "Skip skill training confirmation." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_SKIP_SKILL_TRAINING_CONFIRMATION)
+	listn(0, 11) = "Auto-drop opened chests." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_AUTODROP_OPENED_CHESTS)
+	listn(0, 12) = "Remove spell over-cast confirmation." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_REMOVE_SPELL_OVER_CAST_CONFIRMATION)
+	listn(0, 13) = "Auto Hand-in quests." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_AUTO_HANDIN_QUESTS)
+	listn(0, 14) = "Sort spells by spell type." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_SORT_SPELL_BY_TYPE)
+	listn(0, 15) = "Necromancy zombies goes inside DD-Cemetry when they die." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_NECROMANCY_DD_AUTOSTORE)
+	listn(0, 16) = "Allow leashing temporary allies." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_LEASH_MY_ALLIES)
 
-	repeat listmax
+	listn(0, listmax - 1) = "Return."
+	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
 		gcopy 3, cnt * 24 + 72, 30, 24, 18
-		cs_list listn(0, cnt), wx + 64, wy + 40 + cnt * 19 - 1, 19
+		cs_list listn(0, p), wx + 64, wy + 40 + cnt * 19 - 1, 19
 	loop
-
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat listmax
-		if ( listn(0, cs) == listn(0, cnt) ) {
-			if ( cnt == TWEAK_CONVENIENCE_FEED_OPTION_PETS ) {
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
+		if ( cs == cnt ) {
+			s = ""
+			if ( p == 0 ) {
 				s = "Adds a Feed option that works like Give but that filters out non-food items when\ninteracting with pets. Also allows for feeding pets raw equipment."
 			}
-			if ( cnt == TWEAK_CONVENIENCE_CHANGE_ITEM_SPRITE_HOME ) {
+			if ( p == 1 ) {
 				s = "Adds a new menu item to blacksmiths in your home that allows you to change\nitem sprites like at Garok."
 			}
-			if ( cnt == TWEAK_CONVENIENCE_HIGHLIGHT_FILTER ) {
-				s = "Configure your highlighting/filtering choice.\n0 = No Highlight, 1 = Highlight and Mark Items, 2 = Only Show Highlighted Items"
+			if ( p == 2 ) {
+				s = "Adds a \"Yes/No\" dialogue box when attempting to pick up items that do\nnot belong to you outside of quests and moongates."
 			}
-			if ( cnt == TWEAK_CONVENIENCE_REPARSE_ITEMLIST ) {
-				s = "Reload the ItemList.txt file, used to enable highlighting and filtering for items."
+			if ( p == 3 ) {
+				s = "When a Party Time! quest ends, you will be presented with a list of items on the\nfloor that you can take."
 			}
-			if ( cnt == 4 ) {
+			if ( p == 4 ) {
+				s = "When performing an ensemble with pets, your pets will receive a portion\nof all gold earned."
+			}
+			if ( p == 5 ) {
+				s = "Bash all fruit out of fruit trees in one go."
+			}
+			if ( p == 6 ) {
+				s = "Better organize the ranch by collecting all ranch produce in one spot (x17 y14)."
+			}
+			if ( p == 7 ) {
+				s = "Allows shops to sell furniture, red books, and deeds. Registers,\nshop strongboxes, shelters, and unique items still won't be sold."
+			}
+			if ( p == 8 ) {
 				s = "Adds potions to the [t]ool menu.\nUsing a potion with this tweak enabled throws it at your tile."
 			}
-			if ( cnt == 5 ) {
+			if ( p == 9 ) {
 				s = "Allows running in the world map by holding Shift."
 			}
-			if ( cnt == 6 ) {
-				s = "Adds an option to the death menu for reloading from the previous save.\nIf \"Confirm Reload With F2\" is enabled, you will be warned when playing in a mode\nwith a save penalty."
-			}
-			if ( cnt == 7 ) {
+			if ( p == 10 ) {
 				s = "Skips the confirmation when spending platinum coins on skill training."
 			}
-			if ( cnt == 8 ) {
+			if ( p == 11 ) {
 				s = "Automatically drops empty chests after they've been opened."
 			}
-			if ( cnt == 9 ) {
+			if ( p == 12 ) {
 				s = "Removes confirmation window when over-casting spells."
 			}
-			if ( cnt == 10 ) {
+			if ( p == 13 ) {
 				s = "Automatically hand-in quests after you complete them.\nThis applies to harvest/hunt/trap/party/panic/challenge quests."
 			}
-			if ( cnt == 11 ) {
+			if ( p == 14 ) {
 				s = "Sort spells by spell type."
 			}
-			if ( cnt == 12 ) {
+			if ( p == 15 ) {
+				s = "Necromancy zombies goes into DD-Cemetery when they return.\nThis only activates if you are holding a DD-Cemetery Key.\nThis includes: Pushback/Undead-Return/Killed/Necro-Fusion/Placement-Failure.\nAlso gives Necro-Force a Summon-From-DD-Cemetery option."
+			}
+			if ( p == 16 ) {
+				s = "Allow leashing temporary allies."
+			}
+
+			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -503,72 +591,104 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	await cfg_wait1
 	key_check
 	cursor_check
-	if ( key == key_select(TWEAK_CONVENIENCE_FEED_OPTION_PETS) ) {
+	p = -1
+	repeat keyrange
+		if ( key == key_select(cnt) ) {
+			p = pagesize * page + cnt
+			break
+		}
+	loop
+	if ( p == 0 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_FEED_OPTION_PETS
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(TWEAK_CONVENIENCE_CHANGE_ITEM_SPRITE_HOME) ) {
+	if ( p == 1 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_CHANGE_ITEM_SPRITE_HOME
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(TWEAK_CONVENIENCE_HIGHLIGHT_FILTER) ) {
-		tc = TWEAK_CATEGORY_CONVENIENCE
-		tn = TWEAK_CONVENIENCE_HIGHLIGHT_FILTER
-		ts = 1 // Increments by
-		tm = 2 // Max (0, 1, 2)
-		gosub *IncrementTweak
+	if ( p == 2 ) {
+		tc = TWEAK_CATEGORY_UI
+		tn = TWEAK_UI_DISPLAY_PICKPOCKET_SHORTCUT
+		gosub *ToggleTweak
 	}
-	if ( key == key_select(TWEAK_CONVENIENCE_REPARSE_ITEMLIST) ) {
-		tc = TWEAK_CATEGORY_CONVENIENCE
-		tn = TWEAK_CONVENIENCE_REPARSE_ITEMLIST
-		gosub *Load_Item_Highlights
+	if ( p == 3 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_GATHER_ITEM_PARTYTIME
+		gosub *ToggleTweak
 	}
-	if ( key == key_select(4) ) {
+	if ( p == 4 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_SHARED_PERFORMANCE_GOLD
+		gosub *ToggleTweak
+	}
+	if ( p == 5 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_BASH_ALL_FRUIT
+		gosub *ToggleTweak
+	}
+	if ( p == 6 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_ORGANIZE_RANCH
+		gosub *ToggleTweak
+	}
+	if ( p == 7 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_EVERYTHING_MUST_GO
+		gosub *ToggleTweak
+	}
+	if ( p == 8 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_THROW_POTION_AT_SELF
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(5) ) {
+	if ( p == 9 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_ALLOW_RUNNING_IN_WORLD_MAP
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(6) ) {
-		tc = TWEAK_CATEGORY_CONVENIENCE
-		tn = TWEAK_CONVENIENCE_RELOAD_AFTER_DEATH_OPTION
-		gosub *ToggleTweak
-	}
-	if ( key == key_select(7) ) {
+	if ( p == 10 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_SKIP_SKILL_TRAINING_CONFIRMATION
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(8) ) {
+	if ( p == 11 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_AUTODROP_OPENED_CHESTS
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(9) ) {
+	if ( p == 12 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_REMOVE_SPELL_OVER_CAST_CONFIRMATION
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(10) ) {
+	if ( p == 13 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_AUTO_HANDIN_QUESTS
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(11) ) {
+	if ( p == 14 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_SORT_SPELL_BY_TYPE
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(12) ) {
-		snd SOUNDLIST_OK1
-        return
+	if ( p == 15 ) {
+		tc = TWEAK_CATEGORY_CONVENIENCE
+		tn = TWEAK_CONVENIENCE_NECROMANCY_DD_AUTOSTORE
+		gosub *ToggleTweak
 	}
+	if ( p == 14 ) {
+		tc = TWEAK_CATEGORY_CONVENIENCE
+		tn = TWEAK_CONVENIENCE_LEASH_MY_ALLIES
+		gosub *ToggleTweak
+	}
+	
+	// if ( p == listmax - 1 ) {
+	// 	snd SOUNDLIST_OK1
+	// 	return
+	// }
+	page_change *ConvenienceTweakMenu_pgchk
 	if ( key == key_cancel ) {
         return
 	}
@@ -578,7 +698,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 45
+    listmax = 31
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -589,51 +709,41 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	s = "Configure Tweaks"
 	gosub *screen_drawMsg2
 
-	listn(0, TWEAK_GAMEPLAY_GATHER_ITEM_PARTYTIME) = "Gather Items At End Of Party Time." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GATHER_ITEM_PARTYTIME)
-	listn(0, TWEAK_GAMEPLAY_PETS_HEAL_PETS) = "Pets Heal Other Pets." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_PETS_HEAL_PETS)
-	listn(0, TWEAK_GAMEPLAY_SHARED_PERFORMANCE_GOLD) = "Share Gold For Group Performance." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SHARED_PERFORMANCE_GOLD)
-	listn(0, TWEAK_GAMEPLAY_PETS_DIE_LOSSMODE) = "Pets die permanently in Loss Mode." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_PETS_DIE_LOSSMODE)
-	listn(0, TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING) = "Re-enable save-scumming." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING)
-	listn(0, TWEAK_GAMEPLAY_BASH_ALL_FRUIT) = "Bash all fruit." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_BASH_ALL_FRUIT)
-	listn(0, TWEAK_GAMEPLAY_ORGANIZE_RANCH) = "Organize ranch produce." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ORGANIZE_RANCH)
-	listn(0, 7) = "Everything must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_EVERYTHING_MUST_GO)
-	listn(0, 8) = "Disable Deep-Sea Castle persistance." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE)
-	listn(0, 9) = "Sandbag training." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SANDBAG_TRAINING)
-	listn(0, 10) = "No naps while traveling." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING)
-	listn(0, 11) = "Disable Harvest Moon Mode for ranches." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH)
-	listn(0, 12) = "Revert post-1.90 weapon skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_190_EXP_CHANGES)
-	listn(0, 13) = "Disable study days. (triple skill exp)" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_STUDY_DAYS)
-	listn(0, 14) = "Disable DESTINY." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DESTINY)
-	listn(0, 15) = "(Custom-G) Disable thirst." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_THIRST)
-	listn(0, 16) = "(Custom-G) Disable Curtain Call." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_CURTAIN_CALL)
-	listn(0, 17) = "(Custom-G) Disable chain attacks." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_CHAIN_ATTACKS)
-	listn(0, 18) = "(Custom-G) Disable sleep prevention." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION)
-	listn(0, 19) = "(Custom-G) Apply skill buffs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_REVERT_SKILL_NERFS)
-	listn(0, 20) = "(Custom-G) Apply damage calculation buffs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_REVERT_DAMAGE_CALC_NERFS)
-	listn(0, 21) = "Summoned monster training." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SUMMONED_MONSTER_TRAINING)
-	listn(0, 22) = "No stamina depletion when using stairs in Your Home." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_HOME_STAIRS_NO_STAMINA_USAGE)
-	listn(0, 23) = "Increased daily Pet Arena attempts. " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_PET_ARENA_INCREASED_MATCH_LIMIT)
-	listn(0, 24) = "Increased variety of hireable home servants." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_MORE_HIREABLE_HOUSE_SERVANTS)
-	listn(0, 25) = "Disable stamina depletion when attacking." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_ATTACK_STAMINA_DEPLETION)
-	listn(0, 26) = "Revert post-2.13 combat exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_213_EXP_CHANGES)
-	listn(0, 27) = "Disable urination from fear." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_URINATION_FROM_FEAR)
-	listn(0, 28) = "Use CGX Map Layouts in Random Nefia." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES) + "% Chance."
-	listn(0, 29) = "Use CGX Job Quests." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS)
-	listn(0, 30) = "Disable Random Custom NPC spawns." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN)
-	listn(0, 31) = "Use summoning crystals to summon Custom NPCs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING)
-	listn(0, 32) = "Revert post-2.17 skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES)
-	listn(0, 33) = "Necromancy Autotargeting." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING)
-	listn(0, 34) = "Spawn evolved enemies in: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES)
-	listn(0, 35) = "Collect kits instead of socks in Urcaguary quest." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST)
-	listn(0, 36) = "Revert post-2.17 cooking result changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES)
-	listn(0, 37) = "Revert post-2.17 boss out-of-sight healing." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING)
-	listn(0, 38) = "Increase Dojo EXP gain: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASED_DOJO_EXP) + "% increase."
-	listn(0, 39) = "Child, you must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GO_CHILD)
-	listn(0, 40) = "Enable loot in Moongate/Rune maps." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_MOONGATE_LOOT)
-	listn(0, 41) = "Increase mob density in Random Nefias:" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY) + "% increase."
-	listn(0, 42) = "Enable Noa's unused gathering text adventure." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GATHER_TEXT_ADVENTURE)
-	listn(0, 43) = "Necromancy zombies goes inside DD-Cemetry when they die." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NECROMANCY_DD_AUTOSTORE)
-	listn(0, 44) = "Go back."
+	listn(0, 0) = "Re-enable save-scumming." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING)
+	listn(0, 1) = "Enable rare-loot trigger permanently." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_RARE_LOOT_TRIGGER)
+	listn(0, 2) = "Confirm Reload With F2." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_CONFIRM_RELOAD_F2)
+	listn(0, 3) = "Option to reload last save after death." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_RELOAD_AFTER_DEATH_OPTION)
+
+	listn(0, 4) = "=== Gameplay Mechanics changes ==="
+	listn(0, 5) = "Disable Harvest Moon Mode for ranches." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH)
+	listn(0, 6) = "(Custom-G) Disable chain attacks." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_CHAIN_ATTACKS)
+	listn(0, 7) = "(Custom-G) Disable thirst." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_THIRST)
+	listn(0, 8) = "Disable urination from fear." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_URINATION_FROM_FEAR)
+	listn(0, 9) = "Disable stamina depletion when attacking." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_ATTACK_STAMINA_DEPLETION)
+	listn(0, 10) = "Disable depletion when using stairs in Your Home." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_HOME_STAIRS_NO_STAMINA_USAGE)
+	listn(0, 11) = "Revert post-2.17 cooking result changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES)
+	listn(0, 12) = "Revert post-2.17 boss out-of-sight healing." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING)
+	
+	listn(0, 13) = "=== EXP/Progression related changes ==="
+	listn(0, 14) = "Sandbag training." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SANDBAG_TRAINING)
+	listn(0, 15) = "Summoned monster training." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SUMMONED_MONSTER_TRAINING)
+	listn(0, 16) = "Increase Dojo EXP gain: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASED_DOJO_EXP) + "% increase."
+	listn(0, 17) = "Revert post-1.90 weapon skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_190_EXP_CHANGES)
+	listn(0, 18) = "Disable study days (triple skill exp)" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_STUDY_DAYS)
+	listn(0, 19) = "Disable DESTINY." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DESTINY)
+	listn(0, 20) = "Revert post-2.13 combat exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_213_EXP_CHANGES)
+	listn(0, 21) = "Revert post-2.17 skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES)
+	
+	listn(0, 22) = "=== Anti-powergaming/Misc changes ==="
+	listn(0, 23) = "(Custom-G) Disable Curtain Call." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_CURTAIN_CALL)
+	listn(0, 24) = "(Custom-G) Disable skill SP cost nerfs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_REVERT_SKILL_NERFS)
+	listn(0, 25) = "(Custom-G) Disable multi-attack-critical nerfs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_REVERT_DAMAGE_CALC_NERFS)
+	listn(0, 26) = "(Custom-G) Disable sleep prevention." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION)
+	listn(0, 27) = "(Custom-G) Disable naps while traveling." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING)
+	listn(0, 28) = "Disable Deep-Sea Castle persistance." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE)
+	listn(0, 29) = "Child, you must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GO_CHILD)
+
+	listn(0, listmax - 1) = "Go back."
 
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
@@ -657,139 +767,93 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			break
 		}
 		if ( cs == cnt ) {
-			if ( p == TWEAK_GAMEPLAY_GATHER_ITEM_PARTYTIME ) {
-				s = "When a Party Time! quest ends, you will be presented with a list of items on the\nfloor that you can take."
+			s = ""
+			if ( p == 0 ) {
+				s = "Disables autosaving, re-enables F2 save reloading.\nThis also disables rare loot trigger."
 			}
-			if ( p == TWEAK_GAMEPLAY_PETS_HEAL_PETS ) {
-				s = "Pets with Healing Rain will consider the health of other pets when deciding\nwhether or not to use it. If using custom AI, no effect except\nusage out of combat (requires pet to know it naturally)."
+			if ( p == 1 ) {
+				s = "Disables rare loot trigger system (Enable the trigger permanently).\nThis allow rare items obtainable during first 10 minute of gameplay."
 			}
-			if ( p == TWEAK_GAMEPLAY_SHARED_PERFORMANCE_GOLD ) {
-				s = "When performing an ensemble with pets, your pets will receive a portion\nof all gold earned."
+			if ( p == 2 ) {
+				s = "Causes a popup to appear when pressing the F2 key."
 			}
-			if ( p == TWEAK_GAMEPLAY_PETS_DIE_LOSSMODE ) {
-				s = "If you are playing in Loss Mode, pets will also have permadeath."
+			if ( p == 3 ) {
+				s = "Adds an option to the death menu for reloading from the previous save.\nIf \"Confirm Reload With F2\" is enabled, you will be warned when playing in a mode\nwith a save penalty."
 			}
-			if ( p == TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING ) {
-				s = "Disables autosaving, re-enables F2 save reloading."
-			}
-			if ( p == TWEAK_GAMEPLAY_BASH_ALL_FRUIT ) {
-				s = "Bash all fruit out of fruit trees in one go."
-			}
-			if ( p == TWEAK_GAMEPLAY_ORGANIZE_RANCH ) {
-				s = "Better organize the ranch by collecting all ranch produce in one spot (x17 y14)."
-			}
-			if ( p == 7 ) {
-				s = "Allows shops to sell furniture, red books, and deeds. Registers,\nshop strongboxes, shelters, and unique items still won't be sold."
-			}
-			if ( p == 8 ) {
-				s = "Visiting the Deep-Sea Castle only resets items with a cooldown period\nwhile you're there, instead of continuously resetting them until you sleep."
-			}
-			if ( p == 9 ) {
-				s = "Sandbagged monsters will give experience."
-			}
-			if ( p == 10 ) {
-				s = "Removes the chance to automatically take a nap when traveling while sleepy."
-			}
-			if ( p == 11 ) {
+			
+			if ( p == 5 ) {
 				s = "Revert Ano's ranch content after version 1.89. Example: \nLivestock can randomly become sick, are born unable to be milked, etc.\n\nIt is disabled by default before CGX 2.21.2.0."
 			}
-			if ( p == 12 ) {
-				s = "Reverts changes to the weapon skill experience formula after version 1.90.\nThis mainly addresses the three-fold increase in player weapon skill exp gain.\nIt does not change the study day triple exp bonus."
-			}
-			if ( p == 13 ) {
-				s = "Disables the \"study day bonus\" feature.\nThis will prevent certain skills from gaining triple skill experience based on the\nstudy day type."
-			}
-			if ( p == 14 ) {
-				s = "Disables the \"DESTINY\" feature.\nThis restores the chances of godly equipment being generated, regardless of\nDESTINY triggers."
-			}
-			if ( p == 15 ) {
-				s = "Disables the thirst mechanic.\nThis allows you to survive without drinking, and also disables the passive\nstamina regeneration that the \"Wetting\" condition provides."
-			}
-			if ( p == 16 ) {
-				s = "Disables the Curtain Call mechanic.\nThis is an anti-AFK mechanism intended to prevent farming. It spawns instant-kill\nenemies if you attack 10,000 times within the same map without leaving."
-			}
-			if ( p == 17 ) {
+			if ( p == 6 ) {
 				s = "Disables the chain attacks mechanic.\nThis reduces the damage dealt by sequential attacks within the attacker's turn."
 			}
-			if ( p == 18 ) {
-				s = "Disables the sleep prevention effects caused by coffee and tobacco.\nThey reduce your drowsiness directly as in Version 1.86."
+			if ( p == 7 ) {
+				s = "Disables the thirst mechanic.\nThis allows you to survive without drinking, and also disables the passive\nstamina regeneration that the \"Wetting\" condition provides."
 			}
-			if ( p == 19 ) {
-				s = "Enables Custom-G's changes to certain skills.\nThis affects Gravity Sphere, Graviton Buster, Violent Garden,\nShadow Step, and some other skills."
-			}
-			if ( p == 20 ) {
-				s = "Enables Custom-G's changes to damage calculation.\nThis affects the damage and critical chance when multi-attacking."
-			}
-			if ( p == 21 ) {
-				s = "Summoned monsters and monsters that split up will give experience."
-			}
-			if ( p == 22 ) {
-				s = "Using stairs in Your Home will not deplete stamina."
-			}
-			if ( p == 23 ) {
-				s = "Increases the daily limit of Pet Arena match attempts\nin intervals of 10 and maxing out at 100 a day."
-			}
-			if ( p == 24 ) {
-				s = "Adds more hireable home servants.\nIncludes the baker, fisher, and food vendor.\nAlso increases the number of servants generated."
-			}
-			if ( p == 25 ) {
-				s = "Disables stamina depletion when attacking or casting spells."
-			}
-			if ( p == 26 ) {
-				s = "Reverts changes to the killing experience formula after version 2.13.\nAddresses \"increased EXP multipliers when defeating enemies above the PC's level\".\nToggling this also reverts the changes to the taxation mechanic."
-			}
-			if ( p == 27 ) {
+			if ( p == 8 ) {
 				s = "Prevents characters from urinating when they are afflicted with fear."
 			}
-			if ( p == 28 ) {
-				s = "Uses Custom Map Layouts in Nefia. \nThis replaces the existing mapgen algorithm with the given percentage chance. \nLayouts with no clear path to exit may be generated, you might need to dig walls. \nMob density is 1 mob every 64 tile, +10~20 per monster-room/packs"
+			if ( p == 9 ) {
+				s = "Disables stamina depletion when attacking or casting spells."
 			}
-			if ( p == 29 ) {
-				s = "Delivery quests now marks the item and makes it heavier, but rewards more PP.\nEliminate quests now spawn targets in a group, civilians will also be spawned.\nHarvest quests now reward seeds based on your performance instead.\nPeople throw more music tickets at you during Party Quest."
+			if ( p == 10 ) {
+				s = "Using stairs in Your Home will not deplete stamina."
 			}
-			if ( p == 30 ) {
-				s = "This will disable Random CNPC spawn in all areas except Derphy and Melkawn."
-			}
-			if ( p == 31 ) {
-				s = "Play as a summoner. Summon CNPCS and monsters to help you in battle. \nYou can summon allied CNPCS in dungeons using god's favor, or at Home using PP. \nThis will also change player summoned monsters in dungeons to be allied."
-			}
-			if ( p == 32 ) {
-				s = "Reverts changes to the skill experience formula after version 2.17.\nThis will lock your growth rate at 400% (100% compared to growth in 2.17)."
-			}
-			if ( p == 33 ) {
-				s = "Make necromancy minions actively seek out enemies like pets do."
-			}
-			if ( p == 34 ) {
-				s = "Spawn evolved enemies at given locations. \nChance start at 1/1800 chance, caps at area lvl 301 with 1/6 chance.\nEvolution branches chance stack. \nEvolution stages are calculated independently."
-			}
-			if ( p == 35 ) {
-				s = "Urcaguary now accept craft repair kits and material kits instead of socks.\nCraft repair kit count as 1 and material kit count as 2.\nYou still need to find the sock-thief for the first time.\nBut he will drop enough socks for you complete the quest."
-			}
-			if ( p == 36 ) {
+			if ( p == 11 ) {
 				s = "Reverts changes to the cooking product after version 2.17. \nCooking will give extra product at cooking lvl 100 and lvl 200. \nBut will no longer gave extra enchant or enhance values. \nOn-eat changes to +enhance post 2.17 do not apply."
 			}
-			if ( p == 37 ) {
+			if ( p == 12 ) {
 				s = "Disable the <{enemy}> self-heal anti-cheese mechanics after version 2.17. \nThis does not apply to creatures like Megamole/Talpidae/Aile."
 			}
-			if ( p == 38 ) {
+
+			if ( p == 14 ) {
+				s = "Sandbagged monsters will give experience."
+			}
+			if ( p == 15 ) {
+				s = "Summoned monsters and monsters that split up will give experience."
+			}
+			if ( p == 16 ) {
 				s = "Increase Dojo EXP gain. \nDojo EXP is gained by traveling on world map, at ~3.5 EXP per tile.\nWhile slightly higher than travel EXP, it may be underwhelming for \nthose who doesn't visit Dojo very often."
 			}
-			if ( p == 39 ) {
+			if ( p == 17 ) {
+				s = "Reverts changes to the weapon skill experience formula after version 1.90.\nThis mainly addresses the three-fold increase in player weapon skill exp gain.\nIt does not change the study day triple exp bonus."
+			}
+			if ( p == 18 ) {
+				s = "Disables the \"study day bonus\" feature.\nThis will prevent certain skills from gaining triple skill experience based on the\nstudy day type."
+			}
+			if ( p == 19 ) {
+				s = "Disables the \"DESTINY\" feature.\nThis restores the chances of godly equipment being generated, regardless of\nDESTINY triggers."
+			}
+			if ( p == 20 ) {
+				s = "Reverts changes to the killing experience formula after version 2.13.\nAddresses \"increased EXP multipliers when defeating enemies above the PC's level\".\nToggling this also reverts the changes to the taxation mechanic."
+			}
+			if ( p == 21 ) {
+				s = "Reverts changes to the skill experience formula after version 2.17.\nThis will lock your growth rate at 400% (100% compared to growth in 2.17)."
+			}
+
+			if ( p == 23 ) {
+				s = "Disables the Curtain Call mechanic.\nThis is an anti-AFK mechanism intended to prevent farming. It spawns instant-kill\nenemies if you attack 10,000 times within the same map without leaving."
+			}
+			if ( p == 24 ) {
+				s = "Enables Custom-G's changes to certain skills.\nThis affects Gravity Sphere, Graviton Buster, Violent Garden,\nShadow Step, and some other skills."
+			}
+			if ( p == 25 ) {
+				s = "Enables Custom-G's changes to damage calculation.\nThis affects the damage and critical chance when multi-attacking."
+			}
+			if ( p == 26 ) {
+				s = "Disables the sleep prevention effects caused by coffee and tobacco.\nThey reduce your drowsiness directly as in Version 1.86."
+			}
+			if ( p == 27 ) {
+				s = "Removes the chance to automatically take a nap when traveling while sleepy."
+			}
+			if ( p == 28 ) {
+				s = "Visiting the Deep-Sea Castle only resets items with a cooldown period\nwhile you're there, instead of continuously resetting them until you sleep."
+			}
+			if ( p == 29 ) {
 				s = "Allow you to turn in quests using pets with child-bit-flag.\nNamely: Town Childs / Stray Cats / Little Sisters"
 			}
-			if ( p == 40 ) {
-				s = "Custom maps entered via Moongate/Runes now contains loot.\nEnemies drop gold and ores depend on their level.\nContainers can be opened.\nThis won't enable if you enter the Custom Map using Show House."
-			}
-			if ( p == 41 ) {
-				s = "Increase density in random Nefia, result may vary due to mob-room/pack.\n  Default population of low density dungeon (rdtype1): 5~60 average: 23\n  Default population of high density dungeon (rdtype5): 25~110 average: 59\nThis also enforces a 1/64 mob density, +10~30 from mob-room/pack."
-			}
-			if ( p == 42 ) {
-				s = "Enable the unused text adventure made by Noa. \nThis affects the material-spot gathering mechanics. \nMaterial/EXP gain is increased compare to Vanilla. \nBut lowered compared to Plus (If your skill is insufficient.)"
-			}
-			if ( p == 43 ) {
-				s = "Necromancy zombies goes into DD-Cemetery when they return.\nThis only activates if you are holding a DD-Cemetery Key.\nThis includes: Pushback/Undead-Return/Killed/Necro-Fusion/Placement-Failure.\nAlso gives Necro-Force a Summon-From-DD-Cemetery option."
-			}
-			if ( p == 44 ) {
+
+			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -808,240 +872,161 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			break
 		}
 	loop
-	if ( p == TWEAK_GAMEPLAY_GATHER_ITEM_PARTYTIME ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_GATHER_ITEM_PARTYTIME
-		gosub *ToggleTweak
-	}
-	if ( p == TWEAK_GAMEPLAY_PETS_HEAL_PETS ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_PETS_HEAL_PETS
-		gosub *ToggleTweak
-	}
-	if ( p == TWEAK_GAMEPLAY_SHARED_PERFORMANCE_GOLD ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_SHARED_PERFORMANCE_GOLD
-		gosub *ToggleTweak
-	}
-	if ( p == TWEAK_GAMEPLAY_PETS_DIE_LOSSMODE ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_PETS_DIE_LOSSMODE
-		gosub *ToggleTweak
-	}
-	if ( p == TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING ) {
+	if ( p == 0 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING
 		gosub *ToggleTweak
 		dbg_noautosave = 1 * (TweakData(TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING, TWEAK_CATEGORY_GAMEPLAY) > 0)
-		gdata(GDATA_FLAG_RARE_DROP) = 100 * (TweakData(TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING, TWEAK_CATEGORY_GAMEPLAY) > 0)
 	}
-	if ( p == TWEAK_GAMEPLAY_BASH_ALL_FRUIT ) {
+	if ( p == 1 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_BASH_ALL_FRUIT
+		tn = TWEAK_GAMEPLAY_DISABLE_RARE_LOOT_TRIGGER
+		gosub *ToggleTweak
+		gdata(GDATA_FLAG_RARE_DROP) = 100 * (TweakData(TWEAK_GAMEPLAY_DISABLE_RARE_LOOT_TRIGGER, TWEAK_CATEGORY_GAMEPLAY) > 0)
+	}
+	if ( p == 2 ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_CONFIRM_RELOAD_F2
 		gosub *ToggleTweak
 	}
-	if ( p == TWEAK_GAMEPLAY_ORGANIZE_RANCH ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_ORGANIZE_RANCH
+	if ( p == 3 ) {
+		tc = TWEAK_CATEGORY_CONVENIENCE
+		tn = TWEAK_CONVENIENCE_RELOAD_AFTER_DEATH_OPTION
 		gosub *ToggleTweak
 	}
-	if ( p == 7 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_EVERYTHING_MUST_GO
-		gosub *ToggleTweak
-	}
-	if ( p == 8 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE
-		gosub *ToggleTweak
-	}
-	if ( p == 9 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_SANDBAG_TRAINING
-		gosub *ToggleTweak
-	}
-	if ( p == 10 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING
-		gosub *ToggleTweak
-	}
-	if ( p == 11 ) {
+
+	if ( p == 5 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH
 		gosub *ToggleTweak
 	}
-	if ( p == 12 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_REVERT_POST_190_EXP_CHANGES
-		gosub *ToggleTweak
-	}
-	if ( p == 13 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_DISABLE_STUDY_DAYS
-		gosub *ToggleTweak
-	}
-	if ( p == 14 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_DISABLE_DESTINY
-		gosub *ToggleTweak
-	}
-	if ( p == 15 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_CG_DISABLE_THIRST
-		gosub *ToggleTweak
-	}
-	if ( p == 16 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_CG_DISABLE_CURTAIN_CALL
-		gosub *ToggleTweak
-	}
-	if ( p == 17 ) {
+	if ( p == 6 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_CG_DISABLE_CHAIN_ATTACKS
 		gosub *ToggleTweak
 	}
-	if ( p == 18 ) {
+	if ( p == 7 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION
+		tn = TWEAK_GAMEPLAY_CG_DISABLE_THIRST
 		gosub *ToggleTweak
 	}
-	if ( p == 19 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_CG_REVERT_SKILL_NERFS
-		gosub *ToggleTweak
-		gosub *ApplyCGSkillTweak
-	}
-	if ( p == 20 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_CG_REVERT_DAMAGE_CALC_NERFS
-		gosub *ToggleTweak
-	}
-	if ( p == 21 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_SUMMONED_MONSTER_TRAINING
-		gosub *ToggleTweak
-	}
-	if ( p == 22 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_HOME_STAIRS_NO_STAMINA_USAGE
-		gosub *ToggleTweak
-	}
-	if ( p == 23 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_PET_ARENA_INCREASED_MATCH_LIMIT
-		ts = 10 // Increments by
-		tm = 100 // Max
-		gosub *IncrementTweak
-	}
-	if ( p == 24 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_MORE_HIREABLE_HOUSE_SERVANTS
-		gosub *ToggleTweak
-	}
-	if ( p == 25 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_DISABLE_ATTACK_STAMINA_DEPLETION
-		gosub *ToggleTweak
-	}
-	if ( p == 26 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_REVERT_POST_213_EXP_CHANGES
-		gosub *ToggleTweak
-	}
-	if ( p == 27 ) {
+	if ( p == 8 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_DISABLE_URINATION_FROM_FEAR
 		gosub *ToggleTweak
 	}
-	if ( p == 28 ) {
+	if ( p == 9 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES
-		ts = 10 // Increments by
-		tm = 100 // Max
-		gosub *IncrementTweak
-	}
-	if ( p == 29 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS
+		tn = TWEAK_GAMEPLAY_DISABLE_ATTACK_STAMINA_DEPLETION
 		gosub *ToggleTweak
 	}
-	if ( p == 30 ) {
+	if ( p == 10 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN
+		tn = TWEAK_GAMEPLAY_HOME_STAIRS_NO_STAMINA_USAGE
 		gosub *ToggleTweak
 	}
-	if ( p == 31 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING
-		gosub *ToggleTweak
-	}
-	if ( p == 32 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES
-		gosub *ToggleTweak
-	}
-	if ( p == 33 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING
-		gosub *ToggleTweak
-	}
-	if ( p == 34 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES
-		ts = 1 // Increments by
-		tm = 3 // Max
-		gosub *IncrementTweak
-	}
-	if ( p == 35 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST
-		gosub *ToggleTweak
-	}
-	if ( p == 36 ) {
+	if ( p == 11 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES
 		gosub *ToggleTweak
 	}
-	if ( p == 37 ) {
+	if ( p == 12 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING
 		gosub *ToggleTweak
 	}
-	if ( p == 38 ) {
+	
+	if ( p == 14 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_SANDBAG_TRAINING
+		gosub *ToggleTweak
+	}
+	if ( p == 15 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_SUMMONED_MONSTER_TRAINING
+		gosub *ToggleTweak
+	}
+	if ( p == 16 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_INCREASED_DOJO_EXP
 		ts = 100 // Increments by
 		tm = 1900 // Max
 		gosub *IncrementTweak
 	}
-	if ( p == 39 ) {
+	if ( p == 17 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REVERT_POST_190_EXP_CHANGES
+		gosub *ToggleTweak
+	}
+	if ( p == 18 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_DISABLE_STUDY_DAYS
+		gosub *ToggleTweak
+	}
+	if ( p == 19 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_DISABLE_DESTINY
+		gosub *ToggleTweak
+		if ( TweakData(TWEAK_GAMEPLAY_DISABLE_DESTINY, TWEAK_CATEGORY_GAMEPLAY) & gdata(GDATA_FLAG_DESTINY_LETTERS) > 0 ) {
+			gdata(GDATA_FLAG_DESTINY_LETTERS) = 0
+			gdata(GDATA_FLAG_STUDY_BONUS_TRAINING_EXP) = 0
+			gdata(GDATA_FLAG_STUDY_BONUS_COMBAT_EXP) = 0
+			gdata(GDATA_FLAG_STUDY_BONUS_JOB_EXP) = 0
+			gdata(GDATA_FLAG_STUDY_BONUS_EXPLORATION_EXP) = 0
+			gdata(GDATA_FLAG_STUDY_BONUS_STUDY_EXP) = 0
+			gdata(GDATA_FLAG_DESTINY_NEFIA_BOSSES_DEFEATED) = 0
+			gdata(GDATA_FLAG_DESTINY_TIMES_SLEPT) = 0
+		}
+	}
+	if ( p == 20 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REVERT_POST_213_EXP_CHANGES
+		gosub *ToggleTweak
+	}
+	if ( p == 21 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES
+		gosub *ToggleTweak
+	}
+
+	if ( p == 23 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_CG_DISABLE_CURTAIN_CALL
+		gosub *ToggleTweak
+	}
+	if ( p == 24 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_CG_REVERT_SKILL_NERFS
+		gosub *ToggleTweak
+		gosub *ApplyCGSkillTweak
+	}
+	if ( p == 25 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_CG_REVERT_DAMAGE_CALC_NERFS
+		gosub *ToggleTweak
+	}
+	if ( p == 26 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION
+		gosub *ToggleTweak
+	}
+	if ( p == 27 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING
+		gosub *ToggleTweak
+	}
+	if ( p == 28 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE
+		gosub *ToggleTweak
+	}
+	if ( p == 29 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_GO_CHILD
 		gosub *ToggleTweak
 	}
-	if ( p == 40 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_MOONGATE_LOOT
-		gosub *ToggleTweak
-	}
-	if ( p == 41 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY
-		ts = 25 // Increments by
-		tm = 500 // Max
-		gosub *IncrementTweak
-	}
-	if ( p == 42 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_GATHER_TEXT_ADVENTURE
-		gosub *ToggleTweak
-	}
-	if ( p == 43 ) {
-		tc = TWEAK_CATEGORY_GAMEPLAY
-		tn = TWEAK_GAMEPLAY_NECROMANCY_DD_AUTOSTORE
-		gosub *ToggleTweak
-	}
-	if ( p == 44 ) {
+
+	if ( p == listmax - 1 ) {
 		snd SOUNDLIST_OK1
 		return
 	}
@@ -1072,9 +1057,192 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	}
 	return
 
+*GameplayExtraTweakMenu
+	cs = 0
+	page = 0
+	pagesize = 16
+	listmax = 12
+*GameplayExtraTweakMenu_pgchk
+	redraw 0
+	page_check
+*GameplayExtraTweakMenu_loop
+	redraw 0
+	s = "Tweak Setup", strhint2 + strhint3b
+	display_window (windoww - 680) / 2 + inf_screenx, winposy(448), 640, 448
+	s = "Configure Tweaks"
+	gosub *screen_drawMsg2
+
+	listn(0, 0) = "Increased daily Pet Arena attempts. " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_PET_ARENA_INCREASED_MATCH_LIMIT)
+	listn(0, 1) = "Increased variety of hireable home servants." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_MORE_HIREABLE_HOUSE_SERVANTS)
+	listn(0, 2) = "Increase mob density in Random Nefias:" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY) + "% increase."
+	listn(0, 3) = "Use CGX Map Layouts in Random Nefia." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES) + "% Chance."
+	listn(0, 4) = "Use CGX Job Quests." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS)
+	listn(0, 5) = "Disable Random Custom NPC spawns." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN)
+	listn(0, 6) = "Use summoning crystals to summon Custom NPCs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING)
+	listn(0, 7) = "Spawn evolved enemies in: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES)
+	listn(0, 8) = "Collect kits instead of socks in Urcaguary quest." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST)
+	listn(0, 9) = "Enable loot in Moongate/Rune maps." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_MOONGATE_LOOT)
+	listn(0, 10) = "Enable Noa's unused gathering text adventure." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GATHER_TEXT_ADVENTURE)
+
+	listn(0, listmax - 1) = "Return."
+	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
+		key_list(cnt) = key_select(cnt)
+		keyrange = cnt + 1
+		pos wx + 38, wy + 40 + cnt * 19 - 2
+		gcopy 3, cnt * 24 + 72, 30, 24, 18
+		cs_list listn(0, p), wx + 64, wy + 40 + cnt * 19 - 1, 19
+	loop
+	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
+
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
+		if ( cs == cnt ) {
+			s = ""
+			if ( p == 0 ) {
+				s = "Increases the daily limit of Pet Arena match attempts\nin intervals of 10 and maxing out at 100 a day."
+			}
+			if ( p == 1 ) {
+				s = "Adds more hireable home servants.\nIncludes the baker, fisher, and food vendor.\nAlso increases the number of servants generated."
+			}
+			if ( p == 2 ) {
+				s = "Increase density in random Nefia, result may vary due to mob-room/pack.\n  Default population of low density dungeon (rdtype1): 5~60 average: 23\n  Default population of high density dungeon (rdtype5): 25~110 average: 59\nThis also enforces a 1/64 mob density, +10~30 from mob-room/pack."
+			}
+			if ( p == 3 ) {
+				s = "Uses Custom Map Layouts in Nefia. \nThis replaces the existing mapgen algorithm with the given percentage chance. \nLayouts with no clear path to exit may be generated, you might need to dig walls. \nMob density is 1 mob every 64 tile, +10~20 per monster-room/packs"
+			}
+			if ( p == 4 ) {
+				s = "Delivery quests now marks the item and makes it heavier, but rewards more PP.\nEliminate quests now spawn targets in a group, civilians will also be spawned.\nHarvest quests now reward seeds based on your performance instead.\nPeople throw more music tickets at you during Party Quest."
+			}
+			if ( p == 5 ) {
+				s = "This will disable Random CNPC spawn in all areas except Derphy and Melkawn."
+			}
+			if ( p == 6 ) {
+				s = "Play as a summoner. Summon CNPCS and monsters to help you in battle. \nYou can summon allied CNPCS in dungeons using god's favor, or at Home using PP. \nThis will also change player summoned monsters in dungeons to be allied."
+			}
+			if ( p == 7 ) {
+				s = "Spawn evolved enemies at given locations. \nChance start at 1/1800 chance, caps at area lvl 301 with 1/6 chance.\nEvolution branches chance stack. \nEvolution stages are calculated independently."
+			}
+			if ( p == 8 ) {
+				s = "Urcaguary now accept craft repair kits and material kits instead of socks.\nCraft repair kit count as 1 and material kit count as 2.\nYou still need to find the sock-thief for the first time.\nBut he will drop enough socks for you complete the quest."
+			}
+			if ( p == 9 ) {
+				s = "Custom maps entered via Moongate/Runes now contains loot.\nEnemies drop gold and ores depend on their level.\nContainers can be opened.\nThis won't enable if you enter the Custom Map using Show House."
+			}
+			if ( p == 10 ) {
+				s = "Enable the unused text adventure made by Noa. \nThis affects the material-spot gathering mechanics. \nMaterial/EXP gain is increased compare to Vanilla. \nBut lowered compared to Plus (If your skill is insufficient.)"
+			}
+
+
+			if ( p == listmax - 1 ) {
+				s = "Return to the previous menu."
+			}
+			pos wx + 38, wy + 343
+			mes s
+		}
+	loop
+
+	redraw 1
+	await cfg_wait1
+	key_check
+	cursor_check
+	p = -1
+	repeat keyrange
+		if ( key == key_select(cnt) ) {
+			p = pagesize * page + cnt
+			break
+		}
+	loop
+
+	if ( p == 0 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_PET_ARENA_INCREASED_MATCH_LIMIT
+		ts = 10 // Increments by
+		tm = 100 // Max
+		gosub *IncrementTweak
+	}
+	if ( p == 1 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_MORE_HIREABLE_HOUSE_SERVANTS
+		gosub *ToggleTweak
+	}
+	if ( p == 2 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_INCREASE_NEFIA_MOB_DENSITY
+		ts = 25 // Increments by
+		tm = 500 // Max
+		gosub *IncrementTweak
+	}
+	if ( p == 3 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES
+		ts = 10 // Increments by
+		tm = 100 // Max
+		gosub *IncrementTweak
+	}
+	if ( p == 4 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_CUSTOM_JOB_QUESTS
+		gosub *ToggleTweak
+	}
+	if ( p == 5 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_DISABLE_RANDOM_CNPC_SPAWN
+		gosub *ToggleTweak
+	}
+	if ( p == 6 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_CUSTOM_CNPC_SUMMONING
+		gosub *ToggleTweak
+	}
+	if ( p == 7 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_SPAWN_EVOLVED_ENEMIES
+		ts = 1 // Increments by
+		tm = 3 // Max
+		gosub *IncrementTweak
+	}
+	if ( p == 8 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_ALTERNATE_URCAGUARY_QUEST
+		gosub *ToggleTweak
+	}
+	if ( p == 9 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_MOONGATE_LOOT
+		gosub *ToggleTweak
+	}
+	if ( p == 10 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_GATHER_TEXT_ADVENTURE
+		gosub *ToggleTweak
+	}
+
+	if ( p == listmax - 1 ) {
+		snd SOUNDLIST_OK1
+		return
+	}
+	page_change *GameplayExtraTweakMenu_pgchk
+	if ( key == key_cancel ) {
+        return
+	}
+	goto *GameplayExtraTweakMenu_loop
+
 *AITweakMenu
     cs = 0
-	listmax = 3
+	page = 0
+	pagesize = 16
+	listmax = 8
+*AITweakMenu_pgchk
+	redraw 0
+	page_check
 *AITweakMenu_loop
 	redraw 0
 	s = "Tweak Setup", strhint3b
@@ -1082,30 +1250,59 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	s = "Configure Tweaks"
 	gosub *screen_drawMsg2
 
-	listn(0, TWEAK_AI_ZEOME) = "Change Zeome's AI." + GetTStatus(TWEAK_CATEGORY_AI, TWEAK_AI_ZEOME)
-	listn(0, TWEAK_AI_INCREASED_PARTYTIME_DRUNKENNESS) = "Increased drinking/brawling chance during parties." + GetTStatus(TWEAK_CATEGORY_AI, TWEAK_AI_INCREASED_PARTYTIME_DRUNKENNESS)
-	listn(0, 2) = "Return."
+	listn(0, 0) = "Change Zeome's AI." + GetTStatus(TWEAK_CATEGORY_AI, TWEAK_AI_ZEOME)
+	listn(0, 1) = "Increased drinking/brawling chance during parties." + GetTStatus(TWEAK_CATEGORY_AI, TWEAK_AI_INCREASED_PARTYTIME_DRUNKENNESS)
+	listn(0, 2) = "Prevent home stayers from moving." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_PREVENT_STAYER_MOVEMENT)
+	listn(0, 3) = "Pets Heal Other Pets." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_PETS_HEAL_PETS)
+	listn(0, 4) = "Necromancy Autotargeting." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING)
+	listn(0, 5) = "Disable Necro/Summons auto shadow step." + GetTStatus(TWEAK_CATEGORY_AI, TWEAK_AI_DISABLE_NECROMANCY_SHADOWSTEP)
+	listn(0, 6) = "Prevent allies from auto-targeting player target." + GetTStatus(TWEAK_CATEGORY_AI, TWEAK_AI_DISABLE_ALLY_FOLLOW_TARGET)
+	
+	listn(0, listmax - 1) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
-
-	repeat listmax
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
 		gcopy 3, cnt * 24 + 72, 30, 24, 18
-		cs_list listn(0, cnt), wx + 64, wy + 40 + cnt * 19 - 1, 19
+		cs_list listn(0, p), wx + 64, wy + 40 + cnt * 19 - 1, 19
 	loop
-
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat listmax
-		if ( listn(0, cs) == listn(0, cnt) ) {
-			if ( cnt == TWEAK_AI_ZEOME ) {
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
+		if ( cs == cnt ) {
+			s = ""
+			if ( p == 0 ) {
 				s = "Changes Zeome's move list and AI to make the fight significantly more difficult."
 			}
-			if ( cnt == TWEAK_AI_INCREASED_PARTYTIME_DRUNKENNESS ) {
+			if ( p == 1 ) {
 				s = "NPC's drink and brawl more during Party Time! Warning: 100% is chaos. "
 			}
-			if ( cnt == 2 ) {
+			if ( p == 2 ) {
+				s = "Prevent your home stayers from moving inside your home."
+			}
+			if ( p == 3 ) {
+				s = "Pets with Healing Rain will consider the health of other pets when deciding\nwhether or not to use it. If using custom AI, no effect except\nusage out of combat (requires pet to know it naturally)."
+			}
+			if ( p == 4 ) {
+				s = "Make necromancy minions actively seek out enemies like pets do."
+			}
+			if ( p == 5 ) {
+				s = "Necromancy/Summons shadow steps player when out of sight.\nWhich resets their target very often.\n\nYou can use 'undead call' to pull them back manually."
+			}
+			if ( p == 6 ) {
+				s = "Prevent allies from auto targeting player target.\n\nWhen they have no target: \nthey will seek out enemies in sight instead."
+			}
+
+			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1117,29 +1314,69 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	await cfg_wait1
 	key_check
 	cursor_check
-	if ( key == key_select(TWEAK_AI_ZEOME) ) {
+	p = -1
+	repeat keyrange
+		if ( key == key_select(cnt) ) {
+			p = pagesize * page + cnt
+			break
+		}
+	loop
+	if ( p == 0 ) {
 		tc = TWEAK_CATEGORY_AI
 		tn = TWEAK_AI_ZEOME
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(TWEAK_AI_INCREASED_PARTYTIME_DRUNKENNESS) ) {
+	if ( p == 1 ) {
 		tc = TWEAK_CATEGORY_AI
 		tn = TWEAK_AI_INCREASED_PARTYTIME_DRUNKENNESS
 		ts = 10
 		tm = 100
 		gosub *IncrementTweak
 	}
-	if ( key == key_select(2) ) {
-		snd SOUNDLIST_OK1
-        return
+	if ( p == 2 ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_PREVENT_STAYER_MOVEMENT
+		gosub *ToggleTweak
 	}
+	if ( p == 3 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_PETS_HEAL_PETS
+		gosub *ToggleTweak
+	}
+	if ( p == 4 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING
+		gosub *ToggleTweak
+	}
+	if ( p == 5 ) {
+		tc = TWEAK_CATEGORY_AI
+		tn = TWEAK_AI_DISABLE_NECROMANCY_SHADOWSTEP
+		gosub *ToggleTweak
+	}
+	if ( p == 6 ) {
+		tc = TWEAK_CATEGORY_AI
+		tn = TWEAK_AI_DISABLE_ALLY_FOLLOW_TARGET
+		gosub *ToggleTweak
+	}
+	
+	if ( p == listmax - 1 ) {
+		snd SOUNDLIST_OK1
+		return
+	}
+	page_change *AITweakMenu_pgchk
 	if ( key == key_cancel ) {
-        return
+		return
 	}
 	goto *AITweakMenu_loop
 
 *MiscTweakMenu
-    cs = 0
+	cs = 0
+	page = 0
+	pagesize = 16
+	listmax = 9
+*MiscTweakMenu_pgchk
+	redraw 0
+	page_check
 *MiscTweakMenu_loop
 	redraw 0
 	s = "Tweak Setup", strhint3b
@@ -1147,62 +1384,62 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	s = "Configure Tweaks"
 	gosub *screen_drawMsg2
 
-	listn(0, TWEAK_MISC_RANDOM_START_MP3) = "Enable Random Start For MP3." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_RANDOM_START_MP3)
-	listn(0, TWEAK_MISC_WEATHER_EVERYWHERE) = "Display Weather Everywhere." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_WEATHER_EVERYWHERE)
-	listn(0, TWEAK_MISC_CONFIRM_RELOAD_F2) = "Confirm Reload With F2." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_CONFIRM_RELOAD_F2)
-	listn(0, TWEAK_MISC_PREVENT_STAYER_MOVEMENT) = "Prevent home stayers from moving." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_PREVENT_STAYER_MOVEMENT)
-	listn(0, TWEAK_MISC_PREVENT_BUMP_ATTACK) = "Prevent bump attack." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_PREVENT_BUMP_ATTACK)
-	listn(0, 5) = "Fist of the North Star Mode." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_HOKUTO_NO_KEN_MODE)
-	listn(0, 6) = "Disable cicada noises." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DISABLE_CICADA_NOISES)
-	listn(0, 7) = "Faster Fishing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_FASTER_FISHING)
-	listn(0, 8) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS)
-	listn(0, 9) = "Display Day/Night Cycle Everywhere." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DAYNIGHTCYCLE_EVERYWHERE)
-	listn(0, 10) = "Return."
-	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	listn(0, 0) = "Enable Random Start For MP3." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_RANDOM_START_MP3)
+	listn(0, 1) = "Display Weather Everywhere." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_WEATHER_EVERYWHERE)
+	listn(0, 2) = "Prevent bump attack." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_PREVENT_BUMP_ATTACK)
+	listn(0, 3) = "Fist of the North Star Mode." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_HOKUTO_NO_KEN_MODE)
+	listn(0, 4) = "Disable cicada noises." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DISABLE_CICADA_NOISES)
+	listn(0, 5) = "Faster Fishing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_FASTER_FISHING)
+	listn(0, 6) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS)
+	listn(0, 7) = "Display Day/Night Cycle Everywhere." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DAYNIGHTCYCLE_EVERYWHERE)
 
-	repeat 11
+	listn(0, listmax - 1) = "Return."
+	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
 		gcopy 3, cnt * 24 + 72, 30, 24, 18
-		cs_list listn(0, cnt), wx + 64, wy + 40 + cnt * 19 - 1, 19
+		cs_list listn(0, p), wx + 64, wy + 40 + cnt * 19 - 1, 19
 	loop
-
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat 11
-		if ( listn(0, cs) == listn(0, cnt) ) {
-			if ( cnt == TWEAK_MISC_RANDOM_START_MP3 ) {
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
+		if ( cs == cnt ) {
+			s = ""
+			if ( p == 0 ) {
 				s = "Will make MP3s start playback from a random point.\nCould cause compatability issues."
 			}
-			if ( cnt == TWEAK_MISC_WEATHER_EVERYWHERE ) {
+			if ( p == 1 ) {
 				s = "Weather effects will display in all areas."
 			}
-			if ( cnt == TWEAK_MISC_CONFIRM_RELOAD_F2 ) {
-				s = "If in a mode with save penalty, causes a popup to appear when pressing the\nF2 key to quick-load a save."
-			}
-			if ( cnt == TWEAK_MISC_PREVENT_STAYER_MOVEMENT ) {
-				s = "Prevent your home stayers from moving inside your home."
-			}
-			if ( cnt == TWEAK_MISC_PREVENT_BUMP_ATTACK ) {
+			if ( p == 2 ) {
 				s = "Prevents you from performing a melee attack when bumping into others."
 			}
-			if ( cnt == 5 ) {
+			if ( p == 3 ) {
 				s = "Nani?!"
 			}
-			if ( cnt == 6 ) {
+			if ( p == 4 ) {
 				s = "Prevents cicada noises from playing during the summer months."
 			}
-			if ( cnt == 7 ) {
+			if ( p == 5 ) {
 				s = "Makes fishing animations much faster. \nAnd instant dimensional fishing with a super lure."
 			}
-			if ( cnt == 8 ) {
+			if ( p == 6 ) {
 				s = "Use Custom Animation for Arrow/Bolt/Ball spell animations. \nIf it causes crashes, make sure you have the files in 'graphic/custom_animation' folder."
 			}
-			if ( cnt == 9 ) {
+			if ( p == 7 ) {
 				s = "Day/Night will display in all areas.\nSome area will be unnavigably dark like Devil's Cape."
 			}
-			if ( cnt == 10 ) {
+			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1214,69 +1451,74 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	await cfg_wait1
 	key_check
 	cursor_check
-	if ( key == key_select(TWEAK_MISC_RANDOM_START_MP3) ) {
+	p = -1
+	repeat keyrange
+		if ( key == key_select(cnt) ) {
+			p = pagesize * page + cnt
+			break
+		}
+	loop
+	
+	if ( p == 0 ) {
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_RANDOM_START_MP3
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(TWEAK_MISC_WEATHER_EVERYWHERE) ) {
+	if ( p == 1 ) {
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_WEATHER_EVERYWHERE
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(TWEAK_MISC_CONFIRM_RELOAD_F2) ) {
-		tc = TWEAK_CATEGORY_MISC
-		tn = TWEAK_MISC_CONFIRM_RELOAD_F2
-		gosub *ToggleTweak
-	}
-	if ( key == key_select(TWEAK_MISC_PREVENT_STAYER_MOVEMENT) ) {
-		tc = TWEAK_CATEGORY_MISC
-		tn = TWEAK_MISC_PREVENT_STAYER_MOVEMENT
-		gosub *ToggleTweak
-	}
-	if ( key == key_select(TWEAK_MISC_PREVENT_BUMP_ATTACK) ) {
+	if ( p == 2 ) {
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_PREVENT_BUMP_ATTACK
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(5) ) {
+	if ( p == 3 ) {
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_HOKUTO_NO_KEN_MODE
 		ts = 1
 		tm = 3
 		gosub *IncrementTweak
 	}
-	if ( key == key_select(6) ) {
+	if ( p == 4 ) {
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_DISABLE_CICADA_NOISES
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(7) ) {
+	if ( p == 5 ) {
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_FASTER_FISHING
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(8) ) {
+	if ( p == 6 ) {
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(9) ) {
+	if ( p == 7 ) {
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_DAYNIGHTCYCLE_EVERYWHERE
 		gosub *ToggleTweak
 	}
-	if ( key == key_select(10) ) {
+	if ( p == listmax - 1 ) {
 		snd SOUNDLIST_OK1
-        return
+		return
 	}
+	page_change *MiscTweakMenu_pgchk
 	if ( key == key_cancel ) {
         return
 	}
 	goto *MiscTweakMenu_loop
 
 *ChallengeTweakMenu
-	cs = 0
+    cs = 0
+    page = 0
+    pagesize = 16
+    listmax = 6
+*ChallengeTweakMenu_pgchk
+	redraw 0
+	page_check
 *ChallengeTweakMenu_loop
 	redraw 0
 	s = "Tweak Setup", strhint3b
@@ -1289,34 +1531,46 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 1) = "Double your tax each month." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH, "Months Paid")
 	listn(0, 2) = "Nuke the beggar-cave." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE, "Eleas Obliterated")
 	listn(0, 3) = "Make travelling harder." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_HARCORE_TRAVELLING, "Miles Travelled")
-	listn(0, 4) = "Return."
-	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	listn(0, 4) = "Pets die permanently." + GetTStatusProgress(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_PETS_DIE_PERMANENTLY, "Friends Buried")
 
-	repeat 5
+	listn(0, listmax - 1) = "Go back."
+	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 38, wy + 40 + cnt * 19 - 2
 		gcopy 3, cnt * 24 + 72, 30, 24, 18
-		cs_list listn(0, cnt), wx + 64, wy + 40 + cnt * 19 - 1, 19
+		cs_list listn(0, p), wx + 64, wy + 40 + cnt * 19 - 1, 19
 	loop
-
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 
-	repeat 4
-		if ( listn(0, cs) == listn(0, cnt) ) {
-			if ( cnt == 0 ) {
+	repeat pagesize
+		p = pagesize * page + cnt
+		if ( p >= listmax ) {
+			break
+		}
+		if ( cs == cnt ) {
+			s = ""
+			if ( p == 0 ) {
 				s = "Weather will change into etherwind 100%, but hey, at least it's not raining. \nShelters are closed. Vindale cloaks are sold out. Training time-skips are disabled. \nHead to Lumiest, seek Renton, may the Wind God have mercy on your soul. "
 			}
-			if ( cnt == 1 ) {
+			if ( p == 1 ) {
 				s = "You taxes will double each month. You building/hiring cost remain unchanged. \nNot paying tax or using a empty bill will fail the challenge. \nYou tax immunities will be lifted. \nWorry not, your big sister Goddess may help you pay (some) your bills."
 			}
-			if ( cnt == 2 ) {
+			if ( p == 2 ) {
 				s = "You can nuke your home again. \nThis will prevent you from entering Vernis until you nuked your cave. \nYou can leave home without triggering main quest. \nNoel quest no longer require 7000 fame."
 			}
-			if ( cnt == 3 ) {
+			if ( p == 3 ) {
 				s = "Remove the traveling needs reduction. \nYou get hungry/thirsty/tired on world map like regular maps. \nYou miles travelled (exp/idea gain) on a vehicle won't count."
 			}
-			if ( cnt == 4 ) {
+			if ( p == 4 ) {
+				s = "Pets now have permadeath.\nOn the bright side, they now drop figurine and corpses!\n(Only if they have high impression.)"
+			}
+			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
 			}
 			pos wx + 38, wy + 343
@@ -1328,30 +1582,45 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	await cfg_wait1
 	key_check
 	cursor_check
-	if ( key == key_select(0) ) {
+	p = -1
+	repeat keyrange
+		if ( key == key_select(cnt) ) {
+			p = pagesize * page + cnt
+			break
+		}
+	loop
+
+	if ( p == 0 ) {
 		tc = TWEAK_CATEGORY_CHALLENGE
 		tn = TWEAK_CHALLENGE_ALWAYS_ETHERWIND
 		gosub *ToggleTweakChallenge
 	}
-	if ( key == key_select(1) ) {
+	if ( p == 1 ) {
 		tc = TWEAK_CATEGORY_CHALLENGE
 		tn = TWEAK_CHALLENGE_DOUBLE_TAX_EACH_MONTH
 		gosub *ToggleTweakChallenge
 	}
-	if ( key == key_select(2) ) {
+	if ( p == 2 ) {
 		tc = TWEAK_CATEGORY_CHALLENGE
 		tn = TWEAK_CHALLENGE_NUKE_BEGGAR_CAVE
 		gosub *ToggleTweakChallenge
 	}
-	if ( key == key_select(3) ) {
+	if ( p == 3 ) {
 		tc = TWEAK_CATEGORY_CHALLENGE
 		tn = TWEAK_CHALLENGE_HARCORE_TRAVELLING
 		gosub *ToggleTweakChallenge
 	}
-	if ( key == key_select(4) ) {
+	if ( p == 4 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_PETS_DIE_PERMANENTLY
+		gosub *ToggleTweakChallenge
+	}
+
+	if ( p == listmax - 1 ) {
 		snd SOUNDLIST_OK1
 		return
 	}
+	page_change *ChallengeTweakMenu_pgchk
 	if ( key == key_cancel ) {
 		return
 	}

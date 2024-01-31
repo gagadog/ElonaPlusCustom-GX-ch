@@ -1972,7 +1972,7 @@
 		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_YACA_POINT_CARD ) {
 			continue
 		}
-		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_RED_BOOK & TweakData(50, 2) == 0 ) {
+		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_RED_BOOK & TweakData(TWEAK_GAMEPLAY_EVERYTHING_MUST_GO, TWEAK_CATEGORY_GAMEPLAY) == 0 ) {
 			continue
 		}
 		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_GOLD_PIECE ) {
@@ -1981,7 +1981,7 @@
 		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_SHELTER ) {
 			continue
 		}
-		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_DEED & TweakData(50, 2) == 0 ) {
+		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_DEED & TweakData(TWEAK_GAMEPLAY_EVERYTHING_MUST_GO, TWEAK_CATEGORY_GAMEPLAY) == 0 ) {
 			continue
 		}
 		if ( inv(INV_ITEM_WEIGHT, cnt) < 0 ) {
@@ -2458,7 +2458,7 @@
 
 	/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Report duplicated cards/figurines in your museum
 
-	if (TweakData(51, 0) == 1) {
+	if (TweakData(TWEAK_UI_REPORT_MUSEUM_DUPLICATES, TWEAK_CATEGORY_UI) == 1) {
 		repeat MAX_DB
 			dblist_dup_card(cnt, 0) = -1
 			dblist_dup_card(cnt, 1) = -1
@@ -2491,7 +2491,7 @@
 
 		/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Report duplicated cards/figurines in your museum
 
-	if (TweakData(51, 0) == 1) {
+	if (TweakData(TWEAK_UI_REPORT_MUSEUM_DUPLICATES, TWEAK_CATEGORY_UI) == 1) {
 		mob_name_dup = inv(INV_ITEM_SUB_NAME, cnt)
 		dup_found_x = -1
 		dup_found_y = -1

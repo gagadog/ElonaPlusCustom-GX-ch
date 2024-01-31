@@ -2,7 +2,7 @@
 	mtilefilecur = -1
 	firstturn = 1
 	gdata(GDATA_VERSION) = VERSION_NUMBER
-	gosub *initTweakDataVersion
+	gosub *initTweakData
 	dbgchara = 23
 	playerid = "sav_noa"
 	gdata(GDATA_WORLD_X) = 22

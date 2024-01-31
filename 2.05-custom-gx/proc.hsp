@@ -1450,12 +1450,7 @@
 					if ( synccheck(cc, -1) ) {
 						txtef COLOR_SKY_BLUE
 						chatc@DP = tc
-						if ( jp ) {
-							txt "「目障り」", "「あっちいけ！」", "「シッシッ！」"
-						}
-						if ( en ) {
-							txt cnvtalk("Go away!"), cnvtalk("You are an eyesore!")
-						}
+						txt lang("「目障り」", cnvtalk("Go away!")), lang("「あっちいけ！」", cnvtalk("You are an eyesore!")), lang("「シッシッ！」", cnvtalk("Shoo! Shoo!"))
 					}
 					cdata(CDATA_INTEREST, tc) = 0
 					continue
@@ -1465,17 +1460,7 @@
 						if ( synccheck(cc, -1) ) {
 							txtef COLOR_SKY_BLUE
 							chatc@DP = tc
-							if ( jp ) {
-								txt "「" + _ore(3) + "よりお金持ってるみたい" + _dana(3) + "」"
-							}
-							if ( en ) {
-								txt cnvtalk("You have more money than me!")
-							}
-							if ( 0 ) {
-								if ( rnd(5) == 0 ) {
-									cdata(CDATA_GOLD, CHARA_PLAYER) = 0
-								}
-							}
+							txt lang("「" + _ore(3) + "よりお金持ってるみたい" + _dana(3) + "」", cnvtalk("You have more money than me!")), lang("「" + _ore(3) + "よりお金持ってるみたい" + _dana(3) + "」", cnvtalk("I have nothing for you!"))
 						}
 						continue
 					}
@@ -1505,12 +1490,7 @@
 							}
 						}
 						chatc@DP = tc
-						if ( jp ) {
-							txt "「哀れな…」", "「すっごいかわいそ！」", "「みじめぇ！」"
-						}
-						if ( en ) {
-							txt cnvtalk("Pathetic!"), cnvtalk("Very pitiful...")
-						}
+						txt lang("「哀れな…」", cnvtalk("Pathetic!")), lang("「すっごいかわいそ！」", cnvtalk("Very pitiful...")), lang("「みじめぇ！」", cnvtalk("Sad!"))
 					}
 				}
 				if ( cc == CHARA_PLAYER ) {
@@ -1899,9 +1879,7 @@
 				customtalk tc, DBMODE_FLAVOR_CHARGE
 				gosub *convert_word
 				if ( gdata(GDATA_CUSTOM_TALK) == 100 ) {
-					if ( jp ) {
-						txt "「ここは任せて！」", "「時間は稼ぐよ！」", "「チャージの邪魔などさせるものか」", "「急いでね？」"
-					}
+					txt lang("「ここは任せて！」", cnvtalk("Leave this to me!")), lang("「時間は稼ぐよ！」", cnvtalk("I'll buy you some time!")), lang("「チャージの邪魔などさせるものか」", cnvtalk("I won't let them interfere!")), lang("「急いでね？」", cnvtalk("Hurry up, will you?"))
 				}
 			loop
 			if ( synccheck(cc, -1) ) {
@@ -3209,6 +3187,8 @@
 						cdata(CDATA_AI_AGGRO, cc) = 20
 					}
 				}
+			} else {
+				txt lang("」", "\"")
 			}
 			if ( cdata(CDATA_GOLD, tc) <= 0 ) {
 				cdata(CDATA_GOLD, tc) = 1
@@ -4536,12 +4516,7 @@
 	if ( gdata(GDATA_AREA) == AREA_OCEAN ) {
 		if ( rnd(1000) == 0 ) {
 			txtef COLOR_PURPLE
-			if ( jp ) {
-				txt "高波のせいで旅程が遅れている。", "流れに逆らって進むのは大変な苦労だ。"
-			}
-			if ( en ) {
-				txt "High waves delays your travel.", "It's hard to go against the flow."
-			}
+			txt lang("高波のせいで旅程が遅れている。", "High waves delays your travel."), lang("流れに逆らって進むのは大変な苦労だ。", "It's hard to go against the flow.")
 		}
 	}
 	if ( gdata(GDATA_AREA) != AREA_OCEAN ) {
@@ -4563,12 +4538,7 @@
 					}
 					if ( rnd(1000) == 0 ) {
 						txtef COLOR_PURPLE
-						if ( jp ) {
-							txt "積雪のせいで旅程が遅れている。", "雪道を進むのは大変な苦労だ。", "深い雪に脚をとられている。"
-						}
-						if ( en ) {
-							txt "Snow delays your travel.", "You are caught in a snowdrift.", "It's hard to walk on a snowy road."
-						}
+						txt lang("積雪のせいで旅程が遅れている。", "Snow delays your travel."), lang("雪道を進むのは大変な苦労だ。", "You are caught in a snowdrift."), lang("深い雪に脚をとられている。", "It's hard to walk on a snowy road.")
 						cdata(CDATA_ACTION_PERIOD, cc) += 50
 					}
 				}
@@ -5554,12 +5524,7 @@
 				if ( inv(INV_ITEM_ROT, ci) < 0 ) {
 					txtef COLOR_SKY_BLUE
 					chatc@DP = cc
-					if ( jp ) {
-						txt "「うぐぐ！なんだこの飯は！」", "「うっ！」", "「……！！」", "「あれれ…」", "「…これは何の嫌がらせですか」", "「まずい！」"
-					}
-					if ( en ) {
-						txt cnvtalk("Yuck!!"), cnvtalk("...!!"), cnvtalk("W-What..."), cnvtalk("Are you teasing me?"), cnvtalk("You fool!")
-					}
+					txt lang("「うぐぐ！なんだこの飯は！」", cnvtalk("Uggg! What's with the food!")), lang("「うっ！」", cnvtalk("Yuck!!")), lang("「……！！」", cnvtalk("...!!")), lang("「あれれ…」", cnvtalk("W-What...")), lang("「…これは何の嫌がらせですか」", cnvtalk("Are you teasing me?")), lang("「まずい！」", cnvtalk("You fool!"))
 					dmghp cc, 999, DAMAGE_FROM_BAD_FOOD
 					if ( cdata(CDATA_EXIST, cc) != CHAR_STATE_ALIVE ) {
 						if ( cdata(CDATA_RELATION, cc) > 0 ) {
@@ -13732,11 +13697,11 @@
 		}
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		hokutoudmg = limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1)
-		if ( TweakData(50, 4) > 0 & hokutoudmg >= cdata(CDATA_HP, tc) ) {
+		if ( TweakData(TWEAK_MISC_HOKUTO_NO_KEN_MODE, TWEAK_CATEGORY_MISC) > 0 & hokutoudmg >= cdata(CDATA_HP, tc) ) {
 			cdata(CDATA_CHAIN_ATTACK_COUNT, cc) = 100
 			txtef COLOR_YELLOW
 			chatc@DP = cc
-			switch TweakData(50, 4)
+			switch TweakData(TWEAK_MISC_HOKUTO_NO_KEN_MODE, TWEAK_CATEGORY_MISC)
 				case 1
 					txt "「お前はもう死んでいる。」"
 					swbreak
@@ -18889,11 +18854,11 @@
 			}
 			else {
 				chatc@DP = cc
-				if ( rnd(2) ) {
-					txt cnvtalk("You suck!"), cnvtalk("You will die alone."), cnvtalk("Bow down before me."), cnvtalk("Go jump off a bridge."), cnvtalk("Bang your head against the wall!"), cnvtalk("Why do you sniff under your dog's tail?")
+				if ( cdata(CDATA_SEX, cc) == 0 ) {
+					txt cnvtalk("You suck!"), cnvtalk("Are you serious?"), cnvtalk("Go jump off a bridge."), cnvtalk("You should kill yourself, now!"), cnvtalk("Bang your head against the wall!"), cnvtalk("The world is against you because you are a unsavory decomposing virus."), cnvtalk("You are no better than a immoral guzzling bureaucrat.")
 				}
 				else {
-					txt cnvtalk("The world is against you because you are a unsavory decomposing virus."), cnvtalk("You are no better than a immoral guzzling bureaucrat."), cnvtalk("You are so lowly."), cnvtalk("Get off me.")
+					txt cnvtalk("You will die alone."), cnvtalk("Bow down before me."), cnvtalk("Wanna play with me?"), cnvtalk("You are so lowly."), cnvtalk("Get off me."), cnvtalk("Hey, over here!"), cnvtalk("Why do you sniff under your dog's tail?")
 				}
 			}
 		}
@@ -19006,7 +18971,7 @@
 			loop
 
 			/********** JAMES CUSTOM - BEGINNING *********/
-			if ( necromancyHaveDDCemeteryKey() & TweakData(TWEAK_GAMEPLAY_NECROMANCY_DD_AUTOSTORE, TWEAK_CATEGORY_GAMEPLAY) > 0 ) {
+			if ( necromancyHaveDDCemeteryKey() & TweakData(TWEAK_CONVENIENCE_NECROMANCY_DD_AUTOSTORE, TWEAK_CATEGORY_CONVENIENCE) > 0 ) {
 				promptAdd lang("異界墓地アンデッド召喚", "Undead Summon"), "null", 6666
 			}
 			/********** JAMES CUSTOM - ENDING **********/

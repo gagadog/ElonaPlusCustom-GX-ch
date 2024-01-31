@@ -8,6 +8,7 @@
 - Added pop-up and text for AP-gains.
 
 # Changed
+- Organized Tweak Menu, and moved some of the options.
 - Player's tag-team partner now scroll as well, tag-team partner is drawn behind tag leader.
 - Combined Item-mark set and Item-mark adjust together. Setting item mark immediately enters edit mode.
 - Werewolves are no longer renamed outside of towns.

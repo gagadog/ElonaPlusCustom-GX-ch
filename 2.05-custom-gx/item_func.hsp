@@ -2494,7 +2494,7 @@
 	if ( necromancy_returnmode == "inventory" ) { // Normal DD cemetery transfer, shove in player inventory.
 		necromancy_return_index = 0
 	}
-	necromancy_usekey = (necromancy_returnmode == "DDCemetery") | (necromancy_returnmode != "inventory" & necromancyHaveDDCemeteryKey() & TweakData(TWEAK_GAMEPLAY_NECROMANCY_DD_AUTOSTORE, TWEAK_CATEGORY_GAMEPLAY) > 0)
+	necromancy_usekey = (necromancy_returnmode == "DDCemetery") | (necromancy_returnmode != "inventory" & necromancyHaveDDCemeteryKey() & TweakData(TWEAK_CONVENIENCE_NECROMANCY_DD_AUTOSTORE, TWEAK_CATEGORY_CONVENIENCE) > 0)
 	if ( necromancy_usekey ) { // Used when player inventory full, placed in DDCemetery.
 		necromancy_return_index = -1
 		necromancy_return_count = 1

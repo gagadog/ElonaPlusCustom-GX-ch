@@ -4291,7 +4291,7 @@
 		txtmore
 	}
 	expmodifer = 1 + cbit(CHARA_BIT_SANDBAG, tc) * 1000 + cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) * 1000 + cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) * 1000 + (gdata(GDATA_AREA) == AREA_SHOW_HOUSE) * 1000
-	if ( TweakData(52, 2) == 1 ) {
+	if ( TweakData(TWEAK_GAMEPLAY_SANDBAG_TRAINING, TWEAK_CATEGORY_GAMEPLAY) == 1 ) {
 		expmodifer = 1 + cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) * 1000 + cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) * 1000 + (gdata(GDATA_AREA) == AREA_SHOW_HOUSE) * 1000
 	}
 	hit = calcattackhit()
