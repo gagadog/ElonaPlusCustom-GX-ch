@@ -98,6 +98,7 @@
 					}
 					swbreak
 			swend
+			// dialog "cnt:" + cnt +"/\n/ContinueTactic: " + ContinueTactic +"/\n/PassTactic: " + PassTactic +"/\n/act: " + act +"/\n/ActionTarget: " + ActionTarget +"/\n/fov_los: " + fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, limit(ActionTarget,0,245)), cdata(CDATA_Y, limit(ActionTarget,0,245))) + "/\n/currentline: " + CAIEntity(cnt,cc) + "/" + CAIComparator(cnt,cc) + "/" + CAIComparatorFix(cnt,cc) + "/" + CAIValue(cnt,cc) + "/" + CAIAction(cnt,cc) +"/\n/tc:" + tc +"/\n/cc:" + cc +"/\n/TargetCount:" + TargetCount
 
 			if ( ActionTarget != (-2) & CAIAction(cnt, cc) != 3 & CAIAction(cnt, cc) != 4 ) {
 				dx = cdata(CDATA_X, ActionTarget)
@@ -111,7 +112,7 @@
 			; Initialize target array, so multiple conditions can use same target set (enemy < 50%HP & distance <= 1)
 			if ( TargetCount <= 0 ) {
 				TargetCount = 0
-				if ( CAIEntity(cnt, cc) \ 1000 != 2 & CAIEntity(cnt, cc) \ 1000 != 5 ) {
+				if ( CAIEntity(cnt, cc) \ 1000 != 3 & CAIEntity(cnt, cc) \ 1000 != 5 ) {
 					TargetCount = 1
 					TargetList(0) = ActionTarget
 				}
@@ -898,6 +899,9 @@
 			txt lang("" + name(cc) + "は自分の指示によって、どのように対応すればいいのか分からない！", "" + name(cc) + " doesn't know how to respond to the situation based on the instructions " + he(cc) + " " + have(cc) + " been given!")
 		}
 	}
+	if ( CAIActDoAsYouPlease(cc) ) {
+		goto *CustomAI_SKIP
+	}
 	goto *turn_end
 	return
 
@@ -981,6 +985,7 @@
 	return
 
 *ProcessTactic
+	// dialog "process tactic: " + cc + "/" + tc + "/" + act
 	if ( act == CAIActionLearning(cc) ) {
 		if ( rnd(100) > limit(CAIActionLearnProgress(cc)/2, 1, 20) | TriedLearnedSkill == 1 ) {
 			PassTactic = 1
@@ -1513,14 +1518,9 @@
 
 	listn(0, CAIAvailableSlots(tc)) = "Toggle AI"
 	listn(0, CAIAvailableSlots(tc)+1) = "Re-Initialize Actions"
-	if ( CAIQuiet(tc) == 0 ) {
-		listn(0, CAIAvailableSlots(tc)+2) = "Be quiet."
-	}
-	else {
-		listn(0, CAIAvailableSlots(tc)+2) = "Tell me when you're confused."
-	}
+	listn(0, CAIAvailableSlots(tc)+2) = "Confusion Behavior"
 	listn(0, CAIAvailableSlots(tc)+3) = "Import/Export AI"
-	// listn(0, CAIAvailableSlots(tc)+3) = "Back"
+	listn(0, CAIAvailableSlots(tc)+4) = "Back"
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
 	repeat CAIAvailableSlots(tc) + 4
@@ -1633,12 +1633,7 @@
 	}
 	if ( key == key_select(CAIAvailableSlots(tc)+2) ) {
 		snd SOUNDLIST_OK1
-		if ( CAIQuiet(tc) == FALSE ) {
-			CAIQuiet(tc) = TRUE
-		}
-		else {
-			CAIQuiet(tc) = FALSE
-		}
+		gosub *AIOtherSettingsMenu
 	}
 	if ( key == key_select(CAIAvailableSlots(tc)+3) ) {
 		snd SOUNDLIST_OK1
@@ -3314,6 +3309,32 @@
 		goto *AITacticConfigMenu
 	}
 	goto *AIComparatorSetMenu
+	return
+
+*AIOtherSettingsMenu
+	redraw 0
+	txtnew
+	txt lang("[カスタムAI]何をする？", "[Customize AI] What to do when confused?")
+	if ( CAIQuiet(tc) == 0 ) {
+		promptAdd "(Current: Tell me.)", "a"
+	} else {
+		promptAdd "(Current: Be quiet.)", "a"
+	}
+	if ( CAIActDoAsYouPlease(tc) == 0 ) {
+		promptAdd "(Current: Stand still.)", "b"
+	} else {
+		promptAdd "(Current: Do as you please.)", "b"
+	}
+	val = promptx, prompty, 280, 1
+	gosub *prompt_key
+	if ( rtval == 0 ) {
+		CAIQuiet(tc) = (CAIQuiet(tc) == FALSE)
+		goto *AIOtherSettingsMenu
+	}
+	if ( rtval == 1 ) {
+		CAIActDoAsYouPlease(tc) = (CAIActDoAsYouPlease(tc) == FALSE)
+		goto *AIOtherSettingsMenu
+	}
 	return
 
 *AIExportImportMenu
