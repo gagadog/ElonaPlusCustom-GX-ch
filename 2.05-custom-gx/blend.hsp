@@ -1135,8 +1135,7 @@
 	return
 
 *com_blend
-	procid = (procid + 1) \ 4
-	proclist(procid) = "com_blend" + " ct:" + ct
+	proc "com_blend"
 	step = -1
 	rpid = 0
 	gsel 3

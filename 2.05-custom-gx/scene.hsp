@@ -1,6 +1,5 @@
 *scene
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Scene:Init" + " ct:" + ct
+	proc "Scene:Init"
 	if ( gdata(GDATA_STORY_BOOKMARK) < sceneid ) {
 		gdata(GDATA_STORY_BOOKMARK) = sceneid
 	}
@@ -37,8 +36,7 @@
 	}
 	scidx += strlen(s)
 *scene_loop
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Scene:Loop" + " ct:" + ct
+	proc "Scene:Loop"
 	await
 	stick a, 128
 	if ( a == 128 ) {
@@ -504,8 +502,7 @@
 	goto *scene_loop
 
 *scene_end
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Scene:Exit" + " ct:" + ct
+	proc "Scene:Exit"
 	gsel 4
 	color 0, 0, 0
 	boxf

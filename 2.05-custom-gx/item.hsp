@@ -2220,8 +2220,7 @@
 		if ( mode != MODELIST_SHOP ) {
 			if ( nooracle == 0 ) {
 				if ( gdata(GDATA_ADVENTURER_ORACLE) == 0 ) {
-					procid = (procid + 1) \ 4
-					proclist(procid) = "oracle" + " ct:" + ct
+					proc "oracle"
 					ii_p = inv_getowner(ci)
 					if ( ii_p != (-1) ) {
 						if ( cdata(CDATA_ROLE, ii_p) == ROLE_ADVENTURER ) {

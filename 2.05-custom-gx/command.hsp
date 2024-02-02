@@ -736,8 +736,7 @@
 	goto *findLocation_WHILE1
 
 *com_target
-	procid = (procid + 1) \ 4
-	proclist(procid) = "com_target" + " ct:" + ct
+	proc "com_target"
 	page = 0
 	pagesize = 16
 	cs_bk = -1
@@ -11445,8 +11444,7 @@
 	}
 
 *com_wear
-	procid = (procid + 1) \ 4
-	proclist(procid) = "com_wear" + " ct:" + ct
+	proc "com_wear"
 	cc = CHARA_PLAYER
 	page = 0
 	pagesize = 14
@@ -12024,8 +12022,7 @@
 	return
 
 *com_inventory
-	procid = (procid + 1) \ 4
-	proclist(procid) = "com_inventory" + invctrl + "/" + invctrl(1) + " ct:" + ct
+	proc "com_inventory" + invctrl + "/" + invctrl(1)
 	if ( invctrl == 22 ) {
 		if ( invctrl(1) == 1 ) {
 			gosub *gene_itemfix
@@ -12141,7 +12138,7 @@
 			}
 			if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
 				if ( invctrl == 7 ) {
-					if ( refitem(inv(INV_ITEM_ID, cnt), DBSPEC_TYPE_MINOR) != FILTER_ITEM_DEED & inv(INV_ITEM_ID, cnt) != ITEM_ID_TREASURE_MAP ) {
+					if ( refitem(inv(INV_ITEM_ID, cnt), DBSPEC_TYPE_MINOR) != FILTER_ITEM_DEED & inv(INV_ITEM_ID, cnt) != ITEM_ID_TREASURE_MAP & inv(INV_ITEM_ID, cnt) != ITEM_ID_MAP ) {
 						continue
 					}
 				}
@@ -14789,8 +14786,7 @@
 	return locvar_trimdesc_q
 
 *com_identify
-	procid = (procid + 1) \ 4
-	proclist(procid) = "com_identify" + " ct:" + ct
+	proc "com_identify"
 	if ( ci < 0 ) {
 		dialog "暫定エラー回避処置です。お手数ですが、どの持ち物メニュー(例えば飲む、振る、食べるなど）から調査(xキー)を押したか報告お願いします。"
 		return
@@ -16314,8 +16310,7 @@
 	return
 
 *dump_chara
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:Init" + " ct:" + ct
+	proc "Dump:Init"
 	cc = CHARA_PLAYER
 	dbidn = cdatan(CDATAN_RACE, CHARA_PLAYER)
 	dbmode = DBMODE_REF
@@ -16325,8 +16320,7 @@
 	gosub *db_class
 	buff = ""
 	notesel buff
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:1" + " ct:" + ct
+	proc "Dump:1"
 	noteadd lang("Elona Version " + VERSION_STRING + " キャラクター情報 " + gdata(GDATA_YEAR) + "年" + gdata(GDATA_MONTH) + "月" + gdata(GDATA_DAY) + "日 " + gdata(GDATA_HOUR) + "時" + gdata(GDATA_MIN) + "分  " + mdatan(MDATAN_NAME), "Elona Version 3.03 Character Report. Generated at " + gdata(GDATA_HOUR) + ":" + gdata(GDATA_MIN) + " " + gdata(GDATA_MONTH) + "/" + gdata(GDATA_DAY) + "/" + gdata(GDATA_YEAR)+ " in " + mdatan(MDATAN_NAME))
 	noteadd ""
 	noteadd lang("  " + fixtxt("" + cdatan(CDATAN_AKA, CHARA_PLAYER) + cdatan(CDATAN_NAME, CHARA_PLAYER), 34) + _sex(cdata(CDATA_SEX, CHARA_PLAYER)) + " " + calcage(CHARA_PLAYER) + "歳" + "  " + cdata(CDATA_HEIGHT, CHARA_PLAYER) + "cm" + " " + cdata(CDATA_WEIGHT, CHARA_PLAYER) + "kg", "Name: " + fixtxt("" + cdatan(CDATAN_AKA, CHARA_PLAYER) + cdatan(CDATAN_NAME, CHARA_PLAYER), 34) + "Sex: " + _sex(cdata(CDATA_SEX, CHARA_PLAYER)) + "   Age: " + calcage(CHARA_PLAYER) + " \nHeight: " + cdata(CDATA_HEIGHT, CHARA_PLAYER) + "cm   Weight: " + cdata(CDATA_WEIGHT, CHARA_PLAYER) + "kg" )
@@ -16334,17 +16328,14 @@
 	noteadd lang(fixtxt("種族       : " + racename, 30) + fixtxt("信仰      : " + godname(cdata(CDATA_GOD, CHARA_PLAYER)), 32), fixtxt("Race      : " + racename, 30) + fixtxt("God       : " + godname(cdata(CDATA_GOD,0)), 32))
 	noteadd lang(fixtxt("職業       : " + classname, 30) + fixtxt("所属      : " + guildname(), 32), fixtxt("Class     : " + classname, 30) + fixtxt("Guild     : " + guildname(), 32))
 	noteadd lang(fixtxt("レベル     : " + cdata(CDATA_LEVEL, CHARA_PLAYER), 30) + fixtxt("経過日数  : " + gdata(GDATA_DAY_PAST), 32), fixtxt("Level     : " + cdata(CDATA_LEVEL,0), 30) + fixtxt("Tot. Days : " + gdata(GDATA_DAY_PAST), 32))
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:1-2" + " ct:" + ct
+	proc "Dump:1-2"
 	noteadd lang(fixtxt("残りBP     : " + cdata(CDATA_SKILLPOINT, CHARA_PLAYER), 30) + fixtxt("経過ターン: " + gdata(GDATA_TURN), 32), fixtxt("S. Points : " + cdata(CDATA_SKILLPOINT, CHARA_PLAYER),30) + fixtxt("Turns     : " + gdata(GDATA_TURN), 32))
 	noteadd lang(fixtxt("金貨       : " + cdata(CDATA_GOLD, CHARA_PLAYER), 30) + fixtxt("殺害数    : " + gdata(GDATA_KILLED), 32), fixtxt("Gold      : " + cdata(CDATA_GOLD, CHARA_PLAYER), 30) + fixtxt("Kills     : " + gdata(GDATA_KILLED), 32))
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:1-3" + " ct:" + ct
+	proc "Dump:1-3"
 	noteadd lang(fixtxt("プラチナ   : " + cdata(CDATA_PLATINUM, CHARA_PLAYER), 30) + fixtxt("最深攻略  : " + gdata(GDATA_DEEPEST_LEVEL) + "階相当", 32), fixtxt("Platinum  : " + cdata(CDATA_PLATINUM, CHARA_PLAYER), 30) + fixtxt("Max D Lvl : " + gdata(GDATA_DEEPEST_LEVEL), 32))
 	noteadd lang(fixtxt("プレイ時間 : " + cnvplaytime(gdata(GDATA_PLAY_TIME) + timeGetTime() / 1000 - time_begin), 30), fixtxt("Playtime  : " + cnvplaytime(gdata(GDATA_PLAY_TIME) + timeGetTime() / 1000 - time_begin), 30))
 	noteadd ""
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:2" + " ct:" + ct
+	proc "Dump:2"
 	s(1) = lang("生命力    : ", "Life      : ") + sdata(SKILL_ATTR_LIFE, CHARA_PLAYER) + "(" + sorg(SKILL_ATTR_LIFE, CHARA_PLAYER) + ")"
 	s(2) = lang("マナ      : ", "Mana      : ") + sdata(SKILL_ATTR_MANA, CHARA_PLAYER) + "(" + sorg(SKILL_ATTR_MANA, CHARA_PLAYER) + ")"
 	s(3) = lang("狂気度    : ", "Sanity    : ") + cdata(CDATA_CONDITION_INSANE, CHARA_PLAYER)
@@ -16354,8 +16345,7 @@
 	s(7) = lang("DV        : ", "DV        : ") + cdata(CDATA_DV, CHARA_PLAYER)
 	s(8) = lang("PV        : ", "PV        : ") + cdata(CDATA_PV, CHARA_PLAYER)
 	s(9) = ""
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:3" + " ct:" + ct
+	proc "Dump:3"
 	repeat MAX_SKILL_ATTR_BASIC
 		s = ""
 		p = sdata(STARTING_SKILL_ATTR + cnt + STARTING_SKILL_SPACT, CHARA_PLAYER) \ 1000
@@ -16385,8 +16375,7 @@
 		noteadd s + s(1 + cnt)
 	loop
 	noteadd ""
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:4" + " ct:" + ct
+	proc "Dump:4"
 	val = 1
 	gosub *com_calcAttack
 	tc = CHARA_PLAYER
@@ -16398,8 +16387,7 @@
 	noteadd ""
 	noteadd lang("------------------------------ 装備品 合計重量", "------------------------------ Equip Weight   ") + cnvweight(cdata(CDATA_EQUIP_WEIGHT, cc)) + " " + cnveqweight(cc)
 	noteadd ""
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:5" + " ct:" + ct
+	proc "Dump:5"
 	listmax = 0
 	repeat MAX_EQUIP_SLOT_TOTAL, CDATA_STARTING_EQUIP_SLOTS
 		if ( cdata(cnt, cc) != 0 ) {
@@ -16473,8 +16461,7 @@
 			noteadd ""
 		}
 	loop
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:6" + " ct:" + ct
+	proc "Dump:6"
 	noteadd lang("------------------------------ 特徴", "------------------------------ Characteristics")
 	noteadd ""
 	dump_return = 1
@@ -16490,8 +16477,7 @@
 		noteadd listn(0, cnt)
 	loop
 	noteadd ""
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:7" + " ct:" + ct
+	proc "Dump:7"
 	noteadd lang("------------------------------ 仲間", "------------------------------ Companions")
 	noteadd ""
 	repeat MAX_CHARA_FOLLOWER
@@ -16520,8 +16506,7 @@
 		noteadd s
 		noteadd ""
 	loop
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:8" + " ct:" + ct
+	proc "Dump:8"
 	noteadd lang("------------------------------ 称号", "------------------------------ Titles")
 	noteadd ""
 	repeat 9
@@ -16539,8 +16524,7 @@
 			noteadd ""
 		}
 	loop
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Dump:9" + " ct:" + ct
+	proc "Dump:9"
 	s = exedir + "\\save\\" + playerid + ".txt"
 	notesave s
 	exec s, 16
@@ -16620,3 +16604,114 @@
 	loop
 	goto *pc_turn
 
+/********** JAMES CUSTOM - BEGINNING **********/
+*com_draw_map			
+	redraw 0
+	gsel 7
+	picload exedir + "graphic\\ie_sheet.bmp"
+	gsel 0
+	wx = (windoww - 700) / 2 + inf_screenx
+	wy = winposy(400) - 10
+	ww = 700
+	wh = 400
+	pos wx + 4, wy + 4
+	gcopy 7, 0, 0, ww, wh
+
+	gsel 7
+	pos 0, 0
+	gfini 700, 400
+	gfdec 165, 205, 225
+	gsel 0
+	gmode 0
+
+	p@NT = 10
+	xs@NT = 600 / p@NT
+	ys@NT = 300 / p@NT
+	wx = (windoww - 700) / 2 + inf_screenx + 50 + (limit(300-mdata(MDATA_WIDTH)/2*p@NT,0,300))
+	wy = winposy(400) - 10 + 50 + (limit(150-mdata(MDATA_HEIGHT)/2*p@NT,0,150))
+	px@NT = -1
+	py@NT = -1
+	midx@NT = xs@NT/2
+	if ( mdata(MDATA_WIDTH) >= xs@NT ) { midx@NT = limit(cdata(CDATA_X, CHARA_PLAYER),(xs@NT/2),(mdata(MDATA_WIDTH) - (xs@NT/2))) }
+	midy@NT = ys@NT/2
+	if ( mdata(MDATA_HEIGHT) >= ys@NT ) { midy@NT = limit(cdata(CDATA_Y, CHARA_PLAYER),(ys@NT/2),(mdata(MDATA_HEIGHT) - (ys@NT/2))) }
+
+	// Draw map
+	repeat xs@NT + 4
+		x@NT = midx@NT + cnt - (xs@NT/2) - 2
+		ox@NT = cnt - (xs@NT/2) - 2
+		if ( x@NT < 0 | x@NT >= mdata(MDATA_WIDTH) ) { continue }
+		repeat ys@NT + 4
+			y@NT = midy@NT + cnt - (ys@NT/2) - 2
+			oy@NT = cnt - (ys@NT/2) - 2
+			if ( y@NT < 0 | y@NT >= mdata(MDATA_HEIGHT) ) { continue }
+			if ( (chipm(CHIPM_ATTRIB, map(x@NT, y@NT, 2)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
+				gmode 0
+				pos wx + 300 + ox@NT * p@NT, wy + 150 + oy@NT * p@NT
+				gcopy 7, 350 + ox@NT * p@NT, 200 + oy@NT * p@NT, p@NT, p@NT
+			}
+		loop
+	loop
+	// Draw world map locations
+	if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
+		repeat xs@NT + 4
+			x@NT = midx@NT + cnt - (xs@NT/2) - 2
+			ox@NT = cnt - (xs@NT/2) - 2
+			if ( x@NT < 0 | x@NT >= mdata(MDATA_WIDTH) ) { continue }
+			repeat ys@NT + 4
+				y@NT = midy@NT + cnt - (ys@NT/2) - 2
+				oy@NT = cnt - (ys@NT/2) - 2
+				if ( y@NT < 0 | y@NT >= mdata(MDATA_HEIGHT) ) { continue }
+				if ( map(x@NT, y@NT, 6) != 0 ) {
+					locvar_cell_draw_p = map(x@NT, y@NT, 6) \ 1000
+					locvar_cell_draw_p2 = map(x@NT, y@NT, 6) / 100000 \ 100 + map(x@NT, y@NT, 6) / 10000000 * 100
+					if ( locvar_cell_draw_p != 999 & locvar_cell_draw_p != 0 & adata(ADATA_TYPE, locvar_cell_draw_p2) != MAP_TYPE_HOME ) {
+						gmode 2, 48, 48
+						pos wx + 300 + ox@NT * p@NT + p@NT / 2, wy + 150 + oy@NT * p@NT + p@NT / 2
+						grotate 2, locvar_cell_draw_p \ 33 * inf_tiles, locvar_cell_draw_p / 33 * inf_tiles, 0, 24, 24
+					}
+				}
+			loop
+		loop
+	}
+	// Draw player
+	gmode 2, 32, 48
+	pos wx + 300 + (cdata(CDATA_X, CHARA_PLAYER) - midx@NT) * p@NT + p@NT / 2, wy + 150 + (cdata(CDATA_Y, CHARA_PLAYER) - midy@NT) * p@NT + p@NT / 2
+	grotate BUFFER_PCC, 0, 0, 0, 12, 16
+	// Draw allies
+	if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
+		repeat MAX_CHARA_TOTAL
+			if ( cdata(CDATA_ALLIED, cnt) != 100 | cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+				continue
+			}
+			locvar_cell_draw_x = cdata(CDATA_X, cnt)
+			locvar_cell_draw_y = cdata(CDATA_Y, cnt)
+			if ( locvar_cell_draw_x < midx@NT - (xs@NT/2) | locvar_cell_draw_x >= midx@NT + (xs@NT/2) | locvar_cell_draw_y < midy@NT - (ys@NT/2) | locvar_cell_draw_y >= midy@NT + (ys@NT/2) ) {
+				continue
+			}
+			if ( cbit(CHARA_BIT_PCC, cnt) == 1 ) {
+				gmode 2, 32, 48
+				pos wx + 300 + (locvar_cell_draw_x - midx@NT) * p@NT + p@NT / 2, wy + 150 + (locvar_cell_draw_y - midy@NT) * p@NT + p@NT / 2
+				grotate BUFFER_PCC + cnt, 0, 0, 0, 12, 16
+
+			} else {
+				locvar_cell_draw_col = (cdata(CDATA_PIC, cnt) - cdata(CDATA_CHARA_PIC, cnt) * COLOR_TINT_MULT) / COLOR_TINT_MULT
+				locvar_cell_draw_p = cdata(CDATA_PIC, cnt) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cnt) * COLOR_TINT_MULT
+				if ( cdata(CDATA_PIC, cnt) >= xy2pic(1, 21) & cdata(CDATA_PIC, cnt) <= xy2pic(31, 21) ) {
+					locvar_cell_draw_col = 0
+					locvar_cell_draw_p = cdata(CDATA_PIC, cnt)
+				}
+				title "" + cnt + "/" + locvar_cell_draw_p + "/" + locvar_cell_draw_col + ""
+				chara_preparepic locvar_cell_draw_p, locvar_cell_draw_col
+				gmode 2, 48, 48
+				pos wx + 300 + (locvar_cell_draw_x - midx@NT) * p@NT + p@NT / 2, wy + 150 + (locvar_cell_draw_y - midy@NT) * p@NT + p@NT / 2 * (chipi(CHIPI_HEIGHT, locvar_cell_draw_p) <= 48)
+				grotate BUFFER_CHR, 0, 960, 0, 16, 16 + 16 * (chipi(CHIPI_HEIGHT, locvar_cell_draw_p) > 48)
+			}
+		loop
+	}
+	gmode 0
+	redraw 1
+	press
+	snd SOUNDLIST_CARD1
+	return
+/********** JAMES CUSTOM - ENDING **********/

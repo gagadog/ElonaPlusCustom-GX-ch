@@ -112,8 +112,7 @@
 	aeff@tcg = cardstack@tcg(TCG_STACK_EFFECT, stack@tcg)
 	aeft@tcg = cardstack@tcg(TCG_STACK_TARGET, stack@tcg)
 	aefp@tcg = cardstack@tcg(TCG_STACK_POWER, stack@tcg)
-	procid = (procid + 1) \ 4
-	proclist(procid) = "tcg effactivate: " + " stack:" + stack@tcg + " effect:" + aeff@tcg + " ac:" + ac@tcg + " aeft:" + aeft@tcg + " ap:" + ap@tcg
+	proc "tcg effactivate: " + " stack:" + stack@tcg + " effect:" + aeff@tcg + " ac:" + ac@tcg + " aeft:" + aeft@tcg + " ap:" + ap@tcg
 	if ( dbg_tcg ) { 
 		dialog "Stack:" + stack@tcg + "/" + ac@tcg + "/" + act@tcg + "/" + ap@tcg + "/" + aflt@tcg + "/" + aeft@tcg + "/" + aefp@tcg
 	}

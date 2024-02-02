@@ -3581,8 +3581,7 @@
 	return
 
 *open_newYear
-	procid = (procid + 1) \ 4
-	proclist(procid) = "new year gift" + " ct:" + ct
+	proc "new year gift"
 	snd SOUNDLIST_CHEST1
 	txt lang("あなたは" + itemname(ci) + "を開けた。", "You open " + itemname(ci) + ".")
 	msg_halt
@@ -3591,12 +3590,10 @@
 	ri = ci
 	cc = CHARA_PLAYER
 	inv(INV_ITEM_PARAM1, ri) = 0
-	procid = (procid + 1) \ 4
-	proclist(procid) = "new year gift1" + " ct:" + ct
+	proc "new year gift1"
 	if ( inv(INV_ITEM_PARAM3, ri) < 100 ) {
 		if ( rnd(3) == 0 ) {
-			procid = (procid + 1) \ 4
-			proclist(procid) = "new year gift1-1" + " ct:" + ct
+			proc "new year gift1-1"
 			if ( synccheck(cc, -1) ) {
 				txt lang("悪意を持った何かが袋から飛び出してきた！", "Something jumps out from the pack!")
 			}
@@ -3607,8 +3604,7 @@
 			return
 		}
 		if ( rnd(3) == 0 ) {
-			procid = (procid + 1) \ 4
-			proclist(procid) = "new year gift1-2" + " ct:" + ct
+			proc "new year gift1-2"
 			if ( synccheck(cc, -1) ) {
 				txt lang("罠だ！お年玉袋は発火した。", "It's a trap! The gift ignites.")
 			}
@@ -3632,8 +3628,7 @@
 		gosub *effect
 		return
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "new year gift2" + " ct:" + ct
+	proc "new year gift2"
 	if ( inv(INV_ITEM_PARAM3, ri) < 200 ) {
 		if ( rnd(4) == 0 ) {
 			if ( synccheck(cc, -1) ) {
@@ -3668,8 +3663,7 @@
 		itemcreate -1, isetgiftminor(rnd(length(isetgiftminor))), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
 		return
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "new year gift3" + " ct:" + ct
+	proc "new year gift3"
 	if ( rnd(3) == 0 ) {
 		if ( synccheck(cc, -1) ) {
 			txtef COLOR_YELLOW
@@ -3687,8 +3681,7 @@
 		loop
 		return
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "new year gift4" + " ct:" + ct
+	proc "new year gift4"
 	if ( rnd(10) == 0 ) {
 		if ( synccheck(cc, -1) ) {
 			txt lang("これは素晴らしい贈り物だ！", "This is truly a wonderful gift!")
@@ -3697,20 +3690,17 @@
 		itemcreate -1, isetgiftgrand(rnd(length(isetgiftgrand))), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
 		return
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "new year gift5" + " ct:" + ct
+	proc "new year gift5"
 	if ( synccheck(cc, -1) ) {
 		txt lang("何かが袋から出てきた。", "There's something inside the pack.")
 	}
 	flt
 	itemcreate -1, isetgiftmajor(rnd(length(isetgiftmajor))), cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 1
-	procid = (procid + 1) \ 4
-	proclist(procid) = "new year gift end" + " ct:" + ct
+	proc "new year gift end"
 	return
 
 *open_catbox
-	procid = (procid + 1) \ 4
-	proclist(procid) = "catbox" + " ct:" + ct
+	proc "catbox"
 	snd SOUNDLIST_CHEST1
 	txt lang("あなたは" + itemname(ci) + "を開けた。", "You open " + itemname(ci) + ".")
 	msg_halt
@@ -3741,8 +3731,7 @@
 		}
 		return
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "catbox end" + " ct:" + ct
+	proc "catbox end"
 	return
 
 *act_openDoor
@@ -6114,8 +6103,7 @@
 	return
 
 *act_dip
-	procid = (procid + 1) \ 4
-	proclist(procid) = "proc_dip" + " ct:" + ct
+	proc "proc_dip"
 	if ( inv(INV_ITEM_PIC, cidip) == xy2pic(24, 10) ) {
 		gdata(GDATA_FLAG_TOTAL_POTION_PLUGS)++
 	}
@@ -6421,8 +6409,7 @@
 			goto *ai_action
 		}
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "act_use" + " ct:" + ct
+	proc "act_use"
 	screenupdate = -1
 	gosub *screen_draw
 	tc = cc

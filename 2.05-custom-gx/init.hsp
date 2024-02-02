@@ -1941,8 +1941,7 @@ if instr(s,0,%1)!-1{	%c\
 	tmset
 	time_warn = timeGetTime() / 1000
 	time_begin = timeGetTime() / 1000
-	procid = (procid + 1) \ 4
-	proclist(procid) = "system_init" + " ct:" + ct
+	proc "system_init"
 	exist exedir + "config.txt"
 	if ( strsize == (-1) ) {
 		bcopy exedir + "original\\" + "config.txt", exedir + "config.txt"
@@ -2025,8 +2024,7 @@ if instr(s,0,%1)!-1{	%c\
 		loop
 		gsel 0
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Init buffer" + " ct:" + ct
+	proc "Init buffer"
 	folder = exedir + "user\\graphic\\"
 	buffer 1, SPRITE_SHEET_COLS_ITEM * SPRITE_SIZE_ITEM, SPRITE_SHEET_ROWS_ITEM * SPRITE_SIZE_ITEM
 	picload exedir + "\\graphic\\item" + devfile + ".bmp", 1
@@ -2038,8 +2036,7 @@ if instr(s,0,%1)!-1{	%c\
 	buffer 6, SPRITE_SHEET_COLS_ITEM * inf_tiles, SPRITE_SHEET_ROWS_ITEM * inf_tiles
 	buffer 7, 24, 24
 	buffer 9, 24, 24
-	procid = (procid + 1) \ 4
-	proclist(procid) = "dim" + " ct:" + ct
+	proc "dim"
 	dim initeq, 2, 50
 	dup eqhelm, initeq(0, 0)
 	dup eqweapon1, initeq(0, 1)
@@ -2443,8 +2440,8 @@ if instr(s,0,%1)!-1{	%c\
 		buf += "#" + cdata(CDATA_ID, rc)
 	}
 	buf += "\n"
-	repeat 4
-		buf += "" + (3 - cnt) + ". " + proclist((procid + cnt + 1) \ 4) + "\n"
+	repeat 8
+		buf += "" + (7 - cnt) + ". " + proclist((procid + cnt + (50 - 7)) \ 50) + "\n"
 	loop
 	repeat MAX_CHARA_TOTAL
 		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {

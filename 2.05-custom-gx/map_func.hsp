@@ -148,8 +148,7 @@
    	return SOUNDLIST_DOOR1
 
 #deffunc map_tileset int map_tileset_arg1
-	procid = (procid + 1) \ 4
-	proclist(procid) = "map_tileSet:Begin" + " ct:" + ct
+	proc "map_tileSet:Begin"
 	tile_doorclosed = 726
 	tile_dooropen = 236
 	tile_trans = 999
@@ -417,8 +416,7 @@
 		tile_fog = 534
 		tile_default = 45
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "map_tileSet:End" + " ct:" + ct
+	proc "map_tileSet:End"
 	/********** JAMES CUSTOM - NEFIA LAYOUT - BEGINNING **********/
 	if ( TweakData(TWEAK_GAMEPLAY_USE_CUSTOM_NEFIA_TYPES, TWEAK_CATEGORY_GAMEPLAY) != 0 ) {
 		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
@@ -434,8 +432,7 @@
 	gosub *game_ctrlFile
 	map_tileset mdata(MDATA_TILESET)
 	nooracle = 1
-	procid = (procid + 1) \ 4
-	proclist(procid) = "map_initCustom:CmapItem" + " ct:" + ct
+	proc "map_initCustom:CmapItem"
 	repeat 400
 		if ( cmapdata(0, cnt) == 0 ) {
 			continue
@@ -468,8 +465,7 @@
 	loop
 	nooracle = 0
 	mdata(MDATA_WALL) = 1
-	procid = (procid + 1) \ 4
-	proclist(procid) = "map_initCustom:End" + " ct:" + ct
+	proc "map_initCustom:End"
 	return
 
 #deffunc map_reload str map_reload_arg1
@@ -514,8 +510,7 @@
 			cell_refresh locvar_map_reload_x, locvar_map_reload_y
 		}
 	loop
-	procid = (procid + 1) \ 4
-	proclist(procid) = "map_reload:End" + " ct:" + ct
+	proc "map_reload:End"
 	return
 
 #deffunc map_initialize
@@ -532,8 +527,7 @@
 	dim mapsync, mdata(MDATA_WIDTH), mdata(MDATA_HEIGHT)
 	dim mef, 9, 200
 	map_tileset mdata(MDATA_TILESET)
-	procid = (procid + 1) \ 4
-	proclist(procid) = "map_initialize:end" + " ct:" + ct
+	proc "map_initialize:end"
 	return
 
 #deffunc map_placecharaonentrance int map_placecharaonentrance_arg1, int map_placecharaonentrance_arg2, int map_placecharaonentrance_arg3

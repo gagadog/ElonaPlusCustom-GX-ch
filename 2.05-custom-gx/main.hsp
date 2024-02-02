@@ -45,7 +45,7 @@
 	dim fpss@d3m, 32
 
 
-	#define global proc(%1) procId@=(procId@+1)\50:procList@(procId@)=%1+" ct:"+ct@
+	#define global proc(%1) procId=(procId+1)\50:procList(procId)=%1+" ct:"+ct//:title ""+%1
 
 	; #include "exrand.as"
 
@@ -870,8 +870,7 @@
 		#include "mock.hsp"
 		stop
 	#endif
-	procid = (procid + 1) \ 4
-	proclist(procid) = "main_init:Begin" + " ct:" + ct
+	proc "main_init:Begin"
 	sound = SOUNDLIST_NONE
 	ct = 0
 	repeat 200
@@ -1060,8 +1059,7 @@
 			gosub *advance_hour
 		}
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "main_init:End" + " ct:" + ct
+	proc "main_init:End"
 	goto *game_main
 
 *weather_change
@@ -1101,8 +1099,7 @@
 	return
 
 *advance_hour
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Advance_hour:Begin" + " ct:" + ct
+	proc "Advance_hour:Begin"
 	if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_MUSEUM ) {
 		gosub *museum_update
 	}
@@ -1706,8 +1703,7 @@
 	if ( gdata(GDATA_AREA) != AREA_SHELTER & gdata(GDATA_AREA) != AREA_JAIL & (gdata(GDATA_AREA) != AREA_CHAOS_CRADLE | gdata(GDATA_LEVEL) != 179) & (gdata(GDATA_AREA) != AREA_DOCK | gdata(GDATA_LEVEL) != 70) ) {
 		gosub *random_event
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Advance_hour:End" + " ct:" + ct
+	proc "Advance_hour:End"
 	return
 
 *game_main
@@ -2469,8 +2465,7 @@
 			}
 		}
 		refreshspeed cc
-		procid = (procid + 1) \ 4
-		proclist(procid) = "turn_end:pc" + " ct:" + ct
+		proc "turn_end:pc"
 	}
 	else {
 	}
@@ -2576,8 +2571,7 @@
 		cdata(CDATA_ALLIED, CHARA_PLAYER) = 0
 	}
 
-	procid = (procid + 1) \ 4
-	proclist(procid) = "pc_turn_init" + " ct:" + ct
+	proc "pc_turn_init"
 	if ( gdata(GDATA_GOD_TALK) ) {
 		if ( rnd(1000) == 0 ) {
 			txtgod cdata(CDATA_GOD, CHARA_PLAYER), GOD_TEXT_RANDOM
@@ -4231,8 +4225,7 @@
 	return
 
 *event
-	procid = (procid + 1) \ 4
-	proclist(procid) = "event" + " ct:" + ct
+	proc "event"
 	_switch_val = evid()
 	if ( _switch_val == EVENT_QUEST_ELEMINATE | _switch_sw ) {
 		_switch_sw = 0
@@ -6282,6 +6275,10 @@
 	if ( _switch_val == EVENT_BOSS_RANDOM | _switch_sw ) {
 		_switch_sw = 0
 		repeat
+			if ( cnt > 99 ) {
+				txt "Boss cannot spawn because theres too many monsters! A random monster is vanquished!"
+				chara_vanquish MAX_CHARA_TOTAL - 1
+			}
 			if ( adata(ADATA_WAKEUP_NEFIA, gdata(GDATA_AREA)) == WAKEUP_NEFIA_NONE ) {
 				gosub *fltChara
 				fixlv = FIX_QUALITY_MIRACLE

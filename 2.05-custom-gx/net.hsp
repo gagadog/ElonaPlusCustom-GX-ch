@@ -790,8 +790,7 @@
 
 *browser
 	snd SOUNDLIST_SPELL
-	procid = (procid + 1) \ 4
-	proclist(procid) = "browser" + " ct:" + ct
+	proc "browser"
 	gsel 7
 	picload exedir + "graphic\\browser.bmp"
 	gsel 0

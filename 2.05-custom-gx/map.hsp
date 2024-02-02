@@ -12202,7 +12202,7 @@
 				}
 				if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CAMP ) {
 					work = 0
-					cost = adata(ADATA_EXTRA_MEDAL, gdata(GDATA_AREA)) * adata(ADATA_EXTRA_MEDAL, gdata(GDATA_AREA)) * adata(ADATA_EXTRA_MEDAL, gdata(GDATA_AREA))
+					cost = adata(ADATA_LABOR_CAMP_TOIL_LEVEL, gdata(GDATA_AREA)) * adata(ADATA_LABOR_CAMP_TOIL_LEVEL, gdata(GDATA_AREA)) * adata(ADATA_LABOR_CAMP_TOIL_LEVEL, gdata(GDATA_AREA))
 					repeat 245
 						if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 							continue
@@ -12838,8 +12838,7 @@
 		loop
 	loop
 	repeat 500
-		procid = (procid + 1) \ 4
-		proclist(procid) = "world_setArea:fix:id" + cnt + "/" + adata(ADATA_ID, cnt) + " ct:" + ct
+		proc "world_setArea:fix:id" + cnt + "/" + adata(ADATA_ID, cnt)
 		if ( adata(ADATA_ID, cnt) == AREA_NONE | adata(ADATA_ICON, cnt) == 0 ) {
 			continue
 		}
@@ -12854,8 +12853,7 @@
 			adata(ADATA_ID, cnt) -= 800
 			continue
 		}
-		procid = (procid + 1) \ 4
-		proclist(procid) = "world_setArea:fix:begin" + adata(ADATA_X, cnt) + "/" + adata(ADATA_Y, cnt) + " ct:" + ct
+		proc "world_setArea:fix:begin" + adata(ADATA_X, cnt) + "/" + adata(ADATA_Y, cnt)
 		if ( adata(ADATA_X, cnt) <= 0 | adata(ADATA_Y, cnt) <= 0 | adata(ADATA_X, cnt) >= mdata(MDATA_WIDTH) | adata(ADATA_Y, cnt) >= mdata(MDATA_HEIGHT) ) {
 			adata(ADATA_X, cnt) = mdata(MDATA_WIDTH) / 2
 			adata(ADATA_Y, cnt) = mdata(MDATA_HEIGHT) / 2
@@ -12886,10 +12884,8 @@
 				break
 			loop
 		}
-		procid = (procid + 1) \ 4
-		proclist(procid) = "world_setArea:fix:xy:" + x + ":" + y + " ct:" + ct
-		procid = (procid + 1) \ 4
-		proclist(procid) = "world_setArea:fix:map:" + map(adata(ADATA_X, cnt), adata(ADATA_Y, cnt), 0) + " ct:" + ct
+		proc "world_setArea:fix:xy:" + x + ":" + y
+		proc "world_setArea:fix:map:" + map(adata(ADATA_X, cnt), adata(ADATA_Y, cnt), 0)
 		if ( range_tileRoad(map(adata(ADATA_X, cnt), adata(ADATA_Y, cnt), 0)) | chipm(CHIPM_ROLE, map(adata(ADATA_X, cnt), adata(ADATA_Y, cnt), 0)) == MAP_CHIP_ROLE_SNOW | chipm(CHIPM_ROLE_SUB, map(adata(ADATA_X, cnt), adata(ADATA_Y, cnt), 0)) == MAP_CHIP_ROLE_COAST ) {
             ; pass
         }

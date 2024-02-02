@@ -5,29 +5,38 @@
 - Added a tweak to enable Noa's material gathering minigame.
 - Added a tweak to increase random Nefia monster density.
 - Added a tweak to return Necromancy Coffins into DD-Cemetery automatically.
+- Added 2 AI tweaks on ally targeting.
+- Added a tweak for showing local/global map when using the 'map' item.
 - Added pop-up and text for AP-gains.
 
 # Changed
-- Organized Tweak Menu, and moved some of the options.
 - Player's tag-team partner now scroll as well, tag-team partner is drawn behind tag leader.
-- Combined Item-mark set and Item-mark adjust together. Setting item mark immediately enters edit mode.
+- Combined Item-mark set and Item-mark adjust command together. Setting item mark immediately enters edit mode.
 - Werewolves are no longer renamed outside of towns.
 - Town NPC no longer have HP/power-level shown when 'l'ooking at them.
 - Custom AI changes:
+  - Allow pet to enter default AI when confused.
   - Added "Enemy" Target entity, it now uses a target list like "ally"
-  - Added "Count" condition, always uses the target list of previous line. 
+  - Added "Count" condition, always uses the target list of previous line (if theres any). 
   - Target list of previous line is used if "Preserve Target" is enabled.
   - Added "Quality" condition (like <> {} brackets).
   - Added "Do as You Please" action, exits custom AI and uses the default offensive mode AI. 
   - Distant check: If enemy not in sight: distance+9 (Prevent confusion due to walls.)
-- Added some variety to Custom Layouts.
-- Lowered Custom Layout's monster density. (to around 15~25, +10x(0~5) due to monster rooms.)
-- Ano's harvest moon ranch is now enabled by default, you need to enable tweak to disable it.
+- Tweaks
+  - Organized Tweak Menu, and moved some of the options.
+  - Rare loot trigger and enable savescumming is now separated.
+  - Ano's harvest moon ranch is now enabled by default, you need to enable tweak to disable it.
+  - Custom Layouts: Added some variety to forests.
+  - Custom Layouts: Lowered monster density. (to around 15~25, +10x(0~5) due to monster rooms.)
+  - Evolving Enemies: Prevent shades from evolving, due to a graphical error.
+  - Enable showroom loot: made more furnitures usable.
 
 # Fixed
-- Player speed are reset after entering a map, and before "main_init"
+- Player speed are wrong on the first turn due to cargo-load/vehicle. 
+  - Speed is re-calculated after entering a map, and before "main_init".
+- Game hang issue when trying to spawn boss when theres too many monsters on the field.
 - Show NPC name: enemies using Jumping-Drop/Diving-Drill now have their names hidden.
-- Encounter canceller can be used with 't' to throw potion at self tweak now.
+- Throw potion at self: Encounter canceller can be used now.
 - Auto-pickup config renamed, so it no longer affect sound settings in Ano's Plus.
 - Enabling savescumming not changing rare loot trigger immediately.
 - Some translation / display issues thanks to @lIllIIlI.

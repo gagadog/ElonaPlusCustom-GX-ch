@@ -2216,7 +2216,7 @@
 	cdata(CDATA_QUALITY, rc) = fixlv
 	gosub *cm_finish
 	/********** JAMES CUSTOM - ENEMY EVOLUTION - BEGINNING **********/
-	if ( rc >= MAX_CHARA_FOLLOWER ) {
+	if ( rc >= MAX_CHARA_FOLLOWER & cmshade == 0 ) {
 		f@PE = 0
 		if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANDOM_DUNGEON ) {
 			if ( adata(ADATA_WAKEUP_NEFIA, gdata(GDATA_AREA)) != WAKEUP_NEFIA_NONE ) {

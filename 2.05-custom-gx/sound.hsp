@@ -407,8 +407,7 @@
 	return
 
 *music_play
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Music" + " ct:" + ct
+	proc "Music"
 	env = SOUNDLIST_NONE
 	if ( TweakData(TWEAK_MISC_DISABLE_CICADA_NOISES, TWEAK_CATEGORY_MISC) == FALSE & mdata(MDATA_TYPE) == MAP_TYPE_TOWN & gdata(GDATA_AREA) != AREA_NOYEL ) {
 		if ( gdata(GDATA_WEATHER) == WEATHER_CLEAR ) {

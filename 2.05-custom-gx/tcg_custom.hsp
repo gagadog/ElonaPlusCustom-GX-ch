@@ -31,8 +31,7 @@
 	return
 
 *card_action_choose_target
-	procid = (procid + 1) \ 4
-	proclist(procid) = "tcg efffire: " + " eff:" + eff@tcg + " effac:" + effac@tcg
+	proc "tcg efffire: " + " eff:" + eff@tcg + " effac:" + effac@tcg
 	if ( cdbit(TCG_BIT_SILENCED, effac@tcg) ) {
 		return
 	}

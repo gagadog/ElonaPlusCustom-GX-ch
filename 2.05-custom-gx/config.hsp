@@ -160,8 +160,7 @@
 	return
 
 *config_load
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Load config" + " ct:" + ct
+	proc "Load config"
 	notesel note_buff
 	noteload exedir + "\\config.txt"
 	repeat noteinfo(0)
@@ -415,8 +414,7 @@
 		gosub *cfg_write
 		redraw 0
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Fix config" + " ct:" + ct
+	proc "Fix config"
 	if ( cfg_language == 0 ) {
 		jp = 1
 		vfix = 0

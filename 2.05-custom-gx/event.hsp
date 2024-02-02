@@ -1,6 +1,5 @@
 *random_event
-	procid = (procid + 1) \ 4
-	proclist(procid) = "Random event" + " ct:" + ct
+	proc "Random event"
 	id = 0, 0
 	if ( gspd < 10 ) {
 		return 0
@@ -338,8 +337,7 @@
 	}
 
 *random_eventProc
-	procid = (procid + 1) \ 4
-	proclist(procid) = "random_eventProc:" + id + " ct:" + ct
+	proc "random_eventProc:" + id
 	if ( id == 0 ) {
 		return 0
 	}
@@ -3048,8 +3046,7 @@
 	return 1
 
 *re_select
-	procid = (procid + 1) \ 4
-	proclist(procid) = "re_select" + " ct:" + ct
+	proc "re_select"
 	if ( cfg_skiprandevents ) {
 		if ( listmax <= 1 ) {
 			snd SOUNDLIST_POP4

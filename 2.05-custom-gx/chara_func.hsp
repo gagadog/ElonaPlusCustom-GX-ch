@@ -3996,8 +3996,7 @@
 	return
 
 #deffunc copy_chara int copy_chara_arg1
-	procid = (procid + 1) \ 4
-	proclist(procid) = "copy_chara:Begin" + " ct:" + ct
+	proc "copy_chara:Begin"
 	locvar_copy_chara_c = 0
 	repeat MAX_CHARA_TOTAL - MAX_CHARA_SAVE, MAX_CHARA_SAVE
 		if ( cdata(CDATA_EXIST, cnt) == CHAR_STATE_DEAD ) {
@@ -4028,8 +4027,7 @@
 	if ( locvar_copy_chara_f == 0 ) {
 		return 0
 	}
-	procid = (procid + 1) \ 4
-	proclist(procid) = "copy_chara:Proc" + " ct:" + ct
+	proc "copy_chara:Proc"
 	del_chara locvar_copy_chara_c
 	memcpy sdata(SKILL_NONE, locvar_copy_chara_c), sdata(SKILL_NONE, copy_chara_arg1), MAX_SKILL_RANGE * 4 * 2
 	memcpy cdata(CDATA_EXIST, locvar_copy_chara_c), cdata(CDATA_EXIST, copy_chara_arg1), MAX_CHARA_DATA * 4
@@ -4052,8 +4050,7 @@
 	cbitmod CHARA_BIT_REFRESH, locvar_copy_chara_c, 1
 	cbitmod CHARA_BIT_SANDBAG, locvar_copy_chara_c, 0
 	cbitmod CHARA_BIT_SUMMONED, locvar_copy_chara_c, 1
-	procid = (procid + 1) \ 4
-	proclist(procid) = "copy_chara:end" + " ct:" + ct
+	proc "copy_chara:end"
 	return 1
 
 #deffunc txteledmg int txteledmg_arg1, int txteledmg_arg2, int txteledmg_arg3, int txteledmg_ele

@@ -10151,8 +10151,7 @@
 		}
 	}
 	txtef COLOR_YELLOW
-	procid = (procid + 1) \ 4
-	proclist(procid) = "god text" + " ct:" + ct
+	proc "god text"
 	if ( txtgod_flavor == GOD_TEXT_RANDOM ) {
 		if ( txtgod_godid == GOD_MANI ) {
 			txt lang("「お前も体を機械化したらどうだ？」", cnvtalk("You should mechanize your body.")), lang("「あまり昔のことで弄らないでくれないか」", cnvtalk("Always behave true to my name.")), lang("「焦るな。すぐに機械が全てを支配する時代が来る」", cnvtalk("No need to hurry. The day machines dominate the world is much closer than you think."))

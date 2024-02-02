@@ -678,7 +678,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tn = TWEAK_CONVENIENCE_NECROMANCY_DD_AUTOSTORE
 		gosub *ToggleTweak
 	}
-	if ( p == 14 ) {
+	if ( p == 16 ) {
 		tc = TWEAK_CATEGORY_CONVENIENCE
 		tn = TWEAK_CONVENIENCE_LEASH_MY_ALLIES
 		gosub *ToggleTweak
@@ -1373,7 +1373,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	cs = 0
 	page = 0
 	pagesize = 16
-	listmax = 9
+	listmax = 10
 *MiscTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -1392,6 +1392,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 5) = "Faster Fishing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_FASTER_FISHING)
 	listn(0, 6) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS)
 	listn(0, 7) = "Display Day/Night Cycle Everywhere." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DAYNIGHTCYCLE_EVERYWHERE)
+	listn(0, 8) = "Draw Local/World map when using 'map' item." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_USABLE_MAP)
 
 	listn(0, listmax - 1) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -1438,6 +1439,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			}
 			if ( p == 7 ) {
 				s = "Day/Night will display in all areas.\nSome area will be unnavigably dark like Devil's Cape."
+			}
+			if ( p == 8 ) {
+				s = "Draw a local map / world map when using the 'map' item.\nTiles undiscovered are not shown."
 			}
 			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
@@ -1499,6 +1503,11 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	if ( p == 7 ) {
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_DAYNIGHTCYCLE_EVERYWHERE
+		gosub *ToggleTweak
+	}
+	if ( p == 8 ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_USABLE_MAP
 		gosub *ToggleTweak
 	}
 	if ( p == listmax - 1 ) {
