@@ -1448,6 +1448,7 @@
 	return
 
 #deffunc cell_draw2 int cell_draw2_ignore_seen
+	screendrawhack = 200
 	locvar_cell_draw_ly = 1
 	locvar_cell_draw_dy = (reph(1) - scy) * inf_tiles + inf_screeny + locvar_cell_draw_syfix
 	repeat reph, reph(1)
@@ -1480,10 +1481,12 @@
 			locvar_cell_draw_x = repw(1) + repw - 1 - cnt
 			// Draw the light circle (lower half) below player. Drawn in the very cycle (repw(2),reph(3)) to prevent overlap.
 			if ( reph(3) == locvar_cell_draw_y & locvar_cell_draw_x == repw(2) ) {
+				screendrawhack = 201
 				cell_draw_player2 cell_draw2_ignore_seen
 			}
 			// Draw the light below player, and the player. Drawn in the very cycle (repw(2),reph(2)) to prevent overlap.
 			if ( reph(2) == locvar_cell_draw_y & locvar_cell_draw_x == repw(2) ) {
+				screendrawhack = 202
 				cell_draw_player cell_draw2_ignore_seen
 			}
 			// Skip out of screen draw.
@@ -1492,6 +1495,7 @@
 				locvar_cell_draw_lx++
 				continue
 			}
+			screendrawhack = 203
 			// Draw out of map fog tiles.
 			if ( locvar_cell_draw_x < 0 | locvar_cell_draw_x >= mdata(MDATA_WIDTH) ) {
 				gmode 0, inf_tiles, inf_tiles
@@ -1529,6 +1533,7 @@
 			gmode 2, inf_tiles, inf_tiles
 			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 7) != 0 ) {
 				if ( mapsync(locvar_cell_draw_x, locvar_cell_draw_y) == msync ) {
+					screendrawhack = 204
 					locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, 7) \ 10, map(locvar_cell_draw_x, locvar_cell_draw_y, 7) / 10
 					if ( locvar_cell_draw_p(1) ) {
 						gcopy 5, locvar_cell_draw_p(1) * inf_tiles + 288, 1152
@@ -1544,6 +1549,7 @@
 			// Draw map sub effects like ripple and fishes. 
 			if ( efmap(1, locvar_cell_draw_x, locvar_cell_draw_y) > 0 ) {
 				if ( mapsync(locvar_cell_draw_x, locvar_cell_draw_y) == msync ) {
+					screendrawhack = 205
 					locvar_cell_draw_p = efmap(0, locvar_cell_draw_x, locvar_cell_draw_y)
 					if ( locvar_cell_draw_scrturnnew == 1 ) {
 						efmap(1, locvar_cell_draw_x, locvar_cell_draw_y)--
@@ -1564,6 +1570,7 @@
 			// Draw map feats like doors/traps/plants
 			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 6) != 0 ) {
 				if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 2) == map(locvar_cell_draw_x, locvar_cell_draw_y, 0) ) {
+					screendrawhack = 206
 					locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, 6) \ 1000
 					if ( locvar_cell_draw_p != 999 & locvar_cell_draw_p != 0 ) {
 						pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipm(CHIPM_F, locvar_cell_draw_p)
@@ -1593,6 +1600,7 @@
 			// Draw the MEF, map effect like fire/acid.
 			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 8) != 0 ) {
 				if ( mapsync(locvar_cell_draw_x, locvar_cell_draw_y) == msync ) {
+					screendrawhack = 207
 					locvar_cell_draw_p2 = map(locvar_cell_draw_x, locvar_cell_draw_y, 8) - 1
 					locvar_cell_draw_p = mef(1, locvar_cell_draw_p2) \ 10000, mef(1, locvar_cell_draw_p2) / 10000
 					pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
@@ -1610,6 +1618,7 @@
 			}
 			// Draw the cell item in the memory MAP_ITEM_CHIPS_MEMORY, index 5, (actual item is at MAP_ITEM_CHIPS index 4, refreshed when checking pov)
 			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 5) != 0 ) {
+				screendrawhack = 208
 				locvar_cell_draw_stackh = 0
 				// If 2-3 item is on the floorstack. MAP_ITEM_CHIPS_MEMORY is negative.
 				// And the MAP_ITEM_CHIPS_MEMORY stores 3 indices of the item.
@@ -1621,6 +1630,7 @@
 						locvar_cell_draw_p = 363
 						goto *skipitemDraw
 					}
+					screendrawhack = 2081
 					// Split the indices and draw the item.
 					locvar_cell_draw_p = -map(locvar_cell_draw_x, locvar_cell_draw_y, 5)
 					locvar_cell_draw_flooritem = locvar_cell_draw_p \ 1000 + RANGE_INV2, locvar_cell_draw_p / 1000 \ 1000 + RANGE_INV2, locvar_cell_draw_p / 1000000 \ 1000 + RANGE_INV2
@@ -1659,6 +1669,7 @@
 					loop
 					locvar_cell_draw_fp = rtval(1)
 					*skipitemDraw
+					screendrawhack = 2082
 					preparePicItem locvar_cell_draw_p, locvar_cell_draw_i
 
 					if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
@@ -1741,6 +1752,7 @@
 			locvar_cell_draw_dx -= inf_tiles
 			locvar_cell_draw_lx++
 		loop
+		screendrawhack = 209
 		locvar_cell_draw_dx = (repw(1) + repw - 1 - scx) * inf_tiles + inf_screenx + locvar_cell_draw_sxfix
 		locvar_cell_draw_lx = 1
 		color 0, 0, 0
@@ -1773,6 +1785,7 @@
 			// Draw the non-player character on current cell.
 			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 1) != 0 ) {
 				if ( synccheck(map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1, -1) | ( cell_draw2_ignore_seen & map(locvar_cell_draw_x, locvar_cell_draw_y, 0) == map(locvar_cell_draw_x, locvar_cell_draw_y, 2) ) ) {
+					screendrawhack = 210
 					locvar_cell_draw_c = map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1
 					/********** JAMES CUSTOM - RENDERING ORDER - BEGINNING **********/
 					// Draw the tagteam partner before tagteam leader. Moved player tag draw to cell_draw_player
@@ -1780,6 +1793,7 @@
 						locvar_cell_draw_c = cdata(CDATA_TAGTEAM_PARTNER, map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1)
 						locvar_cell_draw_c = charaIsVisible(locvar_cell_draw_c)
 						if ( locvar_cell_draw_c != 0 ) {
+							screendrawhack = 211
 							cell_draw_chara locvar_cell_draw_c, locvar_cell_draw_dx, locvar_cell_draw_dy, locvar_cell_draw_ground, locvar_cell_draw_ani
 						}
 						locvar_cell_draw_c = map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1
@@ -1787,6 +1801,7 @@
 					/********** JAMES CUSTOM - RENDERING ORDER - ENDING **********/
 					locvar_cell_draw_c = charaIsVisible(locvar_cell_draw_c)
 					if ( locvar_cell_draw_c != 0 ) {
+						screendrawhack = 212
 						cell_draw_chara locvar_cell_draw_c, locvar_cell_draw_dx, locvar_cell_draw_dy, locvar_cell_draw_ground, locvar_cell_draw_ani
 						cell_draw_chara_detail_info locvar_cell_draw_c, locvar_cell_draw_dx, locvar_cell_draw_dy, locvar_cell_draw_ground
 					}
@@ -1796,6 +1811,7 @@
 						locvar_cell_draw_c = cdata(CDATA_TAGTEAM_PARTNER, map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1)
 						locvar_cell_draw_c = charaIsVisible(locvar_cell_draw_c)
 						if ( locvar_cell_draw_c != 0 ) {
+							screendrawhack = 213
 							// cell_draw_chara locvar_cell_draw_c, locvar_cell_draw_dx, locvar_cell_draw_dy, locvar_cell_draw_ground, locvar_cell_draw_ani
 							cell_draw_chara_detail_info locvar_cell_draw_c, locvar_cell_draw_dx, locvar_cell_draw_dy, locvar_cell_draw_ground
 						}
@@ -1804,6 +1820,7 @@
 			}
 			// Draw the tile light effect, it is changed on cell_refresh, and cleared when map reloads. 
 			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 9) != 0 ) {
+				screendrawhack = 214
 				locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, 9)
 				if ( gdata(GDATA_HOUR) > 17 | gdata(GDATA_HOUR) < 6 | lightdata(LIGHTDATA_TIME, locvar_cell_draw_p) ) {
 					if ( mapsync(locvar_cell_draw_x, locvar_cell_draw_y) == msync | cell_draw2_ignore_seen != FALSE ) {
@@ -1819,6 +1836,7 @@
 				if ( locvar_cell_draw_ground != tile_fog ) {
 					if ( locvar_cell_draw_y > 0 ) {
 						if ( locvar_cell_draw_dy > 48 | cell_draw2_ignore_seen ) {
+							screendrawhack = 215
 							locvar_cell_draw_ground = map(locvar_cell_draw_x, locvar_cell_draw_y - 1, 0)
 							if ( chipm(CHIPM_WALL, locvar_cell_draw_ground) ) {
 								pos locvar_cell_draw_dx + (locvar_cell_draw_dx < 0) * (-locvar_cell_draw_dx), locvar_cell_draw_dy
@@ -1836,6 +1854,7 @@
 				// If the tile below is a high wall, draw the top of the wall, and some shadow
 				gmode 0
 				if ( locvar_cell_draw_y > 0 ) {
+					screendrawhack = 216
 					locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y - 1, 2)
 					if ( chipm(CHIPM_WALL, locvar_cell_draw_p) != 2 ) {
 						if ( locvar_cell_draw_p != tile_fog ) {

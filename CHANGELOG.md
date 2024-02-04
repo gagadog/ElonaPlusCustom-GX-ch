@@ -1,4 +1,4 @@
-# Upcoming
+# 2.21.3.0
 
 # Added
 - Added slot machine minigame for slot machines.
