@@ -1256,7 +1256,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 3) = "Pets Heal Other Pets." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_PETS_HEAL_PETS)
 	listn(0, 4) = "Necromancy Autotargeting." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING)
 	listn(0, 5) = "Disable Necro/Summons auto shadow step." + GetTStatus(TWEAK_CATEGORY_AI, TWEAK_AI_DISABLE_NECROMANCY_SHADOWSTEP)
-	listn(0, 6) = "Prevent allies from auto-targeting player target." + GetTStatus(TWEAK_CATEGORY_AI, TWEAK_AI_DISABLE_ALLY_FOLLOW_TARGET)
+	listn(0, 6) = "Allies acting independently." + GetTStatus(TWEAK_CATEGORY_AI, TWEAK_AI_ALLY_INDEPENDENT_TARGETING)
 	
 	listn(0, listmax - 1) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -1299,7 +1299,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 				s = "Necromancy/Summons shadow steps player when out of sight.\nWhich resets their target very often.\n\nYou can use 'undead call' to pull them back manually."
 			}
 			if ( p == 6 ) {
-				s = "Prevent allies from auto targeting player target.\n\nWhen they have no target: \nthey will seek out enemies in sight instead."
+				s = "Prevent allies from auto targeting player target.\nPrevent allies from prioritize NPCs attacking players.\nAlso allow NPCs to target NPCs outside of player's sight."
 			}
 
 			if ( p == listmax - 1 ) {
@@ -1355,7 +1355,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	}
 	if ( p == 6 ) {
 		tc = TWEAK_CATEGORY_AI
-		tn = TWEAK_AI_DISABLE_ALLY_FOLLOW_TARGET
+		tn = TWEAK_AI_ALLY_INDEPENDENT_TARGETING
 		gosub *ToggleTweak
 	}
 	

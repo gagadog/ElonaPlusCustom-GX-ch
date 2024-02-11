@@ -518,7 +518,7 @@
 		cdata(CDATA_AI_AGGRO, cc)--
 		if ( cdata(CDATA_TARGET, cc) == 0 | cdata(CDATA_AI_AGGRO, cc) <= 0 | (cdata(CDATA_RELATION, cdata(CDATA_TARGET, cc)) >= (-2) & cdata(CDATA_TARGET, cdata(CDATA_TARGET, cc)) != cc) ) {
 			cdata(CDATA_TARGET, cc) = 0
-			if ( pcattacker != 0 ) {
+			if ( pcattacker != 0 & TweakData(TWEAK_AI_ALLY_INDEPENDENT_TARGETING, TWEAK_CATEGORY_AI) == 0 ) {
 				if ( cdata(CDATA_RELATION, pcattacker) <= (-3) ) {
 					if ( cdata(CDATA_EXIST, pcattacker) == CHAR_STATE_ALIVE ) {
 						if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, pcattacker), cdata(CDATA_Y, pcattacker)) ) {
@@ -529,7 +529,7 @@
 				}
 			}
 			if ( cdata(CDATA_TARGET, CHARA_PLAYER) != 0 ) {
-				if ( cdata(CDATA_EXIST, cdata(CDATA_TARGET, CHARA_PLAYER)) == CHAR_STATE_ALIVE & TweakData(TWEAK_AI_DISABLE_ALLY_FOLLOW_TARGET, TWEAK_CATEGORY_AI) == 0 ) {
+				if ( cdata(CDATA_EXIST, cdata(CDATA_TARGET, CHARA_PLAYER)) == CHAR_STATE_ALIVE & TweakData(TWEAK_AI_ALLY_INDEPENDENT_TARGETING, TWEAK_CATEGORY_AI) == 0 ) {
 					cdata(CDATA_TARGET, cc) = cdata(CDATA_TARGET, CHARA_PLAYER)
 				}
 			}
@@ -548,7 +548,7 @@
 			}
 			if ( cdata(CDATA_TARGET, cc) == 0 ) {
 				if ( cdata(CDATA_TARGET, CHARA_PLAYER) != 0 & cdata(CDATA_RELATION, cdata(CDATA_TARGET, CHARA_PLAYER)) <= (-3) ) {
-					if ( cdata(CDATA_EXIST, cdata(CDATA_TARGET, CHARA_PLAYER)) == CHAR_STATE_ALIVE & TweakData(TWEAK_AI_DISABLE_ALLY_FOLLOW_TARGET, TWEAK_CATEGORY_AI) == 0 ) {
+					if ( cdata(CDATA_EXIST, cdata(CDATA_TARGET, CHARA_PLAYER)) == CHAR_STATE_ALIVE & TweakData(TWEAK_AI_ALLY_INDEPENDENT_TARGETING, TWEAK_CATEGORY_AI) == 0 ) {
 						if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cdata(CDATA_TARGET, CHARA_PLAYER)), cdata(CDATA_Y, cdata(CDATA_TARGET, CHARA_PLAYER))) ) {
 							cdata(CDATA_AI_AGGRO, cc) = 5
 							cdata(CDATA_TARGET, cc) = cdata(CDATA_TARGET, CHARA_PLAYER)

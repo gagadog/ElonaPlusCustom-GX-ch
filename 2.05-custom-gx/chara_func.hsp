@@ -560,6 +560,7 @@
 	return 8
 
 #deffunc modimp int modimp_charid, int modimp_arg2
+	if ( modimp_charid == CHARA_PLAYER ) { return } // JAMES CUSTOM: Normally player impression shouldn't be raised through `modimp`.
 	locvar_modimp_p = implevel(cdata(CDATA_IMPRESSION, modimp_charid))
 	if ( modimp_arg2 < 0 ) {
 		locvar_modimp_i = modimp_arg2
@@ -656,6 +657,7 @@
 	return 7
 
 #deffunc modimp2 int modimp2_charid, int modimp2_arg2
+	if ( modimp2_charid == CHARA_PLAYER ) { return } // JAMES CUSTOM: Normally player master/servant shouldn't be raised through `modimp2`, but love potion can trigger this.
 	locvar_modimp2_p = implevel2(cdata(CDATA_MASTER_SERVANT, modimp2_charid))
 	if ( modimp2_arg2 < 0 ) {
 		locvar_modimp2_i = modimp2_arg2
@@ -710,10 +712,10 @@
 				}
 				cdata(CDATA_EMO_ICON, modimp2_charid) = 17 + 100 * 3
 			}
-			cdata(CDATA_MASTER_SERVANT, CHARA_PLAYER)++
-			if ( cdata(CDATA_MASTER_SERVANT, CHARA_PLAYER) > 999 ) {
-				cdata(CDATA_MASTER_SERVANT, CHARA_PLAYER) = 999
-			}
+		}
+		cdata(CDATA_MASTER_SERVANT, CHARA_PLAYER)++
+		if ( cdata(CDATA_MASTER_SERVANT, CHARA_PLAYER) > 999 ) {
+			cdata(CDATA_MASTER_SERVANT, CHARA_PLAYER) = 999
 		}
 	}
 	if ( locvar_modimp2_p > locvar_modimp2_p(1) ) {

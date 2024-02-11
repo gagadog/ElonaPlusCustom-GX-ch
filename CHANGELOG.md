@@ -1,3 +1,17 @@
+# Upcoming
+
+# Changed
+- AI Tweak: Ally independent targeting now allows NPC targeting out-of-player-sight NPCs.
+- TCG/Deck:
+  - Cards not collected yet are listed with info hidden.
+  - Buffed Dog-race cards.
+  - Gave Rilian, Poppy, Ajetalio, and Cresce new decks.
+
+# Fixed
+- Fixes level-based damage of MPbreath pasted to the Sandcannon formula, thanks to @NekoNou
+- Fixes player master/servant value not increasing without the candle, thanks to CY.
+- Fixes player master/servant value reset to 300 due to love potion.
+
 # 2.21.3.0
 
 # Added

@@ -1177,7 +1177,7 @@
 	if ( cdbit(TCG_BIT_MILLSUMMON, gravecard_arg1) & cardorglocation@tcg == TCG_LOCATION_DECK ) {
 		putcard gravecard_arg1, card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
 	}
-	if ( card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTODECKWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTOHANDWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_GWEN | specialrulenoonedies@tcg ) {
+	if ( card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_POPPY | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTODECKWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTOHANDWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_GWEN | specialrulenoonedies@tcg ) {
 		returncard gravecard_arg1
 	}
 	if ( card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTOHANDWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_GWEN ) {
@@ -2901,8 +2901,8 @@
 		goto *select_deck
 	}
 	if ( key == key_msglog & deckmode@tcg == 0 ) {
-		promptAdd lang("降参する", "Reset Your Deck"), "a"
-		promptAdd lang("降参する", "Cancel"), "b"
+		promptAdd lang("デッキのリセット", "Reset Your Deck"), "a"
+		promptAdd lang("キャンセル", "Cancel"), "b"
 		val = basex@tcg + 420, basey@tcg + 230, 200, 1
 		gosub *prompt_key@
 		if ( rtval == 0 ) {

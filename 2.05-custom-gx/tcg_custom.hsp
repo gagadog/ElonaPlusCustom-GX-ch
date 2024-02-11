@@ -224,6 +224,9 @@
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_BIRD ) {
 					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "bird" ) { continue }
 				}
+				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_DOGNOTSELF ) {
+					if ( (cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "dog" & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "doggod") | cnt == effac@tcg ) { continue }
+				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_DOG ) {
 					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "dog" & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "doggod" ) { continue }
 				}
@@ -1052,28 +1055,94 @@
 		deck_opponent(CREATURE_ID_URUK) = 3
 		return 1
 	}
-	if ( cdata(CDATA_ID, tc) == CREATURE_ID_RILIAN_THE_DOG_LOVER | cdata(CDATA_ID, tc) == CREATURE_ID_POPPY_THE_LITTLE_DOG ) {
-		deck_opponent(CREATURE_ID_RILIAN_THE_DOG_LOVER) = 1
-		deck_opponent(CREATURE_ID_POPPY_THE_LITTLE_DOG) = 1
-		deck_opponent(CREATURE_ID_DOG) = 4
-		deck_opponent(CREATURE_ID_FOX_SPIRIT) = 2
-		deck_opponent(CREATURE_ID_WOLF) = 2
-		deck_opponent(CREATURE_ID_SILVER_WOLF) = 2
-		deck_opponent(CREATURE_ID_MINER) = 2
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_RILIAN_THE_DOG_LOVER ) {
 		deck_opponent(CREATURE_ID_BEGGAR) = 2
-		deck_opponent(CREATURE_ID_WIZARD) = 2
-		deck_opponent(CREATURE_ID_WEREWOLF) = 2
-
-		deck_opponent(CREATURE_ID_HOUND) = 1
+		deck_opponent(CREATURE_ID_SHENA_THE_DRAW) = 1
+		deck_opponent(CREATURE_ID_LARNNEIRE_THE_LISTENER_OF_WIND) = 1
+		deck_opponent(CREATURE_ID_DOG) = 4
+		deck_opponent(CREATURE_ID_SILVER_WOLF) = 2
+		deck_opponent(CREATURE_ID_POPPY_THE_LITTLE_DOG) = 1
+		deck_opponent(CREATURE_ID_RILIAN_THE_DOG_LOVER) = 1
+		deck_opponent(CREATURE_ID_GOLDEN_KNIGHT) = 2
+		deck_opponent(CREATURE_ID_DEFENDER) = 2
+		deck_opponent(CREATURE_ID_NOYEL_HORSE) = 2
+		deck_opponent(CREATURE_ID_BARD) = 1
+		deck_opponent(CREATURE_ID_GOOSE) = 2
+		deck_opponent(CREATURE_ID_SHEEPDOG) = 4
+		deck_opponent(CREATURE_ID_PADANGU) = 4
+		deck_opponent(CREATURE_ID_WEREWOLF) = 4
+		deck_opponent(CREATURE_ID_COMMAND_WOLF) = 3
+		deck_opponent(CREATURE_ID_FOX_SPIRIT) = 1
+		deck_opponent(CREATURE_ID_SHINING_SILVER_WOLF) = 4
+		deck_opponent(CREATURE_ID_DETECTIVE) = 2
+		deck_opponent(CREATURE_ID_LEGENDARY_WOLF) = 2
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_POPPY_THE_LITTLE_DOG ) {
+		deck_opponent(CREATURE_ID_HOUND) = 2
 		deck_opponent(CREATURE_ID_FIRE_HOUND) = 1
 		deck_opponent(CREATURE_ID_ICE_HOUND) = 1
-		deck_opponent(CREATURE_ID_LIGHTNING_HOUND) = 1
+		deck_opponent(CREATURE_ID_LIGHTNING_HOUND) = 4
 		deck_opponent(CREATURE_ID_DARK_HOUND) = 1
 		deck_opponent(CREATURE_ID_ILLUSION_HOUND) = 1
 		deck_opponent(CREATURE_ID_NERVE_HOUND) = 1
 		deck_opponent(CREATURE_ID_POISON_HOUND) = 1
 		deck_opponent(CREATURE_ID_SOUND_HOUND) = 1
 		deck_opponent(CREATURE_ID_NETHER_HOUND) = 1
+		deck_opponent(CREATURE_ID_CHAOS_HOUND) = 4
+		deck_opponent(CREATURE_ID_DOG) = 4
+		deck_opponent(CREATURE_ID_SILVER_WOLF) = 2
+		deck_opponent(CREATURE_ID_SHEEPDOG) = 4
+		deck_opponent(CREATURE_ID_PADANGU) = 4
+		deck_opponent(CREATURE_ID_COMMAND_WOLF) = 3
+		deck_opponent(CREATURE_ID_SHINING_SILVER_WOLF) = 4
+		deck_opponent(CREATURE_ID_LEGENDARY_WOLF) = 2
+		deck_opponent(CREATURE_ID_NOVICE) = 7
+		deck_opponent(CREATURE_ID_WOLF) = 2
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_AJETALIO_THE_SEMINAR_LECTURER ) {
+		deck_opponent(CREATURE_ID_SHOPKEEPER) = 2
+		deck_opponent(CREATURE_ID_ELDER) = 2
+		deck_opponent(CREATURE_ID_TRAINER) = 2
+		deck_opponent(CREATURE_ID_WIZARD) = 2
+		deck_opponent(CREATURE_ID_WARRIOR) = 2
+		deck_opponent(CREATURE_ID_STERSHA_THE_QUEEN_OF_PALMIA) = 1
+		deck_opponent(CREATURE_ID_XABI_THE_KING_OF_PALMIA) = 1
+		deck_opponent(CREATURE_ID_ERYSTIA_THE_SCHOLAR_OF_HISTORY) = 1
+		deck_opponent(CREATURE_ID_MASTER_OF_PET_ARENA) = 2
+		deck_opponent(CREATURE_ID_MINER) = 2
+		deck_opponent(CREATURE_ID_BARD) = 2
+		deck_opponent(CREATURE_ID_GRAND_DRAGON) = 1
+		deck_opponent(CREATURE_ID_KALI) = 1
+		deck_opponent(CREATURE_ID_RAGNAROCK) = 1
+		deck_opponent(CREATURE_ID_MRA) = 1
+		deck_opponent(CREATURE_ID_WEREWOLF_DETECTIVE) = 2
+		deck_opponent(CREATURE_ID_UNITDEAD_JOKER) = 1
+		deck_opponent(CREATURE_ID_UNITDEAD_JACK) = 1
+		deck_opponent(CREATURE_ID_UNITDEAD_QUEEN) = 1
+		deck_opponent(CREATURE_ID_UNITDEAD_KING) = 1
+		deck_opponent(CREATURE_ID_AJETALIO_THE_SEMINAR_LECTURER) = 1
+		deck_opponent(CREATURE_ID_NOVICE) = 30
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_CRESCE_THE_SEMINAR_LECTURER ) {
+		deck_opponent(CREATURE_ID_ROCK_THROWER) = 3
+		deck_opponent(CREATURE_ID_BOMB_ROCK) = 2
+		deck_opponent(CREATURE_ID_ROGUE_BOSS) = 2
+		deck_opponent(CREATURE_ID_ROGUE_WARRIOR) = 4
+		deck_opponent(CREATURE_ID_ROGUE_ARCHER) = 4
+		deck_opponent(CREATURE_ID_ROGUE_WIZARD) = 4
+		deck_opponent(CREATURE_ID_BOUNTY_HUNTER) = 2
+		deck_opponent(CREATURE_ID_GIGA_BOMB_ROCK) = 1
+		deck_opponent(CREATURE_ID_CLUSTER_BOMB_ROCK) = 1
+		deck_opponent(CREATURE_ID_BLUE_MOAI) = 1
+		deck_opponent(CREATURE_ID_RAGNAROCK) = 1
+		deck_opponent(CREATURE_ID_MANA_MONOLITH) = 1
+		deck_opponent(CREATURE_ID_CRESCE_THE_SEMINAR_LECTURER) = 1
+		deck_opponent(CREATURE_ID_PART_TIME_WORKER_THE_RED_SWORD) = 1
+		deck_opponent(CREATURE_ID_NOVICE) = 6
+		deck_opponent(CREATURE_ID_KARATA_THE_SEMINAR_MASCOT) = 1
 		return 1
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_RAPHAEL_THE_WOMANIZER ) {
@@ -2588,7 +2657,7 @@
 		cardrefdomain = 7
 		cardrefcost = 2
 		cardrefattack = 4
-		cardrefhp = 1
+		cardrefhp = 2
 		cardrefskillid = TCG_EFF_WEREWOLF
 		cardrefbits = ""
 		return 1
@@ -5419,7 +5488,7 @@
 		cardrefdomain = 4
 		cardrefcost = 4
 		cardrefattack = 4
-		cardrefhp = 3
+		cardrefhp = 4
 		cardrefskillid = TCG_EFF_GUARD
 		cardrefbits = "78"
 		return 1
@@ -7691,9 +7760,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 7
 		cardrefcost = 6
-		cardrefattack = 2
-		cardrefhp = 6
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALALLENEMY2DAMAGE
+		cardrefattack = 1
+		cardrefhp = 7
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALEVERYONE1DAMAGE
 		cardrefbits = "16,19"
 		return 1
 	}
@@ -11132,7 +11201,7 @@
 		cardreflvl = 2
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
-		cardrefcost = 1
+		cardrefcost = 0
 		cardrefattack = 0
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_HALLOWEEN2
@@ -13377,8 +13446,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 5
 		cardrefcost = 9
-		cardrefattack = 15
-		cardrefhp = 9
+		cardrefattack = 12
+		cardrefhp = 12
 		cardrefskillid = TCG_EFF_UNITDEAD
 		cardrefbits = ""
 		return 1
@@ -13405,8 +13474,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 5
 		cardrefcost = 9
-		cardrefattack = 15
-		cardrefhp = 9
+		cardrefattack = 5
+		cardrefhp = 20
 		cardrefskillid = TCG_EFF_UNITDEAD
 		cardrefbits = ""
 		return 1
@@ -13419,8 +13488,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 5
 		cardrefcost = 9
-		cardrefattack = 15
-		cardrefhp = 9
+		cardrefattack = 20
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_UNITDEAD
 		cardrefbits = ""
 		return 1
@@ -13503,9 +13572,9 @@
 		cardreflvl = 200
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 9
-		cardrefattack = 11
-		cardrefhp = 11
+		cardrefcost = 8
+		cardrefattack = 5
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_SIVA
 		cardrefbits = ""
 		return 1
@@ -15665,9 +15734,9 @@
 		cardreflvl = 55
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
-		cardrefcost = 1
-		cardrefattack = 1
-		cardrefhp = 2
+		cardrefcost = 2
+		cardrefattack = 3
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_DOG
 		cardrefbits = ""
 		return 1
@@ -15680,8 +15749,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
 		cardrefcost = 5
-		cardrefattack = 6
-		cardrefhp = 5
+		cardrefattack = 4
+		cardrefhp = 4
 		cardrefskillid = TCG_EFF_DOG_GANG
 		cardrefbits = ""
 		return 1
@@ -15695,8 +15764,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
 		cardrefcost = 3
-		cardrefattack = 3
-		cardrefhp = 3
+		cardrefattack = 4
+		cardrefhp = 4
 		cardrefskillid = TCG_EFF_WEREWOLF
 		cardrefbits = ""
 		return 1
@@ -15709,10 +15778,10 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
 		cardrefcost = 4
-		cardrefattack = 5
+		cardrefattack = 3
 		cardrefhp = 4
 		cardrefskillid = TCG_EFF_DOG
-		cardrefbits = ""
+		cardrefbits = "21"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_FOX_SPIRIT ) {
@@ -15722,8 +15791,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
 		cardrefcost = 1
-		cardrefattack = 1
-		cardrefhp = 1
+		cardrefattack = 2
+		cardrefhp = 2
 		cardrefskillid = TCG_EFF_WEREWOLF
 		cardrefbits = ""
 		return 1
@@ -15735,9 +15804,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
 		cardrefcost = 3
-		cardrefattack = 4
-		cardrefhp = 3
-		cardrefskillid = TCG_EFF_DOG
+		cardrefattack = 3
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_DOG_COMMAND
 		cardrefbits = ""
 		return 1
 	}
@@ -15750,8 +15819,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
 		cardrefcost = 2
-		cardrefattack = 2
-		cardrefhp = 2
+		cardrefattack = 3
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_WEREWOLF
 		cardrefbits = ""
 		return 1
@@ -15763,7 +15832,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
 		cardrefcost = 0
-		cardrefattack = 0
+		cardrefattack = 1
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_WEREWOLF
 		cardrefbits = ""
@@ -15777,7 +15846,7 @@
 		cardrefdomain = 1
 		cardrefcost = 2
 		cardrefattack = 3
-		cardrefhp = 2
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_DOG
 		cardrefbits = ""
 		return 1
@@ -15791,8 +15860,8 @@
 		cardrefcost = 1
 		cardrefattack = 1
 		cardrefhp = 2
-		cardrefskillid = TCG_EFF_NONE
-		cardrefbits = "22"
+		cardrefskillid = TCG_EFF_DOG
+		cardrefbits = "21"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_PASCAL ) {
@@ -15802,9 +15871,9 @@
 		cardreflvl = 65
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 5
-		cardrefattack = 5
-		cardrefhp = 7
+		cardrefcost = 4
+		cardrefattack = 4
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_PASCAL
 		cardrefbits = ""
 		return 1
@@ -15816,7 +15885,7 @@
 		cardreflvl = 80
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 6
+		cardrefcost = 7
 		cardrefattack = 7
 		cardrefhp = 8
 		cardrefskillid = TCG_EFF_ANUBIS
@@ -15911,7 +15980,7 @@
 		cardrefcost = 1
 		cardrefattack = 1
 		cardrefhp = 1
-		cardrefskillid = TCG_EFF_BATTLECRY_SUMMONACOPY01
+		cardrefskillid = TCG_EFF_INSANETARGET
 		cardrefbits = ""
 		return 1
 	}
@@ -15986,11 +16055,11 @@
 		cardreflvl = 4
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
-		cardrefcost = 0
-		cardrefattack = 1
+		cardrefcost = 1
+		cardrefattack = 2
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_DOG
-		cardrefbits = ""
+		cardrefbits = "11"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_POPPY_THE_LITTLE_DOG ) {
@@ -16003,7 +16072,7 @@
 		cardrefattack = 0
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_POPPY
-		cardrefbits = "8"
+		cardrefbits = ""
 		return 1
 	}
 	if ( dbid == CREATURE_ID_SILVER_WOLF ) {
@@ -16012,11 +16081,11 @@
 		cardreflvl = 10
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
-		cardrefcost = 1
-		cardrefattack = 2
-		cardrefhp = 1
+		cardrefcost = 3
+		cardrefattack = 3
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_DOG
-		cardrefbits = ""
+		cardrefbits = "8"
 		return 1
 	}
 	// eulderna
@@ -16057,7 +16126,7 @@
 		cardreflvl = 2
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
-		cardrefcost = 2
+		cardrefcost = 1
 		cardrefattack = 0
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_HALLOWEEN1

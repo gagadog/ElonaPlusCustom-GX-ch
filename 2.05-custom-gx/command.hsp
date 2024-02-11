@@ -15861,7 +15861,7 @@
 			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 				continue
 			}
-			if ( synccheck(cnt, -1) == 0 ) {
+			if ( synccheck(cnt, -1) == 0 & TweakData(TWEAK_AI_ALLY_INDEPENDENT_TARGETING, TWEAK_CATEGORY_AI) == 0 ) {
 				continue
 			}
 			if ( cc == CHARA_PLAYER | cdata(CDATA_RELATION, cc) >= 0 ) {

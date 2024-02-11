@@ -390,7 +390,7 @@
 	if ( _switch_val@tcg == TCG_SKILL_EFF_LUNE | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
-			if ( cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) >= 1 ) {
+			if ( cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) >= 1 & getholdersum(aeft@tcg) < 7 ) {
 				getrandomcard aeft@tcg
 				cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) -= 1
 			}
@@ -865,6 +865,9 @@
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg & effref@tcg(TCG_SKILL_POWER, card@tcg(TCG_CARD_EFFECT, effac@tcg)) >= 5 ) {
 			cdbitmod effref@tcg(TCG_SKILL_POWER, card@tcg(TCG_CARD_EFFECT, effac@tcg)), aeft@tcg, 1
 			efllistadd 2, 1, card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg), card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg)
+			if ( effref@tcg(TCG_SKILL_POWER, card@tcg(TCG_CARD_EFFECT, effac@tcg)) == TCG_BIT_WINDFURY ) {
+				cdbitmod TCG_BIT_WINDFURY_USABLE, aeft@tcg, 1
+			}
 		}
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
