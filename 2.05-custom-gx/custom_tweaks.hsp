@@ -960,6 +960,17 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE
 		gosub *ToggleTweak
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			skilldesc(SKILL_RES_LIGHTNING) = lang("電撃攻撃の抵抗", "Resist Lightning damage.")
+			skilldesc(SKILL_RES_MIND) = lang("幻惑攻撃や麻痺/恐怖への抵抗", "Resist Mind/Fear/Confuse.")
+			skilldesc(SKILL_RES_NERVE) = lang("神経攻撃や混乱/睡眠への抵抗", "Resist Nerve/Sleep/Paralyse.")
+			skilldesc(SKILL_RES_CHAOS) = lang("混沌攻撃の抵抗", "Resist Chaos damage.")
+		} else {
+			skilldesc(SKILL_RES_LIGHTNING) = lang("電撃攻撃や麻痺への抵抗", "Resist Lightning/Paralyse.")
+			skilldesc(SKILL_RES_MIND) = lang("幻惑攻撃や恐怖への抵抗", "Resist Mind/Fear.")
+			skilldesc(SKILL_RES_NERVE) = lang("神経攻撃や睡眠への抵抗", "Resist Nerve/Sleep.")
+			skilldesc(SKILL_RES_CHAOS) = lang("混沌攻撃や混乱への抵抗", "Resist Chaos/Confuse.")
+		}
 	}
 
 	if ( p == 15 ) {
