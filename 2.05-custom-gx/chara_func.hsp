@@ -2641,6 +2641,9 @@
 			}
 		}
 		res@con = SKILL_RES_CHAOS
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			res@con = SKILL_RES_MIND
+		}
 		gosub *conCalc
 		if ( f@con == 0 ) {
 			return 0
@@ -2673,6 +2676,9 @@
 			}
 		}
 		res@con = SKILL_RES_LIGHTNING
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			res@con = SKILL_RES_NERVE
+		}
 		gosub *conCalc
 		if ( f@con == 0 ) {
 			return 0
@@ -2859,6 +2865,20 @@
 		gosub *conCalc
 		if ( f@con == 0 ) {
 			return 0
+		}
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			p@con = p@con / 8
+			if ( cdata(CDATA_CONDITION_DIM, dmgcon_charid) == 0 ) {
+				cdata(CDATA_CONDITION_DIM, dmgcon_charid) = p@con
+				if ( synccheck(dmgcon_charid, -1) ) {
+					txtmore
+					txtef COLOR_PURPLE
+					txt lang(name(dmgcon_charid) + "は朦朧とした。", name(dmgcon_charid) + " " + is(dmgcon_charid) + " dimmed.")
+                    DamagePopupAdd "" + _condim, dmgcon_charid, DMGPOPUP_ADD_CONDITION, CONDITION_DIM
+				}
+			}
+			rowactend dmgcon_charid
+			return 1
 		}
 		p@con = p@con / 16
 		p@con = rnd(p@con + 1)
@@ -4330,6 +4350,9 @@
 					locvar_dmghp_r = 0
 				}
 			}
+			if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+				locvar_dmghp_r = cdata(CDATA_PV, dmghp_charid) + cdata(CDATA_DV, dmghp_charid)
+			}
 			if ( locvar_dmghp_r > 0 ) {
 				locvar_dmghp_r = locvar_dmghp_r * 2 / 3
 			}
@@ -4337,6 +4360,9 @@
 		}
 		if ( locvar_dmghp_ele == SKILL_RESDMG_CONSTITUTION | dmghp_source == DAMAGE_FROM_SUFFOCATION | dmghp_source == DAMAGE_FROM_POISON ) {
 			locvar_dmghp_r = sdata(SKILL_ATTR_CON, dmghp_charid) + limit(cdata(CDATA_MASTER_SERVANT, dmghp_charid), 50, 1000) + limit(cdata(CDATA_IMPRESSION, dmghp_charid), 50, 1000)
+			if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+				locvar_dmghp_r = 50
+			}
 			locvar_dmghp_dmg = locvar_dmghp_dmg * 100 / (locvar_dmghp_r + 50)
 		}
 	}
@@ -4773,12 +4799,24 @@
 	}
 	if ( dmghp_source != DAMAGE_FROM_UNSEEN & dmghp_source != DAMAGE_FROM_BLEED & dmghp_source != DAMAGE_FROM_POISON ) {
 		if ( locvar_dmghp_ele ) {
+			if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+				// BEGINNING - Pre-2.08 behavior, do not apply changes here.
+				if ( locvar_dmghp_ele != SKILL_SPACT_DANCE_OF_BLOW & locvar_dmghp_ele != SKILL_SPACT_FLASH_OF_SWIFTNESS & locvar_dmghp_ele != SKILL_RES_MAGIC & locvar_dmghp_ele != SKILL_RESDMG_CONSTITUTION ) {
+					if ( cbit(CHARA_BIT_RES_ELEMENTAL, dmghp_charid) ) {
+						locvar_dmghp_dmg = 0
+					}
+				}
+				// ENDING - Pre-2.08 behavior, do not apply changes here.
+			} else {
+			// BEGINNING - Current behavior, apply changes here.
 			if ( locvar_dmghp_ele != SKILL_SPACT_DANCE_OF_BLOW & locvar_dmghp_ele != SKILL_SPACT_FLASH_OF_SWIFTNESS & locvar_dmghp_ele != SKILL_RESDMG_CRUSH & locvar_dmghp_ele != SKILL_RESDMG_CONSTITUTION ) {
 				if ( cbit(CHARA_BIT_RES_ELEMENTAL, dmghp_charid) ) {
 					if ( locvar_dmghp_dmg > 0 ) {
 						locvar_dmghp_dmg = locvar_dmghp_dmg / 50
 					}
 				}
+			}
+			// ENDING - Current behavior, apply changes here.
 			}
 		}
 		if ( cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_GARZIEM ) {
@@ -4822,7 +4860,7 @@
 			if ( cdata(CDATA_QUALITY, dmghp_charid) >= FIX_QUALITY_MIRACLE ) {
 				locvar_dmghp_dmg = locvar_dmghp_dmg * 10 / limit(sdata(SKILL_ATTR_SPD, dmghp_source) * 10 / sdata(SKILL_ATTR_SPD, dmghp_charid), 10, 50)
 			}
-			if ( locvar_dmghp_ele ) {
+			if ( locvar_dmghp_ele & TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 				if ( locvar_dmghp_ele != SKILL_SPACT_DANCE_OF_BLOW & locvar_dmghp_ele != SKILL_SPACT_FLASH_OF_SWIFTNESS & locvar_dmghp_ele != SKILL_RESDMG_CRUSH & locvar_dmghp_ele != SKILL_RESDMG_CONSTITUTION ) {
 					if ( cbit(CHARA_BIT_RES_ELEMENTAL, dmghp_source) ) {
 						if ( locvar_dmghp_dmg > 0 ) {
@@ -5392,6 +5430,9 @@
 					if ( locvar_dmghp_healn > cdata(CDATA_HP, dmghp_source) / 15 + 1 ) {
 						locvar_dmghp_healn = cdata(CDATA_HP, dmghp_source) / 15 + 1
 					}
+					if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+						locvar_dmghp_healn = limit(rnd(locvar_dmghp_dmg * (150 + dmghp_element_power * 2) / 1000 + 10), 1, cdata(CDATA_HP, dmghp_source) / 15 + rnd(5))
+					}
 					txtmore
 					txtef COLOR_BROWN
 					txt "(" + locvar_dmghp_healn + " drained)"
@@ -5749,6 +5790,103 @@
 				}
 			}
 		}
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			// BEGINNING - Pre-2.08 behavior, do not apply changes here.
+			if ( locvar_dmghp_ele ) {
+				if ( locvar_dmghp_ele == 59 ) {
+					if ( rnd(10) < dmghp_element_power / 75 + 4 ) {
+						dmgcon dmghp_charid, CONDITION_BLIND, rnd(dmghp_element_power / 3 * 2 + 1)
+					}
+					if ( rnd(20) < dmghp_element_power / 50 + 4 ) {
+						dmgcon dmghp_charid, CONDITION_PARALYZE, rnd(dmghp_element_power / 3 * 2 + 1)
+					}
+					if ( rnd(20) < dmghp_element_power / 50 + 4 ) {
+						dmgcon dmghp_charid, CONDITION_CONFUSE, rnd(dmghp_element_power / 3 * 2 + 1)
+					}
+					if ( rnd(20) < dmghp_element_power / 50 + 4 ) {
+						dmgcon dmghp_charid, CONDITION_POISON, rnd(dmghp_element_power / 3 * 2 + 1)
+					}
+					if ( rnd(20) < dmghp_element_power / 50 + 4 ) {
+						dmgcon dmghp_charid, CONDITION_SLEEP, rnd(dmghp_element_power / 3 * 2 + 1)
+					}
+				}
+				if ( locvar_dmghp_ele == 52 ) {
+					if ( rnd(10 + (cdata(CDATA_QUALITY, dmghp_charid) >= FIX_QUALITY_MIRACLE) * 10) == 0 ) {
+						if ( cdata(CDATA_CONDITION_PARALYZE, dmghp_charid) == 0 ) {
+							cdata(CDATA_CONDITION_PARALYZE, dmghp_charid)++
+						}
+					}
+					if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 1 ) {
+						if ( dmghp_charid == CHARA_PLAYER ) {
+							if ( cdata(CDATA_SP, dmghp_charid) >= (-100) ) {
+								cdata(CDATA_SP, dmghp_charid) -= 5
+							}
+						}
+						if ( dmghp_charid != CHARA_PLAYER ) {
+							if ( cdata(CDATA_SP, dmghp_charid) >= (-50) ) {
+								cdata(CDATA_SP, dmghp_charid) -= 5
+							}
+						}
+					}
+				}
+				if ( locvar_dmghp_ele == 50 | dmghp_source == DAMAGE_FROM_FIRE ) {
+					inv_find ITEM_ID_MAGATAMA, dmghp_source
+					if ( stat == (-1) ) {
+						item_fire dmghp_charid, -1
+						locvar_dmghp_maga = 0
+					}
+				}
+				if ( locvar_dmghp_ele == 51 ) {
+					inv_find ITEM_ID_MAGAICE, dmghp_source
+					if ( stat == (-1) ) {
+						item_cold dmghp_charid, -1
+					}
+				}
+				if ( locvar_dmghp_ele == 50 ) {
+					dmgcon dmghp_charid, CONDITION_WINCE, rnd(dmghp_element_power + 1)
+				}
+				if ( locvar_dmghp_ele == 51 ) {
+					dmgcon dmghp_charid, CONDITION_CHILLS, rnd(dmghp_element_power + 1)
+				}
+				if ( locvar_dmghp_ele == 53 ) {
+					dmgcon dmghp_charid, CONDITION_BLIND, rnd(dmghp_element_power + 1)
+				}
+				if ( locvar_dmghp_ele == 58 ) {
+					dmgcon dmghp_charid, CONDITION_PARALYZE, rnd(dmghp_element_power + 1)
+				}
+				if ( locvar_dmghp_ele == 54 ) {
+					dmgcon dmghp_charid, CONDITION_CONFUSE, rnd(dmghp_element_power + 1)
+				}
+				if ( locvar_dmghp_ele == 57 ) {
+					dmgcon dmghp_charid, CONDITION_CONFUSE, rnd(dmghp_element_power + 1)
+				}
+				if ( locvar_dmghp_ele == 55 ) {
+					dmgcon dmghp_charid, CONDITION_POISON, rnd(dmghp_element_power + 1)
+				}
+				if ( locvar_dmghp_ele == 61 ) {
+					dmgcon dmghp_charid, CONDITION_BLEED, rnd(dmghp_element_power + 1)
+				}
+				if ( locvar_dmghp_ele == 62 ) {
+					if ( dmghp_charid == CHARA_PLAYER ) {
+						modcorrupt rnd(dmghp_element_power + 1)
+					}
+				}
+				if ( locvar_dmghp_ele == 63 ) {
+					if ( dmghp_charid == CHARA_PLAYER | rnd(3) == 0 ) {
+						item_acid dmghp_charid, -1
+					}
+				}
+			}
+			if ( cdata(CDATA_CONDITION_SLEEP, dmghp_charid) > 0 ) {
+				if ( locvar_dmghp_ele != 54 & locvar_dmghp_ele != 58 & locvar_dmghp_ele != 59 ) {
+					cdata(CDATA_CONDITION_SLEEP, dmghp_charid) = 0
+					txtmore
+					txt lang(name(dmghp_charid) + "は眠りを妨げられた。", name(dmghp_charid) + your(dmghp_charid) + " sleep " + is(dmghp_charid) + " disturbed.")
+				}
+			}
+			// ENDING - Pre-2.08 behavior, do not apply changes here.
+		} else {
+		// BEGINNING - Current behavior, apply changes here.
 		if ( locvar_dmghp_ele ) {
 			if ( locvar_dmghp_ele == SKILL_RES_CHAOS ) {
 				dmgcon dmghp_charid, CONDITION_WINCE, rnd(dmghp_element_power / 9 + 1)
@@ -5820,6 +5958,8 @@
 					txt lang(name(dmghp_charid) + "は眠りを妨げられた。", name(dmghp_charid) + your(dmghp_charid) + " sleep " + is(dmghp_charid) + " disturbed.")
 				}
 			}
+		}
+		// ENDING - Current behavior, apply changes here.
 		}
 		if ( dmghp_source == DAMAGE_FROM_CHARA ) {
 			locvar_dmghp_pcnoise = 100

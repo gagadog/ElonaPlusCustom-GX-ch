@@ -2336,6 +2336,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_FIRE
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_COLD_BREATH ) {
@@ -2344,6 +2347,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_COLD
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_LIGHTNING_BREATH ) {
@@ -2352,6 +2358,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_LIGHTNING
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_DARKNESS_BREATH ) {
@@ -2360,6 +2369,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_DARKNESS
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_CHAOS_BREATH ) {
@@ -2368,6 +2380,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_CHAOS
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_NETHER_BREATH ) {
@@ -2376,6 +2391,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_NETHER
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_POISON_BREATH ) {
@@ -2384,6 +2402,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_POISON
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_SOUND_BREATH ) {
@@ -2392,6 +2413,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_SOUND
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_NERVE_BREATH ) {
@@ -2400,6 +2424,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_NERVE
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_MIND_BREATH ) {
@@ -2408,6 +2435,9 @@
 		bonus = locvar_calcskill_rs / 20
 		ele = SKILL_RES_MIND
 		elep = 150 + locvar_calcskill_rs * 21
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = limit(locvar_calcskill_rs + sdata(ele, calcskill_charid), 200, 2000) / 2
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_ACID_HURRICANE ) {
@@ -2448,6 +2478,9 @@
 		bonus = 0
 		ele = SKILL_RESDMG_CONSTITUTION
 		elep = 150 + locvar_calcskill_rs * 24
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = 100 + locvar_calcskill_rs * 3
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_TOUCH_OF_SLEEP ) {
@@ -2456,6 +2489,9 @@
 		bonus = 0
 		ele = SKILL_RESDMG_CONSTITUTION
 		elep = 150 + locvar_calcskill_rs * 24
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = 100 + locvar_calcskill_rs * 3
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_TOUCH_OF_POISON ) {
@@ -2464,6 +2500,9 @@
 		bonus = 0
 		ele = SKILL_RESDMG_CONSTITUTION
 		elep = 150 + locvar_calcskill_rs * 24
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = locvar_calcskill_rs * 4 + 20
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_MEMORY_POISON ) {
@@ -2480,6 +2519,9 @@
 		bonus = 0
 		ele = SKILL_RESDMG_CONSTITUTION
 		elep = 150 + locvar_calcskill_rs * 24
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			elep = locvar_calcskill_rs * 4 + 20
+		}
 		return 1
 	}
 	if ( calcskill_skillid == SKILL_SPACT_EYE_OF_INSANITY ) {

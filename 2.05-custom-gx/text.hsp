@@ -8520,7 +8520,7 @@
 	}
 	if ( val == 0 ) {
 		if ( p == 1 ) {
-			s1 = lang("戦士ギルドに加入するには、" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇してから、カプールのギルドの番人に話しかける必要がある。", "To join the Fighters Guild, I need to conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " nefia more than " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " level.")
+			s1 = lang("戦士ギルドに加入するには、" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇してから、カプールのギルドの番人に話しかける必要がある。", "To join the Fighters Guild, I'll need to conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " Nefia of level " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " or more.")
 			talk_conv s1, 40 - en * 4
 			buff += "(" + s + ")\n" + s1
 			noteadd ""
@@ -8556,7 +8556,7 @@
 	}
 	if ( val == 0 ) {
 		if ( p == 1 ) {
-			s1 = lang("戦士ギルドのランクを上げるためには、" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇してから、カプールのギルドの番人に話しかける必要がある。", "To raise the rank in the Fighters Guild, I need to conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " nefia more than " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " in level and talk talk to the guild guard in Port Kapul.")
+			s1 = lang("戦士ギルドのランクを上げるためには、" + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + "階相当以上の" + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + "のランダムネフィアを" + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + "個制覇してから、カプールのギルドの番人に話しかける必要がある。", "To raise the rank in the Fighters Guild, I'll need to conquer " + gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) + " random " + _nefiatype(gdata(GDATA_FLAG_FIGHTER_GUILD_QUEST_LEVEL)) + " Nefia of level " + gdata(GDATA_FLAG_GUILD_FIGHTER_THIEF) + " or more and talk to the guild guard in Port Kapul.")
 			talk_conv s1, 40 - en * 4
 			buff += "(" + s + ")\n" + s1
 			noteadd ""

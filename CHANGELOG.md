@@ -1,5 +1,8 @@
 # Upcoming
 
+# Added
+- Added a tweak to Revert most of the post-2.08 elemental behavior changes.
+
 # Changed
 - AI Tweak: Ally independent targeting now allows NPC targeting out-of-player-sight NPCs.
 - TCG/Deck:
@@ -8,9 +11,10 @@
   - Gave Rilian, Poppy, Ajetalio, and Cresce new decks.
 
 # Fixed
-- Fixes level-based damage of MPbreath pasted to the Sandcannon formula, thanks to @NekoNou
-- Fixes player master/servant value not increasing without the candle, thanks to CY.
-- Fixes player master/servant value reset to 300 due to love potion.
+- Fixed level-based damage of MPbreath pasted to the Sandcannon formula, thanks to @NekoNou
+- Fixed player master/servant value not increasing without the candle, thanks to CY.
+- Fixed player master/servant value reset to 300 due to love potion.
+- Fixed some translations.
 
 # 2.21.3.0
 

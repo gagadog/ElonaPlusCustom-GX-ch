@@ -698,7 +698,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 31
+    listmax = 48
 *GameplayTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -723,25 +723,35 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 10) = "Disable depletion when using stairs in Your Home." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_HOME_STAIRS_NO_STAMINA_USAGE)
 	listn(0, 11) = "Revert post-2.17 cooking result changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES)
 	listn(0, 12) = "Revert post-2.17 boss out-of-sight healing." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING)
+	listn(0, 13) = "Revert post-2.08 elemental mechanics changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE)
+	listn(0, 14) = "" 
+	listn(0, 15) = "Go back."
 	
-	listn(0, 13) = "=== EXP/Progression related changes ==="
-	listn(0, 14) = "Sandbag training." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SANDBAG_TRAINING)
-	listn(0, 15) = "Summoned monster training." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SUMMONED_MONSTER_TRAINING)
-	listn(0, 16) = "Increase Dojo EXP gain: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASED_DOJO_EXP) + "% increase."
-	listn(0, 17) = "Revert post-1.90 weapon skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_190_EXP_CHANGES)
-	listn(0, 18) = "Disable study days (triple skill exp)" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_STUDY_DAYS)
-	listn(0, 19) = "Disable DESTINY." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DESTINY)
-	listn(0, 20) = "Revert post-2.13 combat exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_213_EXP_CHANGES)
-	listn(0, 21) = "Revert post-2.17 skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES)
+	listn(0, 16) = "=== EXP/Progression related changes ==="
+	listn(0, 17) = "Sandbag training." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SANDBAG_TRAINING)
+	listn(0, 18) = "Summoned monster training." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_SUMMONED_MONSTER_TRAINING)
+	listn(0, 19) = "Increase Dojo EXP gain: " + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_INCREASED_DOJO_EXP) + "% increase."
+	listn(0, 20) = "Revert post-1.90 weapon skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_190_EXP_CHANGES)
+	listn(0, 21) = "Disable study days (triple skill exp)" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_STUDY_DAYS)
+	listn(0, 22) = "Disable DESTINY." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DESTINY)
+	listn(0, 23) = "Revert post-2.13 combat exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_213_EXP_CHANGES)
+	listn(0, 24) = "Revert post-2.17 skill exp formula changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES)
+	listn(0, 25) = "" 
+	listn(0, 26) = "" 
+	listn(0, 27) = "" 
+	listn(0, 28) = "" 
+	listn(0, 29) = "" 
+	listn(0, 30) = "" 
+	listn(0, 31) = "Go back."
 	
-	listn(0, 22) = "=== Anti-powergaming/Misc changes ==="
-	listn(0, 23) = "(Custom-G) Disable Curtain Call." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_CURTAIN_CALL)
-	listn(0, 24) = "(Custom-G) Disable skill SP cost nerfs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_REVERT_SKILL_NERFS)
-	listn(0, 25) = "(Custom-G) Disable multi-attack-critical nerfs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_REVERT_DAMAGE_CALC_NERFS)
-	listn(0, 26) = "(Custom-G) Disable sleep prevention." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION)
-	listn(0, 27) = "(Custom-G) Disable naps while traveling." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING)
-	listn(0, 28) = "Disable Deep-Sea Castle persistance." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE)
-	listn(0, 29) = "Child, you must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GO_CHILD)
+	listn(0, 32) = "=== Anti-powergaming/Misc changes ==="
+	listn(0, 33) = "(Custom-G) Disable Curtain Call." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_CURTAIN_CALL)
+	listn(0, 34) = "(Custom-G) Disable skill SP cost nerfs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_REVERT_SKILL_NERFS)
+	listn(0, 35) = "(Custom-G) Disable multi-attack-critical nerfs." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_REVERT_DAMAGE_CALC_NERFS)
+	listn(0, 36) = "(Custom-G) Disable sleep prevention." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION)
+	listn(0, 37) = "(Custom-G) Disable naps while traveling." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING)
+	listn(0, 38) = "Disable Deep-Sea Castle persistance." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE)
+	listn(0, 39) = "Child, you must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GO_CHILD)
 
 	listn(0, listmax - 1) = "Go back."
 
@@ -805,51 +815,62 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			if ( p == 12 ) {
 				s = "Disable the <{enemy}> self-heal anti-cheese mechanics after version 2.17. \nThis does not apply to creatures like Megamole/Talpidae/Aile."
 			}
+			if ( p == 13 ) {
+				s = "Revert Post-2.08 elemental related changes, this includes:\nLightning/Nerve/Mind/Sound/Chaos infliction changes. \nNether drain nerf. cResEle bit nerf. Dim Nerf.\nBreath/Touch skill element power buff. Crush damage DV resist buff. "
+			}
 
-			if ( p == 14 ) {
+			if ( p == 15 ) {
+				s = "Return to the previous menu."
+			}
+
+			if ( p == 17 ) {
 				s = "Sandbagged monsters will give experience."
 			}
-			if ( p == 15 ) {
+			if ( p == 18 ) {
 				s = "Summoned monsters and monsters that split up will give experience."
 			}
-			if ( p == 16 ) {
+			if ( p == 19 ) {
 				s = "Increase Dojo EXP gain. \nDojo EXP is gained by traveling on world map, at ~3.5 EXP per tile.\nWhile slightly higher than travel EXP, it may be underwhelming for \nthose who doesn't visit Dojo very often."
 			}
-			if ( p == 17 ) {
+			if ( p == 20 ) {
 				s = "Reverts changes to the weapon skill experience formula after version 1.90.\nThis mainly addresses the three-fold increase in player weapon skill exp gain.\nIt does not change the study day triple exp bonus."
 			}
-			if ( p == 18 ) {
+			if ( p == 21 ) {
 				s = "Disables the \"study day bonus\" feature.\nThis will prevent certain skills from gaining triple skill experience based on the\nstudy day type."
 			}
-			if ( p == 19 ) {
+			if ( p == 22 ) {
 				s = "Disables the \"DESTINY\" feature.\nThis restores the chances of godly equipment being generated, regardless of\nDESTINY triggers."
 			}
-			if ( p == 20 ) {
+			if ( p == 23 ) {
 				s = "Reverts changes to the killing experience formula after version 2.13.\nAddresses \"increased EXP multipliers when defeating enemies above the PC's level\".\nToggling this also reverts the changes to the taxation mechanic."
 			}
-			if ( p == 21 ) {
+			if ( p == 24 ) {
 				s = "Reverts changes to the skill experience formula after version 2.17.\nThis will lock your growth rate at 400% (100% compared to growth in 2.17)."
 			}
 
-			if ( p == 23 ) {
+			if ( p == 31 ) {
+				s = "Return to the previous menu."
+			}
+
+			if ( p == 33 ) {
 				s = "Disables the Curtain Call mechanic.\nThis is an anti-AFK mechanism intended to prevent farming. It spawns instant-kill\nenemies if you attack 10,000 times within the same map without leaving."
 			}
-			if ( p == 24 ) {
+			if ( p == 34 ) {
 				s = "Enables Custom-G's changes to certain skills.\nThis affects Gravity Sphere, Graviton Buster, Violent Garden,\nShadow Step, and some other skills."
 			}
-			if ( p == 25 ) {
+			if ( p == 35 ) {
 				s = "Enables Custom-G's changes to damage calculation.\nThis affects the damage and critical chance when multi-attacking."
 			}
-			if ( p == 26 ) {
+			if ( p == 36 ) {
 				s = "Disables the sleep prevention effects caused by coffee and tobacco.\nThey reduce your drowsiness directly as in Version 1.86."
 			}
-			if ( p == 27 ) {
+			if ( p == 37 ) {
 				s = "Removes the chance to automatically take a nap when traveling while sleepy."
 			}
-			if ( p == 28 ) {
+			if ( p == 38 ) {
 				s = "Visiting the Deep-Sea Castle only resets items with a cooldown period\nwhile you're there, instead of continuously resetting them until you sleep."
 			}
-			if ( p == 29 ) {
+			if ( p == 39 ) {
 				s = "Allow you to turn in quests using pets with child-bit-flag.\nNamely: Town Childs / Stray Cats / Little Sisters"
 			}
 
@@ -935,35 +956,45 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tn = TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING
 		gosub *ToggleTweak
 	}
+	if ( p == 13 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE
+		gosub *ToggleTweak
+	}
+
+	if ( p == 15 ) {
+		snd SOUNDLIST_OK1
+		return
+	}
 	
-	if ( p == 14 ) {
+	if ( p == 17 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_SANDBAG_TRAINING
 		gosub *ToggleTweak
 	}
-	if ( p == 15 ) {
+	if ( p == 18 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_SUMMONED_MONSTER_TRAINING
 		gosub *ToggleTweak
 	}
-	if ( p == 16 ) {
+	if ( p == 19 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_INCREASED_DOJO_EXP
 		ts = 100 // Increments by
 		tm = 1900 // Max
 		gosub *IncrementTweak
 	}
-	if ( p == 17 ) {
+	if ( p == 20 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_REVERT_POST_190_EXP_CHANGES
 		gosub *ToggleTweak
 	}
-	if ( p == 18 ) {
+	if ( p == 21 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_DISABLE_STUDY_DAYS
 		gosub *ToggleTweak
 	}
-	if ( p == 19 ) {
+	if ( p == 22 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_DISABLE_DESTINY
 		gosub *ToggleTweak
@@ -978,49 +1009,54 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			gdata(GDATA_FLAG_DESTINY_TIMES_SLEPT) = 0
 		}
 	}
-	if ( p == 20 ) {
+	if ( p == 23 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_REVERT_POST_213_EXP_CHANGES
 		gosub *ToggleTweak
 	}
-	if ( p == 21 ) {
+	if ( p == 24 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_REVERT_POST_217_EXP_CHANGES
 		gosub *ToggleTweak
 	}
 
-	if ( p == 23 ) {
+	if ( p == 31 ) {
+		snd SOUNDLIST_OK1
+		return
+	}
+	
+	if ( p == 33 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_CG_DISABLE_CURTAIN_CALL
 		gosub *ToggleTweak
 	}
-	if ( p == 24 ) {
+	if ( p == 34 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_CG_REVERT_SKILL_NERFS
 		gosub *ToggleTweak
 		gosub *ApplyCGSkillTweak
 	}
-	if ( p == 25 ) {
+	if ( p == 35 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_CG_REVERT_DAMAGE_CALC_NERFS
 		gosub *ToggleTweak
 	}
-	if ( p == 26 ) {
+	if ( p == 36 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_CG_DISABLE_SLEEP_PREVENTION
 		gosub *ToggleTweak
 	}
-	if ( p == 27 ) {
+	if ( p == 37 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING
 		gosub *ToggleTweak
 	}
-	if ( p == 28 ) {
+	if ( p == 38 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE
 		gosub *ToggleTweak
 	}
-	if ( p == 29 ) {
+	if ( p == 39 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_GO_CHILD
 		gosub *ToggleTweak
