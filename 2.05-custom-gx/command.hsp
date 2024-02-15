@@ -16605,7 +16605,7 @@
 	goto *pc_turn
 
 /********** JAMES CUSTOM - BEGINNING **********/
-*com_draw_map			
+*com_draw_map
 	redraw 0
 	gsel 7
 	picload exedir + "graphic\\ie_sheet.bmp"
@@ -16652,28 +16652,28 @@
 			}
 		loop
 	loop
-	// Draw world map locations
-	if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-		repeat xs@NT + 4
-			x@NT = midx@NT + cnt - (xs@NT/2) - 2
-			ox@NT = cnt - (xs@NT/2) - 2
-			if ( x@NT < 0 | x@NT >= mdata(MDATA_WIDTH) ) { continue }
-			repeat ys@NT + 4
-				y@NT = midy@NT + cnt - (ys@NT/2) - 2
-				oy@NT = cnt - (ys@NT/2) - 2
-				if ( y@NT < 0 | y@NT >= mdata(MDATA_HEIGHT) ) { continue }
-				if ( map(x@NT, y@NT, 6) != 0 ) {
-					locvar_cell_draw_p = map(x@NT, y@NT, 6) \ 1000
-					locvar_cell_draw_p2 = map(x@NT, y@NT, 6) / 100000 \ 100 + map(x@NT, y@NT, 6) / 10000000 * 100
-					if ( locvar_cell_draw_p != 999 & locvar_cell_draw_p != 0 & adata(ADATA_TYPE, locvar_cell_draw_p2) != MAP_TYPE_HOME ) {
-						gmode 2, 48, 48
-						pos wx + 300 + ox@NT * p@NT + p@NT / 2, wy + 150 + oy@NT * p@NT + p@NT / 2
-						grotate 2, locvar_cell_draw_p \ 33 * inf_tiles, locvar_cell_draw_p / 33 * inf_tiles, 0, 24, 24
-					}
+	// Draw world map locations.
+	// Also draw local map door/stairs/traps.
+	repeat xs@NT + 4
+		x@NT = midx@NT + cnt - (xs@NT/2) - 2
+		ox@NT = cnt - (xs@NT/2) - 2
+		if ( x@NT < 0 | x@NT >= mdata(MDATA_WIDTH) ) { continue }
+		repeat ys@NT + 4
+			y@NT = midy@NT + cnt - (ys@NT/2) - 2
+			oy@NT = cnt - (ys@NT/2) - 2
+			if ( y@NT < 0 | y@NT >= mdata(MDATA_HEIGHT) ) { continue }
+			if ( map(x@NT, y@NT, 2) != map(x@NT, y@NT, 0) ) { continue }
+			if ( map(x@NT, y@NT, 6) != 0 ) {
+				locvar_cell_draw_p = map(x@NT, y@NT, 6) \ 1000
+				locvar_cell_draw_p2 = map(x@NT, y@NT, 6) / 100000 \ 100 + map(x@NT, y@NT, 6) / 10000000 * 100
+				if ( locvar_cell_draw_p != 999 & locvar_cell_draw_p != 0 & adata(ADATA_TYPE, locvar_cell_draw_p2) != MAP_TYPE_HOME ) {
+					gmode 2, 48, 48
+					pos wx + 300 + ox@NT * p@NT + p@NT / 2, wy + 150 + oy@NT * p@NT + p@NT / 2
+					grotate 2, locvar_cell_draw_p \ 33 * inf_tiles, locvar_cell_draw_p / 33 * inf_tiles, 0, 16, 16
 				}
-			loop
+			}
 		loop
-	}
+	loop
 	// Draw player
 	gmode 2, 32, 48
 	pos wx + 300 + (cdata(CDATA_X, CHARA_PLAYER) - midx@NT) * p@NT + p@NT / 2, wy + 150 + (cdata(CDATA_Y, CHARA_PLAYER) - midy@NT) * p@NT + p@NT / 2
@@ -16701,7 +16701,7 @@
 					locvar_cell_draw_col = 0
 					locvar_cell_draw_p = cdata(CDATA_PIC, cnt)
 				}
-				title "" + cnt + "/" + locvar_cell_draw_p + "/" + locvar_cell_draw_col + ""
+				// title "" + cnt + "/" + locvar_cell_draw_p + "/" + locvar_cell_draw_col + ""
 				chara_preparepic locvar_cell_draw_p, locvar_cell_draw_col
 				gmode 2, 48, 48
 				pos wx + 300 + (locvar_cell_draw_x - midx@NT) * p@NT + p@NT / 2, wy + 150 + (locvar_cell_draw_y - midy@NT) * p@NT + p@NT / 2 * (chipi(CHIPI_HEIGHT, locvar_cell_draw_p) <= 48)

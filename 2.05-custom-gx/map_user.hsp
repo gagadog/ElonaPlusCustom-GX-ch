@@ -3092,7 +3092,7 @@
 						if ( stat ) {
 							inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
 							inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 40, 20, 10000)
-							inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, cnt) + 2400) / 4, 600, 3000)
+							inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, ci) + 2400) / 4, 600, 3000)
 							if (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 								inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) * 10 + 250, 100, 100000)
 								inv(INV_ITEM_VALUE, ci) = limit((cdata(CDATA_WEIGHT, cnt) * cdata(CDATA_WEIGHT, cnt) + 1) / 10000, 200, 40000)
@@ -3130,7 +3130,7 @@
 					if ( stat ) {
 						inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
 						inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 40, 20, 10000)
-						inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, cnt) + 2400) / 4, 600, 3000)
+						inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, ci) + 2400) / 4, 600, 3000)
 						if (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 							inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) * 10 + 250, 100, 100000)
 							inv(INV_ITEM_VALUE, ci) = limit((limit(cdata(CDATA_WEIGHT, cnt) * 10 + 250, 100, 100000) + 13000) / 14, 1000, 8000)

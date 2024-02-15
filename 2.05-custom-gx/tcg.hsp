@@ -314,12 +314,14 @@
 		if ( n@tcg != cardposgrave_arg1 & cardposgrave_arg1 != -1 ) { continue }
 
 		p@tcg = 0
-		repeat gravesum@tcg(n@tcg)
-			if ( card@tcg(TCG_CARD_CONTROLLER, gravelist@tcg(cnt, n@tcg)) != n@tcg ) { continue }
-			if ( card@tcg(TCG_CARD_LOCATION, gravelist@tcg(cnt, n@tcg)) != TCG_LOCATION_GRAVEYARD ) { continue }
-			gravelist@tcg(p@tcg, n@tcg) = gravelist@tcg(cnt, n@tcg)
-			p@tcg++
-		loop
+		if ( gravesum@tcg(n@tcg) > 0 ) {
+			repeat gravesum@tcg(n@tcg)
+				if ( card@tcg(TCG_CARD_CONTROLLER, gravelist@tcg(cnt, n@tcg)) != n@tcg ) { continue }
+				if ( card@tcg(TCG_CARD_LOCATION, gravelist@tcg(cnt, n@tcg)) != TCG_LOCATION_GRAVEYARD ) { continue }
+				gravelist@tcg(p@tcg, n@tcg) = gravelist@tcg(cnt, n@tcg)
+				p@tcg++
+			loop
+		}
 
 		gravesum@tcg(n@tcg) = p@tcg
 		cpdata@tcg(TCG_PLAYER_GRAVEYARD, n@tcg) = p@tcg
@@ -1057,50 +1059,14 @@
 
 #deffunc returncard int returncard_arg1
 	n@tcg = card@tcg(TCG_CARD_CONTROLLER, returncard_arg1)
+	cardorglocation@tcg = card@tcg(TCG_CARD_LOCATION, returncard_arg1)
 	if ( card@tcg(TCG_CARD_LOCATION, returncard_arg1) == TCG_LOCATION_FIELD ) {
-		repeat maxcard@tcg
-			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) {
-				continue
-			}
-			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != n@tcg ) {
-				continue
-			}
-			if ( card@tcg(TCG_CARD_X, cnt) <= card@tcg(TCG_CARD_X, returncard_arg1) ) {
-				continue
-			}
-			card@tcg(TCG_CARD_X_MOVETO, cnt) -= spotspace@tcg
-		loop
 		efllistadd 2, 1, card@tcg(TCG_CARD_X, returncard_arg1), card@tcg(TCG_CARD_Y, returncard_arg1), deckix@tcg(n@tcg), deckiy@tcg(n@tcg)
 	}
 	if ( card@tcg(TCG_CARD_LOCATION, returncard_arg1) == TCG_LOCATION_HAND ) {
-		repeat maxcard@tcg
-			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_HAND ) {
-				continue
-			}
-			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != n@tcg ) {
-				continue
-			}
-			if ( card@tcg(TCG_CARD_X, cnt) <= card@tcg(TCG_CARD_X, returncard_arg1) ) {
-				continue
-			}
-			card@tcg(TCG_CARD_X_MOVETO, cnt) -= holderspace@tcg
-		loop
 		efllistadd 2, 1, card@tcg(TCG_CARD_X, returncard_arg1), card@tcg(TCG_CARD_Y, returncard_arg1), deckix@tcg(n@tcg), deckiy@tcg(n@tcg)
 	}
 	if ( card@tcg(TCG_CARD_LOCATION, returncard_arg1) == TCG_LOCATION_GRAVEYARD ) {
-		f@tcg = 0
-		repeat gravesum@tcg(n@tcg)
-			if ( f@tcg == 1 ) {
-				gravelist@tcg(cnt - 1, n@tcg) = gravelist@tcg(cnt, n@tcg)
-			}
-			if ( gravelist@tcg(cnt, n@tcg) != returncard_arg1 & f@tcg == 0 ) { continue }
-			if ( gravelist@tcg(cnt, n@tcg) == returncard_arg1 ) { 
-				f@tcg = 1
-				continue 
-			}
-		loop
-		gravesum@tcg(n@tcg)--
-		cpdata@tcg(TCG_PLAYER_GRAVEYARD, n@tcg)--
 		efllistadd 2, 1, graveix@tcg(n@tcg), graveiy@tcg(n@tcg), deckix@tcg(n@tcg), deckiy@tcg(n@tcg)
 	}
 	// create_card returncard_arg1, card@tcg(TCG_CARD_REF_DBID, returncard_arg1)
@@ -1113,6 +1079,16 @@
 	card@tcg(TCG_CARD_ANIM_DURATION, returncard_arg1) = 0
 	cdbitmod TCG_BIT_FACE_UP, returncard_arg1, 0
 	makecardlist
+	if ( cardorglocation@tcg == TCG_LOCATION_FIELD ) {
+		cardpos 0, -1
+		cardpos 1, -1
+	}
+	if ( cardorglocation@tcg == TCG_LOCATION_GRAVEYARD ) {
+		cardposgrave -1
+	}
+	if ( cardorglocation@tcg == TCG_LOCATION_HAND ) {
+		cardposhand (1-n@tcg), -1
+	}
 	cardposhand n@tcg, -1
 	gosub *refresh_bg
 	return
@@ -1156,8 +1132,7 @@
 		card@tcg(TCG_CARD_TURN_COUNT, gravecard_arg1) = 0
 		cpdata@tcg(TCG_PLAYER_GRAVEYARD, card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1))++
 		n@tcg = card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
-		gravelist@tcg(gravesum@tcg(n@tcg), n@tcg) = gravecard_arg1
-		gravesum@tcg(n@tcg)++
+		cardposgrave n@tcg
 		makecardlist
 	}
 	// Reorganize field and hand
@@ -1338,6 +1313,7 @@
 #deffunc gettargetcard int gettargetcard_arg1
 	n@tcg = card@tcg(TCG_CARD_CONTROLLER, gettargetcard_arg1)
 	p@tcg = getholdersum(n@tcg)
+	cardorglocation@tcg = card@tcg(TCG_CARD_LOCATION, gettargetcard_arg1)
 	if ( getholdersum(n@tcg) >= 7 & specialruledrawswhenhandfull@tcg != 1 ) {
 		return
 	}
@@ -1346,33 +1322,9 @@
 		cpdata@tcg(TCG_PLAYER_DECK, n@tcg)--
 	}
 	if ( card@tcg(TCG_CARD_LOCATION, gettargetcard_arg1) == TCG_LOCATION_GRAVEYARD ) {
-		f@tcg = 0
-		repeat gravesum@tcg(n@tcg)
-			if ( f@tcg == 1 ) {
-				gravelist@tcg(cnt - 1, n@tcg) = gravelist@tcg(cnt, n@tcg)
-			}
-			if ( gravelist@tcg(cnt, n@tcg) != gettargetcard_arg1 & f@tcg == 0 ) { continue }
-			if ( gravelist@tcg(cnt, n@tcg) == gettargetcard_arg1 ) { 
-				f@tcg = 1
-				continue 
-			}
-		loop
-		gravesum@tcg(n@tcg)--
-		cpdata@tcg(TCG_PLAYER_GRAVEYARD, n@tcg)--
 		card@tcg(TCG_CARD_X, gettargetcard_arg1) = graveix@tcg(n@tcg), graveiy@tcg(n@tcg), graveix@tcg(n@tcg), graveiy@tcg(n@tcg), 0, 0
 	}
 	if ( card@tcg(TCG_CARD_LOCATION, gettargetcard_arg1) == TCG_LOCATION_FIELD ) {
-		repeat maxcard@tcg
-			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) {
-				continue
-			}
-			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != card@tcg(TCG_CARD_CONTROLLER, gettargetcard_arg1) ) {
-				continue
-			}
-			if ( card@tcg(TCG_CARD_X, cnt) > card@tcg(TCG_CARD_X, gettargetcard_arg1) ) {
-				card@tcg(TCG_CARD_X_MOVETO, cnt) -= spotspace@tcg
-			}
-		loop
 		card@tcg(TCG_CARD_STATUS, gettargetcard_arg1) = TCG_ACTION_NONE
 		cdbitmod TCG_BIT_EXHAUSTED, gettargetcard_arg1, 0
 	}
@@ -1387,6 +1339,13 @@
 	}
 	if ( getholdersum(n@tcg) > 7 ) {
 		delbottomcard n@tcg
+	}
+	if ( cardorglocation@tcg == TCG_LOCATION_FIELD ) {
+		cardpos 0, -1
+		cardpos 1, -1
+	}
+	if ( cardorglocation@tcg == TCG_LOCATION_GRAVEYARD ) {
+		cardposgrave -1
 	}
 	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)) == TCG_SKILL_TYPE_ONDRAW ) {
 		effac@tcg = gettargetcard_arg1
@@ -1466,6 +1425,7 @@
 		}
 		return -1
 	}
+	cardorglocation@tcg = card@tcg(TCG_CARD_LOCATION, putcard_arg1)
 	if ( card@tcg(TCG_CARD_LOCATION, putcard_arg1) == TCG_LOCATION_FIELD ) {
 		if ( putcard_arg2 != card@tcg(TCG_CARD_CONTROLLER, putcard_arg1) ) {
 			if ( getspotsum(1 - card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)) < 8 ) {
@@ -1479,19 +1439,6 @@
 	}
 	if ( card@tcg(TCG_CARD_LOCATION, putcard_arg1) == TCG_LOCATION_GRAVEYARD ) {
 		card@tcg(TCG_CARD_X, putcard_arg1) = graveix@tcg(putcard_arg2), graveiy@tcg(putcard_arg2), graveix@tcg(putcard_arg2), graveiy@tcg(putcard_arg2), 0, 0
-		f@tcg = 0
-		repeat gravesum@tcg(putcard_arg2)
-			if ( f@tcg == 1 ) {
-				gravelist@tcg(cnt - 1, putcard_arg2) = gravelist@tcg(cnt, putcard_arg2)
-			}
-			if ( gravelist@tcg(cnt, putcard_arg2) != putcard_arg1 & f@tcg == 0 ) { continue }
-			if ( gravelist@tcg(cnt, putcard_arg2) == putcard_arg1 ) { 
-				f@tcg = 1
-				continue 
-			}
-		loop
-		gravesum@tcg(putcard_arg2)--
-		cpdata@tcg(TCG_PLAYER_GRAVEYARD, putcard_arg2)--
 	}
 	if ( card@tcg(TCG_CARD_LOCATION, putcard_arg1) == TCG_LOCATION_HAND ) {
 		if ( putcardfree@tcg == 0 ) {
@@ -1523,19 +1470,7 @@
 				card@tcg(TCG_CARD_Y_MOVETO, putcard_arg1) += 25
 			}
 			tcgdraw
-		} 
-		repeat maxcard@tcg
-			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != putcard_arg2 ) {
-				continue
-			}
-			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_HAND ) {
-				continue
-			}
-			if ( card@tcg(TCG_CARD_X, cnt) <= card@tcg(TCG_CARD_X, putcard_arg1) ) {
-				continue
-			}
-			card@tcg(TCG_CARD_X_MOVETO, cnt) -= holderspace@tcg
-		loop
+		}
 		cdbitmod TCG_BIT_FACE_UP, putcard_arg1, 0
 	}
 	putcardfree@tcg = 0
@@ -1553,6 +1488,13 @@
 	cdbitmod TCG_BIT_WINDFURY_USABLE, putcard_arg1, 0
 	if ( cdbit(TCG_BIT_WINDFURY, putcard_arg1) == TRUE ) {
 		cdbitmod TCG_BIT_WINDFURY_USABLE, putcard_arg1, 1
+	}
+	if ( cardorglocation@tcg == TCG_LOCATION_GRAVEYARD ) {
+		cardposgrave -1
+	}
+	if ( cardorglocation@tcg == TCG_LOCATION_HAND ) {
+		cardposhand 0, -1
+		cardposhand 1, -1
 	}
 	cardpos card@tcg(TCG_CARD_CONTROLLER, putcard_arg1), putcard_arg1
 	tcgdraw
