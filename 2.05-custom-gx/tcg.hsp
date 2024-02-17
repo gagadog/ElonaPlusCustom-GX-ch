@@ -241,12 +241,8 @@
 	return p@tcg
 
 #deffunc cardpos int cardpos_arg1, int cardpos_arg2
-	if ( cardpos_arg1 == 0 ) {
-		l@tcg = TCG_LANE_PLAYER_FIELD
-	}
-	else {
-		l@tcg = TCG_LANE_OPPONENT_FIELD
-	}
+	cardposn@tcg = (cardpos_arg1 == TCG_CONTROLLER_OPPONENT)
+	l@tcg = TCG_LANE_PLAYER_FIELD * (cardposn@tcg == 0) + TCG_LANE_OPPONENT_FIELD * (cardposn@tcg == 1)
 	p@tcg = -1
 	spotlistmax@tcg = clistmax@tcg(l@tcg)
 	repeat spotlistmax@tcg
@@ -273,17 +269,13 @@
 	x@tcg = basex@tcg + 466 - spotlistmax@tcg * x2@tcg / 2
 	repeat spotlistmax@tcg
 		p@tcg = spotlist@tcg(cnt)
-		card@tcg(TCG_CARD_X_MOVETO, p@tcg) = x@tcg + cnt * x2@tcg, spotiy@tcg(cardpos_arg1)
+		card@tcg(TCG_CARD_X_MOVETO, p@tcg) = x@tcg + cnt * x2@tcg, spotiy@tcg(cardposn@tcg)
 	loop
 	return
 
 #deffunc cardposhand int cardposhand_arg1, int cardposhand_arg2
-	if ( cardposhand_arg1 == 0 ) {
-		l@tcg = TCG_LANE_PLAYER_HAND
-	}
-	else {
-		l@tcg = TCG_LANE_OPPONENT_HAND
-	}
+	cardposn@tcg = (cardposhand_arg1 == TCG_CONTROLLER_OPPONENT)
+	l@tcg = TCG_LANE_PLAYER_HAND * (cardposn@tcg == 0) + TCG_LANE_OPPONENT_HAND * (cardposn@tcg == 1)
 	holderlistmax@tcg = clistmax@tcg(l@tcg)
 	if ( holderlistmax@tcg <= 0 ) { 
 		return 
@@ -303,43 +295,43 @@
 		if ( card@tcg(TCG_CARD_LOCATION, pp@tcg) != TCG_LOCATION_HAND ) { 
 			continue 
 		}
-		card@tcg(TCG_CARD_X_MOVETO, pp@tcg) = x@tcg + cnt2@tcg * x2@tcg, holderiy@tcg(cardposhand_arg1)
+		card@tcg(TCG_CARD_X_MOVETO, pp@tcg) = x@tcg + cnt2@tcg * x2@tcg, holderiy@tcg(cardposn@tcg)
 		cnt2@tcg++
 	loop
 	return
 
 #deffunc cardposgrave int cardposgrave_arg1
 	repeat 2
-		n@tcg = cnt
-		if ( n@tcg != cardposgrave_arg1 & cardposgrave_arg1 != -1 ) { continue }
+		cardposn@tcg = cnt
+		if ( cardposn@tcg != cardposgrave_arg1 & cardposgrave_arg1 != -1 ) { continue }
 
 		p@tcg = 0
-		if ( gravesum@tcg(n@tcg) > 0 ) {
-			repeat gravesum@tcg(n@tcg)
-				if ( card@tcg(TCG_CARD_CONTROLLER, gravelist@tcg(cnt, n@tcg)) != n@tcg ) { continue }
-				if ( card@tcg(TCG_CARD_LOCATION, gravelist@tcg(cnt, n@tcg)) != TCG_LOCATION_GRAVEYARD ) { continue }
-				gravelist@tcg(p@tcg, n@tcg) = gravelist@tcg(cnt, n@tcg)
+		if ( gravesum@tcg(cardposn@tcg) > 0 ) {
+			repeat gravesum@tcg(cardposn@tcg)
+				if ( card@tcg(TCG_CARD_CONTROLLER, gravelist@tcg(cnt, cardposn@tcg)) != cardposn@tcg ) { continue }
+				if ( card@tcg(TCG_CARD_LOCATION, gravelist@tcg(cnt, cardposn@tcg)) != TCG_LOCATION_GRAVEYARD ) { continue }
+				gravelist@tcg(p@tcg, cardposn@tcg) = gravelist@tcg(cnt, cardposn@tcg)
 				p@tcg++
 			loop
 		}
 
-		gravesum@tcg(n@tcg) = p@tcg
-		cpdata@tcg(TCG_PLAYER_GRAVEYARD, n@tcg) = p@tcg
+		gravesum@tcg(cardposn@tcg) = p@tcg
+		cpdata@tcg(TCG_PLAYER_GRAVEYARD, cardposn@tcg) = p@tcg
 		repeat maxcard@tcg
-			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != n@tcg ) { continue }
+			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cardposn@tcg ) { continue }
 			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_GRAVEYARD ) { continue }
 			cnt2@tcg = cnt
 			f@tcg = 1
-			repeat gravesum@tcg(n@tcg)
-				if ( cnt2@tcg == gravelist@tcg(cnt, n@tcg) ) {
+			repeat gravesum@tcg(cardposn@tcg)
+				if ( cnt2@tcg == gravelist@tcg(cnt, cardposn@tcg) ) {
 					f@tcg = 0
 					break
 				}
 			loop
 			if ( f@tcg ) {
-				gravelist@tcg(gravesum@tcg(n@tcg), n@tcg) = cnt2@tcg
-				gravesum@tcg(n@tcg)++
-				cpdata@tcg(TCG_PLAYER_GRAVEYARD, n@tcg)++
+				gravelist@tcg(gravesum@tcg(cardposn@tcg), cardposn@tcg) = cnt2@tcg
+				gravesum@tcg(cardposn@tcg)++
+				cpdata@tcg(TCG_PLAYER_GRAVEYARD, cardposn@tcg)++
 			}
 		loop
 	loop
@@ -1087,9 +1079,9 @@
 		cardposgrave -1
 	}
 	if ( cardorglocation@tcg == TCG_LOCATION_HAND ) {
-		cardposhand (1-n@tcg), -1
+		cardposhand (1-card@tcg(TCG_CARD_CONTROLLER, returncard_arg1)), -1
 	}
-	cardposhand n@tcg, -1
+	cardposhand card@tcg(TCG_CARD_CONTROLLER, returncard_arg1), -1
 	gosub *refresh_bg
 	return
 
@@ -1131,8 +1123,7 @@
 		card@tcg(TCG_CARD_LOCATION, gravecard_arg1) = TCG_LOCATION_GRAVEYARD
 		card@tcg(TCG_CARD_TURN_COUNT, gravecard_arg1) = 0
 		cpdata@tcg(TCG_PLAYER_GRAVEYARD, card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1))++
-		n@tcg = card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
-		cardposgrave n@tcg
+		cardposgrave card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
 		makecardlist
 	}
 	// Reorganize field and hand
