@@ -2057,6 +2057,14 @@
 			}
 		}
 	}
+	if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE & cdata(CDATA_CONDITION_PARALYZE, cc) > 0 ) {
+		if ( cc == CHARA_PLAYER ) {
+			await 60
+			sxfix = 0
+			syfix = 0
+		}
+		goto *turn_end
+	}
 	if ( cdata(CDATA_CONDITION_SUFFOCATION, cc) >= 15 | cdata(CDATA_CONDITION_SLEEP, cc) > 0 | (cdata(CDATA_CONDITION_PARALYZE, cc) > 0 & rnd(2) == 0) | cdata(CDATA_CONDITION_DIM, cc) >= 60 | (findbuff(cc, BUFF_MELANCHOLY) != (-1) & rnd(10) == 0) ) {
 		if ( cc == CHARA_PLAYER ) {
 			if ( cdata(CDATA_CONDITION_SUFFOCATION, cc) >= 15 ) {
