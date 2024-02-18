@@ -1,19 +1,23 @@
-# Upcoming
+# 2.21.3.1
 
 # Added
 - Added a tweak to Revert most of the post-2.08 elemental behavior changes.
 
 # Changed
 - AI Tweak: Ally independent targeting now allows NPC targeting out-of-player-sight NPCs.
+- Usable map tweak: Discovered doors/stairs/traps/gather spots are also shown.
 - TCG/Deck:
   - Cards not collected yet are listed with info hidden.
   - Buffed Dog-race cards.
   - Gave Rilian, Poppy, Ajetalio, and Cresce new decks.
+  - Fixes some bug that causes crash.
 
 # Fixed
 - Fixed level-based damage of MPbreath pasted to the Sandcannon formula, thanks to @NekoNou
 - Fixed player master/servant value not increasing without the candle, thanks to CY.
 - Fixed player master/servant value reset to 300 due to love potion.
+- Fixed ranch egg weight calculated using the wrong item, thanks to editors of huijiwiki
+- Necromancy Convenience tweak: fixed wrong 'ti' value used for summoning coffin from DD-Cemetery.
 - Fixed some translations.
 
 # 2.21.3.0

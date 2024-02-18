@@ -13254,7 +13254,7 @@
 		else {
 			cc = CHARA_PLAYER
 		}
-*inv_skipSc
+		*inv_skipSc
 		cargocheck
 		if ( stat == 0 ) {
 			goto *com_inventory_loop_WHILE1_CONTINUE

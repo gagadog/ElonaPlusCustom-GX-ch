@@ -19013,8 +19013,8 @@
 			}
 			/********** JAMES CUSTOM - BEGINNING *********/
 			if ( rtval == 6666 ) {
-				locvar_necromancy_ti = inv_getspace(CHARA_PLAYER)
-				if ( necromancyHaveDDCemeteryKey() & locvar_necromancy_ti != 0 ) {
+				locvar_necromancy_ti = inv_getfreeid(CHARA_PLAYER)
+				if ( necromancyHaveDDCemeteryKey() & locvar_necromancy_ti != (-1) ) {
 					// Save current map inventory and open key.
 					file = "shoptmp.s2"
 					fmode = 4
