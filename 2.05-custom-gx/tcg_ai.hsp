@@ -1,3 +1,9 @@
+#deffunc efllistaddeval int efllistadd_arg1, int efllistadd_arg2, int efllistadd_arg3
+	if ( dbg_tcg == FALSE ) { return }
+	// Below line visualized play weight, enable if you want to debug
+	efllistadd efllistadd_arg1, efllistadd_arg2, card@tcg(TCG_CARD_X, efllistadd_arg3), card@tcg(TCG_CARD_Y, efllistadd_arg3) + efllistadd_arg1 * 20, card@tcg(TCG_CARD_X, efllistadd_arg3), card@tcg(TCG_CARD_Y, efllistadd_arg3) + efllistadd_arg1 * 20
+	return
+
 *ai_evaluate
 	emax@tcg = 0
 	repeat clistmax@tcg(ch@tcg)
@@ -8,16 +14,21 @@
 		p@tcg = 10
 		if ( card@tcg(TCG_CARD_REF_TYPE, c@tcg) == TCG_TYPE_CREATURE ) {
 			p@tcg = 20
-			p@tcg -= abs(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) - card@tcg(TCG_CARD_REF_COST, c@tcg))
+			p@tcg -= abs(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) - card@tcg(TCG_CARD_REF_COST, c@tcg) + (sac@tcg == 0))
 		}
 		// Legendary cards are played first and discarded last.
 		if ( card@tcg(TCG_CARD_REF_DOMAIN, c@tcg) == 5 ) { p@tcg += 10 }
+		if ( cdbit(TCG_BIT_FLEETING, c@tcg) ) { p@tcg += 20 }
 		if ( cpdata@tcg(TCG_PLAYER_LIFE, cp@tcg) >= 8 ) {
-			if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_HOLD ) { p@tcg -= getholdersum(1) / 2 }
+			if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_HOLD ) { p@tcg -= getholdersum(cp@tcg) / 2 }
 			if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_HOLDDONTPLAY ) { p@tcg -= 50 }
 		}
-		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_DRAW ) { p@tcg += 2 * (5 - getholdersum(1)) }
-		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_SAC ) { p@tcg -= 2 * (8 - cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg)) }
+		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_HOLDAWHILE ) { p@tcg = (-20) + 15 * card@tcg(TCG_CARD_TURN_COUNT, c@tcg) }
+		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_DRAW ) { p@tcg += 2 * (5 - getholdersum(cp@tcg)) }
+		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_SAC ) { p@tcg -= 2 * (1 + getspotsum(cp@tcg)) }
+
+		efllistaddeval 1, p@tcg, c@tcg
+		p@tcg += rnd(2)
 		elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_SUMMON
 		emax@tcg++
 	loop
@@ -46,9 +57,8 @@
 				// Deathtouch card attack with some chance to annoy you.
 				if ( cdbit(TCG_BIT_DEATHTOUCH, c@tcg) ) { p@tcg = 0 + 40 * rnd(2) }
 
-				// Below line visualized defend weight, enable if you want to debug
-				// efllistadd 1 + (p@tcg > 0), p@tcg, card@tcg(TCG_CARD_X, c@tcg), card@tcg(TCG_CARD_Y, c@tcg), card@tcg(TCG_CARD_X, c@tcg), card@tcg(TCG_CARD_Y, c@tcg)
-
+				efllistaddeval 1, p@tcg, c@tcg
+				p@tcg += rnd(2)
 				elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_ATTACKING
 				emax@tcg++
 			}
@@ -95,10 +105,10 @@
 				if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) >= cpdata@tcg(TCG_PLAYER_LIFE, cp@tcg) - rnd(5) - rnd(5) ) {
 					p@tcg = 102
 				}
-				// Below line visualized defend weight, enable if you want to debug
-				// efllistadd 1 + (p@tcg > 0), p@tcg, card@tcg(TCG_CARD_X, c@tcg), card@tcg(TCG_CARD_Y, c@tcg), card@tcg(TCG_CARD_X, c@tcg), card@tcg(TCG_CARD_Y, c@tcg)
+
+				efllistaddeval 1, p@tcg, c@tcg
+				p@tcg += rnd(2)
 				if ( p@tcg >= 100 | p@tcg <= -100 ) { p@tcg += 5 - rnd(10) }
-				
 				elist@tcg(TCG_EVAL, emax@tcg) = p@tcg, c@tcg, TCG_ACTION_DEFENDING
 				emax@tcg++
 			}
@@ -128,6 +138,7 @@
 	return
 
 *ai_sac
+	gosub *ai_evaluate
 	if ( sac@tcg > 0 ) {
 		return 0
 	}
@@ -144,8 +155,10 @@
 		if ( card@tcg(TCG_CARD_LOCATION, c@tcg) != TCG_LOCATION_HAND ) {
 			continue
 		}
+		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_DRAW ) { p@tcg = 55 - getholdersum(cp@tcg) }
 		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_HOLD ) { p@tcg += 100 }
 		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_HOLDDONTPLAY ) { p@tcg += 100 }
+		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_HOLDAWHILE ) { p@tcg += 100 }
 		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_SAC ) { p@tcg -= 20 }
 		if ( card@tcg(TCG_CARD_REF_DOMAIN, c@tcg) == 5 ) { p@tcg += 20 }
 		if ( p@tcg < p@tcg(1) ) {
@@ -153,6 +166,7 @@
 			cc@tcg = c@tcg
 			f@tcg = 1
 		}
+		efllistaddeval 2, p@tcg - 50, c@tcg
 	loop
 	if ( f@tcg ) {
 		saccard cc@tcg, cp@tcg
@@ -191,6 +205,29 @@
 		}
 	}
 	gosub *card_resolve_ongoing
+	makecardlist
+	// If AI had a high mana cost card, try to sacrifice a card before playing.
+	if ( sac@tcg == 0 & aiblock@tcg == 0 ) {
+		f@tcg = 0, 0
+		repeat clistmax@tcg(ch@tcg)
+			c@tcg = clist@tcg(cnt, ch@tcg)
+			aip@tcg = effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg))
+			if ( card@tcg(TCG_CARD_COST, c@tcg) > cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) ) { 
+				f@tcg(0) = 1 
+				efllistaddeval 1, 999, c@tcg
+			}
+			if ( aip@tcg != TCG_SKILL_AI_DRAW & aip@tcg != TCG_SKILL_AI_HOLD & aip@tcg != TCG_SKILL_AI_HOLDDONTPLAY & aip@tcg != TCG_SKILL_AI_HOLDAWHILE ) { 
+				f@tcg(1) = 1 
+				efllistaddeval 2, 999, c@tcg
+			}
+		loop
+		if ( f@tcg(0) == 1 & f@tcg(1) == 1 ) {
+			gosub *ai_sac
+			if ( stat == 1 ) {
+				goto *card_ai
+			}
+		}
+	}
 	gosub *ai_evaluate
 	ec@tcg = 0
 	*card_ai_WHILE1
@@ -226,9 +263,11 @@
 			goto *card_ai
 		}
 		else {
-			gosub *ai_sac
-			if ( stat == 1 ) {
-				goto *card_ai
+			if ( sac@tcg == 0 ) {
+				gosub *ai_sac
+				if ( stat == 1 ) {
+					goto *card_ai
+				}
 			}
 		}
 	}

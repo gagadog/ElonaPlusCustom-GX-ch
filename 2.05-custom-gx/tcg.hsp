@@ -16,6 +16,16 @@
 		goto *dbghit_WHILE1
 	*dbghit_WEND1
 
+#deffunc proctcg str proctcg_arg1, int proctcg_arg2
+	if ( dbg_tcg ) {
+		title proctcg_arg1
+		if ( proctcg_arg2 ) {
+			dbghit
+		}
+	}
+	proc proctcg_arg1
+	return
+
 #defcfunc cdbit int cdbit_bit, int cdbit_charid
 	if ( cdbit_charid < 0 | cdbit_charid >= maxcard@tcg ) {
 		return
@@ -149,6 +159,9 @@
 	if ( cdbit(TCG_BIT_FROZEN, cardcandeclareattack_arg1) ) {
 		return 0
 	}
+	if ( cdbit(TCG_BIT_CONFUSED, cardcandeclareattack_arg1) ) {
+		return 0
+	}
 	if ( cdbit(TCG_BIT_DEFENDER, cardcandeclareattack_arg1) ) {
 		return 0
 	}
@@ -174,6 +187,9 @@
 		return 0
 	}
 	if ( cdbit(TCG_BIT_PARALYSED, cardcanblock_arg1) == TRUE ) {
+		return 0
+	}
+	if ( cdbit(TCG_BIT_CONFUSED, cardcanblock_arg1) == TRUE ) {
 		return 0
 	}
 	if ( cdbit(TCG_BIT_VIGILANCE, cardcanblock_arg1) | cdbit(TCG_BIT_DEFENDER, cardcanblock_arg1) ) {
@@ -205,40 +221,40 @@
 	return 1
 
 #defcfunc getholdersum int getholdersum_arg1
-	p@tcg = 0
+	getsump@tcg = 0
 	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getholdersum_arg1 ) {
 			continue
 		}
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_HAND ) {
-			p@tcg++
+			getsump@tcg++
 		}
 	loop
-	return p@tcg
+	return getsump@tcg
 
 #defcfunc getspotsum int getspotsum_arg1
-	p@tcg = 0
+	getsump@tcg = 0
 	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getspotsum_arg1 ) {
 			continue
 		}
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_FIELD ) {
-			p@tcg++
+			getsump@tcg++
 		}
 	loop
-	return p@tcg
+	return getsump@tcg
 
 #defcfunc getdecksum int getdecksum_arg1
-	p@tcg = 0
+	getsump@tcg = 0
 	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != getdecksum_arg1 ) {
 			continue
 		}
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_DECK ) {
-			p@tcg++
+			getsump@tcg++
 		}
 	loop
-	return p@tcg
+	return getsump@tcg
 
 #deffunc cardpos int cardpos_arg1, int cardpos_arg2
 	cardposn@tcg = (cardpos_arg1 == TCG_CONTROLLER_OPPONENT)
@@ -406,7 +422,9 @@
 			}
 		loop
 	loop
-	gosub *ai_evaluate
+	if ( player@tcg != cp@tcg ) {
+		gosub *ai_evaluate
+	}
 	return
 
 #deffunc cardhelp str cardhelp_arg1, int cardhelp_arg2
@@ -479,12 +497,18 @@
 				gcopy 7, 72 + card@tcg(TCG_CARD_REF_BG, tcgdrawcard_arg1) * 72, 0, 72, 96
 				if ( cnt == 0 ) {
 					if ( dbg_tcg ) {
-						pos x@tcg + 60, y@tcg + 4
+						drawnid@tcg = tcgdrawcard_arg1
+						drawneff@tcg = card@tcg(TCG_CARD_EFFECT, tcgdrawcard_arg1)
+						drawnturncount@tcg = card@tcg(TCG_CARD_TURN_COUNT, tcgdrawcard_arg1)
+						pos x@tcg + 60 - 4 * strlen(str(drawnid@tcg)), y@tcg + 4
 						color 0, 0, 0
-						bmes "" + tcgdrawcard_arg1, 235, 235, 235
-						pos x@tcg + 60, y@tcg + 20
+						bmes "" + drawnid@tcg, 235, 235, 235
+						pos x@tcg + 60 - 4 * strlen(str(drawneff@tcg)), y@tcg + 20
 						color 0, 0, 0
-						bmes "" + card@tcg(TCG_CARD_EFFECT, tcgdrawcard_arg1), 235, 235, 235
+						bmes "" + drawneff@tcg, 235, 235, 235
+						pos x@tcg + 60 - 4 * strlen(str(drawnturncount@tcg)), y@tcg + 36
+						color 0, 0, 0
+						bmes "" + drawnturncount@tcg, 235, 235, 235
 					}
 					if ( cdbit(TCG_BIT_FACE_UP, tcgdrawcard_arg1) | dbg_tcg ) {
 						if ( card@tcg(TCG_CARD_REF_TYPE, tcgdrawcard_arg1) == TCG_TYPE_CREATURE & card@tcg(TCG_CARD_ANIM, tcgdrawcard_arg1) == TCG_ANIM_NONE ) {
@@ -656,6 +680,10 @@
 								}
 								if ( cnt == TCG_BIT_INSANE ) { 
 									bmes "Insane", 235, 125, 125 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_CONFUSED ) { 
+									bmes "Confused", 235, 125, 125 
 									p@tcg++
 								}
 							}
@@ -962,6 +990,8 @@
 			if ( p@tcg == TCG_BIT_DEVIL ) { s@tcg += "[Effect Cost 2 Life] "}
 			if ( p@tcg == TCG_BIT_GHOST ) { s@tcg += "[Return on Begin Phase] "}
 			if ( p@tcg == TCG_BIT_INSANE ) { s@tcg += "Insane "}
+			if ( p@tcg == TCG_BIT_CONFUSED ) { s@tcg += "Confused "}
+			if ( p@tcg == TCG_BIT_FLEETING ) { s@tcg += "[Discard if not Played] "}
 
 			if ( p@tcg == TCG_BIT_YERLES ) { s@tcg += "<Yerles> "}
 			if ( p@tcg == TCG_BIT_XEREN ) { s@tcg += "<Xeren> "}
@@ -1293,7 +1323,7 @@
 	if ( effref@tcg(TCG_SKILL_TYPE,card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_TYPE_ONDRAW & turn@tcg > 0 ) {
 		effac@tcg = c@tcg
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, c@tcg)
-		// dialog "" + c@tcg + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
+		proctcg "tcg proc/ondraw: effacc:" + effac@tcg + "/eff" + eff@tcg
 		cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
 		gosub *card_action_choose_target
 	}
@@ -1341,7 +1371,7 @@
 	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)) == TCG_SKILL_TYPE_ONDRAW ) {
 		effac@tcg = gettargetcard_arg1
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)
-		// dialog "" + gettargetcard_arg1 + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
+		proctcg "tcg proc/ondraw(chain): effacc:" + effac@tcg + "/eff" + eff@tcg
 		gosub *card_action_choose_target
 		cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
 	}
@@ -1491,10 +1521,10 @@
 	tcgdraw
 	makecardlist
 	opencard putcard_arg1
-	// dialog "" + putcard_arg1 + "/" + card@tcg(TCG_CARD_EFFECT, putcard_arg1) + "/" + effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, putcard_arg1))
 	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, putcard_arg1)) == TCG_SKILL_TYPE_BATTLECRY ) {
 		effac@tcg = putcard_arg1
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, putcard_arg1)
+		proctcg "tcg proc/battlecry: effac:" + effac@tcg + "/eff" + eff@tcg
 		gosub *card_action_choose_target
 		makecardlist
 		tcgdraw
@@ -1867,8 +1897,8 @@
 		card@tcg(TCG_CARD_TURN_COUNT, cnt)++
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		// dialog "" + cnt + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
 		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_INGRAVE ) {
+			proctcg "tcg proc/in-grave: effac:" + effac@tcg + "/eff" + eff@tcg
 			cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
 			gosub *card_action_choose_target
 		}
@@ -1912,8 +1942,8 @@
 		}
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		// dialog "" + cnt + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
 		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_TURN_START ) {
+			proctcg "tcg proc/phase-begin: effac:" + effac@tcg + "/eff" + eff@tcg
 			gosub *card_action_choose_target
 		}
 	loop
@@ -1949,8 +1979,8 @@
 		card@tcg(TCG_CARD_TURN_COUNT, cnt)++
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		// dialog "" + cnt + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
 		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_INHAND ) {
+			proctcg "tcg proc/in-hand: effac:" + effac@tcg + "/eff" + eff@tcg
 			cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
 			gosub *card_action_choose_target
 		}
@@ -1982,9 +2012,17 @@
 		}
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		// dialog "" + cnt + "/" + eff@tcg + "/" + effref@tcg(TCG_SKILL_TYPE, eff@tcg)
 		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_TURN_END ) {
+			proctcg "tcg proc/phase-end: effac:" + effac@tcg + "/eff" + eff@tcg
 			gosub *card_action_choose_target
+		}
+	loop
+	repeat maxcard@tcg
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_FIELD ) { 
+			cdbitmod TCG_BIT_CONFUSED, cnt, 0
+		}
+		if ( cdbit(TCG_BIT_FLEETING, cnt) == TRUE & card@tcg(TCG_CARD_LOCATION, cnt) = TCG_LOCATION_HAND & card@tcg(TCG_CARD_CONTROLLER, cnt) == cp@tcg ) {
+			gravecard cnt
 		}
 	loop
 	makecardlist

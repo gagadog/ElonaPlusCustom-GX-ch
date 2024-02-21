@@ -4305,6 +4305,14 @@
 		/********** RUIN0X11 CUSTOM - ENDING **********/
 	
 		/********** JAMES CUSTOM - TCG - BEGINNING **********/
+		if ( instr(buff, 0, "dbg_tcg") != (-1) ) {
+			dbg_tcg = (dbg_tcg == 0)
+			buff = ""
+			notesel buff
+			noteadd "Done. dbg_tcg is now " + dbg_tcg + "."
+			goto *console_write
+		}
+
 		if ( instr(buff, 0, "unlock_all_cards") != (-1) ) {
 			repeat MAX_CREATURE_ID - 3
 				card(0, cnt + 1) = 99

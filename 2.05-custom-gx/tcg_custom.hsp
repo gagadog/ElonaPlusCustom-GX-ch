@@ -1,8 +1,13 @@
 *card_resolve_ongoing
 	if ( chainmode@tcg != 0 | selectmode@tcg == 2 ) { return }
 	repeat maxcard@tcg
-		card@tcg(TCG_CARD_COST, cnt) = limit(card@tcg(TCG_CARD_REF_COST, cnt), 0, 99)
-		card@tcg(TCG_CARD_ATTACK, cnt) = limit(card@tcg(TCG_CARD_REF_ATTACK, cnt), 0, 99)
+		card@tcg(TCG_CARD_COST, cnt) = limit(card@tcg(TCG_CARD_REF_COST, cnt), 0, TCG_STAT_MAX)
+		card@tcg(TCG_CARD_REF_ATTACK, cnt) = limit(card@tcg(TCG_CARD_REF_ATTACK, cnt), 0, TCG_STAT_MAX)
+		card@tcg(TCG_CARD_ATTACK, cnt) = limit(card@tcg(TCG_CARD_REF_ATTACK, cnt), 0, TCG_STAT_MAX)
+		card@tcg(TCG_CARD_REF_HP, cnt) = limit(card@tcg(TCG_CARD_REF_HP, cnt), 0, TCG_STAT_MAX)
+		if ( card@tcg(TCG_CARD_HP, cnt) > card@tcg(TCG_CARD_REF_HP, cnt) ) {
+			card@tcg(TCG_CARD_HP, cnt) = card@tcg(TCG_CARD_REF_HP, cnt)
+		}
 	loop
 	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) {
@@ -33,6 +38,9 @@
 *card_action_choose_target
 	proc "tcg efffire: " + " eff:" + eff@tcg + " effac:" + effac@tcg
 	if ( cdbit(TCG_BIT_SILENCED, effac@tcg) ) {
+		return
+	}
+	if ( cdbit(TCG_BIT_CONFUSED, effac@tcg) ) {
 		return
 	}
 	if ( specialrulenoonedies@tcg & effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_DEATHRATTLE ) {
@@ -100,6 +108,9 @@
 				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_SAMEDBID ) {
 					if ( card@tcg(TCG_CARD_REF_DBID, cnt) != card@tcg(TCG_CARD_REF_DBID, effac@tcg) ) { continue }
+				}
+				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_SAMEDBIDNOTSELF ) {
+					if ( card@tcg(TCG_CARD_REF_DBID, cnt) != card@tcg(TCG_CARD_REF_DBID, effac@tcg) | cnt == effac@tcg ) { continue }
 				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_WOUNDED ) {
 					if ( card@tcg(TCG_CARD_HP, cnt) == card@tcg(TCG_CARD_REF_HP, cnt) ) { continue }
@@ -417,11 +428,13 @@
 
 		if ( target_num@tcg == 0 ) { continue }
 		if ( dbg_tcg ) {
-			poptext = "" + target_num@tcg + ":"
+			poptext@tcg = "tcg effchoosetarget: targetnum:" + target_num@tcg + " targets:"
 			repeat target_num@tcg
-				poptext += "" + target@tcg(cnt) + "/" 
+				poptext@tcg += "" + target@tcg(cnt) + "/" 
 			loop
-			if ( target@tcg(0) != (-1) ) { dialog "" + poptext }
+			if ( target@tcg(0) != (-1) ) { 
+				proctcg poptext@tcg 
+			}
 		}
 
 		// Player choose
@@ -492,7 +505,6 @@
 			if ( targettype@tcg == TCG_SKILL_TARGET_SELF_AND_COMBAT_OPPONENT & cnt == 1 & attacktarget@tcg == effac@tcg ) { target@tcg(cnt) = attackingcard@tcg }
 			if ( target@tcg(cnt) == (-1) ) { continue }
 
-			if ( dbg_tcg & effref@tcg(TCG_SKILL_EFF, eff@tcg) == 8 ) { dialog "cs:" + effac@tcg + "/" + effref@tcg(TCG_SKILL_EFF, eff@tcg) + "/" + effref@tcg(TCG_CARD_CONTROLLER, effac@tcg) + "/" + target@tcg(cnt) + "/" + effref@tcg(TCG_SKILL_POWER, eff@tcg) }
 			cardstack@tcg(TCG_STACK, stack@tcg) = effac@tcg, effref@tcg(TCG_SKILL_EFF, eff@tcg), card@tcg(TCG_CARD_CONTROLLER, effac@tcg), eff@tcg, target@tcg(cnt), effref@tcg(TCG_SKILL_POWER, eff@tcg)
 			stack@tcg++
 			efffired@tcg = 1
@@ -923,7 +935,7 @@
 				cardnochoice@tcg(0) = cardno
 			}
 		loop
-		// title "" + cnt2@tcg + "/" + cardnochoice@tcg(1) + ":" + cardnochoice@tcg(0)
+		proctcg "tcg cardfilter: cycle:" + cnt2@tcg + " cards-available:" + cardnochoice@tcg(1) + " card-chosen:" + cardnochoice@tcg(0)
 		cardno = cardnochoice@tcg(0)
 		if ( cardno < 0 ) { continue }
 		dbid = cardno
@@ -1133,6 +1145,27 @@
 		deck_opponent(CREATURE_ID_URUK) = 3
 		return 1
 	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_STRANGE_SCIENTIST | cdata(CDATA_ID, tc) == CREATURE_ID_BIG_DADDY | cdata(CDATA_ID, tc) == CREATURE_ID_LITTLE_SISTER ) {
+		deck_opponent(CREATURE_ID_SAILOR) = 2
+		deck_opponent(CREATURE_ID_CAPTAIN) = 1
+		deck_opponent(CREATURE_ID_BIG_DADDY) = 1
+		deck_opponent(CREATURE_ID_LITTLE_SISTER) = 1
+		deck_opponent(CREATURE_ID_STRANGE_SCIENTIST) = 1
+		deck_opponent(CREATURE_ID_CUBE) = 2
+		deck_opponent(CREATURE_ID_PRISONER) = 2
+		deck_opponent(CREATURE_ID_BLADE_KING) = 2
+		deck_opponent(CREATURE_ID_XEREN_AUTO_TANK) = 4
+		deck_opponent(CREATURE_ID_XEREN_ELECTRIC_TANK) = 4
+		deck_opponent(CREATURE_ID_XEREN_SATELLITE_UNIT) = 2
+		deck_opponent(CREATURE_ID_R_CLEANER) = 4
+		deck_opponent(CREATURE_ID_G_CUBE) = 2
+		deck_opponent(CREATURE_ID_BLACK_BOX) = 1
+		deck_opponent(CREATURE_ID_METAL_ZILLA) = 2
+		deck_opponent(CREATURE_ID_BUILDION) = 3
+		deck_opponent(CREATURE_ID_ZOIBO) = 3
+		deck_opponent(CREATURE_ID_KONIGS_KATZE) = 2
+		return 1
+	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_RILIAN_THE_DOG_LOVER ) {
 		deck_opponent(CREATURE_ID_BEGGAR) = 2
 		deck_opponent(CREATURE_ID_SHENA_THE_DRAW) = 1
@@ -1236,6 +1269,21 @@
 		deck_opponent(CREATURE_ID_THIEF_GUILD_MEMBER) = 2
 		deck_opponent(CREATURE_ID_THIEF) = 2
 		deck_opponent(CREATURE_ID_MASTER_THIEF) = 2
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_BLACK_GAUNTLET_LEOLD ) {
+		deck_opponent(CREATURE_ID_TOWN_CHILD) = 2
+		deck_opponent(CREATURE_ID_ELEC_DRAGON) = 2
+		deck_opponent(CREATURE_ID_WISP) = 3
+		deck_opponent(CREATURE_ID_WAR_SPIRIT) = 4
+		deck_opponent(CREATURE_ID_MAGIC_SPIRIT) = 1
+		deck_opponent(CREATURE_ID_PUDDING_SPIRIT) = 4
+		deck_opponent(CREATURE_ID_GUN_SPIRIT) = 4
+		deck_opponent(CREATURE_ID_BLACK_GAUNTLET_LEOLD) = 1
+		deck_opponent(CREATURE_ID_DEMONS_SOUL) = 3
+		deck_opponent(CREATURE_ID_KIWI) = 1
+		deck_opponent(CREATURE_ID_CHAOS_SEED) = 1
+		deck_opponent(CREATURE_ID_MOSTMUSCYLLA) = 4
 		return 1
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_IRMA_THE_INDOMITABLE_SMITH ) {
@@ -1438,8 +1486,8 @@
 			if ( dbid == CREATURE_ID_USER ) { cardrefskillid = TCG_EFF_SACRIFICE_TARGETCREATUREGETDEATHWORD }
 		}
 	}
-	cardrefattack = limit(cardrefattack, 0, 99)
-	cardrefhp = limit(cardrefhp, 1, 99)
+	cardrefattack = limit(cardrefattack, 0, TCG_STAT_MAX)
+	cardrefhp = limit(cardrefhp, 1, TCG_STAT_MAX)
 	cardrefskill = effdesc@tcg(cardrefskillid)
 	cardrefskillcost = effref@tcg(TCG_SKILL_COST, cardrefskillid)
 	return dbid
@@ -1761,8 +1809,8 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 3
-		cardrefattack = 3
-		cardrefhp = 3
+		cardrefattack = 1
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_STRANGE_SCIENTIST
 		cardrefbits = ""
 		return 1
@@ -3726,7 +3774,7 @@
 		cardreflvl = 121
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
-		cardrefcost = 5
+		cardrefcost = 6
 		cardrefattack = 7
 		cardrefhp = 7
 		cardrefskillid = TCG_EFF_BATTLECRY_HEALPLAYER6DAMAGE
@@ -5512,7 +5560,7 @@
 		cardrefattack = 2
 		cardrefhp = 2
 		cardrefskillid = TCG_EFF_SACRIFICE_DRAW1CARD
-		cardrefbits = "28"
+		cardrefbits = "28,44"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_SECURITY_OFFICER_ORVILLE ) {
@@ -7304,11 +7352,11 @@
 		cardreflvl = 1
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 0
+		cardrefcost = 20
 		cardrefattack = 0
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_LITTLE_SISTER
-		cardrefbits = ""
+		cardrefbits = "27"
 		return 1
 	}
 	// beast
@@ -7454,8 +7502,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
 		cardrefcost = 3
-		cardrefattack = 4
-		cardrefhp = 3
+		cardrefattack = 3
+		cardrefhp = 4
 		cardrefskillid = TCG_EFF_ZOMBIE_GIRL
 		cardrefbits = ""
 		return 1
@@ -7469,8 +7517,8 @@
 		cardrefdomain = 3
 		cardrefcost = 5
 		cardrefattack = 3
-		cardrefhp = 3
-		cardrefskillid = TCG_EFF_BATTLECRY_HEALPLAYER2DAMAGE
+		cardrefhp = 5
+		cardrefskillid = TCG_EFF_BATTLECRY_HEALPLAYER6DAMAGE
 		cardrefbits = "10"
 		return 1
 	}
@@ -7482,9 +7530,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
 		cardrefcost = 5
-		cardrefattack = 4
+		cardrefattack = 5
 		cardrefhp = 3
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT2DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT5DAMAGE
 		cardrefbits = "8"
 		return 1
 	}
@@ -7495,9 +7543,9 @@
 		cardreflvl = 153
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 7
+		cardrefcost = 6
 		cardrefattack = 4
-		cardrefhp = 3
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_ZOMBIE_QUEEN
 		cardrefbits = "5,10"
 		return 1
@@ -8291,7 +8339,7 @@
 		cardreflvl = 141
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 0
-		cardrefcost = 7
+		cardrefcost = 6
 		cardrefattack = 4
 		cardrefhp = 7
 		cardrefskillid = TCG_EFF_TURN_START_SPLITSELF
@@ -10353,8 +10401,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
 		cardrefcost = 4
-		cardrefattack = 4
-		cardrefhp = 4
+		cardrefattack = 3
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_BLACKBOX
 		cardrefbits = "23,65"
 		return 1
@@ -10366,8 +10414,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
 		cardrefcost = 7
-		cardrefattack = 6
-		cardrefhp = 6
+		cardrefattack = 4
+		cardrefhp = 4
 		cardrefskillid = TCG_EFF_GCUBE
 		cardrefbits = "23,65"
 		return 1
@@ -10735,7 +10783,7 @@
 		cardrefcost = 8
 		cardrefattack = 7
 		cardrefhp = 12
-		cardrefskillid = TCG_EFF_TURN_START_SPLITSELF
+		cardrefskillid = TCG_EFF_TURN_START_SPLITSELFALOT
 		cardrefbits = ""
 		return 1
 	}
@@ -11737,10 +11785,10 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 6
-		cardrefattack = 9
+		cardrefattack = 6
 		cardrefhp = 6
-		cardrefskillid = TCG_EFF_MANTICORE
-		cardrefbits = ""
+		cardrefskillid = TCG_EFF_LEOLD
+		cardrefbits = "28"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_CARMILLA ) {
@@ -15010,11 +15058,11 @@
 		cardreflvl = 30
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 4
-		cardrefattack = 3
-		cardrefhp = 9
+		cardrefcost = 3
+		cardrefattack = 6
+		cardrefhp = 8
 		cardrefskillid = TCG_EFF_BIG_DADDY
-		cardrefbits = "24"
+		cardrefbits = "6,9,21,26"
 		return 1
 	}
 	// dwarf
@@ -15171,7 +15219,7 @@
 		cardrefdomain = 4
 		cardrefcost = 1
 		cardrefattack = 1
-		cardrefhp = 2
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_BAMBOOSPIRIT
 		cardrefbits = ""
 		return 1

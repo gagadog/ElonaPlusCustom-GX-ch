@@ -1,3 +1,18 @@
+# Upcoming
+
+# Added
+- Added a tweak to remove abnormal mode inventory limit.
+
+# Changed
+- TCG:
+  - Leold now has a new effect and a new deck.
+  - BigDaddy/LittleSister/StrangeScientist have their effect changed, and got a new deck.
+  - Town NPCs have better card variety.
+  - Buffed zombie girls, nerfs bamboo spirit.
+
+# Fixed
+- TCG: fixed wrong health calculation, AI, and graphic bugs
+
 # 2.21.3.1
 
 # Added

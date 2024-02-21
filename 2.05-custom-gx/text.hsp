@@ -2801,6 +2801,11 @@
 	if ( adata(ADATA_ID, mapname_mapid) == areatestworld ) {
 		s = lang("テストワールド", "Test World")
 	}
+	/********** JAMES CUSTOM - BEGINNING **********/ // Fixes Some Bugs made by Ano
+	if ( adata(ADATA_ID, mapname_mapid) == 0 ) {
+		s = lang("不明", "Unknown")
+	}
+	/********** JAMES CUSTOM - ENDING **********/
 	if ( adata(ADATA_ID, mapname_mapid) == AREA_TW_NORTH_BORDER ) {
 		s = lang("テストワールド北関所", "Test World north border")
 	}
