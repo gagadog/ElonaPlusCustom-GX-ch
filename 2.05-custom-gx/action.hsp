@@ -872,7 +872,7 @@
 		if ( ibit(ITEM_BIT_SHOP_SAMPLE, ci) == TRUE ) {
 			ibitmod ITEM_BIT_SHOP_SAMPLE, ci, FALSE
 		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 			if ( inv_sum(CHARA_PLAYER) > 20 ) {
 				txt lang("これ以上持ち歩けない。", "You can carry nothing more.")
 				return 0
@@ -6154,7 +6154,7 @@
 					txt lang("あっ！空き瓶を井戸に落としてしまった…", "Oops! You drop the empty bottle into the well...")
 					goto *turn_end
 				}
-				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 					if ( inv_sum(CHARA_PLAYER) > 20 ) {
 						txt_invfull
 						goto *turn_end

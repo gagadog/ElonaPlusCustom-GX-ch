@@ -3831,7 +3831,7 @@
 	}
 	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_CHEWING_GUM | inv(INV_ITEM_ID, ci) == ITEM_ID_CHEWED_UP_GUM ) {
 		cibk = ci
-		if ( inv_getspace(cc) == 0 | (cc == CHARA_PLAYER & gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & inv_sum(CHARA_PLAYER) > 20) ) {
+		if ( inv_getspace(cc) == 0 | (cc == CHARA_PLAYER & gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE & inv_sum(CHARA_PLAYER) > 20) ) {
 			flt
 			itemcreate -1, ITEM_ID_CHEWED_UP_GUM, cdata(CDATA_X, cc), cdata(CDATA_Y, cc), 0
 			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL

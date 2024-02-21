@@ -513,8 +513,11 @@
 	if ( rtval != (-1) ) { 
 		fmode = 24
 		gosub *game_ctrlFile@
-		repeat MAX_CARD
+		repeat MAX_CREATURE_ID - 3, 1
 			cnt2@tcg = cnt
+			if ( card(0, cnt2@tcg) < deck(cnt2@tcg) ) {
+				deck(cnt2@tcg) = card(0, cnt2@tcg)
+			}
 			if ( deck(cnt2@tcg) <= 0 ) {
 				continue
 			}
@@ -543,7 +546,7 @@
 	if ( cdata(CDATA_QUALITY, tc) == FIX_QUALITY_UNIQUE | (cdata(CDATA_ID, tc) == CREATURE_ID_USER & cdata(CDATA_QUALITY, tc) >= FIX_QUALITY_MIRACLE) ) {
 		gosub *card_populate_deck_unique
 		if ( stat == 1 ) { 
-			repeat MAX_CARD
+			repeat MAX_CREATURE_ID - 3, 1
 				cnt2@tcg = cnt
 				if ( cnt == 0 ) { continue }
 				if ( deck_opponent(cnt) <= 0 ) { continue }
@@ -568,17 +571,83 @@
 	}
 	dueldecksize@tcg = MIN_CARD_DECK + rnd(rnd(20)+1)
 	duelrace@tcg = cdatan(CDATAN_RACE, tc) 
+	randomize tc * 10000 + cdata(CDATA_AGE, tc) 
+	// Town NPCs have random decks
+	if ( cdata(CDATA_ROLE, tc) > ROLE_NONE & cdata(CDATA_RELATION, tc) == RELATION_NEUTRAL ) {
+		duelrace@tcg == "god"
+	}
 	// These decks has too little racial cards.
 	if ( duelrace@tcg == "god" | duelrace@tcg == "doggod" | duelrace@tcg == "catgod" | duelrace@tcg == "machinegod" | duelrace@tcg == "undeadgod" | duelrace@tcg == "servant" | duelrace@tcg == "quickling" | duelrace@tcg == "dwarf" | duelrace@tcg == "catsister" | duelrace@tcg == "metal" ) {
 		if ( rnd(1) == 0 ) { duelrace@tcg = "yerles" }
 		if ( rnd(2) == 0 ) { duelrace@tcg = "eulderna" }
-		if ( rnd(3) == 0 ) { duelrace@tcg = "roran" }
-		if ( rnd(4) == 0 ) { duelrace@tcg = "karune" }
-		if ( rnd(5) == 0 ) { duelrace@tcg = "elea" }
-		if ( rnd(6) == 0 ) { duelrace@tcg = "juere" }
-		if ( rnd(7) == 0 ) { duelrace@tcg = "norland" }
+		if ( rnd(3) == 0 ) { duelrace@tcg = "elea" }
+		if ( rnd(4) == 0 ) { duelrace@tcg = "juere" }
+		if ( rnd(5) == 0 ) { duelrace@tcg = "zanan" }
+		if ( rnd(6) == 0 ) { duelrace@tcg = "karune" }
+		if ( rnd(10) == 0 ) { duelrace@tcg = "roran" }
 		deckuserdomain@tcg = 3
 	}
+	// Generic humanoid have a chance to not use their race's deck.
+	if ( rnd(5) == 0 ) {
+		if ( duelrace@tcg == "yerles" | duelrace@tcg == "eulderna" | duelrace@tcg == "elea" | duelrace@tcg == "juere" | duelrace@tcg == "zanan" ) {
+			duelrace@tcg = "norland"
+		}
+	}
+	// norland/karune have a sucky system due to it's card pool, they'd use a somewhat more consistent deck.
+	if ( duelrace@tcg == "karune" | duelrace@tcg == "norland" ) {
+		if ( rnd(1) == 0 ) {
+			if ( rnd(1) == 0 ) { duelrace@tcg = "seamonster" }
+			if ( rnd(2) == 0 ) { duelrace@tcg = "spirit" }
+			if ( rnd(3) == 0 ) { duelrace@tcg = "mushroom" }
+			if ( rnd(4) == 0 ) { duelrace@tcg = "wisp" }
+			if ( rnd(5) == 0 ) { duelrace@tcg = "wasp" }
+			deckuserdomain@tcg = 1
+		}
+		if ( rnd(2) == 0 ) {
+			if ( rnd(1) == 0 ) { duelrace@tcg = "bear" }
+			if ( rnd(2) == 0 ) { duelrace@tcg = "ent" }
+			if ( rnd(3) == 0 ) { duelrace@tcg = "dog" }
+			if ( rnd(4) == 0 ) { duelrace@tcg = "fairy" }
+			if ( rnd(5) == 0 ) { duelrace@tcg = "bird" }
+			deckuserdomain@tcg = 2
+		}
+		if ( rnd(3) == 0 ) {
+			if ( rnd(1) == 0 ) { duelrace@tcg = "minotaur" }
+			if ( rnd(2) == 0 ) { duelrace@tcg = "lizardman" }
+			if ( rnd(3) == 0 ) { duelrace@tcg = "orc" }
+			if ( rnd(4) == 0 ) { duelrace@tcg = "kobolt" }
+			if ( rnd(5) == 0 ) { duelrace@tcg = "yeek" }
+			if ( rnd(6) == 0 ) { duelrace@tcg = "rat" }
+			deckuserdomain@tcg = 7
+		}
+		if ( rnd(4) == 0 ) {
+			if ( rnd(1) == 0 ) { duelrace@tcg = "imp" }
+			if ( rnd(2) == 0 ) { duelrace@tcg = "yith" }
+			if ( rnd(3) == 0 ) { duelrace@tcg = "drake" }
+			if ( rnd(4) == 0 ) { duelrace@tcg = "eye" }
+			if ( rnd(5) == 0 ) { duelrace@tcg = "asura" }
+			deckuserdomain@tcg = 8
+		}
+		if ( rnd(5) == 0 ) {
+			if ( rnd(1) == 0 ) { duelrace@tcg = "zombie" }
+			if ( rnd(2) == 0 ) { duelrace@tcg = "ghost" }
+			if ( rnd(3) == 0 ) { duelrace@tcg = "piece" }
+			if ( rnd(4) == 0 ) { duelrace@tcg = "lich" }
+			if ( rnd(5) == 0 ) { duelrace@tcg = "skeleton" }
+			if ( rnd(6) == 0 ) { duelrace@tcg = "worm" }
+			deckuserdomain@tcg = 4
+		}
+		if ( rnd(6) == 0 ) {
+			if ( rnd(1) == 0 ) { duelrace@tcg = "yerles" }
+			if ( rnd(2) == 0 ) { duelrace@tcg = "eulderna" }
+			if ( rnd(3) == 0 ) { duelrace@tcg = "elea" }
+			if ( rnd(4) == 0 ) { duelrace@tcg = "juere" }
+			if ( rnd(5) == 0 ) { duelrace@tcg = "cupid" }
+			if ( rnd(10) == 0 ) { duelrace@tcg = "roran" }
+			deckuserdomain@tcg = 3
+		}
+	}
+	randomize
 	repeat dueldecksize@tcg
 		gosub *card_filter_reset
 		rndlvl@tcg = cdata(CDATA_LEVEL, tc) + 80
@@ -586,6 +655,14 @@
 		if ( rnd(3) > 0 ) { 
 			rndfixlvl@tcg = 2
 			rndrace@tcg = duelrace@tcg
+			if ( rndrace@tcg == "yerles" & rnd(4) == 0 ) { rndrace@tcg = "machine" }
+			if ( rndrace@tcg == "dog" & rnd(40) == 0 ) { rndrace@tcg = "doggod" }
+			if ( rndrace@tcg == "cat" & rnd(40) == 0 ) { rndrace@tcg = "catgod" }
+			if ( rndrace@tcg == "lich" & rnd(40) == 0 ) { rndrace@tcg = "undeadgod" }
+			if ( rndrace@tcg == "machine" & rnd(40) == 0 ) { rndrace@tcg = "machinegod" }
+			if ( rndrace@tcg == "bird" & rnd(4) == 0 ) { rndrace@tcg = "harpy" }
+			if ( rndrace@tcg == "harpy" & rnd(4) == 0 ) { rndrace@tcg = "bird" }
+			if ( rndrace@tcg == "cupid" & rnd(4) == 0 ) { rndrace@tcg = "quickling" }
 		} else {
 			if ( rnd(5) > 0 ) {
 				rndfixlvl@tcg = 2
@@ -606,6 +683,7 @@
 		}
 		if ( cardno == CREATURE_ID_ELDER ) {
 			if (deck_opponent(CREATURE_ID_GUARD) < 2 ) { deck_opponent(CREATURE_ID_GUARD) = 2 }
+			if (deck_opponent(CREATURE_ID_GUARD2) < 2 ) { deck_opponent(CREATURE_ID_GUARD2) = 2 }
 		}
 		if ( cardno == CREATURE_ID_CAPTAIN ) {
 			if (deck_opponent(CREATURE_ID_SAILOR) < 2 ) { deck_opponent(CREATURE_ID_SAILOR) = 2 }
@@ -613,7 +691,7 @@
 	loop
 	create_card MAX_CARD_DECK_TOTAL, cdata(CDATA_ID, tc)
 	cc@tcg = MAX_CARD_DECK_TOTAL + 1
-	repeat MAX_CARD
+	repeat MAX_CREATURE_ID - 3, 1
 		cnt2@tcg = cnt
 		if ( deck_opponent(cnt2@tcg) > 0 ) {
 			repeat deck_opponent(cnt2@tcg)
@@ -754,7 +832,7 @@
 		}
 		cnt2@tcg = cnt
 		cardnochoice@tcg = -1, 0
-		repeat MAX_CREATURE_ID - 4, 1
+		repeat MAX_CREATURE_ID - 3, 1
 			cardno = cnt
 			if ( gdata(GDATA_FLAG_MAIN) < 200 ) {
 				// cardno = rnd(347) + 1

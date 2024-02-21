@@ -752,6 +752,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 37) = "(Custom-G) Disable naps while traveling." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_NO_NAPS_WHILE_TRAVELING)
 	listn(0, 38) = "Disable Deep-Sea Castle persistance." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE)
 	listn(0, 39) = "Child, you must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GO_CHILD)
+	listn(0, 40) = "Disable Abnormal mode inventory limit" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT)
 
 	listn(0, listmax - 1) = "Go back."
 
@@ -873,6 +874,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			if ( p == 39 ) {
 				s = "Allow you to turn in quests using pets with child-bit-flag.\nNamely: Town Childs / Stray Cats / Little Sisters"
 			}
+			if ( p == 40 ) {
+				s = "Disable the inventory limit of Abnormal Mode\nThis includes: 20 inv limit, 4 4-dim mirror limit."
+			}
 
 			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
@@ -897,13 +901,13 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING
 		gosub *ToggleTweak
-		dbg_noautosave = 1 * (TweakData(TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING, TWEAK_CATEGORY_GAMEPLAY) > 0)
+		gosub *ApplyCGSkillTweak
 	}
 	if ( p == 1 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_DISABLE_RARE_LOOT_TRIGGER
 		gosub *ToggleTweak
-		gdata(GDATA_FLAG_RARE_DROP) = 100 * (TweakData(TWEAK_GAMEPLAY_DISABLE_RARE_LOOT_TRIGGER, TWEAK_CATEGORY_GAMEPLAY) > 0)
+		gosub *ApplyCGSkillTweak
 	}
 	if ( p == 2 ) {
 		tc = TWEAK_CATEGORY_MISC
@@ -960,17 +964,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE
 		gosub *ToggleTweak
-		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
-			skilldesc(SKILL_RES_LIGHTNING) = lang("電撃攻撃の抵抗", "Resist Lightning damage.")
-			skilldesc(SKILL_RES_MIND) = lang("幻惑攻撃や麻痺/恐怖への抵抗", "Resist Mind/Fear/Confuse.")
-			skilldesc(SKILL_RES_NERVE) = lang("神経攻撃や混乱/睡眠への抵抗", "Resist Nerve/Sleep/Paralyse.")
-			skilldesc(SKILL_RES_CHAOS) = lang("混沌攻撃の抵抗", "Resist Chaos damage.")
-		} else {
-			skilldesc(SKILL_RES_LIGHTNING) = lang("電撃攻撃や麻痺への抵抗", "Resist Lightning/Paralyse.")
-			skilldesc(SKILL_RES_MIND) = lang("幻惑攻撃や恐怖への抵抗", "Resist Mind/Fear.")
-			skilldesc(SKILL_RES_NERVE) = lang("神経攻撃や睡眠への抵抗", "Resist Nerve/Sleep.")
-			skilldesc(SKILL_RES_CHAOS) = lang("混沌攻撃や混乱への抵抗", "Resist Chaos/Confuse.")
-		}
+		gosub *ApplyCGSkillTweak
 	}
 
 	if ( p == 15 ) {
@@ -1009,16 +1003,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tc = TWEAK_CATEGORY_GAMEPLAY
 		tn = TWEAK_GAMEPLAY_DISABLE_DESTINY
 		gosub *ToggleTweak
-		if ( TweakData(TWEAK_GAMEPLAY_DISABLE_DESTINY, TWEAK_CATEGORY_GAMEPLAY) & gdata(GDATA_FLAG_DESTINY_LETTERS) > 0 ) {
-			gdata(GDATA_FLAG_DESTINY_LETTERS) = 0
-			gdata(GDATA_FLAG_STUDY_BONUS_TRAINING_EXP) = 0
-			gdata(GDATA_FLAG_STUDY_BONUS_COMBAT_EXP) = 0
-			gdata(GDATA_FLAG_STUDY_BONUS_JOB_EXP) = 0
-			gdata(GDATA_FLAG_STUDY_BONUS_EXPLORATION_EXP) = 0
-			gdata(GDATA_FLAG_STUDY_BONUS_STUDY_EXP) = 0
-			gdata(GDATA_FLAG_DESTINY_NEFIA_BOSSES_DEFEATED) = 0
-			gdata(GDATA_FLAG_DESTINY_TIMES_SLEPT) = 0
-		}
+		gosub *ApplyCGSkillTweak
 	}
 	if ( p == 23 ) {
 		tc = TWEAK_CATEGORY_GAMEPLAY
@@ -1072,6 +1057,11 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tn = TWEAK_GAMEPLAY_GO_CHILD
 		gosub *ToggleTweak
 	}
+	if ( p == 40 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT
+		gosub *ToggleTweak
+	}
 
 	if ( p == listmax - 1 ) {
 		snd SOUNDLIST_OK1
@@ -1084,6 +1074,8 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	goto *GameplayTweakMenu_loop
 
 *ApplyCGSkillTweak
+	dbg_noautosave = 1 * (TweakData(TWEAK_GAMEPLAY_ENABLE_SAVE_SCUMMING, TWEAK_CATEGORY_GAMEPLAY) > 0)
+	gdata(GDATA_FLAG_RARE_DROP) = 100 * (TweakData(TWEAK_GAMEPLAY_DISABLE_RARE_LOOT_TRIGGER, TWEAK_CATEGORY_GAMEPLAY) > 0)
 	if ( TweakData(TWEAK_GAMEPLAY_CG_REVERT_SKILL_NERFS, TWEAK_CATEGORY_GAMEPLAY) == TRUE ) {
 		sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_COOKING) = SKILL_ATTR_LER, SKILL_TYPE_SP, 3, TARGET_TYPE_SELF_ONLY, 0
 		sdataref(SKILL_DATAREF_USE, SKILL_NORMAL_FISHING) = SKILL_ATTR_PER, SKILL_TYPE_SP, 1, TARGET_TYPE_SELF_ONLY, 0
@@ -1101,6 +1093,27 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		sdataref(SKILL_DATAREF_COST, SKILL_SPACT_READING_PARTY) = 25
 		sdataref(SKILL_DATAREF_COST, SKILL_SPACT_LOCK_BREAK) = 30
 		sdataref(SKILL_DATAREF_COST, SKILL_SPACT_VIOLENT_GARDEN) = 18
+	}
+	if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+		skilldesc(SKILL_RES_LIGHTNING) = lang("電撃攻撃の抵抗", "Resist Lightning damage.")
+		skilldesc(SKILL_RES_MIND) = lang("幻惑攻撃や麻痺/恐怖への抵抗", "Resist Mind/Fear/Confuse.")
+		skilldesc(SKILL_RES_NERVE) = lang("神経攻撃や混乱/睡眠への抵抗", "Resist Nerve/Sleep/Paralyse.")
+		skilldesc(SKILL_RES_CHAOS) = lang("混沌攻撃の抵抗", "Resist Chaos damage.")
+	} else {
+		skilldesc(SKILL_RES_LIGHTNING) = lang("電撃攻撃や麻痺への抵抗", "Resist Lightning/Paralyse.")
+		skilldesc(SKILL_RES_MIND) = lang("幻惑攻撃や恐怖への抵抗", "Resist Mind/Fear.")
+		skilldesc(SKILL_RES_NERVE) = lang("神経攻撃や睡眠への抵抗", "Resist Nerve/Sleep.")
+		skilldesc(SKILL_RES_CHAOS) = lang("混沌攻撃や混乱への抵抗", "Resist Chaos/Confuse.")
+	}
+	if ( TweakData(TWEAK_GAMEPLAY_DISABLE_DESTINY, TWEAK_CATEGORY_GAMEPLAY) & gdata(GDATA_FLAG_DESTINY_LETTERS) > 0 ) {
+		gdata(GDATA_FLAG_DESTINY_LETTERS) = 0
+		gdata(GDATA_FLAG_STUDY_BONUS_TRAINING_EXP) = 0
+		gdata(GDATA_FLAG_STUDY_BONUS_COMBAT_EXP) = 0
+		gdata(GDATA_FLAG_STUDY_BONUS_JOB_EXP) = 0
+		gdata(GDATA_FLAG_STUDY_BONUS_EXPLORATION_EXP) = 0
+		gdata(GDATA_FLAG_STUDY_BONUS_STUDY_EXP) = 0
+		gdata(GDATA_FLAG_DESTINY_NEFIA_BOSSES_DEFEATED) = 0
+		gdata(GDATA_FLAG_DESTINY_TIMES_SLEPT) = 0
 	}
 	return
 

@@ -1539,6 +1539,9 @@
 		p@tcg = cnt
 		cpdata@tcg(TCG_PLAYER_DOMAIN, p@tcg) = 0
 		repeat maxcard@tcg
+			if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_DEFAULT ) {
+				continue
+			}
 			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != p@tcg ) {
 				continue
 			}
@@ -1562,10 +1565,13 @@
 	cpdata@tcg(TCG_PLAYER_DOMAIN, 0) = 0
 	dim domain@tcg, 9
 	repeat maxcard@tcg
-		cardsize@tcg += card(0, cnt)
-		if ( deck(card@tcg(TCG_CARD_REF_DBID, cnt)) == 0 ) {
+		if ( card(0, card@tcg(TCG_CARD_REF_DBID, cnt)) < deck(card@tcg(TCG_CARD_REF_DBID, cnt)) ) {
+			deck(card@tcg(TCG_CARD_REF_DBID, cnt)) = card(0, card@tcg(TCG_CARD_REF_DBID, cnt))
+		}
+		if ( deck(card@tcg(TCG_CARD_REF_DBID, cnt)) <= 0 ) {
 			continue
 		}
+		cardsize@tcg += card(0, cnt)
 		gdata(GDATA_DECK_SIZE + curdeck) += deck(card@tcg(TCG_CARD_REF_DBID, cnt))
 		domain@tcg(card@tcg(TCG_CARD_REF_DOMAIN, cnt)) = 1
 	loop
@@ -1598,7 +1604,7 @@
 	displayinfo@tcg = 0
 	cardmode@tcg = 1
 	i@tcg = 0
-	repeat MAX_CREATURE_ID - 4, 1
+	repeat MAX_CREATURE_ID - 3, 1
 		create_card i@tcg, cnt
 		card@tcg(TCG_CARD_LOCATION, i@tcg) = TCG_LOCATION_DECK, 0
 		i@tcg++
@@ -2121,8 +2127,8 @@
 		cnt2@tcg = cnt
 		dim mana@tcg, 10
 		repeat landsum@tcg(cnt2@tcg)
-			x@tcg = landix@tcg(cnt2@tcg) + cnt * limit(landspace@tcg - landsum@tcg(cnt2@tcg) / 2, 4, landspace@tcg)
-			y@tcg = landiy@tcg(cnt2@tcg)
+			x@tcg = landix@tcg(cnt2@tcg) - basex@tcg + cnt * limit(landspace@tcg - landsum@tcg(cnt2@tcg) / 2, 4, landspace@tcg)
+			y@tcg = landiy@tcg(cnt2@tcg) - basey@tcg
 			m@tcg = landlist@tcg(cnt, cnt2@tcg)
 			n@tcg = abs(card@tcg(TCG_CARD_REF_PIC, m@tcg))
 			mana@tcg(card@tcg(TCG_CARD_REF_DOMAIN, m@tcg))++
@@ -2130,8 +2136,8 @@
 			// gcopy 2, n@tcg \ 22 * 72, n@tcg / 22 * 96, 72, 96
 			gcopy 7, 72 + card@tcg(TCG_CARD_REF_DOMAIN, m@tcg) * 72, 0, 72, 96
 		loop
-		y@tcg = landiy@tcg(cnt2@tcg) + (cnt == 0) * 80
-		x@tcg = landix@tcg(cnt2@tcg) - 16
+		y@tcg = landiy@tcg(cnt2@tcg) - basey@tcg + (cnt == 0) * 80
+		x@tcg = landix@tcg(cnt2@tcg) - basex@tcg - 16
 		repeat 10
 			if ( mana@tcg(cnt) == 0 ) {
 				continue
@@ -2153,8 +2159,8 @@
 			gravespace@tcg = 110 / gravesum@tcg(cnt2@tcg)
 		}
 		repeat gravesum@tcg(cnt2@tcg)
-			x@tcg = graveix@tcg(cnt2@tcg) - cnt * gravespace@tcg
-			y@tcg = graveiy@tcg(cnt2@tcg)
+			x@tcg = graveix@tcg(cnt2@tcg) - basex@tcg - cnt * gravespace@tcg
+			y@tcg = graveiy@tcg(cnt2@tcg) - basey@tcg
 			m@tcg = gravelist@tcg(cnt, cnt2@tcg)
 			if ( dbg_tcg ) {
 				pos x@tcg + 60, y@tcg - 28
@@ -2850,7 +2856,7 @@
 		displayinfo@tcg = limit(1 - displayinfo@tcg, 0, 1)
 		if ( cardmode@tcg == 1 ) {
 			i@tcg = 0
-			repeat MAX_CREATURE_ID - 4, 1
+			repeat MAX_CREATURE_ID - 3, 1
 				fubk@tcg = cdbit(TCG_BIT_FACE_UP, i@tcg)
 				create_card i@tcg, cnt
 				card@tcg(TCG_CARD_LOCATION, i@tcg) = TCG_LOCATION_DECK, 0

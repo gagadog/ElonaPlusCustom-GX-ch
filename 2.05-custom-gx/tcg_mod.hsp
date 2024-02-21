@@ -2501,6 +2501,7 @@
     dim deck, MAX_CARD
     dim deck_opponent, MAX_CARD
     sdim domname@tcg, 20, 10
+	dim domain@tcg, 9
     domblue = 0
     domgreen = 1
     domwhite = 2

@@ -11817,7 +11817,7 @@
 							gosub *screen_draw
 							goto *pc_turn
 						}
-						if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+						if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 							if ( inv_sum(CHARA_PLAYER) > 20 ) {
 								txt_invfull
 								gosub *screen_draw
@@ -13420,7 +13420,7 @@
 				}
 			}
 			if ( invctrl == 22 ) {
-				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 					if ( inv_sum(CHARA_PLAYER) > 20 ) {
 						txt_invfull
 						goto *com_inventory_loop
@@ -13511,7 +13511,7 @@
 				}
 			}
 			if ( invctrl == 11 ) {
-				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 					if ( inv_sum(CHARA_PLAYER) > 20 ) {
 						txt_invfull
 						goto *com_inventory_loop
@@ -14380,7 +14380,7 @@
 				txt_invfull
 				goto *com_inventory_loop
 			}
-			if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+			if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 				if ( inv_sum(CHARA_PLAYER) > 20 ) {
 					txt_invfull
 					goto *com_inventory_loop
@@ -14497,7 +14497,7 @@
 					snd SOUNDLIST_FAIL1
 					goto *com_inventory
 				}
-				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 					if ( inv_sum(CHARA_PLAYER) > 20 ) {
 						txt_invfull
 						goto *com_inventory
@@ -14532,7 +14532,7 @@
 					snd SOUNDLIST_FAIL1
 					goto *com_inventory
 				}
-				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+				if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 					if ( inv_sum(CHARA_PLAYER) > 20 ) {
 						txt_invfull
 						goto *com_inventory

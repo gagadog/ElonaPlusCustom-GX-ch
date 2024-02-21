@@ -3759,7 +3759,7 @@
 			txt_invfull2
 			return
 		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 			if ( inv_sum(CHARA_PLAYER) > 20 ) {
 				txt_invfull
 				return
@@ -4783,7 +4783,7 @@
 			rowactend cc
 			return
 		}
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 			if ( inv_sum(CHARA_PLAYER) > 20 ) {
 				txt_invfull
 				rowactend cc
@@ -24232,7 +24232,7 @@
 		invsubroutine = 1
 		invctrl = 22, 5
 		invcontainer = limit(efp / 10 + 10, 10, 300)
-		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL ) {
+		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ABNORMAL & TweakData(TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 			invcontainer = 4
 		}
 		mode = MODELIST_SHOP
