@@ -80,7 +80,7 @@
 		cp@tcg = TCG_CONTROLLER_PLAYER
 		tp@tcg = TCG_CONTROLLER_OPPONENT
 		cl@tcg = TCG_LANE_PLAYER_FIELD
-		tl@tcg = TCG_LANE_OPPONENT_HAND
+		tl@tcg = TCG_LANE_OPPONENT_FIELD
 		ch@tcg = TCG_LANE_PLAYER_HAND
 		th@tcg = TCG_LANE_OPPONENT_HAND
 	}
@@ -99,7 +99,7 @@
 		cp@tcg = TCG_CONTROLLER_PLAYER
 		tp@tcg = TCG_CONTROLLER_OPPONENT
 		cl@tcg = TCG_LANE_PLAYER_FIELD
-		tl@tcg = TCG_LANE_OPPONENT_HAND
+		tl@tcg = TCG_LANE_OPPONENT_FIELD
 		ch@tcg = TCG_LANE_PLAYER_HAND
 		th@tcg = TCG_LANE_OPPONENT_HAND
 	}
@@ -126,7 +126,7 @@
 		cp@tcg = TCG_CONTROLLER_PLAYER
 		tp@tcg = TCG_CONTROLLER_OPPONENT
 		cl@tcg = TCG_LANE_PLAYER_FIELD
-		tl@tcg = TCG_LANE_OPPONENT_HAND
+		tl@tcg = TCG_LANE_OPPONENT_FIELD
 		ch@tcg = TCG_LANE_PLAYER_HAND
 		th@tcg = TCG_LANE_OPPONENT_HAND
 	}
@@ -571,6 +571,23 @@
 			gcopy 7, 0, 0, 72, 96
 		}
 		if ( cnt == 0 ) {
+			if ( card@tcg(TCG_CARD_LOCATION, tcgdrawcard_arg1) == TCG_LOCATION_HAND ) {
+				if ( cdbit(TCG_BIT_FACE_UP, tcgdrawcard_arg1) & card@tcg(TCG_CARD_REF_TYPE, tcgdrawcard_arg1) == TCG_TYPE_CREATURE ) {
+					p@tcg = 0
+					if ( cdbit(TCG_BIT_SILENCED, tcgdrawcard_arg1) == 1 ) {
+						pos x@tcg, y@tcg + 69 - 13 * p@tcg
+						color 0, 0, 0
+						bmes "Silenced", 235, 125, 125 
+						p@tcg++
+					}
+					if ( cdbit(TCG_BIT_CONFUSED, tcgdrawcard_arg1) == 1 ) {
+						pos x@tcg, y@tcg + 69 - 13 * p@tcg
+						color 0, 0, 0
+						bmes "Confused", 235, 125, 125
+						p@tcg++
+					}
+				}
+			}
 			if ( card@tcg(TCG_CARD_LOCATION, tcgdrawcard_arg1) == TCG_LOCATION_FIELD ) {
 				if ( cdbit(TCG_BIT_FACE_UP, tcgdrawcard_arg1) ) {
 					if ( card@tcg(TCG_CARD_REF_TYPE, tcgdrawcard_arg1) == TCG_TYPE_CREATURE ) {
@@ -639,6 +656,10 @@
 								}
 								if ( cnt == TCG_BIT_RIDER ) { 
 									bmes "Rider", 235, 235, 235 
+									p@tcg++
+								}
+								if ( cnt == TCG_BIT_BARRIER ) { 
+									bmes "Barrier", 235, 235, 235 
 									p@tcg++
 								}
 
@@ -978,6 +999,7 @@
 			if ( p@tcg == TCG_BIT_TEMPO ) { s@tcg += "[Drawn when Mana=Cost] "}
 			if ( p@tcg == TCG_BIT_CONSTANT ) { s@tcg += "[Starts in your Hand] "}
 			if ( p@tcg == TCG_BIT_MILLSUMMON ) { s@tcg += "[Summon itself when Sent to Graveyard from Deck] "}
+			if ( p@tcg == TCG_BIT_BARRIER ) { s@tcg += "Barrier "}
 			
 			if ( p@tcg == TCG_BIT_DEATHWORD ) { s@tcg += "Deathword "}
 			if ( p@tcg == TCG_BIT_GRAVITY ) { s@tcg += "Gravity "}
@@ -1182,13 +1204,17 @@
 	gosub *refresh_bg
 	return
 
-#deffunc dmgcard int dmgcard_arg1, int dmgcard_arg2_in
+#deffunc dmgcard int dmgcard_arg1, int dmgcard_arg2_in, int dmgcard_arg_combat
 	dmgcard_arg2 = dmgcard_arg2_in
 	if ( cdbit(TCG_BIT_BLEEDING, dmgcard_arg1) ) {
 		dmgcard_arg2++
 	}
 	if ( dmgcard_arg2 > 0 ) {
 		snd SOUNDLIST_ATK1
+	}
+	if ( cdbit(TCG_BIT_BARRIER, dmgcard_arg1) & dmgcard_arg2 > 0 & dmgcard_arg_combat != TRUE ) {
+		efllistadd 1, 0, card@tcg(TCG_CARD_X, dmgcard_arg1), card@tcg(TCG_CARD_Y, dmgcard_arg1) 
+		return
 	}
 	if ( cdbit(TCG_BIT_ARMOR, dmgcard_arg1) & dmgcard_arg2 > 0 ) {
 		cdbitmod TCG_BIT_ARMOR, dmgcard_arg1, 0
@@ -1352,7 +1378,7 @@
 	card@tcg(TCG_CARD_LOCATION, gettargetcard_arg1) = TCG_LOCATION_HAND, n@tcg
 	card@tcg(TCG_CARD_X_MOVETO, gettargetcard_arg1) = holderix@tcg(n@tcg) + p@tcg * holderspace@tcg, holderiy@tcg(n@tcg)
 	card@tcg(TCG_CARD_TURN_COUNT, gettargetcard_arg1) = 0
-	if ( n@tcg == 0 | specialruleseeopponenthand@tcg ) {
+	if ( n@tcg == player@tcg | specialruleseeopponenthand@tcg ) {
 		cdbitmod TCG_BIT_FACE_UP, gettargetcard_arg1, 1
 	}
 	else {
@@ -1385,7 +1411,7 @@
 #deffunc saccard int saccard_arg1, int saccard_arg2
 	snd SOUNDLIST_FEAT
 	sac@tcg++
-	if ( dbg_tcg & saccard_arg2 == 0 ) { sac@tcg = 0 } 
+	// if ( dbg_tcg & saccard_arg2 == 0 ) { sac@tcg = 0 } 
 	if ( saccard_arg2 == 0 ) {
 		cardhelp lang("カードを捧げた。", "You sacrifice the card."), 40
 	}
@@ -1862,6 +1888,7 @@
     gosub *tcg_initBg
     tcgdrawbg
 	gosub *tcg_drawInterface
+	gosub *refresh_bg
 	tcgdraw
 	*tcgmain_WEND2
 	cardhelp lang("ゲームオーバー！Enterキーで退出。", "Game Over! Press Enter to leave."), 40
@@ -1962,12 +1989,12 @@
 		await 50
 		getrandomcard cp@tcg
 	}
-	if ( cp@tcg == 1 & getspotsum(0) >= getspotsum(1) + 1 + rnd(6) ) { // Give AI extra cards because they suck
+	if ( cp@tcg != player@tcg & getspotsum(1-cp@tcg) >= getspotsum(cp@tcg) + 1 + rnd(6) ) { // Give AI extra cards because they suck
 		await 50
 		specialrulenextdrawtempo@tcg++
 		getrandomcard cp@tcg
 	}
-	if ( dbg_tcg & cp@tcg == 0 ) {
+	if ( dbg_tcg & cp@tcg == player@tcg ) {
 		repeat 7 
 			await 50
 			getrandomcard cp@tcg
@@ -2018,7 +2045,7 @@
 		}
 	loop
 	repeat maxcard@tcg
-		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_FIELD ) { 
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_FIELD | (card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_HAND & card@tcg(TCG_CARD_CONTROLLER, cnt) == cp@tcg) ) { 
 			cdbitmod TCG_BIT_CONFUSED, cnt, 0
 		}
 		if ( cdbit(TCG_BIT_FLEETING, cnt) == TRUE & card@tcg(TCG_CARD_LOCATION, cnt) = TCG_LOCATION_HAND & card@tcg(TCG_CARD_CONTROLLER, cnt) == cp@tcg ) {
@@ -3137,7 +3164,8 @@
 		goto *card_player_WHILE1
 	}
 	if ( key == key_enter ) {
-		if ( cs@tcg == (-1) ) {
+		if ( cs@tcg <= (-1) ) {
+			rtval@tcg = (-1)
 			goto *card_player_WEND1
 		}
 		act@tcg = 0, 0, 0

@@ -16666,7 +16666,11 @@
 			if ( map(x@NT, y@NT, 6) != 0 ) {
 				locvar_cell_draw_p = map(x@NT, y@NT, 6) \ 1000
 				locvar_cell_draw_p2 = map(x@NT, y@NT, 6) / 100000 \ 100 + map(x@NT, y@NT, 6) / 10000000 * 100
-				if ( locvar_cell_draw_p != 999 & locvar_cell_draw_p != 0 & adata(ADATA_TYPE, locvar_cell_draw_p2) != MAP_TYPE_HOME ) {
+				locvar_cell_draw_f = (locvar_cell_draw_p != 999 & locvar_cell_draw_p != 0)
+				if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
+					locvar_cell_draw_f = locvar_cell_draw_f & adata(ADATA_TYPE, locvar_cell_draw_p2) != MAP_TYPE_HOME
+				}
+				if ( locvar_cell_draw_f ) {
 					gmode 2, 48, 48
 					pos wx + 300 + ox@NT * p@NT + p@NT / 2, wy + 150 + oy@NT * p@NT + p@NT / 2
 					grotate 2, locvar_cell_draw_p \ 33 * inf_tiles, locvar_cell_draw_p / 33 * inf_tiles, 0, 16, 16
