@@ -3380,7 +3380,7 @@
 				if ( cdata(CDATA_DIRECTIVE_MODE, i) == DIRECTIVE_MODE_TALKING ) {
 					s += lang("/交渉/", "(talking")
 				}
-				s += lang("ガードブレイク" + cdata(CDATA_GUARD_BREAK,, i) + "%", " GuardBreak:" + cdata(CDATA_GUARD_BREAK,, i) + "%")
+				s += lang("ガードブレイク" + cdata(CDATA_GUARD_BREAK, i) + "%", " GuardBreak:" + cdata(CDATA_GUARD_BREAK, i) + "%")
 			}
 		}
 		if ( allyctrl != 4 ) {
