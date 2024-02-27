@@ -14561,6 +14561,17 @@
 			}
 		}
 	}
+	/********** JAMES CUSTOM - TAB TO SWITCH BUY/SELL - BEGINNING **********/
+	if ( key == key_next | key == key_prev ) {
+		if ( mode == MODELIST_SHOP & (invctrl == 11 | invctrl == 12) ) {
+			invctrl = 11 + 1 * (invctrl == 11)
+			snd SOUNDLIST_INV
+			screenupdate = -1
+			gosub *screen_draw
+			goto *com_inventory
+		}
+	}
+	/********** JAMES CUSTOM - TAB TO SWITCH BUY/SELL - ENDING **********/
 	if ( key == key_identify ) {
 		if ( listmax != 0 ) {
 			ci = list(0, pagesize * page + cs)
