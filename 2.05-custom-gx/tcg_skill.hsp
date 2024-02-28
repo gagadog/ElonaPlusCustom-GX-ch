@@ -1319,10 +1319,34 @@
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
 			if ( getspotsum(card@tcg(TCG_CARD_CONTROLLER, ac@tcg)) < 8 & card@tcg(TCG_CARD_LOCATION, aeft@tcg) != TCG_LOCATION_FIELD ) {
 				putcardfree@tcg = 1
-				aeftbk@tcg = aeft@tcg
-				effpowbk@tcg = effref@tcg(TCG_SKILL_POWER, aeff@tcg)
-				putcard aeft@tcg, card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)
-				dmgcard aeftbk@tcg, effpowbk@tcg
+				repeat 1, aeft@tcg
+					; cdbitmod TCG_BIT_CONFUSED, cnt, 1
+					card@tcg(TCG_CARD_TEMP, cnt) = effref@tcg(TCG_SKILL_POWER, aeff@tcg)
+					putcard cnt, card@tcg(TCG_CARD_CONTROLLER, cnt)
+					dmgcard cnt, card@tcg(TCG_CARD_TEMP, cnt) 
+					; cdbitmod TCG_BIT_CONFUSED, cnt, 0
+				loop
+				makecardlist
+				tcgdraw
+			}
+		}
+		cardposhand 0, -1
+		cardposhand 1, -1
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_WEAKEN_AND_PUT_TARGET_CARD | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+			if ( getspotsum(card@tcg(TCG_CARD_CONTROLLER, ac@tcg)) < 8 & card@tcg(TCG_CARD_LOCATION, aeft@tcg) != TCG_LOCATION_FIELD ) {
+				putcardfree@tcg = 1
+				repeat 1, aeft@tcg
+					cdbitmod TCG_BIT_CONFUSED, cnt, 1
+					card@tcg(TCG_CARD_TEMP, cnt) = effref@tcg(TCG_SKILL_POWER, aeff@tcg)
+					putcard cnt, card@tcg(TCG_CARD_CONTROLLER, cnt)
+					card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg) -= card@tcg(TCG_CARD_TEMP, cnt)
+					cdbitmod TCG_BIT_CONFUSED, cnt, 0
+				loop
 				makecardlist
 				tcgdraw
 			}

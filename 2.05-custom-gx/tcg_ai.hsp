@@ -19,7 +19,7 @@
 		// Legendary cards are played first and discarded last.
 		if ( card@tcg(TCG_CARD_REF_DOMAIN, c@tcg) == 5 ) { p@tcg += 10 }
 		if ( cdbit(TCG_BIT_FLEETING, c@tcg) ) { p@tcg += 20 }
-		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_KEEPALIVE ) { p@tcg += 2 }
+		if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_KEEPALIVE ) { p@tcg += rnd(3) }
 		if ( cpdata@tcg(TCG_PLAYER_LIFE, cp@tcg) >= 8 ) {
 			if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_HOLD ) { p@tcg -= getholdersum(cp@tcg) / 2 }
 			if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_HOLDDONTPLAY ) { p@tcg -= 50 }

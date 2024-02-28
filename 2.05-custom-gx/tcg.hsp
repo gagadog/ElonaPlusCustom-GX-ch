@@ -513,8 +513,11 @@
 					if ( cdbit(TCG_BIT_FACE_UP, tcgdrawcard_arg1) | dbg_tcg ) {
 						if ( card@tcg(TCG_CARD_REF_TYPE, tcgdrawcard_arg1) == TCG_TYPE_CREATURE & card@tcg(TCG_CARD_ANIM, tcgdrawcard_arg1) == TCG_ANIM_NONE ) {
 							drawnhp@tcg = card@tcg(TCG_CARD_HP, tcgdrawcard_arg1)
+							drawnmaxhp@tcg = card@tcg(TCG_CARD_REF_HP, tcgdrawcard_arg1)
 							drawnatk@tcg = card@tcg(TCG_CARD_ATTACK, tcgdrawcard_arg1)
+							drawnbaseatk@tcg = card@tcg(TCG_CARD_REF_ATTACK, tcgdrawcard_arg1)
 							drawncost@tcg = card@tcg(TCG_CARD_COST, tcgdrawcard_arg1)
+							drawnbasecost@tcg = card@tcg(TCG_CARD_REF_COST, tcgdrawcard_arg1)
 							if ( tcgdrawcard_arg2 == 1 ) {
 								drawnhp@tcg = card@tcg(TCG_CARD_REF_HP, tcgdrawcard_arg1)
 								drawnatk@tcg = card@tcg(TCG_CARD_REF_ATTACK, tcgdrawcard_arg1)
@@ -525,18 +528,38 @@
 							gzoom 21, 15, 7, 0, 96, 35, 25
 							pos x@tcg + 12 - 4 * strlen(str(drawnatk@tcg)), y@tcg + 81
 							color 0, 0, 0
-							bmes "" + drawnatk@tcg, 235, 235, 235
+							if ( drawnatk@tcg == drawnbaseatk@tcg ) {
+								bmes "" + drawnatk@tcg, 235, 235, 235
+							} else {
+								if ( drawnatk@tcg > drawnbaseatk@tcg ) {
+									bmes "" + drawnatk@tcg, 125, 235, 125
+								} else {
+									bmes "" + drawnatk@tcg, 235, 125, 125
+								}
+							}
 							pos x@tcg + 51, y@tcg + 81
 							gzoom 21, 15, 7, 48, 96, 35, 25
 							pos x@tcg + 51 + 12 - 4 * strlen(str(drawnhp@tcg)), y@tcg + 81
 							color 0, 0, 0
-							bmes "" + drawnhp@tcg, 235, 235, 235
+							if ( drawnhp@tcg < drawnmaxhp@tcg ) {
+								bmes "" + drawnhp@tcg, 235, 125, 125
+							} else {
+								bmes "" + drawnhp@tcg, 235, 235, 235
+							}
 							if ( card@tcg(TCG_CARD_LOCATION, tcgdrawcard_arg1) == TCG_LOCATION_HAND | tcgdrawcard_arg2 == 1 ) {
 								pos x@tcg, y@tcg
 								gzoom 24, 24, 7, 192, 96, 32, 32
 								pos x@tcg + 12 - 3 * strlen(str(drawncost@tcg)), y@tcg + 4
 								color 0, 0, 0
-								bmes "" + drawncost@tcg, 235, 235, 235
+								if ( drawncost@tcg == drawnbasecost@tcg ) {
+									bmes "" + drawncost@tcg, 235, 235, 235
+								} else {
+									if ( drawncost@tcg > drawnbasecost@tcg ) {
+										bmes "" + drawncost@tcg, 235, 125, 125
+									} else {
+										bmes "" + drawncost@tcg, 125, 235, 125
+									}
+								}
 							}
 						}
 					}
@@ -584,6 +607,12 @@
 						pos x@tcg, y@tcg + 69 - 13 * p@tcg
 						color 0, 0, 0
 						bmes "Confused", 235, 125, 125
+						p@tcg++
+					}
+					if ( cdbit(TCG_BIT_POISONED, tcgdrawcard_arg1) == 1 ) {
+						pos x@tcg, y@tcg + 69 - 13 * p@tcg
+						color 0, 0, 0
+						bmes "Poisoned", 235, 125, 125
 						p@tcg++
 					}
 				}
@@ -1931,13 +1960,28 @@
 		}
 	loop
 	repeat maxcard@tcg
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_HAND & card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) { continue }
+		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) { continue }
+		card@tcg(TCG_CARD_TURN_COUNT, cnt)++
+		if ( cdbit(TCG_BIT_POISONED, cnt) ) {
+			card@tcg(TCG_CARD_HP, cnt)--
+		}
+		if ( cdbit(TCG_BIT_REGENERATION, cnt) | specialrulecreatureremovewounds@tcg ) {
+			card@tcg(TCG_CARD_HP, cnt) = card@tcg(TCG_CARD_REF_HP, cnt)
+			cdbitmod TCG_BIT_POISONED, cnt, 0
+		}
+		if ( card@tcg(TCG_CARD_HP, cnt) <= 0 ) {
+			gravecard cnt
+			continue
+		}
+	loop
+	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) {
 			continue
 		}
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) {
 			continue
 		}
-		card@tcg(TCG_CARD_TURN_COUNT, cnt)++
 		if ( cdbit(TCG_BIT_WINDFURY, cnt) == TRUE ) {
 			cdbitmod TCG_BIT_WINDFURY_USABLE, cnt, 1
 		}
@@ -1953,17 +1997,10 @@
 			cdbitmod TCG_BIT_EXHAUSTED, cnt, 1
 			card@tcg(TCG_CARD_STATUS, cnt) = TCG_ACTION_EXHAUSTED
 		}
-		if ( cdbit(TCG_BIT_POISONED, cnt) ) {
-			card@tcg(TCG_CARD_HP, cnt)--
-		}
-		if ( cdbit(TCG_BIT_REGENERATION, cnt) | specialrulecreatureremovewounds@tcg ) {
-			card@tcg(TCG_CARD_HP, cnt) = card@tcg(TCG_CARD_REF_HP, cnt)
-			cdbitmod TCG_BIT_POISONED, cnt, 0
-		}
 		if ( cdbit(TCG_BIT_DEATHWORD, cnt) & card@tcg(TCG_CARD_TURN_COUNT, cnt) >= 3) {
 			card@tcg(TCG_CARD_HP, cnt) = 0
 		}
-		if ( card@tcg(TCG_CARD_HP, cnt) == 0 ) {
+		if ( card@tcg(TCG_CARD_HP, cnt) <= 0 ) {
 			dmgcard cnt, 0
 			continue
 		}
@@ -2003,7 +2040,6 @@
 	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_HAND ) { continue }
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) { continue }
-		card@tcg(TCG_CARD_TURN_COUNT, cnt)++
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
 		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_INHAND ) {

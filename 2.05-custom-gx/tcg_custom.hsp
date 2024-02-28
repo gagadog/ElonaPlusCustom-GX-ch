@@ -6688,10 +6688,10 @@
 		cardreflvl = 183
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
-		cardrefcost = 5
-		cardrefattack = 7
+		cardrefcost = 6
+		cardrefattack = 3
 		cardrefhp = 5
-		cardrefskillid = TCG_EFF_BATTLECRY_OPPONENTMILL2CARD
+		cardrefskillid = TCG_EFF_HELRAUNE
 		cardrefbits = ""
 		return 1
 	}
@@ -6704,8 +6704,8 @@
 		cardrefdomain = 1
 		cardrefcost = 5
 		cardrefattack = 3
-		cardrefhp = 2
-		cardrefskillid = TCG_EFF_BATTLECRY_PARALYSEALLENEMY
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_KINGHOGWEEDER
 		cardrefbits = ""
 		return 1
 	}
@@ -6717,9 +6717,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
 		cardrefcost = 3
-		cardrefattack = 3
-		cardrefhp = 4
-		cardrefskillid = TCG_EFF_BATTLECRY_PARALYSECHOSENENEMY
+		cardrefattack = 2
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_HOGWEEDER
 		cardrefbits = ""
 		return 1
 	}
@@ -6731,9 +6731,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
 		cardrefcost = 2
-		cardrefattack = 3
-		cardrefhp = 3
-		cardrefskillid = TCG_EFF_BATTLECRY_OPPONENTMILL1CARD
+		cardrefattack = 1
+		cardrefhp = 1
+		cardrefskillid = TCG_EFF_ALRAUNE
 		cardrefbits = ""
 		return 1
 	}
@@ -6811,7 +6811,7 @@
 		cardrefcost = 4
 		cardrefattack = 4
 		cardrefhp = 4
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALEVERYONE1DAMAGE
+		cardrefskillid = TCG_EFF_HELLFIREFLOWER
 		cardrefbits = ""
 		return 1
 	}
@@ -6824,8 +6824,8 @@
 		cardrefcost = 4
 		cardrefattack = 4
 		cardrefhp = 6
-		cardrefskillid = TCG_EFF_BATTLECRY_OPPONENTMILL1CARD
-		cardrefbits = "9"
+		cardrefskillid = TCG_EFF_GIANTEATER
+		cardrefbits = ""
 		return 1
 	}
 	if ( dbid == CREATURE_ID_MANDRAKE ) {
@@ -6845,10 +6845,10 @@
 		cardreflvl = 8
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
-		cardrefcost = 0
+		cardrefcost = 1
 		cardrefattack = 1
-		cardrefhp = 1
-		cardrefskillid = TCG_EFF_BATTLECRY_HEALALLCARD
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_MANEATER
 		cardrefbits = ""
 		return 1
 	}
@@ -6857,10 +6857,10 @@
 		cardreflvl = 19
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
-		cardrefcost = 1
+		cardrefcost = 2
 		cardrefattack = 2
-		cardrefhp = 2
-		cardrefskillid = TCG_EFF_BATTLECRY_HEALALLCARD
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_MANEATER2
 		cardrefbits = ""
 		return 1
 	}
@@ -15641,7 +15641,7 @@
 		cardrefdomain = 1
 		cardrefcost = 5
 		cardrefattack = 3
-		cardrefhp = 5
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_TREEINCARNATION
 		cardrefbits = ""
 		return 1
@@ -15682,7 +15682,7 @@
 		cardrefdomain = 1
 		cardrefcost = 2
 		cardrefattack = 0
-		cardrefhp = 2
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_SKOGSRA
 		cardrefbits = ""
 		return 1
