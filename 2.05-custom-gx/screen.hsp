@@ -5009,10 +5009,11 @@
 		repw = inf_screenw, scx
 		reph = inf_screenh, scy
 	}
+	repw = inf_screenw + 2, scx - 1 // JAMES CUSTOM - fixes rendering order in no scroll mode.
 	ly = 1 + (cfg_scroll == 0)
 	repeat reph, reph(1)
 		sy = cnt
-		lx = 1 + (cfg_scroll == 0)
+		lx = 1; + (cfg_scroll == 0) // JAMES CUSTOM - fixes rendering order in no scroll mode.
 		if ( sy < 0 | sy >= mdata(MDATA_HEIGHT) ) {
 			repeat repw, repw(1)
 				slight(lx + 1, ly) += 1
@@ -5102,10 +5103,11 @@
 		repw = inf_screenw, scx
 		reph = inf_screenh, scy
 	}
+	repw = inf_screenw + 2, scx - 1 // JAMES CUSTOM - fixes rendering order in no scroll mode.
 	ly = 1 + (cfg_scroll == 0)
 	repeat reph, reph(1)
 		sy = cnt
-		lx = 1 + (cfg_scroll == 0)
+		lx = 1; + (cfg_scroll == 0) // JAMES CUSTOM - fixes rendering order in no scroll mode.
 		if ( sy < 0 | sy >= mdata(MDATA_HEIGHT) ) {
 			repeat repw, repw(1)
 				slight(lx + 1, ly) += 1

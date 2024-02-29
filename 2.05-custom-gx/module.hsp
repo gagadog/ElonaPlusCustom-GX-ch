@@ -1335,8 +1335,8 @@
 
 	// Calculate the exact iteration where player/shadow should be drawn. So player won't be drawn above walls
 	// repw(2) is the first cell of the row (drawn last because it's right to left.)
-	// reph(2)(player shadow) is the current player row (+1 if scrolling)
-	// and reph(3)(player) is drawn one row later.
+	// reph(2)(player) is the current player row (+1 if scrolling)
+	// and reph(3)(player shadow (lower half)) is drawn one row later.
 	repw(2) = repw(1)
 	reph(2) = cdata(CDATA_Y, CHARA_PLAYER) + (syfix < 0)
 	reph(3) = reph(2) + 1
