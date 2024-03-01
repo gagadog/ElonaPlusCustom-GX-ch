@@ -1,16 +1,23 @@
-# Upcoming
+# 2.21.3.2
 
 # Added
 - Added a tweak to remove abnormal mode inventory limit.
 
 # Changed
+- Allow using tab to switch between buy/sell.
 - TCG:
+  - Added some animation, and changed stat display.
   - Leold now has a new effect and a new deck.
-  - BigDaddy/LittleSister/StrangeScientist have their effect changed, and got a new deck.
+  - Some Act I cards have their effect changed/reworked, and got a new deck.
   - Town NPCs have better card variety.
-  - Buffed zombie girls, nerfs bamboo spirit.
+  - Buffed ent/mandrakes/zombies.
 
 # Fixed
+- When scrolling is disabled: change rendering order to prevent PC getting covered by tile.
+- Fixes individual leading crashes.
+- Map Item Tweak: fixed crashes in Farms.
+- Custom AI: fixed quality check not working.
+- Custom AI: fixed ally target group targets enemies.
 - TCG: fixed wrong health calculation, AI, and graphic bugs
 
 # 2.21.3.1

@@ -129,7 +129,7 @@
 							LoopCount++
 							_continue
 						}
-						if ( CAIEntity(cnt, cc) \ 1000 == 2 ) {
+						if ( CAIEntity(cnt, cc) \ 1000 == 3 ) {
 							if ( (cdata(CDATA_RELATION, cc) \ 10) != (cdata(CDATA_RELATION, LoopTarget) \ 10) ) {
 								LoopCount++
 								_continue

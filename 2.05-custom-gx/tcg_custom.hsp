@@ -23,7 +23,7 @@
 		}
 	loop
 	repeat maxcard@tcg
-		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_HAND ) {
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_HAND ) {
 			continue
 		}
 		effac@tcg = cnt
@@ -42,6 +42,9 @@
 	}
 	if ( cdbit(TCG_BIT_CONFUSED, effac@tcg) ) {
 		return
+	}
+	if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) >= TCG_SKILL_TYPE_BATTLECRY & effref@tcg(TCG_SKILL_TYPE, eff@tcg) <= TCG_SKILL_TYPE_INHAND) | effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_AFTERCOMBAT ) {
+		efllistaddcard 3, effac@tcg
 	}
 	if ( specialrulenoonedies@tcg & effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_DEATHRATTLE ) {
 		return
@@ -6704,7 +6707,7 @@
 		cardrefdomain = 1
 		cardrefcost = 5
 		cardrefattack = 3
-		cardrefhp = 3
+		cardrefhp = 6
 		cardrefskillid = TCG_EFF_KINGHOGWEEDER
 		cardrefbits = ""
 		return 1
@@ -6718,7 +6721,7 @@
 		cardrefdomain = 1
 		cardrefcost = 3
 		cardrefattack = 2
-		cardrefhp = 2
+		cardrefhp = 4
 		cardrefskillid = TCG_EFF_HOGWEEDER
 		cardrefbits = ""
 		return 1
@@ -14757,7 +14760,7 @@
 		cardrefcost = 4
 		cardrefattack = 2
 		cardrefhp = 5
-		cardrefskillid = TCG_EFF_PERFORMAICOCRUEL
+		cardrefskillid = TCG_EFF_PERFORMAIDCOCRUEL
 		cardrefbits = "16,40"
 		return 1
 	}

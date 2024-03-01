@@ -916,6 +916,24 @@
 			pos efllist@tcg(2, cnt), efllist@tcg(3, cnt) + 24
 			gcopy 7, 64 * limit(10 - (efllist@tcg(4, cnt) - 30) / 3, 0, 8), 416, 64, 64
 		}
+		if ( efllist@tcg(0, cnt) == 3 ) {
+			gmode 5, , , 120
+			color 0, 0, 0
+			pos efllist@tcg(5, cnt), efllist@tcg(6, cnt)
+			gcopy 7, efllist@tcg(2, cnt) + 72 * limit(efllist@tcg(1, cnt) - 1 - (efllist@tcg(4, cnt) / animespeed@tcg), 0, efllist@tcg(1, cnt) - 1), efllist@tcg(3, cnt), 64, 64
+		}
+		if ( efllist@tcg(0, cnt) == 4 ) {
+			gmode 2, 48, 48
+			color 0, 0, 0
+			pos efllist@tcg(5, cnt), efllist@tcg(6, cnt)
+			grotate 7, efllist@tcg(2, cnt) + 48 * limit(efllist@tcg(1, cnt) - 1 - (efllist@tcg(4, cnt) / animespeed@tcg), 0, efllist@tcg(1, cnt) - 1), efllist@tcg(3, cnt), 0, 48, 48
+		}
+		if ( efllist@tcg(0, cnt) >= 5 & efllist@tcg(0, cnt) <= 23 ) {
+			gmode 2, 96, 96
+			color 0, 0, 0
+			pos efllist@tcg(5, cnt), efllist@tcg(6, cnt)
+			grotate 7, efllist@tcg(2, cnt) + 96 * limit(efllist@tcg(1, cnt) - 1 - (efllist@tcg(4, cnt) / animespeed@tcg / 2), 0, efllist@tcg(1, cnt) - 1), efllist@tcg(3, cnt), 0, 96, 96
+		}
 	loop
 	gmode 2
 	if ( screenupdate@tcg == (-1) ) {
@@ -933,6 +951,28 @@
 	*tcgdraw_WEND1
 	return
 
+#deffunc efllistaddcard int efllistadd_arg1, int efllistadd_arg2, int efllistadd_arg3, int efllistadd_arg4
+	proctcg "tcg efllistaddcard: efllistadd_arg1:" + efllistadd_arg1 + "/efllistadd_arg2:" + efllistadd_arg2 + "/efllistadd_arg3:" + efllistadd_arg3 + "/efllistadd_arg4:" + efllistadd_arg4
+	if ( efllistadd_arg2 < 0 | efllistadd_arg2 >= maxcard@tcg ) { return }
+	if ( efllistadd_arg3 != 1 & card@tcg(TCG_CARD_LOCATION, efllistadd_arg2) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, efllistadd_arg2) != TCG_LOCATION_HAND ) { return }
+	// Middle of card.
+	elax@tcg = 36
+	elay@tcg = 48
+	if ( efllistadd_arg4 == 1 ) { // Cost
+		elax@tcg = 12
+		elay@tcg = 12
+	}
+	if ( efllistadd_arg4 == 2 ) { // Attack
+		elax@tcg = 10
+		elay@tcg = 88
+	}
+	if ( efllistadd_arg4 == 3 ) { // HP
+		elax@tcg = 61
+		elay@tcg = 88
+	}
+	efllistadd efllistadd_arg1, 0, card@tcg(TCG_CARD_X, efllistadd_arg2) + elax@tcg, card@tcg(TCG_CARD_Y, efllistadd_arg2) + elay@tcg
+	return
+
 #deffunc efllistadd int efllistadd_arg1, int efllistadd_arg2, int efllistadd_arg3, int efllistadd_arg4, int efllistadd_arg5, int efllistadd_arg6
 	repeat efllistmax@tcg
 		if ( efllist@tcg(4, cnt) <= 0 ) {
@@ -946,6 +986,26 @@
 				efllist@tcg(4, cnt) = 60
 				efllist@tcg(5, cnt) = efllistadd_arg3, efllistadd_arg4
 				efllist@tcg(2, cnt) = efllistadd_arg5, efllistadd_arg6
+			}
+			if ( efllistadd_arg1 == 3 ) {
+				efllist@tcg(1, cnt) = 2, 8, 576
+				efllist@tcg(4, cnt) = efllist@tcg(1, cnt) * animespeed@tcg
+				efllist@tcg(5, cnt) = efllistadd_arg3 - 32, efllistadd_arg4 - 32
+			}
+			if ( efllistadd_arg1 == 4 ) {
+				efllist@tcg(1, cnt) = 10, 336, 1248
+				efllist@tcg(4, cnt) = efllist@tcg(1, cnt) * animespeed@tcg
+				efllist@tcg(5, cnt) = efllistadd_arg3, efllistadd_arg4
+			}
+			if ( efllistadd_arg1 >= 5 & efllistadd_arg1 <= 17 ) {
+				efllist@tcg(1, cnt) = 5 + 1 * (efllistadd_arg1 != 7), 720, (efllistadd_arg1 - 5) * 96
+				efllist@tcg(4, cnt) = efllist@tcg(1, cnt) * animespeed@tcg
+				efllist@tcg(5, cnt) = efllistadd_arg3, efllistadd_arg4
+			}
+			if ( efllistadd_arg1 >= 18 & efllistadd_arg1 <= 23 ) {
+				efllist@tcg(1, cnt) = 5 + 1 * (efllistadd_arg1 > 20), 0, 640 + (efllistadd_arg1 - 18) * 96
+				efllist@tcg(4, cnt) = efllist@tcg(1, cnt) * animespeed@tcg * 2
+				efllist@tcg(5, cnt) = efllistadd_arg3, efllistadd_arg4
 			}
 			break
 		}
@@ -1233,42 +1293,42 @@
 	gosub *refresh_bg
 	return
 
-#deffunc dmgcard int dmgcard_arg1, int dmgcard_arg2_in, int dmgcard_arg_combat
-	dmgcard_arg2 = dmgcard_arg2_in
+#deffunc dmgcard int dmgcard_arg1, int dmgcard_arg2, int dmgcard_arg_combat
+	dmgcard_dmg = dmgcard_arg2
 	if ( cdbit(TCG_BIT_BLEEDING, dmgcard_arg1) ) {
-		dmgcard_arg2++
+		dmgcard_dmg++
 	}
-	if ( dmgcard_arg2 > 0 ) {
+	if ( dmgcard_dmg > 0 ) {
 		snd SOUNDLIST_ATK1
 	}
-	if ( cdbit(TCG_BIT_BARRIER, dmgcard_arg1) & dmgcard_arg2 > 0 & dmgcard_arg_combat != TRUE ) {
+	if ( cdbit(TCG_BIT_BARRIER, dmgcard_arg1) & dmgcard_dmg > 0 & dmgcard_arg_combat != TRUE ) {
 		efllistadd 1, 0, card@tcg(TCG_CARD_X, dmgcard_arg1), card@tcg(TCG_CARD_Y, dmgcard_arg1) 
 		return
 	}
-	if ( cdbit(TCG_BIT_ARMOR, dmgcard_arg1) & dmgcard_arg2 > 0 ) {
+	if ( cdbit(TCG_BIT_ARMOR, dmgcard_arg1) & dmgcard_dmg > 0 ) {
 		cdbitmod TCG_BIT_ARMOR, dmgcard_arg1, 0
 		efllistadd 1, 0, card@tcg(TCG_CARD_X, dmgcard_arg1), card@tcg(TCG_CARD_Y, dmgcard_arg1) 
 		return
 	}
-	if ( cdbit(TCG_BIT_RIDER, dmgcard_arg1) & dmgcard_arg2 > 0 ) {
+	if ( cdbit(TCG_BIT_RIDER, dmgcard_arg1) & dmgcard_dmg > 0 ) {
 		cdbitmod TCG_BIT_RIDER, dmgcard_arg1, 0
-		dmgcard_arg2 = 2
+		dmgcard_dmg = 2
 	}
 	if ( specialrulelifeordeathcombat@tcg ) {
-		if ( dmgcard_arg2 >= card@tcg(TCG_CARD_HP, dmgcard_arg1) ) {
-			dmgcard_arg2 = card@tcg(TCG_CARD_HP, dmgcard_arg1)
+		if ( dmgcard_dmg >= card@tcg(TCG_CARD_HP, dmgcard_arg1) ) {
+			dmgcard_dmg = card@tcg(TCG_CARD_HP, dmgcard_arg1)
 		} else {
-			dmgcard_arg2 = 0
+			dmgcard_dmg = 0
 		}
 	}
-	if ( dmgcard_arg2 != 0 ) { 
-		efllistadd 1, -dmgcard_arg2, card@tcg(TCG_CARD_X, dmgcard_arg1), card@tcg(TCG_CARD_Y, dmgcard_arg1) 
+	if ( dmgcard_dmg != 0 ) { 
+		efllistadd 1, -dmgcard_dmg, card@tcg(TCG_CARD_X, dmgcard_arg1), card@tcg(TCG_CARD_Y, dmgcard_arg1) 
 	}
-	card@tcg(TCG_CARD_HP, dmgcard_arg1) -= dmgcard_arg2
+	card@tcg(TCG_CARD_HP, dmgcard_arg1) -= dmgcard_dmg
 	if ( card@tcg(TCG_CARD_HP, dmgcard_arg1) < 0 ) {
 		card@tcg(TCG_CARD_HP, dmgcard_arg1) = 0
 	}
-	if ( card@tcg(TCG_CARD_HP, dmgcard_arg1) <= 0 & card@tcg(TCG_CARD_LOCATION, dmgcard_arg1) == TCG_LOCATION_FIELD ) {
+	if ( card@tcg(TCG_CARD_HP, dmgcard_arg1) <= 0 & (card@tcg(TCG_CARD_LOCATION, dmgcard_arg1) == TCG_LOCATION_FIELD | card@tcg(TCG_CARD_LOCATION, dmgcard_arg1) == TCG_LOCATION_HAND) ) {
 		card@tcg(TCG_CARD_ANIM, dmgcard_arg1) = TCG_ANIM_FADE, 18
 		tcgdraw
 		gravecard dmgcard_arg1
@@ -1902,20 +1962,7 @@
 	if ( gameresult@tcg == 15 ) { buff = "You won due to Jaldabaoth' effect." }
 	if ( gameresult@tcg == 16 ) { buff = "You lose due to Jaldabaoth' effect." }
 	gosub *re_select
-    gsel 3
-    pos 960, 96
-    picload exedir + "graphic\\deco_card.bmp", 1
-    gsel 7
-    picload exedir + "graphic\\interface2.bmp"
-    gsel 2
-    pos 0, 0
-    picload exedir + "graphic\\card0.bmp", 1
-    gsel 4
-    pos 0, 0
-    picload exedir + "graphic\\bg_card.bmp", 1
-    gosub *tcg_effect_define
-    gosub *tcg_initBg
-    tcgdrawbg
+	tcginit2
 	gosub *tcg_drawInterface
 	gosub *refresh_bg
 	tcgdraw
