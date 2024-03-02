@@ -526,6 +526,256 @@
 	makecardlist
 	return
 
+#defcfunc getcardattackanime int getcardattackanime_arg1
+	if ( getcardattackanime_arg1 < 0 | getcardattackanime_arg1 >= maxcard@tcg ) { return }
+	switch card@tcg(TCG_CARD_REF_DBID, getcardattackanime_arg1)
+		case CREATURE_ID_DOLPHIN_SOLDIER
+		case CREATURE_ID_SUZAKU
+		case CREATURE_ID_SHINE_OGRE
+		case CREATURE_ID_SLASH_OGRE
+		case CREATURE_ID_SMASH_OGRE
+		case CREATURE_ID_FIRE_ENT
+		case CREATURE_ID_FIRE_DRAKE
+		case CREATURE_ID_FIRE_HOUND
+		case CREATURE_ID_RED_DRAGON
+		case CREATURE_ID_RED_BAPTIST
+		case CREATURE_ID_FIRE_DRAGON_CHILD
+		case CREATURE_ID_VESDA_THE_FIRE_DRAGON
+		case CREATURE_ID_METAL_VESDA_THE_FIRE_MACHINE
+		case CREATURE_ID_VANSESDA_THE_ANCIENT_FIRE
+		case CREATURE_ID_LAVA_GOLEM
+		case CREATURE_ID_VOL_PHANTOM
+			return 5
+			swbreak
+		case CREATURE_ID_LEIKI
+		case CREATURE_ID_BLIZZARD_LIZARD
+		case CREATURE_ID_CHAOSHAPRINCESS_FSSSY
+		case CREATURE_ID_LAZASYE_THE_DESTROY
+		case CREATURE_ID_ICE_ENT
+		case CREATURE_ID_ICE_DRAKE
+		case CREATURE_ID_WHITE_DRAGON
+		case CREATURE_ID_BLUE_BAPTIST
+		case CREATURE_ID_BEILGENA_THE_ARTIFICIAL_DRAGON
+		case CREATURE_ID_ICE_HOUND
+			return 6
+			swbreak
+		case CREATURE_ID_ELECTRIC_CLOUD
+		case CREATURE_ID_SEI_RYU
+		case CREATURE_ID_LIGHTNING_KOBOLD
+		case CREATURE_ID_ELECTRIC_SHEEP
+		case CREATURE_ID_ELEC_DRAGON
+		case CREATURE_ID_LIGHTNING_HOUND
+			return 7
+			swbreak
+		case CREATURE_ID_DARK_KOALA
+		case CREATURE_ID_CONDUCTOR_KOALA
+		case CREATURE_ID_GOKIBURI
+		case CREATURE_ID_MURDER_COCKROACH
+		case CREATURE_ID_KING_COCKROACH
+		case CREATURE_ID_CHAOSHAPRINCESS_ZEHLS
+		case CREATURE_ID_ROATONIS_THE_INFECTIONS
+		case CREATURE_ID_VIASHIVAN
+		case CREATURE_ID_CURSE_DRAKE
+		case CREATURE_ID_BLACK_BAPTIST
+		case CREATURE_ID_DARK_HOUND
+			return 8
+			swbreak
+		case CREATURE_ID_PUPPY
+		case CREATURE_ID_PUMPKIN
+		case CREATURE_ID_GREATER_PUMPKIN
+		case CREATURE_ID_HALLOWEEN_NIGHTMARE
+		case CREATURE_ID_VAMPKIN
+		case CREATURE_ID_MIRAGE_GRYPHON
+		case CREATURE_ID_ILLUSION_HOUND
+		case CREATURE_ID_MOONLIT_PAPILLON
+			return 9
+			swbreak
+		case CREATURE_ID_BLACK_LIZARDMAN
+		case CREATURE_ID_KOBOLD_BLUE
+		case CREATURE_ID_CHAOSHAPRINCESS_MEM
+		case CREATURE_ID_MRA
+		case CREATURE_ID_POISON_HOUND
+			return 10
+			swbreak
+		case CREATURE_ID_SPACE_ZILLA
+		case CREATURE_ID_GRAVEED_THE_GRAVITY_VALLEY
+		case CREATURE_ID_ANUBIS_THE_MASTER_OF_DEATH
+		case CREATURE_ID_VAMPIRE
+		case CREATURE_ID_CARMILLA
+		case CREATURE_ID_NETHER_HOUND
+		case CREATURE_ID_NETHER_IMP
+		case CREATURE_ID_NETHER_DRAGON
+			return 11
+			swbreak
+		case CREATURE_ID_MANDRAKE
+		case CREATURE_ID_ZAP_MANDRAKE
+		case CREATURE_ID_NIN_NINZIN
+		case CREATURE_ID_SOUND_HOUND
+			return 12
+			swbreak
+		case CREATURE_ID_DOSUKEBE_SEA_ANEMONE
+		case CREATURE_ID_EGELVEIL_THE_BIND
+		case CREATURE_ID_COCKATRICE
+		case CREATURE_ID_NERVE_HOUND
+			return 13
+			swbreak
+		case CREATURE_ID_CHAOS_CLOUD
+		case CREATURE_ID_CHAOS_UNICORN_KING_OF_CHAOS
+		case CREATURE_ID_CHAOS_HOUND
+		case CREATURE_ID_CHAOS_IMP
+		case CREATURE_ID_CHAOS_MUSHROOM
+		case CREATURE_ID_CHAOS_DRAGON
+			return 13
+			swbreak
+		case CREATURE_ID_ANGRY_BURGER
+		case CREATURE_ID_CHAOS_PALADIN
+		case CREATURE_ID_LITYOU
+		case CREATURE_ID_SPIDER
+		case CREATURE_ID_BLOOD_SPIDER
+		case CREATURE_ID_WARRIOR_OF_ELEA
+		case CREATURE_ID_KNIGHT_OF_ELEA
+		case CREATURE_ID_TALON_SOLDIER
+		case CREATURE_ID_FIN_CROCODILE
+		case CREATURE_ID_GOLDEN_KNIGHT
+		case CREATURE_ID_DEFENDER
+			return 15
+			swbreak
+		case CREATURE_ID_SPIRIT_OF_BREAD
+		case CREATURE_ID_BAMBOO_SPEAR_SPIRIT
+		case CREATURE_ID_CHAOS_HUNTER
+		case CREATURE_ID_PUTIT
+		case CREATURE_ID_RED_PUTIT
+		case CREATURE_ID_CUCUMBER_HORSE
+		case CREATURE_ID_CUCUMBER_WARRIOR
+		case CREATURE_ID_CATTLE
+		case CREATURE_ID_BLUE_BULL
+		case CREATURE_ID_CHAOSHAPRINCESS_FWBS
+		case CREATURE_ID_PERFORMAID_BLOODRESS
+		case CREATURE_ID_PERFORMAID_COCRUEL
+		case CREATURE_ID_ANDHAKA
+		case CREATURE_ID_RAVANA
+		case CREATURE_ID_ANDROID
+		case CREATURE_ID_BLACK_ANGEL
+			return 16
+			swbreak
+		case CREATURE_ID_LIZARD_MAGE
+		case CREATURE_ID_GOBLIN_SHAMAN
+		case CREATURE_ID_GOBLIN_WIZARD
+		case CREATURE_ID_MASTER_YEEK
+		case CREATURE_ID_RODLOB_THE_YEEK_CHIEF
+		case CREATURE_ID_MASTER_ARCHAYEEK
+		case CREATURE_ID_LUNATYEEK
+		case CREATURE_ID_PERFORMAID_DESWEEPER
+		case CREATURE_ID_MOAI
+		case CREATURE_ID_BLUE_MOAI
+		case CREATURE_ID_CLAYMOAI
+		case CREATURE_ID_MOAI_CORE
+		case CREATURE_ID_MANA_MONOLITH
+		case CREATURE_ID_CARBUNCLE
+		case CREATURE_ID_RUBY_CARBUNCLE
+			return 17
+			swbreak
+		default
+			swbreak
+	swend
+	switch cardn@tcg(TCG_CARDN_REF_RACE, getcardattackanime_arg1)
+		case "rock"
+			return 5
+			swbreak
+		case "ghost"
+			return 8
+			swbreak
+		case "yith"
+		case "mind"
+			return 9
+			swbreak
+		case "frog"
+		case "snail"
+		case "slime"
+		case "mushroom"
+		case "mandrake"
+		case "spider"
+			return 10
+			swbreak
+		case "lich"
+		case "undeadgod"
+			return 11
+			swbreak
+		case "shell"
+		case "bird"
+		case "wasp"
+		case "rabbit"
+		case "ent"
+		case "minotaur"
+		case "lizardman"
+		case "goblin"
+		case "kobolt"
+		case "yeek"
+		case "harpy"
+		case "snake"
+		case "rat"
+		case "drake"
+		case "asura"
+		case "dragon"
+		case "zombie"
+		case "piece"
+		case "armor"
+		case "skeleton"
+		case "bat"
+		case "cat"
+		case "roran"
+		case "karune"
+		case "dwarf"
+		case "juere"
+		case "norland"
+		case "catsister"
+		case "catgod"
+			return 15
+			swbreak
+		case "seamonster"
+		case "bacteria"
+		case "dinosaur"
+		case "largeanimal"
+		case "horse"
+		case "beast"
+		case "bear"
+		case "sheep"
+		case "dog"
+		case "beetle"
+		case "orc"
+		case "mutant"
+		case "mazin"
+		case "hand"
+		case "giant"
+		case "golem"
+		case "metal"
+		case "worm"
+		case "cupid"
+		case "yerles"
+		case "zanan"
+		case "quickling"
+		case "machine"
+		case "vehicle"
+		case "machinegod"
+		case "doggod"
+			return 16
+    		swbreak
+		case "spirit"
+		case "wisp"
+		case "fairy"
+		case "medusa"
+		case "imp"
+		case "eulderna"
+		case "elea"
+		case "servant"
+		case "god"
+			return 17
+    		swbreak
+		default
+			swbreak
+	swend
+    return 16
+
 *card_loadplayerdeck
 	curdeck = limit(gdata(GDATA_DECK), 0, 4)
 	cardsize@tcg = 0
@@ -4162,7 +4412,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 0
 		cardrefcost = 2
-		cardrefattack = 3
+		cardrefattack = 4
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = ""
@@ -4241,7 +4491,7 @@
 		cardreflvl = 110
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
-		cardrefcost = 5
+		cardrefcost = 3
 		cardrefattack = 3
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_PERI
@@ -4853,11 +5103,11 @@
 		cardreflvl = 142
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 0
-		cardrefcost = 6
-		cardrefattack = 8
-		cardrefhp = 8
+		cardrefcost = 4
+		cardrefattack = 9
+		cardrefhp = 7
 		cardrefskillid = TCG_EFF_NONE
-		cardrefbits = "12,39"
+		cardrefbits = "12,38,39"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_FOREST_ASSASSIN ) {
@@ -4867,8 +5117,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 0
 		cardrefcost = 6
-		cardrefattack = 6
-		cardrefhp = 6
+		cardrefattack = 5
+		cardrefhp = 9
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "7,21"
 		return 1
@@ -4879,7 +5129,7 @@
 		cardreflvl = 71
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 0
-		cardrefcost = 3
+		cardrefcost = 2
 		cardrefattack = 4
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_BATTLECRY_PARALYSECHOSENENEMY
@@ -4906,8 +5156,8 @@
 		cardrefdomain = 0
 		cardrefcost = 2
 		cardrefattack = 1
-		cardrefhp = 5
-		cardrefskillid = TCG_EFF_NONE
+		cardrefhp = 6
+		cardrefskillid = TCG_EFF_RETURNTODECKWHENKILLED
 		cardrefbits = "22"
 		return 1
 	}
@@ -5011,7 +5261,7 @@
 		cardrefcost = 2
 		cardrefattack = 3
 		cardrefhp = 3
-		cardrefskillid = TCG_EFF_NONE
+		cardrefskillid = TCG_EFF_ONKILL_DRAW1CARD
 		cardrefbits = "7"
 		return 1
 	}
@@ -5075,10 +5325,10 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 0
 		cardrefcost = 2
-		cardrefattack = 3
-		cardrefhp = 2
-		cardrefskillid = TCG_EFF_DEATHRATTLE_POISONTARGETENEMY
-		cardrefbits = "7"
+		cardrefattack = 2
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_AFTERCOMBAT_PARALYSEOPPONENT
+		cardrefbits = ""
 		return 1
 	}
 	if ( dbid == CREATURE_ID_CHICKEN ) {
@@ -5091,7 +5341,7 @@
 		cardrefcost = 0
 		cardrefattack = 1
 		cardrefhp = 1
-		cardrefskillid = TCG_EFF_SACRIFICE_GAIN1MANA
+		cardrefskillid = TCG_EFF_CHICKEN
 		cardrefbits = "7"
 		return 1
 	}
@@ -5128,11 +5378,11 @@
 		cardreflvl = 134
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 1
-		cardrefcost = 4
+		cardrefcost = 5
 		cardrefattack = 7
-		cardrefhp = 7
-		cardrefskillid = TCG_EFF_ONGOING_INCREASECOSTEACH2TURN
-		cardrefbits = "12"
+		cardrefhp = 6
+		cardrefskillid = TCG_EFF_GANESH
+		cardrefbits = "12,30"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_KNIGHTCEROS ) {
@@ -10271,8 +10521,8 @@
 		cardreflvl = 151
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
-		cardrefcost = 8
-		cardrefattack = 4
+		cardrefcost = 9
+		cardrefattack = 0
 		cardrefhp = 8
 		cardrefskillid = TCG_EFF_ASTERIOS
 		cardrefbits = "12"
@@ -10284,10 +10534,10 @@
 		cardreflvl = 100
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
-		cardrefcost = 5
+		cardrefcost = 6
 		cardrefattack = 0
-		cardrefhp = 5
-		cardrefskillid = TCG_EFF_ASTERIOS
+		cardrefhp = 1
+		cardrefskillid = TCG_EFF_CHIHYU
 		cardrefbits = ""
 		return 1
 	}
@@ -10299,8 +10549,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
 		cardrefcost = 3
-		cardrefattack = 3
-		cardrefhp = 3
+		cardrefattack = 1
+		cardrefhp = 2
 		cardrefskillid = TCG_EFF_BLUEBULL
 		cardrefbits = ""
 		return 1
@@ -10326,7 +10576,7 @@
 		cardrefcost = 4
 		cardrefattack = 0
 		cardrefhp = 3
-		cardrefskillid = TCG_EFF_UNGAGA
+		cardrefskillid = TCG_EFF_STEELMINOTAUR
 		cardrefbits = ""
 		return 1
 	}
@@ -10365,7 +10615,7 @@
 		cardrefdomain = 6
 		cardrefcost = 2
 		cardrefattack = 3
-		cardrefhp = 3
+		cardrefhp = 2
 		cardrefskillid = TCG_EFF_BATTLECRY_DEBUFFRANDOMENEMY
 		cardrefbits = ""
 		return 1
@@ -10378,7 +10628,7 @@
 		cardrefdomain = 6
 		cardrefcost = 3
 		cardrefattack = 3
-		cardrefhp = 4
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "19"
 		return 1
@@ -10404,10 +10654,10 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 5
-		cardrefattack = 4
-		cardrefhp = 4
+		cardrefattack = 0
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_UNGAGA
-		cardrefbits = ""
+		cardrefbits = "12"
 		return 1
 	}
 	// kobolt
@@ -10541,7 +10791,7 @@
 		cardrefattack = 8
 		cardrefhp = 5
 		cardrefskillid = TCG_EFF_NONE
-		cardrefbits = "6,12,65"
+		cardrefbits = "6,12,30,65"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_BLACK_BOX ) {

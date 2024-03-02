@@ -258,18 +258,18 @@
 	if ( elist@tcg(TCG_EVAL_PROB, ec@tcg) <= 0 ) {
 		goto *card_ai_WEND1
 	}
-	cc@tcg = elist@tcg(TCG_EVAL_TARGET, ec@tcg)
-	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_SUMMON ) {
-		if ( card@tcg(TCG_CARD_COST, cc@tcg) <= cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) ) {
-			putcard cc@tcg, cp@tcg
+	ecc@tcg = elist@tcg(TCG_EVAL_TARGET, ec@tcg)
+	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_SUMMON & card@tcg(TCG_CARD_LOCATION, ecc@tcg) == TCG_LOCATION_HAND ) {
+		if ( card@tcg(TCG_CARD_COST, ecc@tcg) <= cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) ) {
+			putcard ecc@tcg, cp@tcg
 			if ( stat == -1 ) {
 				goto *card_ai_CARDSKIP
 			}
 			if ( gameover() ) {
 				goto *card_ai_WEND1
 			}
-			if ( card@tcg(TCG_CARD_REF_TYPE, cc@tcg) == TCG_TYPE_SPELL ) {
-				cardstack@tcg(TCG_STACK, stack@tcg) = cc@tcg, TCG_ACTION_INVOKING, cp@tcg
+			if ( card@tcg(TCG_CARD_REF_TYPE, ecc@tcg) == TCG_TYPE_SPELL ) {
+				cardstack@tcg(TCG_STACK, stack@tcg) = ecc@tcg, TCG_ACTION_INVOKING, cp@tcg
 				stack@tcg++
 				if ( chainmode@tcg ) {
 					chaincontinue@tcg = 1
@@ -289,16 +289,18 @@
 			}
 		}
 	}
-	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_ATTACKING ) {
-		cardstack@tcg(TCG_STACK, stack@tcg) = cc@tcg, TCG_ACTION_ATTACKING, cp@tcg
+	ecc@tcg = elist@tcg(TCG_EVAL_TARGET, ec@tcg)
+	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_ATTACKING & card@tcg(TCG_CARD_LOCATION, ecc@tcg) == TCG_LOCATION_FIELD ) {
+		cardstack@tcg(TCG_STACK, stack@tcg) = ecc@tcg, TCG_ACTION_ATTACKING, cp@tcg
 		stack@tcg++
 		actionproc
 		if ( player@tcg < 0 ) {
 			goto *card_ai
 		}
 	}
-	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_DEFENDING ) {
-		attacktarget@tcg = cc@tcg
+	ecc@tcg = elist@tcg(TCG_EVAL_TARGET, ec@tcg)
+	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_DEFENDING & card@tcg(TCG_CARD_LOCATION, ecc@tcg) == TCG_LOCATION_FIELD ) {
+		attacktarget@tcg = ecc@tcg
 		goto *card_ai_WEND1
 	}
 	*card_ai_CARDSKIP

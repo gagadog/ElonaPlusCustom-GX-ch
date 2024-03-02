@@ -1649,6 +1649,9 @@
 	}
 	if ( card@tcg(TCG_CARD_HP, putcard_arg1) == 0 & card@tcg(TCG_CARD_LOCATION, putcard_arg1) == TCG_LOCATION_FIELD ) {
 		dmgcard putcard_arg1, 0 + cdbit(TCG_BIT_SUICIDE, putcard_arg1) * 999
+		if ( card@tcg(TCG_CARD_LOCATION, putcard_arg1) == TCG_LOCATION_FIELD ) {
+			gravecard putcard_arg1
+		}
 	}
 	return 1
 
