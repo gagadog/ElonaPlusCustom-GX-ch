@@ -12184,7 +12184,7 @@
 			if ( inv(INV_ITEM_PARAM2, ci) >= calcexpalive(inv(INV_ITEM_PARAM1, ci)) ) {
 				txtef COLOR_GREEN
 				snd SOUNDLIST_DING3
-				txt lang(itemname(ci) + "はレベルアップできる！", itemname(cw) + " can level up!")
+				txt lang(itemname(ci) + "はレベルアップできる！", itemname(ci) + " can level up!")
 			}
 			ci = cibk
 			inv(INV_ITEM_NUM, ci)--

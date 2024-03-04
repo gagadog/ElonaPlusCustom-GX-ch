@@ -92,7 +92,7 @@
 				if ( cdbit(TCG_BIT_INTIMIDATE, attackingcard@tcg) ) { p@tcg += 20 }
 				// Get basic combat predictions
 				cardsurvive@tcg = card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) + 50 * cdbit(TCG_BIT_DEATHTOUCH, attackingcard@tcg) < card@tcg(TCG_CARD_HP, c@tcg) + 100 * cdbit(TCG_BIT_ARMOR, c@tcg) + 100 * (card@tcg(TCG_CARD_HP, c@tcg) > 2) * cdbit(TCG_BIT_RIDER, c@tcg)
-				cardcankill@tcg = card@tcg(TCG_CARD_ATTACK, c@tcg) + 50 * cdbit(TCG_BIT_DEATHTOUCH, c@tcg) >= card@tcg(TCG_CARD_HP, attackingcard@tcg) + 100 * cdbit(TCG_BIT_ARMOR, attackingcard@tcg) + 100 * (card@tcg(TCG_CARD_HP, attackingcard@tcg) > 2) * cdbit(TCG_BIT_RIDER, attackingcard@tcg)
+				cardcankill@tcg = card@tcg(TCG_CARD_ATTACK, c@tcg) + 50 * cdbit(TCG_BIT_DEATHTOUCH, c@tcg) >= card@tcg(TCG_CARD_HP, attackingcard@tcg) + 100 * cdbit(TCG_BIT_ARMOR, attackingcard@tcg) + 100 * (card@tcg(TCG_CARD_EFFECT, attackingcard@tcg) == TCG_EFF_NOCOMBATDAMAGE) + 100 * (card@tcg(TCG_CARD_HP, attackingcard@tcg) > 2) * cdbit(TCG_BIT_RIDER, attackingcard@tcg)
 				cardvantage@tcg = (cdbit(TCG_BIT_FIRST_STRIKE, c@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, c@tcg)) - (cdbit(TCG_BIT_FIRST_STRIKE, attackingcard@tcg) | cdbit(TCG_BIT_DOUBLE_STRIKE, attackingcard@tcg))
 				// Basic card advantage calcs
 				if ( cardvantage@tcg < 0 & cardsurvive@tcg == 0 ) { cardcankill@tcg = 0 }
