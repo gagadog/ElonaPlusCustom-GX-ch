@@ -64,13 +64,14 @@
 	if ( (specialruleaitakeover@tcg > 0 | card@tcg(TCG_CARD_CONTROLLER, effac@tcg) != player@tcg) & targettype@tcg >= 100 & targetloc@tcg >= 1 & targettype@tcg \ 10 == 1 ) { targettype@tcg += 1 }
 
 	efffirerepeat@tcg = limit(effref@tcg(TCG_SKILL_REPEAT, eff@tcg), 1, 10)
-	if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_BATTLECRY & especialrulebattlecrytwice@tcg > 0 ) {
+	if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_BATTLECRY & specialrulebattlecrytwice@tcg > 0 ) {
 		specialrulebattlecrytwice@tcg-- 
 		efffirerepeat@tcg *= 2
 	}
 	
 	efffired@tcg = 0
 	repeat efffirerepeat@tcg
+		makecardlist
 		target@tcg = (-1)
 		target_num@tcg = 1
 		has_evasion_target@tcg = 0
@@ -108,8 +109,8 @@
 				if ( targetloc@tcg == 9 & card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_EXILE ) { continue } // in Deck
 				
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_NOTYOURS ) {
-					if ( targetplayer@tcg == 1 & cnt < MAX_CARD_DECK ) { continue }
-					if ( targetplayer@tcg == 2 & cnt >= MAX_CARD_DECK ) { continue }
+					if ( targetplayer@tcg == 1 & cnt < MAX_CARD_DECK_TOTAL ) { continue }
+					if ( targetplayer@tcg == 2 & cnt >= MAX_CARD_DECK_TOTAL ) { continue }
 				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_GENERATEDCARDS ) {
 					if ( (cnt\MAX_CARD_DECK_TOTAL) < MAX_CARD_DECK ) { continue }
@@ -643,7 +644,7 @@
 		case CREATURE_ID_CHAOS_IMP
 		case CREATURE_ID_CHAOS_MUSHROOM
 		case CREATURE_ID_CHAOS_DRAGON
-			return 13
+			return 14
 			swbreak
 		case CREATURE_ID_ANGRY_BURGER
 		case CREATURE_ID_CHAOS_PALADIN
@@ -7201,7 +7202,7 @@
 		cardrefcost = 1
 		cardrefattack = 0
 		cardrefhp = 2
-		cardrefskillid = TCG_EFF_PUMPKIN_TAKE5DAMAGE
+		cardrefskillid = TCG_EFF_PUMPKIN_TAKE6DAMAGE
 		cardrefbits = "105"
 		return 1
 	}
@@ -9428,7 +9429,7 @@
 		cardrefcost = 3
 		cardrefattack = 2
 		cardrefhp = 3
-		cardrefskillid = TCG_EFF_TURN_START_DRAW1CARD
+		cardrefskillid = TCG_EFF_ARCHYEEK
 		cardrefbits = ""
 		return 1
 	}
@@ -9487,9 +9488,9 @@
 		cardreflvl = 9
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
-		cardrefcost = 3
-		cardrefattack = 1
-		cardrefhp = 3
+		cardrefcost = 2
+		cardrefattack = 2
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_YEEKMASTER
 		cardrefbits = ""
 		return 1
@@ -14571,7 +14572,7 @@
 		cardreflvl = 151
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 3
-		cardrefcost = 6
+		cardrefcost = 5
 		cardrefattack = 5
 		cardrefhp = 6
 		cardrefskillid = TCG_EFF_GLARETIGER
@@ -16690,9 +16691,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
 		cardrefcost = 4
-		cardrefattack = 5
+		cardrefattack = 4
 		cardrefhp = 1
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALCHOSENENEMY5DAMAGE
+		cardrefskillid = TCG_EFF_MAGICARCHER
 		cardrefbits = "9,30,72"
 		return 1
 	}
@@ -16733,8 +16734,8 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 3
-		cardrefattack = 1
-		cardrefhp = 10
+		cardrefattack = 10
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_RAIZEL
 		cardrefbits = "30"
 		return 1

@@ -957,6 +957,12 @@
 				cdbitmod TCG_BIT_EXHAUSTED, aeft@tcg, 1
 			}
 			efllistadd 2, 1, card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg), card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg)
+			if ( getspotsum(card@tcg(TCG_CARD_CONTROLLER, ac@tcg)) < 8 ) {
+				card@tcg(TCG_CARD_CONTROLLER, aeft@tcg) = card@tcg(TCG_CARD_CONTROLLER, ac@tcg)
+				makecardlist
+				cardpos 0, -1
+				cardpos 1, -1
+			}
 		}
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
@@ -1627,14 +1633,15 @@
 			aeftbk@tcg = aeft@tcg
 			cardidbk@tcg = card@tcg(TCG_CARD_REF_DBID, effac@tcg)
 			cardpool@tcg = 1, 2, 2
-			repeat limit(effref@tcg(TCG_SKILL_POWER, aeff@tcg), 1, 6)
+			cardsgenerated@tcg = limit(7 - getholdersum(aeftbk@tcg), 0, limit(effref@tcg(TCG_SKILL_POWER, aeff@tcg), 1, 6))
+			animeseq@tcg = 1
+			repeat cardsgenerated@tcg
 				cardchoice@tcg = rnd(3)
 				if ( cardpool@tcg(cardchoice@tcg) <= 0 ) { cardchoice@tcg = (cardchoice@tcg + 1) \ 3 }
 				if ( cardpool@tcg(cardchoice@tcg) <= 0 ) { cardchoice@tcg = (cardchoice@tcg + 1) \ 3 }
 				cardpool@tcg(cardchoice@tcg)--
 				if ( cnt == 5 ) { cardchoice@tcg = 3 }
 
-				if ( getholdersum(aeftbk@tcg) >= 7 ) { break }
 				create_extra_card aeftbk@tcg, cardidbk@tcg
 				if ( cextra@tcg >= 0 ) {
 					card@tcg(TCG_CARD_COST, cextra@tcg) = 0
@@ -1669,9 +1676,54 @@
 						cdbitmod TCG_BIT_FLEETING, cextra@tcg, 1
 						carddetailneff@tcg(cextra@tcg) = "Awakening-Card EXTRA   No.???   male mazin warmage  Rare:None\n[Command Card] [Discard if not Played] \nEffect: Deal 1 Damage to every card."
 					}
-					gettargetcard cextra@tcg
+					// gettargetcard cextra@tcg
+					// a Large chunk of animation code below.
+					card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_ANIM
+					if ( cnt < 5 ) {
+						cdbitmod TCG_BIT_FACE_UP, cextra@tcg, 1
+						card@tcg(TCG_CARD_X, cextra@tcg) = basex@tcg + 457, basey@tcg + 222, basex@tcg + 457 - limit(cardsgenerated@tcg, 0, 5) * 40 + cnt * 80, basey@tcg + 222
+						tcgpass 10 - cnt * 2
+					}
 				}
 			loop
+			// a Large chunk of animation code below.
+			tcgpass 30
+			if ( cardsgenerated@tcg == 6 ) {
+				p@tcg = 0
+				repeat maxcard@tcg
+					if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != ap@tcg ) { continue }
+					if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_ANIM ) { continue }
+					if ( card@tcg(TCG_CARD_REF_DBID, cnt) != cardidbk@tcg ) { continue }
+					
+					cdbitmod TCG_BIT_FACE_UP, cnt, 1
+					if ( cdbit(TCG_BIT_FLEETING, cnt) ) {
+						card@tcg(TCG_CARD_X, cnt) = basex@tcg + 457 + 160, basey@tcg + 222, basex@tcg + 457 + 160, basey@tcg + 222
+						efllistaddcard 18, cnt
+					} else {
+						card@tcg(TCG_CARD_X_MOVETO, cnt) = basex@tcg + 457 - limit(cardsgenerated@tcg, 0, 6) * 40 + p@tcg * 80, basey@tcg + 222
+						p@tcg++
+					}
+				loop
+				tcgpass 30
+			}
+			repeat maxcard@tcg
+				if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != ap@tcg ) { continue }
+				if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_ANIM ) { continue }
+				if ( card@tcg(TCG_CARD_REF_DBID, cnt) != cardidbk@tcg ) { continue }
+				card@tcg(TCG_CARD_X_MOVETO, cnt) = deckix@tcg(ap@tcg), deckiy@tcg(ap@tcg)
+			loop
+			tcgpass 15
+			repeat maxcard@tcg
+				if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != ap@tcg ) { continue }
+				if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_ANIM ) { continue }
+				if ( card@tcg(TCG_CARD_REF_DBID, cnt) != cardidbk@tcg ) { continue }
+				card@tcg(TCG_CARD_LOCATION, cnt) = TCG_LOCATION_DECK
+				gettargetcard cnt
+				cdbitmod TCG_BIT_FACE_UP, cnt, 1
+			loop
+			cardposhand ap@tcg, -1
+			animeseq@tcg = 0
+			tcgdraw
 		}
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
@@ -1720,12 +1772,11 @@
 				repeat maxcard@tcg
 					if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != aeft@tcg ) { continue }
 					if ( card@tcg(TCG_CARD_EFFECT, cnt) != TCG_EFF_RENTON ) { continue }
-					if ( cdbit(TCG_BIT_INSANE, cnt) ) { continue }
 					card@tcg(TCG_CARD_ATTACK, cnt) = limit(card@tcg(TCG_CARD_ATTACK, cnt) + 6, 0, TCG_STAT_MAX)
 					card@tcg(TCG_CARD_REF_ATTACK, cnt) = limit(card@tcg(TCG_CARD_REF_ATTACK, cnt) + 6, 0, TCG_STAT_MAX)
 					card@tcg(TCG_CARD_HP, cnt) = limit(card@tcg(TCG_CARD_HP, cnt) + 6, 1, TCG_STAT_MAX)
 					card@tcg(TCG_CARD_REF_HP, cnt) = limit(card@tcg(TCG_CARD_REF_HP, cnt) + 6, 1, TCG_STAT_MAX)
-					cdbitmod TCG_BIT_INSANE, cnt, 1
+					if ( cdbit(TCG_BIT_INSANE, cnt) == 0 )  { cdbitmod TCG_BIT_INSANE, cnt, 1 }
 					efllistadd 2, 6, card@tcg(TCG_CARD_X, cnt), card@tcg(TCG_CARD_Y, cnt), card@tcg(TCG_CARD_X, cnt), card@tcg(TCG_CARD_Y, cnt)
 					efllistaddcard 22, cnt
 				loop
@@ -1794,6 +1845,7 @@
 				if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != ap@tcg ) { continue }
 				if ( card@tcg(TCG_CARD_REF_DBID, cnt) != cardidbk@tcg ) { continue }
 				card@tcg(TCG_CARD_X_MOVETO, cnt) = deckix@tcg(ap@tcg), deckiy@tcg(ap@tcg)
+				tcgpass 2
 			loop
 			tcgpass 15
 			repeat maxcard@tcg
@@ -2726,7 +2778,7 @@
 	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_EXILE | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
-		specialrulebattlecrytwice@tcg = effref@tcg(TCG_SKILL_POWER, aeff@tcg)
+		specialrulebattlecrytwice@tcg += effref@tcg(TCG_SKILL_POWER, aeff@tcg)
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
 	}

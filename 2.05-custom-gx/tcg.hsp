@@ -850,6 +850,12 @@
 				card@tcg(TCG_CARD_ANIM_DURATION, c@tcg)--
 			}
 		}
+		if ( card@tcg(TCG_CARD_LOCATION, c@tcg) == TCG_LOCATION_ANIM ) { continue }
+		tcgdrawcard c@tcg
+	loop
+	repeat maxcard@tcg
+		c@tcg = maxcard@tcg - cnt - 1
+		if ( card@tcg(TCG_CARD_LOCATION, c@tcg) != TCG_LOCATION_ANIM ) { continue }
 		tcgdrawcard c@tcg
 	loop
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -1670,10 +1676,11 @@
 		returncard putcard_arg1
 		return 1
 	}
-	if ( cdbit(TCG_BIT_COMMAND, putcard_arg1) ) {
+	if ( cdbit(TCG_BIT_COMMAND, putcard_arg1) & card@tcg(TCG_CARD_LOCATION, putcard_arg1) != TCG_LOCATION_GRAVEYARD ) {
 		card@tcg(TCG_CARD_ANIM, putcard_arg1) = TCG_ANIM_FADE, 18
 		tcgdraw
 		gravecard putcard_arg1
+		return 1
 	}
 	if ( cdbit(TCG_BIT_SUICIDE, putcard_arg1) ) {
 		card@tcg(TCG_CARD_HP, putcard_arg1) = 0
