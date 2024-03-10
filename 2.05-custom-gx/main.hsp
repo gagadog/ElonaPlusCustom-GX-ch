@@ -2574,10 +2574,13 @@
 
 	/********** ANNA CUSTOM - ENDING **********/
 	
-	// Fix allied status accidentally set by *ai_turn, if Ano addressed this in other ways, remove this.
+	// JAMES CUSTOM - Fix allied status accidentally set by *ai_turn, if Ano addressed this in other ways, remove this.
 	if ( cdata(CDATA_ALLIED, CHARA_PLAYER) != 0 ) {
 		cdata(CDATA_ALLIED, CHARA_PLAYER) = 0
 	}
+	// JAMES CUSTOM - Prevent foe from spamming angered flavor text
+	jamesangerhack = 0
+	
 
 	proc "pc_turn_init"
 	if ( gdata(GDATA_GOD_TALK) ) {

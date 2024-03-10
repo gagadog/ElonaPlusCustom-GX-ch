@@ -291,7 +291,7 @@
 	}
 	ecc@tcg = elist@tcg(TCG_EVAL_TARGET, ec@tcg)
 	if ( elist@tcg(TCG_EVAL_ACTION, ec@tcg) == TCG_ACTION_ATTACKING & card@tcg(TCG_CARD_LOCATION, ecc@tcg) == TCG_LOCATION_FIELD ) {
-		cardstack@tcg(TCG_STACK, stack@tcg) = ecc@tcg, TCG_ACTION_ATTACKING, cp@tcg
+		cardstack@tcg(TCG_STACK, stack@tcg) = ecc@tcg, TCG_ACTION_ATTACKING, cp@tcg, -1
 		stack@tcg++
 		actionproc
 		if ( player@tcg < 0 ) {

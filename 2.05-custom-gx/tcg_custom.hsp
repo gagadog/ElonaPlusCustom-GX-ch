@@ -43,6 +43,9 @@
 	if ( cdbit(TCG_BIT_CONFUSED, effac@tcg) ) {
 		return
 	}
+	if ( cdbit(TCG_BIT_FOSSIL, effac@tcg) ) {
+		return
+	}
 	if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) >= TCG_SKILL_TYPE_BATTLECRY & effref@tcg(TCG_SKILL_TYPE, eff@tcg) <= TCG_SKILL_TYPE_INHAND) | effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_AFTERCOMBAT ) {
 		efllistaddcard 3, effac@tcg
 	}
@@ -10376,7 +10379,7 @@
 		cardrefcost = 4
 		cardrefattack = 2
 		cardrefhp = 4
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALEVERYONE1DAMAGE
+		cardrefskillid = TCG_EFF_ATTACKALLENEMY
 		cardrefbits = "15"
 		return 1
 	}

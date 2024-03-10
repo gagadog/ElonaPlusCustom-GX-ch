@@ -1561,7 +1561,8 @@
 			cdata(CDATA_TARGET, hostileaction_target) = hostileaction_source
 		}
 		if ( cdata(CDATA_ID, hostileaction_target) != CREATURE_ID_RAIZEL_THE_OLD_WIZARD | cdata(CDATA_ALLIED, hostileaction_target) != 0 | gdata(GDATA_FLAG_MAIN) < 760 ) {
-			if ( gdata(GDATA_TEMPORARY_FLAGS2) < 1000 ) {
+			if ( gdata(GDATA_TEMPORARY_FLAGS2) < 1000 & jamesangerhack == 0 ) {
+				jamesangerhack = 1
 				customtalk hostileaction_target, DBMODE_FLAVOR_ANGERED
 				gosub *convert_word
 			}

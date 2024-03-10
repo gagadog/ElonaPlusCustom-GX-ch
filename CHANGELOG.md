@@ -1,3 +1,22 @@
+# Upcoming
+
+# Changed
+- Foes no longer spams angered flavor text when attacked by player.
+- TCG:
+  - Added some attack/effect animations.
+  - Reworked most of the bad/unusable Act I cards.
+  - Allow viewing your deck with `/` during game.
+
+# Fixed
+- Fixed wrong itemname `cw` when leveling a living weapon.
+- TCG: 
+  - fixed Exiles effect not working.
+  - fixed Inqtual firing battlecry in hand.
+  - fixed Erystia causing "BeginPhase:Draw1" drawing the wrong cards.
+  - fixed Sin discounting wrong cards.
+  - fixed Unitdeads winning with 3 or less cards.
+  - fixed some AI/animation issues.
+
 # 2.21.3.2
 
 # Added

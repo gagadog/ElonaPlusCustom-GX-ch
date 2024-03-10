@@ -156,6 +156,9 @@
 	if ( card@tcg(TCG_CARD_REF_TYPE, cardcandeclareattack_arg1) != TCG_TYPE_CREATURE ) {
 		return 0
 	}
+	if ( cdbit(TCG_BIT_FOSSIL, cardcandeclareattack_arg1) ) {
+		return 0
+	}
 	if ( cdbit(TCG_BIT_FROZEN, cardcandeclareattack_arg1) ) {
 		return 0
 	}
@@ -179,6 +182,9 @@
 	}
 	if ( cdbit(TCG_BIT_GRAVITY, cardcanblock_arg2) == TRUE ) {
 		return 1
+	}
+	if ( cdbit(TCG_BIT_FOSSIL, cardcanblock_arg1) ) {
+		return 0
 	}
 	if ( cdbit(TCG_BIT_FLYING, cardcanblock_arg2) == TRUE & cdbit(TCG_BIT_FLYING, cardcanblock_arg1 ) != TRUE & cdbit(TCG_BIT_REACH, cardcanblock_arg1 ) != TRUE ) {
 		return 0
@@ -1153,6 +1159,8 @@
 			if ( p@tcg == TCG_BIT_FLEETING ) { s@tcg += "[Discard if not Played] "}
 			if ( p@tcg == TCG_BIT_PUMPKIN ) { s@tcg += "[Summoned into Opponent Deck / Gain [OnDraw:Discard&Draw1]] "}
 			if ( p@tcg == TCG_BIT_SURGE ) { s@tcg += "[After Drawn: Discard this and Draw 1] "}
+			if ( p@tcg == TCG_BIT_COMMAND ) { s@tcg += "[Command Card] "}
+			if ( p@tcg == TCG_BIT_FOSSIL ) { s@tcg += "[Does Nothing until Unfossiled/Graved] "}
 		loop
 		rtvaln2 += "\n" + s@tcg
 		s@tcg = ""
@@ -1312,6 +1320,27 @@
 	}
 	if ( cdbit(TCG_BIT_MILLSUMMON, gravecard_arg1) & cardorglocation@tcg == TCG_LOCATION_DECK ) {
 		putcard gravecard_arg1, card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
+	}
+	if ( cdbit(TCG_BIT_FOSSIL, gravecard_arg1) ) {
+		animeseq@tcg = 1
+		cdbitmod TCG_BIT_FACE_UP, gravecard_arg1, 1
+		card@tcg(TCG_CARD_LOCATION, gravecard_arg1) = TCG_LOCATION_ANIM
+		card@tcg(TCG_CARD_X, gravecard_arg1) = graveix@tcg(card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)), graveiy@tcg(card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1))
+		card@tcg(TCG_CARD_X_MOVETO, gravecard_arg1) = basex@tcg + 455 - 36, basey@tcg + 270 - 48
+		tcgpass 20
+		create_card gravecard_arg1, card@tcg(TCG_CARD_REF_DBID, gravecard_arg1)
+		cdbitmod TCG_BIT_FACE_UP, gravecard_arg1, 1
+		cdbitmod TCG_BIT_FOSSIL, gravecard_arg1, 0
+		efllistadd 18, 0, basex@tcg + 455, basey@tcg + 270, basex@tcg + 455, basey@tcg + 270
+		tcgpass 30
+		card@tcg(TCG_CARD_X_MOVETO, gravecard_arg1) = deckix@tcg(card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)), deckiy@tcg(card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1))
+		tcgpass 15
+		card@tcg(TCG_CARD_LOCATION, gravecard_arg1) = TCG_LOCATION_GRAVEYARD
+		cdbitmod TCG_BIT_FACE_UP, gravecard_arg1, 0
+		returncard gravecard_arg1
+		gettargetcard gravecard_arg1
+		animeseq@tcg = 0
+		tcgdraw
 	}
 	if ( card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_POPPY | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_AINC | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTODECKWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_RETURNTOHANDWHENKILLED | card@tcg(TCG_CARD_EFFECT, gravecard_arg1) == TCG_EFF_GWEN | specialrulenoonedies@tcg ) {
 		returncard gravecard_arg1
@@ -1899,6 +1928,22 @@
 		if ( cdbit(TCG_BIT_ASSASSIN, cnt) == TRUE ) {
 			card@tcg(TCG_CARD_CONTROLLER, cnt) = 1 - card@tcg(TCG_CARD_CONTROLLER, cnt)
 		}
+		if ( cdbit(TCG_BIT_FOSSIL, cnt) == TRUE ) {
+			card@tcg(TCG_CARD_REF_ATTACK, cnt) = 0
+			card@tcg(TCG_CARD_ATTACK, cnt) = 0
+			card@tcg(TCG_CARD_REF_HP, cnt) = card@tcg(TCG_CARD_REF_COST, cnt)
+			card@tcg(TCG_CARD_HP, cnt) = card@tcg(TCG_CARD_REF_COST, cnt)
+			card@tcg(TCG_CARD_REF_COST, cnt) -= 1
+			card@tcg(TCG_CARD_COST, cnt) -= 1
+			card@tcg(TCG_CARD_REF_PIC, cnt) = -23
+			carddetailneff@tcg(cnt) = "Mysterious Fossil No.???    Dinosaur Tourist  Rare:Antique\nEffect: You need to unearth it somehow to use it.\n        Otherwise, it's just a ston"
+			c@tcg = cnt
+			repeat 128
+				cdbitmod cnt, c@tcg, 0
+			loop
+			cdbitmod TCG_BIT_FOSSIL, c@tcg, 1
+			continue
+		}
 		if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, cnt)) == TCG_SKILL_TYPE_ONGAMESTART ) {
 			effac@tcg = cnt
 			eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
@@ -2193,7 +2238,6 @@
 	else {
 		selectmode@tcg = -1
 	}
-	tcgpass 15
 	tcgdraw
 	return
 
@@ -2381,7 +2425,7 @@
 						chara_preparepic n@tcg, 0
 						gsel 4
 					}
-					if ( card@tcg(TCG_CARD_REF_DBID, tcgdrawcard_arg1) == CREATURE_ID_USER ) {
+					if ( card@tcg(TCG_CARD_REF_DBID, m@tcg) == CREATURE_ID_USER ) {
 						gmode 2, 32, 48
 						pos x@tcg + 21, y@tcg + 24
 						gcopy 10, 0, 0, 32, 48
@@ -3396,7 +3440,7 @@
 					attacktarget@tcg = cc@tcg
 					goto *card_player_WEND1
 				}
-				cardstack@tcg(TCG_STACK, stack@tcg) = cc@tcg, TCG_ACTION_ATTACKING, cp@tcg
+				cardstack@tcg(TCG_STACK, stack@tcg) = cc@tcg, TCG_ACTION_ATTACKING, cp@tcg, -1
 				stack@tcg++
 				actionproc
 				if ( gameover() ) {
