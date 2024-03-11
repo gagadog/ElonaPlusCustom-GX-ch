@@ -300,11 +300,9 @@
 							gosub *disarmTrap
 							return
 						}
-						else {
-							txt lang("解除に失敗した。", "You fail to disarm the trap.")
-							return
-						}
 					}
+					txt lang("解除に失敗した。", "You fail to disarm the trap.")
+					return
 				}
 				if ( feat(3) != 0 ) {
 					if ( cc >= MAX_CHARA_FOLLOWER ) {
@@ -321,11 +319,9 @@
 								gosub *disarmTrap
 								return
 							}
-							else {
-								txt lang("解除に失敗した。", "You fail to disarm the trap.")
-								return
-							}
 						}
+						txt lang("解除に失敗した。", "You fail to disarm the trap.")
+						return
 					}
 				}
 				if ( feat(3) != 0 ) {
@@ -342,11 +338,9 @@
 							gosub *disarmTrap
 							return
 						}
-						else {
-							txt lang("解除に失敗した。", "You fail to disarm the trap.")
-							return
-						}
 					}
+					txt lang("解除に失敗した。", "You fail to disarm the trap.")
+					return
 				}
 				if ( feat(FEAT_CELL_PARAM_1) != 0 ) {
 					if ( cc >= MAX_CHARA_FOLLOWER ) {
@@ -373,10 +367,8 @@
 							gosub *disarmTrap
 							return
 						}
-						else {
-							txt lang("解除に失敗した。", "You fail to disarm the trap.")
-						}
 					}
+					txt lang("解除に失敗した。", "You fail to disarm the trap.")
 				}
 			}
 			gosub *calcTrap
@@ -1369,6 +1361,11 @@
 					dmgsp CHARA_PLAYER, rnd(10) + 10
 				}
 			}
+			if ( cdata(CDATA_ALLIED, cc) == 0 ) {
+				if ( cdata(CDATA_GUARD_BREAK, tc) <= 40 ) {
+					cdata(CDATA_GUARD_BREAK, tc) += 10
+				}
+			}
 			if ( tc != CHARA_PLAYER ) {
 				if ( cdata(CDATA_ALLIED, cc) == 0 | cdata(CDATA_ALLIED, tc) == 0 ) {
 					dmgspt tc, rnd(10) + 10
@@ -1919,6 +1916,9 @@
 	return
 
 *skill_jumping_drop
+	if ( cdata(CDATA_EXIST, cc) != CHAR_STATE_ALIVE ) {
+		rowactend cc
+	}
 	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
 		cdata(CDATA_ROW_ACT, cc) = ACTION_JUMPING_DROP
 		cdata(CDATA_ACTION_PERIOD, cc) = 5
@@ -1970,6 +1970,9 @@
 	return
 
 *skill_diving_drill
+	if ( cdata(CDATA_EXIST, cc) != CHAR_STATE_ALIVE ) {
+		rowactend cc
+	}
 	if ( cdata(CDATA_ROW_ACT, cc) == ACTION_NONE ) {
 		cdata(CDATA_ROW_ACT, cc) = ACTION_DIVING_DRILL
 		cdata(CDATA_ACTION_PERIOD, cc) = 10
@@ -3948,6 +3951,9 @@
 		if ( cbit(CHARA_BIT_LAY_HANDS, tc) | cdata(CDATA_ID, tc) == CREATURE_ID_GOOSE | cdata(CDATA_ID, tc) == CREATURE_ID_CUTE_FAIRY ) {
 			cbitmod CHARA_BIT_EXCLUSIVE_SKILL_CHARGE, tc, 1
 		}
+		if ( cbit(CHARA_BIT_QUICK_RESTORE, tc) ) {
+			cbitmod CHARA_BIT_EXCLUSIVE_SKILL_CHARGE, tc, TRUE
+		}
 	loop
 	cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) = 10
 	mode = MODELIST_TXT_ADV
@@ -5250,6 +5256,17 @@
 					rtval = ITEM_ID_STARDUST
 				}
 			}
+			if ( mdatan(0) == lang("商船内部", "Merchant ship") | mdatan(0) == lang("海賊船内部", "Pirate ship") ) {
+				if ( rtval != 0 ) {
+					rtval = ITEM_ID_GARBAGE
+				}
+				if ( rnd(10) == 0 ) {
+					rtval = ITEM_ID_WOOD_CHIP
+				}
+				if ( rnd(20) == 0 ) {
+					rtval = ITEM_ID_WOOD_MATERIAL
+				}
+			}
 			item_find ITEM_ID_DOWSING_OPATOS, 3, 1
 			if ( stat != (-1) ) {
 				ci = stat
@@ -5338,6 +5355,17 @@
 							}
 							if ( rnd(300) == 0 ) {
 								rtval = ITEM_ID_STARDUST
+							}
+						}
+						if ( mdatan(0) == lang("商船内部", "Merchant ship") | mdatan(0) == lang("海賊船内部", "Pirate ship") ) {
+							if ( rtval != 0 ) {
+								rtval = ITEM_ID_GARBAGE
+							}
+							if ( rnd(10) == 0 ) {
+								rtval = ITEM_ID_WOOD_CHIP
+							}
+							if ( rnd(20) == 0 ) {
+								rtval = ITEM_ID_WOOD_MATERIAL
 							}
 						}
 						if ( rtval != 0 ) {
@@ -11936,9 +11964,11 @@
 			characreate -1, CREATURE_ID_SHADE, cdata(CDATA_X, cc), cdata(CDATA_Y, cc)
 			cdata(CDATA_HP, rc) = limit(cost / 25, 1, 2000)
 			cdata(CDATA_MAX_HP, rc) = limit(cost / 25, 1, 2000)
-			cbitmod CHARA_BIT_NECRO, rc, TRUE
 			cbitmod CHARA_BIT_SUMMONED, rc, TRUE
 			cbitmod CHARA_BIT_SHADOW_CLONE, rc, TRUE
+			if ( cc == CHARA_PLAYER ) {
+				cbitmod CHARA_BIT_NECRO, rc, TRUE
+			}
 			cdata(CDATA_RELATION, rc) = RELATION_ALLY
 			cdata(CDATA_RELATION_ORG, rc) = RELATION_ALLY
 			cdata(CDATA_TARGET, rc) = cdata(CDATA_TARGET, cc)
@@ -16692,12 +16722,11 @@
 		}
 		txt lang("対象にする食品は？", "Which food?")
 		invsubroutine = 1
-		invctrl = 23, 19
+		invctrl = 23, 31
 		snd SOUNDLIST_INV
 		gosub *com_inventory
 		if ( stat == 1 ) {
 			snd SOUNDLIST_ATK_POISON
-			item_separate ci
 			txtef COLOR_RED
 			txt lang(itemname(ci) + "にアレンジを加えた！", "You arranged " + itemname(ci) + ".")
 			ibitmod ITEM_BIT_HAZARD, ci, 1
@@ -19101,6 +19130,9 @@
 				if ( cc == cnt ) {
 					continue
 				}
+				if ( cdata(CDATA_RELATION, cnt) != RELATION_ALLY ) {
+					continue
+				}
 				tc = cnt
 				dx = cdata(CDATA_X, tc)
 				dy = cdata(CDATA_Y, tc)
@@ -19110,7 +19142,7 @@
 				if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), dx, dy) == 0 ) {
 					continue
 				}
-				if ( charaIsNecromancyZombie(tc) ) {
+				if ( charaIsNecromancyMinion(tc) ) {
 					if ( rtval == 1 ) {
 						necromancyZombieToCoffin tc, "push"
 						gosub *screen_draw
@@ -19154,7 +19186,7 @@
 				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 					continue
 				}
-				if ( cdata(CDATA_ALLIED, cc) != 100 ) {
+				if ( cdata(CDATA_RELATION, cc) != RELATION_ALLY ) {
 					if ( cdata(CDATA_ID, cnt) != CREATURE_ID_ZOMBIE ) {
 						continue
 					}
@@ -19166,10 +19198,10 @@
 					}
 				}
 				else {
-					if ( cdata(CDATA_ALLIED, cnt) == 100 ) {
+					if ( cdata(CDATA_RELATION, cnt) != RELATION_ALLY ) {
 						continue
 					}
-					if ( charaIsNecromancyZombie(cnt) != TRUE ) {
+					if ( charaIsNecromancyMinion(cnt) != TRUE ) {
 						continue
 					}
 				}
@@ -19958,6 +19990,9 @@
 				}
 				cdata(CDATA_INTEREST, tc) -= rnd(10) + 20
 				cdata(CDATA_INTEREST_RENEW, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 12
+			}
+			if ( cdata(CDATA_GUARD_BREAK, tc) <= 60 ) {
+				cdata(CDATA_GUARD_BREAK, tc) += 20
 			}
 			if ( cdata(CDATA_CONDITION_PARALYZE, tc) == 0 ) {
 				cdata(CDATA_CONDITION_PARALYZE, tc) = 1

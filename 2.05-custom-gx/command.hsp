@@ -12616,6 +12616,14 @@
 						continue
 					}
 				}
+				if ( invctrl(1) == 31 ) {
+					if ( ibit(ITEM_BIT_HAZARD, cnt) == TRUE ) {
+						continue
+					}
+					if ( reftype != FILTER_ITEM_FOOD ) {
+						continue
+					}
+				}
 			}
 			if ( invctrl == INVCTRL_PUT ) {
 				if ( invctrl(1) == 0 ) {
@@ -14259,7 +14267,7 @@
 			return 1
 		}
 		if ( invctrl == 23 ) {
-			if ( invctrl(1) != 21 & invctrl(1) != 23 & invctrl(1) != 24 ) {
+			if ( invctrl(1) != 31 & invctrl(1) != 21 & invctrl(1) != 23 & invctrl(1) != 24 ) {
 				item_separate ci
 			}
 			invsubroutine = 0

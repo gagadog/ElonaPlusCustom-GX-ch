@@ -2745,7 +2745,7 @@
 	repeat invrange, invhead
 		if ( inv(INV_ITEM_NUM, cnt) != 0 ) {
 			if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_SHIT ) {
-				sicp += 100
+				sickp += 100
 			}
 		}
 	loop
@@ -2757,7 +2757,7 @@
 			continue
 		}
 		if ( cdata(CDATA_CONDITION_SICK, cnt) > 0) {
-			sicp += 500
+			sickp += 500
 		}
 		if ( cdata(CDATA_LIVESTOCK_PRODUCE_QUALITY, cnt) >= 7 & cdata(CDATA_LIVESTOCK_PRODUCE_QUALITY, cnt) <= 9 ) {
 			ooitama += cdata(CDATA_LIVESTOCK_PRODUCE_QUALITY, cnt)
@@ -2951,6 +2951,9 @@
 			dbid = CREATURE_ID_WILD_SHEEP
 		}
 		if ( cdata(CDATA_QUALITY, worker) == FIX_QUALITY_UNIQUE ) {
+			dbid = CREATURE_ID_SHADE
+		}
+		if ( cdata(CDATA_ID, worker) == CREATURE_ID_AILE_THE_ATTENDANT | cdata(CDATA_ID, worker) == CREATURE_ID_LEND_THE_TAKER | cdata(CDATA_ID, worker) == CREATURE_ID_MOYER_THE_CROOKED ) {
 			dbid = CREATURE_ID_SHADE
 		}
 		if ( cdata(CDATA_ID, worker) == CREATURE_ID_ITZPALT | cdata(CDATA_ID, worker) == CREATURE_ID_THE_ELEMENT ) {
@@ -3183,6 +3186,11 @@
 					}
 				}
 				if ( cdata(CDATA_ID, cnt) == CREATURE_ID_CATTLE ) {
+					if ( rnd(20) == 0 ) {
+						f = 1
+					}
+				}
+				if ( cdata(CDATA_ID, cnt) == CREATURE_ID_RESTOROID_GOAT ) {
 					if ( rnd(20) == 0 ) {
 						f = 1
 					}

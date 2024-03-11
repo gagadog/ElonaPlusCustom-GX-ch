@@ -1,8 +1,12 @@
-# Upcoming
+# 2.22.1.0
+
+# Added
+- Ported all changes from Elona+ 2.22.
 
 # Changed
 - Foes no longer spams angered flavor text when attacked by player.
 - TCG:
+  - Added effects for the fossil cards.
   - Added some attack/effect animations.
   - Reworked most of the bad/unusable Act I cards.
   - Allow viewing your deck with `/` during game.

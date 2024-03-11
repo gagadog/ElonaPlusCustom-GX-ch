@@ -1910,12 +1910,19 @@
 
 	*skip_custom_UI
 	if ( evochat != 0 ) {
-		gsel selbufh
-		pos 0, 0
-		picload exedir + "graphic\\bg33.bmp", 1
+		if ( evochat >= 11 ) {
+			gsel selbufh
+			pos 0, 0
+			picload exedir + "graphic\\bg42.bmp", 1
+		}
+		else {
+			gsel selbufh
+			pos 0, 0
+			picload exedir + "graphic\\bg33.bmp", 1
+		}
 		pos 0, 0
 		gzoom windoww, windowh - 88, selbufh, 0, 0, 640, 480
-		gsel 0
+		gsel BUFFER_SCREEN
 	}
 
 	return
@@ -3015,8 +3022,10 @@
 				}
 			loop
 			kaiten = 0
-			if ( efid == SKILL_SPELL_HYDRO_FANG ) {
-				snd SOUNDLIST_MIZU
+			if ( animeid == ANIMATION_ARROW ) {
+				if ( efid == SKILL_SPELL_HYDRO_FANG ) {
+					snd SOUNDLIST_MIZU
+				}
 			}
 		}
 		if ( anisound ) {
@@ -7292,6 +7301,14 @@
 	}
 	if ( pierce > 0 ) {
 		pierce = pierce * (100 - limit(sdata(carmor(tc), tc) / 50, 0, 50)) / 100
+		if ( tc == CHARA_PLAYER ) {
+			if ( trait(TRAIT_GOD_OPATOS) != 0 ) {
+				pierce -= 3
+			}
+		}
+		if ( pierce < 0 ) {
+			pierce = 0
+		}
 	}
 	if ( attackrange == 0 ) {
 		if ( cdatan(CDATAN_CLASS, cc) == "claymore" ) {
@@ -7337,9 +7354,6 @@
 				txtmore
 			}
 		}
-		if ( ammoproc == ENCHANT_AMMO_RAPID ) {
-			damage /= 2
-		}
 		if ( ammoproc == ENCHANT_AMMO_BURST ) {
 			damage /= 5
 		}
@@ -7358,11 +7372,6 @@
 	damage = damagenormal + damagepierce
 	if ( cdata(CDATA_CONDITION_INVERT, tc) > 0 ) {
 		damage = damage * 7 / 4
-	}
-	if ( tc == CHARA_PLAYER ) {
-		if ( trait(TRAIT_GOD_OPATOS) != 0 ) {
-			damage--
-		}
 	}
 	if ( cdata(CDATA_RES_DAMAGE, tc) != 0 ) {
 		damage = damage * 100 / limit(100 + cdata(CDATA_RES_DAMAGE, tc), 25, 1000)

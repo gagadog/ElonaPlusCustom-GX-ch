@@ -158,6 +158,9 @@
 		if ( rnd(13) == 0 ) {
 			qdata(QDATA_LEVEL, rq) = rnd(gdata(GDATA_DEEPEST_LEVEL) / 2 + 10) + rnd(cdata(CDATA_FAME, CHARA_PLAYER) / 2500 + 1)
 			qdata(QDATA_LEVEL, rq) = roundmargin(qdata(QDATA_LEVEL, rq), gdata(GDATA_DEEPEST_LEVEL) / 2)
+			if ( qdata(QDATA_LEVEL, rq) > 4444 ) {
+				qdata(QDATA_LEVEL, rq) = 4444
+			}
 			minlevel = limit(qdata(QDATA_LEVEL, rq) / 7, 5, 30)
 			repeat 50
 				flt qdata(QDATA_LEVEL, rq), 2
@@ -186,6 +189,9 @@
 		if ( rnd(20) == 0 ) {
 			qdata(QDATA_LEVEL, rq) = rnd(gdata(GDATA_DEEPEST_LEVEL) / 2 + 10) + rnd(cdata(CDATA_FAME, CHARA_PLAYER) / 2500 + 1)
 			qdata(QDATA_LEVEL, rq) = roundmargin(qdata(QDATA_LEVEL, rq), gdata(GDATA_DEEPEST_LEVEL) / 2)
+			if ( qdata(QDATA_LEVEL, rq) > 4000 ) {
+				qdata(QDATA_LEVEL, rq) = 4000
+			}
 			minlevel = limit(qdata(QDATA_LEVEL, rq) / 4, 5, 30)
 			repeat 50
 				flt qdata(QDATA_LEVEL, rq), 2
@@ -284,6 +290,9 @@
 	if ( rnd(23) == 0 | (gdata(GDATA_AREA) == AREA_PALMIA & rnd(8) == 0) | (gdata(GDATA_AREA) == AREA_ARCBELC & rnd(2) == 0) ) {
 		if ( gdata(GDATA_AREA) != AREA_RUST_PLAZA & gdata(GDATA_AREA) != AREA_OL_DRAN ) {
 			qdata(QDATA_LEVEL, rq) = limit(rnd(gdata(GDATA_DEEPEST_LEVEL) + sdata(SKILL_ATTR_CHA, CHARA_PLAYER) / 10 + 10), int(1.5 * sqrt(gdata(GDATA_DEEPEST_LEVEL) + 4)) + 10, cdata(CDATA_FAME, CHARA_PLAYER) / 1000 + 10)
+			if ( qdata(QDATA_LEVEL, rq) > 995 ) {
+				qdata(QDATA_LEVEL, rq) = 995
+			}
 			qdata(QDATA_RENEW, rq) = (rnd(6) + 2) * 24 + (gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12)
 			qdata(QDATA_REWARD_ITEM, rq) = QUEST_REWARD_NONE
 			qdata(QDATA_EXIST, rq) = QUEST_TYPE_PARTY

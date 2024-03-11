@@ -367,6 +367,9 @@
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) >= TCG_SKILL_FILTER_ATK & effref@tcg(TCG_SKILL_FILTER, eff@tcg) < TCG_SKILL_FILTER_ATK + 20 ) {
 					if ( card@tcg(TCG_CARD_ATTACK, cnt) != effref@tcg(TCG_SKILL_FILTER, eff@tcg) - TCG_SKILL_FILTER_ATK ) { continue }
 				}
+				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) >= TCG_SKILL_FILTER_ATKGREATEROREQUAL & effref@tcg(TCG_SKILL_FILTER, eff@tcg) < TCG_SKILL_FILTER_ATKGREATEROREQUAL + 20 ) {
+					if ( card@tcg(TCG_CARD_ATTACK, cnt) < effref@tcg(TCG_SKILL_FILTER, eff@tcg) - TCG_SKILL_FILTER_ATKGREATEROREQUAL ) { continue }
+				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) >= TCG_SKILL_FILTER_BIT & effref@tcg(TCG_SKILL_FILTER, eff@tcg) < TCG_SKILL_FILTER_BIT + 200 ) {
 					if ( cdbit(effref@tcg(TCG_SKILL_FILTER, eff@tcg) - TCG_SKILL_FILTER_BIT, cnt) != 1 ) { continue }
 				}
@@ -5114,6 +5117,58 @@
 		return 1
 	}
 	// bird
+	if ( dbid == CREATURE_ID_RESTOROID_TOKI ) {
+		cardrefrace = "bird"
+		cardrefclass = "predator"
+		cardreflvl = 7
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 4
+		cardrefattack = 3
+		cardrefhp = 7
+		cardrefskillid = TCG_EFF_ALKONOST
+		cardrefbits = "108"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_PASSENGER_PIGEON ) {
+		cardrefrace = "bird"
+		cardrefclass = "tourist"
+		cardreflvl = 5
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 2
+		cardrefattack = 2
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_GRAVEFOSSIL
+		cardrefbits = "108"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_GAREFOWL ) {
+		cardrefrace = "bird"
+		cardrefclass = "predator"
+		cardreflvl = 3
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 1
+		cardrefattack = 2
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_BATTLECRY_DRAW1CARD
+		cardrefbits = "21,108"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_DODO ) {
+		cardrefrace = "bird"
+		cardrefclass = "tourist"
+		cardreflvl = 1
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 0
+		cardrefattack = 0
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_SACRIFICE_DRAW1CARD
+		cardrefbits = "108"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_YOUNG_SWALLOW ) {
 		cardrefrace = "bird"
 		cardreflvl = 2
@@ -5402,6 +5457,33 @@
 		return 1
 	}
 	// largeanimal
+	if ( dbid == CREATURE_ID_RESTOROID_MEGA_KANGAROO ) {
+		cardrefrace = "largeanimal"
+		cardrefclass = "predator"
+		cardrefsex = "female"
+		cardreflvl = 16
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 4
+		cardrefattack = 2
+		cardrefhp = 5
+		cardrefskillid = TCG_EFF_ATTACKALLENEMY
+		cardrefbits = "16,108"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_SEA_COW ) {
+		cardrefrace = "largeanimal"
+		cardrefclass = "priest"
+		cardreflvl = 10
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 3
+		cardrefattack = 1
+		cardrefhp = 8
+		cardrefskillid = TCG_EFF_TURN_START_HEALPLAYER5DAMAGE
+		cardrefbits = "22,108"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_BOAR ) {
 		cardrefrace = "largeanimal"
 		cardrefclass = "predator"
@@ -8177,6 +8259,19 @@
 		return 1
 	}
 	// bear
+	if ( dbid == CREATURE_ID_RESTOROID_GIANT_PANDA ) {
+		cardrefrace = "bear"
+		cardrefclass = "tourist"
+		cardreflvl = 19
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 4
+		cardrefattack = 5
+		cardrefhp = 8
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALEVERYONE3DAMAGE
+		cardrefbits = "108"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_DOBIEL ) {
 		cardrefrace = "bear"
 		cardrefclass = "archer"
@@ -11397,6 +11492,19 @@
 		return 1
 	}
 	// sheep
+	if ( dbid == CREATURE_ID_RESTOROID_GOAT ) {
+		cardrefrace = "sheep"
+		cardrefclass = "thief"
+		cardreflvl = 13
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 3
+		cardrefattack = 6
+		cardrefhp = 6
+		cardrefskillid = TCG_EFF_LITTLE_SISTER
+		cardrefbits = "108"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_NIGHTMARE_SHEEP ) {
 		cardrefrace = "sheep"
 		cardrefclass = "wizard"
@@ -14490,6 +14598,19 @@
 		return 1
 	}
 	// cat
+	if ( dbid == CREATURE_ID_RESTOROID_SABER_TIGER ) {
+		cardrefrace = "cat"
+		cardrefclass = "claymore"
+		cardreflvl = 27
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 5
+		cardrefattack = 5
+		cardrefhp = 7
+		cardrefskillid = TCG_EFF_SHANGCHI
+		cardrefbits = "15,108"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_TALKA_THE_LONG_TWINTAIL ) {
 		cardrefrace = "cat"
 		cardrefclass = "warmage"
@@ -15014,6 +15135,19 @@
 		return 1
 	}
 	// imp
+	if ( dbid == CREATURE_ID_RESTOROID_KAPPA ) {
+		cardrefrace = "imp"
+		cardrefclass = "warmage"
+		cardreflvl = 31
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 7
+		cardrefattack = 4
+		cardrefhp = 5
+		cardrefskillid = TCG_EFF_GRAVEFOSSILALL
+		cardrefbits = "108"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_BYSYMLHA_THE_AMBER_EYES ) {
 		cardrefrace = "imp"
 		cardrefclass = "archer"
@@ -16297,6 +16431,19 @@
 		return 1
 	}
 	// dog
+	if ( dbid == CREATURE_ID_RESTOROID_DIRE_WOLF ) {
+		cardrefrace = "dog"
+		cardrefclass = "predator"
+		cardreflvl = 23
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 4
+		cardrefattack = 4
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_KALI
+		cardrefbits = "108"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_FOX ) {
 		cardrefrace = "dog"
 		cardrefclass = "farmer"

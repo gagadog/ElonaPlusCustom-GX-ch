@@ -921,7 +921,7 @@
 				noteadd lang("おめでとうございます。あなたの勝ちです。", "Congratulations, you win.")
 			}
 		}
-		ikasama = rnd(40) + ikasamalv * ikasamalv * 5
+		ikasama = rnd(39) + 1 + ikasamalv * ikasamalv * 5
 		keihin = stake + winrow * 2
 		atxinfon(1) = lang("カジノチップ残り " + mat(1) + "枚\n", "Casino chips left: " + mat(1) + "\n")
 		atxinfon(2) = lang("賭けチップ " + stake + "枚 現在" + winrow + "連勝中", "Bets: " + stake + " Wins: " + winrow + "")
@@ -988,7 +988,7 @@
 			opencard2 stat
 			p = ikasama
 			ikasamalv++
-			if ( rnd(sdata(SKILL_ATTR_DEX, CHARA_PLAYER)) < rnd(p + 1) ) {
+			if ( rnd(sdata(SKILL_ATTR_DEX, CHARA_PLAYER)) < rnd(p) ) {
 				atxinit
 				noteadd lang("イカサマだ！", "Cheater!")
 				atxinfon(1) = lang("カジノチップ残り " + mat(1) + "枚\n", "Casino chips left: " + mat(1) + "\n")

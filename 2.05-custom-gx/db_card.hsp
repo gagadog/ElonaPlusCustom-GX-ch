@@ -1,4 +1,147 @@
 *db_card
+	if ( dbid == CREATURE_ID_RESTOROID_KAPPA ) {
+		cardreftype = 10
+		cardrefskill = lang("水質汚染で数が減っていたところをキュウリ農家に駆除され、野生の個体は絶滅。寿司屋に捕まって地下で強制労働させられていた個体も、過酷な労働環境には耐えられなかった。皿も奪われて店の食器にされていたらしい。", "Extinct from the wild, when their numbers were declining due to water pollution, they were exterminated by cucumber farmers. Individuals caught by sushi restaurants and forced to work underground could not withstand the harsh working conditions. They were also apparently robbed of their plates and used as shop crockery.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元魔KAPPA", "restoroid KAPPA")
+		cardrefpic = xy2pic(24, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1112 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_SABER_TIGER ) {
+		cardreftype = 10
+		cardrefskill = lang("古代の虎。サーベル状の大きな牙で動きの遅い大型獣を専門に狩っていた。特化しすぎて小型獣を狩れなかったため、主な獲物の絶滅によって一緒に滅びた。勢いよく噛みつきすぎて牙や顎骨が破損することもあったという。", "Ancient tiger. It specialised in hunting large, slow-moving beasts with its large sabre-shaped tusks. It was too specialised to hunt smaller beasts, so they perished together with it when its main prey became extinct. Sometimes their tusks and jawbones were damaged by biting too vigorously.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元獣サーベルタイガー", "restoroid saber tiger")
+		cardrefpic = xy2pic(23, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1111 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_DIRE_WOLF ) {
+		cardreftype = 10
+		cardrefskill = lang("鋭い眼光を放つ古代の狼。群れを率いて狩りをしていたが、気候変動によって生息地の獲物が減少した結果、群れを維持できなくなり滅びてしまった。", "Ancient wolves with sharp eyes. They used to hunt in packs, but as a result of climate change, which reduced prey in their habitat, they were unable to sustain their packs and perished.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元獣ダイアウルフ", "restoroid dire wolf")
+		cardrefpic = xy2pic(22, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1110 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_GIANT_PANDA ) {
+		cardreftype = 10
+		cardrefskill = lang("白黒模様が特徴的な古代の熊。竹が主食だがそれだけでは栄養がカス過ぎるので、熊らしく魚や動物を襲って食べることもある。人間に生息地を分断され続けたことと、異性の好き嫌いが激しいことから、繁殖が困難になり滅びた。", "Ancient bear with distinctive black-and-white pattern. Bamboo is its staple food, but as it is too nutritionally depleted, it sometimes attacks and eats fish and animals, as bears do. They perished because their habitat was continually fragmented by humans and because they had a severe predilection for the opposite sex, making it difficult for them to reproduce.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元獣ジャイアントパンダ", "restoroid giant panda")
+		cardrefpic = xy2pic(21, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1109 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_MEGA_KANGAROO ) {
+		cardreftype = 10
+		cardrefskill = lang("百万倍とまではいかないが巨大に進化した古代の獣。親子の愛が生み出す連続攻撃が当時基準ではあまりに強すぎて、環境を徹底的に破壊した。危険視した人間によって大幅に弱められた挙句、一斉に駆除された。", "Ancient beast that evolved into a behemoth, if not a million times larger. The continuous attacks produced by the love between parent and child were too strong by the standards of the time and thoroughly destroyed the environment. It was greatly weakened by humans, who saw it as dangerous, and then exterminated en masse.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元獣メガカンガルー", "restoroid mega kangaroo")
+		cardrefpic = xy2pic(7, 31) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1108 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_GOAT ) {
+		cardreftype = 10
+		cardrefskill = lang("毛を刈った羊とそっくりな古代の獣。生贄として悪魔に捧げられそうになった際に、とっさに悪魔と契約してほぼ不死身となった。破壊と混沌をもたらしたが、この世の理を破りすぎた反動が一気に来て破滅したとされる。", "Ancient beast resembling a shorn sheep. When it was about to be sacrificed to the devil, it made a contract with the devil in a moment of desperation and became almost immortal. It is said to have brought destruction and chaos, but was destroyed when the repercussions of breaking too many of the world's laws came at once.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元獣ヤギ", "restoroid goat")
+		cardrefpic = xy2pic(20, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1107 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_SEA_COW ) {
+		cardreftype = 10
+		cardrefskill = lang("心優しい古代の海獣。その性格上、ピンチの仲間を見捨てて逃げることができず、みんなで助けに集まってしまいみんなピンチになる。だから滅びた。", "Ancient sea beast with a kind heart. Because of their nature, they cannot abandon their friends in danger and escape, so they all gather together to help and everyone gets trap. That's why they became extinct.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元獣カイギュウ", "restoroid sea cow")
+		cardrefpic = xy2pic(19, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1106 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_TOKI ) {
+		cardreftype = 10
+		cardrefskill = lang("ずっと絶滅を危惧されていた古代の鳥。どうにかこうにか当時の核戦争は生き抜いたものの、死の灰を浴びすぎて弱った体ではその後の乱世を勝ち抜けなかった。", "Ancient bird that was endangered for a long time. Somehow they managed to survive the nuclear war of the time, but their bodies, weakened by over exposure to the ashes of death, were unable to survive the turbulent times that followed.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元鳥トキ", "restoroid toki")
+		cardrefpic = xy2pic(18, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1105 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_PASSENGER_PIGEON ) {
+		cardreftype = 10
+		cardrefskill = lang("大勢で旅行するのが好きな古代の鳥。かつては数十億羽もいたとされるが、美味しいことが人間にバレてしまい狩り尽くされてしまった。", "Ancient birds that like to travel in large numbers. It is believed that there were once billions of them, but they were hunted down when humans discovered how tasty they were.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元鳥リョコウバト", "restoroid passenger pigeon")
+		cardrefpic = xy2pic(17, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1104 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_GAREFOWL ) {
+		cardreftype = 10
+		cardrefskill = lang("飛ばずに泳ぐ古代の鳥。警戒心が薄く、人懐っこい。この種が本当のペンギンだったのだが、別種の鳥の謀略によって滅ぼされ、ペンギンの名まで奪われてしまった。", "Ancient bird that swims instead of flying. Unwary and friendly. This species was the original penguin race, but it was destroyed by a plot by another species of bird, depriving them of the name penguin as well.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元鳥オオウミガラス", "restoroid garefowl")
+		cardrefpic = xy2pic(16, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1103 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_DODO ) {
+		cardreftype = 10
+		cardrefskill = lang("飛べない古代の鳥。天敵がいない島でずっと平和ボケしながら暮らしていた。当然の帰結として外敵への対抗手段など持っておらず、島にやってきた悪い人間たちに無抵抗のまま蹂躙されてしまい、絶滅した。", "Ancient flightless bird. They lived peacefully on an island with no natural enemies for a long time. As a natural consequence, it had no means of resisting foreign enemies, and was overrun without resistance by the vicious humans who came to the island, leading to its extinction.")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("復元鳥ドードー", "restoroid dodo")
+		cardrefpic = xy2pic(15, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1102 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
 	if ( dbid == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
 		cardreftype = 10
 		cardrefskill = lang("長い年月を経て竹が精霊化したもの。精霊化の際になんか３本に増えた。別名タケトリオ。たけのこ時代から暮らしていた里を旅立ち、人間の掘った穴を探して住み着く。普段は先端に毒や汚物を塗っていたりするが、１月に門松のバイトをする時は奇麗にしている。", "Bamboo that has been spiritualized over a long period of time. At the time of spiritualization, it has somehow increased to a trio, known as the Bamboo Trio. They leave the village where they have lived since the age of bamboo, and find a hole dug by humans to live in. They usually have poison or filth smeared on the tips, however they are clean and tidy when they work part-time on the kadomatsu in January.")
@@ -7465,7 +7608,7 @@
 		cardreftype = 10
 		cardrefskill = lang("複数のシェイドが融合した存在で、シェイドの集合体ということでシュイドと命名された。この魔物の影がさらにシェイド化することもあるため非常にややこしい。", "A being that is a fusion of multiple shades named shadow because it is a collection of shades. The shadow of this demon can become even more shades so it's very confusing.")
 		cardrefdomain = 3
-		cardrefrare = 5
+		cardrefrare = 1
 		cardrefcost = 0
 		cardrefattack = 690
 		cardrefhp = 3

@@ -4,7 +4,370 @@
 	}
 	dbsum = 0
 	dbmax = 0
-// *db_creature_BAMBOO_SPEAR_SPIRIT
+// *db_creature_RESTOROID_RESTOROID_KAPPA
+	if ( 31 > objlv ) {
+		goto *db_creature_RESTOROID_SABER_TIGER
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_SABER_TIGER
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_SABER_TIGER
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "imp" ) {
+			goto *db_creature_RESTOROID_SABER_TIGER
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_KAPPA + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_SABER_TIGER
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 31) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_KAPPA, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_SABER_TIGER
+	if ( 27 > objlv ) {
+		goto *db_creature_RESTOROID_DIRE_WOLF
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_DIRE_WOLF
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_DIRE_WOLF
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "cat" ) {
+			goto *db_creature_RESTOROID_DIRE_WOLF
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_SABER_TIGER + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_DIRE_WOLF
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 27) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_SABER_TIGER, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_DIRE_WOLF
+	if ( 23 > objlv ) {
+		goto *db_creature_RESTOROID_GIANT_PANDA
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_GIANT_PANDA
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_GIANT_PANDA
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "dog" ) {
+			goto *db_creature_RESTOROID_GIANT_PANDA
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_DIRE_WOLF + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_GIANT_PANDA
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 23) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_DIRE_WOLF, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_GIANT_PANDA
+	if ( 19 > objlv ) {
+		goto *db_creature_RESTOROID_MEGA_KANGAROO
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_MEGA_KANGAROO
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_MEGA_KANGAROO
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "bear" ) {
+			goto *db_creature_RESTOROID_MEGA_KANGAROO
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_GIANT_PANDA + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_MEGA_KANGAROO
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 19) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_GIANT_PANDA, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_MEGA_KANGAROO
+	if ( 16 > objlv ) {
+		goto *db_creature_RESTOROID_GOAT
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_GOAT
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_GOAT
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "largeanimal" ) {
+			goto *db_creature_RESTOROID_GOAT
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_MEGA_KANGAROO + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_GOAT
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 16) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_MEGA_KANGAROO, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_GOAT
+	if ( 13 > objlv ) {
+		goto *db_creature_RESTOROID_SEA_COW
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_SEA_COW
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_SEA_COW
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "sheep" ) {
+			goto *db_creature_RESTOROID_SEA_COW
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_GOAT + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_SEA_COW
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 13) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_GOAT, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_SEA_COW
+	if ( 10 > objlv ) {
+		goto *db_creature_RESTOROID_TOKI
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_TOKI
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_TOKI
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "largeanimal" ) {
+			goto *db_creature_RESTOROID_TOKI
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_SEA_COW + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_TOKI
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 10) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_SEA_COW, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_TOKI
+	if ( 7 > objlv ) {
+		goto *db_creature_RESTOROID_PASSENGER_PIGEON
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_PASSENGER_PIGEON
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_PASSENGER_PIGEON
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "bird" ) {
+			goto *db_creature_RESTOROID_PASSENGER_PIGEON
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_TOKI + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_PASSENGER_PIGEON
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 7) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_TOKI, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_PASSENGER_PIGEON
+	if ( 5 > objlv ) {
+		goto *db_creature_RESTOROID_GAREFOWL
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_GAREFOWL
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_GAREFOWL
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "bird" ) {
+			goto *db_creature_RESTOROID_GAREFOWL
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_PASSENGER_PIGEON + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_GAREFOWL
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 5) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_PASSENGER_PIGEON, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_GAREFOWL
+	if ( 3 > objlv ) {
+		goto *db_creature_RESTOROID_DODO
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_DODO
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_DODO
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "bird" ) {
+			goto *db_creature_RESTOROID_DODO
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_GAREFOWL + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_DODO
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 3) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_GAREFOWL, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_DODO
+	if ( 1 > objlv ) {
+		goto *db_creature_BAMBOO_SPEAR_SPIRIT
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_BAMBOO_SPEAR_SPIRIT
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_BAMBOO_SPEAR_SPIRIT
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "bird" ) {
+			goto *db_creature_BAMBOO_SPEAR_SPIRIT
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_RESTOROID_DODO + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_BAMBOO_SPEAR_SPIRIT
+		}
+	}
+	dbsum += 1000 / (500 + abs(objlv - 1) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_RESTOROID_DODO, dbsum
+	dbmax++
+
+*db_creature_BAMBOO_SPEAR_SPIRIT
 	if ( 70 > objlv ) {
 		goto *db_creature_ANTITANK_LANDMINE_GIRL
 	}
@@ -18432,7 +18795,7 @@
 			goto *db_creature_POWER_EAGLE
 		}
 	}
-	dbsum += 5000 / (500 + abs(objlv - 118) * 0) + 1
+	dbsum += 1000 / (500 + abs(objlv - 118) * 0) + 1
 	dblist(0, dbmax) = CREATURE_ID_SHADOW, dbsum
 	dbmax++
 *db_creature_POWER_EAGLE
@@ -35385,6 +35748,711 @@
 	return
 
 *db_creature2
+	if ( dbid == CREATURE_ID_RESTOROID_KAPPA ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元魔KAPPA", "restoroid KAPPA")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "imp"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1146
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_KAPPA
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 31
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 30
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPELL_WATER_BOLT
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元魔KAPPA", "restoroid KAPPA")
+			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "imp"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "warmage"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(24, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_SABER_TIGER ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元獣サーベルタイガー", "restoroid saber tiger")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "cat"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1145
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_SABER_TIGER
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 27
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 40
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_VORACITY_FANG
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元獣サーベルタイガー", "restoroid saber tiger")
+			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "cat"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "claymore"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(23, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_DIRE_WOLF ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元獣ダイアウルフ", "restoroid dire wolf")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "dog"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1144
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_DIRE_WOLF
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 23
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 15
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_EYE_OF_DIMNESS
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元獣ダイアウルフ", "restoroid dire wolf")
+			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "dog"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "predator"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(22, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_GIANT_PANDA ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元獣ジャイアントパンダ", "restoroid giant panda")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "bear"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1143
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_GIANT_PANDA
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 19
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 30
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_SQUEEZE
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元獣ジャイアントパンダ", "restoroid giant panda")
+			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "bear"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "tourist"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(21, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_MEGA_KANGAROO ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元獣メガカンガルー", "restoroid mega kangaroo")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "largeanimal"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1030
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_MEGA_KANGAROO
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 16
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 50
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_CONTINUOUS_ATTACKS
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元獣メガカンガルー", "restoroid mega kangaroo")
+			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "largeanimal"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "predator"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_SEX, rc) = 1
+			cdata(CDATA_PIC, rc) = xy2pic(7, 31)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_GOAT ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元獣ヤギ", "restoroid goat")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "sheep"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1142
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_GOAT
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 13
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 20
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_DRAW_SHADOW
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元獣ヤギ", "restoroid goat")
+			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "sheep"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "thief"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(20, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_SEA_COW ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元獣カイギュウ", "restoroid sea cow")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "largeanimal"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1141
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_SEA_COW
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 10
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 5
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_BOUND_IN_BLOOD
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元獣カイギュウ", "restoroid sea cow")
+			cdata(CDATA_RELATION, rc) = RELATION_DISLIKE
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_DISLIKE
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "largeanimal"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "priest"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(19, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_TOKI ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元鳥トキ", "restoroid toki")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "bird"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1140
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_TOKI
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 7
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 10
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_DEATH_WORD
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元鳥トキ", "restoroid toki")
+			cdata(CDATA_RELATION, rc) = RELATION_DISLIKE
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_DISLIKE
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "bird"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "predator"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(18, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_PASSENGER_PIGEON ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元鳥リョコウバト", "restoroid passenger pigeon")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "bird"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1139
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_PASSENGER_PIGEON
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 5
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 15
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_JUMPING_DROP
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元鳥リョコウバト", "restoroid passenger pigeon")
+			cdata(CDATA_RELATION, rc) = RELATION_DISLIKE
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_DISLIKE
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "bird"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "tourist"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(17, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_GAREFOWL ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元鳥オオウミガラス", "restoroid garefowl")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "bird"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1138
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_GAREFOWL
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 3
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 4
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 20
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_BEWITCH
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元鳥オオウミガラス", "restoroid garefowl")
+			cdata(CDATA_RELATION, rc) = RELATION_DISLIKE
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_DISLIKE
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "bird"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "predator"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(16, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_RESTOROID_DODO ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 1
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("復元鳥ドードー", "restoroid dodo")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "bird"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1137
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_RESTOROID_DODO
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 1
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 4
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 90
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 100
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = ACTION_MELEE
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPACT_DO_NOTHING
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("復元鳥ドードー", "restoroid dodo")
+			cdata(CDATA_RELATION, rc) = RELATION_DISLIKE
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_DISLIKE
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "bird"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "tourist"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_PIC, rc) = xy2pic(15, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
 	if ( dbid == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
 		if ( dbmode == DBMODE_REF_SPEC ) {
 			if ( dbspec == DBSPEC_CHARA_LOOT ) {
@@ -79227,7 +80295,7 @@
 				return COLOR_DEFAULT
 			}
 			if ( dbspec == DBSPEC_CHARA_RARE ) {
-				return 5
+				return 1
 			}
 			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
 				return lang("シュイド", "shadow")
@@ -120654,6 +121722,20 @@
 	// This causes weird bugs in almost every version of CGX, so if you don't want to change every reference to "filter_creature".
 	// Just change filter_creature(bullshit_number) to filter_creature(new_creature_id + 2) like the ones below.
 	// Make sure the filter matches or you will get bugs like fairys spawning in lake dungeons or something.
+
+	filter_creature(CREATURE_ID_RESTOROID_KAPPA + 2) = ""
+	filter_creature(CREATURE_ID_RESTOROID_SABER_TIGER + 2) = ""
+	filter_creature(CREATURE_ID_RESTOROID_DIRE_WOLF + 2) = ""
+	filter_creature(CREATURE_ID_RESTOROID_GIANT_PANDA + 2) = ""
+	filter_creature(CREATURE_ID_RESTOROID_MEGA_KANGAROO + 2) = ""
+	filter_creature(CREATURE_ID_RESTOROID_GOAT + 2) = ""
+	filter_creature(CREATURE_ID_RESTOROID_SEA_COW + 2) = ""
+	filter_creature(CREATURE_ID_RESTOROID_TOKI + 2) = ""
+	HMMBITON cbitorg(CHARA_BIT_FLOAT / 32, CREATURE_ID_RESTOROID_TOKI), CHARA_BIT_FLOAT \ 32
+	filter_creature(CREATURE_ID_RESTOROID_PASSENGER_PIGEON + 2) = ""
+	HMMBITON cbitorg(CHARA_BIT_FLOAT / 32, CREATURE_ID_RESTOROID_PASSENGER_PIGEON), CHARA_BIT_FLOAT \ 32
+	filter_creature(CREATURE_ID_RESTOROID_GAREFOWL + 2) = ""
+	filter_creature(CREATURE_ID_RESTOROID_DODO + 2) = ""
 
 	filter_creature(CREATURE_ID_BAMBOO_SPEAR_SPIRIT + 2) = ""
 	filter_creature(CREATURE_ID_ANTITANK_LANDMINE_GIRL + 2) = "/man/"

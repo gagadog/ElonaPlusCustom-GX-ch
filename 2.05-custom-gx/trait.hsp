@@ -1033,6 +1033,17 @@
 		}
 		return 1
 	}
+	if ( tid == TRAIT_ETHER_SLEEPINESS ) {
+		if ( traitmode == 0 ) {
+			traitref = 3, -1, 0, 1, 0, 100, -1
+			if ( trait(tid) < 0 ) {
+				traitrefn(2) = "", lang("あなたは夜よりも昼に眠くなる[眠気時間帯変化]", "You feel more sleepy during the day than at night. [Change in sleepiness]")
+			}
+			traitrefn = lang("あなたは再び夜に眠気を感じるようになった。", "You started feeling sleepy at night again."), lang("あなたは昼に眠気を感じるようになった。", "You start to feel sleepy during the day.")
+			return 1
+		}
+		return 1
+	}
 	if ( tid == TRAIT_ETHER_DEBILITATION ) {
 		if ( traitmode == 0 ) {
 			traitref = 3, -1, 0, 1, 0, 100, -1

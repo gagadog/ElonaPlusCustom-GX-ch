@@ -18307,6 +18307,69 @@
 			}
 		}
 	}
+	if ( evochat == 11 ) {
+		if ( cdata(CDATA_EVOCHAT_POINTS, tc) >= 10 ) {
+			hyouzyou = 100
+		}
+		if ( hyouzyou == 0 ) {
+			buff = lang(_yamero(3) + "…" + _ore(3) + "に乱暴する気" + _daro(3) + "？", "Stop...you're trying to be rough with me, aren't you?")
+		}
+		if ( hyouzyou == 100 ) {
+			buff = lang("はい…あなたには逆らいません…。", "Yes...I won't defy you...")
+		}
+		if ( hyouzyou == 101 ) {
+			kaiwa = rnd(3)
+			if ( kaiwa == 0 ) {
+				buff = lang("(" + name(tc) + "は苦痛に顔を歪めている)", "(" + name(tc) + " looks grimaced with pain.)")
+			}
+			if ( kaiwa == 1 ) {
+				buff = lang("こ、こんなの痛くない" + _yo(3) + "…。", "It...It doesn't hurt at all...")
+			}
+			if ( kaiwa == 2 ) {
+				buff = lang("ウッ…！", "Ugh...!")
+			}
+			kaiwa = 0
+		}
+		if ( hyouzyou == 102 ) {
+			kaiwa = rnd(3)
+			if ( kaiwa == 0 ) {
+				buff = lang("(" + name(tc) + "は驚いて目を白黒させている)", "(" + name(tc) + " is surprised and confused.)")
+			}
+			if ( kaiwa == 1 ) {
+				buff = lang("むぐっ…！？もごご！！", "Mugh...!? Mmmmhhm!!")
+			}
+			if ( kaiwa == 2 ) {
+				buff = lang("お、おいしいかも…？", "It, it's delicious...?")
+			}
+			kaiwa = 0
+		}
+		if ( hyouzyou == 103 ) {
+			kaiwa = rnd(3)
+			if ( kaiwa == 0 ) {
+				buff = lang("ひっ…急に何事" + _kana(3) + "…。", "What...do you mean all of a sudden?")
+			}
+			if ( kaiwa == 1 ) {
+				buff = lang("…ゾワゾワする" + _yo(3) + "。", "...It's kind of creepy.")
+			}
+			if ( kaiwa == 2 ) {
+				buff = lang("…もっと可愛がってもいい" + _ga(3) + "？", "...I wouldn't mind doing more of the same.")
+			}
+			kaiwa = 0
+		}
+		if ( hyouzyou == 104 ) {
+			kaiwa = rnd(3)
+			if ( kaiwa == 0 ) {
+				buff = lang("あっ、ひあああああっ！あひ、あひゃああああ！！", "Hyahahahaaa!! Ahyaaaaa!?")
+			}
+			if ( kaiwa == 1 ) {
+				buff = lang("ひいいっ、ひゃ…ひひひっひいいいいっ！！", "Whe! hiii! Haaa...!")
+			}
+			if ( kaiwa == 2 ) {
+				buff = lang("あははは、はっっっ！？はうっ、あー！！あ…あはははは…！！！", "Ahahahaaa! Ooh..! A..Ahyaaaa!!")
+			}
+			kaiwa = 0
+		}
+	}
 	if ( evochat == 2 ) {
 		if ( hyouzyou == 0 ) {
 			msg_newline
@@ -18561,6 +18624,19 @@
 		}
 		chatList 81, lang("おしまい", "<End evochat>")
 	}
+	if ( evochat == 11 ) {
+		if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) > 0 & cdata(CDATA_EVOCHAT_POINTS, tc) < 10 ) {
+			chatList 135, lang("ムチでひっぱたく", "<Whipping>")
+			chatList 136, lang("アメをしゃぶらせる", "<Stick a candy in>")
+			chatList 137, lang("たっぷりと可愛がってやる", "<Give lots of love>")
+			chatList 138, lang("【乱暴する】（未実装）", "<<Violence>>(Unimplemented)")
+			chatList 139, lang("暗黒くすぐり撮影会", "<Dark tickling recording>")
+			if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) >= 4 ) {
+				chatList 140, lang("【とにかく拷問する】（未実装）", "<<Torture anyway>>(Unimplemented)")
+			}
+		}
+		chatList 81, lang("おしまい", "<End evochat>")
+	}
 	if ( evochat == 2 ) {
 		if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) > 0 & cdata(CDATA_EVOCHAT_POINTS, tc) < 10 ) {
 			customtalk tc, DBMODE_FLAVOR_EX_ACT
@@ -18735,15 +18811,11 @@
 			}
 		}
 		if ( cbit(CHARA_BIT_LABOR_CAMP, tc) == TRUE & gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
-			if ( cdata(CDATA_INTEREST, tc) > 0 ) {
-				chatList 132, lang("【暗黒evochat】（未実装）", "<Darkness evochat> under development")
+			if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) > 0 ) {
+				chatList 132, lang("【暗黒evochat】", "<Darkness evochat>")
 			}
-			if ( cdata(CDATA_INTEREST, tc) > 0 ) {
-				chatList 133, lang("収容者を解放する", "I have decided to release you.")
-			}
-			if ( cdata(CDATA_INTEREST, tc) > 0 ) {
-				chatList 134, lang("見せしめに処刑する", "I have decided to execute you as a demonstration.")
-			}
+			chatList 133, lang("収容者を解放する", "I have decided to release you.")
+			chatList 134, lang("見せしめに処刑する", "I have decided to execute you as a demonstration.")
 		}
 		if ( cbit(CHARA_BIT_LIVESTOCK, tc) == 1 & gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
 			if ( cdata(CDATA_INTEREST, tc) > 0 ) {
@@ -20440,6 +20512,38 @@
 		DSRELEASE lpfilewind
 		goto *chat_default
 	}
+	if ( chatval == 132 ) {
+		await 500
+		txtef COLOR_GREEN
+		txt lang("あなたと" + cdatan(CDATAN_NAME, tc) + "は二人だけの世界に突入した。", "You and " + cdatan(CDATAN_NAME, tc) + " entered into the world of only two people.")
+		music = MUSICLIST_MCMELAN
+		gosub *music_play
+		await 500
+		kigenbk = cdata(CDATA_EVOCHAT_POINTS, tc)
+		evochat = 11
+		ame = 0
+		muti = 0
+		if ( gdata(GDATA_WEATHER) == WEATHER_RAIN ) {
+			envwprev = 75 + 1
+		}
+		if ( gdata(GDATA_WEATHER) == WEATHER_HARD_RAIN ) {
+			envwprev = 76 + 1
+		}
+		if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
+			envwprev = 77 + 1
+		}
+		DSSTOP 7 + 6
+		DSRELEASE 7 + 6
+		DSSTOP 7 + 6 + 1
+		DSRELEASE 7 + 6 + 1
+		DSSTOP 7 + 6 + 2
+		DSRELEASE 7 + 6 + 2
+		DSSTOP 7 + 6 + 3
+		DSRELEASE 7 + 6 + 3
+		DSSTOP lpfilewind
+		DSRELEASE lpfilewind
+		goto *chat_default
+	}
 	if ( chatval == 102 ) {
 		dmgsp CHARA_PLAYER, rnd(5) + 3
 		dmgspt tc, rnd(5) + 3
@@ -20743,6 +20847,61 @@
 			cdata(CDATA_EMO_ICON, ttc) = 6 + 100 * 3
 		}
 		snd SOUNDLIST_ATK_MIND
+		goto *chat_default
+	}
+	if ( chatval == 135 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		cdata(CDATA_EVOCHAT_POINTS, tc)++
+		if ( ame == 1 ) {
+			cdata(CDATA_EVOCHAT_POINTS, tc)++
+		}
+		muti = 1
+		hyouzyou = 101
+		cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 3
+		snd SOUNDLIST_PUNISH1
+		goto *chat_default
+	}
+	if ( chatval == 136 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		cdata(CDATA_EVOCHAT_POINTS, tc)++
+		if ( muti == 1 ) {
+			cdata(CDATA_EVOCHAT_POINTS, tc)++
+		}
+		ame = 1
+		hyouzyou = 102
+		cdata(CDATA_EMO_ICON, tc) = 21 + 100 * 3
+		snd SOUNDLIST_EAT1
+		goto *chat_default
+	}
+	if ( chatval == 137 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		cdata(CDATA_EVOCHAT_POINTS, tc)++
+		if ( rnd(sdata(SKILL_ATTR_CHA, CHARA_PLAYER) + 100) > rnd(sdata(SKILL_ATTR_WIL, tc) + 100) ) {
+			cdata(CDATA_EVOCHAT_POINTS, tc)++
+		}
+		hyouzyou = 103
+		cdata(CDATA_EMO_ICON, tc) = 26 + 100 * 3
+		snd SOUNDLIST_ATK_MIND
+		goto *chat_default
+	}
+	if ( chatval == 138 ) {
+		snd SOUNDLIST_FAIL1
+		goto *chat_default
+	}
+	if ( chatval == 139 ) {
+		cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)--
+		cdata(CDATA_EVOCHAT_POINTS, tc)++
+		if ( rnd(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) + 100) > rnd(sdata(SKILL_ATTR_CON, tc) + 100) ) {
+			cdata(CDATA_EVOCHAT_POINTS, tc)++
+		}
+		hyouzyou = 104
+		evorec = 1
+		cdata(CDATA_EMO_ICON, tc) = 17 + 100 * 3
+		snd SOUNDLIST_ATK_MIND
+		goto *chat_default
+	}
+	if ( chatval == 140 ) {
+		snd SOUNDLIST_FAIL1
 		goto *chat_default
 	}
 	if ( chatval == 79 ) {
@@ -23653,6 +23812,30 @@
 	tag = 0
 	tagevochat = 0
 	if ( evochat >= 1 | evochat <= (-1) ) {
+		if ( evochat < 9 ) {
+			if ( evochat != 3 ) {
+				redraw 0
+				gosub *screen_draw
+				gosub *screen_fade
+			}
+			if ( evochat == 3 ) {
+				redraw 0
+				gosub *screen_draw
+				gosub *screen_fadeIn3
+			}
+			gsel 4
+			buffer 4, FACE_SIZE_WIDTH, FACE_SIZE_HEIGHT
+			pos 0, 0
+			picload exedir + "graphic\\face1" + devfile + ".bmp", 1
+			gsel 0
+			evochat = 0
+			if ( cdata(CDATA_EVOCHAT_POINTS, tc) - kigenbk > 0 ) {
+				modimp tc, (cdata(CDATA_EVOCHAT_POINTS, tc) - kigenbk) * 4
+			}
+			gosub *music_play
+		}
+	}
+	if ( evochat >= 9 ) {
 		if ( evochat != 3 ) {
 			redraw 0
 			gosub *screen_draw
@@ -23663,15 +23846,16 @@
 			gosub *screen_draw
 			gosub *screen_fadeIn3
 		}
-		gsel 4
-		buffer 4, FACE_SIZE_WIDTH, FACE_SIZE_HEIGHT
+		gsel BUFFER_BUF
 		pos 0, 0
 		picload exedir + "graphic\\face1" + devfile + ".bmp", 1
-		gsel 0
+		gsel BUFFER_SCREEN
 		evochat = 0
+		evorec = 0
 		if ( cdata(CDATA_EVOCHAT_POINTS, tc) - kigenbk > 0 ) {
-			modimp tc, (cdata(CDATA_EVOCHAT_POINTS, tc) - kigenbk) * 4
+			modimp2 tc, (cdata(CDATA_EVOCHAT_POINTS, tc) - kigenbk) * 4
 		}
+		cdata(CDATA_EVOCHAT_POINTS, tc) = 0
 		gosub *music_play
 	}
 	if ( cdata(CDATA_EVOCHAT_POINTS, tc) >= 10 ) {
@@ -23709,11 +23893,11 @@
 			color 255, 255, 255
 		}
 		noteget s, cnt
-		if ( evochat < 2 ) {
+		if ( evochat < 2 | evochat == 11 ) {
 			x = wx + 136
 			y = wy + wh - 56 - keyrange * 19 + cnt * 19 + 2
 		}
-		if ( evochat >= 2 ) {
+		if ( evochat >= 2 & evochat < 11 ) {
 			x = wx + 66
 			y = wy + wh - 56 - keyrange * 19 + cnt * 19 + 2
 		}
@@ -23765,28 +23949,29 @@
 	talk_conv buff, 56 - en * 3
 	chatpicloaded = 0
 	redraw 0
-	if ( evochat < 2 ) {
+	if ( evochat < 2 | evochat == 11 ) {
 		wx = (windoww - 600) / 2 + inf_screenx
 		wy = winposy(380)
 		ww = 600
 		wh = 380
 	}
-	if ( evochat >= 2 ) {
+	if ( evochat >= 2 & evochat < 11 ) {
 		wx = (windoww - (-280)) / 2 + inf_screenx
 		wy = winposy(280)
 		ww = 1480
 		wh = 280
 	}
-	if ( evochat < 2 ) {
+	if ( evochat < 2 | evochat == 11 ) {
 		gmode 6, , , 80
 		pos wx + 4, wy - 16
-		gcopy 7, 0, 0, 600, 380
+		gcopy BUFFER_PIC, 0, 0, 600, 380
 	}
-	if ( evochat >= 2 ) {
+	if ( evochat >= 2 & evochat < 11 ) {
 		gmode 6, , , 80
 		pos wx + 4 + 750, wy - 16 - 100
-		gcopy 7, 0, 0, 1480, 280
+		gcopy BUFFER_PIC, 0, 0, 1480, 280
 	}
+
 *chat_draw2
 	redraw 0
 	gmode 2
@@ -23795,7 +23980,7 @@
 	if ( cdata(CDATA_TAGTEAM_PARTNER, tc) > 0 ) {
 		ttc = cdata(CDATA_TAGTEAM_PARTNER, tc)
 	}
-	if ( cdata(CDATA_PORTRAIT, tc) != (-1) & cdata(CDATA_FACE, tc) == 0 & evochat < 2 | scenemode ) {
+	if ( cdata(CDATA_PORTRAIT, tc) != (-1) & cdata(CDATA_FACE, tc) == 0 & (evochat < 2 | evochat == 11) | scenemode ) {
 		if ( cdata(CDATA_PORTRAIT, tc) < 80 ) {
 			p = cdata(CDATA_SEX, tc) * 80 + cdata(CDATA_PORTRAIT, tc)
 		}
@@ -23812,7 +23997,7 @@
 		}
 		if ( scenemode == FALSE ) {
 			if ( cdata(CDATA_PORTRAIT, tc) >= 0 ) {
-				if ( evochat < 2 ) {
+				if ( evochat < 2 | evochat == 11 ) {
 					pos wx + 42, wy + 42
 					gzoom 80, 112, 4, p \ 16 * 48, p / 16 * 72, 48, 72
 				}
@@ -23824,7 +24009,7 @@
 				exist s
 				if ( cdata(CDATA_PORTRAIT, tc) != (-1) ) {
 					if ( strsize != (-1) ) {
-						if ( evochat < 2 ) {
+						if ( evochat < 2 | evochat == 11 ) {
 							pos wx + 42, wy + 42
 							picload s, 1
 						}
@@ -23955,19 +24140,19 @@
 				}
 				p = cdata(CDATA_PIC, tc) \ COLOR_TINT_MULT + picols * COLOR_TINT_MULT, (cdata(CDATA_PIC, tc) - picols * COLOR_TINT_MULT) / COLOR_TINT_MULT
 				chara_preparepic p, p(1)
-				if ( evochat < 2 ) {
+				if ( evochat < 2 | evochat == 11 ) {
 					pos wx + 82, wy + 125 - chipc(CHIPC_F, p)
 					gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
-					grotate 5, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 2, chipc(CHIPC_HEIGHT, p) * 2
+					grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 2, chipc(CHIPC_HEIGHT, p) * 2
 				}
-				if ( evochat >= 2 ) {
+				if ( evochat >= 2 & evochat < 11 ) {
 					if ( tagevochat == 0 ) {
 						pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
 						gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
 						grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
 					}
 				}
-				if ( evochat >= 2 ) {
+				if ( evochat < 2 | evochat == 11 ) {
 					if ( tagevochat > 0 ) {
 						if ( cdata(CDATA_IN_TAGTEAM, tc) == (-1) ) {
 							pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
@@ -23976,7 +24161,7 @@
 						}
 					}
 				}
-				if ( evochat >= 2 ) {
+				if ( evochat >= 2 & evochat < 11 ) {
 					if ( tagevochat > 0 ) {
 						if ( cdata(CDATA_IN_TAGTEAM, tc) == 1 ) {
 							pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
@@ -23991,17 +24176,17 @@
 				pos 0, 0
 				picload s, 1
 				gsel BUFFER_SCREEN
-				if ( evochat < 2 ) {
+				if ( evochat < 2 | evochat == 11 ) {
 					pos windoww - 300, windowh - 588
-					gcopy 4, 0, 0, 300, 500
+					gcopy BUFFER_BUF, 0, 0, 300, 500
 				}
-				if ( evochat >= 2 ) {
+				if ( evochat >= 2 & evochat < 11 ) {
 					if ( tagevochat == 0 ) {
 						pos windoww / 2 - 150, windowh - 588
 						gcopy BUFFER_BUF, 0, 0, 300, 500
 					}
 				}
-				if ( evochat >= 2 ) {
+				if ( evochat < 2 | evochat == 11 ) {
 					if ( tagevochat > 0 ) {
 						if ( cdata(CDATA_IN_TAGTEAM, tc) == (-1) ) {
 							pos windoww / 2 - 150 - 250, windowh - 588
@@ -24009,7 +24194,7 @@
 						}
 					}
 				}
-				if ( evochat >= 2 ) {
+				if ( evochat >= 2 & evochat < 11 ) {
 					if ( tagevochat > 0 ) {
 						if ( cdata(CDATA_IN_TAGTEAM, tc) == 1 ) {
 							pos windoww / 2 - 150, windowh - 588
@@ -24030,7 +24215,7 @@
 						}
 						p2 = cdata(CDATA_PIC, tatc2) \ COLOR_TINT_MULT + picols2 * COLOR_TINT_MULT, (cdata(CDATA_PIC, tatc2) - picols2 * COLOR_TINT_MULT) / COLOR_TINT_MULT
 						chara_preparepic p2, p2(1)
-						if ( evochat >= 2 ) {
+						if ( evochat >= 2 & evochat < 11 ) {
 							if ( tagevochat > 0 ) {
 								if ( cdata(CDATA_IN_TAGTEAM, tatc2) == (-1) ) {
 									pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
@@ -24039,7 +24224,7 @@
 								}
 							}
 						}
-						if ( evochat >= 2 ) {
+						if ( evochat >= 2 & evochat < 11 ) {
 							if ( tagevochat > 0 ) {
 								if ( cdata(CDATA_IN_TAGTEAM, tatc2) == 1 ) {
 									pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
@@ -24054,7 +24239,7 @@
 						pos 0, 0
 						picload stati2, 1
 						gsel BUFFER_SCREEN
-						if ( evochat >= 2 ) {
+						if ( evochat >= 2 & evochat < 11 ) {
 							if ( tagevochat > 0 ) {
 								if ( cdata(CDATA_IN_TAGTEAM, tatc2) == (-1) ) {
 									pos windoww / 2 - 150 - 250, windowh - 588
@@ -24062,7 +24247,7 @@
 								}
 							}
 						}
-						if ( evochat >= 2 ) {
+						if ( evochat >= 2 & evochat < 11 ) {
 							if ( tagevochat > 0 ) {
 								if ( cdata(CDATA_IN_TAGTEAM, tatc2) == 1 ) {
 									pos windoww / 2 - 150, windowh - 588
@@ -24081,26 +24266,26 @@
 			}
 			p = cdata(CDATA_PIC, tc) \ COLOR_TINT_MULT + picols * COLOR_TINT_MULT, (cdata(CDATA_PIC, tc) - picols * COLOR_TINT_MULT) / COLOR_TINT_MULT
 			chara_preparepic p, p(1)
-			if ( evochat < 2 ) {
+			if ( evochat < 2 | evochat == 11 ) {
 				pos wx + 82, wy + 125 - chipc(CHIPC_F, p)
 				gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
 				grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 2, chipc(CHIPC_HEIGHT, p) * 2
 			}
-			if ( evochat >= 2 ) {
+			if ( evochat >= 2 & evochat < 11 ) {
 				if ( tagevochat == 0 ) {
 					pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
 					gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
 					grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
 				}
 			}
-			if ( evochat >= 2 ) {
+			if ( evochat >= 2 & evochat < 11 ) {
 				if ( tagevochat == 0 ) {
 					pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
 					gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
 					grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
 				}
 			}
-			if ( evochat >= 2 ) {
+			if ( evochat >= 2 & evochat < 11 ) {
 				if ( tagevochat > 0 ) {
 					if ( cdata(CDATA_IN_TAGTEAM, tc) == (-1) ) {
 						pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
@@ -24109,7 +24294,7 @@
 					}
 				}
 			}
-			if ( evochat >= 2 ) {
+			if ( evochat >= 2 & evochat < 11 ) {
 				if ( tagevochat > 0 ) {
 					if ( cdata(CDATA_IN_TAGTEAM, tc) == 1 ) {
 						pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
@@ -24128,14 +24313,14 @@
 					}
 					p2 = cdata(CDATA_PIC, tatc2) \ COLOR_TINT_MULT + picols2 * COLOR_TINT_MULT, (cdata(CDATA_PIC, tatc2) - picols2 * COLOR_TINT_MULT) / COLOR_TINT_MULT
 					chara_preparepic p2, p2(1)
-					if ( evochat >= 2 ) {
+					if ( evochat >= 2 & evochat < 11 ) {
 						if ( tagevochat == 0 ) {
 							pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
 							gmode 2, chipc(CHIPC_WIDTH, p2), chipc(CHIPC_HEIGHT, p2)
 							grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p2) * 6, chipc(CHIPC_HEIGHT, p2) * 6
 						}
 					}
-					if ( evochat >= 2 ) {
+					if ( evochat >= 2 & evochat < 11 ) {
 						if ( tagevochat > 0 ) {
 							if ( cdata(CDATA_IN_TAGTEAM, tatc2) == (-1) ) {
 								pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
@@ -24144,7 +24329,7 @@
 							}
 						}
 					}
-					if ( evochat >= 2 ) {
+					if ( evochat >= 2 & evochat < 11 ) {
 						if ( tagevochat > 0 ) {
 							if ( cdata(CDATA_IN_TAGTEAM, tatc2) == 1 ) {
 								pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
@@ -24157,9 +24342,15 @@
 			}
 		}
 	}
+	if ( evorec == 1 ) {
+		font lang(cfg_font1, cfg_font2), 30 - en * 2, 1
+		pos inf_clockw + 6, inf_clocky + 70
+		color 0, 0, 0
+		bmes lang("[●ＲＥＣ]", "[Recording]"), 235, 5, 5
+	}
 	font lang(cfg_font1, cfg_font2), 10 - en * 2, 0
 	color 0, 0, 0
-	if ( scenemode == 0 & evochat < 2 ) {
+	if ( scenemode == 0 & (evochat < 2 | evochat == 11) ) {
 		if ( cdata(CDATA_SPRITE_SIZE_MILK, tc) < 0 ) {
 			pos wx + 35, wy + 157
 			mes lang("size:" + cdata(CDATA_SPRITE_SIZE_MILK, tc) + " ", "size:" + cdata(CDATA_SPRITE_SIZE_MILK, tc) + " ")
@@ -24196,6 +24387,10 @@
 			display_topic lang("行動力", "Action"), wx + 28, wy + 225
 			display_topic lang("幸福度", "Happiness"), wx + 28, wy + 280
 		}
+		if ( evochat == 11 ) {
+			display_topic lang("行動力", "Action"), wx + 28, wy + 225
+			display_topic lang("屈服度", "Submission"), wx + 28, wy + 280
+		}
 	}
 	if ( ohanasi6 == 100 ) {
 		font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
@@ -24228,7 +24423,7 @@
 	}
 	font lang(cfg_font1, cfg_font2), 12 + sizefix - en * 2, 1
 	color 20, 10, 5
-	if ( evochat < 2 ) {
+	if ( evochat < 2 | evochat == 11 ) {
 		if ( cdatan(CDATAN_AKA, tc) == "" ) {
 			s = cdatan(CDATAN_NAME, tc) + " "
 		}
@@ -24239,7 +24434,7 @@
 	else {
 		s = ""
 	}
-	if ( evochat < 2 ) {
+	if ( evochat < 2 | evochat == 11 ) {
         s += cnven(gendername(tc))
 		if ( cdatan(CDATAN_AKA, tc) != "" ) {
 			s += lang(" 名声 ", " Fame: ") + cdata(CDATA_FAME, tc)
@@ -24263,17 +24458,17 @@
 			s = actor(0, rc)
 		}
 	}
-	if ( evochat < 2 ) {
+	if ( evochat < 2 | evochat == 11 ) {
 		pos wx + 120, wy + 16
 		mes s
 	}
-	if ( evochat >= 2 ) {
+	if ( evochat >= 2 & evochat < 11 ) {
 		pos wx + 50, wy + 16
 		mes s
 	}
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 0
 	color 20, 10, 5
-	if ( scenemode == 0 & evochat < 2 ) {
+	if ( scenemode == 0 & (evochat < 2 | evochat == 11) ) {
 		if ( chatval(2) == 1 ) {
 			s = _impression(implevel(cdata(CDATA_IMPRESSION, tc)))
 			if ( cdata(CDATA_HEART_LOCK_RELATION, tc) == (-1) ) {
@@ -24346,6 +24541,20 @@
 					loop
 				}
 			}
+			if ( evochat == 11 ) {
+				if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) > 0 ) {
+					repeat cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER)
+						pos wx + 26 + cnt * 8, wy + 255
+						gcopy BUFFER_INF, 784, 360, 16, 16
+					loop
+				}
+				if ( cdata(CDATA_EVOCHAT_POINTS, tc) > 0 ) {
+					repeat cdata(CDATA_EVOCHAT_POINTS, tc)
+						pos wx + 26 + cnt * 8, wy + 310
+						gcopy BUFFER_INF, 800, 360, 16, 16
+					loop
+				}
+			}
 			if ( evochat == 0 ) {
 				if ( cdata(CDATA_INTEREST, tc) >= 0 ) {
 					repeat cdata(CDATA_INTEREST, tc) / 5 + 1
@@ -24366,7 +24575,7 @@
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 	color 20, 10, 5
 	notesel buff
-	if ( evochat < 2 ) {
+	if ( evochat < 2 | evochat == 11 ) {
 		repeat noteinfo(0)
 			p = cnt
 			x = wx + 150

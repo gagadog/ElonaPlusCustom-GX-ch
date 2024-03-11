@@ -4322,6 +4322,23 @@
 			noteadd "Done."
 			goto *console_write
 		}
+
+		// TODO delete this
+		if ( instr(buff, 0, "get_all_fossils") != (-1) ) {
+			repeat 11
+				flt
+				itemcreate -1, ITEM_ID_MYSTERIOUS_FOSSIL, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_MYSTERIOUS_FOSSIL ) {
+					inv(INV_ITEM_PARAM2, ci) = cnt * 10 + 1
+				}
+				flt
+				itemcreate -1, ITEM_ID_BOOK_RESURRECTION, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+			loop
+			buff = ""
+			notesel buff
+			noteadd "Done."
+			goto *console_write
+		}
 		/********** JAMES CUSTOM - TCG - ENDING **********/ 
 
 		if ( instr(buff, 0, "gain_spell") != (-1) ) {

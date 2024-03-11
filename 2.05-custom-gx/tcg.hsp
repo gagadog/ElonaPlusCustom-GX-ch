@@ -1225,6 +1225,7 @@
 	card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_DECK, create_extra_card_player, deckix@tcg(create_extra_card_player), deckiy@tcg(create_extra_card_player), deckix@tcg(create_extra_card_player), deckiy@tcg(create_extra_card_player)
 	cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player)++
 	cpdata@tcg(TCG_PLAYER_DECK, create_extra_card_player)++
+	cdbitmod TCG_BIT_FOSSIL, cextra@tcg, 0
 	return cextra@tcg
 
 #deffunc returncard int returncard_arg1
@@ -1324,6 +1325,7 @@
 	if ( cdbit(TCG_BIT_FOSSIL, gravecard_arg1) ) {
 		animeseq@tcg = 1
 		cdbitmod TCG_BIT_FACE_UP, gravecard_arg1, 1
+		card@tcg(TCG_CARD_ANIM, gravecard_arg1) = 0, 0
 		card@tcg(TCG_CARD_LOCATION, gravecard_arg1) = TCG_LOCATION_ANIM
 		card@tcg(TCG_CARD_X, gravecard_arg1) = graveix@tcg(card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)), graveiy@tcg(card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1))
 		card@tcg(TCG_CARD_X_MOVETO, gravecard_arg1) = basex@tcg + 455 - 36, basey@tcg + 270 - 48
@@ -1931,10 +1933,10 @@
 		if ( cdbit(TCG_BIT_FOSSIL, cnt) == TRUE ) {
 			card@tcg(TCG_CARD_REF_ATTACK, cnt) = 0
 			card@tcg(TCG_CARD_ATTACK, cnt) = 0
-			card@tcg(TCG_CARD_REF_HP, cnt) = card@tcg(TCG_CARD_REF_COST, cnt)
-			card@tcg(TCG_CARD_HP, cnt) = card@tcg(TCG_CARD_REF_COST, cnt)
-			card@tcg(TCG_CARD_REF_COST, cnt) -= 1
-			card@tcg(TCG_CARD_COST, cnt) -= 1
+			card@tcg(TCG_CARD_REF_HP, cnt) = limit(card@tcg(TCG_CARD_REF_COST, cnt),1,2000)
+			card@tcg(TCG_CARD_HP, cnt) = limit(card@tcg(TCG_CARD_REF_COST, cnt),1,2000)
+			card@tcg(TCG_CARD_COST, cnt) = limit(card@tcg(TCG_CARD_REF_COST, cnt)-1,0,2000)
+			card@tcg(TCG_CARD_REF_COST, cnt) = limit(card@tcg(TCG_CARD_REF_COST, cnt)-1,0,2000)
 			card@tcg(TCG_CARD_REF_PIC, cnt) = -23
 			carddetailneff@tcg(cnt) = "Mysterious Fossil No.???    Dinosaur Tourist  Rare:Antique\nEffect: You need to unearth it somehow to use it.\n        Otherwise, it's just a ston"
 			c@tcg = cnt

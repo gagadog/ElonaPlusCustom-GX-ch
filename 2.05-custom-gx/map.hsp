@@ -12210,20 +12210,21 @@
 						if ( cbit(CHARA_BIT_LABOR_CAMP, cnt) != TRUE ) {
 							continue
 						}
-						if ( cbit(CHARA_BIT_TOIL_ENERGY_DRINK, cnt) == TRUE ) {
-							txtmore
-							txtef COLOR_GREEN
-							txt lang(cdatan(CDATAN_NAME, cnt) + "は労働エナジーで疲労をこらえたようだ。", cdatan(CDATAN_NAME, cnt) + " seems to have endured the fatigue with Toil-Energy.")
-							cbitmod CHARA_BIT_TOIL_ENERGY_DRINK, cnt, FALSE
-							continue
-						}
 						if ( cost > 0 ) {
 							work += cost * 2
-							if ( sorg(SKILL_ATTR_LIFE, cnt) <= cost ) {
-								evadd EVENT_SQUEEZE, cnt
+							if ( cbit(CHARA_BIT_TOIL_ENERGY_DRINK, cnt) == TRUE ) {
+								txtmore
+								txtef COLOR_GREEN
+								txt lang(cdatan(CDATAN_NAME, cnt) + "は労働エナジーで疲労をこらえたようだ。", cdatan(CDATAN_NAME, cnt) + " seems to have endured the fatigue with Toil-Energy.")
+								cbitmod CHARA_BIT_TOIL_ENERGY_DRINK, cnt, FALSE
 							}
 							else {
-								skillmod SKILL_ATTR_LIFE, cnt, -cost * 1000
+								if ( sorg(SKILL_ATTR_LIFE, cnt) <= cost ) {
+									evadd EVENT_SQUEEZE, cnt
+								}
+								else {
+									skillmod SKILL_ATTR_LIFE, cnt, -cost * 1000
+								}
 							}
 						}
 						if ( cdata(CDATA_MASTER_SERVANT, cnt) > 0 ) {
@@ -12251,7 +12252,7 @@
 									f = 0
 									repeat listmax
 										p = list(0, cnt)
-										if ( inv(INV_ITEM_MATERIAL, p) == ITEM_MATERIAL_RAW | inv(INV_ITEM_ID, p) == ITEM_ID_WOOD_CHIP | inv(INV_ITEM_ID, p) == ITEM_ID_GARBAGE | inv(INV_ITEM_ID, p) == ITEM_ID_BONE_FRAGMENT | inv(INV_ITEM_ID, p) == ITEM_ID_SKELETON | inv(INV_ITEM_ID, p) == ITEM_ID_DEAD_FISH | inv(INV_ITEM_ID, p) == ITEM_ID_STRAW | inv(INV_ITEM_ID, p) == ITEM_ID_ANIMAL_BONE | inv(INV_ITEM_ID, p) == ITEM_ID_LARGE_BOUQUET | inv(INV_ITEM_ID, p) == ITEM_ID_STUMP | inv(INV_ITEM_ID, p) == ITEM_ID_SHIT ) {
+										if ( inv(INV_ITEM_MATERIAL, p) == ITEM_MATERIAL_RAW | inv(INV_ITEM_ID, p) == ITEM_ID_WOOD_CHIP | inv(INV_ITEM_ID, p) == ITEM_ID_GARBAGE | inv(INV_ITEM_ID, p) == ITEM_ID_BONE_FRAGMENT | inv(INV_ITEM_ID, p) == ITEM_ID_SKELETON | inv(INV_ITEM_ID, p) == ITEM_ID_DEAD_FISH | inv(INV_ITEM_ID, p) == ITEM_ID_STRAW | inv(INV_ITEM_ID, p) == ITEM_ID_ANIMAL_BONE | inv(INV_ITEM_ID, p) == ITEM_ID_LARGE_BOUQUET | inv(INV_ITEM_ID, p) == ITEM_ID_STUMP | inv(INV_ITEM_ID, p) == ITEM_ID_SHIT | inv(INV_ITEM_ID, p) == ITEM_ID_VOMIT | inv(INV_ITEM_ID, p) == ITEM_ID_URINE ) {
 											inv(INV_ITEM_NUM, p)--
 											flt
 											itemcreate -1, ITEM_ID_ORGANIC_FERTILIZER, x, y, 0

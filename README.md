@@ -1,8 +1,8 @@
-# Elona+ Custom-GX 2.21
+# Elona+ Custom-GX 2.22
 
 *\~Believe in Jure and hold a determination to mince.\~*
 
-Elona+ Custom-GX is a new variant of Elona+ based on Elona+ Custom-G, updated with the changes in Elona+ up to version 2.21.
+Elona+ Custom-GX is a new variant of Elona+ based on Elona+ Custom-G, updated with the changes in Elona+ up to version 2.22.
 
 It is originally created and maintained by [Ruin0x11](https://github.com/Ruin0x11), on [this repository](https://github.com/Ruin0x11/ElonaPlusCustom-GX).  
 This repository is an unofficial continuation of the above repository using Ruin0x11's [borscht/erystia](https://github.com/Ruin0x11/borscht) decompiler.
@@ -11,13 +11,13 @@ This repository is an unofficial continuation of the above repository using Ruin
 
 ## Installation
 
-1. Download Elona+ 2.21 from [here](https://mega.nz/file/0D9DAJ6S#2La0xH9wPcJZgmLZfXNQqHyn0xX2viRzhH9XhSCXkuk). Extract it to `elonaplus2.21`.
-2. Extract the contents of Custom-GX's archive to the `elonaplus2.21` folder, overwriting all existing files.
+1. Download Elona+ 2.22 from [here](https://mega.nz/file/BTszjbTC#IpaeuHWymrJ180NJuHqUt_Uda_rTRBDB5ybGGt5SWkM). Extract it to `elonaplus2.22`.
+2. Extract the contents of Custom-GX's archive to the `elonaplus2.22` folder, overwriting all existing files.
 3. Run `elonapluscgx.exe`.
 
 ## Building
 
-1. Follow the installation instructions above. Rename the `elonaplus2.21` folder to `2.05-custom-gx` and move it to the `assets/` folder of this repository.
+1. Follow the installation instructions above. Rename the `elonaplus2.22` folder to `2.05-custom-gx` and move it to the `assets/` folder of this repository.
 2. Download the HSP3.4 SDK (`hsp34a.zip`) from [here](http://hsp.tv/make/downlist.html) and extract it somewhere.
 3. Copy `hsplua.dll` from the `2.05-custom-gx` folder into the HSP3.4 SDK folder. Otherwise, you'll get an error saying it's missing when running the game from the editor.
 4. Open `2.05-custom-gx/main.hsp` with `hsed3.exe` from the HSP3.4 SDK folder. Press <kbd>F5</kbd> to compile and run under debug mode.

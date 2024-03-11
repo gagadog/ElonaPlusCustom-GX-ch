@@ -57,7 +57,10 @@
 	if ( stack@tcg > 0 ) {
 		cc@tcg = cardstack@tcg(TCG_STACK_CARD, stack@tcg - 1)
 		if ( spellused@tcg == 0 ) {
-			if ( cardstack@tcg(TCG_STACK_ACTION, stack@tcg - 1) == TCG_ACTION_ATTACKING & (card@tcg(TCG_CARD_LOCATION, cc@tcg) == TCG_LOCATION_FIELD | card@tcg(TCG_CARD_LOCATION, cc@tcg) == TCG_LOCATION_HAND) ) {
+			if ( cardstack@tcg(TCG_STACK_ACTION, stack@tcg - 1) == TCG_ACTION_ATTACKING & card@tcg(TCG_CARD_LOCATION, cc@tcg) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, cc@tcg) != TCG_LOCATION_HAND ) {
+				cardstack@tcg(TCG_STACK_ACTION, stack@tcg - 1) = TCG_ACTION_NONE
+			}
+			if ( cardstack@tcg(TCG_STACK_ACTION, stack@tcg - 1) == TCG_ACTION_ATTACKING ) {
 				attackingcard@tcg = cc@tcg
 				if ( cp@tcg == TCG_CONTROLLER_PLAYER ) {
 					card@tcg(TCG_CARD_Y_MOVETO, cc@tcg) -= 25
@@ -73,6 +76,7 @@
 				}
 				tcgdraw
 				attacktarget@tcg = -1
+				proctcg "tcg attacking: " + " stack:" + stack@tcg + " card:" + cc@tcg + " target:" + cardstack@tcg(TCG_STACK_EFFECT, stack@tcg - 1)
 				if ( cardstack@tcg(TCG_STACK_EFFECT, stack@tcg - 1) >= 0 & cardstack@tcg(TCG_STACK_EFFECT, stack@tcg - 1) < maxcard@tcg ) {
 					if ( card@tcg(TCG_CARD_LOCATION, cardstack@tcg(TCG_STACK_EFFECT, stack@tcg - 1)) == TCG_LOCATION_FIELD | card@tcg(TCG_CARD_LOCATION, cardstack@tcg(TCG_STACK_EFFECT, stack@tcg - 1)) == TCG_LOCATION_HAND ) {
 						attacktarget@tcg = cardstack@tcg(TCG_STACK_EFFECT, stack@tcg - 1)
@@ -120,7 +124,7 @@
 	aeft@tcg = cardstack@tcg(TCG_STACK_TARGET, stack@tcg)
 	aefp@tcg = cardstack@tcg(TCG_STACK_POWER, stack@tcg)
 	aite@tcg = cardstack@tcg(TCG_STACK_ITERATION, stack@tcg)
-	proctcg "tcg effactivate: " + " stack:" + stack@tcg + " effect:" + aeff@tcg + " ac:" + ac@tcg + " aeft:" + aeft@tcg + " aite:" + aite@tcg + " ap:" + ap@tcg
+	proctcg "tcg effactivate: " + " stack:" + stack@tcg + " effect:" + aeff@tcg + " ac:" + ac@tcg + " act:" + act@tcg + " aeft:" + aeft@tcg + " aite:" + aite@tcg + " ap:" + ap@tcg
 	if ( ap@tcg != cp@tcg ) {
 		cpflip
 	}
@@ -2790,9 +2794,8 @@
 	if ( _switch_val@tcg == TCG_SKILL_EFF_IMMEDIATECOMBAT | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
-			cardstack@tcg(TCG_STACK, stack@tcg) = effac@tcg, TCG_ACTION_ATTACKING, cp@tcg, aeft@tcg
+			cardstack@tcg(TCG_STACK, stack@tcg) = ac@tcg, TCG_ACTION_ATTACKING, cp@tcg, aeft@tcg
 			stack@tcg++
-			actionproc
 		}
 		_switch_sw@tcg++
 	}

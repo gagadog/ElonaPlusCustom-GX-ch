@@ -2741,6 +2741,7 @@
 					inv(INV_ITEM_NUM, ci) = kazu
 				}
 			}
+			gosub *calcBurdenPc
 		}
 		goto *random_eventProc_SWEND1
 		_switch_sw++

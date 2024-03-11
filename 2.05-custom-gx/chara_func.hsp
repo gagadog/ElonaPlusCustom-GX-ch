@@ -4837,6 +4837,11 @@
 	if ( gdata(GDATA_TEMPORARY_FLAGS2) == 1200 ) {
 		locvar_dmghp_dmg = locvar_dmghp_dmg * 1 / 6 + 1
 	}
+	if ( locvar_dmghp_dmg > 0 ) {
+		if ( gdata(GDATA_RAPID_FIRE) == 100 ) {
+			locvar_dmghp_dmg = locvar_dmghp_dmg / 2 + 1
+		}
+	}
 	if ( dmghp_source == DAMAGE_FROM_CHARA ) {
 		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_EYTH ) {
 			locvar_dmghp_s = refchara(cdata(CDATA_ID, dmghp_charid), DBSPEC_CHARA_FILTER, 1)
@@ -5539,6 +5544,17 @@
 				if ( cdata(CDATA_POWER_GAUGE, dmghp_charid) >= 196 ) {
 					cdata(CDATA_POWER_GAUGE, dmghp_charid) = 196
 				}
+			}
+		}
+	}
+	if ( cdata(CDATA_HP, dmghp_charid) >= 0 & cdata(CDATA_HP, dmghp_charid) <= cdata(CDATA_MAX_HP, dmghp_charid) / 4 ) {
+		if ( cbit(CHARA_BIT_QUICK_RESTORE, dmghp_charid) ) {
+			if ( cbit(CHARA_BIT_EXCLUSIVE_SKILL_CHARGE, dmghp_charid) ) {
+				txt lang(name(dmghp_charid) + "の身体が急速に復元した！", name(dmghp_charid) + " " + is(dmghp_charid) + " quickly restored!")
+				snd SOUNDLIST_PRAY2
+				animeload 42, dmghp_charid
+				cdata(CDATA_HP, dmghp_charid) = cdata(CDATA_MAX_HP, dmghp_charid)
+				cbitmod CHARA_BIT_EXCLUSIVE_SKILL_CHARGE, dmghp_charid, FALSE
 			}
 		}
 	}
@@ -7946,6 +7962,18 @@
 					if ( cbit(CHARA_BIT_NECRO, charaIsNecromancyZombie_charidx) == TRUE ) {
 						return TRUE
 					}
+				}
+			}
+		}
+	}
+	return FALSE
+
+#defcfunc charaIsNecromancyMinion int charaIsNecromancyZombie_charidx
+	if ( cbit(CHARA_BIT_LIVESTOCK, charaIsNecromancyZombie_charidx) != TRUE ) {
+		if ( cbit(CHARA_BIT_SHADOW_CLONE, charaIsNecromancyZombie_charidx) != TRUE | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_UNITDEAD_JOKER | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_UNITDEAD_JACK | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_UNITDEAD_QUEEN | cdata(CDATA_ID, charaIsNecromancyZombie_charidx) == CREATURE_ID_UNITDEAD_KING ) {
+			if ( charaIsNecromancyZombie_charidx >= MAX_CHARA_FOLLOWER ) {
+				if ( cbit(CHARA_BIT_NECRO, charaIsNecromancyZombie_charidx) == TRUE ) {
+					return TRUE
 				}
 			}
 		}

@@ -206,6 +206,12 @@
 	if ( efid == SKILL_SPACT_TOUCH_OF_SLEEP ) {
 		return lang("柔らかい", "silky")
 	}
+	if ( efid == SKILL_SPACT_TOUCH_OF_NERVE ) {
+		return lang("痺れる", "numbing")
+	}
+	if ( efid == SKILL_SPACT_TOUCH_OF_POISON ) {
+		return lang("毒の", "poisonous")
+	}
 	if ( elename_ele == SKILL_RES_FIRE ) {
 		return lang("燃える", "burning")
 	}
@@ -4637,6 +4643,93 @@
 			locvar__yoro__tone = "にゃりーん", "ふしゃー！", "", "", ""
 			locvar__yoro_p = 1 + ("ふしゃー！" != "") + ("" != "") + ("" != "") + ("" != "")
 			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_rob_arg1)
+		}
+	}
+	return locvar__yoro__tone
+
+#defcfunc _yamero int _yamero_arg1
+	if ( cdata(CDATA_TONE, tc) == 0 ) {
+		if ( cdata(CDATA_TONE_SEX, tc) == 1 ) {
+			locvar__yoro__tone = "やめてください", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+		else {
+			locvar__yoro__tone = "おやめください", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+	}
+	if ( cdata(CDATA_TONE, tc) == 1 ) {
+		if ( cdata(CDATA_TONE_SEX, tc) == 1 ) {
+			locvar__yoro__tone = "やめろ", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+		else {
+			locvar__yoro__tone = "やめろよ", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+	}
+	if ( cdata(CDATA_TONE, tc) == 2 ) {
+		if ( cdata(CDATA_TONE_SEX, tc) == 1 ) {
+			locvar__yoro__tone = "やめてくれ", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+		else {
+			locvar__yoro__tone = "やめて", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+	}
+	if ( cdata(CDATA_TONE, tc) == 3 ) {
+		if ( cdata(CDATA_TONE_SEX, tc) == 1 ) {
+			locvar__yoro__tone = "やめてよ…", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+		else {
+			locvar__yoro__tone = "やめて…", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+	}
+	if ( cdata(CDATA_TONE, tc) == 4 ) {
+		if ( cdata(CDATA_TONE_SEX, tc) == 1 ) {
+			locvar__yoro__tone = "やめい", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+		else {
+			locvar__yoro__tone = "やめぬか", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+	}
+	if ( cdata(CDATA_TONE, tc) == 5 ) {
+		if ( cdata(CDATA_TONE_SEX, tc) == 1 ) {
+			locvar__yoro__tone = "やめてくだされ", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+		else {
+			locvar__yoro__tone = "おやめなさい", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+	}
+	if ( cdata(CDATA_TONE, tc) == 6 ) {
+		if ( cdata(CDATA_TONE_SEX, tc) == 1 ) {
+			locvar__yoro__tone = "やめるッス", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
+		}
+		else {
+			locvar__yoro__tone = "やめるにゃ", "", "", "", ""
+			locvar__yoro_p = 1 + ("" != "") + ("" != "") + ("" != "") + ("" != "")
+			locvar__yoro__tone = locvar__yoro__tone(rnd(locvar__yoro_p)) + _mark(_yamero_arg1)
 		}
 	}
 	return locvar__yoro__tone

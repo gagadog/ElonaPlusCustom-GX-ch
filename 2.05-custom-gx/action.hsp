@@ -5387,7 +5387,7 @@
 				}
 				else {
 					txtef COLOR_BLUE
-					txt lang(aln(cc) + "攻撃は完全に見切られてかわされた。", name(tc) + " skillfully evade" + _s(tc) + " " + name(cc) + ".")
+					txt lang(aln(cc) + "攻撃を完全に見切られてかわされた。", name(tc) + " skillfully evade" + _s(tc) + " " + name(cc) + ".")
 				}
 
                 /********** RUIN0X11 CUSTOM - BEGINNING **********/
@@ -5686,6 +5686,9 @@
 	return
 
 *act_attackSub
+	if ( ammoproc == ENCHANT_AMMO_BURST ) {
+		return
+	}
 	if ( gdata(GDATA_TEMPORARY_FLAGS2) >= 100 ) {
 		return
 	}
