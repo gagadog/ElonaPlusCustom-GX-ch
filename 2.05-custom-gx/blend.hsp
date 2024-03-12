@@ -3164,36 +3164,36 @@
 	}
 	if ( _switch_val == RECIPE_BLEND_ACTION_BIOLOGICAL_RESTORATION | _switch_sw ) {
 		_switch_sw = 0
-		p = 1102
+		p = CREATURE_ID_RESTOROID_DODO
 		if ( inv(INV_ITEM_PARAM2, ti) >= 10 & inv(INV_ITEM_PARAM2, ti) <= 19 ) {
-			p = 1103
+			p = CREATURE_ID_RESTOROID_GAREFOWL
 		}
 		if ( inv(INV_ITEM_PARAM2, ti) >= 20 & inv(INV_ITEM_PARAM2, ti) <= 29 ) {
-			p = 1104
+			p = CREATURE_ID_RESTOROID_PASSENGER_PIGEON
 		}
 		if ( inv(INV_ITEM_PARAM2, ti) >= 30 & inv(INV_ITEM_PARAM2, ti) <= 39 ) {
-			p = 1105
+			p = CREATURE_ID_RESTOROID_TOKI
 		}
 		if ( inv(INV_ITEM_PARAM2, ti) >= 40 & inv(INV_ITEM_PARAM2, ti) <= 49 ) {
-			p = 1106
+			p = CREATURE_ID_RESTOROID_SEA_COW
 		}
 		if ( inv(INV_ITEM_PARAM2, ti) >= 50 & inv(INV_ITEM_PARAM2, ti) <= 59 ) {
-			p = 1107
+			p = CREATURE_ID_RESTOROID_GOAT
 		}
 		if ( inv(INV_ITEM_PARAM2, ti) >= 60 & inv(INV_ITEM_PARAM2, ti) <= 69 ) {
-			p = 1108
+			p = CREATURE_ID_RESTOROID_MEGA_KANGAROO
 		}
 		if ( inv(INV_ITEM_PARAM2, ti) >= 70 & inv(INV_ITEM_PARAM2, ti) <= 79 ) {
-			p = 1109
+			p = CREATURE_ID_RESTOROID_GIANT_PANDA
 		}
 		if ( inv(INV_ITEM_PARAM2, ti) >= 80 & inv(INV_ITEM_PARAM2, ti) <= 89 ) {
-			p = 1110
+			p = CREATURE_ID_RESTOROID_DIRE_WOLF
 		}
 		if ( inv(INV_ITEM_PARAM2, ti) >= 90 & inv(INV_ITEM_PARAM2, ti) <= 98 ) {
-			p = 1111
+			p = CREATURE_ID_RESTOROID_SABER_TIGER
 		}
 		if ( inv(INV_ITEM_PARAM2, ti) >= 99 ) {
-			p = 1112
+			p = CREATURE_ID_RESTOROID_KAPPA
 		}
 		flt
 		novoidlv = 1

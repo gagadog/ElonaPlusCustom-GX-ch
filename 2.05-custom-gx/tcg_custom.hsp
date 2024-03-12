@@ -552,7 +552,7 @@
 	return
 
 #defcfunc getcardattackanime int getcardattackanime_arg1
-	if ( getcardattackanime_arg1 < 0 | getcardattackanime_arg1 >= maxcard@tcg ) { return }
+	if ( getcardattackanime_arg1 < 0 | getcardattackanime_arg1 >= maxcard@tcg ) { return -1 }
 	switch card@tcg(TCG_CARD_REF_DBID, getcardattackanime_arg1)
 		case CREATURE_ID_DOLPHIN_SOLDIER
 		case CREATURE_ID_SUZAKU

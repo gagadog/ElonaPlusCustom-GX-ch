@@ -1,3 +1,13 @@
+# Upcoming
+
+# Changed
+- Show NPC name: Names are splitted to prevent overlap.
+- Chat Pop-Up: Overlong dialogs are separated into multiple lines.
+- Damage Pop-Up: font size increase is now a hidden config named: "dmgPopupExplode"
+
+# Fixed
+- TCG: Forced attack related bugs.
+
 # 2.22.1.0
 
 # Added

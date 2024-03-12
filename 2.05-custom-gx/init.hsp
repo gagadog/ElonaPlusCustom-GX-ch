@@ -1203,7 +1203,7 @@ if instr(s,0,%1)!-1{	%c\
 			chatc@DP = CHARA_PLAYER
 		}
 		if ( msgtemp != "" & ( instr(msgtemp, 0, "\"") != (-1) | instr(msgtemp, 0, "*") != (-1)  | instr(msgtemp, 0, "「") != (-1) ) ) {
-			DamagePopupAdd msgtemp, chatc@DP, DMGPOPUP_REMOVE_CONDITION, 9999
+			DamagePopupAddChat msgtemp, chatc@DP
 		}
 	}
 	chatc@DP = 0

@@ -59,6 +59,7 @@
 		if ( spellused@tcg == 0 ) {
 			if ( cardstack@tcg(TCG_STACK_ACTION, stack@tcg - 1) == TCG_ACTION_ATTACKING & card@tcg(TCG_CARD_LOCATION, cc@tcg) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, cc@tcg) != TCG_LOCATION_HAND ) {
 				cardstack@tcg(TCG_STACK_ACTION, stack@tcg - 1) = TCG_ACTION_NONE
+				attackingcard@tcg = -1
 			}
 			if ( cardstack@tcg(TCG_STACK_ACTION, stack@tcg - 1) == TCG_ACTION_ATTACKING ) {
 				attackingcard@tcg = cc@tcg
@@ -157,13 +158,26 @@
 	_switch_val@tcg = act@tcg
 	if ( _switch_val@tcg == TCG_ACTION_ATTACKING | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
+		if ( attackingcard@tcg == (-1) ) {
+			goto *actionproc_SWEND1
+		}
 		if ( attacktarget@tcg != (-1) ) {
-			if ( cdbit(TCG_BIT_VIGILANCE, attacktarget@tcg) | cdbit(TCG_BIT_DEFENDER, attacktarget@tcg) ) {
-				card@tcg(TCG_CARD_STATUS, attacktarget@tcg) = TCG_ACTION_NONE
-			} else {
-				card@tcg(TCG_CARD_STATUS, attacktarget@tcg) = TCG_ACTION_DEFENDING
-				cdbitmod TCG_BIT_EXHAUSTED, attacktarget@tcg, 1
+			forcedcombat@tcg = 0
+			if ( aeff@tcg >= 0 & aeff@tcg < maxcard@tcg ) {
+				forcedcombat@tcg = (aeff@tcg == attacktarget@tcg)
 			}
+			if ( forcedcombat@tcg & card@tcg(TCG_CARD_STATUS, attacktarget@tcg) != TCG_ACTION_ATTACKING ) {
+				card@tcg(TCG_CARD_STATUS, attacktarget@tcg) = TCG_ACTION_NONE
+				cdbitmod TCG_BIT_EXHAUSTED, attacktarget@tcg, 0
+			} else {
+				if ( cdbit(TCG_BIT_VIGILANCE, attacktarget@tcg) | cdbit(TCG_BIT_DEFENDER, attacktarget@tcg) ) {
+					card@tcg(TCG_CARD_STATUS, attacktarget@tcg) = TCG_ACTION_NONE
+					cdbitmod TCG_BIT_EXHAUSTED, attacktarget@tcg, 0
+				} else {
+					card@tcg(TCG_CARD_STATUS, attacktarget@tcg) = TCG_ACTION_DEFENDING
+					cdbitmod TCG_BIT_EXHAUSTED, attacktarget@tcg, 1
+				}
+			}			
 			if ( cp@tcg == TCG_CONTROLLER_PLAYER ) {
 				card@tcg(TCG_CARD_Y_MOVETO, attacktarget@tcg) += 25
 			}

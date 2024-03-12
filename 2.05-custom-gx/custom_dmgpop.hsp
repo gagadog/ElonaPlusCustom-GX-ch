@@ -107,6 +107,31 @@
 
     return
 
+#deffunc DamagePopupAddChat str prm_text, int prm_cc
+    if ( cfg_dmgpopup_chat == FALSE ) { return }
+    s@DP = prm_text
+    sreplace s@DP, s@DP, "\"", ""
+    sreplace s@DP, s@DP, ".", ".@"
+    sreplace s@DP, s@DP, ",", ",@"
+    sreplace s@DP, s@DP, "!", "!@"
+    sreplace s@DP, s@DP, "?", "?@"
+    sdim dialogs@DP, 20
+    split s@DP, "@", dialogs@DP
+    repeat length(dialogs@DP)
+        s@DP = dialogs@DP(cnt)
+        if ( s@DP == "" ) { break }
+        if ( cnt < length(dialogs@DP) - 1 ) {
+            if ( dialogs@DP(cnt + 1) != "" ) {
+                if ( strlen(s@DP) < 15 | strlen(dialogs@DP(cnt + 1)) < 8 ) {
+                    dialogs@DP(cnt + 1) = s@DP + dialogs@DP(cnt + 1)
+                    continue
+                }
+            }
+        }
+        DamagePopupAdd s@DP, prm_cc, DMGPOPUP_REMOVE_CONDITION, 9999
+    loop
+    return
+
 #deffunc DamagePopupAdd str prm_text, int prm_cc, int prm_type, int prm_extra
     if ( cfg_dmgpopups == FALSE ) {
         return
@@ -128,11 +153,6 @@
     }
     if ( cfg_dmgpopup_evade == FALSE ) {
         if ( prm_type == DMGPOPUP_MISS | prm_type == DMGPOPUP_EVADE ) {
-            return
-        }
-    }
-    if ( cfg_dmgpopup_chat == FALSE ) {
-        if ( prm_extra == 9999 ) {
             return
         }
     }
@@ -176,6 +196,38 @@
 
     DmgPopupNext = (DmgPopupNext + 1) \ length2(DmgPopups)
 
+    return
+
+#deffunc DamagePopupNPCNameSplit
+    s@DP = s@DP, ""
+    sreplace s@DP, s@DP, " <", "<"
+    sreplace s@DP, s@DP, "> ", ">"
+    sdim names@DP, 2
+    // Extract name inside <> bracket:  a->a,_  a<b>c-><b>,ac
+    split s@DP, "<", names@DP
+    if ( instr(names@DP(1), 0, ">") != (-1) ) {
+        s@DP = names@DP(0), names@DP(1)
+        split s@DP(1), ">", names@DP
+        s@DP(1) = s@DP(0) + names@DP(1)
+        s@DP = "<" + names@DP(0) + ">"
+        // Remove starting "the " from alias
+        if ( instr(s@DP(1), 0, "the ") != (-1) & instr(s@DP(1), 1, "the ") == (-1) ) {
+            split s@DP(1), "the ", names@DP
+            s@DP(1) = names@DP(1)
+        }
+    }
+    // If not unique, split with " the " ("A the mercenary")
+    if ( instr(s@DP, 0, " the ") != (-1) ) {
+        split s@DP, " the ", names@DP
+        s@DP = names@DP(0), names@DP(1)
+    }
+    // Swap Name and alias to print alias at top. Capitalize alias
+    names@DP = s@DP(1), s@DP(0)
+    s@DP = capitalize(names@DP(0),1), names@DP(1)
+    // Put name at alias space if no alias.
+    if ( s@DP(0) == "" ) {
+        s@DP(0) = s@DP(1), ""
+    }
     return
 
 *DamagePopupsDraw
@@ -228,22 +280,28 @@
 			}
 			if ( fov_los(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx@DP, dy@DP) == 0 ) {
 				continue
-			}
-            s@DP = cdatan(CDATAN_NAME, cnt) // + "("+cdata(CDATA_ROLE, cnt)+")"
-            DmgPopupP = cdata(CDATA_PIC, cnt) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cnt) * COLOR_TINT_MULT
-            if ( cdata(CDATA_PIC, cnt) >= xy2pic(1, 21) & cdata(CDATA_PIC, cnt) <= xy2pic(31, 21) ) {
-                DmgPopupP = cdata(CDATA_PIC, cnt)
             }
-            DmgPopupX = (dx@DP - scx) * inf_tiles + inf_screenx - strlen(s@DP) * (2 + cfg_dmgfont + 1) / 2 / 2 + inf_tiles / 2
-            DmgPopupY = (dy@DP - scy) * inf_tiles + inf_screeny - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
-            DmgPopupX += (scx != scxbk) * sxfix
-            DmgPopupY += (scy != scybk) * syfix
-            if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver ) {
-                continue
+            c@DP = cnt
+            s@DP = cdatan(CDATAN_NAME, c@DP)
+            DmgPopupP = cdata(CDATA_PIC, c@DP) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, c@DP) * COLOR_TINT_MULT
+            if ( cdata(CDATA_PIC, c@DP) >= xy2pic(1, 21) & cdata(CDATA_PIC, c@DP) <= xy2pic(31, 21) ) {
+                DmgPopupP = cdata(CDATA_PIC, c@DP)
             }
-            pos DmgPopupX, DmgPopupY
-            color 0, 0, 0
-            bmes s@DP, DmgPopupColorsNPCName(0, DmgPopupR), DmgPopupColorsNPCName(1, DmgPopupR), DmgPopupColorsNPCName(2, DmgPopupR)
+            DamagePopupNPCNameSplit
+            repeat 2
+                if ( cnt >= length(s@DP) ) { break }
+                if ( strlen(s@DP(cnt)) == 0 ) { continue }
+                DmgPopupX = (dx@DP - scx) * inf_tiles + inf_screenx - strlen(s@DP(cnt)) * (2 + cfg_dmgfont + 1 + cfg_dmgfontshift) / 2 / 2 + inf_tiles / 2
+                DmgPopupY = (dy@DP - scy) * inf_tiles + inf_screeny - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20 + cnt * ((-2) - cfg_dmgfont)
+                DmgPopupX += (scx != scxbk) * sxfix
+                DmgPopupY += (scy != scybk) * syfix
+                if (DmgPopupY < 0 | DmgPopupY + (2 + cfg_dmgfont + 3) > inf_ver ) {
+                    continue
+                }
+                pos DmgPopupX, DmgPopupY
+                color 0, 0, 0
+                bmes s@DP(cnt), DmgPopupColorsNPCName(0, DmgPopupR), DmgPopupColorsNPCName(1, DmgPopupR), DmgPopupColorsNPCName(2, DmgPopupR)
+            loop
         loop
     }
     /********** JAMES CUSTOM - BEGINNING **********/
@@ -285,13 +343,13 @@
             s@DP = DmgPopupTexts(i@DP)
 
             DmgPopFontInc = 0
-            if ( DmgPopups(8, i@DP) != 9999 & ( DmgPopups(9, i@DP) == DMGPOPUP_NORMAL_DAMAGE | DmgPopups(9, i@DP) == DMGPOPUP_ELEM_DAMAGE ) ) {
+            if ( cfg_dmgexplode & DmgPopups(8, i@DP) != 9999 & ( DmgPopups(9, i@DP) == DMGPOPUP_NORMAL_DAMAGE | DmgPopups(9, i@DP) == DMGPOPUP_ELEM_DAMAGE ) ) {
                 if ( (t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1) + popupY@DP * (2 + cfg_dmgfont + 3) < cfg_dmgfont) {
                     DmgPopFontInc = cfg_dmgfont - ((t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1) - popupY@DP * (2 + cfg_dmgfont + 3))
                 }
             }
 
-            DmgPopupX = (cdata(CDATA_X, cc@DP) - scx) * inf_tiles + inf_screenx - strlen(s@DP) * (2 + cfg_dmgfont + 1 + DmgPopFontInc) / 2 / 2 + inf_tiles / 2
+            DmgPopupX = (cdata(CDATA_X, cc@DP) - scx) * inf_tiles + inf_screenx - strlen(s@DP) * (2 + cfg_dmgfont + 1 + DmgPopFontInc + cfg_dmgfontshift) / 2 / 2 + inf_tiles / 2
             DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3 + DmgPopFontInc) - (t@DP - dt@DP) / (cfg_dmgspeed * 5 + 1)
             if (DmgPopups(8, i@DP) == 9999) {
                 DmgPopupP = cdata(CDATA_PIC, cc@DP) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, cc@DP) * COLOR_TINT_MULT
@@ -300,7 +358,7 @@
                 }
                 DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3) - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
                 if ( cfg_showNpcName > 0 ) {
-                    DmgPopupY += (-2) - cfg_dmgfont
+                    DmgPopupY += 2 * ((-2) - cfg_dmgfont)
                 }
             }
             DmgPopupX += (scx != scxbk) * sxfix
