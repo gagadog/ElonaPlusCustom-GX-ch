@@ -21190,6 +21190,8 @@
 			txt lang(" *ブシュッ* ", "*Gash*")
 			gdata(GDATA_DMG_TYPE) = 2
 			txt3rd = 1
+			cdata(CDATA_RELATION, tc) = RELATION_ENEMY // JAMES CUSTOM - fix layhanded inmate not dying.
+			cdata(CDATA_RELATION_ORG, tc) = RELATION_ENEMY // JAMES CUSTOM - fix karma lost.
 			txt lang(name(cc) + "は" + name(tc) + "の首をちょんぎり", name(cc) + " cut" + _s(cc) + " " + name(tc) + your(tc) + " head and")
 			dmghp tc, cdata(CDATA_MAX_HP, tc), DAMAGE_FROM_CHARA, SKILL_SPACT_DECAPITATION
 			if ( cdata(CDATA_EXIST, tc) != CHAR_STATE_DEAD ) {

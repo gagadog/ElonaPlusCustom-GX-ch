@@ -109,8 +109,13 @@
 
 #deffunc DamagePopupAddChat str prm_text, int prm_cc
     if ( cfg_dmgpopup_chat == FALSE ) { return }
+    if ( cfg_showNameChatMultiline == FALSE ) {
+        DamagePopupAdd prm_text, prm_cc, DMGPOPUP_REMOVE_CONDITION, 9999
+        return 
+    }
     s@DP = prm_text
-    sreplace s@DP, s@DP, "\"", ""
+    sreplace s@DP, s@DP, "\" ", "\"@ "
+    sreplace s@DP, s@DP, " \"", " @\""
     sreplace s@DP, s@DP, ".", ".@"
     sreplace s@DP, s@DP, ",", ",@"
     sreplace s@DP, s@DP, "!", "!@"
@@ -119,7 +124,7 @@
     split s@DP, "@", dialogs@DP
     repeat length(dialogs@DP)
         s@DP = dialogs@DP(cnt)
-        if ( s@DP == "" ) { break }
+        if ( s@DP == "" & cnt > 0 ) { break }
         if ( cnt < length(dialogs@DP) - 1 ) {
             if ( dialogs@DP(cnt + 1) != "" ) {
                 if ( strlen(s@DP) < 15 | strlen(dialogs@DP(cnt + 1)) < 8 ) {
@@ -198,7 +203,8 @@
 
     return
 
-#deffunc DamagePopupNPCNameSplit
+#deffunc DamagePopupNPCNameSplit // needs  s@DP c@DP
+    if ( cfg_showNameChatMultiline == FALSE ) { return }
     s@DP = s@DP, ""
     sreplace s@DP, s@DP, " <", "<"
     sreplace s@DP, s@DP, "> ", ">"
@@ -211,7 +217,7 @@
         s@DP(1) = s@DP(0) + names@DP(1)
         s@DP = "<" + names@DP(0) + ">"
         // Remove starting "the " from alias
-        if ( instr(s@DP(1), 0, "the ") != (-1) & instr(s@DP(1), 1, "the ") == (-1) ) {
+        if ( cdata(CDATA_QUALITY, c@DP) != FIX_QUALITY_UNIQUE & instr(s@DP(1), 0, "the ") != (-1) & instr(s@DP(1), 1, "the ") == (-1) ) {
             split s@DP(1), "the ", names@DP
             s@DP(1) = names@DP(1)
         }
@@ -288,7 +294,7 @@
                 DmgPopupP = cdata(CDATA_PIC, c@DP)
             }
             DamagePopupNPCNameSplit
-            repeat 2
+            repeat 1 + (cfg_showNameChatMultiline != FALSE)
                 if ( cnt >= length(s@DP) ) { break }
                 if ( strlen(s@DP(cnt)) == 0 ) { continue }
                 DmgPopupX = (dx@DP - scx) * inf_tiles + inf_screenx - strlen(s@DP(cnt)) * (2 + cfg_dmgfont + 1 + cfg_dmgfontshift) / 2 / 2 + inf_tiles / 2
@@ -358,7 +364,7 @@
                 }
                 DmgPopupY = (cdata(CDATA_Y, cc@DP) - scy) * inf_tiles + inf_screeny - popupY@DP * (2 + cfg_dmgfont + 3) - chipc(CHIPC_HEIGHT, DmgPopupP \ length2(chipc)) + 20
                 if ( cfg_showNpcName > 0 ) {
-                    DmgPopupY += 2 * ((-2) - cfg_dmgfont)
+                    DmgPopupY += (-2 - cfg_dmgfont) * (1 + (cfg_showNameChatMultiline != FALSE))
                 }
             }
             DmgPopupX += (scx != scxbk) * sxfix

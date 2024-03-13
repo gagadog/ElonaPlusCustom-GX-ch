@@ -1102,6 +1102,7 @@
 		gosub *com_ally
 		if ( stat != (-1) ) {
 			c = stat
+			cdata(CDATA_EXIST, c) = CHAR_STATE_ALIVE // JAMES CUSTOM - FIX STANDBY ALLY CAMP BUG
 			snd SOUNDLIST_OK1
 			txtnew
 			cdata(CDATA_X_ORG, c) = cdata(CDATA_X, c)

@@ -118209,7 +118209,7 @@
 		if ( dbmode == DBMODE_FLAVOR_PASSIVE ) {
 			txtmore
 			txtef COLOR_SKY_BLUE
-			txt lang("「もえちゃえ」", "You hear a someone making ticking sounds, followed by a pantomimed 'Ka-BOOOOM', followed by maniacal laughter."), lang("「クズね。この世界は」", cnvtalk("He says to me, he says to me, 'Baby I'm TIRED of workin' for the MAN!' I says, I says, WHY DON'T YOU BLOW HIM TO BITS?")), lang("「あたし、綺麗かしら？」", cnvtalk("You got STYLE, baby. But if you're going to be a real villain, you gotta get a gimmick.' And so I go I says YEAH, baby. A gimmick, that's it. High explosives."))
+			txt lang("「もえちゃえ」", "You hear a someone making ticking sounds, followed by a pantomimed 'Ka-BOOOOM', followed by maniacal laughter."), lang("「クズね。この世界は」", cnvtalk("He says to me, he says to me, \"Baby I'm TIRED of workin' for the MAN!\" I says, I says, WHY DON'T YOU BLOW HIM TO BITS?")), lang("「あたし、綺麗かしら？」", cnvtalk("You got STYLE, baby. But if you're going to be a real villain, you gotta get a gimmick.' And so I go I says YEAH, baby. A gimmick, that's it. High explosives."))
 			return 1
 		}
 		if ( dbmode == DBMODE_FLAVOR_ANGERED ) {

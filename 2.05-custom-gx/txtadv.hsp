@@ -87,7 +87,6 @@
 	/********** JAMES CUSTOM - BEGINNING **********/ // Fix sleeping crashes caused by uninitiated atxinfon (type mismatch).
 	atxinfon(0) = ""
 	/********** JAMES CUSTOM - ENDING **********/ // Fix sleeping crashes
-	atxci = inv(INV_ITEM_ID, limit(ci,0,MAX_INV_DATA-1))
 	redraw 0
 	if ( atxid == 2 ) {
 		goto *atx_RE
@@ -792,11 +791,7 @@
 	chatList 0, lang("店を出る", "Later.")
 	chatList 1, lang("ブラックジャック", "I want to play Blackjack.")
 	/********** JAMES CUSTOM - SLOTS - BEGINNING **********/
-	if ( atxci == ITEM_ID_SLOT_MACHINE | atxci == ITEM_ID_PACHISURO_MACHINE ) {
-		listmax = 0
-		chatList 0, lang("店を出る", "Later.")
-		chatList 1, lang("ブラックジャック", "I want to play Slots.")
-	}
+	chatList 12345, lang("ブラックジャック", "I want to play Slots.")
 	/********** JAMES CUSTOM - SLOTS - ENDING **********/
 	chatesc = 0
 	txtadvmsgfix = 0
@@ -806,13 +801,13 @@
 		goto *com_txtAdvQuit
 	}
 	if ( rtval == 1 ) {
-		/********** JAMES CUSTOM - SLOTS - BEGINNING **********/
-		if ( atxci == ITEM_ID_SLOT_MACHINE | atxci == ITEM_ID_PACHISURO_MACHINE ) {
-			goto *adv_casinoSlots
-		}
-		/********** JAMES CUSTOM - SLOTS - ENDING **********/
 		goto *adv_casinoBlackJack
 	}
+	/********** JAMES CUSTOM - SLOTS - BEGINNING **********/
+	if ( rtval == 12345 ) {
+		goto *adv_casinoSlots
+	}
+	/********** JAMES CUSTOM - SLOTS - ENDING **********/
 	goto *adv_casinoCard
 
 *adv_casinoBlackJack

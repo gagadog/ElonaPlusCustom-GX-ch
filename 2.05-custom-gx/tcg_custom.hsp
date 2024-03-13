@@ -1528,7 +1528,7 @@
 		deck_opponent(CREATURE_ID_CHAOSHAPRINCESS_ZEHLS) = 1
 		return 1
 	}
-	if ( cdata(CDATA_ID, tc) == CREATURE_ID_SLAN_THE_SHADOW_OF_PALMIA | cdata(CDATA_ID, tc) == CREATURE_ID_KARAM_THE_LONELY_WOLF_OF_KARUNE | cdata(CDATA_ID, tc) == CREATURE_ID_MARKS_THE_GREAT_THIEF | cdata(CDATA_ID, tc) == CREATURE_ID_SIN_THE_THIEF_GUILDMASTER | cdata(CDATA_ID, tc) == CREATURE_ID_ABYSS_THE_THIEF_WATCHMAN ) {
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_SLAN_THE_SHADOW_OF_PALMIA | cdata(CDATA_ID, tc) == CREATURE_ID_KARAM_THE_LONELY_WOLF_OF_KARUNE | cdata(CDATA_ID, tc) == CREATURE_ID_MARKS_THE_GREAT_THIEF | cdata(CDATA_ID, tc) == CREATURE_ID_SIN_THE_THIEF_GUILDMASTER | cdata(CDATA_ID, tc) == CREATURE_ID_ABYSS_THE_THIEF_WATCHMAN  | cdata(CDATA_ID, tc) == CREATURE_ID_NAGA_THE_THIEF_REPORTER ) {
 		deck_opponent(CREATURE_ID_ELDER) = 2
 		deck_opponent(CREATURE_ID_INFORMER) = 2
 		deck_opponent(CREATURE_ID_ROCK_THROWER) = 2
@@ -1550,6 +1550,28 @@
 		deck_opponent(CREATURE_ID_KARAM_THE_LONELY_WOLF_OF_KARUNE) = 1
 		deck_opponent(CREATURE_ID_NAGA_THE_THIEF_REPORTER) = 1
 		deck_opponent(CREATURE_ID_MARKS_THE_GREAT_THIEF) = 1
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_REVLUS_THE_MAGE_GUILDMASTER | cdata(CDATA_ID, tc) == CREATURE_ID_LEXUS_THE_MAGE_WATCHMAN | cdata(CDATA_ID, tc) == CREATURE_ID_LENAS_THE_MAGE_REPORTER ) {
+		deck_opponent(CREATURE_ID_MISSIONARY_OF_DARKNESS) = 4
+		deck_opponent(CREATURE_ID_GREAT_RACE_OF_YITH) = 1
+		deck_opponent(CREATURE_ID_SHUB_NIGGURATH) = 2
+		deck_opponent(CREATURE_ID_EXILE) = 2
+		deck_opponent(CREATURE_ID_REVLUS_THE_MAGE_GUILDMASTER) = 1
+		deck_opponent(CREATURE_ID_MAGE_GUILD_MEMBER) = 2
+		deck_opponent(CREATURE_ID_LEXUS_THE_MAGE_WATCHMAN) = 1
+		deck_opponent(CREATURE_ID_EULDERNA_SUMMONKNIGHT) = 4
+		deck_opponent(CREATURE_ID_NYARLATHOTEP) = 1
+		deck_opponent(CREATURE_ID_TSATHOGGUA) = 1
+		deck_opponent(CREATURE_ID_WRANG_WRANG) = 2
+		deck_opponent(CREATURE_ID_LENAS_THE_MAGE_REPORTER) = 1
+		deck_opponent(CREATURE_ID_CTHUGHA) = 1
+		deck_opponent(CREATURE_ID_MAGIC_ARCHER) = 4
+		deck_opponent(CREATURE_ID_PALACE_MAGICIAN) = 2
+		deck_opponent(CREATURE_ID_BISQUE_DOLL) = 2
+		deck_opponent(CREATURE_ID_CRIMSON_DARK_GUARDIAN) = 1
+		deck_opponent(CREATURE_ID_BLUE_DARK_GUARDIAN) = 1
+		deck_opponent(CREATURE_ID_GREEN_DARK_GUARDIAN) = 1
 		return 1
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_GILBERT_THE_COLONEL ) {
@@ -1728,6 +1750,38 @@
 		deck_opponent(CREATURE_ID_KIWI) = 1
 		deck_opponent(CREATURE_ID_CHAOS_SEED) = 1
 		deck_opponent(CREATURE_ID_MOSTMUSCYLLA) = 4
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_LEAD_DEVELOPER_DR_GAVELA | cdata(CDATA_ID, tc) == CREATURE_ID_MOBILE_COMMUNICATION_EQUIPMENT | cdata(CDATA_ID, tc) == CREATURE_ID_MELUGAST_TYPE0_THE_DIMENSION_DRIVER | cdata(CDATA_ID, tc) == CREATURE_ID_MELUGAST_AO_I_THE_DIMENSION_DRIVER ) {
+		deck_opponent(CREATURE_ID_YERLES_MACHINE_INFANTRY) = 3
+		deck_opponent(CREATURE_ID_YERLES_ELITE_MACHINE_INFANTRY) = 2
+		deck_opponent(CREATURE_ID_MILITARY_PUTIT) = 3
+		deck_opponent(CREATURE_ID_PUTIT_TANK) = 2
+		deck_opponent(CREATURE_ID_BARD) = 2
+		deck_opponent(CREATURE_ID_QUANTUM_CREATURE) = 1
+		deck_opponent(CREATURE_ID_YERLES_COMBAT_PLANE) = 4
+		deck_opponent(CREATURE_ID_LEAD_DEVELOPER_DR_GAVELA) = 1
+		deck_opponent(CREATURE_ID_MOBILE_COMMUNICATION_EQUIPMENT) = 1
+		deck_opponent(CREATURE_ID_YERLES_LATEST_OUTFIT_SOLDIER) = 1
+		deck_opponent(CREATURE_ID_YERLES_CYBORG_SOLDIER) = 1
+		deck_opponent(CREATURE_ID_YERLESWOOD_TYPE_M) = 3
+		deck_opponent(CREATURE_ID_YERLES_SELF_PROPELLED_GUN) = 3
+		deck_opponent(CREATURE_ID_SECURITY_SYSTEM) = 2
+		deck_opponent(CREATURE_ID_YERLES_MORTAR) = 2
+		deck_opponent(CREATURE_ID_GRAVITY_CANNON) = 1
+		deck_opponent(CREATURE_ID_YERLESWOOD_THE_SAVAGE_MACHINE) = 1
+		if ( gdata(GDATA_FLAG_MAIN) >= 368 ) {
+			deck_opponent(CREATURE_ID_MELUGAST_TYPE0_THE_DIMENSION_DRIVER) = 1
+		}
+		if ( gdata(GDATA_FLAG_MAIN) >= 390 ) {
+			deck_opponent(CREATURE_ID_YERLESWOOD_NEO) = 1
+		}
+		if ( gdata(GDATA_FLAG_MAIN) >= 480 ) {
+			deck_opponent(CREATURE_ID_MELUGAST_TYPEM) = 2
+		}
+		if ( gdata(GDATA_FLAG_MAIN) >= 740 ) {
+			deck_opponent(CREATURE_ID_MELUGAST_AO_I_THE_DIMENSION_DRIVER) = 1
+		}
 		return 1
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_IRMA_THE_INDOMITABLE_SMITH ) {
@@ -6041,7 +6095,7 @@
 		cardrefdomain = 2
 		cardrefcost = 4
 		cardrefattack = 6
-		cardrefhp = 2
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_YERLESLATESTOUTFIT
 		cardrefbits = "64"
 		return 1
@@ -6136,8 +6190,8 @@
 		cardreflvl = 114
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 6
-		cardrefattack = 5
+		cardrefcost = 7
+		cardrefattack = 4
 		cardrefhp = 8
 		cardrefskillid = TCG_EFF_HEINRICH
 		cardrefbits = "6,64"
@@ -7756,7 +7810,7 @@
 		cardrefcost = 8
 		cardrefattack = 4
 		cardrefhp = 8
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALALLENEMY5DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALALLENEMY3DAMAGE
 		cardrefbits = "7,12"
 		return 1
 	}
@@ -10224,7 +10278,7 @@
 		cardrefcost = 9
 		cardrefattack = 10
 		cardrefhp = 14
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALALLENEMY5DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALALLENEMY3DAMAGE
 		cardrefbits = "5,30"
 		return 1
 	}
@@ -11017,10 +11071,10 @@
 		cardreflvl = 85
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
-		cardrefcost = 4
+		cardrefcost = 5
 		cardrefattack = 4
-		cardrefhp = 6
-		cardrefskillid = TCG_EFF_NONE
+		cardrefhp = 8
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALRANDOMENEMY3DAMAGE
 		cardrefbits = "9,21,64"
 		return 1
 	}
@@ -11030,9 +11084,9 @@
 		cardreflvl = 163
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
-		cardrefcost = 5
-		cardrefattack = 7
-		cardrefhp = 4
+		cardrefcost = 4
+		cardrefattack = 5
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "6,64"
 		return 1
@@ -11043,9 +11097,9 @@
 		cardreflvl = 135
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
-		cardrefcost = 6
-		cardrefattack = 8
-		cardrefhp = 4
+		cardrefcost = 7
+		cardrefattack = 4
+		cardrefhp = 12
 		cardrefskillid = TCG_EFF_BATTLECRY_GRAVITYALLENEMY
 		cardrefbits = "9,21,64"
 		return 1
@@ -11056,8 +11110,8 @@
 		cardreflvl = 112
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
-		cardrefcost = 5
-		cardrefattack = 5
+		cardrefcost = 6
+		cardrefattack = 7
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "8,15,64"
@@ -11097,8 +11151,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
 		cardrefcost = 3
-		cardrefattack = 6
-		cardrefhp = 2
+		cardrefattack = 2
+		cardrefhp = 6
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "9,21,64"
 		return 1
@@ -11122,8 +11176,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 2
 		cardrefcost = 1
-		cardrefattack = 3
-		cardrefhp = 1
+		cardrefattack = 1
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "9,21,64"
 		return 1
@@ -13765,7 +13819,7 @@
 		cardrefclass = "gunner"
 		cardreflvl = 6
 		cardrefquality = FIX_QUALITY_GOOD
-		cardrefdomain = 0
+		cardrefdomain = 2
 		cardrefcost = 1
 		cardrefattack = 1
 		cardrefhp = 2
@@ -15579,10 +15633,10 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 9
-		cardrefattack = 15
-		cardrefhp = 8
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALRANDOMENEMY6DAMAGE
-		cardrefbits = "6,12"
+		cardrefattack = 8
+		cardrefhp = 15
+		cardrefskillid = TCG_EFF_BATTLECRY_DESTROYCHOSENENEMY
+		cardrefbits = "6,12,21,30"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_MELUGAST_TYPE0_THE_DIMENSION_DRIVER ) {
@@ -15621,10 +15675,10 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 7
-		cardrefattack = 9
+		cardrefattack = 10
 		cardrefhp = 6
-		cardrefskillid = TCG_EFF_NONE
-		cardrefbits = "6,12"
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALCHOSENENEMY5DAMAGE
+		cardrefbits = "6,12,30"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_UTIMA_THE_DESTROYER_OF_XEREN ) {
@@ -16869,9 +16923,9 @@
 		cardreflvl = 76
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 5
+		cardrefcost = 4
 		cardrefattack = 6
-		cardrefhp = 6
+		cardrefhp = 4
 		cardrefskillid = TCG_EFF_BATTLECRY_DRAW2CARD
 		cardrefbits = "7,30"
 		return 1

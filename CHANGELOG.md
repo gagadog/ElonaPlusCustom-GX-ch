@@ -1,11 +1,20 @@
 # Upcoming
 
+# Added
+- Pop-Up: Settings to adjust horizontal-shift for font of different size.
+- Chat Pop-Up: A EX Setting to multi-line the overlong names/dialogs.
+
 # Changed
-- Show NPC name: Names are splitted to prevent overlap.
-- Chat Pop-Up: Overlong dialogs are separated into multiple lines.
-- Damage Pop-Up: font size increase is now a hidden config named: "dmgPopupExplode"
+- Pop-Up: font size increase is now a hidden config named: "dmgPopupExplode"
+- Revert 2.08 elemental tweak: Removed Constituion-Resist revert.
+- TCG: 
+  - Buffed some Yerles/Machine cards.
+  - Gave Gavela and Mage Guild Uniques new decks.
 
 # Fixed
+- (Plus) Critical rate from predator class and magnetism not working.
+- (Plus) Bugs caused by Containing a standby inmate.
+- (Plus) Bugs caused by inmate surviving execution due to Lay Hand.
 - TCG: Forced attack related bugs.
 
 # 2.22.1.0

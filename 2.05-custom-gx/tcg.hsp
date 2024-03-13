@@ -778,14 +778,16 @@
 	return
 
 #deffunc tcgpass int tcgpass_arg1
-	animeseq@tcg = 1
+	animeseqbk@tcg = animeseq@tcg
+	animeseq@tcg = 2
 	repeat limit(tcgpass_arg1, 0, 50)
 		tcgdraw
 	loop
-	animeseq@tcg = 0
+	animeseq@tcg = animeseqbk@tcg
 	return
 
 #deffunc tcgdraw
+	if ( animeseq@tcg == 1 ) { return }
 	if ( debug ) {
 		title " L:" + looplev + " S:" + sublev
 	}
@@ -974,7 +976,7 @@
 		await 15
 		redraw 1
 	}
-	if ( anime@tcg == 0 | animeseq@tcg == 1 ) {
+	if ( anime@tcg == 0 | animeseq@tcg == 2 ) {
 		goto *tcgdraw_WEND1
 	}
 	goto *tcgdraw_WHILE1

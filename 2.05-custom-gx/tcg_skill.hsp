@@ -1315,14 +1315,22 @@
 			if ( card@tcg(TCG_CARD_REF_DBID, aeft@tcg) == CREATURE_ID_YERLES_LATEST_OUTFIT_SOLDIER ) { dbid = CREATURE_ID_YERLES_CYBORG_SOLDIER }
 			if ( card@tcg(TCG_CARD_REF_DBID, aeft@tcg) == CREATURE_ID_YERLES_SELF_PROPELLED_GUN ) { dbid = CREATURE_ID_SECURITY_SYSTEM }
 			if ( card@tcg(TCG_CARD_REF_DBID, aeft@tcg) == CREATURE_ID_SECURITY_SYSTEM ) { dbid = CREATURE_ID_YERLES_MORTAR }
+			if ( card@tcg(TCG_CARD_REF_DBID, aeft@tcg) == CREATURE_ID_YERLES_MORTAR ) { dbid = CREATURE_ID_GRAVITY_CANNON }
 			if ( dbid >= 0) {
-				costbk@tcg = card@tcg(TCG_CARD_COST, aeft@tcg)
+				costbk@tcg = card@tcg(TCG_CARD_REF_COST, aeft@tcg)
 				create_card aeft@tcg, dbid
-				card@tcg(TCG_CARD_COST, aeft@tcg) = costbk@tcg
+				card@tcg(TCG_CARD_REF_COST, aeft@tcg) = costbk@tcg
 				cdbitmod TCG_BIT_FACE_UP, aeft@tcg, 1
 				if ( card@tcg(TCG_CARD_STATUS, aeft@tcg) != TCG_ACTION_NONE ) {
 					cdbitmod TCG_BIT_EXHAUSTED, aeft@tcg, 1
 				}
+				card@tcg(TCG_CARD_X_MOVETO, ac@tcg) = card@tcg(TCG_CARD_X, aeft@tcg) - 8, card@tcg(TCG_CARD_Y, aeft@tcg) + 40 - 80 * (ap@tcg != 0)
+				tcgpass 20
+				efllistaddcard 18, aeft@tcg
+				makecardlist
+				cardpos ap@tcg, -1
+				cardposhand ap@tcg, -1
+				tcgpass 15
 				if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) == TCG_SKILL_TYPE_BATTLECRY & card@tcg(TCG_CARD_LOCATION, aeft@tcg) == TCG_LOCATION_FIELD ) {
 					effac@tcg = aeft@tcg
 					eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
@@ -1626,26 +1634,56 @@
 		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
 			aeftbk@tcg = aeft@tcg
 			apbk@tcg = ap@tcg
-			repeat 1 // Used to be 2, but too slow and op
-				if ( getspotsum(aeftbk@tcg) < 8 ) {
-					create_extra_card aeftbk@tcg, CREATURE_ID_YERLES_MACHINE_INFANTRY
-					if ( cextra@tcg >= 0 ) {
-						putcard cextra@tcg, apbk@tcg
-					}
+			acbk@tcg = ac@tcg
+			animeseq@tcg = 1
+			cardsgenerated@tcg = 0, 0
+			xbk2@tcg = card@tcg(TCG_CARD_X, ac@tcg), card@tcg(TCG_CARD_Y, ac@tcg)
+			repeat 2
+				create_extra_card aeftbk@tcg, CREATURE_ID_YERLES_MACHINE_INFANTRY
+				if ( cextra@tcg >= 0 ) { 
+					cardsgenerated@tcg(0)++
+					card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_ANIM 
+					cdbitmod TCG_BIT_FACE_UP, cextra@tcg, 1
+					card@tcg(TCG_CARD_X, cextra@tcg) = card@tcg(TCG_CARD_X, acbk@tcg), card@tcg(TCG_CARD_Y, acbk@tcg), card@tcg(TCG_CARD_X, acbk@tcg) - 40 + 80 * cnt, card@tcg(TCG_CARD_Y, acbk@tcg) - 104 + 208 * (apbk@tcg != 0)
 				}
-				if ( getspotsum(aeftbk@tcg) < 8 ) {
-					create_extra_card aeftbk@tcg, CREATURE_ID_YERLES_SELF_PROPELLED_GUN
-					if ( cextra@tcg >= 0 ) {
-						putcard cextra@tcg, apbk@tcg
-					}
+				create_extra_card aeftbk@tcg, CREATURE_ID_YERLES_SELF_PROPELLED_GUN
+				if ( cextra@tcg >= 0 ) { 
+					cardsgenerated@tcg(0)++
+					card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_ANIM 
+					cdbitmod TCG_BIT_FACE_UP, cextra@tcg, 1
+					card@tcg(TCG_CARD_X, cextra@tcg) = card@tcg(TCG_CARD_X, acbk@tcg), card@tcg(TCG_CARD_Y, acbk@tcg), card@tcg(TCG_CARD_X, acbk@tcg) - 80 + 160 * cnt, card@tcg(TCG_CARD_Y, acbk@tcg)
 				}
-				if ( getholdersum(aeftbk@tcg) < 8 ) {
-					create_extra_card aeftbk@tcg, CREATURE_ID_YERLES_COMBAT_PLANE
-					if ( cextra@tcg >= 0 ) {
-						gettargetcard cextra@tcg
-					}
+				create_extra_card aeftbk@tcg, CREATURE_ID_YERLES_COMBAT_PLANE
+				if ( cextra@tcg >= 0 ) { 
+					cardsgenerated@tcg(0)++
+					cardsgenerated@tcg(1)++
+					card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_ANIM 
+					cdbitmod TCG_BIT_FACE_UP, cextra@tcg, 1
+					card@tcg(TCG_CARD_X, cextra@tcg) = card@tcg(TCG_CARD_X, acbk@tcg), card@tcg(TCG_CARD_Y, acbk@tcg), card@tcg(TCG_CARD_X, acbk@tcg) - 50 + 100 * cnt, card@tcg(TCG_CARD_Y, acbk@tcg) + 104 - 208 * (apbk@tcg != 0)
 				}
 			loop
+			if ( cardsgenerated@tcg(0) > 0 ) {
+				tcgpass 30
+				repeat maxcard@tcg
+					if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != ap@tcg ) { continue }
+					if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_ANIM ) { continue }
+					cdbitmod TCG_BIT_FACE_UP, cnt, 1
+					card@tcg(TCG_CARD_LOCATION, cnt) = TCG_LOCATION_DECK
+					xbk@tcg = card@tcg(TCG_CARD_X, cnt), card@tcg(TCG_CARD_Y, cnt)
+					if ( card@tcg(TCG_CARD_REF_DBID, cnt) == CREATURE_ID_YERLES_COMBAT_PLANE ) {
+						gettargetcard cnt
+					} else {
+						putcard cnt, apbk@tcg
+					}
+					card@tcg(TCG_CARD_X, cnt) = xbk@tcg(0), xbk@tcg(1), xbk@tcg(0), xbk@tcg(1)
+				loop
+				card@tcg(TCG_CARD_X, ac@tcg) = xbk2@tcg(0) + 80, xbk2@tcg(1), xbk2@tcg(0) + 80, xbk2@tcg(1)
+				makecardlist
+				cardposhand apbk@tcg, -1
+				cardpos apbk@tcg, -1
+			}
+			animeseq@tcg = 0
+			tcgdraw
 		}
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++

@@ -295,6 +295,7 @@
 		cfgRead "dmgPopupExplode.", cfg_dmgexplode = int(rtvaln)
 
 		cfgRead "showNpcName.", cfg_showNpcName = int(rtvaln)
+		cfgRead "showNameChatMultilined.", cfg_showNameChatMultiline = int(rtvaln)
 		cfgRead "showPetHealth.", cfg_showPetHealth = int(rtvaln)
 		cfgRead "showDamageMeter.", cfg_showDamageMeter = int(rtvaln)
 		cfgRead "showDamageMeterTurns.", cfg_showDamageMeterTurns = int(rtvaln)
@@ -620,7 +621,7 @@
 	}
 	if ( submenu == 9 ) {
 		q = lang("拡張設定2(表示)", "EX Setting 2 (Display)")
-		s = lang("ダメージ表示", "Damage Popups"), lang("　HEX+バフ", "  Hexes/Buffs"), lang("　状態異常", "  Ailments"), lang("　回避", "  Evade"), lang("　会話", "  Chat"), lang("　フォントサイズ", "  Font Size"), lang("　フォントシフト", "  Font Shift"), lang("　表示速度", "  Display Duration"), lang("　表示NPC名前", "  Show NPC Name"), lang("　ペットのHPゲージ表示", "  Show Pet HP gauge"), lang("　表示ダメージ測定", "  Show Damage Meter"), lang("　測定ターン", "  Meter Duration Turns"), lang("　UI自動隠蔽", "  Extra UI Auto Hide"), ""
+		s = lang("ダメージ表示", "Damage Popups"), lang("　HEX+バフ", "  Hexes/Buffs"), lang("　状態異常", "  Ailments"), lang("　回避", "  Evade"), lang("　会話", "  Chat"), lang("　フォントサイズ", "  Font Size"), lang("　フォントシフト", "  Font Shift"), lang("　表示速度", "  Display Duration"), lang("　表示NPC名前", "  Show NPC Name"), lang("　ペットのHPゲージ表示", "  Show Pet HP gauge"), lang("　表示ダメージ測定", "  Show Damage Meter"), lang("　測定ターン", "  Meter Duration Turns"), lang("　UI自動隠蔽", "  Extra UI Auto Hide"), lang("　多列名前/会話", "  Multi-lined Name/Chat"), ""
 		dx = 440
 		dy = 410
 	}
@@ -987,6 +988,10 @@
 			if ( cnt == 12 ) {
 				s = lang("しない", "Off"), lang("する", "On")
 				mes s(cfg_autoHideUI)
+			}
+			if ( cnt == 13 ) {
+				s = lang("しない", "Off"), lang("する", "On")
+				mes s(cfg_showNameChatMultiline)
 			}
 		}
 	loop
@@ -1849,6 +1854,9 @@
 			}
 			if ( cs == 12 ) {
 				setBoolOption cfg_autoHideUI, "autoHideUI"
+			}
+			if ( cs == 13 ) {
+				setBoolOption cfg_showNameChatMultiline, "showNameChatMultilined"
 			}
 		}
 	}
