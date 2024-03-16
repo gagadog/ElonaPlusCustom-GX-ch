@@ -939,8 +939,25 @@
 				cdbitmod TCG_BIT_FACE_UP, aeft@tcg, 1
 				card@tcg(TCG_CARD_CONTROLLER, aeft@tcg) = ap@tcg
 			}
-			cpdata@tcg(TCG_PLAYER_MANA, card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) += 1
-			gettargetcard aeft@tcg
+			if ( getholdersum(card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) < 7 ) {
+				cpdata@tcg(TCG_PLAYER_MANA, card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) += 1
+				gettargetcard aeft@tcg
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_DRAW_TARGET_CARD_DISCOUNT1 | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+			if ( card@tcg(TCG_CARD_CONTROLLER, aeft@tcg) != ap@tcg ) {
+				cdbitmod TCG_BIT_FACE_UP, aeft@tcg, 1
+				card@tcg(TCG_CARD_CONTROLLER, aeft@tcg) = ap@tcg
+			}
+			if ( getholdersum(card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) < 7 ) {
+				card@tcg(TCG_CARD_REF_COST, aeft@tcg) -= 1
+				gettargetcard aeft@tcg
+			}
 		}
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
