@@ -3656,6 +3656,65 @@
 	gcopy 3, display_key_arg3 * 24 + 72, 30, 24, 18
 	return
 
+/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+#defcfunc click_tab_menu@MMAH int click_tab_menu_arg1_count
+	f@MMAH = 0
+	x@MMAH = click_tab_menu_arg1_count * 50 + 60
+	if ( menucycle == 1 ) {
+		if ( click_left@MMAH ) {
+			if ( mousey > 10 & mousey < 62 ) {
+				p@MMAH = (mousex - (windoww - x@MMAH + 20) + 50) / 50 - 1
+				if ( p@MMAH >= 0 & p@MMAH < click_tab_menu_arg1_count ) {
+					if ( p@MMAH != curmenu ) {
+						curmenu = p@MMAH
+						screenupdate = -1
+						gosub *screen_draw
+						f@MMAH = 1
+					}
+				}
+			}
+		}
+	}
+	return f@MMAH
+	
+#deffunc cursor_check@MMAH int cursor_check_ystart, int cursor_check_yskip
+	if ( cfg_mmah_mouseoperation ) {
+		if ( mousex != mousebx@MMAH | mousey != mouseby@MMAH ) {
+			mousebx@MMAH = mousex
+			mouseby@MMAH = mousey
+			if ( cursor_check_ystart != 0 & cursor_check_yskip != 0 ) {
+				if ( keyrange ) {
+					cs = limit((mousey - cursor_check_ystart) / cursor_check_yskip, 0, keyrange - 1)
+				}
+			}
+		}
+		if ( click_left@MMAH ) {
+			key = key_enter
+			if ( cs >= keyrange ) {
+				cs_bk = -1
+				cs = keyrange - 1
+				if ( cs < 0 ) {
+					cs = 0
+				}
+			}
+			if ( key == key_enter ) {
+				key = key_list(cs)
+			}
+			dont_mouse_move@MMAH = 1
+			if ( mousex < wx ) {
+				key = key_pagedown
+			}
+			if ( mousex > wx + ww ) {
+				key = key_pageup
+			}
+		}
+		if ( click_right@MMAH ) {
+			key = key_cancel
+		}
+	}
+	return
+/********** MMAHACK - MOUSE OPERATION - ENDING **********/
+
 #deffunc cursor_check
 	if ( key == key_north ) {
 		snd SOUNDLIST_CURSOR1

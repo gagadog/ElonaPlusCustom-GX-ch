@@ -18,17 +18,17 @@
 		setCom lang("シート", "Chara"), key_charainfo
 		setCom "", "aaa"
 		setCom lang("日誌", "Journal"), key_journal
-		setCom "", "aaa"
-		setCom "", "aaa"
+		setCom lang("装備", "Wear"), key_wear
+		setCom lang("所持品", "Inventory"), key_quickinv
 		setCom "", "aaa"
 	}
 	if ( page == 1 ) {
 		setCom "", "aaa"
-		setCom lang("装備", "Wear"), key_wear
-		setCom lang("休息", "Rest"), key_rest
 		setCom lang("魔法", "Spell"), key_cast
-		setCom "", "aaa"
+		setCom lang("休息", "Rest"), key_rest
 		setCom lang("技能", "Skill"), key_skill
+		setCom "", "aaa"
+		setCom lang("拾う", "Pick Up"), key_get
 		setCom lang("広技能", "W Skill"), key_wipe
 		setCom lang("掘る", "Dig"), key_dig
 		setCom "", "aaa"
@@ -99,6 +99,29 @@
 	redraw 1
 	await cfg_wait1
 	key_check 2
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		if ( click_right@MMAH ) {
+			key = key_cancel
+		}
+		else {
+			if ( click_left@MMAH ) {
+				p = -1
+				repeat 9
+					if ( mousex > tx + x(cnt) & mousex < tx + x(cnt) + 48 & mousey > ty + y(cnt) & mousey < ty + y(cnt) + 48 ) {
+						p = cnt
+						break
+					}
+				loop
+				if ( p != (-1) ) {
+					s = key_west, key_northwest, key_southwest, key_north, key_enter, key_south, key_northeast, key_southeast, key_east
+					key = s(p)
+				}
+				dont_mouse_move@MMAH = 1
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_north ) {
 		key = listn(1, 3)
 		cs = 3
@@ -448,6 +471,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -538,6 +566,22 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+		if ( click_tab_menu@MMAH(3) ) {
+			if ( curmenu == 0 ) {
+				goto *com_log
+			}
+			if ( curmenu == 1 ) {
+				goto *com_journal
+			}
+			if ( curmenu == 2 ) {
+				goto *com_chatlog
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( menucycle == 1 ) {
 		if ( key == key_next | key == key_prev ) {
 			p = curmenu
@@ -684,6 +728,22 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+		if ( click_tab_menu@MMAH(3) ) {
+			if ( curmenu == 0 ) {
+				goto *com_log
+			}
+			if ( curmenu == 1 ) {
+				goto *com_journal
+			}
+			if ( curmenu == 2 ) {
+				goto *com_chatlog
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( menucycle == 1 ) {
 		if ( key == key_next | key == key_prev ) {
 			p = curmenu
@@ -811,6 +871,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 91, 22
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {

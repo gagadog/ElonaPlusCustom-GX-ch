@@ -755,6 +755,11 @@
 		await cfg_wait1
 		key_check
 		cursor_check
+		/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+		if ( cfg_mmah_mouseoperation ) {
+			cursor_check@MMAH wy + 138, 19
+		}
+		/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 		if ( key == key_cancel ) {
 			goto *com_home_SWEND1
 		}

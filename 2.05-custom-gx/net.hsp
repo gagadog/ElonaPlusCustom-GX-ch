@@ -537,6 +537,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -679,6 +684,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {

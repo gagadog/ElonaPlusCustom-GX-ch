@@ -26,6 +26,88 @@
 	proc proctcg_arg1
 	return
 
+#deffunc cursor_check@tcg int cursor_check_tcg_mode
+	if ( cfg_mmah_mouseoperation != TRUE ) { return }
+	if ( mousex != mousebx@MMAH | mousey != mouseby@MMAH ) {
+		mousebx@MMAH = mousex
+		mouseby@MMAH = mousey
+		if ( cursor_check_tcg_mode == 0 ) {
+			if ( mousex >= basex@tcg + 144 & mousex <= basex@tcg + 704 & mousey >= basey@tcg + 70 & mousey <= basey@tcg + 370 ) {
+				dsctmp@tcg = limit((mousey - 43 - basey@tcg) / 150, 0, 2) * 8 + limit((mousex - 144 - basex@tcg) / 80, 0, 7)
+				if ( dsctmp@tcg >= 0 & dsctmp@tcg < dlistmax@tcg ) {
+					dsc@tcg = dsctmp@tcg
+				}
+			}
+		}
+		if ( cursor_check_tcg_mode == 1 ) {
+			if ( mousey >= holderiy@tcg(1) & mousey <= holderiy@tcg(1) + 96 ) { 
+				csline@tcg = 3 
+			}
+			if ( mousey >= spotiy@tcg(1) & mousey <= spotiy@tcg(1) + 96 ) { 
+				csline@tcg = 2 
+			}
+			if ( mousey >= spotiy@tcg(0) & mousey <= spotiy@tcg(0) + 96 ) { 
+				csline@tcg = 1
+			}
+			if ( mousey >= holderiy@tcg(0) & mousey <= holderiy@tcg(0) + 96 ) { 
+				csline@tcg = 0 
+			}
+			csfix
+			if ( csline@tcg == 0 | csline@tcg == 3 ) {
+				cs@tcg = limit((mousex + holderspace@tcg - holderix@tcg) / holderspace@tcg - 1, 0 - (csline@tcg == 0), clistmax@tcg(csline@tcg))
+			} else {
+				cs@tcg = limit((mousex - (basex@tcg + 466 - clistmax@tcg(csline@tcg) * spotspace@tcg / 2)) / spotspace@tcg, 0, clistmax@tcg(csline@tcg))
+			}
+			csfix
+		}
+	}
+	title "" + mousex + "/" + mousey + "/" + click_left@MMAH + "/" + click_right@MMAH + "/" + ginfo(2) + "/" + locvar_key_check_p
+	if ( click_left@MMAH ) {
+		key = key_enter
+		if ( cursor_check_tcg_mode == 2 ) {
+			if ( mousey < card@tcg(TCG_CARD_Y, cc@tcg) + 20 ) {
+				key = key_north
+			}
+			if ( mousey > card@tcg(TCG_CARD_Y, cc@tcg) + 66 ) {
+				key = key_south
+			}
+		}
+		if ( mousex < basex@tcg ) {
+			key = key_prev
+			return
+		}
+		if ( mousex > basex@tcg + basew@tcg ) {
+			key = key_next
+			return
+		}
+		if ( cursor_check_tcg_mode == 0 ) {
+			if ( mousex >= basex@tcg + 180 & mousey >= basey@tcg & mousey <= basey@tcg + 49 ) {
+				ccf@tcg = limit((mousex - 180 - basex@tcg)/63, 0, cfmax@tcg - 1) + 1
+				key = key_prev
+				return
+			}
+			if ( mousex < basex@tcg + 120 ) {
+				key = key_search
+			}
+			if ( mousex < basex@tcg + 120 &  mousey < basey@tcg + 120 ) {
+				key = key_msglog
+			}
+			if ( mousey > basey@tcg + 537 ) {
+				key = key_charainfo
+			}
+			if ( mousey < basey@tcg ) {
+				key = key_fire
+			}
+			if ( mousey > basey@tcg + 600 ) {
+				key = key_get
+			}
+		}
+	}
+	if ( click_right@MMAH ) {
+		key = key_cancel
+	}
+	return
+
 #defcfunc cdbit int cdbit_bit, int cdbit_charid
 	if ( cdbit_charid < 0 | cdbit_charid >= maxcard@tcg ) {
 		return
@@ -2061,9 +2143,8 @@
 	cardhelp lang("ゲームオーバー！Enterキーで退出。", "Game Over! Press Enter to leave."), 40
 	tcgdraw
 	await 15
-	stick a@tcg
 	key_check
-	if ( key == key_enter | key == key_cancel | key == key_escape ) {
+	if ( key == key_enter | key == key_cancel | key == key_escape | click_right@MMAH ) {
 		return
 	}
 	goto *tcgmain_WEND2
@@ -3075,6 +3156,7 @@
 	redraw 1
 	await 30
 	key_check
+	cursor_check@tcg 0
 	if ( deckmode@tcg == 0 ) {
 		getkey a, 119
 		if ( a ) {
@@ -3301,8 +3383,8 @@
 	tcgdraw
 	cursor@tcg = 1
 	await 15
-	stick a@tcg
 	key_check
+	cursor_check@tcg 1
 	if ( gameresult@tcg > 0 ) {
 		return
 	}
@@ -3606,6 +3688,7 @@
 	loop
 	await 15
 	key_check
+	cursor_check@tcg 2
 	if ( key == key_north ) {
 		f@tcg = 0
 		goto *select_action_WEND1

@@ -319,6 +319,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -470,6 +475,26 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+		if ( click_tab_menu@MMAH(4) ) {
+			if ( curmenu == 0 ) {
+				csctrl = 0
+				goto *com_charainfo
+			}
+			if ( curmenu == 1 ) {
+				goto *com_wear
+			}
+			if ( curmenu == 2 ) {
+				goto *com_trait
+			}
+			if ( curmenu == 3 ) {
+				goto *com_material
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {

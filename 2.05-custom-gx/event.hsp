@@ -3131,6 +3131,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + dy - listmax * 20 - 52, 20
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	rtval = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {

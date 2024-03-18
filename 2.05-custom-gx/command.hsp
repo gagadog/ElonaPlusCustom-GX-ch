@@ -365,6 +365,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -634,6 +639,27 @@
 				tlocx += kdx
 				tlocy += kdy
 			}
+		} else {
+			/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+			if ( cfg_mmah_mouseoperation ) {
+				if ( mousex != mousebx@MMAH | mousey != mouseby@MMAH ) {
+					scposval = 0
+					mousebx@MMAH = mousex
+					mouseby@MMAH = mousey
+					tx = limit(mousex - inf_screenx, 0, windoww) / 48
+					ty = limit(mousey - inf_screeny, 0, windowh - inf_verh) / 48
+					tlocx = limit(tx + scx, 0, mdata(0) - 1)
+					tlocy = limit(ty + scy, 0, mdata(1) - 1)
+				}
+				if ( click_left@MMAH ) {
+					key = key_enter
+					dont_mouse_move@MMAH = 1
+				}
+				if ( click_right@MMAH ) {
+					key = key_cancel
+				}
+			}
+			/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 		}
 	}
 	if ( findlocmode == 1 ) {
@@ -819,6 +845,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_target ) {
 		key = key_list(cs)
 	}
@@ -1320,6 +1351,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -1785,6 +1821,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	page_change *com_knowOther_loop
 	if ( key == key_cancel ) {
@@ -1866,6 +1907,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	page_change *com_knowSelf_loop
 	if ( key == key_cancel ) {
@@ -2510,6 +2556,26 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+		if ( click_tab_menu@MMAH(4) ) {
+			if ( curmenu == 0 ) {
+				csctrl = 0
+				goto *com_charainfo
+			}
+			if ( curmenu == 1 ) {
+				goto *com_wear
+			}
+			if ( curmenu == 2 ) {
+				goto *com_trait
+			}
+			if ( curmenu == 3 ) {
+				goto *com_material
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -2984,6 +3050,22 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+		if ( click_tab_menu@MMAH(3) ) {
+			if ( curmenu == 0 ) {
+				goto *com_log
+			}
+			if ( curmenu == 1 ) {
+				goto *com_journal
+			}
+			if ( curmenu == 2 ) {
+				goto *com_chatlog
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( menucycle == 1 ) {
 		if ( key == key_next | key == key_prev ) {
 			p = curmenu
@@ -3183,6 +3265,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 2, 120
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -3420,6 +3507,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -3510,6 +3602,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -3857,6 +3954,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -3977,6 +4079,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -4092,6 +4199,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
 			p = cnt
@@ -5035,6 +5147,25 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+		if ( click_tab_menu@MMAH(3) ) {
+			if ( curmenu == 0 ) {
+				snd SOUNDLIST_SPELL
+				goto *com_spell
+			}
+			if ( curmenu == 1 ) {
+				snd SOUNDLIST_SKILL
+				goto *com_applySkill
+			}
+			if ( curmenu == 2 ) {
+				snd SOUNDLIST_SKILL
+				goto *com_applyWideSkill
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	commark(0) = page * 1000 + cs
 	repeat keyrange
@@ -5226,6 +5357,25 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+		if ( click_tab_menu@MMAH(3) ) {
+			if ( curmenu == 0 ) {
+				snd SOUNDLIST_SPELL
+				goto *com_spell
+			}
+			if ( curmenu == 1 ) {
+				snd SOUNDLIST_SKILL
+				goto *com_applySkill
+			}
+			if ( curmenu == 2 ) {
+				snd SOUNDLIST_SKILL
+				goto *com_applyWideSkill
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	commark(2) = page * 1000 + cs
 	repeat keyrange
@@ -6906,6 +7056,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	talkp = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -7036,6 +7191,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -7648,6 +7808,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -7750,6 +7915,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	page_change *com_book_loop, SOUNDLIST_CARD1
 	if ( key == key_cancel | key == key_enter ) {
 		gosub *screen_draw
@@ -7903,6 +8073,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	commark(1) = page * 1000 + cs
 	repeat keyrange
@@ -8180,6 +8355,25 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+		if ( click_tab_menu@MMAH(3) ) {
+			if ( curmenu == 0 ) {
+				snd SOUNDLIST_SPELL
+				goto *com_spell
+			}
+			if ( curmenu == 1 ) {
+				snd SOUNDLIST_SKILL
+				goto *com_applySkill
+			}
+			if ( curmenu == 2 ) {
+				snd SOUNDLIST_SKILL
+				goto *com_applyWideSkill
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	commark(1) = page * 1000 + cs
 	repeat keyrange
@@ -10065,6 +10259,26 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+		if ( click_tab_menu@MMAH(4) ) {
+			if ( curmenu == 0 ) {
+				csctrl = 0
+				goto *com_charainfo
+			}
+			if ( curmenu == 1 ) {
+				goto *com_wear
+			}
+			if ( curmenu == 2 ) {
+				goto *com_trait
+			}
+			if ( curmenu == 3 ) {
+				goto *com_material
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( page == 0 ) {
 		if ( key == "p" ) {
 			if ( cc < MAX_CHARA_FOLLOWER ) {
@@ -10536,6 +10750,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	goto *com_item_mark_loop
 
 *com_item_mark_adjust
@@ -10614,6 +10833,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	goto *com_item_mark_adjust_loop
 
 *com_tag_team
@@ -10710,6 +10934,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	goto *com_tag_team_WHILE1
 
 *com_tag_team_WEND1
@@ -10841,6 +11070,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 21
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	val = cs, 0
 	gosub *get_pic_selection
 	p = 0
@@ -11089,6 +11323,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 21
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	val = cs, 0
 	gosub *portrait_item
 	p = 0
@@ -11272,6 +11511,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 21
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( cs != 0 ) {
 		if ( key == key_enter ) {
 			key = key_pageup
@@ -11670,6 +11914,26 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+		if ( click_tab_menu@MMAH(4) ) {
+			if ( curmenu == 0 ) {
+				csctrl = 0
+				goto *com_charainfo
+			}
+			if ( curmenu == 1 ) {
+				goto *com_wear
+			}
+			if ( curmenu == 2 ) {
+				goto *com_trait
+			}
+			if ( curmenu == 3 ) {
+				goto *com_material
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -13240,6 +13504,53 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+		if ( menucycle == 1 ) {
+			if ( click_left@MMAH ) {
+				if ( mousey > 12 & mousey < 64 ) {
+					if ( dropcontinue ) {
+						i = 4
+					}
+					else {
+						if ( invally == 1 ) {
+							i = 2
+						}
+						else {
+							if ( invcontainer ) {
+								i = 3
+							}
+							else {
+								if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
+									i = 1
+								}
+								else {
+									i = 0
+								}
+							}
+						}
+					}
+					p = (mousex - (windoww - 650 + 156 + 20)) / 44
+					if ( p < 0 | p > 11 ) {
+						goto *com_inventory_loop
+					}
+					if ( cycle(p, i) < 1 ) {
+						goto *com_inventory_loop
+					}
+					if ( invctrl != cycle(p, i) ) {
+						invctrl = cycle(p, i)
+						snd SOUNDLIST_INV
+						screenupdate = -1
+						gosub *screen_draw
+						goto *com_inventory
+					}
+					goto *com_inventory_loop
+				}
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	invmark(invctrl) = page * 1000 + cs
 	repeat keyrange
@@ -15716,6 +16027,16 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		if ( click_left@MMAH ) {
+			key = key_enter
+		}
+		if ( click_right@MMAH ) {
+			key = key_cancel
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	page_change *com_identify_loop_pgchk
 	if ( key == key_cancel | key == key_enter ) {
 		returnfromidentify = 1

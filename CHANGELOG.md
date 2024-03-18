@@ -1,15 +1,14 @@
 # Upcoming
 
 # Added
+- (MMA_hack): Added mouse control settings.
 - Pop-Up: Settings to adjust horizontal-shift for font of different size.
 - Chat Pop-Up: A EX Setting to multi-line the overlong names/dialogs.
 
 # Changed
 - Pop-Up: font size increase is now a hidden config named: "dmgPopupExplode"
 - Revert 2.08 elemental tweak: Removed Constituion-Resist revert.
-- TCG: 
-  - Buffed some Yerles/Machine cards.
-  - Gave Gavela and Mage Guild Uniques new decks.
+- TCG: Buffed some ActI&II cards. And gave some ActI&II Uniques new decks.
 
 # Fixed
 - (Plus) Critical rate from predator class and magnetism not working.

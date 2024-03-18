@@ -39,6 +39,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 385, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_select(0) ) {
 		snd SOUNDLIST_OK1
 		cs = 0
@@ -101,6 +106,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 347, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_select(0) ) {
 		snd SOUNDLIST_OK1
 		tn = 0

@@ -3105,6 +3105,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 50, 35
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == "b" ) {
 		snd SOUNDLIST_OK1
 		geneuse = ""
@@ -3198,6 +3203,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 48, 40
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -3304,6 +3314,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 48, 40
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -3399,6 +3414,26 @@
 			redraw 1
 			await cfg_wait1
 			key_check
+			/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+			if ( cfg_mmah_mouseoperation ) {
+				if ( click_right@MMAH ) {
+					key = key_cancel
+				}
+				else {
+					if ( click_left@MMAH ) {
+						if ( mousex > x + 20 & mousex < x + dx - 20 & mousey > y & mousey < y + 36 ) {
+							key = key_enter
+						}
+						if ( mousex < x + 20 ) {
+							key = key_west
+						}
+						if ( mousex > x + dx - 20 ) {
+							key = key_east
+						}
+					}
+				}
+			}
+			/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 			if ( key == key_enter ) {
 				f = 1
 				break
@@ -3611,6 +3646,32 @@
 	key_check 1
 	x = cdata(CDATA_X, CHARA_PLAYER)
 	y = cdata(CDATA_Y, CHARA_PLAYER)
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		if ( click_right@MMAH ) {
+			key = key_cancel
+		}
+		else {
+			if ( click_left@MMAH ) {
+				mondmgdx@MMAH = (x - scx) * inf_tiles + inf_screenx + inf_tiles / 2
+				mondmgdy@MMAH = (y - scy) * inf_tiles + inf_screeny + inf_tiles / 2
+				if ( abs(mousex - mondmgdx@MMAH) < inf_tiles * 3 / 2 & abs(mousey - mondmgdy@MMAH) < inf_tiles * 3 / 2 ) {
+					p(1) = 1, 1
+					if ( abs(mousey - mondmgdy@MMAH) > inf_tiles / 2 ) {
+						p(1) = (mousey > mondmgdy@MMAH) * 2
+					}
+					if ( abs(mousex - mondmgdx@MMAH) > inf_tiles / 2 ) {
+						p(2) = (mousex > mondmgdx@MMAH) * 2
+					}
+					p = p(1) * 3 + p(2)
+					s = key_northwest, key_north, key_northeast, key_west, key_enter, key_east, key_southwest, key_south, key_southeast
+					key = s(p)
+					dont_mouse_move@MMAH = 1
+				}
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_alter ) {
 		goto *prompt_direction_WHILE1_CONTINUE
 	}
@@ -3766,6 +3827,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH sy + 21, 20
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	rtval = -1
 	repeat promptmax
 		if ( key == promptl(1, cnt) ) {

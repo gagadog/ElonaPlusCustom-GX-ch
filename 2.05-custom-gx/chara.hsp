@@ -2986,15 +2986,20 @@
 		s = lang("これ以上は冒険者を保存できない。", "Save slots are full. You have to delete some of your adventurers.")
 		gosub *screen_drawMsg2
 		redraw 1
-*cm_init_WHILE1
+		*cm_init_WHILE1
 		key_check
 		cursor_check
+		/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+		if ( cfg_mmah_mouseoperation ) {
+			cursor_check@MMAH wy + 50, 40
+		}
+		/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 		await cfg_wait1
 		if ( key != "" ) {
 			goto *cm_init_WEND1
 		}
 		goto *cm_init_WHILE1
-*cm_init_WEND1
+		*cm_init_WEND1
 		goto *game_title
 	}
 	goto *cm_aka
@@ -3061,6 +3066,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
 			p = cnt
@@ -3186,6 +3196,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 23
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
 			p = cnt
@@ -3325,6 +3340,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
 			p = page * pagesize + cnt
@@ -3470,6 +3490,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
  	if ( key == key_select(0) ) {
  		cmsex = SEX_MALE
 		zisyousex = ""
@@ -3642,6 +3667,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
 			p = page * pagesize + cnt
@@ -3855,6 +3885,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 23
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
 			p = cnt
@@ -4130,6 +4165,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_select(0) ) {
 		gdata(GDATA_FLAG_GAME_MODE) = GAMEMODE_ESSENTIAL
 		goto *cm_confirm

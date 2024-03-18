@@ -316,6 +316,10 @@
 		cfgRead "showTopTileCutoff.", cfg_showtoptilecutoff = int(rtvaln)
 
 		/********** RUIN0X11 CUSTOM - ENDING **********/
+		
+		/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+		cfgRead "MMAH_mouseoperation.", cfg_mmah_mouseoperation = int(rtvaln)
+		/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 
 		key_prev = key_northwest
 		key_next = key_northeast
@@ -615,7 +619,7 @@
 	}
 	if ( submenu == 8 ) {
         q = lang("拡張設定1", "EX Setting 1")
-        s = lang("自動拾い＆自動破壊", "Auto pickup & destroy"), lang("自動拾い時の効果音", "Autopick sound"), lang("自動破壊時の効果音", "Autodestroy sound"), ""
+        s = lang("自動拾い＆自動破壊", "Auto pickup & destroy"), lang("自動拾い時の効果音", "Autopick sound"), lang("自動破壊時の効果音", "Autodestroy sound"), lang("(MMAH)マウス操作の拡張","(MMAH) Mouse Control"), ""
 		dx = 440
 		dy = 300
 	}
@@ -936,6 +940,10 @@
 				s = lang("なし", "Off"), lang("あり", "On")
 				mes s(cfg_autodestroysound)
 			}
+			if ( cnt == 3 ) {
+				s = lang("なし", "Off"), lang("あり", "On")
+				mes s(cfg_mmah_mouseoperation)
+			}
 		}
 		if ( submenu == 9 ) {
 			if ( cnt == 0 ) {
@@ -1018,6 +1026,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -1812,6 +1825,9 @@
 			}
 			if ( cs == 2 ) {
 				setBoolOption cfg_autodestroysound, "autodestroy_sound"
+			}
+			if ( cs == 3 ) {
+				setBoolOption cfg_mmah_mouseoperation, "MMAH_mouseoperation"
 			}
 		}
 		if ( submenu == 9 ) {

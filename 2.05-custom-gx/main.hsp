@@ -3196,6 +3196,59 @@
 			goto *pc_turn
 		}
 	}
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		if ( click_right@MMAH ) {
+			key = key_quick
+		}
+		else {
+			mousemove = 0
+			mondmgdx@MMAH = (cdata(CDATA_X, CHARA_PLAYER) - scx) * inf_tiles + inf_screenx + inf_tiles / 2
+			mondmgdy@MMAH = (cdata(CDATA_Y, CHARA_PLAYER) - scy) * inf_tiles + inf_screeny + inf_tiles / 2
+			if ( click_left@MMAH ) {
+				if ( mousex > inf_msgx & mousex < windoww & mousey > inf_msgy & mousey < inf_msgy + inf_msgh ) {
+					goto *com_log
+				}
+				if ( abs(mousex - mondmgdx@MMAH) < inf_tiles * 3 / 2 & abs(mousey - mondmgdy@MMAH) < inf_tiles * 3 / 2 ) {
+					p(1) = 1, 1
+					if ( abs(mousey - mondmgdy@MMAH) > inf_tiles / 2 ) {
+						p(1) = (mousey > mondmgdy@MMAH) * 2
+					}
+					if ( abs(mousex - mondmgdx@MMAH) > inf_tiles / 2 ) {
+						p(2) = (mousex > mondmgdx@MMAH) * 2
+					}
+					p = p(1) * 3 + p(2)
+					s = key_northwest, key_north, key_northeast, key_west, key_enter, key_east, key_southwest, key_south, key_southeast
+					key = s(p)
+					dont_mouse_move@MMAH = 1
+				}
+			}
+			else {
+				stick a, 256
+				if ( a != 256 ) {
+					dont_mouse_move@MMAH = 0
+					mousebc@MMAH = 0
+				}
+				else {
+					if ( dont_mouse_move@MMAH == 0 ) {
+						if ( mousebc@MMAH == 1 | (mousex > 0 & mousex < windoww & mousey > inf_screeny & mousey < inf_ver) ) {
+							dvalue@MMAH = atan(mousey - mondmgdy@MMAH, mousex - mondmgdx@MMAH)
+							if ( dvalue@MMAH < 0.0 ) {
+								dvalue@MMAH += 3.14159265 * 2
+							}
+							dvalue@MMAH = dvalue@MMAH * 180.0 / 3.14159265
+							p = limit(int((dvalue@MMAH + 22.5) / 45.0), 0, 8)
+							s = key_east, key_southeast, key_south, key_southwest, key_west, key_northwest, key_north, key_northeast, key_east
+							key = s(p)
+							mousemove = 1
+						}
+					}
+					mousebc@MMAH = 1
+				}
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == "" ) {
 		goto *pc_turn
 	}
@@ -3867,6 +3920,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_cancel ) {
 		goto *game_win_WEND1
 	}
@@ -3942,6 +4000,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_cancel ) {
 		goto *game_win2_WEND1
 	}
@@ -4018,6 +4081,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_cancel ) {
 		goto *game_win3_WEND1
 	}

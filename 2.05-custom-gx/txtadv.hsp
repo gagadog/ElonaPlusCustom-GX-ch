@@ -179,6 +179,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH noteinfo(0) * 20 + 120 + txtadvmsgfix + 16, 20
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	rtval = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {

@@ -127,6 +127,22 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+		if ( click_tab_menu@MMAH(3) ) {
+			if ( curmenu == 0 ) {
+				goto *com_politics_chart
+			}
+			if ( curmenu == 1 ) {
+				goto *com_politics_economy
+			}
+			if ( curmenu == 2 ) {
+				goto *com_politics_rule
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -342,6 +358,22 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+		if ( click_tab_menu@MMAH(3) ) {
+			if ( curmenu == 0 ) {
+				goto *com_politics_chart
+			}
+			if ( curmenu == 1 ) {
+				goto *com_politics_economy
+			}
+			if ( curmenu == 2 ) {
+				goto *com_politics_rule
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( menucycle == 1 ) {
 		if ( key == key_next | key == key_prev ) {
 			p = curmenu
@@ -474,6 +506,22 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH
+		if ( click_tab_menu@MMAH(3) ) {
+			if ( curmenu == 0 ) {
+				goto *com_politics_chart
+			}
+			if ( curmenu == 1 ) {
+				goto *com_politics_economy
+			}
+			if ( curmenu == 2 ) {
+				goto *com_politics_rule
+			}
+		}
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -667,6 +715,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 70
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {

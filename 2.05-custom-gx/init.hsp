@@ -576,6 +576,10 @@ if instr(s,0,%1)!-1{	%c\
 		key = ""
 		objprm 0, ""
 		keylog = ""
+		/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+		click_block@MMAH = 1
+		dont_mouse_move@MMAH = 1
+		/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 		await 100
 		return
 	}
@@ -616,6 +620,10 @@ if instr(s,0,%1)!-1{	%c\
 	locvar_key_check_f = 0
 	key_tab = 0
 	key_escape = 0
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	click_left@MMAH = 0
+	click_right@MMAH = 0
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	stick locvar_key_check_p, 15
 	if ( locvar_key_check_p != 0 ) {
 		if ( locvar_key_check_p == 128 ) {
@@ -624,6 +632,19 @@ if instr(s,0,%1)!-1{	%c\
 				key_escape = 1
 			}
 		}
+		/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+		if ( click_block@MMAH ) {
+			click_block@MMAH = 0
+		}
+		else {
+			if ( locvar_key_check_p == 256 ) {
+				click_left@MMAH = 1
+			}
+			if ( locvar_key_check_p == 512 ) {
+				click_right@MMAH = 1
+			}
+		}
+		/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 		if ( locvar_key_check_p == 1024 ) {
 			key_tab = 1
 			key = key_next
@@ -945,6 +966,18 @@ if instr(s,0,%1)!-1{	%c\
 			}
 		}
 		if ( press_arg1 == 1 ) {
+			/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+			if ( cfg_mmah_mouseoperation ) {
+				if ( mousex > x@txtfunc & mousex < x@txtfunc + 120 & mousey > y@txtfunc & mousey < y@txtfunc + 24 ) {
+					if ( click_right@MMAH ) {
+						key = key_cancel
+					}
+					if ( click_left@MMAH ) {
+						key = key_enter
+					}
+				}
+			}
+			/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 			if ( key == key_enter | key == key_cancel ) {
 				break
 			}

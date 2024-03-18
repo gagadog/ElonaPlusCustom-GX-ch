@@ -1156,6 +1156,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 385, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_select(0) ) {
 		snd SOUNDLIST_OK1
 		cs = 0
@@ -1202,6 +1207,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_select(0) ) {
 		snd SOUNDLIST_OK1
 		goto *AISpellLearnMenu
@@ -1260,6 +1270,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 
 	repeat 20
 		if ( key == cnt ) {
@@ -1328,6 +1343,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	repeat (MAX_SPELL - STARTING_SKILL_SPELL), STARTING_SKILL_SPELL
 	if ( key == cnt ) {
 		snd SOUNDLIST_OK1
@@ -1447,6 +1467,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	p = -1
 	repeat keyrange
 		if ( key == key_select(cnt) ) {
@@ -1566,6 +1591,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_mode2 ) {
 		snd SOUNDLIST_OK1
 		if ( HeldTactic == -1 ) {
@@ -1689,6 +1719,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_select(0) ) {
 		snd SOUNDLIST_OK1
 		cs = 0
@@ -1789,6 +1824,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 
 	repeat 115
 		if ( key == cnt ) {
@@ -3072,6 +3112,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 25, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 
 	repeat 600
 		if ( key == cnt ) {
@@ -3156,6 +3201,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 
 	repeat NumActions+1
 		if ( key == key_select(cnt) ) {
@@ -3211,6 +3261,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 
 	repeat NumActions+1
 		if ( key == key_select(cnt) ) {
@@ -3285,6 +3340,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 60, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 
 	repeat CUSTOM_AI_MAX_TACTICS
 		if ( key == key_select(cnt) & cnt < NumActions + 1 ) {

@@ -16434,6 +16434,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + 66, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	if ( key == key_select(0) ) {
 		if ( gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_ESSENTIAL | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_OVERDOSE | gdata(GDATA_FLAG_GAME_MODE) == GAMEMODE_PURGE ) {
 			snd SOUNDLIST_FAIL1
@@ -23911,6 +23916,11 @@
 	await cfg_wait1
 	key_check
 	cursor_check
+	/********** MMAHACK - MOUSE OPERATION - BEGINNING **********/
+	if ( cfg_mmah_mouseoperation ) {
+		cursor_check@MMAH wy + wh - 56 - keyrange * 19, 19
+	}
+	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	stick a, 128
 	if ( a == 128 ) {
 		if ( scenemode ) {
