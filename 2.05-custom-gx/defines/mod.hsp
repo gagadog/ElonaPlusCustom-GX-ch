@@ -2892,6 +2892,9 @@
 #define global	ANIMATION_UNUSED3	110
 #define global	ANIMATION_UNUSED4	111
 
+// CGX - ported MMA's slash animation: Change this if it overlaps with Ano's animation
+#define global	ANIMATION_MMA_SLASHWEAPON	1120 // 112 in MMA_hack
+
 // Mode list
 #define global	MODELIST_MAIN	0
 #define global	MODELIST_CHARA_CREATION	1
@@ -7158,6 +7161,7 @@
 #define global	TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS	53
 #define global	TWEAK_MISC_DAYNIGHTCYCLE_EVERYWHERE	54
 #define global	TWEAK_MISC_USABLE_MAP	55
+#define global	TWEAK_MISC_MMA_MELEE_ANIMATIONS	56
 
 // Custom AI
 #define global	CUSTOM_AI_ACTION_ATTACK_MELEE	1

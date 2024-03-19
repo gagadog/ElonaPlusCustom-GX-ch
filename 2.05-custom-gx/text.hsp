@@ -2425,6 +2425,12 @@
 		return limitmax_arg2
 	}
 	return limitmax_arg1
+	
+#defcfunc limitmin int limitmax_arg1, int limitmax_arg2
+	if ( limitmax_arg1 < limitmax_arg2 ) {
+		return limitmax_arg2
+	}
+	return limitmax_arg1
 
 *map_randNameInit
 	sdim mapnamerd, 20, 2, 5

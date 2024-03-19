@@ -4276,6 +4276,15 @@
 		aniref = cw
 		gosub *anime
 	}
+	/********** MMA - SLASH ANIMATION - BEGINNING **********/
+	if ( attackrange != 1 & cw != (-1) & attackskill != SKILL_WEAPON_MARTIAL_ARTS & (TweakData(TWEAK_MISC_MMA_MELEE_ANIMATIONS, TWEAK_CATEGORY_MISC) == 3 | (TweakData(TWEAK_MISC_MMA_MELEE_ANIMATIONS, TWEAK_CATEGORY_MISC) == 2 & cc < MAX_CHARA_FOLLOWER) | (TweakData(TWEAK_MISC_MMA_MELEE_ANIMATIONS, TWEAK_CATEGORY_MISC) == 1 & cc == CHARA_PLAYER)) ) {
+		animenum = attacknum
+		animeskill = attackskill
+		aniref = cw
+		animeid = ANIMATION_MMA_SLASHWEAPON
+		gosub *anime
+	}
+	/********** MMA - SLASH ANIMATION - ENDING **********/
 	if ( attacknum > 1 | cc != CHARA_PLAYER ) {
 		txtmore
 	}

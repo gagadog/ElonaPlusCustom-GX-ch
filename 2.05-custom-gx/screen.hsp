@@ -2077,6 +2077,161 @@
 		anisound = eleinfo(ele, 1)
 	}
 	_switch_val = animeid
+	/********** MMA - SLASH ANIMATION - BEGINNING **********/
+	if ( _switch_val == ANIMATION_MMA_SLASHWEAPON ) {
+		_switch_sw = 0
+		if ( synccheck(cc, -1) == 0 ) { goto *anime_SWEND1 }
+		if ( cw < 0 | cw >= MAX_INV_DATA ) { goto *anime_SWEND1 }
+		preparePicItem inv(INV_ITEM_PIC, cw), inv(INV_ITEM_COL, cw)
+		// Horizontal Flip, then rotate 90 degrees clockwise (for blades with wrong facing, probably shouldn't put it here)
+		if ( (animenum \ 2 == 0 | animeskill == SKILL_WEAPON_SHORTSWORD | animeskill == SKILL_WEAPON_POLEARM | animeskill == SKILL_WEAPON_STAVE) ^ (inv(INV_ITEM_PIC, cw) == xy2pic(2, 13) | inv(INV_ITEM_PIC, cw) == xy2pic(3, 13) | inv(INV_ITEM_PIC, cw) == xy2pic(6, 15) | inv(INV_ITEM_PIC, cw) == xy2pic(6, 15)) ) {
+			gsel BUFFER_PIC
+			buffer BUFFER_PIC, inf_tiles, inf_tiles
+			gmode 0, inf_tiles, inf_tiles
+			pos inf_tiles - 1, 0
+			gzoom (-1) * inf_tiles, inf_tiles, BUFFER_ITEM, 0, 960, inf_tiles, inf_tiles
+
+			gsel BUFFER_ITEM
+			gmode 0, inf_tiles, inf_tiles
+			pos 0 + inf_tiles / 2, 960 + inf_tiles / 2
+			gfini inf_tiles, inf_tiles
+			grotate BUFFER_PIC, 0, 0, 1.6, inf_tiles, inf_tiles
+			gsel selcur
+		}
+		// Rotate 90 degress clockwise.
+		if ( inv(INV_ITEM_PIC, cw) == xy2pic(10, 12) | inv(INV_ITEM_PIC, cw) == xy2pic(11, 20) | inv(INV_ITEM_PIC, cw) == xy2pic(4, 21) | inv(INV_ITEM_PIC, cw) == xy2pic(5, 21) | inv(INV_ITEM_PIC, cw) == xy2pic(7, 21) | inv(INV_ITEM_PIC, cw) == xy2pic(32, 26) | inv(INV_ITEM_PIC, cw) == xy2pic(1, 28) | inv(INV_ITEM_PIC, cw) == xy2pic(2, 28) | inv(INV_ITEM_PIC, cw) == xy2pic(7, 31) | inv(INV_ITEM_PIC, cw) == xy2pic(11, 31) | inv(INV_ITEM_PIC, cw) == xy2pic(13, 30) ) {
+			gsel BUFFER_PIC
+			buffer BUFFER_PIC, inf_tiles, inf_tiles
+			gmode 0, inf_tiles, inf_tiles
+			pos 0, 0
+			gcopy BUFFER_ITEM, 0, 960, inf_tiles, inf_tiles
+
+			gsel BUFFER_ITEM
+			gmode 0, inf_tiles, inf_tiles
+			pos 0 + inf_tiles / 2, 960 + inf_tiles / 2
+			gfini inf_tiles, inf_tiles
+			grotate BUFFER_PIC, 0, 0, 1.6, inf_tiles, inf_tiles
+			gsel selcur
+		}
+		// Rotate 180 degress clockwise.
+		if ( inv(INV_ITEM_PIC, cw) == xy2pic(20, 16) ) {
+			gsel BUFFER_PIC
+			buffer BUFFER_PIC, inf_tiles, inf_tiles
+			gmode 0, inf_tiles, inf_tiles
+			pos 0, 0
+			gcopy BUFFER_ITEM, 0, 960, inf_tiles, inf_tiles
+
+			gsel BUFFER_ITEM
+			gmode 0, inf_tiles, inf_tiles
+			pos 0 + inf_tiles / 2, 960 + inf_tiles / 2
+			gfini inf_tiles, inf_tiles
+			grotate BUFFER_PIC, 0, 0, 3.2, inf_tiles, inf_tiles
+			gsel selcur
+		}
+		ap = cfg_animewait / 4 + 1
+		repeat ap
+			animex = (cdata(CDATA_X, tc) - scx) * inf_tiles
+			animey = (cdata(CDATA_Y, tc) - scy) * inf_tiles + inf_screeny + 8
+			animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * 1 / 3
+			animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * 1 / 3
+			if ( animeskill == SKILL_WEAPON_SHORTSWORD ) {
+				if ( animenum \ 2 ) {
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(ap / 2 - cnt) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(ap / 2 - cnt) / limitmin((ap - 1) * 2, 1)
+					animex += (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles / 5
+					animey -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles / 5
+				}
+				else {
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(cnt - ap / 2) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(cnt - ap / 2) / limitmin((ap - 1) * 2, 1)
+					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles / 5
+					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles / 5
+				}
+			}
+			if ( animeskill == SKILL_WEAPON_POLEARM ) {
+				if ( animenum \ 2 ) {
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (ap - cnt) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (ap - cnt) / limitmin((ap - 1) * 2, 1)
+					animex += (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles / 5
+					animey -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles / 5
+				}
+				else {
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (ap - cnt) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (ap - cnt) / limitmin((ap - 1) * 2, 1)
+					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles / 5
+					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles / 5
+				}
+			}
+			if ( animeskill == SKILL_WEAPON_STAVE ) {
+				if ( animenum \ 2 ) {
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(ap / 4 - cnt \ (ap / 2)) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(ap / 4 - cnt \ (ap / 2)) / limitmin((ap - 1) * 2, 1)
+					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (ap / 4 - cnt \ (ap / 2)) / limitmin(ap - 1, 1)
+					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (ap / 4 - cnt \ (ap / 2)) / limitmin(ap - 1, 1)
+					animex += (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles / 5
+					animey -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles / 5
+				}
+				else {
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(cnt \ (ap / 2) - ap / 4) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(cnt \ (ap / 2) - ap / 4) / limitmin((ap - 1) * 2, 1)
+					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (cnt \ (ap / 2) - ap / 4) / limitmin(ap - 1, 1)
+					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (cnt \ (ap / 2) - ap / 4) / limitmin(ap - 1, 1)
+					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles / 5
+					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles / 5
+				}
+			}
+			if ( animeskill != SKILL_WEAPON_SHORTSWORD & animeskill != SKILL_WEAPON_POLEARM & animeskill != SKILL_WEAPON_STAVE ) {
+				if ( animenum \ 2 ) {
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(ap / 2 - cnt) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(ap / 2 - cnt) / limitmin((ap - 1) * 2, 1)
+					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (ap / 2 - cnt) / limitmin(ap - 1, 1)
+					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (ap / 2 - cnt) / limitmin(ap - 1, 1)
+				}
+				else {
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(cnt - ap / 2) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(cnt - ap / 2) / limitmin((ap - 1) * 2, 1)
+					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (cnt - ap / 2) / limitmin(ap - 1, 1)
+					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (cnt - ap / 2) / limitmin(ap - 1, 1)
+				}
+			}
+			gsel 4
+			gmode 0
+			pos 0, 0
+			gcopy 0, animex, animey - inf_tiles / 2, inf_tiles, inf_tiles
+			gmode 2
+			gsel 0
+			gmode 2, inf_tiles, inf_tiles
+			pos animex + inf_tiles / 2, animey
+			if ( animeskill == SKILL_WEAPON_SHORTSWORD | animeskill == SKILL_WEAPON_POLEARM ) {
+				grotate 1, 0, 960, atan(cdata(1, tc) - cdata(1, cc), cdata(2, cc) - cdata(2, tc)) - 0.8, inf_tiles, inf_tiles
+			}
+			if ( animeskill == SKILL_WEAPON_STAVE ) {
+				if ( animenum \ 2 ) {
+					grotate 1, 0, 960, atan(cdata(CDATA_X, tc) - cdata(CDATA_X, cc), cdata(CDATA_Y, cc) - cdata(CDATA_Y, tc)) - 0.8 + 3.2 * (ap / 4 - cnt \ (ap / 2)) / limitmin(ap, 1), inf_tiles, inf_tiles
+				}
+				else {
+					grotate 1, 0, 960, atan(cdata(CDATA_X, tc) - cdata(CDATA_X, cc), cdata(CDATA_Y, cc) - cdata(CDATA_Y, tc)) + 0.8 + 3.2 * (cnt \ (ap / 2) - ap / 4) / limitmin(ap, 1), inf_tiles, inf_tiles
+				}
+			}
+			if ( animeskill != SKILL_WEAPON_SHORTSWORD & animeskill != SKILL_WEAPON_POLEARM & animeskill != SKILL_WEAPON_STAVE ) {
+				if ( animenum \ 2 ) {
+					grotate 1, 0, 960, atan(cdata(CDATA_X, tc) - cdata(CDATA_X, cc), cdata(CDATA_Y, cc) - cdata(CDATA_Y, tc)) + 3.2 * (ap / 2 - cnt) / limitmin(ap, 1), inf_tiles, inf_tiles
+				}
+				else {
+					grotate 1, 0, 960, atan(cdata(CDATA_X, tc) - cdata(CDATA_X, cc), cdata(CDATA_Y, cc) - cdata(CDATA_Y, tc)) + 3.2 * (cnt - ap / 2) / limitmin(ap, 1), inf_tiles, inf_tiles
+				}
+			}
+			redraw 1
+			redraw 0
+			gmode 0
+			pos animex, animey - inf_tiles / 2
+			gcopy 4, 0, 0, inf_tiles, inf_tiles
+			gmode 2
+			await cfg_animewait
+		loop
+		goto *anime_SWEND1
+	}
+	/********** MMA - SLASH ANIMATION - ENDING **********/
 	if ( _switch_val == ANIMATION_FIZZLE | _switch_sw ) {
 		_switch_sw = 0
 		if ( synccheck(cc, -1) == 0 ) {

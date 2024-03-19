@@ -32,10 +32,10 @@
 		mousebx@MMAH = mousex
 		mouseby@MMAH = mousey
 		if ( cursor_check_tcg_mode == 0 ) {
-			if ( mousex >= basex@tcg + 144 & mousex <= basex@tcg + 704 & mousey >= basey@tcg + 70 & mousey <= basey@tcg + 370 ) {
+			if ( mousex >= basex@tcg + 140 & mousex <= basex@tcg + 780 & mousey >= basey@tcg + 70 & mousey <= basey@tcg + 520 ) {
 				dsctmp@tcg = limit((mousey - 43 - basey@tcg) / 150, 0, 2) * 8 + limit((mousex - 144 - basex@tcg) / 80, 0, 7)
-				if ( dsctmp@tcg >= 0 & dsctmp@tcg < dlistmax@tcg ) {
-					dsc@tcg = dsctmp@tcg
+				if ( dsctmp@tcg >= 0 & dsctmp@tcg < 24 ) {
+					dsc@tcg = limit(page@tcg * 8 + dsctmp@tcg, 0, dlistmax@tcg - 1)
 				}
 			}
 		}
@@ -60,8 +60,10 @@
 			}
 			csfix
 		}
+		if ( dbg_tcg ) {
+			title "" + mousex + "/" + mousey + "/" + (mousex - basex@tcg) + "/" + (mousey - basey@tcg)
+		}
 	}
-	title "" + mousex + "/" + mousey + "/" + click_left@MMAH + "/" + click_right@MMAH + "/" + ginfo(2) + "/" + locvar_key_check_p
 	if ( click_left@MMAH ) {
 		key = key_enter
 		if ( cursor_check_tcg_mode == 2 ) {
@@ -81,15 +83,27 @@
 			return
 		}
 		if ( cursor_check_tcg_mode == 0 ) {
+			if ( mousey >= basey@tcg + 70 & mousey <= basey@tcg + 520 ) {
+				if ( mousex >= basex@tcg + 114 & mousex <= basex@tcg + 140 ) {
+					dsc@tcg = limit(dsc@tcg - 24, 0, dlistmax@tcg - 1)
+					key == ""
+					return
+				}
+				if ( mousex >= basex@tcg + 780 & mousex <= basex@tcg + 800 ) {
+					dsc@tcg = limit(dsc@tcg + 24, 0, dlistmax@tcg - 1)
+					key == ""
+					return
+				}
+			}
 			if ( mousex >= basex@tcg + 180 & mousey >= basey@tcg & mousey <= basey@tcg + 49 ) {
 				ccf@tcg = limit((mousex - 180 - basex@tcg)/63, 0, cfmax@tcg - 1) + 1
 				key = key_prev
 				return
 			}
-			if ( mousex < basex@tcg + 120 ) {
+			if ( mousex < basex@tcg + 114 ) {
 				key = key_search
 			}
-			if ( mousex < basex@tcg + 120 &  mousey < basey@tcg + 120 ) {
+			if ( mousex < basex@tcg + 114 &  mousey < basey@tcg + 120 ) {
 				key = key_msglog
 			}
 			if ( mousey > basey@tcg + 537 ) {

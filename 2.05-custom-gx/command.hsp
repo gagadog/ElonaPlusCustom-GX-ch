@@ -6371,7 +6371,7 @@
 		goto *pc_turn
 	}
 	if ( p == 27 ) {
-		gosub *com_tag_team
+		gosub *com_tachi_e
 		gosub *screen_draw
 		goto *pc_turn
 	}
@@ -10840,7 +10840,7 @@
 	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
 	goto *com_item_mark_adjust_loop
 
-*com_tag_team
+*com_tachi_e
 	gosub *screen_draw
 	tatiebk = cdata(CDATA_FACE, tc)
 	n = 0
@@ -10851,7 +10851,7 @@
 	await 1000
 	p = 0
 
-*com_tag_team_WHILE1
+*com_tachi_e_WHILE1
 	if ( cdata(CDATA_FACE, tc) > 0 ) {
 		stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_B.bmp"
 		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 6 ) {
@@ -10907,12 +10907,12 @@
 	getkey p, 13
 	if ( p ) {
 		snd SOUNDLIST_PORT
-		goto *com_tag_team_WEND1
+		goto *com_tachi_e_WEND1
 	}
 	if ( key == key_cancel ) {
 		snd SOUNDLIST_EQUIP1
 		cdata(CDATA_FACE, tc) = tatiebk
-		goto *com_tag_team_WEND1
+		goto *com_tachi_e_WEND1
 	}
 	if ( key == key_pageup ) {
 		tatiebk2 = cdata(CDATA_FACE, tc)
@@ -10939,9 +10939,9 @@
 		cursor_check@MMAH
 	}
 	/********** MMAHACK - MOUSE OPERATION - ENDING **********/
-	goto *com_tag_team_WHILE1
+	goto *com_tachi_e_WHILE1
 
-*com_tag_team_WEND1
+*com_tachi_e_WEND1
 	gosub *screen_draw
 	return
 

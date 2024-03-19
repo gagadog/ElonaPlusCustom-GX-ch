@@ -424,6 +424,20 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			return " (Currently: None)"
 		}
 	}
+	if ( TweakCategory == TWEAK_CATEGORY_MISC ) & ( TweakNumber == TWEAK_MISC_MMA_MELEE_ANIMATIONS ) {
+		if ( TweakData(TweakNumber, TweakCategory) == 1 ) {
+			return " (Currently: Player Only)"
+		}
+		if ( TweakData(TweakNumber, TweakCategory) == 2 ) {
+			return " (Currently: Player/Follower Only)"
+		}
+		if ( TweakData(TweakNumber, TweakCategory) == 3 ) {
+			return " (Currently: All)"
+		}
+		else {
+			return " (Currently: Disabled)"
+		}
+	}
 	if ( TweakData(TweakNumber, TweakCategory) == 1 ) {
 		return " (Currently: On)"
 	}
@@ -1463,7 +1477,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	cs = 0
 	page = 0
 	pagesize = 16
-	listmax = 10
+	listmax = 11
 *MiscTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -1483,6 +1497,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 6) = "Use CGX Arrow/Bolt/Ball Spell Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_CUSTOM_SPELL_ANIMATIONS)
 	listn(0, 7) = "Display Day/Night Cycle Everywhere." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DAYNIGHTCYCLE_EVERYWHERE)
 	listn(0, 8) = "Draw Local/World map when using 'map' item." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_USABLE_MAP)
+	listn(0, 9) = "(MMA) Use Melee-Weapon-Swing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_MMA_MELEE_ANIMATIONS)
 
 	listn(0, listmax - 1) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -1532,6 +1547,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			}
 			if ( p == 8 ) {
 				s = "Draw a local map / world map when using the 'map' item.\nTiles undiscovered are not shown."
+			}
+			if ( p == 9 ) {
+				s = "Use Melee-Weapon-Swing attack animation from MMA branch."
 			}
 			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
@@ -1604,6 +1622,13 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tc = TWEAK_CATEGORY_MISC
 		tn = TWEAK_MISC_USABLE_MAP
 		gosub *ToggleTweak
+	}
+	if ( p == 9 ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_MMA_MELEE_ANIMATIONS
+		ts = 1
+		tm = 3
+		gosub *IncrementTweak
 	}
 	if ( p == listmax - 1 ) {
 		snd SOUNDLIST_OK1

@@ -2,6 +2,7 @@
 
 # Added
 - (MMA_hack): Added mouse control settings.
+- (MMA): Added a misc tweak to enable melee weapon swing animations.
 - Pop-Up: Settings to adjust horizontal-shift for font of different size.
 - Chat Pop-Up: A EX Setting to multi-line the overlong names/dialogs.
 
@@ -14,7 +15,7 @@
 - (Plus) Critical rate from predator class and magnetism not working.
 - (Plus) Bugs caused by Containing a standby inmate.
 - (Plus) Bugs caused by inmate surviving execution due to Lay Hand.
-- TCG: Forced attack related bugs.
+- TCG: Fossil AI, Forced-attack, Gavela, and Shangchi effect.
 
 # 2.22.1.0
 
