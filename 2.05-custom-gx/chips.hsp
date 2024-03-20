@@ -740,11 +740,11 @@
 	tname(MAP_CHIP_ROLE_COMPOST) = lang("コンポスト", "a compost")
 
 	dim chipc, 6, SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + 240
-	dim chipi, 8, SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM
+	dim chipi, 8, SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM + 240// Some custom item support
 	repeat SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA
 		chipc(CHIPC_X, cnt) = cnt \ SPRITE_SHEET_COLS_CHARA * inf_tiles, cnt / SPRITE_SHEET_COLS_CHARA * inf_tiles, inf_tiles, inf_tiles, 16
 	loop
-	repeat SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM
+	repeat SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM + 240// Some custom item support
 		chipi(CHIPI_X, cnt) = cnt \ SPRITE_SHEET_COLS_ITEM * inf_tiles, cnt / SPRITE_SHEET_COLS_ITEM * inf_tiles, inf_tiles, inf_tiles, 0
 		chipi(CHIPI_S, cnt) = 8
 		chipi(CHIPI_SH, cnt) = 40

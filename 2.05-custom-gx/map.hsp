@@ -496,6 +496,7 @@
 	if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE ) {
 		gosub *del_userTemp
 		gosub *userNpc_update
+		gosub *userItem_update
 	}
 	if ( TweakData(TWEAK_GAMEPLAY_MOONGATE_LOOT, TWEAK_CATEGORY_GAMEPLAY) ) {
 		if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE & comctrl == 2 ) {
@@ -9553,6 +9554,8 @@
 	}
 	if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE ) {
 		gosub *userNpc_update
+		gosub *userItem_update
+		omakeshowroomfix
 	}
 	proc "Map:Check renew"
 	gosub *check_renew
@@ -12521,8 +12524,13 @@
 	if ( gdata(GDATA_AREA) == AREA_SHOW_HOUSE & mdata(MDATA_TILE_FILE) == 1 ) {
 		gmode 0
 		color 0, 0, 0
-		pos 240, 864
         boxf 144, 864, 144 + 48 * 20 - 1, 864 + 48 - 1
+		// Hey, theres custom items, this must be an omake map. 
+		// Let's revert the lava and red water tiles as well
+		if ( useritemmax > 0 ) {
+			boxf 0, 816, 0 + 48 * 3 - 1, 864 + 48 - 1 // Dark lava like
+			boxf 432, 240, 432 + 48 * 3 - 1, 240 + 48 - 1 // Dark water like
+		}
 	}
 	map_tileset mdata(MDATA_TILESET)
 	gsel 2

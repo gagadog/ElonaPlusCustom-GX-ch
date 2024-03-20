@@ -8278,7 +8278,7 @@
 	drawmenu 1
 *com_spell_loop
 	redraw 0
-	s = lang("魔法の詠唱", "Spell"), strhint2 + strhint3 + strhint7 + strhint8
+	s = lang("魔法の詠唱", "Spell"), strhint2 + strhint3 + strhint7 + strhint8 + lang("  z/x [魔法/詠唱の制限]  ", "  z/x [Spell-Lv/Casting-limit]  ")
 	display_window (windoww - 720) / 2 + inf_screenx, winposy(438), 720, 438
 	display_topic lang("魔法の名称", "Name"), wx + 28, wy + 36
 	display_topic lang("消費MP(ｽﾄｯｸ)　LV/成功　(潜在) ", "Cost(Stock) Lv/Chance"), wx + 190, wy + 36
@@ -8382,6 +8382,29 @@
 			break
 		}
 	loop
+	/********** JAMES CUSTOM - SPELL LEVEL LIMITER - BEGINNING **********/
+	if ( key == "z" | key == "x" ) {
+		keybk = key
+		if ( keybk == "z" ) { promptAdd lang("やっぱりやめる", "No Spell-lvl Limit"), "null", 0 }
+		if ( keybk == "x" ) { promptAdd lang("やっぱりやめる", "No Casting-lvl Limit"), "null", 0 }
+		promptAdd lang("制限レベル1", "Limiter LV.1"), "null", 1
+		promptAdd lang("制限レベル10", "Limiter LV.10"), "null", 10
+		promptAdd lang("制限レベル25", "Limiter LV.25"), "null", 25
+		promptAdd lang("制限レベル50", "Limiter LV.50"), "null", 50
+		promptAdd lang("制限レベル100", "Limiter LV.100"), "null", 100
+		promptAdd lang("制限レベル250", "Limiter LV.250"), "null", 250
+		promptAdd lang("制限レベル500", "Limiter LV.500"), "null", 500
+		promptAdd lang("制限レベル1000", "Limiter LV.1000"), "null", 1000
+		promptAdd lang("制限レベル1500", "Limiter LV.1500"), "null", 1500
+		val = promptx, prompty, 200, 1
+		gosub *prompt_key
+		if ( stat != 0 ) {
+			if ( keybk == "z" ) { customspelllimiter = rtval }
+			if ( keybk == "x" ) { customcastinglimiter = rtval }
+		}
+		goto *com_spell
+	}
+	/********** JAMES CUSTOM - SPELL LEVEL LIMITER - BEGINNING **********/
 	if ( p != (-1) ) {
 		menucycle = 0
 		efid = p
@@ -16543,6 +16566,9 @@
 		promptAdd lang("アップロード", "Upload"), "e"
 		promptAdd lang("設定", "Setting"), "f"
 	}
+	if ( gdata(GDATA_WIZARD) != 0 ) {
+		promptAdd lang("カスタムITEMを作成", "Make custom ITEM"), "null", 3333
+	}
 	val = promptx, prompty, 240, 1
 	gosub *prompt_key
 	gosub *screen_draw
@@ -16625,6 +16651,10 @@
 	}
 	if ( rtval == 3 ) {
 		gosub *user_npc
+		return
+	}
+	if ( rtval == 3333 ) {
+		gosub *user_item
 		return
 	}
 	if ( rtval == 4 ) {

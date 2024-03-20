@@ -281,6 +281,11 @@
 			}
 		}
 	}
+	/********** MMA - CNPC EVENT - BEGINNING **********/
+	if ( tc >= MAX_CHARA_FOLLOWER & cdata(CDATA_ID, tc) == CREATURE_ID_USER & cdata(CDATA_QUALITY, tc) == FIX_QUALITY_UNIQUE ) {
+		goto *chat_unique
+	}
+	/********** MMA - CNPC EVENT - ENDING **********/
 	if ( questteleport == 1 ) {
 		questteleport = 0
 		goto *chat_quest
@@ -912,6 +917,287 @@
 *chat_unique
 	listmax = 0
 	_switch_val = chatval(1)
+	/********** MMA - CNPC EVENT - BEGINNING **********/
+	if ( _switch_val == CREATURE_ID_USER | _switch_sw ) {
+		proc "cnpc event start"
+		p = instr(usertxt(cdata(CDATA_USERNPC_ID, tc)), 0, "%txt_ucnpc_ev_b")
+		if ( p == (-1) ) { goto *chat_unique_SWEND1 }
+		starttxt = "%txtevstart" + "," + lang("JP", "EN")
+		sdim setbuff, 10000
+		sdim tmpbuff, 1000, 10
+		sdim evact, 500
+		sdim evline, 50
+		buff = ""
+		setbuff = strmid(usertxt(cdata(CDATA_USERNPC_ID, tc)), p, instr(usertxt(cdata(CDATA_USERNPC_ID, tc)), 0, "%txt_ucnpc_ev_e") - p + 15)
+		repeat 300
+			listmax = 0
+			notesel tmpbuff(0)
+			if ( cnt == 0 ) {
+				p = instr(setbuff, 0, starttxt)
+			}
+			else {
+				p = instr(setbuff, 0, evline + "," + lang("JP", "EN"))
+				if ( p == (-1) ) {
+					p = instr(setbuff, 0, evline)
+				}
+			}
+			if ( p != (-1) ) {
+				tmpbuff(0) = strmid(setbuff, p, instr(setbuff, p + 1, "%txt"))
+				if ( noteinfo(0) > 1 ) {
+					notedel 0
+					split tmpbuff(0), "{c}", tmpbuff
+					ccount = stat - 1
+					if ( ccount == 0 ) {
+						buff = tmpbuff(0)
+						gosub *convert_word
+						break
+					}
+					buff = tmpbuff(0)
+					gosub *convert_word
+					tmpbuff(0) = buff
+					repeat ccount
+						buff = strmid(tmpbuff(cnt + 1), 0, instr(tmpbuff(cnt + 1), 0, "%"))
+						gosub *convert_word
+						chatList cnt, buff
+					loop
+					buff = tmpbuff(0)
+					chatesc = 1
+					gosub *chat_select
+					if ( chatval == (-1) ) {
+						break
+					}
+					repeat ccount
+						evact = ""
+						if ( chatval == cnt ) {
+							if ( instr(tmpbuff(cnt + 1), 0, "{ev}") != (-1) ) {
+								p = instr(tmpbuff(cnt + 1), instr(tmpbuff(cnt + 1), 0, "%") + 1, "{ev}")
+								evact = strmid(tmpbuff(cnt + 1), instr(tmpbuff(cnt + 1), 0, "{ev}"), 100)
+							}
+							else {
+								p = 100
+							}
+							evline = "%txt" + strmid(tmpbuff(cnt + 1), instr(tmpbuff(cnt + 1), 0, "%") + 1, p)
+							matubi = strmid(evline, -1, 1)
+							if ( peek(matubi, 0) == 13 ) {
+								evline = strtrim(evline, 2, 13)
+							}
+							break
+						}
+					loop
+				}
+			}
+			if ( instr(evact, 0, "gohos") != (-1) ) { cdata(CDATA_RELATION, tc) = -3 }
+			if ( instr(evact, 0, "turnAlly") != (-1) ) { cdata(CDATA_RELATION, tc) = 10 }
+			if ( instr(evact, 0, "emofire") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 0 + 100 * 5 }
+			if ( instr(evact, 0, "emonote") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 6 + 100 * 5 }
+			if ( instr(evact, 0, "emolead") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 7 + 100 * 5 }
+			if ( instr(evact, 0, "emopoison") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 8 + 100 * 5 }
+			if ( instr(evact, 0, "emobleed") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 9 + 100 * 5 }
+			if ( instr(evact, 0, "emoblind") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 10 + 100 * 5 }
+			if ( instr(evact, 0, "emoconfuse") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 11 + 100 * 5 }
+			if ( instr(evact, 0, "emodim") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 12 + 100 * 5 }
+			if ( instr(evact, 0, "emofear") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 13 + 100 * 5 }
+			if ( instr(evact, 0, "emosleep") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 14 + 100 * 5 }
+			if ( instr(evact, 0, "emoparalyze") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 15 + 100 * 5 }
+			if ( instr(evact, 0, "emoeat") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 16 + 100 * 5 }
+			if ( instr(evact, 0, "emolove") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 17 + 100 * 5 }
+			if ( instr(evact, 0, "emoanger") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 18 + 100 * 5 }
+			if ( instr(evact, 0, "emobag") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 19 + 100 * 5 }
+			if ( instr(evact, 0, "emoexclamation") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 20 + 100 * 5 }
+			if ( instr(evact, 0, "emoquestion") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 21 + 100 * 5 }
+			if ( instr(evact, 0, "emoperson") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 22 + 100 * 5 }
+			if ( instr(evact, 0, "emomemo") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 23 + 100 * 5 }
+			if ( instr(evact, 0, "emomad") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 24 + 100 * 5 }
+			if ( instr(evact, 0, "emostar") != (-1) ) { cdata(CDATA_EMO_ICON, tc) = 25 + 100 * 5 }
+			if ( instr(evact, 0, "exitmap1.wav") != (-1) ) { snd 49 }
+			if ( instr(evact, 0, "book1.wav") != (-1) ) { snd 59 }
+			if ( instr(evact, 0, "write1.wav") != (-1) ) { snd 44 }
+			if ( instr(evact, 0, "pop1.wav") != (-1) ) { snd 1 }
+			if ( instr(evact, 0, "kill1.wav") != (-1) ) { snd 8 }
+			if ( instr(evact, 0, "kill2.wav") != (-1) ) { snd 9 }
+			if ( instr(evact, 0, "trap1.wav") != (-1) ) { snd 70 }
+			if ( instr(evact, 0, "more1.wav") != (-1) ) { snd 10 }
+			if ( instr(evact, 0, "getgold1.wav") != (-1) ) { snd 11 }
+			if ( instr(evact, 0, "paygold1.wav") != (-1) ) { snd 12 }
+			if ( instr(evact, 0, "equip1.wav") != (-1) ) { snd 13 }
+			if ( instr(evact, 0, "get1.wav") != (-1) ) { snd 14 }
+			if ( instr(evact, 0, "get2.wav") != (-1) ) { snd 15 }
+			if ( instr(evact, 0, "drop1.wav") != (-1) ) { snd 16 }
+			if ( instr(evact, 0, "drink1.wav") != (-1) ) { snd 17 }
+			if ( instr(evact, 0, "eat1.wav") != (-1) ) { snd 18 }
+			if ( instr(evact, 0, "spend1.wav") != (-1) ) { snd 19 }
+			if ( instr(evact, 0, "ding1.wav") != (-1) ) { snd 60 }
+			if ( instr(evact, 0, "ding3.wav") != (-1) ) { snd 61 }
+			if ( instr(evact, 0, "dead1.wav") != (-1) ) { snd 50 }
+			if ( instr(evact, 0, "ok1.wav") != (-1) ) { snd 20 }
+			if ( instr(evact, 0, "dig1.wav") != (-1) ) { snd 52 }
+			if ( instr(evact, 0, "bash1.wav") != (-1) ) { snd 73 }
+			if ( instr(evact, 0, "complete1.wav") != (-1) ) { snd 51 }
+			if ( instr(evact, 0, "alert1.wav") != (-1) ) { snd 21 }
+			if ( instr(evact, 0, "locked1.wav") != (-1) ) { snd 22 }
+			if ( instr(evact, 0, "chest1.wav") != (-1) ) { snd 23 }
+			if ( instr(evact, 0, "ding2.wav") != (-1) ) { snd 24 }
+			if ( instr(evact, 0, "cook1.wav") != (-1) ) { snd 25 }
+			if ( instr(evact, 0, "pop2.wav") != (-1) ) { snd 26 }
+			if ( instr(evact, 0, "fail1.wav") != (-1) ) { snd 27 }
+			if ( instr(evact, 0, "build1.wav") != (-1) ) { snd 58 }
+			if ( instr(evact, 0, "bow1.wav") != (-1) ) { snd 29 }
+			if ( instr(evact, 0, "atk1.wav") != (-1) ) { snd 2 }
+			if ( instr(evact, 0, "atk2.wav") != (-1) ) { snd 3 }
+			if ( instr(evact, 0, "gun1.wav") != (-1) ) { snd 30 }
+			if ( instr(evact, 0, "throw1.wav") != (-1) ) { snd 31 }
+			if ( instr(evact, 0, "heart1.wav") != (-1) ) { snd 32 }
+			if ( instr(evact, 0, "heal1.wav") != (-1) ) { snd 33 }
+			if ( instr(evact, 0, "teleport1.wav") != (-1) ) { snd 72 }
+			if ( instr(evact, 0, "ball1.wav") != (-1) ) { snd 34 }
+			if ( instr(evact, 0, "breath1.wav") != (-1) ) { snd 35 }
+			if ( instr(evact, 0, "bolt1.wav") != (-1) ) { snd 37 }
+			if ( instr(evact, 0, "arrow1.wav") != (-1) ) { snd 36 }
+			if ( instr(evact, 0, "curse1.wav") != (-1) ) { snd 38 }
+			if ( instr(evact, 0, "pop3.wav") != (-1) ) { snd 39 }
+			if ( instr(evact, 0, "chime.wav") != (-1) ) { snd 53 }
+			if ( instr(evact, 0, "laser1.wav") != (-1) ) { snd 42 }
+			if ( instr(evact, 0, "web.wav") != (-1) ) { snd 68 }
+			if ( instr(evact, 0, "cheer.wav") != (-1) ) { snd 69 }
+			if ( instr(evact, 0, "door1.wav") != (-1) ) { snd 48 }
+			if ( instr(evact, 0, "crush1.wav") != (-1) ) { snd 45 }
+			if ( instr(evact, 0, "crush2.wav") != (-1) ) { snd 47 }
+			if ( instr(evact, 0, "fire1.wav") != (-1) ) { snd 6 }
+			if ( instr(evact, 0, "snow.wav") != (-1) ) { snd 86 }
+			if ( instr(evact, 0, "fish_cast.wav") != (-1) ) { snd 87 }
+			if ( instr(evact, 0, "fish_get.wav") != (-1) ) { snd 88 }
+			if ( instr(evact, 0, "fish_fight.wav") != (-1) ) { snd 89 }
+			if ( instr(evact, 0, "ammo.wav") != (-1) ) { snd 90 }
+			if ( instr(evact, 0, "throw2.wav") != (-1) ) { snd 91 }
+			if ( instr(evact, 0, "foot1a.wav") != (-1) ) { snd 81 }
+			if ( instr(evact, 0, "foot2a.wav") != (-1) ) { snd 83 }
+			if ( instr(evact, 0, "foot1b.wav") != (-1) ) { snd 82 }
+			if ( instr(evact, 0, "foot2b.wav") != (-1) ) { snd 84 }
+			if ( instr(evact, 0, "foot2c.wav") != (-1) ) { snd 85 }
+			if ( instr(evact, 0, "click1.wav") != (-1) ) { snd 40 }
+			if ( instr(evact, 0, "get3.wav") != (-1) ) { snd 41 }
+			if ( instr(evact, 0, "card1.wav") != (-1) ) { snd 71 }
+			if ( instr(evact, 0, "water.wav") != (-1) ) { snd 57 }
+			if ( instr(evact, 0, "water2.wav") != (-1) ) { snd 46 }
+			if ( instr(evact, 0, "dig2.wav") != (-1) ) { snd 54 }
+			if ( instr(evact, 0, "bush1.wav") != (-1) ) { snd 55 }
+			if ( instr(evact, 0, "gasha.wav") != (-1) ) { snd 56 }
+			if ( instr(evact, 0, "cursor1.wav") != (-1) ) { snd 5 }
+			if ( instr(evact, 0, "pop4.wav") != (-1) ) { snd 62 }
+			if ( instr(evact, 0, "punish1.wav") != (-1) ) { snd 63 }
+			if ( instr(evact, 0, "pray1.wav") != (-1) ) { snd 64 }
+			if ( instr(evact, 0, "offer1.wav") != (-1) ) { snd 65 }
+			if ( instr(evact, 0, "fizzle.wav") != (-1) ) { snd 66 }
+			if ( instr(evact, 0, "door2.wav") != (-1) ) { snd 67 }
+			if ( instr(evact, 0, "foot.wav") != (-1) ) { snd 43 }
+			if ( instr(evact, 0, "miss.wav") != (-1) ) { snd 4 }
+			if ( instr(evact, 0, "night.wav") != (-1) ) { snd 74 }
+			if ( instr(evact, 0, "bg_rain.wav") != (-1) ) { snd 75 }
+			if ( instr(evact, 0, "bg_thunder.wav") != (-1) ) { snd 76 }
+			if ( instr(evact, 0, "bg_wind.wav") != (-1) ) { snd 77 }
+			if ( instr(evact, 0, "bg_sea.wav") != (-1) ) { snd 78 }
+			if ( instr(evact, 0, "bg_town.wav") != (-1) ) { snd 79 }
+			if ( instr(evact, 0, "bg_fire.wav") != (-1) ) { snd 80 }
+			if ( instr(evact, 0, "scroll.wav") != (-1) ) { snd 92 }
+			if ( instr(evact, 0, "log.wav") != (-1) ) { snd 93 }
+			if ( instr(evact, 0, "chara.wav") != (-1) ) { snd 94 }
+			if ( instr(evact, 0, "wear.wav") != (-1) ) { snd 95 }
+			if ( instr(evact, 0, "feat.wav") != (-1) ) { snd 96 }
+			if ( instr(evact, 0, "port.wav") != (-1) ) { snd 97 }
+			if ( instr(evact, 0, "unpop1.wav") != (-1) ) { snd 98 }
+			if ( instr(evact, 0, "chat.wav") != (-1) ) { snd 99 }
+			if ( instr(evact, 0, "inv.wav") != (-1) ) { snd 100 }
+			if ( instr(evact, 0, "skill.wav") != (-1) ) { snd 101 }
+			if ( instr(evact, 0, "spell.wav") != (-1) ) { snd 102 }
+			if ( instr(evact, 0, "dice.wav") != (-1) ) { snd 103 }
+			if ( instr(evact, 0, "vomit.wav") != (-1) ) { snd 104 }
+			if ( instr(evact, 0, "atksword.wav") != (-1) ) { snd 105 }
+			if ( instr(evact, 0, "atk_ice.wav") != (-1) ) { snd 106 }
+			if ( instr(evact, 0, "atk_elec.wav") != (-1) ) { snd 107 }
+			if ( instr(evact, 0, "atk_fire.wav") != (-1) ) { snd 108 }
+			if ( instr(evact, 0, "atk_hell.wav") != (-1) ) { snd 109 }
+			if ( instr(evact, 0, "atk_poison.wav") != (-1) ) { snd 110 }
+			if ( instr(evact, 0, "atk_nerve.wav") != (-1) ) { snd 111 }
+			if ( instr(evact, 0, "atk_sound.wav") != (-1) ) { snd 112 }
+			if ( instr(evact, 0, "atk_mind.wav") != (-1) ) { snd 113 }
+			if ( instr(evact, 0, "atk_chaos.wav") != (-1) ) { snd 114 }
+			if ( instr(evact, 0, "atk_dark.wav") != (-1) ) { snd 115 }
+			if ( instr(evact, 0, "curse2.wav") != (-1) ) { snd 116 }
+			if ( instr(evact, 0, "curse3.wav") != (-1) ) { snd 117 }
+			if ( instr(evact, 0, "enc.wav") != (-1) ) { snd 118 }
+			if ( instr(evact, 0, "enc2.wav") != (-1) ) { snd 119 }
+			if ( instr(evact, 0, "pray2.wav") != (-1) ) { snd 120 }
+			if ( instr(evact, 0, "offer2.wav") != (-1) ) { snd 121 }
+			music@MMA = 0, 0
+			if ( instr(evact, 0, "mcReset") != (-1) ) { music@MMA = 50, 1 }
+			if ( instr(evact, 0, "mcTown1") != (-1) ) { music@MMA = 51, 1 }
+			if ( instr(evact, 0, "mcTown2") != (-1) ) { music@MMA = 52, 1 }
+			if ( instr(evact, 0, "mcTown3") != (-1) ) { music@MMA = 53, 1 }
+			if ( instr(evact, 0, "mcTown4") != (-1) ) { music@MMA = 54, 1 }
+			if ( instr(evact, 0, "mcDungeon1") != (-1) ) { music@MMA = 55, 1 }
+			if ( instr(evact, 0, "mcDungeon2") != (-1) ) { music@MMA = 56, 1 }
+			if ( instr(evact, 0, "mcDungeon3") != (-1) ) { music@MMA = 57, 1 }
+			if ( instr(evact, 0, "mcDungeon4") != (-1) ) { music@MMA = 58, 1 }
+			if ( instr(evact, 0, "mcDungeon5") != (-1) ) { music@MMA = 59, 1 }
+			if ( instr(evact, 0, "mcDungeon6") != (-1) ) { music@MMA = 60, 1 }
+			if ( instr(evact, 0, "mcPuti") != (-1) ) { music@MMA = 61, 1 }
+			if ( instr(evact, 0, "mcBoss") != (-1) ) { music@MMA = 62, 1 }
+			if ( instr(evact, 0, "mcBoss2") != (-1) ) { music@MMA = 63, 1 }
+			if ( instr(evact, 0, "mcVictory") != (-1) ) { music@MMA = 64, 1 }
+			if ( instr(evact, 0, "mcOpening") != (-1) ) { music@MMA = 65, 1 }
+			if ( instr(evact, 0, "mcLastBoss") != (-1) ) { music@MMA = 66, 1 }
+			if ( instr(evact, 0, "mcHome") != (-1) ) { music@MMA = 67, 1 }
+			if ( instr(evact, 0, "mcLonely") != (-1) ) { music@MMA = 68, 1 }
+			if ( instr(evact, 0, "mcChaos") != (-1) ) { music@MMA = 69, 1 }
+			if ( instr(evact, 0, "mcMarch1") != (-1) ) { music@MMA = 70, 1 }
+			if ( instr(evact, 0, "mcMarch2") != (-1) ) { music@MMA = 71, 1 }
+			if ( instr(evact, 0, "mcMarch3") != (-1) ) { music@MMA = 72, 1 }
+			if ( instr(evact, 0, "mcArena") != (-1) ) { music@MMA = 73, 1 }
+			if ( instr(evact, 0, "mcFanfare") != (-1) ) { music@MMA = 74, 1 }
+			if ( instr(evact, 0, "mcVillage1") != (-1) ) { music@MMA = 75, 1 }
+			if ( instr(evact, 0, "mcBattle1") != (-1) ) { music@MMA = 76, 1 }
+			if ( instr(evact, 0, "mcCasino") != (-1) ) { music@MMA = 77, 1 }
+			if ( instr(evact, 0, "mcCoda") != (-1) ) { music@MMA = 78, 1 }
+			if ( instr(evact, 0, "mcRuin") != (-1) ) { music@MMA = 79, 1 }
+			if ( instr(evact, 0, "mcWedding") != (-1) ) { music@MMA = 80, 1 }
+			if ( instr(evact, 0, "mcPetArena") != (-1) ) { music@MMA = 81, 1 }
+			if ( instr(evact, 0, "mcUnrest") != (-1) ) { music@MMA = 82, 1 }
+			if ( instr(evact, 0, "mcTown5") != (-1) ) { music@MMA = 83, 1 }
+			if ( instr(evact, 0, "mcUnrest2") != (-1) ) { music@MMA = 84, 1 }
+			if ( instr(evact, 0, "mcTown6") != (-1) ) { music@MMA = 85, 1 }
+			if ( instr(evact, 0, "mcField1") != (-1) ) { music@MMA = 86, 1 }
+			if ( instr(evact, 0, "mcField2") != (-1) ) { music@MMA = 87, 1 }
+			if ( instr(evact, 0, "mcField3") != (-1) ) { music@MMA = 88, 1 }
+			if ( instr(evact, 0, "mcMemory") != (-1) ) { music@MMA = 89, 1 }
+			if ( instr(evact, 0, "mcIntro") != (-1) ) { music@MMA = 90, 1 }
+			if ( music@MMA(1) == 1 ) {
+				music = music@MMA
+				if ( music == 74 ) { musicloop = 1 }
+				gosub *music_play
+			}
+			if ( instr(evact, 0, "iikoto") != (-1) ) {
+				gosub *sexsex
+				break
+			}
+			if ( instr(evact, 0, "vanq") != (-1) ) {
+				txt lang(name(tc) + "は消え去った。", name(tc) + " vanish" + _s(tc) + ".")
+				chara_vanquish tc
+				break
+			}
+			if ( evline == "%txtbye" ) { break }
+			if ( evline == "%txtsceneplay" ) { break }
+			if ( strmid(evline, 0, 13) == "%txtlevelmove" ) { break }
+			if ( strmid(evline, 0, 11) == "%txtmapmove" ) { break }
+			if ( strmid(evline, 0, 13) == "%txtumapmove:" ) { break }
+		loop
+		if ( evline == "%txtbye" | chatval == (-1) | instr(evact, 0, "vanq") != (-1) | instr(evact, 0, "iikoto") != (-1) ) { goto *chat_end }
+		if ( buff != "" ) {
+			chatMore buff
+			goto *chat_end
+		}
+		goto *chat_unique_SWEND1
+	}
+	/********** MMA - CNPC EVENT - ENDING **********/
 	if ( _switch_val == CREATURE_ID_ZEOME_THE_FALSE_PROPHET | _switch_sw ) {
 		_switch_sw = 0
 		if ( gdata(GDATA_AREA) == AREA_AMUR_CAGE ) {

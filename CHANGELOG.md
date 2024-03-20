@@ -3,8 +3,11 @@
 # Added
 - (MMA_hack): Added mouse control settings.
 - (MMA): Added a misc tweak to enable melee weapon swing animations.
+- (Omake): Added basic `txt_ucnpc_ev_b` compatiability for CNPC/showrooms.
+- (Omake): Added basic custom item display support for showrooms.
 - Pop-Up: Settings to adjust horizontal-shift for font of different size.
 - Chat Pop-Up: A EX Setting to multi-line the overlong names/dialogs.
+- Spell-level/Casting/Magic limiter in spell window.
 
 # Changed
 - Pop-Up: font size increase is now a hidden config named: "dmgPopupExplode"

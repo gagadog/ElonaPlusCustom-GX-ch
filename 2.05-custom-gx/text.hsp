@@ -6835,6 +6835,10 @@
 				s = ""
 				break
 			}
+			if ( s == "n" ) {
+				s = "\n"
+				break
+			}
 
             f = 0
             repeat 100

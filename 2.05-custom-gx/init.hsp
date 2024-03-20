@@ -514,6 +514,71 @@ if instr(s,0,%1)!-1{	%c\
 	loop
 	return locvar_getunid_f
 
+/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
+// Using a temporarily loaded custom item list. Fixes the picture of them.
+#deffunc omakeshowroomfix
+	if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE & gdata(GDATA_WIZARD) == 0 ) { return }
+	proc "showroom: fix custom item pic on the ground"
+	inv_getheader -1
+	repeat invrange, invhead
+		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_PIC, cnt) == xy2pic(30, 19) ) {
+			getitemid cnt
+			inv(INV_ITEM_PIC, cnt) = SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM + useritemdata(39, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cnt))
+			cell_refresh inv(INV_ITEM_X, cnt), inv(INV_ITEM_Y, cnt)
+		}
+	loop
+	proc "showroom: fix custom item pic on npcs"
+	repeat MAX_INV_DATA - RANGE_INV1, RANGE_INV1
+		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_PIC, cnt) == xy2pic(30, 19) ) {
+			getitemid cnt
+			inv(INV_ITEM_PIC, cnt) = SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM + useritemdata(39, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cnt))
+		}
+	loop
+	return
+
+#deffunc setitemid int setitemid_ci, int setitemid_unid
+	inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, setitemid_ci) = setitemid_unid
+	useritemdata(39, setitemid_unid) = setitemid_unid
+	return
+
+#deffunc getitemid int getitemid_ci
+	if ( inv(INV_ITEM_PARTS, getitemid_ci) == 0 ) {
+		inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, getitemid_ci) = inv(INV_ITEM_PARAM1, getitemid_ci)
+		inv(INV_ITEM_OMAKE_CUSTOM_ITEM_CHECKSUM, getitemid_ci) = inv(INV_ITEM_PARAM2, getitemid_ci)
+		inv(INV_ITEM_PARAM1, getitemid_ci) = 0
+		inv(INV_ITEM_PARAM2, getitemid_ci) = 0
+	}
+	f = 0
+	repeat useritemmax
+		s = useritemdatan(0, cnt)
+		p = 0
+		repeat strlen(s)
+			p += peek(s, cnt)
+		loop
+		s = str(peek(s, 0)) + str(p) + str(peek(s, strlen(s) - 1))
+		if ( inv(INV_ITEM_OMAKE_CUSTOM_ITEM_CHECKSUM, getitemid_ci) == int(s) ) {
+			setitemid getitemid_ci, cnt
+			f = 1
+			break
+		}
+	loop
+	if ( f == 0 ) {
+		useritemdata(39, getitemid_ci) = useritemmax
+		inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, getitemid_ci) = useritemmax
+	}
+	return f
+
+#defcfunc finditemid str finditemid_id
+	f = 0
+	repeat useritemmax
+		if ( finditemid_id == useritemdatan(0, cnt) ) {
+			f = 1 + cnt
+			break
+		}
+	loop
+	return f
+/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
+
 #defcfunc synccheck int synccheck_arg1, int synccheck_arg2
 	if ( synccheck_arg2 == (-1) ) {
 		if ( cdata(CDATA_IN_TAGTEAM, synccheck_arg1) == 1 ) {
@@ -2265,6 +2330,7 @@ if instr(s,0,%1)!-1{	%c\
 	sdim filtern
 	sdim filter_creature
 	sdim netbuf, 20000
+	gosub *del_userItem
 	gosub *del_userNpc
 	gosub *del_userTemp
 	gosub *db_setFilterRace
@@ -2292,6 +2358,7 @@ if instr(s,0,%1)!-1{	%c\
 	gosub *map_randNameInit
 	gosub *setHome
 	gosub *userNpc_update
+	gosub *userItem_update
 	if ( cfg_music == 1 ) {
 		DMINIT
 		if ( stat == 0 ) {

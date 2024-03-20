@@ -1889,6 +1889,11 @@
 
 #deffunc calcskill int calcskill_skillid, int calcskill_charid, int calcskill_spellpower_dice_y, int calcskill_spellpower_dice_x
 	locvar_calcskill_rs = sdata(sdataref(SKILL_DATAREF_USE, calcskill_skillid), calcskill_charid)
+	if ( calcskill_charid == CHARA_PLAYER & calcskill_skillid >= STARTING_SKILL_SPELL & calcskill_skillid < MAX_SPELL ) {
+		if ( customcastinglimiter > 0 ) { 
+			locvar_calcskill_rs = limitmax(locvar_calcskill_rs, customcastinglimiter) 
+		}
+	}
 	ele = SKILL_NONE
 	elep = 0
 	if ( calcskill_skillid == SKILL_SPELL_UNCURSE ) {

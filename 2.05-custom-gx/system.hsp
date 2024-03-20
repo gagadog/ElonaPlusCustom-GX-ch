@@ -1324,6 +1324,211 @@
 	setunid rc, cun
 	return
 
+/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
+*userItem_update
+	proc "userItem_update"
+	gosub *del_userTemp
+	dirlist buff, exedir + "user\\*.item"
+	notesel buff
+	useritemmax = noteinfo(0)
+	if ( useritemmax >= 240 ) {
+		useritemmax = 240
+	}
+	dim useritemdata, 72, useritemmax + 1
+	sdim useritemdatan, 40, 10, useritemmax + 1
+	sdim useritemtxt, 80 * 50, 4, useritemmax + 1
+	sdim untaglistitem
+	buffer 1, SPRITE_SHEET_COLS_ITEM * 48, (SPRITE_SHEET_ROWS_ITEM + (useritemmax / SPRITE_SHEET_COLS_ITEM + 1) * 2) * 48
+	pos 0, 0
+	picload exedir + "\\graphic\\item" + devfile + ".bmp", 1
+	gmode 0
+	proc "userItem_update:1"
+	sortnote2 buff, 1
+	tg = 0
+	repeat useritemmax
+		notesel buff
+		noteget s, cnt
+		proc "userItem_update:2" + " " + s
+		cnt2 = tg
+		unzip2 exedir + "user\\", s
+		citemfilename = strmid(s, 0, strlen(s) - 4)
+		proc "userItem_update:2a" + " " + s
+		zOpen hgz, exedir + "user\\item1.t", 0
+		zRead useritemdata(0, tg), hgz, 72 * 4
+		zClose hgz
+		dim bmpbuff, useritemdata(0, tg)
+		sdim txtbuff, useritemdata(1, tg) + 1
+		proc "userItem_update:2c" + " " + s
+		zOpen hgz, exedir + "user\\item2.t", 0
+		zRead bmpbuff, hgz, useritemdata(0, tg)
+		zClose hgz
+		proc "userItem_update:2d" + " " + s
+		zOpen hgz, exedir + "user\\item3.t", 0
+		zRead txtbuff, hgz, useritemdata(1, tg)
+		zClose hgz
+		proc "userItem_update:2e" + " " + s
+		s = getnpctxt("name.", "unknown,unknown")
+		csvstr2 s, s
+		useritemdatan(0, tg) = s
+		useritemdatan(1, tg) = s(jp)
+		noteget s, cnt
+		useritemdatan(6, tg) = s
+		useritemdatan(9, tg) = "user\\"
+		if ( instr(untaglistitem, 0, "/" + useritemdatan(0, tg) + "/") != (-1) ) {
+			useritemmax--
+			if ( instr(s, 0, "_tmp_") == (-1) ) {
+				msgtemp += lang("同名アイテムは読み込まれない。", "An item of the same name exists.") + "(skipped:" + useritemdatan(0, tg) + "," + s + ") "
+			}
+			continue
+		}
+		untaglistitem += "/" + useritemdatan(0, tg) + "/"
+		proc "userItem_update:2 set info " + s
+		useritemdatan(2, tg) = getnpctxt("ialphanameref.", "")
+		useritemdatan(3, tg) = getnpctxt("ifilterref.", "")
+		useritemdatan(4, tg) = getnpctxt(lang("iknownnameref.","iknownnameref_en."), useritemdatan(1, tg))
+		useritemdatan(5, tg) = getnpctxt(lang("author.","author_en."), lang("プレイヤー", "Player"))
+		useritemdatan(7, tg) = getnpctxt("isnd.", "")
+		useritemdata(2, tg) = int(getnpctxt("iorgvalue.", "5000"))
+		useritemdata(3, tg) = int(getnpctxt("iorgweight.", "3000"))
+		useritemdata(4, tg) = int(getnpctxt("dicex.", "0"))
+		useritemdata(5, tg) = int(getnpctxt("dicey.", "0"))
+		useritemdata(6, tg) = int(getnpctxt("fixdamage.", "0"))
+		useritemdata(7, tg) = int(getnpctxt("fixhit.", "0"))
+		useritemdata(8, tg) = int(getnpctxt("dodgevalue.", "0"))
+		useritemdata(9, tg) = int(getnpctxt("protectvalue.", "0"))
+		useritemdata(10, tg) = int(getnpctxt("relaskill.", "0"))
+		useritemdata(11, tg) = int(getnpctxt("material.", "0"))
+		useritemdata(12, tg) = int(getnpctxt("identifydef.", "0"))
+		useritemdata(13, tg) = int(getnpctxt("ilight.", "0"))
+		useritemdata(14, tg) = int(getnpctxt("reftype.", "60000"))
+		useritemdata(15, tg) = int(getnpctxt("reftypeminor.", "0"))
+		useritemdata(16, tg) = int(getnpctxt("ibitvaluable.", "0"))
+		useritemdata(17, tg) = int(getnpctxt("objlv.", "10"))
+		useritemdata(18, tg) = limit(int(getnpctxt("fixlv.", "2")), 0, 6)
+		useritemdata(19, tg) = int(getnpctxt("givegod.", "-1"))
+		useritemdata(38, tg) = int(getnpctxt("icolref.", "0"))
+		useritemdata(39, tg) = tg
+		useritemdata(40, tg) = int(getnpctxt("isetpos.", "0"))
+		useritemdata(41, tg) = int(getnpctxt("ipilepos.", "8"))
+		useritemdata(42, tg) = int(getnpctxt("idropshadow.", "40"))
+		useritemdata(43, tg) = int(getnpctxt("irare.", "1000"))
+		useritemdata(44, tg) = int(getnpctxt("ipierce.", "0"))
+		s = getnpctxt("irangepow.", "100, 20, 20, 20, 20, 20, 20, 20, 20, 20")
+		csvstr2 s, s
+		repeat 10
+			useritemdata(45 + cnt, tg) = int(s(cnt))
+		loop
+		s = getnpctxt("irangehit.", "100, 20, 20, 20, 20, 20, 20, 20, 20, 20")
+		csvstr2 s, s
+		repeat 10
+			useritemdata(55 + cnt, tg) = int(s(cnt))
+		loop
+		useritemdata(65, tg) = int(getnpctxt("inameonly.", "0"))
+		useritemdata(66, tg) = int(getnpctxt("ieffect.", "0"))
+		useritemdata(67, tg) = int(getnpctxt("cargoitem.", "0"))
+		repeat 3, 1
+			useritemdata(67 + cnt, tg) = int(getnpctxt("isub" + cnt + ".", "0"))
+		loop
+		if ( useritemdata(66, tg) == 30 ) {
+			sid = useritemdata(68, tg)
+			if ( sid == 657 ) {
+				useritemdata(68, tg) = 0
+			}
+			if ( sid == 441 | sid == 464 ) {
+				useritemdata(70, tg) = limitmin(useritemdata(70, tg), 8640)
+			}
+		}
+		useritemdata(71, tg) = int(getnpctxt("ispawnType.", "0"))
+		if ( useritemdata(14, tg) >= 50000 ) {
+			if ( useritemdata(11, tg) >= length2(mtname) ) {
+				useritemdata(11, tg) = 0
+			}
+		}
+		if ( useritemdata(14, tg) == 92000 ) {
+			useritemdata(66, tg) = 0
+			useritemdata(67, tg) = 1
+			useritemdata(68, tg) = limit(useritemdata(68, tg), 0, length(trate))
+			useritemdata(69, tg) = 0
+			useritemdata(70, tg) = 0
+			if ( useritemdata(3, tg) > 0 ) {
+				useritemdata(3, tg) = -useritemdata(3, tg)
+			}
+		}
+		proc "userItem_update:2 set txt " + s
+		p = instr(txtbuff, 0, "%txt")
+		txtbuff = strmid(txtbuff, p, instr(txtbuff, 0, "%endTxt") - p + 7)
+		repeat 4
+			if ( jp ) {
+				hajime = instr(txtbuff, 0, "%txt[MMA]description" + cnt + ",JP")
+				if ( hajime == (-1) ) {
+					hajime = instr(txtbuff, 0, "%txtdescription" + cnt + ",JP")
+				}
+				if ( hajime == (-1) ) {
+					hajime = instr(txtbuff, 0, "%txtdescription" + cnt + ",EN")
+				}
+			}
+			else {
+				hajime = instr(txtbuff, 0, "%txt[MMA]description" + cnt + ",EN")
+				if ( hajime == (-1) ) {
+					hajime = instr(txtbuff, 0, "%txtdescription" + cnt + ",EN")
+				}
+				if ( cnt == 3 ) {
+					if ( hajime == (-1) ) {
+						hajime = instr(txtbuff, 0, "%txtdescription" + cnt + ",JP")
+					}
+				}
+			}
+			useritemtxt(cnt, tg) = strmid(txtbuff, hajime, instr(txtbuff, hajime + 1, "%"))
+			notesel useritemtxt(cnt, tg)
+			notedel 0
+			if ( instr(useritemtxt(cnt, tg), 0, "nodescription") != (-1) ) {
+				useritemtxt(cnt, tg) = ""
+			}
+		loop
+		proc "userItem_update:2 set bmp " + s
+		gsel 9
+		memfile bmpbuff
+		picload "MEM:temp.bmp"
+		if ( ginfo(13) > (double(50) * cfg_highdpi_scaling) ) {
+			chipi(CHIPI_X, SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM + tg) = tg \ SPRITE_SHEET_COLS_ITEM * inf_tiles, SPRITE_SHEET_ROWS_ITEM * inf_tiles + tg / SPRITE_SHEET_COLS_ITEM * inf_tiles * 2, inf_tiles, inf_tiles * 2, inf_tiles + useritemdata(40, tg), useritemdata(41, tg), useritemdata(42, tg)
+		}
+		else {
+			chipi(CHIPI_X, SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM + tg) = tg \ SPRITE_SHEET_COLS_ITEM * inf_tiles, SPRITE_SHEET_ROWS_ITEM * inf_tiles + tg / SPRITE_SHEET_COLS_ITEM * inf_tiles * 2, inf_tiles, inf_tiles, useritemdata(40, tg), useritemdata(41, tg), useritemdata(42, tg)
+		}
+		gsel 1
+		pos tg \ SPRITE_SHEET_COLS_ITEM * inf_tiles, SPRITE_SHEET_ROWS_ITEM * inf_tiles + tg / SPRITE_SHEET_COLS_ITEM * (inf_tiles * 2)
+		gcopy 9, 0, 0, 48, 96
+		tg++
+	loop
+	proc "userItem_update:3"
+	gosub *del_userTemp
+	gosub *del_userItem
+	proc "userItem_update:Replace bmp"
+	gsel 1
+	folder = exedir + "user\\item\\"
+	dirlist buff, folder + "plan*.bmp"
+	notesel buff
+	repeat stat
+		noteget file, cnt
+		p = int(strmid(file, 4, instr(file, 4, "."))) + 890
+		pos p \ 33 * inf_tiles, p / 33 * inf_tiles
+		picload folder + file, 1
+	loop
+	gsel 0
+	gsel 1
+	folder = exedir + "user\\graphic\\"
+	dirlist buff, folder + "item_*.bmp"
+	notesel buff
+	repeat stat
+		noteget file, cnt
+		p = int(strmid(file, 5, instr(file, 5, ".")))
+		pos p \ 33 * inf_tiles, p / 33 * inf_tiles
+		picload folder + file, 1
+	loop
+	gsel 0
+	return
+/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
+
 *userNpc_update
 	proc "userNpc_update"
 	dirlist buff, exedir + "user\\*.npc"
@@ -1516,6 +1721,111 @@
 	loop
 	gsel 0
 	return
+
+/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
+// Load and creates a make-shift item. For decoration only.
+*user_item
+	fread = 0
+	cun = useritemmax
+	txt lang("どのファイルからアイテムを作成する？", "Use which file to create item?")
+	redraw 1
+	fileext = "txt"
+	filedsc = "Custom Item Text"
+	_fdialog fileext, 16, filedsc, exedir + "user", ""
+	if ( stat == 0 ) {
+		return 0
+	}
+	txtfile = refstr
+	exist txtfile
+	useritemdata(1, cun) = strsize
+	sdim txtbuff, strsize
+	bload txtfile, txtbuff
+	if ( instr(txtbuff, 0, "%Elona Custom Item") == (-1) ) {
+		txt "Invalid File. Aborting."
+		return 0
+	}
+	txt lang("どの画像を埋め込む？", "Embed which picture?")
+	redraw 1
+	fileext = "bmp"
+	filedsc = "Bit Map File"
+	_fdialog fileext, 16, filedsc, exedir + "user", ""
+	if ( stat == 0 ) {
+		return 0
+	}
+	bmpfile = refstr
+	exist bmpfile
+	if ( strsize > 30000 ) {
+		txt "The file size must be lower than 30KB. Aborting."
+		return 0
+	}
+	useritemdata(0, cun) = strsize
+	dim bmpbuff, strsize
+	bload bmpfile, bmpbuff
+	if ( fread == 0 ) {
+		zOpen hgz, exedir + "user\\item1.t", 1, 3
+		zWrite useritemdata(0, cun), hgz, 72 * 4
+		zClose hgz
+	}
+	else {
+		zOpen hgz, exedir + "user\\item1.t", 0
+		zRead useritemdata(0, cun), hgz, 72 * 4
+		zClose hgz
+	}
+	if ( fread == 0 ) {
+		zOpen hgz, exedir + "user\\item2.t", 1, 3
+		zWrite bmpbuff, hgz, useritemdata(0, cun)
+		zClose hgz
+	}
+	else {
+		zOpen hgz, exedir + "user\\item2.t", 0
+		zRead bmpbuff, hgz, useritemdata(0, cun)
+		zClose hgz
+	}
+	if ( fread == 0 ) {
+		zOpen hgz, exedir + "user\\item3.t", 1, 3
+		zWrite txtbuff, hgz, useritemdata(1, cun)
+		zClose hgz
+	}
+	else {
+		zOpen hgz, exedir + "user\\item3.t", 0
+		zRead txtbuff, hgz, useritemdata(1, cun)
+		zClose hgz
+	}
+	s = getnpctxt("name.", "unknown,unknown")
+	csvstr2 s, s
+	cnv_filestr s
+	if ( instr(s, 0, "_tmp_") != (-1) ) {
+		dialog "The name contains an invalid word \"_tmp_\""
+		return 0
+	}
+	if ( peek(s) >= 65 & peek(s) <= 90 | (peek(s) >= 97 & peek(s) <= 122) ) {
+	}
+	else {
+		dialog "The first letter of the name must be alphabetic."
+		return 0
+	}
+	if ( strlen(s) >= 32 | strlen(s(1)) >= 32 ) {
+		dialog "The name is too long."
+		return 0
+	}
+	zipinit2 exedir + "user\\", s + ".item"
+	zipadd2 "item1.t"
+	zipadd2 "item2.t"
+	zipadd2 "item3.t"
+	zipend2
+	flt
+	itemcreate -1, ITEM_ID_OMAKE_CUSTOM_ITEM, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
+	s = useritemdatan(0, cun)
+	p = 0
+	repeat strlen(s)
+		p += peek(s, cun)
+	loop
+	s = str(peek(s, 0)) + str(p) + str(peek(s, strlen(s) - 1))
+	inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, ci) = cun
+	inv(INV_ITEM_OMAKE_CUSTOM_ITEM_CHECKSUM, ci) = s
+	inv(INV_ITEM_PIC, ci) = SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM + useritemdata(39, cun)
+	return 1
+/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
 
 *user_npc
 	fread = 0
@@ -2848,6 +3158,22 @@
 	gosub *game_ctrlFile
 	bsave userfile, filebuff
 	gosub *del_userTemp
+	return
+
+*del_userItem
+	proc "del_userItem"
+	dirlist buff, exedir + "user\\_tmp_*.item"
+	notesel buff
+	repeat stat
+		noteget file, cnt
+		delete exedir + "user\\" + file
+	loop
+	dirlist buff, exedir + "user\\!tmp*.item"
+	notesel buff
+	repeat stat
+		noteget file, cnt
+		delete exedir + "user\\" + file
+	loop
 	return
 
 *del_userNpc

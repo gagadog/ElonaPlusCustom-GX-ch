@@ -5,8 +5,8 @@
 	cs = -1
 *com_quick_loop
 	listmax = 0
-	if ( page == 3 ) {
-		page = 2
+	if ( page == 4 ) {
+		page = 3
 	}
 	if ( page == (-1) ) {
 		page = 0
@@ -19,41 +19,52 @@
 		setCom "", "aaa"
 		setCom lang("日誌", "Journal"), key_journal
 		setCom lang("装備", "Wear"), key_wear
-		setCom lang("所持品", "Inventory"), key_quickinv
+		setCom lang("調べる", "Examine"), key_inventory
 		setCom "", "aaa"
 	}
 	if ( page == 1 ) {
 		setCom "", "aaa"
 		setCom lang("魔法", "Spell"), key_cast
-		setCom lang("休息", "Rest"), key_rest
+		setCom lang("装填", "Ammo"), key_ammo
 		setCom lang("技能", "Skill"), key_skill
 		setCom "", "aaa"
-		setCom lang("拾う", "Pick Up"), key_get
+		setCom lang("射撃", "Fire"), key_fire
 		setCom lang("広技能", "W Skill"), key_wipe
-		setCom lang("掘る", "Dig"), key_dig
+		setCom lang("拾う", "Pick Up"), key_get
 		setCom "", "aaa"
 	}
 	if ( page == 2 ) {
 		setCom "", "aaa"
 		setCom lang("祈る", "Pray"), key_pray
-		setCom lang("装填", "Ammo"), key_ammo
+		setCom lang("休息", "Rest"), key_rest
 		setCom lang("干渉", "Interact"), key_interact
 		setCom "", "aaa"
 		setCom lang("体当り", "Bash"), key_bash
-		setCom lang("射撃", "Fire"), key_fire
+		setCom lang("掘る", "Dig"), key_dig
 		setCom lang("ｽﾀｯｸ", "Stack"), key_itemstack
 		setCom "", "aaa"
 	}
-	s = lang("情報", "Info"), lang("行動", "Action"), lang("特殊", "Etc"), "null"
+	if ( page == 3 ) {
+		setCom "", "aaa"
+		setCom lang("食べる", "Eat"), key_eat
+		setCom lang("読む", "Read"), key_read
+		setCom lang("使う", "Tool"), key_use
+		setCom lang("所持品", "Inventory"), key_quickinv
+		setCom lang("置く", "Drop"), key_drop
+		setCom lang("投げる", "Throw"), key_throw
+		setCom lang("振る", "Zap"), key_zap
+		setCom "", "aaa"
+	}
+	s = lang("情報", "Info"), lang("行動", "Action"), lang("特殊", "Etc"), lang("所持品", "Inventory"), "null"
 	p = page - 1
 	if ( p == (-1) ) {
-		p = 3
+		p = 4
 	}
 	listn(0, 0) = s(p)
 	listn(0, 4) = s(page)
 	p = page + 1
-	if ( p == 3 ) {
-		p = 3
+	if ( p == 4 ) {
+		p = 4
 	}
 	listn(0, 8) = s(p)
 	t = 0
@@ -157,6 +168,13 @@
 		snd SOUNDLIST_CURSOR1
 		key = ""
 		goto *com_quick_loop_WEND1
+	}
+	if ( key == key_wait | key == key_enter ) {
+		if ( page == 3 ) {
+			key = listn(1, 4)
+			cs = 4
+			goto *com_quick_loop_WEND1
+		}
 	}
 	if ( key != "" ) {
 		if ( cs == (-1) ) {

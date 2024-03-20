@@ -332,6 +332,11 @@
 				if ( ilight(inv(INV_ITEM_ID, cnt)) != LIGHT_TYPE_NONE ) {
 					map(cell_refresh_x, cell_refresh_y, 9) = ilight(inv(INV_ITEM_ID, cnt))
 				}
+				/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
+				if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cnt) < useritemmax & useritemmax > 0 ) {
+					map(cell_refresh_x, cell_refresh_y, 9) = useritemdata(13, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cnt))
+				}
+				/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
 			}
 		}
 	loop
@@ -1189,6 +1194,9 @@
 		}
 		else {
 			locvar_itemname_s2 = "" + ioriginalnameref2(inv(INV_ITEM_ID, itemname_itemid))
+			if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, itemname_itemid) < useritemmax & useritemmax > 0 ) {
+				locvar_itemname_s2 = ""
+			}
 			if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_JUICE ) {
 				locvar_itemname_s2 += "bottle"
 			}
@@ -1333,6 +1341,21 @@
 				locvar_itemowner_s += "leg"
 			}
 		}
+	}
+	if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, itemname_itemid) < useritemmax & useritemmax > 0 ) {
+		if ( inv(INV_ITEM_KNOWN, itemname_itemid) < ITEM_KNOWN_FULL ) {
+			if ( inv(INV_ITEM_QUALITY, itemname_itemid) < FIX_QUALITY_MIRACLE | locvar_itemowner_a >= FILTER_ITEM_MIN ) {
+				locvar_itemowner_s += useritemdatan(1, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, itemname_itemid))
+			}
+			else {
+				locvar_itemowner_s += useritemdatan(4, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, itemname_itemid))
+			}
+		}
+		else {
+			locvar_itemowner_s += useritemdatan(1, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, itemname_itemid))
+		}
+		gosub *itemNameSub
+		return capitalize(locvar_itemowner_s, cfg_capitalizeItemName)
 	}
 	if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_MATERIAL_KIT ) {
 		locvar_itemowner_s += "" + mtname(0, inv(INV_ITEM_MATERIAL, itemname_itemid)) + lang("製の", " ")

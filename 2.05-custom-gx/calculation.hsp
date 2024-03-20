@@ -812,7 +812,17 @@
 		return 100
 	}
 	if ( calcspellpower_charid == CHARA_PLAYER ) {
-		return sdata(calcspellpower_skillid, calcspellpower_charid) * 5 + sdata(SKILL_NORMAL_CASTING, calcspellpower_charid) * 5 + 50
+		// JAMES CUSTOM - SPELL LEVEL LIMITER
+		customspelllevelused = sdata(calcspellpower_skillid, calcspellpower_charid)
+		if ( customspelllimiter > 0 ) { 
+			customspelllevelused = limitmax(customspelllevelused, customspelllimiter) 
+		}
+		customcastinglevelused = sdata(SKILL_NORMAL_CASTING, calcspellpower_charid)
+		if ( customcastinglimiter > 0 ) { 
+			customcastinglevelused = limitmax(customcastinglevelused, customcastinglimiter) 
+		}
+		return customspelllevelused * 5 + customcastinglevelused * 5 + 50
+		// return sdata(calcspellpower_skillid, calcspellpower_charid) * 5 + sdata(SKILL_NORMAL_CASTING, calcspellpower_charid) * 5 + 50
 	}
 	if ( sdata(SKILL_NORMAL_CASTING, calcspellpower_charid) == 0 ) {
 		if ( calcspellpower_charid >= MAX_CHARA_FOLLOWER ) {
@@ -911,11 +921,17 @@
 
 #defcfunc calcspellcostmp int calcspellcostmp_skillid, int calcspellcostmp_charid
 	if ( calcspellcostmp_charid == CHARA_PLAYER ) {
-		if ( calcspellcostmp_skillid == SKILL_SPELL_ORACLE | calcspellcostmp_skillid == SKILL_SPELL_RESURRECTION | calcspellcostmp_skillid == SKILL_SPELL_DOOR_CREATION | calcspellcostmp_skillid == SKILL_SPELL_WALL_CREATION | calcspellcostmp_skillid == SKILL_SPELL_TELEPORT_OTHER | calcspellcostmp_skillid == SKILL_SPELL_TELEPORT | calcspellcostmp_skillid == SKILL_SPELL_SHORT_TELEPORT | calcspellcostmp_skillid == SKILL_SPELL_GRAVITY ) {
+		if ( calcspellcostmp_skillid == SKILL_SPELL_ORACLE | calcspellcostmp_skillid == SKILL_SPELL_RESURRECTION | calcspellcostmp_skillid == SKILL_SPELL_DOOR_CREATION | calcspellcostmp_skillid == SKILL_SPELL_WALL_CREATION | calcspellcostmp_skillid == SKILL_SPELL_TELEPORT_OTHER | calcspellcostmp_skillid == SKILL_SPELL_TELEPORT | calcspellcostmp_skillid == SKILL_SPELL_SHORT_TELEPORT | calcspellcostmp_skillid == SKILL_SPELL_GRAVITY | calcspellcostmp_skillid == SKILL_SPELL_RETURN | calcspellcostmp_skillid == SKILL_SPELL_RESTORE_BODY | calcspellcostmp_skillid == SKILL_SPELL_RESTORE_SPIRIT | calcspellcostmp_skillid == SKILL_SPELL_MUTATION ) {
 			locvar_calcspellcostmp_cost = sdataref(SKILL_DATAREF_COST, calcspellcostmp_skillid)
 			return locvar_calcspellcostmp_cost
 		}
-		locvar_calcspellcostmp_cost = sdataref(SKILL_DATAREF_COST, calcspellcostmp_skillid) * (100 + sdata(calcspellcostmp_skillid, calcspellcostmp_charid) * 3) / 100 + sdata(calcspellcostmp_skillid, calcspellcostmp_charid) / 8
+		// JAMES CUSTOM - SPELL LEVEL LIMITER
+		customspelllevelused = sdata(calcspellcostmp_skillid, calcspellcostmp_charid)
+		if ( customspelllimiter > 0 ) { 
+			customspelllevelused = limitmax(customspelllevelused, customspelllimiter) 
+		}
+		locvar_calcspellcostmp_cost = sdataref(SKILL_DATAREF_COST, calcspellcostmp_skillid) * (100 + customspelllevelused * 3) / 100 + customspelllevelused / 8
+		// locvar_calcspellcostmp_cost = sdataref(SKILL_DATAREF_COST, calcspellcostmp_skillid) * (100 + sdata(calcspellcostmp_skillid, calcspellcostmp_charid) * 3) / 100 + sdata(calcspellcostmp_skillid, calcspellcostmp_charid) / 8
 	}
 	else {
 		locvar_calcspellcostmp_cost = sdataref(SKILL_DATAREF_COST, calcspellcostmp_skillid) * (50 + cdata(CDATA_LEVEL, calcspellcostmp_charid) * 3) / 100
