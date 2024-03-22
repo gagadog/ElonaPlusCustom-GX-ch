@@ -4366,6 +4366,22 @@
 						s(1) = lang("", "The ") + iknownnameref(inv(INV_ITEM_ID, cw))
 					}
 				}
+				/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
+				if ( inv(INV_ITEM_ID, cw) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cw) < useritemmax & useritemmax > 0 ) {
+					if ( inv(INV_ITEM_KNOWN, cw) < ITEM_KNOWN_FULL ) {
+						if ( inv(INV_ITEM_QUALITY, cw) < FIX_QUALITY_MIRACLE | locvar_itemowner_a >= FILTER_ITEM_MIN ) {
+							s(1) = useritemdatan(1, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cw))
+						}
+						else {
+							s(1) = useritemdatan(4, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cw))
+						}
+					}
+					else {
+						s(1) = useritemdatan(1, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cw))
+					}
+					s(1) = capitalize(s(1), cfg_capitalizeItemName)
+				}
+				/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
 				s(1) = lang("『", "<") + s(1) + lang("』", ">")
 				if ( inv(INV_ITEM_PARAM4, cw) != 0 ) {
 					if ( inv(INV_ITEM_PARAM4, cw) == 1 ) {

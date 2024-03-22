@@ -517,13 +517,14 @@ if instr(s,0,%1)!-1{	%c\
 /********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
 // Using a temporarily loaded custom item list. Fixes the picture of them.
 #deffunc omakeshowroomfix
-	if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE & gdata(GDATA_WIZARD) == 0 ) { return }
+	if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) { return }
 	proc "showroom: fix custom item pic on the ground"
 	inv_getheader -1
 	repeat invrange, invhead
 		if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_PIC, cnt) == xy2pic(30, 19) ) {
 			getitemid cnt
 			inv(INV_ITEM_PIC, cnt) = SPRITE_SHEET_COLS_ITEM * SPRITE_SHEET_ROWS_ITEM + useritemdata(39, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cnt))
+			inv(INV_ITEM_COL, cnt) = 0
 			cell_refresh inv(INV_ITEM_X, cnt), inv(INV_ITEM_Y, cnt)
 		}
 	loop
@@ -1099,6 +1100,16 @@ if instr(s,0,%1)!-1{	%c\
 					p@txtfunc = 1
 				}
 				p2@txtfunc += p@txtfunc
+
+				/********** JAMES CUSTOM - BEGINNING **********/ // Fix jp linebreak when text contains newlines
+				if ( peek(msgtemp@txtfunc, p2@txtfunc - p@txtfunc) == 10 & scenemode == 0 ) {
+					talk_conv_arg1 += strmid(msgtemp@txtfunc, 0, p2@txtfunc)
+					n@txtfunc++
+					msgtemp@txtfunc = strmid(msgtemp@txtfunc, p2@txtfunc, len@txtfunc - p2@txtfunc)
+					break
+				}
+				/********** JAMES CUSTOM - ENDING **********/
+
 				if ( p2@txtfunc > talk_conv_arg2 ) {
 					m@txtfunc = strmid(msgtemp@txtfunc, p2@txtfunc, 2)
 					if ( m@txtfunc == "。" | m@txtfunc == "、" | m@txtfunc == "」" | m@txtfunc == "』" | m@txtfunc == "！" | m@txtfunc == "？" | m@txtfunc == "…" ) {
@@ -1124,13 +1135,23 @@ if instr(s,0,%1)!-1{	%c\
 					break
 				}
 
-				/********** ANNA CUSTOM - BEGINNING **********/ // Fix linebreak when text contains newlines
+				/********** JAMES CUSTOM - BEGINNING **********/ // When having a "\n" in current line. Use that.
 
-				if ( instr(msgtemp@txtfunc, 0, "\n") != (-1) & scenemode == 0 ) {
+				nl@txtfunc = instr(msgtemp@txtfunc, 0, "\n") + 1
+				if ( nl@txtfunc != 0 & nl@txtfunc < p@txtfunc & scenemode == 0 ) {
+					if ( len@txtfunc + nl@txtfunc > talk_conv_arg2 ) {
+						talk_conv_arg1 += "\n"
+						n@txtfunc++
+						break
+					}
+					talk_conv_arg1 += strmid(msgtemp@txtfunc, 0, nl@txtfunc)
+					len@txtfunc += nl@txtfunc
+					n@txtfunc++
+					msgtemp@txtfunc = strmid(msgtemp@txtfunc, nl@txtfunc, strlen(msgtemp@txtfunc) - nl@txtfunc)
 					break
 				}
 
-				/********** ANNA CUSTOM - ENDING **********/
+				/********** JAMES CUSTOM - ENDING **********/
 
 				if ( len@txtfunc + p@txtfunc > talk_conv_arg2 ) {
 					talk_conv_arg1 += "\n"

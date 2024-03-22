@@ -874,9 +874,10 @@
 	return
 
 #deffunc tcgpass int tcgpass_arg1
+	animeframes@tcg = tcgpass_arg1 * cfg_tcganimewait / limit(timespentdraw@tcg, 5, 120) / 2
 	animeseqbk@tcg = animeseq@tcg
 	animeseq@tcg = 2
-	repeat limit(tcgpass_arg1, 0, 50)
+	repeat limit(animeframes@tcg, 0, 50)
 		tcgdraw
 	loop
 	animeseq@tcg = animeseqbk@tcg
@@ -904,7 +905,12 @@
 		mes "" + cpdata@tcg(TCG_PLAYER_DECK, cnt) + "/" + cpdata@tcg(TCG_PLAYER_GRAVEYARD, cnt)
 	loop
 	font lang(cfg_font1, cfg_font2), 13 + en - en * 2, 0
+	// Calculate the time spent draw, normally the logic between draw takes about 1/8 of the draw.
 	drawcardcount@tcg = 0
+	currenttime1@tcg = timeGetTime()
+	timeawaitbetweendraw@tcg = limit((currenttime1@tcg - lastframe@tcg), 0, 1000)
+	drawpace@tcg = limit(cfg_tcganimewait * 6 /limit(timespentdraw@tcg,1,120),2,6), limit(timespentdraw@tcg/cfg_tcganimewait, 1, 5)
+	// title "/" + timeawaitbetweendraw@tcg + "/" + timespentdraw@tcg + "/" + drawpace@tcg(0) + "/" + drawpace@tcg(1)
 	repeat maxcard@tcg
 		c@tcg = maxcard@tcg - cnt - 1
 		if ( cc@tcg != 0 ) {
@@ -929,8 +935,9 @@
 			anime@tcg = 1
 			p@tcg = 0
 			drawcardcount@tcg++
+			drawpace@tcg(0) = limitmax(drawpace@tcg(0), limit(40/limit(drawcardcount@tcg,1,40),2,6))
 			if ( card@tcg(TCG_CARD_X, c@tcg) != card@tcg(TCG_CARD_X_MOVETO, c@tcg) ) {
-				p@tcg = (card@tcg(TCG_CARD_X_MOVETO, c@tcg) - card@tcg(TCG_CARD_X, c@tcg)) / limit(40/limit(drawcardcount@tcg,1,40),2,6)
+				p@tcg = (card@tcg(TCG_CARD_X_MOVETO, c@tcg) - card@tcg(TCG_CARD_X, c@tcg)) / drawpace@tcg(0)
 				if ( card@tcg(TCG_CARD_X, c@tcg) > card@tcg(TCG_CARD_X_MOVETO, c@tcg) ) {
 					p@tcg--
 				}
@@ -941,7 +948,7 @@
 			card@tcg(TCG_CARD_X, c@tcg) += p@tcg
 			p@tcg = 0
 			if ( card@tcg(TCG_CARD_Y, c@tcg) != card@tcg(TCG_CARD_Y_MOVETO, c@tcg) ) {
-				p@tcg = (card@tcg(TCG_CARD_Y_MOVETO, c@tcg) - card@tcg(TCG_CARD_Y, c@tcg)) / limit(40/limit(drawcardcount@tcg,1,40),2,6)
+				p@tcg = (card@tcg(TCG_CARD_Y_MOVETO, c@tcg) - card@tcg(TCG_CARD_Y, c@tcg)) / drawpace@tcg(0)
 				if ( card@tcg(TCG_CARD_Y, c@tcg) > card@tcg(TCG_CARD_Y_MOVETO, c@tcg) ) {
 					p@tcg--
 				}
@@ -951,7 +958,7 @@
 			}
 			card@tcg(TCG_CARD_Y, c@tcg) += p@tcg
 			if ( card@tcg(TCG_CARD_ANIM_DURATION, c@tcg) > 0 ) {
-				card@tcg(TCG_CARD_ANIM_DURATION, c@tcg)--
+				card@tcg(TCG_CARD_ANIM_DURATION, c@tcg) -= drawpace@tcg(1)
 			}
 		}
 		if ( card@tcg(TCG_CARD_LOCATION, c@tcg) == TCG_LOCATION_ANIM ) { continue }
@@ -1009,7 +1016,7 @@
 		if ( efllist@tcg(4, cnt) <= 0 ) {
 			continue
 		}
-		efllist@tcg(4, cnt)--
+		efllist@tcg(4, cnt) -= drawpace@tcg(1)
 		if ( efllist@tcg(0, cnt) == 1 ) {
 			font lang(cfg_font1, cfg_font2), 20 - en * 2, 1
 			color 0, 0, 0
@@ -1069,7 +1076,13 @@
 		goto *tcgdraw_WEND1
 	}
 	else {
-		await 15
+		currenttime2@tcg = timeGetTime()
+		timespentdraw@tcg = (currenttime2@tcg - currenttime1@tcg)
+		timeawait@tcg = limit(cfg_tcganimewait - timespentdraw@tcg, 0, cfg_tcganimewait)
+		lastframe@tcg = currenttime2@tcg
+		if ( timeawait@tcg > 0 ) {
+			await timeawait@tcg
+		}
 		redraw 1
 	}
 	if ( anime@tcg == 0 | animeseq@tcg == 2 ) {
@@ -3169,6 +3182,7 @@
 	gosub *tcg_drawDeck
 	redraw 1
 	await 30
+	lastframe@tcg = timeGetTime()
 	key_check
 	cursor_check@tcg 0
 	if ( deckmode@tcg == 0 ) {
@@ -3397,6 +3411,7 @@
 	tcgdraw
 	cursor@tcg = 1
 	await 15
+	lastframe@tcg = timeGetTime()
 	key_check
 	cursor_check@tcg 1
 	if ( gameresult@tcg > 0 ) {
@@ -3701,6 +3716,7 @@
 		gcopy 7, cnt * 48, 264, 36, 36
 	loop
 	await 15
+	lastframe@tcg = timeGetTime()
 	key_check
 	cursor_check@tcg 2
 	if ( key == key_north ) {

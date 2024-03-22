@@ -197,6 +197,11 @@
     DmgPopups(9, DmgPopupNext) = prm_type
     if (prm_extra == 9999) {
         DmgPopups(0, DmgPopupNext) += 1500
+        if ( colorused@txtfunc ) {
+            DmgPopups(2, DmgPopupNext) = tcol@txtfunc(0)
+            DmgPopups(3, DmgPopupNext) = tcol@txtfunc(1)
+            DmgPopups(4, DmgPopupNext) = tcol@txtfunc(2)
+        }
     }
 
     DmgPopupNext = (DmgPopupNext + 1) \ length2(DmgPopups)
@@ -276,8 +281,8 @@
             }
             if ( DmgPopupR >= 1000 ) { DmgPopupR -= 1000 - 25 }
             if ( DmgPopupR >= 1000 ) { DmgPopupR = ROLE_CITIZEN }
-            if ( cdata(CDATA_QUALITY, cnt) == FIX_QUALITY_UNIQUE & DmgPopupR == ROLE_NONE ) { DmgPopupR = ROLE_SPECIAL }
-            if ( cdata(CDATA_QUALITY, cnt) >= FIX_QUALITY_MIRACLE & DmgPopupR == ROLE_NONE ) { DmgPopupR = ROLE_ADVENTURER }
+            if ( cdata(CDATA_QUALITY, cnt) == FIX_QUALITY_UNIQUE & (DmgPopupR == ROLE_NONE | DmgPopupR == ROLE_USER) ) { DmgPopupR = ROLE_SPECIAL }
+            if ( cdata(CDATA_QUALITY, cnt) >= FIX_QUALITY_MIRACLE & (DmgPopupR == ROLE_NONE | DmgPopupR == ROLE_USER) ) { DmgPopupR = ROLE_ADVENTURER }
             DmgPopupR = DmgPopupR \ 50
             dx@DP = cdata(CDATA_X, cnt)
             dy@DP = cdata(CDATA_Y, cnt)

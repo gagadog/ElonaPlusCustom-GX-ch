@@ -1194,9 +1194,11 @@
 		}
 		else {
 			locvar_itemname_s2 = "" + ioriginalnameref2(inv(INV_ITEM_ID, itemname_itemid))
+			/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
 			if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, itemname_itemid) < useritemmax & useritemmax > 0 ) {
 				locvar_itemname_s2 = ""
 			}
+			/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
 			if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_JUICE ) {
 				locvar_itemname_s2 += "bottle"
 			}
@@ -1342,6 +1344,7 @@
 			}
 		}
 	}
+	/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
 	if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, itemname_itemid) < useritemmax & useritemmax > 0 ) {
 		if ( inv(INV_ITEM_KNOWN, itemname_itemid) < ITEM_KNOWN_FULL ) {
 			if ( inv(INV_ITEM_QUALITY, itemname_itemid) < FIX_QUALITY_MIRACLE | locvar_itemowner_a >= FILTER_ITEM_MIN ) {
@@ -1357,6 +1360,7 @@
 		gosub *itemNameSub
 		return capitalize(locvar_itemowner_s, cfg_capitalizeItemName)
 	}
+	/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
 	if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_MATERIAL_KIT ) {
 		locvar_itemowner_s += "" + mtname(0, inv(INV_ITEM_MATERIAL, itemname_itemid)) + lang("製の", " ")
 	}

@@ -169,6 +169,8 @@
 		cfgRead "key_sCancel.", cfg_scancel = int(rtvaln)
 		cfgRead "alert_wait.", cfg_alert = int(rtvaln)
 		cfgRead "anime_wait.", cfg_animewait = int(rtvaln)
+		cfgRead "anime_wait_tcg.", cfg_tcganimewait = int(rtvaln)
+		if ( cfg_tcganimewait < 5 | cfg_tcganimewait > 60 ) { cfg_tcganimewait = 20 }
 		cfgRead "ignoreDislike.", cfg_ignoredislike = int(rtvaln)
 		cfgRead "wait1.", cfg_wait1 = int(rtvaln)
 		cfgRead "font1.", cfg_font1 = rtvaln
@@ -619,7 +621,7 @@
 	}
 	if ( submenu == 8 ) {
         q = lang("拡張設定1", "EX Setting 1")
-        s = lang("自動拾い＆自動破壊", "Auto pickup & destroy"), lang("自動拾い時の効果音", "Autopick sound"), lang("自動破壊時の効果音", "Autodestroy sound"), lang("(MMAH)マウス操作の拡張","(MMAH) Mouse Control"), ""
+        s = lang("自動拾い＆自動破壊", "Auto pickup & destroy"), lang("自動拾い時の効果音", "Autopick sound"), lang("自動破壊時の効果音", "Autodestroy sound"), lang("(MMAH)マウス操作の拡張","(MMAH) Mouse Control"), lang("TCGの速さ","(TCG) Effect Speed"), ""
 		dx = 440
 		dy = 300
 	}
@@ -943,6 +945,9 @@
 			if ( cnt == 3 ) {
 				s = lang("なし", "Off"), lang("あり", "On")
 				mes s(cfg_mmah_mouseoperation)
+			}
+			if ( cnt == 4 ) {
+				mes "" + cfg_tcganimewait + " wait"
 			}
 		}
 		if ( submenu == 9 ) {
@@ -1828,6 +1833,9 @@
 			}
 			if ( cs == 3 ) {
 				setBoolOption cfg_mmah_mouseoperation, "MMAH_mouseoperation"
+			}
+			if ( cs == 4 ) {
+				setOption cfg_tcganimewait, "anime_wait_tcg", 5, 60
 			}
 		}
 		if ( submenu == 9 ) {

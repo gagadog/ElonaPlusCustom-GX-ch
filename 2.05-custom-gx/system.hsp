@@ -1539,7 +1539,7 @@
 	}
 	dim userdata, 70, usernpcmax + 1
 	sdim userdatan, 40, 15, usernpcmax + 1
-	sdim usertxt, 80 * 100, usernpcmax + 1
+	sdim usertxt, 80 * 500, usernpcmax + 1
 	sdim untaglist
 	gdata(GDATA_USERNPC_COUNT) = 0
 	buffer 5, SPRITE_SHEET_COLS_CHARA * 48, (SPRITE_SHEET_ROWS_CHARA + (usernpcmax / SPRITE_SHEET_COLS_CHARA + 1) * 2) * 48
@@ -1655,7 +1655,7 @@
 		unaiactsubfreq(tg) = int(getnpctxt("aiActSubFreq.", "0"))
 		p = instr(txtbuff, 0, "%txt")
 		txtbuff = strmid(txtbuff, p, instr(txtbuff, 0, "%endTxt") - p)
-		usertxt(tg) = strmid(txtbuff, 0, 80 * 100 - 2)
+		usertxt(tg) = strmid(txtbuff, 0, 80 * 500 - 2)
 		proc "userNpc_update:2.1"
 		gsel 9
 		memfile bmpbuff

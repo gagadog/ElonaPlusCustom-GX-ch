@@ -356,6 +356,12 @@
 			locvar_customtalk_s = "%txtLeading"
 		}
 		locvar_customtalk_p = instr(locvar_customtalk_buff, 0, locvar_customtalk_s + "," + lang("JP", "EN"))
+		// Incase someone deleted every talk dialog: Prevent npc stats being shown.
+		if ( locvar_customtalk_p == (-1) ) {
+			gdata(GDATA_CUSTOM_TALK) = 0
+			noteunsel
+			return 1
+		}
 		locvar_customtalk_buff = strmid(locvar_customtalk_buff, locvar_customtalk_p, instr(locvar_customtalk_buff, locvar_customtalk_p + 1, "%"))
 		if ( noteinfo(0) > 1 ) {
 			// Allow non-pet/non-adventurer CNPCs have ordered dialogues, it's disabled for pets because the cdata is used for Advance Casting (Player) / Obedience Training (Pet) / Send Message (Adventurers)
@@ -370,6 +376,15 @@
 					cdata(CDATA_CUSTOM_TALK_LINE, customtalk_charid) = 0
 				}
 				noteget locvar_customtalk_s, locvar_customtalk_p
+				// Handle the empty line at the end of each section
+				if ( locvar_customtalk_s == "" ) {
+					locvar_customtalk_p = cdata(CDATA_CUSTOM_TALK_LINE, customtalk_charid) + 1
+					cdata(CDATA_CUSTOM_TALK_LINE, customtalk_charid)++
+					if ( cdata(CDATA_CUSTOM_TALK_LINE, customtalk_charid) + 1 >= noteinfo(0) ) {
+						cdata(CDATA_CUSTOM_TALK_LINE, customtalk_charid) = 0
+					}
+					noteget locvar_customtalk_s, locvar_customtalk_p
+				}
 				if ( locvar_customtalk_s != "" ) {
 					buff = locvar_customtalk_s
 					gdata(GDATA_CUSTOM_TEXT_DIALOG) = 0
@@ -378,6 +393,11 @@
 			else {
 				locvar_customtalk_p = rnd(noteinfo(0) - 1) + 1
 				noteget locvar_customtalk_s, locvar_customtalk_p
+				// Handle the empty line at the end of each section
+				if ( locvar_customtalk_s == "" & noteinfo(0) > 2 ) {
+					locvar_customtalk_p = rnd(noteinfo(0) - 2) + 1
+					noteget locvar_customtalk_s, locvar_customtalk_p
+				}
 				if ( locvar_customtalk_s != "" ) {
 					buff = locvar_customtalk_s
 					gdata(GDATA_CUSTOM_TEXT_DIALOG) = 0
@@ -389,6 +409,41 @@
 						iroiro = buff
 					}
 				}
+			}
+			// Omake: For multiline/color 'haha!|[255,200,0]putit!'.
+			if ( buff != "" & buff != "default" ) {
+				if ( customtalk_dbmode > 1000 | customtalk_dbmode == 106 ) {
+				}
+				else {
+					tcolbk = tcol@txtfunc(0), tcol@txtfunc(1), tcol@txtfunc(2)
+					tcolfixbk = tcolfix@txtfunc
+					ctdlbk = gdata(GDATA_CUSTOM_TEXT_DIALOG)
+					colorused@txtfunc = 0
+					split buff, "|", splitbuff
+					rep@txtfunc = stat
+					repeat rep@txtfunc
+						tcol@txtfunc = tcolbk(0), tcolbk(1), tcolbk(2)
+						tcolfix@txtfunc = tcolfixbk
+						p = instr(splitbuff(cnt), 0, "["), instr(splitbuff(cnt), p, "]"), strlen(splitbuff(cnt))
+						if ( p != (-1) ) {
+							s = strmid(splitbuff(cnt), p + 1, p(1) - 1)
+							csvstr2 s, s
+							tcol@txtfunc = int(s(0)), int(s(1)), int(s(2))
+							tcolfix@txtfunc = 1
+							splitbuff(cnt) = strmid(splitbuff(cnt), p + p(1) + 1, p(2) - p(1) - p)
+							colorused@txtfunc = 1
+						}
+						chatc@DP = customtalk_charid
+						buff = splitbuff(cnt)
+						gdata(GDATA_CUSTOM_TEXT_DIALOG) = ctdlbk
+						gosub *convert_word
+					loop
+					colorused@txtfunc = 0
+					buff = ""
+				}
+				tcol@txtfunc = 255, 255, 255
+				noteunsel
+				return 1
 			}
 		}
 		gdata(GDATA_CUSTOM_TALK) = 0

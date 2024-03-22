@@ -8,6 +8,7 @@
 - Pop-Up: Settings to adjust horizontal-shift for font of different size.
 - Chat Pop-Up: A EX Setting to multi-line the overlong names/dialogs.
 - Spell-level/Casting/Magic limiter in spell window.
+- TCG: Anime Speed config / some wait-time optimization.
 
 # Changed
 - Pop-Up: font size increase is now a hidden config named: "dmgPopupExplode"
@@ -18,7 +19,9 @@
 - (Plus) Critical rate from predator class and magnetism not working.
 - (Plus) Bugs caused by Containing a standby inmate.
 - (Plus) Bugs caused by inmate surviving execution due to Lay Hand.
-- TCG: Fossil AI, Forced-attack, Gavela, and Shangchi effect.
+- CNPC: txt dialog issues, newline handling in japanese.
+- Showroom: Crashes on bad filename, wrong NPC name display color
+- TCG: Fixed bugs in Fossil AI, Forced-attack, Gavela, and Shangchi effect.
 
 # 2.22.1.0
 

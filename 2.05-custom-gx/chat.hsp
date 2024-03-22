@@ -920,7 +920,7 @@
 	/********** MMA - CNPC EVENT - BEGINNING **********/
 	if ( _switch_val == CREATURE_ID_USER | _switch_sw ) {
 		proc "cnpc event start"
-		p = instr(usertxt(cdata(CDATA_USERNPC_ID, tc)), 0, "%txt_ucnpc_ev_b")
+		p = instr(usertxt(cdata(CDATA_USERNPC_ID, tc)), 0, "%txt_ucnpc_ev_b"), instr(usertxt(cdata(CDATA_USERNPC_ID, tc)), 0, "%txt_ucnpc_ev_e")
 		if ( p == (-1) ) { goto *chat_unique_SWEND1 }
 		starttxt = "%txtevstart" + "," + lang("JP", "EN")
 		sdim setbuff, 10000
@@ -928,7 +928,8 @@
 		sdim evact, 500
 		sdim evline, 50
 		buff = ""
-		setbuff = strmid(usertxt(cdata(CDATA_USERNPC_ID, tc)), p, instr(usertxt(cdata(CDATA_USERNPC_ID, tc)), 0, "%txt_ucnpc_ev_e") - p + 15)
+		setbuff = strmid(usertxt(cdata(CDATA_USERNPC_ID, tc)), p, p(1) - p + 15)
+		// dialog "p0:" + p + "\np1:" + p(1) + "\nbuff:" + setbuff
 		repeat 300
 			listmax = 0
 			notesel tmpbuff(0)
@@ -943,6 +944,7 @@
 			}
 			if ( p != (-1) ) {
 				tmpbuff(0) = strmid(setbuff, p, instr(setbuff, p + 1, "%txt"))
+				// dialog "buff:" + tmpbuff(0)
 				if ( noteinfo(0) > 1 ) {
 					notedel 0
 					split tmpbuff(0), "{c}", tmpbuff

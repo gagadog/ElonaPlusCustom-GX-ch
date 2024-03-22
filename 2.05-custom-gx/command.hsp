@@ -277,6 +277,9 @@
 		if ( file == "temp.eum" | file == "temp.ept" | file == "temp.pum" | file == "temp.pet" ) {
 			continue
 		}
+		// Skip showrooms with broken filename
+		exist folder + file
+		if ( strsize == (-1) ) { continue }
 		bload folder + file, headtemp, 1024
 		notesel headtemp
 		noteget s, 0
@@ -15179,6 +15182,20 @@
 
 	/********** JAMES CUSTOM - ENDING **********/
 
+	/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
+	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, ci) < useritemmax & useritemmax > 0 ) {
+		repeat 4
+			description(cnt) = useritemtxt(cnt, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, ci))
+			sreplace description(cnt), description(cnt), "\\n", "\n"
+		loop
+		if ( description(3) == "" ) { 
+			description(3) = "It is a Custom Item from Omake branch!" 
+		} else {
+			description(3) = "(Omake CItem) " + description(3)
+		}
+	}
+	/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
+
 	/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Shows item sell price if the item quality is known
 
 	if ( inv(INV_ITEM_KNOWN, ci) >= ITEM_KNOWN_QUALITY ) {
@@ -16566,9 +16583,6 @@
 		promptAdd lang("アップロード", "Upload"), "e"
 		promptAdd lang("設定", "Setting"), "f"
 	}
-	if ( gdata(GDATA_WIZARD) != 0 ) {
-		promptAdd lang("カスタムITEMを作成", "Make custom ITEM"), "null", 3333
-	}
 	val = promptx, prompty, 240, 1
 	gosub *prompt_key
 	gosub *screen_draw
@@ -16651,10 +16665,6 @@
 	}
 	if ( rtval == 3 ) {
 		gosub *user_npc
-		return
-	}
-	if ( rtval == 3333 ) {
-		gosub *user_item
 		return
 	}
 	if ( rtval == 4 ) {
