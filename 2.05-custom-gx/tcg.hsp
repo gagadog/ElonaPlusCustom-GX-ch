@@ -74,6 +74,10 @@
 				key = key_south
 			}
 		}
+		// During play: Enable drag and play.
+		if ( cursor_check_tcg_mode == 1 & deck_mode@tcg == 0 ) {
+			keyholding@tcg = 1
+		}
 		if ( mousex < basex@tcg ) {
 			key = key_prev
 			return
@@ -115,6 +119,27 @@
 			if ( mousey > basey@tcg + 600 ) {
 				key = key_get
 			}
+		}
+	} else {
+		// Drag and play support
+		if ( cursor_check_tcg_mode == 2 & keyholding@tcg ) {
+			stick a, 256
+			if ( a != 256 ) { // If not holding left click anymore
+				key = key_cancel
+				keyholding@tcg = 0
+			} else { // If still holding left click
+				if ( mousey < card@tcg(TCG_CARD_Y, cc@tcg) - 10 ) {
+					key = key_north
+					keyholding@tcg = 0
+				}
+				if ( mousey > card@tcg(TCG_CARD_Y, cc@tcg) + 106 ) {
+					key = key_south
+					keyholding@tcg = 0
+				}
+			}
+		}
+		if ( cursor_check_tcg_mode != 2 ) {
+			keyholding@tcg = 0
 		}
 	}
 	if ( click_right@MMAH ) {
@@ -874,10 +899,10 @@
 	return
 
 #deffunc tcgpass int tcgpass_arg1
-	animeframes@tcg = tcgpass_arg1 * cfg_tcganimewait / limit(timespentdraw@tcg, 5, 120) / 2
+	animeframes@tcg = tcgpass_arg1 * cfg_tcganimewait / limit(timespentdraw@tcg, cfg_tcganimewait, 120) / 2
 	animeseqbk@tcg = animeseq@tcg
 	animeseq@tcg = 2
-	repeat limit(animeframes@tcg, 0, 50)
+	repeat limit(animeframes@tcg, 1, 50)
 		tcgdraw
 	loop
 	animeseq@tcg = animeseqbk@tcg
@@ -907,10 +932,9 @@
 	font lang(cfg_font1, cfg_font2), 13 + en - en * 2, 0
 	// Calculate the time spent draw, normally the logic between draw takes about 1/8 of the draw.
 	drawcardcount@tcg = 0
-	currenttime1@tcg = timeGetTime()
-	timeawaitbetweendraw@tcg = limit((currenttime1@tcg - lastframe@tcg), 0, 1000)
-	drawpace@tcg = limit(cfg_tcganimewait * 6 /limit(timespentdraw@tcg,1,120),2,6), limit(timespentdraw@tcg/cfg_tcganimewait, 1, 5)
-	// title "/" + timeawaitbetweendraw@tcg + "/" + timespentdraw@tcg + "/" + drawpace@tcg(0) + "/" + drawpace@tcg(1)
+	currenttime1@tcg = gettime(7)
+	drawpace@tcg = limit(cfg_tcganimewait * 6 /limit(timespentdraw@tcg,cfg_tcganimewait,120),2,6), limit(timespentdraw@tcg/cfg_tcganimewait, 1, 5)
+	// title "/" + timespentdraw@tcg + "/" + drawpace@tcg(0) + "/" + drawpace@tcg(1)
 	repeat maxcard@tcg
 		c@tcg = maxcard@tcg - cnt - 1
 		if ( cc@tcg != 0 ) {
@@ -924,7 +948,7 @@
 			}
 		}
 		if ( card@tcg(TCG_CARD_LOCATION, c@tcg) <= 0 ) {
-			if ( card@tcg(TCG_CARD_ANIM_DURATION, c@tcg) == 0 ) {
+			if ( card@tcg(TCG_CARD_ANIM_DURATION, c@tcg) <= 0 ) {
 				continue
 			}
 		}
@@ -958,7 +982,7 @@
 			}
 			card@tcg(TCG_CARD_Y, c@tcg) += p@tcg
 			if ( card@tcg(TCG_CARD_ANIM_DURATION, c@tcg) > 0 ) {
-				card@tcg(TCG_CARD_ANIM_DURATION, c@tcg) -= drawpace@tcg(1)
+				card@tcg(TCG_CARD_ANIM_DURATION, c@tcg) -= limitmax(drawpace@tcg(1), card@tcg(TCG_CARD_ANIM_DURATION, c@tcg))
 			}
 		}
 		if ( card@tcg(TCG_CARD_LOCATION, c@tcg) == TCG_LOCATION_ANIM ) { continue }
@@ -1016,7 +1040,7 @@
 		if ( efllist@tcg(4, cnt) <= 0 ) {
 			continue
 		}
-		efllist@tcg(4, cnt) -= drawpace@tcg(1)
+		efllist@tcg(4, cnt) -= limitmax(drawpace@tcg(1), efllist@tcg(4, cnt))
 		if ( efllist@tcg(0, cnt) == 1 ) {
 			font lang(cfg_font1, cfg_font2), 20 - en * 2, 1
 			color 0, 0, 0
@@ -1076,15 +1100,13 @@
 		goto *tcgdraw_WEND1
 	}
 	else {
-		currenttime2@tcg = timeGetTime()
-		timespentdraw@tcg = (currenttime2@tcg - currenttime1@tcg)
-		timeawait@tcg = limit(cfg_tcganimewait - timespentdraw@tcg, 0, cfg_tcganimewait)
-		lastframe@tcg = currenttime2@tcg
-		if ( timeawait@tcg > 0 ) {
-			await timeawait@tcg
-		}
+		currenttime2@tcg = gettime(7)
+		timespentdraw@tcg = (currenttime2@tcg - currenttime1@tcg) + (currenttime1@tcg > currenttime2@tcg) * 1000
+		timeawait@tcg = limit(cfg_tcganimewait - timespentdraw@tcg, 1, cfg_tcganimewait)
+		await timeawait@tcg
 		redraw 1
 	}
+	redraw 1
 	if ( anime@tcg == 0 | animeseq@tcg == 2 ) {
 		goto *tcgdraw_WEND1
 	}
@@ -3182,7 +3204,6 @@
 	gosub *tcg_drawDeck
 	redraw 1
 	await 30
-	lastframe@tcg = timeGetTime()
 	key_check
 	cursor_check@tcg 0
 	if ( deckmode@tcg == 0 ) {
@@ -3411,7 +3432,6 @@
 	tcgdraw
 	cursor@tcg = 1
 	await 15
-	lastframe@tcg = timeGetTime()
 	key_check
 	cursor_check@tcg 1
 	if ( gameresult@tcg > 0 ) {
@@ -3628,11 +3648,20 @@
 			rtval@tcg = (-1)
 			return
 		}
-		goto *card_player_WEND1
+		if ( selectmode@tcg != 0 ) {
+			goto *card_player_WEND1
+		}
+		promptAdd lang("ターンエンド", "End Turn"), "a"
+		promptAdd lang("いいえ", "No"), "b"
+		val = basex@tcg + 420, basey@tcg + 230, 200, 1
+		gosub *prompt_key@
+		if ( rtval == 0 ) {
+			goto *card_player_WEND1
+		}
 	}
 	if ( key == "s"  | key_escape ) {
 		promptAdd lang("降参する", "Surrender"), "a"
-		promptAdd lang("降参する", "No"), "b"
+		promptAdd lang("いいえ", "No"), "b"
 		val = basex@tcg + 420, basey@tcg + 230, 200, 1
 		gosub *prompt_key@
 		if ( rtval == 0 ) {
@@ -3716,7 +3745,6 @@
 		gcopy 7, cnt * 48, 264, 36, 36
 	loop
 	await 15
-	lastframe@tcg = timeGetTime()
 	key_check
 	cursor_check@tcg 2
 	if ( key == key_north ) {

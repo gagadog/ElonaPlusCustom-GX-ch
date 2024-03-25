@@ -170,7 +170,7 @@
 		cfgRead "alert_wait.", cfg_alert = int(rtvaln)
 		cfgRead "anime_wait.", cfg_animewait = int(rtvaln)
 		cfgRead "anime_wait_tcg.", cfg_tcganimewait = int(rtvaln)
-		if ( cfg_tcganimewait < 5 | cfg_tcganimewait > 60 ) { cfg_tcganimewait = 20 }
+		if ( cfg_tcganimewait < 5 | cfg_tcganimewait > 60 ) { cfg_tcganimewait = 18 }
 		cfgRead "ignoreDislike.", cfg_ignoredislike = int(rtvaln)
 		cfgRead "wait1.", cfg_wait1 = int(rtvaln)
 		cfgRead "font1.", cfg_font1 = rtvaln
@@ -1826,10 +1826,10 @@
 				setBoolOption cfg_autopick, "autopick"
 			}
 			if ( cs == 1 ) {
-				setBoolOption cfg_autopicksound, "autopick_sound"
+				setBoolOption cfg_autopicksound, "autopick_Sound"
 			}
 			if ( cs == 2 ) {
-				setBoolOption cfg_autodestroysound, "autodestroy_sound"
+				setBoolOption cfg_autodestroysound, "autodestroy_Sound"
 			}
 			if ( cs == 3 ) {
 				setBoolOption cfg_mmah_mouseoperation, "MMAH_mouseoperation"
