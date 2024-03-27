@@ -903,6 +903,7 @@
 			}
 			else {
 				if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_RED_BOOK ) {
+					booktitlefix itemowner_itemid // BOOKS COMPATIABILITY
 					locvar_itemowner_s += lang("《" + booktitle(inv(INV_ITEM_BOOK_ID, itemowner_itemid)) + "》という題名の", " titled <" + booktitle(inv(INV_ITEM_BOOK_ID, itemowner_itemid)) + ">")
 				}
 			}

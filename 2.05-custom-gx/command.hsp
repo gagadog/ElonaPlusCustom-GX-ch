@@ -7865,6 +7865,7 @@
 	picload exedir + "graphic\\book.bmp", 1
 	gsel 0
 	notesel buff
+	booktitlefix ci // BOOKS COMPATIABILITY
 	noteload exedir + "data\\book.txt"
 	p = instr(buff, 0, "" + inv(INV_ITEM_BOOK_ID, ci) + "," + lang("JP", "EN"))
 	if ( p == (-1) ) {

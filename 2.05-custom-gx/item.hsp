@@ -127,6 +127,16 @@
 	magebookn = lang("ヴォイニッチ写本", "Voynich Manuscript"), lang("ドール賛歌", "Dhol Chants"), lang("ポナペ教教典", "Ponape Scripture"), lang("グラーキ黙示録", "Revelations of Glaaki"), lang("グ＝ハーン断章", "G'harne Fragments"), lang("断罪の書", "Liber Damnatus"), lang("ドジアンの書", "Book of Dzyan"), lang("エイボンの書", "Book of Eibon"), lang("大いなる教書", "Grand Grimoire"), lang("セラエノ断章", "Celaeno Fragments"), lang("ネクロノミコン", "Necronomicon"), lang("ルルイエ異本", "The R'lyeh Text"), lang("エルトダウン・シャールズ", "Eltdown Shards"), lang("金枝篇", "The Golden Bough"), lang("終焉の書", "Apocalypse"), lang("真なる終焉の書", "True Apocalypse")
 	return
 
+/********** JAMES CUSTOM - BOOKS COMPATIABILITY - BEGINNING **********/
+#deffunc booktitlefix int booktitle_ci
+	if ( booktitle_ci < 0 | booktitle_ci >= MAX_INV_DATA ) { return }
+	if ( inv(INV_ITEM_ID, booktitle_ci) != ITEM_ID_RED_BOOK ) { return }
+	if ( inv(INV_ITEM_BOOK_ID, booktitle_ci) < 0 | inv(INV_ITEM_BOOK_ID, booktitle_ci) >= length(booktitle) ) {
+		inv(INV_ITEM_BOOK_ID, booktitle_ci) = 0
+	}
+	return
+/********** JAMES CUSTOM - BOOKS COMPATIABILITY - ENDING **********/
+
 *item_loot
 	items_lost_on_death = ""
 	if ( rc == CHARA_PLAYER ) {
