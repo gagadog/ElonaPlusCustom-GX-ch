@@ -3100,6 +3100,7 @@
 						itemcreate -1, ITEM_ID_EGG, x, y, 0
 						if ( stat ) {
 							inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
+							if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, cnt)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 							inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 40, 20, 10000)
 							inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, ci) + 2400) / 4, 600, 3000)
 							if (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
@@ -3138,6 +3139,7 @@
 					itemcreate -1, ITEM_ID_EGG, x, y, 0
 					if ( stat ) {
 						inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
+						if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, cnt)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 						inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 40, 20, 10000)
 						inv(INV_ITEM_VALUE, ci) = limit((inv(INV_ITEM_WEIGHT, ci) + 2400) / 4, 600, 3000)
 						if (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
@@ -3165,6 +3167,7 @@
 						itemcreate -1, ITEM_ID_BOTTLE_MILK, x, y, 0
 						if ( stat ) {
 							inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
+							if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, cnt)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 						}
 
 						/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Organize ranch produce.
@@ -3207,6 +3210,7 @@
 					itemcreate -1, ITEM_ID_BOTTLE_MILK, x, y, 0
 					if ( stat ) {
 						inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
+						if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, cnt)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 					}
 
 					/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Organize ranch produce.
@@ -3232,6 +3236,7 @@
 					itemcreate -1, ITEM_ID_SHIT, x, y, 0
 					if ( stat ) {
 						inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cnt)
+						if ( cdata(CDATA_ID, cnt) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, cnt)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 						inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, cnt) / 10 * 150, 30, 15000)
 						inv(INV_ITEM_VALUE, ci) = limit((cdata(CDATA_WEIGHT, cnt) + 3600) / 4, 900, 4500)
 						if (TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {

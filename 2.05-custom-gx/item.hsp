@@ -821,6 +821,7 @@
 			itemcreate -1, ITEM_ID_CARD, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
 			inv(INV_ITEM_COL, ci) = cdata(CDATA_PIC, rc) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, rc) * COLOR_TINT_MULT
 			inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, rc)
+			if ( cdata(CDATA_ID, rc) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, rc)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 			cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
 		}
 		if ( gdata(GDATA_FLAG_FLESH_DOLL_LOOT_SPAWN) <= 0 & gdata(GDATA_FLAG_TALKING_USED) == 0 ) {
@@ -829,6 +830,7 @@
 				itemcreate -1, ITEM_ID_FIGURINE, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
 				inv(INV_ITEM_COL, ci) = cdata(CDATA_PIC, rc) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, rc) * COLOR_TINT_MULT
 				inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, rc)
+				if ( cdata(CDATA_ID, rc) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, rc)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 				cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
 			}
 		}
@@ -883,6 +885,7 @@
 				itemcreate -1, ITEM_ID_EGG, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
 				if ( stat ) {
 					inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, rc)
+					if ( cdata(CDATA_ID, rc) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, rc)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 					inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, rc) / 10 * 40, 20, 10000)
 					inv(INV_ITEM_VALUE, ci) = limit((cdata(CDATA_WEIGHT, rc) + 2400) / 4, 600, 3000)
 				}
@@ -894,6 +897,7 @@
 				itemcreate -1, ITEM_ID_BOTTLE_MILK, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
 				if ( stat ) {
 					inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, rc)
+					if ( cdata(CDATA_ID, rc) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, rc)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 				}
 			}
 		}
@@ -2682,6 +2686,7 @@
 		itemcreate -1, ITEM_ID_EGG, cdata(CDATA_X, lovemiracle_arg1), cdata(CDATA_Y, lovemiracle_arg1), 0
 		if ( stat ) {
 			inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, lovemiracle_arg1)
+			if ( cdata(CDATA_ID, lovemiracle_arg1) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, lovemiracle_arg1)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 			if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 				// New formula since 1.89
 				inv(INV_ITEM_WEIGHT, ci) = limit(cdata(CDATA_WEIGHT, lovemiracle_arg1) / 10 * 40, 20, 10000)
@@ -2698,6 +2703,7 @@
 		itemcreate -1, ITEM_ID_BOTTLE_MILK, cdata(CDATA_X, lovemiracle_arg1), cdata(CDATA_Y, lovemiracle_arg1), 0
 		if ( stat ) {
 			inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, lovemiracle_arg1)
+			if ( cdata(CDATA_ID, lovemiracle_arg1) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, lovemiracle_arg1)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 		}
 	}
 	ci = cibk

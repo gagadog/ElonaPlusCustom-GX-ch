@@ -20519,6 +20519,7 @@
 				itemcreate -1, ITEM_ID_BOTTLE_MILK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 				if ( stat ) {
 					inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, tc)
+					if ( cdata(CDATA_ID, tc) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, tc)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 					inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + milkp + 5 + cdata(CDATA_SPRITE_SIZE_MILK, tc) + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 100, 0, 2) + 1)
 					if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 						inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + 2 + milkp + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 50, 0, 5) + 1)
@@ -20542,6 +20543,7 @@
 			itemcreate -1, ITEM_ID_BOTTLE_MILK, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			if ( stat ) {
 				inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, tc)
+				if ( cdata(CDATA_ID, tc) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, tc)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 				inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + milkp + 5 + cdata(CDATA_SPRITE_SIZE_MILK, tc) + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 100, 0, 2) + 1)
 				if ( TweakData(TWEAK_GAMEPLAY_DISABLE_HARVEST_MOON_RANCH, TWEAK_CATEGORY_GAMEPLAY) == TRUE) {
 					inv(INV_ITEM_LEVEL, ci) = cdata(CDATA_BRUSH_LEVEL, tc) + 2 + milkp + rnd(limit(sdata(SKILL_ATTR_DEX, CHARA_PLAYER) / 50, 0, 5) + 1)

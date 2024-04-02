@@ -962,6 +962,11 @@
 				else {
 					locvar_itemowner_s = locvar_itemowner_s + foodname(inv(INV_ITEM_PARAM1, itemowner_itemid) / 1000, ioriginalnameref(inv(INV_ITEM_ID, itemowner_itemid)), inv(INV_ITEM_PARAM2, itemowner_itemid), inv(INV_ITEM_SUB_NAME, itemowner_itemid))
 				}
+				/********** JAMES CUSTOM - DISPLAY USER PARTS NAME - BEGINNING *********/
+				if ( inv(INV_ITEM_SUB_NAME, itemowner_itemid) == CREATURE_ID_USER & inv(INV_ITEM_AMUR_CAGE, itemowner_itemid) > 0 ) {
+					sreplace locvar_itemowner_s, locvar_itemowner_s, "user", getcnpcnamebychecksum(itemowner_itemid)
+				}
+				/********** JAMES CUSTOM - DISPLAY USER PARTS NAME - ENDING *********/
 				return
 			}
 		}
@@ -1046,6 +1051,11 @@
 						}
 					}
 				}
+				/********** JAMES CUSTOM - DISPLAY USER PARTS NAME - BEGINNING *********/
+				if ( inv(INV_ITEM_SUB_NAME, itemowner_itemid) == CREATURE_ID_USER & inv(INV_ITEM_AMUR_CAGE, itemowner_itemid) > 0 ) {
+					sreplace locvar_itemowner_s, locvar_itemowner_s, "user", getcnpcnamebychecksum(itemowner_itemid)
+				}
+				/********** JAMES CUSTOM - DISPLAY USER PARTS NAME - ENDING *********/
 			}
 		}
 		if ( locvar_itemowner_a == FILTER_FURNITURE ) {
@@ -2221,6 +2231,11 @@
 
 #deffunc remain_make int remain_make_itemid, int remain_make_arg2
 	inv(INV_ITEM_SUB_NAME, remain_make_itemid) = cdata(CDATA_ID, remain_make_arg2)
+	/********** JAMES CUSTOM - DISPLAY USER PARTS NAME - BEGINNING *********/
+	if ( cdata(CDATA_ID, remain_make_arg2) == CREATURE_ID_USER ) {
+		inv(INV_ITEM_AMUR_CAGE, remain_make_itemid) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, remain_make_arg2))
+	}
+	/********** JAMES CUSTOM - DISPLAY USER PARTS NAME - ENDING *********/
 	inv(INV_ITEM_COL, remain_make_itemid) = (cdata(CDATA_PIC, remain_make_arg2) - cdata(CDATA_CHARA_PIC, remain_make_arg2) * COLOR_TINT_MULT) / COLOR_TINT_MULT
 	inv(INV_ITEM_WEIGHT, remain_make_itemid) = cdata(CDATA_WEIGHT, remain_make_arg2) + 1
 	if ( inv(INV_ITEM_ID, remain_make_itemid) == ITEM_ID_CORPSE ) {

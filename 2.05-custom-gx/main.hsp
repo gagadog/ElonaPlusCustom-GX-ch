@@ -5847,6 +5847,7 @@
 		itemcreate -1, ITEM_ID_CARD, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 		inv(INV_ITEM_COL, ci) = cdata(CDATA_PIC, marry) \ COLOR_TINT_MULT + picols * COLOR_TINT_MULT
 		inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, marry)
+		if ( cdata(CDATA_ID, marry) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, marry)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 		txt_questitem
 		autosave = 1 * (gdata(GDATA_AREA) != AREA_SHOW_HOUSE)
 		goto *event_SWEND1

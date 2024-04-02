@@ -515,6 +515,27 @@ if instr(s,0,%1)!-1{	%c\
 	return locvar_getunid_f
 
 /********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
+#defcfunc omakechecksum str checksum_string
+	locvar_checksum_string = checksum_string
+	if ( strlen(locvar_checksum_string) == 0 ) { return 0 }
+	locvar_checksum_p = 0
+	repeat strlen(locvar_checksum_string)
+		locvar_checksum_p += peek(locvar_checksum_string, cnt)
+	loop
+	locvar_checksum_string = str(peek(locvar_checksum_string, 0)) + str(locvar_checksum_p) + str(peek(locvar_checksum_string, strlen(locvar_checksum_string) - 1))
+	return int(locvar_checksum_string)
+/********** JAMES CUSTOM - DISPLAY USER PARTS NAME - BEGINNING *********/
+#defcfunc getcnpcnamebychecksum int getunid_ci
+	if ( inv(INV_ITEM_AMUR_CAGE, getunid_ci) < 10 | inv(INV_ITEM_SUB_NAME, getunid_ci) != CREATURE_ID_USER ) { return "user" }
+	locvar_getunid_s = "unknown user"
+	repeat usernpcmax
+		if ( inv(INV_ITEM_AMUR_CAGE, getunid_ci) == omakechecksum(userdatan(0, cnt)) ) {
+			locvar_getunid_s = userdatan(1, cnt)
+			break
+		}
+	loop
+	return locvar_getunid_s
+/********** JAMES CUSTOM - DISPLAY USER PARTS NAME - ENDING *********/
 // Using a temporarily loaded custom item list. Fixes the picture of them.
 #deffunc omakeshowroomfix
 	if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) { return }
@@ -551,13 +572,7 @@ if instr(s,0,%1)!-1{	%c\
 	}
 	f = 0
 	repeat useritemmax
-		s = useritemdatan(0, cnt)
-		p = 0
-		repeat strlen(s)
-			p += peek(s, cnt)
-		loop
-		s = str(peek(s, 0)) + str(p) + str(peek(s, strlen(s) - 1))
-		if ( inv(INV_ITEM_OMAKE_CUSTOM_ITEM_CHECKSUM, getitemid_ci) == int(s) ) {
+		if ( inv(INV_ITEM_OMAKE_CUSTOM_ITEM_CHECKSUM, getitemid_ci) == omakechecksum(useritemdatan(0, cnt))) {
 			setitemid getitemid_ci, cnt
 			f = 1
 			break
