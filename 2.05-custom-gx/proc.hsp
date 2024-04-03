@@ -22653,6 +22653,7 @@
 				if ( stat != 0 ) {
 					if ( cc != CHARA_PLAYER ) {
 						inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, cc)
+						if ( cdata(CDATA_ID, cc) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, cc)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 					}
 				}
 			}

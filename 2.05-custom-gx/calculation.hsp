@@ -2206,6 +2206,7 @@
 							if ( stat != 0 ) {
 								if ( r1 != 0 ) {
 									inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, r1)
+									if ( cdata(CDATA_ID, r1) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, r1)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 									item_stack -1, ci
 								}
 							}

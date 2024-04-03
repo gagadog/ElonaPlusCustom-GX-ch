@@ -725,6 +725,12 @@
 					}
 				}
 			}
+			if ( gdata(GDATA_AREA) == AREA_PET_ARENA ) {
+				if ( cdata(CDATA_AI_AGGRO, cc) > 0 ) {
+					customtalk cc, DBMODE_FLAVOR_ANGERED
+					gosub *convert_word
+				}
+			}
 		}
 	}
 	if ( gdata(GDATA_AREA) != AREA_PET_ARENA & cdata(CDATA_CONDITION_BRAINWASH, cc) > 0 & cc != CHARA_PLAYER ) {

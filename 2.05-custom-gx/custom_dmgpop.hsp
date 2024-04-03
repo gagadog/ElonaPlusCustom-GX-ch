@@ -286,10 +286,11 @@
             DmgPopupR = DmgPopupR \ 50
             dx@DP = cdata(CDATA_X, cnt)
             dy@DP = cdata(CDATA_Y, cnt)
-			if ( dist(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx@DP, dy@DP) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
+
+			if ( dist(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx@DP, dy@DP) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 & gdata(GDATA_AREA) != AREA_PET_ARENA ) {
 				continue
 			}
-			if ( fov_los(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx@DP, dy@DP) == 0 ) {
+			if ( fov_los(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), dx@DP, dy@DP) == 0 & gdata(GDATA_AREA) != AREA_PET_ARENA ) {
 				continue
             }
             c@DP = cnt

@@ -5753,7 +5753,7 @@
 
 			/********** ANNA CUSTOM - BEGINNING **********/ // Add Feed Option For Pets.
 
-			if ( (tc < MAX_CHARA_FOLLOWER | (cbit(CHARA_BIT_LIVESTOCK, tc) == 1 & gdata(GDATA_AREA) == AREA_DOJO)) & TweakData(TWEAK_CONVENIENCE_FEED_OPTION_PETS, TWEAK_CATEGORY_CONVENIENCE) == 1 ) {
+			if ( (tc < MAX_CHARA_FOLLOWER | (cbit(CHARA_BIT_LIVESTOCK, tc) == 1)) & TweakData(TWEAK_CONVENIENCE_FEED_OPTION_PETS, TWEAK_CATEGORY_CONVENIENCE) == 1 ) {
 				promptAdd lang("所持品", "Feed"), "null", 999
 			}
 
@@ -12254,8 +12254,10 @@
 		gosub *screen_draw
 		goto *pc_turn
 	}
-	menucycle = 1
-	invally = 1
+	if ( tc < MAX_CHARA_FOLLOWER | (cbit(CHARA_BIT_LIVESTOCK, tc) == 1 & gdata(GDATA_AREA) == AREA_DOJO) ) {
+		menucycle = 1
+		invally = 1
+	}
 	invctrl = 10
 	snd SOUNDLIST_INV
 	goto *com_inventory
@@ -14263,6 +14265,26 @@
 				}
 				cdata(CDATA_HUNGER, tc) += 2500
 				goto *com_inventory
+			}
+			if ( (refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ITEM_FOOD | inv(INV_ITEM_MATERIAL, ci) == ITEM_MATERIAL_RAW) & cbit(CHARA_BIT_LIVESTOCK, tc) == 1 ) {
+				if ( cdata(CDATA_HUNGER, tc) < 10000 ) {
+					txt lang(name(tc) + "に家畜の餌を食べさせた。", "You gave " + name(tc) + " food.")
+					snd SOUNDLIST_EQUIP1
+					item_copy ci, ti
+					inv(INV_ITEM_NUM, ci)--
+					gosub *calcBurdenPc
+					inv(INV_ITEM_NUM, ti) = 1
+					item_stack tc, ti, 1
+					ci = ti
+					ccbk = cc
+					cc = tc
+					gosub *insta_eat
+					cc = ccbk
+					goto *com_inventory
+				} else {
+					txt lang("「イヤッ" + _yo() + "」", cnvtalk("I don't want it. I'm full."))
+					goto *pc_turn
+				}
 			}
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_PUFF_PUFF_BREAD & cdata(CDATA_ID, tc) == CREATURE_ID_ALCHEMIST_NAPLUS ) {
 				snd SOUNDLIST_FAIL1

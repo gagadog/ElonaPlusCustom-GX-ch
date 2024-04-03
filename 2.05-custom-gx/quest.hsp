@@ -652,6 +652,7 @@
 			txt lang("名声値を" + p + "失った。", "You lose " + p + " fame.")
 		}
 	}
+	gosub *userNpc_update
 	return
 
 *quest_eliminate

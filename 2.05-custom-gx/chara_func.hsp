@@ -2894,6 +2894,7 @@
 							if ( stat != 0 ) {
 								if ( dmgcon_charid != CHARA_PLAYER ) {
 									inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, dmgcon_charid)
+									if ( cdata(CDATA_ID, dmgcon_charid) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, dmgcon_charid)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 									item_stack -1, ci
 								}
 							}
@@ -5343,7 +5344,7 @@
 				txtef COLOR_BLUE
 				txt "(" + locvar_dmghp_dmgpro + ")."
 				DamagePopupAdd "" + locvar_dmghp_dmgpro, cnt, DMGPOPUP_ELEM_DAMAGE, 0
-				DamagePopupAdd "" + locvar_dmghp_dmg + " (" + locvar_dmghp_dmgpro + "Migrated)", dmghp_charid, DMGPOPUP_ELEM_DAMAGE, locvar_dmghp_ele
+				DamagePopupAdd "" + locvar_dmghp_dmg + " (" + locvar_dmghp_dmgpro + " Mitigated)", dmghp_charid, DMGPOPUP_ELEM_DAMAGE, locvar_dmghp_ele
 				if ( cfg_showDamageMeter > 0 ) {
 					DamageParsesAdd dmghp_source, cnt, locvar_dmghp_dmgpro, locvar_dmghp_ele
 				}
@@ -7684,6 +7685,7 @@
 			if ( stat != 0 ) {
 				if ( chara_morasi_arg1 != 0 ) {
 					inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, chara_morasi_arg1)
+					if ( cdata(CDATA_ID, chara_morasi_arg1) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, chara_morasi_arg1)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME
 					item_stack -1, ci
 				}
 			}

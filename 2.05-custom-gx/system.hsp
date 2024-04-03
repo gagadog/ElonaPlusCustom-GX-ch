@@ -2818,6 +2818,9 @@
 			}
 			id++
 		loop
+		if ( importmode == 1 ) {
+			gosub *userNpc_update
+		}
 	}
 	if ( fmode == 16 ) {
 		proc "ctrlFile" + fmode
