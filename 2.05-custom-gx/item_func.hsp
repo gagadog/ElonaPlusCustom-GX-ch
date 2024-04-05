@@ -2428,6 +2428,303 @@
 	}
 	return
 
+/********** MMAH - BEGINNING **********/
+#deffunc display_show_resist int display_show_resist_arg1, int display_show_resist_arg2
+	if ( display_show_resist_arg1 == 1 ) {
+		s = lang("火","Fi"), lang("冷","Co"), lang("雷","Li"), lang("闇","Da"), lang("幻","Mi"), lang("毒","Po"), lang("獄","Nt"), lang("音","So"), lang("神","Nr"), lang("沌","Ch"), lang("魔","Ma")
+		pos wx + 320, wy + 40
+		color 0, 0, 0
+		repeat 11
+			pos wx + display_show_resist_arg2 + cnt * 20, wy + 40
+			mes s(cnt)
+		loop
+	}
+	if ( display_show_resist_arg1 == 2 ) {
+		s = lang("筋","St"), lang("耐","Co"), lang("器","De"), lang("感","Pe"), lang("習","Le"), lang("意","Wi"), lang("魔","Ma"), lang("魅","Ch"), lang("速","Sp"), lang("運","Lu"), lang("盲","Bl"), lang("麻","Pa"), lang("混","Co"), lang("恐","Fe"), lang("睡","Sl"), lang("毒","Po")
+		semoji = 10, 15, 11, 13, 14, 8, 9
+		color 0, 100, 100
+		repeat 10
+			pos wx + display_show_resist_arg2 + cnt * 20, wy + 40
+			gcopy 3, cnt * 16, 376, 16, 16
+		loop
+		repeat 7
+			pos wx + display_show_resist_arg2 + cnt * 20 + 200, wy + 40
+			gcopy 3, 32 + semoji(cnt) * 16, 608, 16, 16
+		loop
+		// repeat 16
+		// 	if ( cnt == 10 ) {
+		// 		color 80, 50, 0
+		// 	}
+		// 	pos wx + display_show_resist_arg2 + cnt * 20, wy + 40
+		// 	mes s(cnt)
+		// loop
+		color 0, 0, 0
+	}
+	if ( display_show_resist_arg1 == 3 ) {
+		pos wx + display_show_resist_arg2, wy + 40
+		color 0, 0, 0
+		mes lang("修正される技能と能力値", "Modified skills and attributes")
+	}
+	if ( display_show_resist_arg1 == 4 ) {
+		pos wx + display_show_resist_arg2, wy + 40
+		color 0, 0, 0
+		mes lang("特定のエンチャント", "Special Enchantment")
+	}
+	return
+#deffunc equipinfo_mmah int equipinfo_arg1, int equipinfo_arg2, int equipinfo_arg3
+	if ( inv(INV_ITEM_KNOWN, equipinfo_arg1) < ITEM_KNOWN_FULL ) {
+		return
+	}
+	if ( showresist == 1 ) {
+		repeat RANGE_INV_ITEM_ENCHANT
+			locvar_equipinfo_p = inv(STARTING_INV_ITEM_ENCHANT + cnt * 2, equipinfo_arg1)
+			if ( locvar_equipinfo_p == 0 ) { break }
+			if ( locvar_equipinfo_p / EXT_ENCHANTMENT != ENCHANT_RESISTANCE ) { continue }
+			locvar_colorres_i = locvar_equipinfo_p \ 10000
+			pos equipinfo_arg2 + (locvar_colorres_i - 50) * 20, equipinfo_arg3
+			locvar_equipinfo_p = abs(inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, equipinfo_arg1) / 2 / 50) + 1
+			if ( locvar_equipinfo_p > 5 ) {
+				locvar_equipinfo_s = "+"
+			}
+			else {
+				locvar_equipinfo_s = "" + locvar_equipinfo_p
+			}
+			if ( jp ) {
+				colorres
+				if ( inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, equipinfo_arg1) >= 0 ) {
+					mes "●"
+				}
+				else {
+					mes "▼"
+				}
+				pos equipinfo_arg2 + (locvar_colorres_i - 50) * 20 + 5, equipinfo_arg3 + 1
+				color 0, 0, 0
+				mes locvar_equipinfo_s
+				pos equipinfo_arg2 + (locvar_colorres_i - 50) * 20 + 4, equipinfo_arg3
+				color 255, 255, 255
+				mes locvar_equipinfo_s
+			}
+			else {
+				colorres
+				if ( inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, equipinfo_arg1) >= 0 ) {
+					circle equipinfo_arg2 + (locvar_colorres_i - 50) * 20 - 3 * (locvar_equipinfo_p>9), equipinfo_arg3 - 3 * (locvar_equipinfo_p>9), equipinfo_arg2 + (locvar_colorres_i - 50) * 20 + 13 + 3 * (locvar_equipinfo_p>9), equipinfo_arg3 + 13 + 3 * (locvar_equipinfo_p>9), 1
+				}
+				color 0, 0, 0
+				pos equipinfo_arg2 + (locvar_colorres_i - 50) * 20 + 4 - 3 * (locvar_equipinfo_p>9), equipinfo_arg3 - 1
+				mes "" + locvar_equipinfo_p
+				color 255, 255, 255
+				if ( inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, equipinfo_arg1) < 0 ) {
+					color 180, 0, 0
+				}
+				pos equipinfo_arg2 + (locvar_colorres_i - 50) * 20 + 3 - 3 * (locvar_equipinfo_p>9), equipinfo_arg3 - 1
+				mes "" + locvar_equipinfo_p
+			}
+		loop
+	}
+	if ( showresist == 2 ) {
+		dim locvar_equipinfo_list, 17
+		repeat 15
+			locvar_equipinfo_p = inv(STARTING_INV_ITEM_ENCHANT + cnt * 2, equipinfo_arg1)
+			if ( locvar_equipinfo_p == 0 ) {
+				break
+			}
+			locvar_colorres_i = -1
+			if ( locvar_equipinfo_p / 10000 == 6 ) {
+				locvar_equipinfo_list(limit(locvar_equipinfo_p \ 10000 - 10, 0, 9)) = 1
+			}
+			if ( locvar_equipinfo_p >= 23 & locvar_equipinfo_p <= 28 ) {
+				locvar_equipinfo_list(limit(locvar_equipinfo_p - 13, 10, 15)) = 1
+			}
+			if ( locvar_equipinfo_p == 55 ) {
+				locvar_equipinfo_list(16) = 1
+			}
+		loop
+		color 0, 100, 100
+		repeat 17
+			if ( cnt == 10 ) {
+				color 80, 50, 0
+			}
+			if ( locvar_equipinfo_list(cnt) ) {
+				if ( jp ) {
+					pos equipinfo_arg2 + cnt * 20 + en * 4, equipinfo_arg3
+					mes lang("●", "*")
+				} else {
+					circle equipinfo_arg2 + cnt * 20 + 2, equipinfo_arg3, equipinfo_arg2 + cnt * 20 + 2 + 13, equipinfo_arg3 + 13, 1
+				}
+			}
+			else {
+				pos equipinfo_arg2 + cnt * 20 + 4, equipinfo_arg3
+				mes "-"
+			}
+		loop
+	}
+	if ( showresist == 3 ) {
+		locvar_equipinfo_x = equipinfo_arg2
+		repeat 15
+			locvar_equipinfo_p = inv(STARTING_INV_ITEM_ENCHANT + cnt * 2, equipinfo_arg1)
+			if ( locvar_equipinfo_p == 0 ) { break }
+			locvar_equipinfo_f = locvar_equipinfo_p / 10000
+			if ( locvar_equipinfo_f != ENCHANT_ATTRIBUTE & locvar_equipinfo_f != ENCHANT_SKILL & locvar_equipinfo_f != ENCHANT_AMMO ) { continue }
+			locvar_colorres_i = locvar_equipinfo_p \ 10000
+			if ( locvar_equipinfo_f != ENCHANT_AMMO ) {
+				locvar_equipinfo_s = skillname(locvar_colorres_i)
+			}
+			else {
+				locvar_equipinfo_s = ammoname(locvar_colorres_i)
+			}
+			if ( strlen(locvar_equipinfo_s) > 4 ) {
+				if ( jp ) {
+					if ( locvar_colorres_i == SKILL_NORMAL_MAGIC_CAPACITY | locvar_colorres_i == SKILL_NORMAL_CONTROL_MAGIC ) {
+						locvar_equipinfo_s = strmid(locvar_equipinfo_s, 0, 2) + strmid(locvar_equipinfo_s, 4 + (locvar_colorres_i == 164) * 2, 2)
+					}
+				} else {
+					if ( locvar_colorres_i == SKILL_NORMAL_LITERACY ) { locvar_equipinfo_s = "Read" }
+					if ( locvar_colorres_i == SKILL_NORMAL_WEIGHT_LIFTING ) { locvar_equipinfo_s = "Cary" }
+					if ( locvar_colorres_i == SKILL_NORMAL_MINING ) { locvar_equipinfo_s = "Mine" }
+					if ( locvar_colorres_i == SKILL_NORMAL_MAGIC_CAPACITY ) { locvar_equipinfo_s = "M-Cp" }
+					if ( locvar_colorres_i == SKILL_NORMAL_DUAL_WIELD ) { locvar_equipinfo_s = "D-Wd" }
+					if ( locvar_colorres_i == SKILL_NORMAL_TWO_HAND ) { locvar_equipinfo_s = "2Hnd" }
+					if ( locvar_colorres_i == SKILL_NORMAL_SHIELD ) { locvar_equipinfo_s = "Shld" }
+					if ( locvar_colorres_i == SKILL_NORMAL_HEAVY_ARMOR ) { locvar_equipinfo_s = "Hv-A" }
+					if ( locvar_colorres_i == SKILL_NORMAL_MEDIUM_ARMOR ) { locvar_equipinfo_s = "Md-A" }
+					if ( locvar_colorres_i == SKILL_NORMAL_LIGHT_ARMOR ) { locvar_equipinfo_s = "Li-A" }
+					if ( locvar_colorres_i == SKILL_NORMAL_MAGIC_DEVICE ) { locvar_equipinfo_s = "M-Dv" }
+					if ( locvar_colorres_i == SKILL_NORMAL_DISARM_TRAP ) { locvar_equipinfo_s = "Trap" }
+					if ( locvar_colorres_i == SKILL_NORMAL_EYE_OF_MIND ) { locvar_equipinfo_s = "EoMn" }
+					if ( locvar_colorres_i == SKILL_NORMAL_GREATER_EVASION ) { locvar_equipinfo_s = "GEva" }
+					if ( locvar_colorres_i == SKILL_NORMAL_CONTROL_MAGIC ) { locvar_equipinfo_s = "Ct-M" }
+				}
+				if ( strlen(locvar_equipinfo_s) > 4 ) {
+					locvar_equipinfo_s = strmid(locvar_equipinfo_s, 0, 4)
+				}
+			}
+			locvar_equipinfo_p = inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, equipinfo_arg1)
+			if ( locvar_equipinfo_f != 9 ) {
+				if ( locvar_equipinfo_f == 1 ) {
+					color 0, 0, 100
+				}
+				else {
+					color 0, 100, 0
+				}
+				if ( locvar_equipinfo_p / 50 + 1 < 0 ) {
+					color 180, 0, 0
+				}
+				locvar_equipinfo_s = locvar_equipinfo_s + ":" + (locvar_equipinfo_p / 50 + 1)
+			}
+			else {
+				locvar_equipinfo_s = locvar_equipinfo_s + ":" + locvar_equipinfo_p \ 1000 + "/" + locvar_equipinfo_p / 1000
+				color 80, 50, 0
+			}
+			pos locvar_equipinfo_x, equipinfo_arg3
+			mes locvar_equipinfo_s
+			locvar_equipinfo_x += strlen(locvar_equipinfo_s) * 8
+		loop
+	}
+	if ( showresist == 4 ) {
+		locvar_equipinfo_x = equipinfo_arg2
+		repeat 15
+			locvar_equipinfo_p = inv(STARTING_INV_ITEM_ENCHANT + cnt * 2, equipinfo_arg1)
+			if ( locvar_equipinfo_p == 0 ) { break }
+			locvar_equipinfo_pow = inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, equipinfo_arg1)
+			locvar_equipinfo_f = locvar_equipinfo_p / 10000
+			if ( locvar_equipinfo_f == ENCHANT_AMMO | (locvar_equipinfo_f < ENCHANT_ELEMENTAL_DMG & locvar_equipinfo_f != 0) ) { continue }
+			locvar_colorres_i = locvar_equipinfo_p \ 10000
+			if ( locvar_equipinfo_p >= 23 & locvar_equipinfo_p <= 28 | locvar_equipinfo_p == 55 ) { continue }
+			locvar_equipinfo_s = "????"
+			color 80, 50, 0
+			if ( locvar_equipinfo_f == ENCHANT_ELEMENTAL_DMG & locvar_colorres_i >= 0 & locvar_colorres_i < MAX_SKILL ) { 
+				locvar_equipinfo_s = "" + capitalize(skillname(locvar_colorres_i),1) + ""+lang("ダメ","Dmg") + ":" + (locvar_equipinfo_pow / 100 + 1)
+				colorres
+			}
+			if ( locvar_equipinfo_f == ENCHANT_PROC & locvar_colorres_i >= 0 & locvar_colorres_i < MAX_EHCHANTMENT_PROC ) { 
+				locvar_equipinfo_s = "[" + capitalize(skillname(encprocref(0, locvar_colorres_i)),1) + "]" + ":" + (locvar_equipinfo_pow / 50 + 1)
+			}
+			if ( locvar_equipinfo_p == ENCHANT_RANDOM_TELEPORT ) { 
+				locvar_equipinfo_s = lang("ランダムなテレポート","RandTeleport") + ":" + (locvar_equipinfo_pow / 50 + 1)
+				color 180, 0, 0
+			}
+			if ( locvar_equipinfo_p == ENCHANT_PREVENT_TELEPORT ) { 
+				locvar_equipinfo_s = lang("テレポートを妨害", "NoTeleport") + ":" + (locvar_equipinfo_pow / 50 + 1)
+				color 180, 0, 0
+			}
+			if ( locvar_equipinfo_p == ENCHANT_SUCK_BLOOD ) { 
+				locvar_equipinfo_s = lang("血を吸う", "Bloodsucking") + ":" + (locvar_equipinfo_pow / 50 + 1)
+				color 180, 0, 0
+			}
+			if ( locvar_equipinfo_p == ENCHANT_SUCK_MP ) { 
+				locvar_equipinfo_s = lang("ＭＰを吸う", "MP-Absorb") + ":" + (locvar_equipinfo_pow / 50 + 1)
+				color 180, 0, 0
+			}
+			if ( locvar_equipinfo_p == ENCHANT_DISTURB_GROWTH ) { 
+				locvar_equipinfo_s = lang("成長を妨げる", "EXP-Absorb") + ":" + (locvar_equipinfo_pow / 50 + 1)
+				color 180, 0, 0
+			}
+			if ( locvar_equipinfo_p == ENCHANT_ATTRACT_MONSTER ) { 
+				locvar_equipinfo_s = lang("魔物を呼び", "SummonMonster") + ":" + (locvar_equipinfo_pow / 50 + 1)
+				color 180, 0, 0
+			}
+			if ( locvar_equipinfo_p == ENCHANT_ABSORB_MP ) { locvar_equipinfo_s = lang("MPを回復", "HealMP") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_ABSORB_STAMINA ) { locvar_equipinfo_s = lang("スタミナを回復", "HealSP") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+
+			if ( locvar_equipinfo_p == ENCHANT_FLOAT ) { locvar_equipinfo_s = lang("浮遊","Float") }
+			if ( locvar_equipinfo_p == ENCHANT_EAT_ROTTEN ) { locvar_equipinfo_s = lang("腐消化", "DigestRot") }
+			if ( locvar_equipinfo_p == ENCHANT_FAST_TRAVEL ) { locvar_equipinfo_s = lang("ワールド移動時間","WorldTravel") + ":" + (locvar_equipinfo_pow / 100 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_SEE_INVISIBLE ) { locvar_equipinfo_s = lang("透明見る","SeeInvisible") }
+			if ( locvar_equipinfo_p == ENCHANT_RES_CURSE ) { locvar_equipinfo_s = lang("呪い保護","ResCurse") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_RES_STEAL ) { locvar_equipinfo_s = lang("盗無効", "ResSteal") }
+			if ( locvar_equipinfo_p == ENCHANT_RES_ETHERWIND ) { locvar_equipinfo_s = lang("エーテル風保護","ResEther") }
+			if ( locvar_equipinfo_p == ENCHANT_RES_WEATHER ) { locvar_equipinfo_s = lang("雷雨足止無効","ResWeather") }
+			if ( locvar_equipinfo_p == ENCHANT_RES_PREGNANCY ) { locvar_equipinfo_s = lang("異物防ぐ","ResPregnant") }
+			if ( locvar_equipinfo_p == ENCHANT_RES_MUTATION ) { locvar_equipinfo_s = lang("変異保護","ResMutation") }
+		
+			if ( locvar_equipinfo_p == ENCHANT_ENHANCE_SPELL ) { locvar_equipinfo_s = lang("魔法威力","SpellPow+") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_ENHANCE_BREATH ) { locvar_equipinfo_s = lang("放射威力","BreathPow+") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_ROCK_THROWING ) { locvar_equipinfo_s = lang("投石性能","ThrowPow+") }
+			if ( locvar_equipinfo_p == ENCHANT_CHARGING ) { locvar_equipinfo_s = lang("チャージ性能","ChargePow+") }
+
+			if ( locvar_equipinfo_p == ENCHANT_FIRE_AND_COLD ) { locvar_equipinfo_s = lang("火炎冷気複合","Fire/Cold-Combine") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_MIND_AND_SOUND ) { locvar_equipinfo_s = lang("幻惑音複合","Mind/Sound-Combine") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_POISON_AND_NERVE ) { locvar_equipinfo_s = lang("毒神経複合","Poison/Nerver-Comine") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_DARKNESS_AND_NETHER ) { locvar_equipinfo_s = lang("暗黒地獄複合","Dark/Nether-Combine") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+
+			if ( locvar_equipinfo_p == ENCHANT_REMOTE_BLOW ) { locvar_equipinfo_s = lang("遠隔打撃","DistantAttack") }
+			if ( locvar_equipinfo_p == ENCHANT_PIERCING_CHANCE ) { locvar_equipinfo_s = lang("完全貫通","Pierce") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_CRIT_CHANCE ) { locvar_equipinfo_s = lang("クリティカル","Critical") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_EXTRA_MELEE ) { locvar_equipinfo_s = lang("追加打撃","ExtraMelee") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_EXTRA_RANGED ) { locvar_equipinfo_s = lang("追加射撃","ExtraShot") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_SHOOTING_MECHANISM ) { locvar_equipinfo_s = lang("連動射撃","InterlockShot") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_PROXIMITY_ASSIST ) { locvar_equipinfo_s = lang("近接補助","ProximityAttack") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_TIME_STOP ) { locvar_equipinfo_s = lang("時を止める","StopTime") + ":" + (locvar_equipinfo_pow / 100 + 1) }
+
+			if ( locvar_equipinfo_p == ENCHANT_REFLECT_DAMAGE ) { locvar_equipinfo_s = lang("切り傷","CutReflect") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_REFLECT_MAGIC ) { locvar_equipinfo_s = lang("魔法反射","MagicReflect") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_QUICK_SHOOTING ) { locvar_equipinfo_s = lang("早撃","ShotReflect") }
+			if ( locvar_equipinfo_p == ENCHANT_DEC_ENEMY_CRIT_CHANCE ) { locvar_equipinfo_s = lang("クリティカル受ける","CritiGuard") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_RES_PHYSICAL ) { locvar_equipinfo_s = lang("物理ダメージ軽減","PhysicalRes") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_IMMUNE_DAMAGE ) { locvar_equipinfo_s = lang("ダメージ無効","DmgImmune") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+
+			if ( locvar_equipinfo_p == ENCHANT_BANE_DRAGON ) { locvar_equipinfo_s = lang("竜族殺し","Dragonkiller") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_BANE_UNDEAD ) { locvar_equipinfo_s = lang("不死殺し","Undeadkiller") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_BANE_FLYING ) { locvar_equipinfo_s = lang("空敵殺し","Birdkiller") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_BANE_GOD ) { locvar_equipinfo_s = lang("神殺し","Godkiller") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+			if ( locvar_equipinfo_p == ENCHANT_BANE_METAL ) { locvar_equipinfo_s = lang("金属殺し","MetalKiller") + ":" + (locvar_equipinfo_pow / 50 + 1) }
+
+			if ( locvar_equipinfo_p == ENCHANT_SHOW_RELIGION ) { locvar_equipinfo_s = lang("信仰を明らか","Reveal Religion") }
+			if ( locvar_equipinfo_p == ENCHANT_GOD_SIGNALS ) { locvar_equipinfo_s = lang("神電波","Radiowave") }
+
+			if ( locvar_equipinfo_p == ENCHANT_RAGNAROK ) { locvar_equipinfo_s = lang("終結","Ragnarok") }
+			if ( locvar_equipinfo_p == ENCHANT_MANA_TO_ATTACK ) { locvar_equipinfo_s = lang("マナを攻撃力に変える","ManaOvercharge") }
+			if ( locvar_equipinfo_p == ENCHANT_REWARD_QUALITY ) { locvar_equipinfo_s = lang("演奏報酬","PerformReward+") }
+			if ( locvar_equipinfo_p == ENCHANT_KALPA_HAND ) { locvar_equipinfo_s = lang("時を纏っている","Clock-Up") }
+			if ( locvar_equipinfo_p == ENCHANT_DRUNK_LISTENER ) { locvar_equipinfo_s = lang("音色酔わす","BoozeMelody") }
+			pos locvar_equipinfo_x, equipinfo_arg3
+			mes locvar_equipinfo_s
+			locvar_equipinfo_x += strlen(locvar_equipinfo_s) * 8
+		loop
+	}
+	return
+/********** MMAH - ENDING **********/
+
 #deffunc equipinfo int equipinfo_arg1, int equipinfo_arg2, int equipinfo_arg3
 	if ( inv(INV_ITEM_KNOWN, equipinfo_arg1) < ITEM_KNOWN_FULL ) {
 		return

@@ -10202,7 +10202,7 @@
 						s = "" + sorg(i, cc) + "." + strmid(s, 0, 3)
 						if ( sorg(i, cc) != sdata(i, cc) ) {
 							p(1) = sdata(i, cc) - sorg(i, cc)
-							if ( dbg_showallskill ) {
+							if ( dbg_showallskill & FALSE ) { // JAMES CUSTOM - SHOW BONUS BY DEFAULT
 								if ( p(1) > 0 ) {
 									s += "+" + p(1)
 								}
@@ -10253,14 +10253,32 @@
 				else {
 					if ( sorg(i, cc) != sdata(i, cc) ) {
 						i = sdata(i, cc) - sorg(i, cc)
-						if ( list(0, p) >= 50 ) {
-							i = i / 50
+						/********** JAMES CUSTOM - SHOW BONUS BY DEFAULT - BEGINNING **********/
+						if ( i > 0 ) {
+							s = "+" + i
+							color 0, 0, 0
 						}
 						else {
-							i = i / 5
+							s = "" + i
+							color 180, 0, 0
 						}
-						s = ""
-						putenclv i
+						if ( list(0, p) >= STARTING_SKILL_WEAPON & list(0, p) < MAX_SKILL_NORMAL ) {
+							if ( csctrl == 300 ) {
+								s = "Have"
+								color 0, 0, 0
+							}
+						}
+						else {
+							/********** JAMES CUSTOM - SHOW BONUS BY DEFAULT - ENDING **********/
+							if ( list(0, p) >= 50 ) {
+								i = i / 50
+							}
+							else {
+								i = i / 5
+							}
+							s = ""
+							putenclv i
+						}
 						pos wx + 282, wy + 66 + cnt * 19 + 2
 						mes s
 					}
@@ -11817,18 +11835,18 @@
 	pos wx, wy + wh - 164
 	gcopy 3, 960, 216, 72, 144
     calcDvPv cc
+
+	/********** ORIGINAL - BEGINNING **********
 	if ( showresist ) {
 		pos wx + 320, wy + 40
 		color 0, 0, 0
-
-		/********** ORIGINAL - BEGINNING **********
-
 		mes lang("火 冷 雷 闇 幻 毒 獄 音 神 沌 魔", "Fi Co Li Da Mi Po Nt So Nr Ch Ma")
-
-		 ********** ORIGINAL - ENDING **********/
-
-		/********** ANNA CUSTOM - BEGINNING **********/ // Show skills on 'z' toggle
-
+	}
+	********** ORIGINAL - ENDING **********/
+	/********** ANNA CUSTOM - BEGINNING ********** // Show skills on 'z' toggle
+	if ( showresist ) {
+		pos wx + 320, wy + 40
+		color 0, 0, 0
 		switch showresist
 			case 1
 				mes lang("火 冷 雷 闇 幻 毒 獄 音 神 沌 魔", "Fi Co Li Da Mi Po Nt So Nr Ch Ma")
@@ -11855,10 +11873,11 @@
 				mes "Rd"
 				swbreak
 		swend
-
-		/********** ANNA CUSTOM - ENDING **********/
-
 	}
+	********** ANNA CUSTOM - ENDING **********/
+	/********** MMAH - BEGINNING **********/
+	display_show_resist showresist, 260 + (showresist == 1) * 100
+	/********** MMAH - ENDING **********/
 	display_note lang("装備重量: ", "Equip weight: ") + cnvweight(cdata(CDATA_EQUIP_WEIGHT, cc)) + cnveqweight(cc) + lang(" 命中修正:", " Hit Bonus:") + cdata(CDATA_ATTACK, cc) + lang(" ダメージ修正:", " Damage Bonus:") + cdata(CDATA_DAMAGE, cc) + "  DV/PV:" + dvr1 + "/" + pvr1
 	color 0, 0, 0
 	font lang(cfg_font1, cfg_font2), 12 + sizefix - en * 2, 1
@@ -11908,25 +11927,23 @@
 			gmode 2, inf_tiles, inf_tiles
 			grotate 1, 0, 960, 0, chipi(CHIPI_WIDTH, p(2)), chipi(CHIPI_HEIGHT, p(2))
 			if ( showresist ) {
-
 				/********** ORIGINAL - BEGINNING **********
-
 				equipinfo p(1), wx + 320, wy + 60 + cnt * 19 + 2
-
-				 ********** ORIGINAL - ENDING **********/
-
-				/********** ANNA CUSTOM - BEGINNING **********/ // Show skills on 'z' toggle
-
+				s = strmid(s, 0, 22)
+				********** ORIGINAL - ENDING **********/
+				/********** ANNA CUSTOM - BEGINNING ********** // Show skills on 'z' toggle
 				if ( showresist == 1 ) {
 					equipinfo p(1), wx + 320, wy + 60 + cnt * 19 + 2
 				}
 				else {
 					equipinfo2 p(1), wx + 320, wy + 60 + cnt * 19 + 2, showresist
 				}
-
-				/********** ANNA CUSTOM - ENDING **********/
-
 				s = strmid(s, 0, 22)
+				********** ANNA CUSTOM - ENDING **********/
+				/********** MMAH - BEGINNING **********/
+				equipinfo_mmah p(1), wx + 260 + (showresist == 1) * 100, wy + 60 + cnt * 19 + 2
+				s = strmid(s, 0, 12 + (showresist == 1) * 14)
+				/********** MMAH - ENDING **********/
 			}
 		}
 		else {
@@ -12016,29 +12033,9 @@
 		}
 	}
 	if ( key == key_mode ) {
-
-		/********** ORIGINAL - BEGINNING **********
-
-		if ( showresist == 1 ) {
-			showresist = 0
-		}
-		else {
-			showresist = 1
-		}
-
-		 ********** ORIGINAL - ENDING **********/
-
-		/********** ANNA CUSTOM - BEGINNING **********/ // Show skills on 'z' toggle
-
-		if ( showresist == 8 ) {
-			showresist = 0
-		}
-		else {
-			showresist++
-		}
-
-		/********** ANNA CUSTOM - ENDING **********/
-
+		; showresist = (showresist + 1) \ 2 // ORIGINAL
+		; showresist = (showresist + 1) \ 8 // ANNA CUSTOM
+		showresist = (showresist + 1) \ 5 // MMAH
 		snd SOUNDLIST_POP1
 		goto *com_wear_loop_pgchk
 	}
@@ -13293,18 +13290,18 @@
 
 	display_topic lang("アイテムの名称", "Name"), wx + 28, wy + 30
 	display_topic s, wx + 526, wy + 30
+
+	/********** ORIGINAL - BEGINNING **********
 	if ( showresist ) {
 		pos wx + 300, wy + 40
 		color 0, 0, 0
-
-		/********** ORIGINAL - BEGINNING **********
-
 		mes lang("火 冷 雷 闇 幻 毒 獄 音 神 沌 魔", "Fi Co Li Da Mi Po Nt So Nr Ch Ma")
-
-		 ********** ORIGINAL - ENDING **********/
-
-		/********** ANNA CUSTOM - BEGINNING **********/ // Show skills on 'z' toggle
-
+	}
+	********** ORIGINAL - ENDING **********/
+	/********** ANNA CUSTOM - BEGINNING ********** // Show skills on 'z' toggle
+	if ( showresist ) {
+		pos wx + 300, wy + 40
+		color 0, 0, 0
 		switch showresist
 			case 1
 				mes lang("火 冷 雷 闇 幻 毒 獄 音 神 沌 魔", "Fi Co Li Da Mi Po Nt So Nr Ch Ma")
@@ -13331,10 +13328,11 @@
 				mes "Rd"
 				swbreak
 		swend
-
-		/********** ANNA CUSTOM - ENDING **********/
-
 	}
+	********** ANNA CUSTOM - ENDING **********/
+	/********** MMAH - BEGINNING **********/
+	display_show_resist showresist, 200 + (showresist == 1) * 120
+	/********** MMAH - ENDING **********/
 	pos wx + ww - 136, wy - 6
 	gcopy 3, 960, 96, 144, 48
 	if ( showresist == 0 ) {
@@ -13491,25 +13489,26 @@
 			}
 		}
 		if ( showresist ) {
-
 			/********** ORIGINAL - BEGINNING **********
-
 			equipinfo p, wx + 300, wy + 60 + cnt * 19 + 2
-
-			 ********** ORIGINAL - ENDING **********/
-
-			/********** ANNA CUSTOM - BEGINNING **********/ // Show skills on 'z' toggle
-
+			s = strmid(s, 0, 24)
+			********** ORIGINAL - ENDING **********/
+			/********** ANNA CUSTOM - BEGINNING ********** // Show skills on 'z' toggle
 			if ( showresist == 1 ) {
 				equipinfo p, wx + 300, wy + 60 + cnt * 19 + 2
 			}
 			else {
 				equipinfo2 p, wx + 300, wy + 60 + cnt * 19 + 2, showresist
 			}
-
-			/********** ANNA CUSTOM - ENDING **********/
-
 			s = strmid(s, 0, 24)
+			********** ANNA CUSTOM - ENDING **********/
+			/********** MMAH - BEGINNING **********/
+			fmmah = refitem(inv(INV_ITEM_ID, p), DBSPEC_TYPE)
+			if ( fmmah >= FILTER_WEAPON & fmmah < FILTER_ITEM_MIN ) {
+				equipinfo_mmah p, wx + 200 + (showresist == 1) * 120, wy + 60 + cnt * 19 + 2
+				s = strmid(s, 0, 12 + (showresist == 1) * 16)
+			}
+			/********** MMAH - ENDING **********/
 		}
 		cs_list s, wx + 84, wy + 60 + cnt * 19 - 1, 19, 0, 1, p
 		pos wx + 600 - strlen(s(1)) * 7, wy + 60 + cnt * 19 + 2
@@ -15025,29 +15024,9 @@
 		}
 	}
 	if ( key == key_mode ) {
-
-		/********** ORIGINAL - BEGINNING **********
-
-		if ( showresist == 1 ) {
-			showresist = 0
-		}
-		else {
-			showresist = 1
-		}
-
-		 ********** ORIGINAL - ENDING **********/
-
-		/********** ANNA CUSTOM - BEGINNING **********/ // Show skills on 'z' toggle
-
-		if ( showresist == 8 ) {
-			showresist = 0
-		}
-		else {
-			showresist++
-		}
-
-		/********** ANNA CUSTOM - ENDING **********/
-
+		; showresist = (showresist + 1) \ 2 // ORIGINAL
+		; showresist = (showresist + 1) \ 8 // ANNA CUSTOM
+		showresist = (showresist + 1) \ 5 // MMAH
 		snd SOUNDLIST_POP1
 		goto *com_inventory_loop
 	}
