@@ -1658,7 +1658,6 @@
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_GIGA_GRAVITATION) = SKILL_ATTR_CON, SKILL_TYPE_SP, 18, TARGET_TYPE_SELF + SKILL_TYPE_FOV_BOLT, 0
 	skillname(SKILL_SPACT_GIGA_GRAVITATION) = lang("超重圧殺", "Giga Gravitation")
-	skilldesc(SKILL_SPACT_GIGA_GRAVITATION) = lang("周辺の敵に重力依存ダメージ/MP10％消費", "Gravity Damage Surround/Consumes 10% MP")
 	skilldesc(SKILL_SPACT_GIGA_GRAVITATION) = lang("重力依存耐久属性攻撃/MP10％消費", "Gravity and CON attack Surround/Consumes 10% MP")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_HYPER_DASH) = SKILL_ATTR_WIL, SKILL_TYPE_SP, 21, TARGET_TYPE_SELF_ONLY, 500
