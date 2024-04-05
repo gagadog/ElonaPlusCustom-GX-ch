@@ -179,6 +179,7 @@
         await hoseiwait
 
     loop
+    gosub *load_buffer
 
     if ( anisound ) {
         snd anisound, 0, 1
@@ -332,6 +333,7 @@
         await cfg_animewait + 15
         redraw 1
     loop
+    gosub *load_buffer
 
     if ( anisound ) {
         snd anisound, 0, 1
@@ -471,6 +473,7 @@
         redraw 1
         await cfg_animewait
     loop
+    gosub *load_buffer
     await cfg_animewait
     
     if ( anisound ) {
