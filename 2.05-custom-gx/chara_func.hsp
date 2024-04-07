@@ -1996,6 +1996,18 @@
 		}
 	loop
 
+	/********** JAMES CUSTOM - BEGINNING **********/
+	if ( delbuff_buffid < 0 | delbuff_buffid >= MAX_BUFF ) {
+		title "Invalid buff detected on map ["+ gdata(GDATA_AREA) + "_" + (100 + gdata(GDATA_LEVEL))+"], removing all buff from " + cdatan(CDATAN_NAME, delbuff_charid) + "."
+		repeat (MAX_BLESSINGS + MAX_HEXES) * ARRAY_CDATA_BUFF
+			cdata(cnt, delbuff_charid) = 0
+		loop
+		r1 = delbuff_charid
+		gosub *charaRefresh
+		return
+	}
+	/********** JAMES CUSTOM - ENDING **********/
+
     /********** RUIN0X11 CUSTOM - BEGINNING **********/
 
     if ( bufftxt(0, delbuff_buffid) != "" & synccheck(delbuff_charid, -1) ) {

@@ -3763,7 +3763,7 @@
 	pos 0, 0
 	gcopy 4, 0, 0, windoww, windowh
 	gmode 2
-	s = lang("君の特筆すべき才能を1つ、教えてほしいな。印がついているのは種族・職業と被っているものだね。", "I want you to tell me one of your notable skills. The ones with a mark overlap with your class or race.")
+	s = lang("君の特筆すべき才能を1つ、教えてほしいな。印がついているのは種族・職業と被っているものだね。", "Tell me one of your notable skills. The ones with a mark overlap with your class or race.")
 	gosub *screen_drawMsg2
 	font lang(cfg_font1, cfg_font2), 13 - en * 2, 1
 	pos 20, windowh - 20

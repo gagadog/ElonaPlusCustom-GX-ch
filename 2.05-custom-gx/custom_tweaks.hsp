@@ -782,6 +782,13 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 38) = "Disable Deep-Sea Castle persistance." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_DISABLE_DEEP_SEA_CASTLE_PERSISTENCE)
 	listn(0, 39) = "Child, you must go!" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_GO_CHILD)
 	listn(0, 40) = "Disable Abnormal mode inventory limit" + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REMOVE_ABNORMAL_INV_LIMIT)
+	listn(0, 41) = "" 
+	listn(0, 42) = "" 
+	listn(0, 43) = "" 
+	listn(0, 44) = "" 
+	listn(0, 45) = "" 
+	listn(0, 46) = "" 
+	listn(0, 47) = "" 
 
 	listn(0, listmax - 1) = "Go back."
 

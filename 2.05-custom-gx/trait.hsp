@@ -1248,6 +1248,13 @@
 		}
 		return 1
 	}
+	if ( traitmode == 0 ) {
+		traitref = 0, -1, 0, 1, 0, 100, -1
+		if ( trait(tid) < 0 ) {
+			traitrefn(2) = "UNKNOWN_TRAIT["+tid+"]", "This is an UNKNOWN_TRAIT["+tid+"], report it.", "This is an UNKNOWN_TRAIT["+tid+"], report it.", "This is an UNKNOWN_TRAIT["+tid+"], report it."
+		}
+		traitrefn = "UNKNOWN_TRAIT["+tid+"]RECEIVED-1.", "UNKNOWN_TRAIT["+tid+"]RECEIVED+1."
+	}
 	return 0
 
 *cm_putTrait

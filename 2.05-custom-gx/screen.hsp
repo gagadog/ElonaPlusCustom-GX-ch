@@ -7688,6 +7688,12 @@
 			}
 		}
 	}
+	/********** JAMES CUSTOM - BEGINNING **********/
+	if ( cdata(CDATA_RACE_ID, r1) < 0 | cdata(CDATA_RACE_ID, r1) >= 78 ) {
+		title "Invalid race id detected on map ["+ gdata(GDATA_AREA) + "_" + (100 + gdata(GDATA_LEVEL))+"], removing race id from " + cdatan(CDATAN_NAME, r1) + "."
+		cdata(CDATA_RACE_ID, r1) = 0
+	}
+	/********** JAMES CUSTOM - ENDING **********/
 	repeat 10
 		if ( racebit(cnt, cdata(CDATA_RACE_ID, r1)) == 0 ) {
 			break
