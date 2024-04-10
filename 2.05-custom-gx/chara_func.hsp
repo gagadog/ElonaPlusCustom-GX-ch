@@ -3536,7 +3536,7 @@
 				locvar_check_talk_exp *= limit(cdata(CDATA_LEVEL, check_talk_arg2) * 2 / cdata(CDATA_LEVEL, CHARA_PLAYER), 1, 10)
 			}
 		}
-		if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, check_talk_arg2) | cbit(CHARA_BIT_SPLIT_NO_EFFECT, check_talk_arg2) | cbit(CHARA_BIT_SUMMONED, check_talk_arg2) ) {
+		if ( charaGivesExp(check_talk_arg2) == FALSE ) {
 			locvar_check_talk_exp = 0
 		}
 		cdata(CDATA_EXP, check_talk_arg1) += locvar_check_talk_exp
@@ -3557,7 +3557,7 @@
 				locvar_check_talk_exp = locvar_check_talk_exp / 100 + 5
 			}
 		}
-		if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, check_talk_arg2) | cbit(CHARA_BIT_SPLIT_NO_EFFECT, check_talk_arg2) | cbit(CHARA_BIT_SUMMONED, check_talk_arg2) ) {
+		if ( charaGivesExp(check_talk_arg2) == FALSE ) {
 			locvar_check_talk_exp = 0
 		}
 		if ( cdata(CDATA_RELATION, check_talk_arg1) == RELATION_ALLY | check_talk_arg1 == 0 ) {
@@ -5544,7 +5544,7 @@
 		if ( cdata(CDATA_GAUGE_COOLDOWN2, dmghp_charid) == 0 ) {
 			chara_guardbreak dmghp_charid, 3 + 3 * ( locvar_dmghp_ele == 64 )
 			cdata(CDATA_POWER_GAUGE, dmghp_source) += 2
-			if ( cbit(CHARA_BIT_SANDBAG, dmghp_charid) != TRUE ) {
+			if ( cbit(CHARA_BIT_SANDBAG, dmghp_charid) != TRUE | TweakData(TWEAK_GAMEPLAY_SANDBAG_TRAINING, TWEAK_CATEGORY_GAMEPLAY) ) {
 				cdata(CDATA_POWER_GAUGE, dmghp_source) += 2
 				if ( cdata(CDATA_ID, dmghp_source) == CREATURE_ID_TALON_SOLDIER ) {
 					cdata(CDATA_POWER_GAUGE, dmghp_source) += 2
@@ -5645,6 +5645,9 @@
 		repeat MAX_CHARA_TOTAL
 			if ( cbit(CHARA_BIT_SANDBAG, dmghp_charid) ) {
 				cdata(CDATA_HP, dmghp_charid) = 1
+				if ( TweakData(TWEAK_GAMEPLAY_SANDBAG_TRAINING, TWEAK_CATEGORY_GAMEPLAY) ) {
+					cdata(CDATA_HP, dmghp_charid) = cdata(CDATA_MAX_HP, dmghp_charid)
+				}
 				break
 			}
 			if ( dmghp_charid == cnt ) {
@@ -6068,65 +6071,11 @@
 				txt lang(" *カチッ* ", " *click* ")
 			}
 		}
-		if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, dmghp_charid) ) {
-			if ( cdata(CDATA_ROLE, dmghp_charid) != ROLE_SPECIAL ) {
-				if ( cdata(CDATA_ALLIED, dmghp_charid) == 0 ) {
-					if ( gdata(GDATA_DMG_TYPE) != 1 ) {
-						if ( locvar_dmghp_dmg > cdata(CDATA_MAX_HP, dmghp_charid) / 10 ) {
-							if ( cdata(CDATA_HP, dmghp_charid) > cdata(CDATA_MAX_HP, dmghp_charid) / 3 ) {
-								if ( cdata(CDATA_QUALITY, dmghp_charid) < FIX_QUALITY_MIRACLE | locvar_dmghp_dmg > cdata(CDATA_MAX_HP, dmghp_charid) / 6 ) {
-									if ( gdata(GDATA_TEMPORARY_FLAGS2) == 0 ) {
-										if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
-											copy_chara dmghp_charid
-											if ( stat == 1 ) {
-												locvar_dmghp_s = refchara(cdata(CDATA_ID, dmghp_charid), DBSPEC_CHARA_FILTER, 1)
-												if ( instr(locvar_dmghp_s, 0, "/man/") != (-1) | cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_DRAGONS_PET_HARPY | cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_RED_NINJA ) {
-													txt lang(name(dmghp_charid) + "は分身した！", name(dmghp_charid) + " split" + _s(dmghp_charid) + "!")
-												}
-												else {
-													txt lang(name(dmghp_charid) + "は分裂した！", name(dmghp_charid) + " split" + _s(dmghp_charid) + "!")
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+		if ( charaCanSplit(dmghp_charid) ) {
+			charaSplit dmghp_charid
 		}
-		if ( cbit(CHARA_BIT_SPLIT_NO_EFFECT, dmghp_charid) ) {
-			if ( cdata(CDATA_ROLE, dmghp_charid) != ROLE_SPECIAL ) {
-				if ( cdata(CDATA_ALLIED, dmghp_charid) == 0 ) {
-					if ( gdata(GDATA_DMG_TYPE) != 1 ) {
-						if ( rnd(3) == 0 ) {
-							if ( cdata(CDATA_CONDITION_CONFUSE, dmghp_charid) == 0 & cdata(CDATA_CONDITION_DIM, dmghp_charid) == 0 & cdata(CDATA_CONDITION_POISON, dmghp_charid) == 0 & cdata(CDATA_CONDITION_PARALYZE, dmghp_charid) == 0 & cdata(CDATA_CONDITION_BLIND, dmghp_charid) == 0 ) {
-								if ( locvar_dmghp_dmg > cdata(CDATA_MAX_HP, dmghp_charid) / 10 ) {
-									if ( cdata(CDATA_HP, dmghp_charid) > cdata(CDATA_MAX_HP, dmghp_charid) / 3 ) {
-										if ( cdata(CDATA_QUALITY, dmghp_charid) < FIX_QUALITY_MIRACLE | locvar_dmghp_dmg > cdata(CDATA_MAX_HP, dmghp_charid) / 6 ) {
-											if ( gdata(GDATA_TEMPORARY_FLAGS2) == 0 ) {
-												if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
-													copy_chara dmghp_charid
-													if ( stat == 1 ) {
-														locvar_dmghp_s = refchara(cdata(CDATA_ID, dmghp_charid), DBSPEC_CHARA_FILTER, 1)
-														if ( instr(locvar_dmghp_s, 0, "/man/") != (-1) | cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_DRAGONS_PET_HARPY | cdata(CDATA_ID, dmghp_charid) == CREATURE_ID_RED_NINJA ) {
-															txt lang(name(dmghp_charid) + "は分身した！", name(dmghp_charid) + " split" + _s(dmghp_charid) + "!")
-														}
-														else {
-															txt lang(name(dmghp_charid) + "は分裂した！", name(dmghp_charid) + " split" + _s(dmghp_charid) + "!")
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+		if ( charaCanSplit2(dmghp_charid) ) {
+			charaSplit dmghp_charid
 		}
 		if ( cbit(CHARA_BIT_TEMPER, dmghp_charid) ) {
 			if ( gdata(GDATA_DMG_TYPE) != 1 ) {
@@ -6588,7 +6537,7 @@
 						locvar_dmghp_exp *= limit(cdata(CDATA_LEVEL, dmghp_charid) * 2 / cdata(CDATA_LEVEL, CHARA_PLAYER), 1, 10)
 					}
 				}
-				if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, dmghp_charid) | cbit(CHARA_BIT_SPLIT_NO_EFFECT, dmghp_charid) | cbit(CHARA_BIT_SUMMONED, dmghp_charid) ) {
+				if ( charaGivesExp(dmghp_charid) == FALSE ) {
 					locvar_dmghp_exp = 0
 				}
 				cdata(CDATA_EXP, dmghp_source) += locvar_dmghp_exp
@@ -6609,7 +6558,7 @@
 						locvar_dmghp_exp = locvar_dmghp_exp / 100 + 5
 					}
 				}
-				if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, dmghp_charid) | cbit(CHARA_BIT_SPLIT_NO_EFFECT, dmghp_charid) | cbit(CHARA_BIT_SUMMONED, dmghp_charid) ) {
+				if ( charaGivesExp(dmghp_charid) == FALSE ) {
 					locvar_dmghp_exp = 0
 				}
 				if ( cdata(CDATA_RELATION, dmghp_source) == RELATION_ALLY | dmghp_source == CHARA_PLAYER ) {
@@ -7996,6 +7945,72 @@
 	}
 	if ( cbit(CHARA_BIT_SUMMONED, charaIsSummoned2_charidx) ) {
 		return TRUE
+	}
+	return FALSE
+
+#deffunc charaSplit int charaCanSplit_charidx
+	if ( TweakData(TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT, TWEAK_CATEGORY_CHALLENGE) ) {
+		TweakData(TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT, TWEAK_CATEGORY_CHALLENGE)++
+	}
+	copy_chara charaCanSplit_charidx
+	if ( stat == 1 ) {
+		locvar_dmghp_s = refchara(cdata(CDATA_ID, charaCanSplit_charidx), DBSPEC_CHARA_FILTER, 1)
+		if ( instr(locvar_dmghp_s, 0, "/man/") != (-1) | cdata(CDATA_ID, charaCanSplit_charidx) == CREATURE_ID_DRAGONS_PET_HARPY | cdata(CDATA_ID, charaCanSplit_charidx) == CREATURE_ID_RED_NINJA ) {
+			txt lang(name(charaCanSplit_charidx) + "は分身した！", name(charaCanSplit_charidx) + " split" + _s(charaCanSplit_charidx) + "!")
+		}
+		else {
+			txt lang(name(charaCanSplit_charidx) + "は分裂した！", name(charaCanSplit_charidx) + " split" + _s(charaCanSplit_charidx) + "!")
+		}
+	}
+	return
+
+#defcfunc charaCanSplit int charaCanSplit_charidx
+	if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, charaCanSplit_charidx) ) {
+		if ( gdata(GDATA_DMG_TYPE) != 1 & mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
+			if ( TweakData(TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT, TWEAK_CATEGORY_CHALLENGE) ) {
+				if ( locvar_dmghp_dmg > cdata(CDATA_MAX_HP, charaCanSplit_charidx) / 20 | rnd(10) == 0 ) {
+					return TRUE
+				}
+			}
+			if ( cdata(CDATA_ROLE, charaCanSplit_charidx) != ROLE_SPECIAL & cdata(CDATA_ALLIED, charaCanSplit_charidx) == 0 ) {
+				if ( locvar_dmghp_dmg > cdata(CDATA_MAX_HP, charaCanSplit_charidx) / 10 ) {
+					if ( cdata(CDATA_HP, charaCanSplit_charidx) > cdata(CDATA_MAX_HP, charaCanSplit_charidx) / 3 ) {
+						if ( cdata(CDATA_QUALITY, charaCanSplit_charidx) < FIX_QUALITY_MIRACLE | locvar_dmghp_dmg > cdata(CDATA_MAX_HP, charaCanSplit_charidx) / 6 ) {
+							if ( gdata(GDATA_TEMPORARY_FLAGS2) == 0 ) {
+								return TRUE
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return FALSE
+
+#defcfunc charaCanSplit2 int charaCanSplit_charidx
+	if ( cbit(CHARA_BIT_SPLIT_NO_EFFECT, charaCanSplit_charidx) ) {
+		if ( gdata(GDATA_DMG_TYPE) != 1 & mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
+			if ( TweakData(TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT, TWEAK_CATEGORY_CHALLENGE) ) {
+				if ( rnd(3) == 0 & cdata(CDATA_CONDITION_CONFUSE, charaCanSplit_charidx) == 0 & cdata(CDATA_CONDITION_DIM, charaCanSplit_charidx) == 0 & cdata(CDATA_CONDITION_POISON, charaCanSplit_charidx) == 0 & cdata(CDATA_CONDITION_PARALYZE, charaCanSplit_charidx) == 0 & cdata(CDATA_CONDITION_BLIND, charaCanSplit_charidx) == 0 ) {
+					return TRUE
+				}
+			}
+			if ( cdata(CDATA_ROLE, charaCanSplit_charidx) != ROLE_SPECIAL & cdata(CDATA_ALLIED, charaCanSplit_charidx) == 0 ) {
+				if ( rnd(3) == 0 ) {
+					if ( cdata(CDATA_CONDITION_CONFUSE, charaCanSplit_charidx) == 0 & cdata(CDATA_CONDITION_DIM, charaCanSplit_charidx) == 0 & cdata(CDATA_CONDITION_POISON, charaCanSplit_charidx) == 0 & cdata(CDATA_CONDITION_PARALYZE, charaCanSplit_charidx) == 0 & cdata(CDATA_CONDITION_BLIND, charaCanSplit_charidx) == 0 ) {
+						if ( locvar_dmghp_dmg > cdata(CDATA_MAX_HP, charaCanSplit_charidx) / 10 ) {
+							if ( cdata(CDATA_HP, charaCanSplit_charidx) > cdata(CDATA_MAX_HP, charaCanSplit_charidx) / 3 ) {
+								if ( cdata(CDATA_QUALITY, charaCanSplit_charidx) < FIX_QUALITY_MIRACLE | locvar_dmghp_dmg > cdata(CDATA_MAX_HP, charaCanSplit_charidx) / 6 ) {
+									if ( gdata(GDATA_TEMPORARY_FLAGS2) == 0 ) {
+										return TRUE
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	return FALSE
 

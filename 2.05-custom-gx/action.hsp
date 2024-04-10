@@ -4201,7 +4201,7 @@
 			cdata(CDATA_GUARD_BREAK, cc)++
 		}
 		cdata(CDATA_GAUGE_COOLDOWN, cc) = 1
-		if ( cbit(CHARA_BIT_SANDBAG, tc) != TRUE ) {
+		if ( cbit(CHARA_BIT_SANDBAG, tc) != TRUE | TweakData(TWEAK_GAMEPLAY_SANDBAG_TRAINING, TWEAK_CATEGORY_GAMEPLAY) ) {
 			cdata(CDATA_POWER_GAUGE, cc) += 2
 			if ( cdata(CDATA_ID, cc) == CREATURE_ID_TALON_SOLDIER ) {
 				cdata(CDATA_POWER_GAUGE, cc) += 2
@@ -4217,7 +4217,7 @@
 		cdata(CDATA_POWER_GAUGE, cc) = 200
 	}
 	if ( cbit(CHARA_BIT_QUICK_SHOOTING, tc) ) {
-		if ( cbit(CHARA_BIT_SANDBAG, tc) != 1 ) {
+		if ( cbit(CHARA_BIT_SANDBAG, tc) != TRUE ) {
 			if ( slinger == 0 ) {
 				if ( gdata(GDATA_TEMPORARY_FLAGS3) == 0 ) {
 					if ( gdata(GDATA_TEMPORARY_FLAGS2) == 0 ) {
@@ -4289,8 +4289,15 @@
 		txtmore
 	}
 	expmodifer = 1 + cbit(CHARA_BIT_SANDBAG, tc) * 1000 + cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) * 1000 + cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) * 1000 + (gdata(GDATA_AREA) == AREA_SHOW_HOUSE) * 1000
-	if ( TweakData(TWEAK_GAMEPLAY_SANDBAG_TRAINING, TWEAK_CATEGORY_GAMEPLAY) == 1 ) {
-		expmodifer = 1 + cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) * 1000 + cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) * 1000 + (gdata(GDATA_AREA) == AREA_SHOW_HOUSE) * 1000
+	expmodifer = 1
+	if ( TweakData(TWEAK_GAMEPLAY_SANDBAG_TRAINING, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
+		expmodifer += cbit(CHARA_BIT_SANDBAG, tc) * 1000
+	}
+	if ( TweakData(TWEAK_GAMEPLAY_SUMMONED_MONSTER_TRAINING, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
+		expmodifer += cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) * 1000 + cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) * 1000
+	}
+	if ( TweakData(TWEAK_GAMEPLAY_MOONGATE_LOOT, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
+		expmodifer += (gdata(GDATA_AREA) == AREA_SHOW_HOUSE) * 1000
 	}
 	hit = calcattackhit()
 	i = 0
@@ -4819,7 +4826,7 @@
 		dmghp tc, dmg, cc, ele, elep
 		ele = SKILL_NONE
 		if ( critical ) {
-			if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) == 0 & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) == 0 ) {
+			if ( charaGivesExp(tc) ) {
 				skillexp SKILL_NORMAL_EYE_OF_MIND, cc, 60 / expmodifer, 2
 			}
 			critical = 0
@@ -4831,7 +4838,7 @@
 					skillexp SKILL_NORMAL_SHIELD, tc, limit(500 * rtdmg / cdata(CDATA_MAX_HP, tc) + 1, 5, 500) / expmodifer, 0, 5
 				}
 			}
-			if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) == 0 & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) == 0 ) {
+			if ( charaGivesExp(tc) ) {
 				skillexp attackskill, cc, limit(sdata(SKILL_NORMAL_EVASION, tc) * 2 - sdata(attackskill, cc) + 1, 5, 50) / expmodifer, 0, 4
 				if ( attackrange == 0 ) {
 					skillexp SKILL_NORMAL_TACTICS, cc, 20 / expmodifer, 0, 4

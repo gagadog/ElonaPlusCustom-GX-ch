@@ -992,7 +992,7 @@
 			act = -10
 		}
 		else {
-			if ( rnd(4) == 0 & cbit(CHARA_BIT_SANDBAG, tc) != 1 ) {
+			if ( rnd(4) == 0 & (cbit(CHARA_BIT_SANDBAG, tc) != TRUE | TweakData(TWEAK_GAMEPLAY_SANDBAG_TRAINING, TWEAK_CATEGORY_GAMEPLAY)) ) {
 				CAIActionLearnProgress(cc)++
 				if ( CAIActionLearnProgress(cc) > 100 ) {
 					CAIActionLearnProgress(cc) = 100

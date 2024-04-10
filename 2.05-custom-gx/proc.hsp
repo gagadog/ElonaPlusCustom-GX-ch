@@ -11488,7 +11488,7 @@
 		animode = 100 + tc
 		gosub *anime
 		weap = sdata(SKILL_NORMAL_MAGIC_DEVICE, cc)
-		if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE ) {
+		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_MAGIC_DEVICE, cc, 400
 		}
 		if ( synccheck(tc, -1) ) {
@@ -12230,7 +12230,7 @@
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
 		chara_guardbreak tc, 60
-		if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE ) {
+		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 400
 			skillexp SKILL_WEAPON_THROWING, cc, 400
 		}
@@ -12810,7 +12810,7 @@
 		eqlv = limit(eqlv / eqbui * 3, 3, 30)
 		dmghp tc, limit(cdata(CDATA_DAMAGE_FIX, cc) + (weap + 1) / 2, 2, 2500) * sqrt(weap) * sqrt(eqlv - 2) + rnd(weap + 1), cc, SKILL_SPACT_FLASH_OF_SWIFTNESS
 		chara_guardbreak tc, 30
-		if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE ) {
+		if ( charaGivesExp(tc) ) {
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 400
 		}
@@ -22684,7 +22684,7 @@
 			repeat 4
 				dmghp tc, ((sdata(SKILL_ATTR_DEX, cc) / 5 + 5) * ((sdata(SKILL_NORMAL_GENE_ENGINEER, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_NORMAL_GENE_ENGINEER, cc) * 2 + 5) + ((limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30 + 1) / 2) / 4, cc, SKILL_RES_LIGHTNING, 1000 + sdata(SKILL_NORMAL_GENE_ENGINEER, cc)
 			loop
-			if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE & tc != CHARA_PLAYER ) {
+			if ( charaGivesExp(tc) & tc != CHARA_PLAYER ) {
 				skillexp SKILL_NORMAL_GENE_ENGINEER, cc, 40
 			}
 			goto *effect_end
@@ -22705,7 +22705,7 @@
 			if ( cdata(CDATA_CONDITION_SLEEP, tc) > 0 ) {
 				cdata(CDATA_CONDITION_SLEEP, tc) = 0
 			}
-			if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE & tc != CHARA_PLAYER ) {
+			if ( charaGivesExp(tc) & tc != CHARA_PLAYER ) {
 				skillexp SKILL_NORMAL_GENE_ENGINEER, cc, 40
 			}
 		}
@@ -22858,7 +22858,7 @@
 			if ( cdata(CDATA_CONDITION_BIND, tc) < 10 ) {
 				cdata(CDATA_CONDITION_BIND, tc) = 10
 			}
-			if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE & tc != CHARA_PLAYER ) {
+			if ( charaGivesExp(tc) & tc != CHARA_PLAYER ) {
 				skillexp SKILL_NORMAL_TAILORING, cc, 40
 			}
 			goto *effect_end
@@ -22868,7 +22868,7 @@
 			if ( cdata(CDATA_CONDITION_BLEED, tc) > 0 ) {
 				cdata(CDATA_CONDITION_BLEED, tc) = cdata(CDATA_CONDITION_BLEED, tc) / 2
 			}
-			if ( cbit(CHARA_BIT_SPLIT_KEEP_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SPLIT_NO_EFFECT, tc) != TRUE & cbit(CHARA_BIT_SUMMONED, tc) != TRUE & cbit(CHARA_BIT_LIVESTOCK, tc) != TRUE & cbit(CHARA_BIT_NECRO, tc) != TRUE & cbit(CHARA_BIT_SANDBAG, tc) != TRUE & tc != CHARA_PLAYER ) {
+			if ( charaGivesExp(tc) & tc != CHARA_PLAYER ) {
 				skillexp SKILL_NORMAL_TAILORING, cc, 40
 			}
 		}
