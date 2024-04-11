@@ -1212,11 +1212,13 @@
 						cdbitmod TCG_BIT_EXHAUSTED, ac@tcg, 1
 					}
 					if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, ac@tcg)) == TCG_SKILL_TYPE_BATTLECRY & card@tcg(TCG_CARD_LOCATION, ac@tcg) == TCG_LOCATION_FIELD ) {
-						effac@tcg = ac@tcg
-						eff@tcg = card@tcg(TCG_CARD_EFFECT, ac@tcg)
-						gosub *card_action_choose_target
-						makecardlist
-						tcgdraw
+						if ( effref@tcg(TCG_SKILL_EFF, card@tcg(TCG_CARD_EFFECT, ac@tcg)) != TCG_SKILL_EFF_TRANSFORMTO ) {
+							effac@tcg = ac@tcg
+							eff@tcg = card@tcg(TCG_CARD_EFFECT, ac@tcg)
+							gosub *card_action_choose_target
+							makecardlist
+							tcgdraw
+						}
 					}
 				}
 			}
@@ -1569,6 +1571,22 @@
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
 			if ( getspotsum(card@tcg(TCG_CARD_CONTROLLER, ac@tcg)) < 8 & card@tcg(TCG_CARD_LOCATION, aeft@tcg) != TCG_LOCATION_FIELD ) {
 				card@tcg(TCG_CARD_EFFECT, ac@tcg) = TCG_EFF_QURUIZA2
+				putcardfree@tcg = 1
+				putcard aeft@tcg, card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)
+				makecardlist
+				tcgdraw
+			}
+		}
+		cardposhand 0, -1
+		cardposhand 1, -1
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_PUT_DOGGOD_AND_CHANGEEFF | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+			if ( getspotsum(card@tcg(TCG_CARD_CONTROLLER, ac@tcg)) < 8 & card@tcg(TCG_CARD_LOCATION, aeft@tcg) != TCG_LOCATION_FIELD ) {
+				card@tcg(TCG_CARD_EFFECT, ac@tcg) = TCG_EFF_DOGGOD3
 				putcardfree@tcg = 1
 				putcard aeft@tcg, card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)
 				makecardlist
@@ -2746,7 +2764,7 @@
 					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_ESTORK_THE_DOGGOD ) { x@tcg(0) = card@tcg(TCG_CARD_ATTACK, clist@tcg(cnt, 1+ap@tcg)) }
 					if ( card@tcg(TCG_CARD_REF_DBID, clist@tcg(cnt, 1+ap@tcg)) == CREATURE_ID_SAIMEF_THE_DOGGOD ) { x@tcg(1) = card@tcg(TCG_CARD_ATTACK, clist@tcg(cnt, 1+ap@tcg)) }
 				loop
-				if ( x@tcg(0) <= card@tcg(TCG_CARD_REF_COST, aeft@tcg) & card@tcg(TCG_CARD_REF_COST, aeft@tcg) <= x@tcg(1) ) {
+				if ( x@tcg(0) < card@tcg(TCG_CARD_REF_COST, aeft@tcg) & card@tcg(TCG_CARD_REF_COST, aeft@tcg) < x@tcg(1) ) {
 					x@tcg = 999
 				} else {
 					x@tcg = 0

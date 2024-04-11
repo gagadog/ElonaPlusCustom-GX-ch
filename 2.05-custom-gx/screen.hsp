@@ -5124,6 +5124,9 @@
 		sx = cdata(CDATA_X, camera) - scx, cdata(CDATA_X, camera)
 		sy = cdata(CDATA_Y, camera) - scy, cdata(CDATA_Y, camera)
 	}
+	if ( tatcfound@CGX ) {
+		sx += 3
+	}
 	if ( cfg_alwayscenter ) {
 		scx = sx + scx - inf_screenw / 2
 		scy = sy + scy - inf_screenh / 2

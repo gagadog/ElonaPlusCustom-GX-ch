@@ -438,6 +438,23 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			return " (Currently: Disabled)"
 		}
 	}
+	if ( TweakCategory == TWEAK_CATEGORY_MISC ) & ( TweakNumber == TWEAK_MISC_DRAW_TACHI_E_MAINSCREEN ) {
+		if ( TweakData(TweakNumber, TweakCategory) == 1 ) {
+			return " (Currently: Draw Player Tachi-E)"
+		}
+		if ( TweakData(TweakNumber, TweakCategory) == 2 ) {
+			return " (Currently: Draw Player-Tag Tachi-E)"
+		}
+		if ( TweakData(TweakNumber, TweakCategory) == 3 ) {
+			return " (Currently: Draw Player-Mount Tachi-E)"
+		}
+		if ( TweakData(TweakNumber, TweakCategory) == 4 ) {
+			return " (Currently: Draw First Alive Pet Tachi-E)"
+		}
+		else {
+			return " (Currently: Disabled)"
+		}
+	}
 	if ( TweakData(TweakNumber, TweakCategory) == 1 ) {
 		return " (Currently: On)"
 	}
@@ -1484,7 +1501,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	cs = 0
 	page = 0
 	pagesize = 16
-	listmax = 11
+	listmax = 13
 *MiscTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -1505,6 +1522,8 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 7) = "Display Day/Night Cycle Everywhere." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DAYNIGHTCYCLE_EVERYWHERE)
 	listn(0, 8) = "Draw Local/World map when using 'map' item." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_USABLE_MAP)
 	listn(0, 9) = "(MMA) Use Melee-Weapon-Swing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_MMA_MELEE_ANIMATIONS)
+	listn(0, 10) = "Load Animated Tachi-E." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_LOAD_ANIMATED_TACHI_E)
+	listn(0, 11) = "Always draw Tachi-E on Main Screen." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DRAW_TACHI_E_MAINSCREEN)
 
 	listn(0, listmax - 1) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -1557,6 +1576,12 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			}
 			if ( p == 9 ) {
 				s = "Use Melee-Weapon-Swing attack animation from MMA branch."
+			}
+			if ( p == 10 ) {
+				s = "Load Animated Tachi-E.\nUse Frames like face4_B1.bmp~face4_B100.bmp.\nUses default face_B.bmp when there's no animation.\n(Heavy Disc Reading)"
+			}
+			if ( p == 11 ) {
+				s = "Draw Tachi-E of destinated character for RP purposes.\nThis will also shift screen center 3 tiles left.\nDoes not work in pet arena."
 			}
 			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
@@ -1635,6 +1660,18 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tn = TWEAK_MISC_MMA_MELEE_ANIMATIONS
 		ts = 1
 		tm = 3
+		gosub *IncrementTweak
+	}
+	if ( p == 10 ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_LOAD_ANIMATED_TACHI_E
+		gosub *ToggleTweak
+	}
+	if ( p == 11 ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_DRAW_TACHI_E_MAINSCREEN
+		ts = 1
+		tm = 4
 		gosub *IncrementTweak
 	}
 	if ( p == listmax - 1 ) {

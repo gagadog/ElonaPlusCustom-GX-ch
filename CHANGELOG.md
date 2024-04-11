@@ -1,3 +1,23 @@
+# Upcoming
+
+# Added
+- Challenge Tweak to revert Split Monster behavior to Vanilla.
+-
+
+# Changed
+- 'z' toggle on equipment now uses MMAh's menu + special enc summary.
+- PVDV/Resistance and other info are displayed when 'l'ooking at them.
+- CNPC drops (hearts, cards, etc.) now have their name shown.
+- CNPC is now loaded in Pet Arena, they are more vocal in it.
+- Allow 'feed' menu with livestock.
+- TCG: Changed Estork&Saimef effect, mimic effect.
+
+# Fixed
+- Red Book IDs are reset when out of bound.
+- Custom Spell Animation: fixed anim drawn on map/chat buffer.
+- Summoned Monster Training: Added some uncovered cases.
+- Misc fixes.
+
 # 2.22.2.0
 
 # Added

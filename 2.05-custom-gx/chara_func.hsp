@@ -7949,11 +7949,11 @@
 	return FALSE
 
 #deffunc charaSplit int charaCanSplit_charidx
-	if ( TweakData(TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT, TWEAK_CATEGORY_CHALLENGE) ) {
-		TweakData(TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT, TWEAK_CATEGORY_CHALLENGE)++
-	}
 	copy_chara charaCanSplit_charidx
 	if ( stat == 1 ) {
+		if ( TweakData(TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT, TWEAK_CATEGORY_CHALLENGE) ) {
+			TweakData(TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT, TWEAK_CATEGORY_CHALLENGE)++
+		}
 		locvar_dmghp_s = refchara(cdata(CDATA_ID, charaCanSplit_charidx), DBSPEC_CHARA_FILTER, 1)
 		if ( instr(locvar_dmghp_s, 0, "/man/") != (-1) | cdata(CDATA_ID, charaCanSplit_charidx) == CREATURE_ID_DRAGONS_PET_HARPY | cdata(CDATA_ID, charaCanSplit_charidx) == CREATURE_ID_RED_NINJA ) {
 			txt lang(name(charaCanSplit_charidx) + "は分身した！", name(charaCanSplit_charidx) + " split" + _s(charaCanSplit_charidx) + "!")

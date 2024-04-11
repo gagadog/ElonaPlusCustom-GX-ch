@@ -5600,72 +5600,6 @@
 		goto *pc_turn
 	}
 	tc -= 1
-	tatc = tc
-	if ( cdata(CDATA_TAGTEAM_PARTNER, tc) > 0 ) {
-		tatc2 = cdata(CDATA_TAGTEAM_PARTNER, tc)
-	}
-	if ( cdata(CDATA_FACE, tatc) > 0 ) {
-		stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc) + "_B.bmp"
-		if ( cdata(CDATA_EMO_ICON, tatc) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, tatc) > 0 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc) + "_A.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tatc) \ 100 == 21 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc) + "_Q.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tatc) \ 100 == 6 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc) + "_F.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tatc) \ 100 == 17 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc) + "_H.bmp"
-		}
-		if ( cdata(CDATA_HP, tatc) < cdata(CDATA_MAX_HP, tatc) / 2 | cdata(CDATA_EMO_ICON, tatc) \ 100 == 26 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc) + "_E.bmp"
-		}
-		exist stati
-		if ( strsize != (-1) ) {
-			gsel BUFFER_BUF
-			pos 0, 0
-			picload stati, 1
-			gsel BUFFER_SCREEN
-			if ( cdata(CDATA_IN_TAGTEAM, tatc) == 0 ) {
-				pos windoww - 300, windowh - 588
-				gcopy BUFFER_BUF, 0, 0, 300, 500
-			}
-			else {
-				pos 0, windowh - 588
-				gcopy BUFFER_BUF, 0, 0, 300, 500
-			}
-		}
-	}
-	if ( cdata(CDATA_TAGTEAM_PARTNER, tatc) > 0 ) {
-		if ( cdata(CDATA_FACE, tatc2) > 0 ) {
-			stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_B.bmp"
-			if ( cdata(CDATA_EMO_ICON, tatc2) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, tatc2) > 0 ) {
-				stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_A.bmp"
-			}
-			if ( cdata(CDATA_EMO_ICON, tatc2) \ 100 == 21 ) {
-				stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_Q.bmp"
-			}
-			if ( cdata(CDATA_EMO_ICON, tatc2) \ 100 == 6 ) {
-				stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_F.bmp"
-			}
-			if ( cdata(CDATA_EMO_ICON, tatc2) \ 100 == 17 ) {
-				stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_H.bmp"
-			}
-			if ( cdata(CDATA_HP, tatc2) < cdata(CDATA_MAX_HP, tatc2) / 2 | cdata(CDATA_EMO_ICON, tatc2) \ 100 == 26 ) {
-				stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_E.bmp"
-			}
-			exist stati2
-			if ( strsize != (-1) ) {
-				gsel BUFFER_BUF
-				pos 0, 0
-				picload stati2, 1
-				gsel BUFFER_SCREEN
-				pos windoww - 300, windowh - 588
-				gcopy BUFFER_BUF, 0, 0, 300, 500
-			}
-		}
-	}
 	if ( cdata(CDATA_TAGTEAM_PARTNER, tc) > 0 ) {
 		promptTagTeam
 		if ( rtval == 1 ) {
@@ -5721,6 +5655,42 @@
 		goto *pc_turn
 	}
 	tc -= 1
+	tatc = tc
+	if ( cdata(CDATA_TAGTEAM_PARTNER, tc) > 0 ) {
+		tatc2 = cdata(CDATA_TAGTEAM_PARTNER, tc)
+	}
+	if ( cdata(CDATA_FACE, tatc) > 0 ) {
+		stati = getTachiE(tatc, exedir + "\\user\\graphic2\\face_error.bmp")
+		exist stati
+		if ( strsize != (-1) ) {
+			gsel BUFFER_BUF
+			pos 0, 0
+			picload stati, 1
+			gsel BUFFER_SCREEN
+			if ( cdata(CDATA_IN_TAGTEAM, tatc) == 0 ) {
+				pos windoww - 300, windowh - 588
+				gcopy BUFFER_BUF, 0, 0, 300, 500
+			}
+			else {
+				pos 0, windowh - 588
+				gcopy BUFFER_BUF, 0, 0, 300, 500
+			}
+		}
+	}
+	if ( cdata(CDATA_TAGTEAM_PARTNER, tatc) > 0 ) {
+		if ( cdata(CDATA_FACE, tatc2) > 0 ) {
+			stati2 = getTachiE(tatc2, exedir + "\\user\\graphic2\\face_error.bmp")
+			exist stati2
+			if ( strsize != (-1) ) {
+				gsel BUFFER_BUF
+				pos 0, 0
+				picload stati2, 1
+				gsel BUFFER_SCREEN
+				pos windoww - 300, windowh - 588
+				gcopy BUFFER_BUF, 0, 0, 300, 500
+			}
+		}
+	}
 	if ( tc == CHARA_PLAYER ) {
 		if ( gdata(GDATA_RIDER) != 0 ) {
 			txtselectride 2
@@ -10987,22 +10957,7 @@
 
 *com_tachi_e_WHILE1
 	if ( cdata(CDATA_FACE, tc) > 0 ) {
-		stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_B.bmp"
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 6 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_F.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 17 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_H.bmp"
-		}
-		if ( cdata(CDATA_HP, tc) < cdata(CDATA_MAX_HP, tc) / 2 | cdata(CDATA_EMO_ICON, tc) \ 100 == 26 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_E.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, tc) > 0 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_A.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 21 ) {
-			stati = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_Q.bmp"
-		}
+		stati = getTachiE(tc, exedir + "\\user\\graphic2\\face_error.bmp")
 		exist stati
 		if ( strsize == (-1) ) {
 			cdata(CDATA_FACE, tc) = tatiebk2

@@ -17607,7 +17607,7 @@
 		buff = lang("(現在の立ち姿はface" + cdata(CDATA_FACE, tc) + "だ)", "(Currently using face" + cdata(CDATA_FACE, tc) + ")")
 	}
 	if ( cdata(CDATA_FACE, tc) == 0 ) {
-		buff = lang("(現在、立ち姿は決まっていない)", "(no Setting)")
+		buff = lang("(現在、立ち姿は決まっていない)", "(Current: No Tachi-e)")
 	}
 	chatList 1, lang("次へ>>>", ">>>")
 	chatList 0, lang("<<<前へ", "<<<")
@@ -17631,43 +17631,13 @@
 			cdata(CDATA_FACE, tc) = 0
 			goto *evochat_portrait
 		}
-		ss = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_B.bmp"
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 6 ) {
-			ss = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_F.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 17 ) {
-			ss = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_H.bmp"
-		}
-		if ( cdata(CDATA_HP, tc) < cdata(CDATA_MAX_HP, tc) / 2 | cdata(CDATA_EMO_ICON, tc) \ 100 == 26 ) {
-			ss = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_E.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, tc) > 0 ) {
-			ss = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_A.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 21 ) {
-			ss = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_Q.bmp"
-		}
+		ss = getTachiE(tc, exedir + "\\user\\graphic2\\face_error.bmp")
 		exist ss
 		if ( strsize == (-1) ) {
 			cdata(CDATA_FACE, tc) = tatiebk
 			goto *evochat_portrait
 		}
-		s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_B.bmp"
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 6 ) {
-			s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_F.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 17 ) {
-			s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_H.bmp"
-		}
-		if ( cdata(CDATA_HP, tc) < cdata(CDATA_MAX_HP, tc) / 2 | cdata(CDATA_EMO_ICON, tc) \ 100 == 26 ) {
-			s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_E.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, tc) > 0 ) {
-			ss = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_A.bmp"
-		}
-		if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 21 ) {
-			ss = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_Q.bmp"
-		}
+		s = getTachiE(tc, exedir + "\\user\\graphic2\\face_error.bmp")
 		exist s
 		if ( strsize == (-1) ) {
 			picols = cdata(CDATA_CHARA_PIC, tc)
@@ -18435,18 +18405,18 @@
 			if ( gdata(GDATA_CUSTOM_TALK) == 100 ) {
 				if ( tag \ 2 == 1 ) {
 					if ( wadai \ 2 == 0 ) {
-						buff = lang("(少し照れながらパートナーに耳打ちしている)", "(" + name(tc) + " seems to be a little pounding.)")
+						buff = lang("(少し照れながらパートナーに耳打ちしている)", "(Slightly embarrassed, " + he(tc) + " lends an ear to her partner.)")
 					}
 					else {
-						buff = lang("今後とも" + _yoro(3) + "。", "It is alone together.")
+						buff = lang("今後とも" + _yoro(3) + "。", "From now on...")
 					}
 				}
 				else {
 					if ( wadai \ 2 == 0 ) {
-						buff = lang("(恥ずかしそうに頷いた)", "(" + name(tc) + " seems to be a little pounding.)")
+						buff = lang("(恥ずかしそうに頷いた)", "(" + cnven(he(tc)) + " nodded shyly.)")
 					}
 					else {
-						buff = lang("もちろん" + _da(3) + "。", "It is alone together.")
+						buff = lang("もちろん" + _da(3) + "。", "Of course...")
 					}
 				}
 			}
@@ -18459,18 +18429,18 @@
 			if ( gdata(GDATA_CUSTOM_TALK) == 100 ) {
 				if ( tag \ 2 == 1 ) {
 					if ( wadai \ 2 == 0 ) {
-						buff = lang("(話に困って、しょうもないジョークを言い始めた…)", "(" + name(tc) + " seems to be a little pounding.)")
+						buff = lang("(話に困って、しょうもないジョークを言い始めた…)", "(" + name(tc) + " got stuck in the conversation and started telling bad jokes...)")
 					}
 					else {
-						buff = lang("背中は任せて" + _kure(3) + "。", "It is alone together.")
+						buff = lang("背中は任せて" + _kure(3) + "。", "I've got your back.")
 					}
 				}
 				else {
 					if ( wadai \ 2 == 0 ) {
-						buff = lang("(少し呆れているようだ…)", "(" + name(tc) + " seems to be a little pounding.)")
+						buff = lang("(少し呆れているようだ…)", "(" + name(tc) + " seems a little taken aback...)")
 					}
 					else {
-						buff = lang("はいはい。", "It is alone together.")
+						buff = lang("はいはい。", "I'm counting on you.")
 					}
 				}
 			}
@@ -18909,7 +18879,7 @@
 			chatList 101, lang("【特別な気持ちいいこと】", "<<Interest in a little tail t'night>>")
 			chatList 118, lang("心の開錠", "<Heart unlock>")
 			if ( tagevochat == 1 ) {
-				chatList 111, lang("タッグ間でevochatさせる", "<Evochat without you>")
+				chatList 111, lang("タッグ間でevochatさせる", "<Let them Evochat>")
             }
 			if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) >= 4 ) {
 				chatList 87, lang("【暴走する】", "<<Get excited>>")
@@ -19033,7 +19003,7 @@
 									}
 								}
 							}
-							chatList 76, lang("立ち姿を変える", "Change the atmosphere.")
+							chatList 76, lang("立ち姿を変える", "Change the Tachi-e.")
 							if ( cdata(CDATA_EVOCHAT_POINTS, CHARA_PLAYER) > 0 & cdata(CDATA_EVOCHAT_POINTS, tc) < 10 & cdata(CDATA_IMPRESSION, tc) >= 100 ) {
 								chatList 77, lang("【evochat】", "<evochat>")
 								if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
@@ -24162,6 +24132,11 @@
 		screenupdate = -1
 		gosub *screen_draw
 	}
+	// JAMES CUSTOM Reset ww wx broken by evochat.
+	wx = (windoww - 600) / 2 + inf_screenx
+	wy = winposy(380)
+	ww = 600
+	wh = 380
 	return
 
 *chat_select
@@ -24336,170 +24311,43 @@
 		}
 		if ( tagevochat > 0 ) {
 			if ( cdata(CDATA_TAGTEAM_PARTNER, tc) > 0 ) {
-				if ( cdata(CDATA_FACE, tatc2) > 0 ) {
-					stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_B.bmp"
-					if ( hyouzyou > 0 ) {
-						if ( hyouzyou == 7 | hyouzyou == 17 ) {
-							stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_H.bmp"
-						}
-						if ( hyouzyou == 6 | hyouzyou == 16 ) {
-							stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_Q.bmp"
-						}
-						if ( hyouzyou == 5 | hyouzyou == 15 ) {
-							stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_A.bmp"
-						}
-						if ( hyouzyou == 4 | hyouzyou == 14 | hyouzyou == 110 ) {
-							stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_B.bmp"
-						}
-						if ( hyouzyou == 3 | hyouzyou == 13 ) {
-							stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_H.bmp"
-						}
-						if ( hyouzyou == 1 | hyouzyou == 11 | hyouzyou == 18 | hyouzyou == 111 ) {
-							stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_F.bmp"
-						}
-						if ( hyouzyou == 2 | hyouzyou == 12 ) {
-							stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_E.bmp"
-						}
-					}
-					if ( cdata(CDATA_EMO_ICON, tatc2) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, tatc2) > 0 ) {
-						stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_A.bmp"
-					}
-					if ( cdata(CDATA_EMO_ICON, tatc2) \ 100 == 21 ) {
-						stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_Q.bmp"
-					}
-					if ( cdata(CDATA_EMO_ICON, tatc2) \ 100 == 6 ) {
-						stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_F.bmp"
-					}
-					if ( cdata(CDATA_EMO_ICON, tatc2) \ 100 == 17 ) {
-						stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_H.bmp"
-					}
-					if ( cdata(CDATA_HP, tatc2) < cdata(CDATA_MAX_HP, tatc2) / 2 | cdata(CDATA_EMO_ICON, tatc2) \ 100 == 26 ) {
-						stati2 = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tatc2) + "_E.bmp"
-					}
-				}
+				stati2 = getTachiE(cdata(CDATA_TAGTEAM_PARTNER, tc), stati2)
 			}
 		}
-		if ( cdata(CDATA_FACE, tc) > 0 ) {
-			s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_B.bmp"
-			if ( hyouzyou > 0 ) {
-				if ( hyouzyou == 7 | hyouzyou == 17 ) {
-					s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_H.bmp"
-				}
-				if ( hyouzyou == 6 | hyouzyou == 16 ) {
-						s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_Q.bmp"
-				}
-				if ( hyouzyou == 5 | hyouzyou == 15 ) {
-						s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_A.bmp"
-				}
-				if ( hyouzyou == 4 | hyouzyou == 14 | hyouzyou == 110 ) {
-					s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_B.bmp"
-				}
-				if ( hyouzyou == 3 | hyouzyou == 13 ) {
-					if ( tag \ 2 == 1 ) {
-						await 1000
-					}
-					s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_H.bmp"
-				}
-				if ( hyouzyou == 1 | hyouzyou == 11 | hyouzyou == 18 | hyouzyou == 111 ) {
-					if ( tag \ 2 == 1 ) {
-						hyouzyou = 4
-						await 1000
-					}
-					s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_F.bmp"
-				}
-				if ( hyouzyou == 2 | hyouzyou == 12 ) {
-					if ( tag \ 2 == 1 ) {
-						hyouzyou = 4
-						await 1000
-					}
-					s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_E.bmp"
-				}
-			}
-			if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, tc) > 0 ) {
-				s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_A.bmp"
-			}
-			if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 21 ) {
-				s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_Q.bmp"
-			}
-			if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 6 ) {
-				s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_F.bmp"
-			}
-			if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 17 ) {
-				s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_H.bmp"
-			}
-			if ( cdata(CDATA_HP, tc) < cdata(CDATA_MAX_HP, tc) / 2 | cdata(CDATA_EMO_ICON, tc) \ 100 == 26 ) {
-				s = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, tc) + "_E.bmp"
-			}
-		}
+		s = getTachiE(tc, s)
+		tachienotfound = FALSE, FALSE
 		exist s
 		if ( cdata(CDATA_FACE, tc) > 0 ) {
 			if ( strsize == (-1) ) {
-				picols = cdata(CDATA_CHARA_PIC, tc)
-				if ( cdata(CDATA_PIC, tc) >= xy2pic(1, 21) & cdata(CDATA_PIC, tc) <= xy2pic(31, 21) ) {
-					picols = 0
-				}
-				p = cdata(CDATA_PIC, tc) \ COLOR_TINT_MULT + picols * COLOR_TINT_MULT, (cdata(CDATA_PIC, tc) - picols * COLOR_TINT_MULT) / COLOR_TINT_MULT
-				chara_preparepic p, p(1)
-				if ( evochat < 2 | evochat == 11 ) {
-					pos wx + 82, wy + 125 - chipc(CHIPC_F, p)
-					gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
-					grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 2, chipc(CHIPC_HEIGHT, p) * 2
-				}
-				if ( evochat >= 2 & evochat < 11 ) {
-					if ( tagevochat == 0 ) {
-						pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
-						gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
-						grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
-					}
-				}
-				if ( evochat < 2 | evochat == 11 ) {
-					if ( tagevochat > 0 ) {
-						if ( cdata(CDATA_IN_TAGTEAM, tc) == (-1) ) {
-							pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
-							gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
-							grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
-						}
-					}
-				}
-				if ( evochat >= 2 & evochat < 11 ) {
-					if ( tagevochat > 0 ) {
-						if ( cdata(CDATA_IN_TAGTEAM, tc) == 1 ) {
-							pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
-							gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
-							grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
-						}
-					}
-				}
+				tachienotfound(0) = 1
 			}
 			else {
 				gsel BUFFER_BUF
 				pos 0, 0
 				picload s, 1
 				gsel BUFFER_SCREEN
+				// Default Chat mode
 				if ( evochat < 2 | evochat == 11 ) {
-					pos windoww - 300, windowh - 588
-					gcopy BUFFER_BUF, 0, 0, 300, 500
-				}
-				if ( evochat >= 2 & evochat < 11 ) {
-					if ( tagevochat == 0 ) {
-						pos windoww / 2 - 150, windowh - 588
+					// Not in tagchat (Default) or is not leader: Drawn right
+					// Else: Drawn left.
+					if ( tagevochat == 0 | cdata(CDATA_IN_TAGTEAM, tc) == 1 ) {
+						pos windoww - 300, windowh - 588
+						gcopy BUFFER_BUF, 0, 0, 300, 500
+					} else {
+						pos 0, windowh - 588
 						gcopy BUFFER_BUF, 0, 0, 300, 500
 					}
 				}
-				if ( evochat < 2 | evochat == 11 ) {
-					if ( tagevochat > 0 ) {
-						if ( cdata(CDATA_IN_TAGTEAM, tc) == (-1) ) {
-							pos windoww / 2 - 150 - 250, windowh - 588
-							gcopy BUFFER_BUF, 0, 0, 300, 500
-						}
-					}
-				}
+				// Dangerously Close mode
 				if ( evochat >= 2 & evochat < 11 ) {
-					if ( tagevochat > 0 ) {
-						if ( cdata(CDATA_IN_TAGTEAM, tc) == 1 ) {
-							pos windoww / 2 - 150, windowh - 588
-							gcopy BUFFER_BUF, 0, 0, 300, 500
-						}
+					// Not in tagchat (Default) or is not leader: Drawn right
+					// Else: Drawn left.
+					if ( tagevochat == 0 | cdata(CDATA_IN_TAGTEAM, tc) == 1 ) {
+						pos windoww / 2 - 150, windowh - 588
+						gcopy BUFFER_BUF, 0, 0, 300, 500
+					} else {
+						pos windoww / 2 - 150 - 250, windowh - 588
+						gcopy BUFFER_BUF, 0, 0, 300, 500
 					}
 				}
 			}
@@ -24509,48 +24357,37 @@
 			if ( cdata(CDATA_TAGTEAM_PARTNER, tc) > 0 ) {
 				if ( cdata(CDATA_FACE, tatc2) > 0 ) {
 					if ( strsize == (-1) ) {
-						picols2 = cdata(CDATA_CHARA_PIC, tatc2)
-						if ( cdata(CDATA_PIC, tatc2) >= xy2pic(1, 21) & cdata(CDATA_PIC, tatc2) <= xy2pic(31, 21) ) {
-							picols2 = 0
-						}
-						p2 = cdata(CDATA_PIC, tatc2) \ COLOR_TINT_MULT + picols2 * COLOR_TINT_MULT, (cdata(CDATA_PIC, tatc2) - picols2 * COLOR_TINT_MULT) / COLOR_TINT_MULT
-						chara_preparepic p2, p2(1)
-						if ( evochat >= 2 & evochat < 11 ) {
-							if ( tagevochat > 0 ) {
-								if ( cdata(CDATA_IN_TAGTEAM, tatc2) == (-1) ) {
-									pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
-									gmode 2, chipc(CHIPC_WIDTH, p2), chipc(CHIPC_HEIGHT, p2)
-									grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p2) * 6, chipc(CHIPC_HEIGHT, p2) * 6
-								}
-							}
-						}
-						if ( evochat >= 2 & evochat < 11 ) {
-							if ( tagevochat > 0 ) {
-								if ( cdata(CDATA_IN_TAGTEAM, tatc2) == 1 ) {
-									pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
-									gmode 2, chipc(CHIPC_WIDTH, p2), chipc(CHIPC_HEIGHT, p2)
-									grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p2) * 6, chipc(CHIPC_HEIGHT, p2) * 6
-								}
-							}
-						}
+						tachienotfound(1) = 1
 					}
 					else {
 						gsel BUFFER_BUF
 						pos 0, 0
 						picload stati2, 1
 						gsel BUFFER_SCREEN
-						if ( evochat >= 2 & evochat < 11 ) {
+						// Default Chat mode
+						if ( evochat < 2 | evochat == 11 ) {
+							// Drawn if in tag evochat, else not drawn.
 							if ( tagevochat > 0 ) {
-								if ( cdata(CDATA_IN_TAGTEAM, tatc2) == (-1) ) {
-									pos windoww / 2 - 150 - 250, windowh - 588
+								// If is not leader: Drawn right
+								if ( cdata(CDATA_IN_TAGTEAM, tatc2) == 1 ) {
+									pos windoww - 300, windowh - 588
+									gcopy BUFFER_BUF, 0, 0, 300, 500
+								} else {
+									pos 0, windowh - 588
 									gcopy BUFFER_BUF, 0, 0, 300, 500
 								}
 							}
 						}
+						// Dangerously Close mode
 						if ( evochat >= 2 & evochat < 11 ) {
+							// Drawn if in tag evochat, else not drawn.
 							if ( tagevochat > 0 ) {
+								// If is not leader: Drawn right
 								if ( cdata(CDATA_IN_TAGTEAM, tatc2) == 1 ) {
 									pos windoww / 2 - 150, windowh - 588
+									gcopy BUFFER_BUF, 0, 0, 300, 500
+								} else {
+									pos windoww / 2 - 150 - 250, windowh - 588
 									gcopy BUFFER_BUF, 0, 0, 300, 500
 								}
 							}
@@ -24559,83 +24396,53 @@
 				}
 			}
 		}
-		if ( cdata(CDATA_FACE, tc) == 0 ) {
+		if ( cdata(CDATA_FACE, tc) == 0 | tachienotfound(0) == TRUE ) {
 			picols = cdata(CDATA_CHARA_PIC, tc)
 			if ( cdata(CDATA_PIC, tc) >= xy2pic(1, 21) & cdata(CDATA_PIC, tc) <= xy2pic(31, 21) ) {
 				picols = 0
 			}
 			p = cdata(CDATA_PIC, tc) \ COLOR_TINT_MULT + picols * COLOR_TINT_MULT, (cdata(CDATA_PIC, tc) - picols * COLOR_TINT_MULT) / COLOR_TINT_MULT
 			chara_preparepic p, p(1)
+			// Default Chat mode, drawn in the face box.
 			if ( evochat < 2 | evochat == 11 ) {
 				pos wx + 82, wy + 125 - chipc(CHIPC_F, p)
 				gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
 				grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 2, chipc(CHIPC_HEIGHT, p) * 2
 			}
+			// Dangerously Close mode
 			if ( evochat >= 2 & evochat < 11 ) {
-				if ( tagevochat == 0 ) {
+				// Drawn left if in tag chat and leader 
+				if ( tagevochat > 0 & cdata(CDATA_IN_TAGTEAM, tc) == (-1) ) {
+					pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
+					gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
+					grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
+				} else {
 					pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
 					gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
 					grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
-				}
-			}
-			if ( evochat >= 2 & evochat < 11 ) {
-				if ( tagevochat == 0 ) {
-					pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
-					gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
-					grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
-				}
-			}
-			if ( evochat >= 2 & evochat < 11 ) {
-				if ( tagevochat > 0 ) {
-					if ( cdata(CDATA_IN_TAGTEAM, tc) == (-1) ) {
-						pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
-						gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
-						grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
-					}
-				}
-			}
-			if ( evochat >= 2 & evochat < 11 ) {
-				if ( tagevochat > 0 ) {
-					if ( cdata(CDATA_IN_TAGTEAM, tc) == 1 ) {
-						pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p) * 3
-						gmode 2, chipc(CHIPC_WIDTH, p), chipc(CHIPC_HEIGHT, p)
-						grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p) * 6, chipc(CHIPC_HEIGHT, p) * 6
-					}
 				}
 			}
 		}
 		if ( tagevochat > 0 ) {
 			if ( cdata(CDATA_TAGTEAM_PARTNER, tc) > 0 ) {
-				if ( cdata(CDATA_FACE, tatc2) == 0 ) {
+				if ( cdata(CDATA_FACE, tatc2) == 0 | tachienotfound(1) == TRUE ) {
 					picols2 = cdata(CDATA_CHARA_PIC, tatc2)
 					if ( cdata(CDATA_PIC, tatc2) >= xy2pic(1, 21) & cdata(CDATA_PIC, tatc2) <= xy2pic(31, 21) ) {
 						picols2 = 0
 					}
 					p2 = cdata(CDATA_PIC, tatc2) \ COLOR_TINT_MULT + picols2 * COLOR_TINT_MULT, (cdata(CDATA_PIC, tatc2) - picols2 * COLOR_TINT_MULT) / COLOR_TINT_MULT
 					chara_preparepic p2, p2(1)
+					// Dangerously Close mode
 					if ( evochat >= 2 & evochat < 11 ) {
-						if ( tagevochat == 0 ) {
+						// Drawn left if  leader 
+						if ( cdata(CDATA_IN_TAGTEAM, tatc2) == (-1) ) {
+							pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
+							gmode 2, chipc(CHIPC_WIDTH, p2), chipc(CHIPC_HEIGHT, p2)
+							grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p2) * 6, chipc(CHIPC_HEIGHT, p2) * 6
+						} else {
 							pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
 							gmode 2, chipc(CHIPC_WIDTH, p2), chipc(CHIPC_HEIGHT, p2)
 							grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p2) * 6, chipc(CHIPC_HEIGHT, p2) * 6
-						}
-					}
-					if ( evochat >= 2 & evochat < 11 ) {
-						if ( tagevochat > 0 ) {
-							if ( cdata(CDATA_IN_TAGTEAM, tatc2) == (-1) ) {
-								pos windoww / 2 - 250, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
-								gmode 2, chipc(CHIPC_WIDTH, p2), chipc(CHIPC_HEIGHT, p2)
-								grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p2) * 6, chipc(CHIPC_HEIGHT, p2) * 6
-							}
-						}
-					}
-					if ( evochat >= 2 & evochat < 11 ) {
-						if ( tagevochat > 0 ) {
-							if ( cdata(CDATA_IN_TAGTEAM, tatc2) == 1 ) {
-								pos windoww / 2, windowh - 88 - chipc(CHIPC_HEIGHT, p2) * 3
-								gmode 2, chipc(CHIPC_WIDTH, p2), chipc(CHIPC_HEIGHT, p2)
-								grotate BUFFER_CHR, 0, 960, 0, chipc(CHIPC_WIDTH, p2) * 6, chipc(CHIPC_HEIGHT, p2) * 6
-							}
 						}
 					}
 				}

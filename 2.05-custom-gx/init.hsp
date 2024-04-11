@@ -595,6 +595,86 @@ if instr(s,0,%1)!-1{	%c\
 	return f
 /********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
 
+#defcfunc getTachiE int getTachiE_arg1_tc, str getTachiE_arg3_default_value
+	proc "get tachi-e"
+	locvar_tachie_usepath = getTachiE_arg3_default_value
+	if ( getTachiE_arg1_tc < 0 | getTachiE_arg1_tc >= MAX_CHARA_TOTAL ) { return locvar_tachie_usepath }
+	if ( cdata(CDATA_FACE, getTachiE_arg1_tc) <= 0  ) { return locvar_tachie_usepath }
+	locvar_tachie_tagteam_value = limit(cdata(CDATA_IN_TAGTEAM, getTachiE_arg1_tc), -1, 1)
+	locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "B")
+	if ( hyouzyou > 0 ) {
+		if ( hyouzyou == 7 | hyouzyou == 17 ) {
+			locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "H")
+		}
+		if ( hyouzyou == 6 | hyouzyou == 16 ) {
+			locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "Q")
+		}
+		if ( hyouzyou == 5 | hyouzyou == 15 ) {
+			locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "A")
+		}
+		if ( hyouzyou == 4 | hyouzyou == 14 | hyouzyou == 110 ) {
+			locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "B")
+		}
+		if ( hyouzyou == 3 | hyouzyou == 13 ) {
+			locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "H")
+		}
+		if ( hyouzyou == 1 | hyouzyou == 11 | hyouzyou == 18 | hyouzyou == 111 ) {
+			if ( tag \ 2 == 1 ) {
+				hyouzyou = 4
+				await 1000
+			}
+			locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "F")
+		}
+		if ( hyouzyou == 2 | hyouzyou == 12 ) {
+			if ( tag \ 2 == 1 ) {
+				hyouzyou = 4
+				await 1000
+			}
+			locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "E")
+		}
+	}
+	if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, tc) > 0 ) {
+		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "A")
+	}
+	if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 21 ) {
+		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "Q")
+	}
+	if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 6 ) {
+		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "F")
+	}
+	if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 17 ) {
+		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "H")
+	}
+	if ( cdata(CDATA_HP, tc) < cdata(CDATA_MAX_HP, tc) / 2 | cdata(CDATA_EMO_ICON, tc) \ 100 == 26 ) {
+		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "E")
+	}
+	return locvar_tachie_usepath
+
+#defcfunc getTachiEF int getTachiE_arg1_tc, str getTachiE_arg2_type
+	proc "get tachi-e frame"
+	if ( TweakData(TWEAK_MISC_LOAD_ANIMATED_TACHI_E, TWEAK_CATEGORY_MISC) <= 0 ) {
+		return  exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, getTachiE_arg1_tc) + "_" + getTachiE_arg2_type + ".bmp"
+	}
+	// Look for the file in the following order:
+	// Type+Frame Type1  Type
+	statiusetype = getTachiE_arg2_type
+	staticycleindex = locvar_tachie_tagteam_value + 1
+	if ( statiusetype != "B" ) { staticycleindex += 3 }
+	staticycleindex = limit(staticycleindex, 0, 5)
+	staticycle(staticycleindex) = limit((staticycle(staticycleindex) + 1) \ (statiwait*statimax), 0, (statiwait*statimax)-1)
+	repeat 3
+		if ( cnt >= 1 ) { staticycle(staticycleindex) = 1 }
+		statiuseframe = ""
+		if ( cnt == 0 ) { statiuseframe = (staticycle(staticycleindex)/statiwait+1) }
+		if ( cnt == 1 ) { statiuseframe = "1" }
+		locvar_tachie_usepath_try = exedir + "\\user\\graphic2\\face" + cdata(CDATA_FACE, getTachiE_arg1_tc) + "_" + statiusetype + statiuseframe + ".bmp"
+		exist locvar_tachie_usepath_try
+		if ( strsize != (-1) ) { break }
+		if ( statiuseframe == "1" ) { continue 2 }
+	loop
+	if ( strsize != (-1) ) { return locvar_tachie_usepath_try }
+	return locvar_tachie_usepath
+
 #defcfunc synccheck int synccheck_arg1, int synccheck_arg2
 	if ( synccheck_arg2 == (-1) ) {
 		if ( cdata(CDATA_IN_TAGTEAM, synccheck_arg1) == 1 ) {
@@ -2395,6 +2475,9 @@ if instr(s,0,%1)!-1{	%c\
 	gosub *setHome
 	gosub *userNpc_update
 	gosub *userItem_update
+	staticycle = 0, 0, 0, 0, 0, 0
+	statiwait = 3
+	statimax = 100
 	if ( cfg_music == 1 ) {
 		DMINIT
 		if ( stat == 0 ) {

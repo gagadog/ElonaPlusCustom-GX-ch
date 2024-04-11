@@ -536,7 +536,9 @@
 				if ( c2@tcg == (-1) ) {
 					continue
 				}
-				if ( card@tcg(TCG_CARD_X_MOVETO, c2@tcg) < card@tcg(TCG_CARD_X_MOVETO, c1@tcg) ) {
+				c1x@tcg = card@tcg(TCG_CARD_X_MOVETO, c1@tcg) - (card@tcg(TCG_CARD_REF_DBID, c1@tcg) == CREATURE_ID_ESTORK_THE_DOGGOD) * 1000 + (card@tcg(TCG_CARD_REF_DBID, c1@tcg) == CREATURE_ID_SAIMEF_THE_DOGGOD) * 1000
+				c2x@tcg = card@tcg(TCG_CARD_X_MOVETO, c2@tcg) - (card@tcg(TCG_CARD_REF_DBID, c2@tcg) == CREATURE_ID_ESTORK_THE_DOGGOD) * 1000 + (card@tcg(TCG_CARD_REF_DBID, c2@tcg) == CREATURE_ID_SAIMEF_THE_DOGGOD) * 1000
+				if ( c2x@tcg < c1x@tcg ) {
 					i@tcg = clist@tcg(cnt, p@tcg)
 					clist@tcg(cnt, p@tcg) = clist@tcg(cnt + 1, p@tcg)
 					clist@tcg(cnt + 1, p@tcg) = i@tcg
@@ -1822,8 +1824,10 @@
 		cardposhand 1, -1
 	}
 	cardpos card@tcg(TCG_CARD_CONTROLLER, putcard_arg1), putcard_arg1
-	tcgdraw
 	makecardlist
+	cardpos 0, -1
+	cardpos 1, -1
+	tcgdraw
 	opencard putcard_arg1
 	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, putcard_arg1)) == TCG_SKILL_TYPE_BATTLECRY ) {
 		effac@tcg = putcard_arg1
@@ -1831,8 +1835,12 @@
 		proctcg "tcg proc/battlecry: effac:" + effac@tcg + "/eff" + eff@tcg
 		gosub *card_action_choose_target
 		makecardlist
-		tcgdraw
 	}
+	cardposhand 0, -1
+	cardposhand 1, -1
+	cardpos 0, -1
+	cardpos 1, -1
+	tcgdraw
 	if ( cdbit(TCG_BIT_PUMPKIN, putcard_arg1) ) {
 		card@tcg(TCG_CARD_CONTROLLER, putcard_arg1) = 1 - card@tcg(TCG_CARD_CONTROLLER, putcard_arg1)
 		cdbitmod TCG_BIT_PUMPKIN, putcard_arg1, 0

@@ -14476,11 +14476,11 @@
 		cardreflvl = 150
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 7
-		cardrefattack = 8
-		cardrefhp = 9
+		cardrefcost = 8
+		cardrefattack = 9
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_DOGGOD
-		cardrefbits = ""
+		cardrefbits = "12"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_ESTORK_THE_DOGGOD ) {
@@ -14490,11 +14490,11 @@
 		cardreflvl = 130
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 4
-		cardrefattack = 1
+		cardrefcost = 8
+		cardrefattack = 3
 		cardrefhp = 9
-		cardrefskillid = TCG_EFF_DOGGOD
-		cardrefbits = ""
+		cardrefskillid = TCG_EFF_DOGGOD2
+		cardrefbits = "21"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_SIVA_THE_DESTRUCTION ) {
@@ -14615,10 +14615,10 @@
 		cardreflvl = 53
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
-		cardrefcost = 4
-		cardrefattack = 4
-		cardrefhp = 4
-		cardrefskillid = TCG_EFF_MIMIC1
+		cardrefcost = 3
+		cardrefattack = 3
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_MIMIC2
 		cardrefbits = ""
 		return 1
 	}
@@ -14669,9 +14669,9 @@
 		cardreflvl = 30
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
-		cardrefcost = 2
-		cardrefattack = 2
-		cardrefhp = 3
+		cardrefcost = 5
+		cardrefattack = 5
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_MIMIC1
 		cardrefbits = ""
 		return 1
