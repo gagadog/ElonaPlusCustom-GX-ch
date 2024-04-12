@@ -1567,13 +1567,27 @@
 	gravecard delcard@tcg
 	return
 
+#deffunc fatigueplayer int fatigueplayer_arg1
+	efllistadd 18, 0, deckix@tcg(fatigueplayer_arg1), deckiy@tcg(fatigueplayer_arg1)
+	cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1)++
+	efllistadd 1, cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1), deckix@tcg(fatigueplayer_arg1), deckiy@tcg(fatigueplayer_arg1)
+	dmgplayer fatigueplayer_arg1, cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1)
+	if ( cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1) >= 5 ) {
+		dmgplayer 1 - fatigueplayer_arg1, cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1) / 5
+	}
+	return
+
 #deffunc getrandomcard int getrandomcard_arg1
 	if ( getdecksum(getrandomcard_arg1) == 0 ) {
-		cpdata@tcg(TCG_PLAYER_LIFE, getrandomcard_arg1) = 0
-		if ( getrandomcard_arg1 == 0 ) {
-			gameresult@tcg = 4
+		if ( yaminogemu@tcg == 1 ) {
+			fatigueplayer getrandomcard_arg1
 		} else {
-			gameresult@tcg = 3
+			cpdata@tcg(TCG_PLAYER_LIFE, getrandomcard_arg1) = 0
+			if ( getrandomcard_arg1 == 0 ) {
+				gameresult@tcg = 4
+			} else {
+				gameresult@tcg = 3
+			}
 		}
 		return
 	}
@@ -2066,7 +2080,57 @@
 		gosub *re_select
 		return
 	}
+	if ( yaminogemu@tcg == 1 ) {
+		s = lang("適切なデッキ", "a Proper Deck (Lethal)")
+		file = "bg_re8"
+		buff = ""
+		listmax = 0
+		if ( deck(CREATURE_ID_ITZPALT) > 0 ) { buff = "The Eternal League forbids Itzpalt from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_OPATOS) > 0 ) { buff = "The Eternal League forbids Opatos from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_MANI) > 0 ) { buff = "The Eternal League forbids Mani from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_KUMIROMI) > 0 ) { buff = "The Eternal League forbids Kumiromi from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_EHEKATL) > 0 ) { buff = "The Eternal League forbids Ehekatl from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_JURE) > 0 ) { buff = "The Eternal League forbids Jure from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_LULWY) > 0 ) { buff = "The Eternal League forbids Lulwy from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_YACATECT) > 0 ) { buff = "The Eternal League forbids Yacatect from assisting participants of Termination Card Game (TCG)" }
+
+		if ( deck(CREATURE_ID_THE_ELEMENT) > 0 ) { buff = "The Eternal League forbids Itzpalt from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_BUILDUP_OPATOS) > 0 ) { buff = "The Eternal League forbids Opatos from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_DEUS_EX_MANINA) > 0 ) { buff = "The Eternal League forbids Mani from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_INSANE_KUMIROMI) > 0 ) { buff = "The Eternal League forbids Kumiromi from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_GOD_INSIDE_EHEKATL) > 0 ) { buff = "The Eternal League forbids Ehekatl from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_BLESSED_JURE) > 0 ) { buff = "The Eternal League forbids Jure from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_DEVASTATE_LULWY) > 0 ) { buff = "The Eternal League forbids Lulwy from assisting participants of Termination Card Game (TCG)" }
+		if ( deck(CREATURE_ID_HYPER_YACATECT) > 0 ) { buff = "The Eternal League forbids Yacatect from assisting participants of Termination Card Game (TCG)" }
+
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_ITZPALT & deck(CREATURE_ID_EXILE) > 0 ) { buff = "Only a believer of Itzpalt can use the exile in Termination Card Game (TCG)" }
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_OPATOS & deck(CREATURE_ID_GOLDEN_KNIGHT) > 0 ) { buff = "Only a believer of Opatos can use the golden knight in Termination Card Game (TCG)" }
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_MANI & deck(CREATURE_ID_ANDROID) > 0 ) { buff = "Only a believer of Mani can use the android in Termination Card Game (TCG)" }
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_KUMIROMI & deck(CREATURE_ID_CUTE_FAIRY) > 0 ) { buff = "Only a believer of Kumiromi can use the cute fairy in Termination Card Game (TCG)" }
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_EHEKATL & deck(CREATURE_ID_BLACK_CAT) > 0 ) { buff = "Only a believer of Ehekatl can use the black cat in Termination Card Game (TCG)" }
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_JURE & deck(CREATURE_ID_DEFENDER) > 0 ) { buff = "Only a believer of Jure can use the defender in Termination Card Game (TCG)" }
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_LULWY & deck(CREATURE_ID_BLACK_ANGEL) > 0 ) { buff = "Only a believer of Lulwy can use the black angel in Termination Card Game (TCG)" }
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) != GOD_YACATECT & deck(CREATURE_ID_GOOSE) > 0 ) { buff = "Only a believer of Yacatect can use a goose in Termination Card Game (TCG)" }
+
+		if ( buff != "" ) {
+			chatList 1, lang("また今度ね", "Maybe next time.")
+			gameresult@tcg = 0
+			gosub *re_select
+			return
+		}
+	}
 	calcdomain
+	if ( yaminogemu@tcg == 1 ) {
+		lifestake@tcg = cdata(CDATA_HP, CHARA_PLAYER), cdata(CDATA_HP, tc)
+		lifestakebase@tcg = cdata(CDATA_MAX_HP, CHARA_PLAYER), cdata(CDATA_MAX_HP, tc)
+		if ( lifestakebase@tcg(0) < lifestakebase@tcg(1) ) {
+			cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT) = limit(cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT) * lifestakebase@tcg(1) / lifestakebase@tcg(0), cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT), 2000000000)
+		}
+		if ( lifestakebase@tcg(0) > lifestakebase@tcg(1) ) {
+			cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER) = limit(cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER) * lifestakebase@tcg(0) / lifestakebase@tcg(1), cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER), 2000000000)
+		}
+		lifestakestart@tcg = cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER), cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT)
+	}
 	repeat maxcard@tcg
 		if ( cdbit(TCG_BIT_ASSASSIN, cnt) == TRUE ) {
 			card@tcg(TCG_CARD_CONTROLLER, cnt) = 1 - card@tcg(TCG_CARD_CONTROLLER, cnt)
@@ -2151,6 +2215,9 @@
 	goto *tcgmain_WHILE1
 	*tcgmain_WEND1
 		
+	if ( yaminogemu@tcg == 1 ) {
+		lifestakeend@tcg = cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER), cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT)
+	}
 	listmax = 0
 	if ( gameresult@tcg == -1 ) {
 		s = "Surrendered!"
@@ -2210,6 +2277,9 @@
 *phase_begin
 	phase@tcg = 0
 	turn@tcg++
+	if ( turn@tcg > 50 ) {
+		fatigueplayer ct@tcg
+	}
 	tcgdraw
 	await 50
 	sac@tcg = 0

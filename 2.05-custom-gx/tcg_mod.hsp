@@ -42,6 +42,7 @@
 #define global	TCG_PLAYER_EXTRACARD 10
 #define global	TCG_PLAYER_NEXTTURN_MANA 11
 #define global	TCG_PLAYER_MANA_SPENT 12
+#define global	TCG_PLAYER_FATIGUE 13
 
 #define global	TCG_STACK 0
 #define global	TCG_STACK_CARD 0
@@ -2696,6 +2697,10 @@
 	gameresult@tcg = 0
 	animespeed@tcg = 3
 	animeseq@tcg = 0
+	lifestake@tcg = 0, 0
+	lifestakebase@tcg = 0, 0
+	lifestakestart@tcg = 0, 0
+	lifestakeend@tcg = 0, 0
     dim card@tcg, 50, maxcard@tcg
     sdim cardn@tcg, 16, 4, maxcard@tcg
     dim cpdata@tcg, 20, 2

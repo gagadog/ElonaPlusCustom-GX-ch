@@ -5910,7 +5910,12 @@
 	/********** JAMES CUSTOM - TCG - BEGINNING **********/
 	if ( tc > CHARA_PLAYER ) {
 		if ( cdata(CDATA_INTEREST, tc) >= 80 & cdata(CDATA_CONDITION_SLEEP, tc) == 0 ) {
-			promptAdd lang("決闘!", "Play TCG!"), "null", 69100
+			if ( cdata(CDATA_RELATION, tc) >= -1 | cdata(CDATA_QUALITY, tc) >= 5) {
+				promptAdd lang("決闘!", "Play TCG!"), "null", 69100
+			}
+			if ( (cdata(CDATA_RELATION, tc) <= -2 & cdata(CDATA_QUALITY, tc) <= 4) | TweakData(TWEAK_GAMEPLAY_SHADOW_CARD_GAME, TWEAK_CATEGORY_GAMEPLAY) == TRUE ) {
+				promptAdd lang("闇のゲーム!", "Play TCG (Lethal)!"), "null", 69101
+			}
 		}
 	}
 	/********** JAMES CUSTOM - TCG - ENDING **********/
@@ -6317,14 +6322,27 @@
 	}
 	
 	/********** JAMES CUSTOM - TCG - BEGINNING **********/
-	if ( p == 69100 ) {
+	if ( p == 69100 | p == 69101 ) {
+		yaminogemu@tcg = (p == 69101)
+		if ( yaminogemu@tcg == 1 & cdata(CDATA_HP, tc) / cdata(CDATA_HP, CHARA_PLAYER) >= 3 ) {
+			txt lang(itemname(ci) + "彼らはあなたよりずっと体力があるのだから、あなたは非常に不利な立場に置かれることになる。", "They had a lot more health than you, you will be put into great disadvantage, are you sure about this? ")
+			promptYesNo
+			if ( rtval != 0 ) {
+				yaminogemu@tcg = 0
+				gosub *screen_draw
+				goto *pc_turn
+			}
+		}
 		tcgmain
 		gosub *map_prepareTile
 		gosub *screen_refreshFull
 		txtnew
 		txt lang("デッキをしまった。", "You put away the deck.")
 		tcgreward
-		goto *pc_turn
+		if ( yaminogemu@tcg == 1 & cdata(CDATA_EXIST, CHARA_PLAYER) != CHAR_STATE_ALIVE ) {
+			goto *game_main
+		}
+		goto *turn_end
 	}
 	/********** JAMES CUSTOM - TCG - ENDING **********/
 

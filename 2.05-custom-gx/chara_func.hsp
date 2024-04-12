@@ -6381,6 +6381,14 @@
 			if ( dmghp_source == DAMAGE_FROM_SCALP ) {
 				txt lang(cdatan(CDATAN_NAME, dmghp_charid) + "は衰弱して死んだ。", cdatan(CDATAN_NAME, dmghp_charid) + " weakened and died.")
 			}
+			/********** JAMES CUSTOM - TCG - BEGINNING **********/
+			if ( dmghp_source >= DAMAGE_FROM_CARD_GAME - MAX_CHARA_TOTAL & dmghp_source <= DAMAGE_FROM_CARD_GAME & DAMAGE_FROM_CARD_GAME <= -10000 ) {
+				txt lang(cdatan(CDATAN_NAME, dmghp_charid) + "は闇のゲームで負けた。", cdatan(CDATAN_NAME, dmghp_charid) + " was sent to Amur-cage by " + cdatan(CDATAN_NAME, (DAMAGE_FROM_CARD_GAME - dmghp_source)) + ".")
+				if ( dmghp_charid == CHARA_PLAYER ) {
+					ndeathcause = lang("闇のゲームで負けた。", "lost a card game against " + cdatan(CDATAN_NAME, (DAMAGE_FROM_CARD_GAME - dmghp_source)) + " and was sent to Amur-cage")
+				}
+			}
+			/********** JAMES CUSTOM - TCG - ENDING **********/
 			if ( dmghp_source == DAMAGE_FROM_HANGING ) {
 				txt lang(name(dmghp_charid) + "は首を吊った。", name(dmghp_charid) + " hang" + _s(dmghp_charid) + " " + his(dmghp_charid) + "self.")
 				if ( dmghp_charid == CHARA_PLAYER ) {

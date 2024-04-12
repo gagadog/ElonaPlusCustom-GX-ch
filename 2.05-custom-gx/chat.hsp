@@ -1450,6 +1450,7 @@
 							flt
 							goto *chat_end
 						} else {
+							yaminogemu@tcg = 0
 							tcgmain
 							gosub *map_prepareTile
 							gosub *screen_refreshFull
