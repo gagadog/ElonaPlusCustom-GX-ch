@@ -1448,11 +1448,13 @@
 		cardposhand card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1), -1
 	}
 	// Fire deathrattle effect
-	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, gravecard_arg1)) == TCG_SKILL_TYPE_DEATHRATTLE & cardorglocation@tcg == TCG_LOCATION_FIELD ) {
-		effac@tcg = gravecard_arg1
-		eff@tcg = card@tcg(TCG_CARD_EFFECT, gravecard_arg1)
-		gosub *card_action_choose_target
-		makecardlist
+	if ( cardorglocation@tcg == TCG_LOCATION_FIELD ) {
+		if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, gravecard_arg1)) & TCG_SKILL_TYPE_DEATHRATTLE) ) {
+			effac@tcg = gravecard_arg1
+			eff@tcg = card@tcg(TCG_CARD_EFFECT, gravecard_arg1)
+			gosub *card_action_choose_target
+			makecardlist
+		}
 	}
 	if ( cdbit(TCG_BIT_MILLSUMMON, gravecard_arg1) & cardorglocation@tcg == TCG_LOCATION_DECK ) {
 		putcard gravecard_arg1, card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
@@ -1678,12 +1680,14 @@
 	if ( cardorglocation@tcg == TCG_LOCATION_GRAVEYARD ) {
 		cardposgrave -1
 	}
-	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)) == TCG_SKILL_TYPE_ONDRAW & cdbit(TCG_BIT_PUMPKIN, gettargetcard_arg1) == 0 ) {
-		effac@tcg = gettargetcard_arg1
-		eff@tcg = card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)
-		cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
-		proctcg "tcg proc/ondraw: effacc:" + effac@tcg + "/eff" + eff@tcg
-		gosub *card_action_choose_target
+	if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)) & TCG_SKILL_TYPE_ONDRAW) ) {
+		if ( cdbit(TCG_BIT_PUMPKIN, gettargetcard_arg1) == 0 ) {
+			effac@tcg = gettargetcard_arg1
+			eff@tcg = card@tcg(TCG_CARD_EFFECT, gettargetcard_arg1)
+			cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
+			proctcg "tcg proc/ondraw: effacc:" + effac@tcg + "/eff" + eff@tcg
+			gosub *card_action_choose_target
+		}
 	}
 	if ( cdbit(TCG_BIT_SURGE, gettargetcard_arg1) ) {
 		cdbitmod TCG_BIT_FACE_UP, gettargetcard_arg1, 1
@@ -1742,7 +1746,7 @@
 	card@tcg(TCG_CARD_LOCATION, saccard_arg1) = TCG_LOCATION_EXILE
 	cdbitmod TCG_BIT_FACE_UP, saccard_arg1, 1
 	makecardlist
-	if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_SACRIFICE ) {
+	if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_SACRIFICE) ) {
 		gosub *card_action_choose_target
 		makecardlist
 		tcgdraw
@@ -1803,7 +1807,7 @@
 				}
 			}
 			cpdata@tcg(TCG_PLAYER_MANA, putcard_arg2) -= card@tcg(TCG_CARD_COST, putcard_arg1)
-			cpdata@tcg(TCG_PLAYER_MANA_SPENT, putcard_arg2) += card@tcg(TCG_CARD_COST, putcard_arg1)
+			specialrulemanaspent@tcg(putcard_arg2) += card@tcg(TCG_CARD_COST, putcard_arg1)
 			if ( cardorgcontroller@tcg == TCG_CONTROLLER_PLAYER ) {
 				card@tcg(TCG_CARD_Y_MOVETO, putcard_arg1) -= 25
 			}
@@ -1843,7 +1847,7 @@
 	cardpos 1, -1
 	tcgdraw
 	opencard putcard_arg1
-	if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, putcard_arg1)) == TCG_SKILL_TYPE_BATTLECRY ) {
+	if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, putcard_arg1)) & TCG_SKILL_TYPE_BATTLECRY) ) {
 		effac@tcg = putcard_arg1
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, putcard_arg1)
 		proctcg "tcg proc/battlecry: effac:" + effac@tcg + "/eff" + eff@tcg
@@ -1902,7 +1906,7 @@
 #deffunc calcstartattb int calcstartattb_arg1
 	cpdata@tcg(TCG_PLAYER_LIFE, calcstartattb_arg1) = limit(40 - cpdata@tcg(TCG_PLAYER_DOMAIN, calcstartattb_arg1) * 5, 25, 40)
 	cpdata@tcg(TCG_PLAYER_MAX_MANA, calcstartattb_arg1) = 0
-	cpdata@tcg(TCG_PLAYER_NEXTTURN_MANA, calcstartattb_arg1) = 0
+	specialrulenextturnmana@tcg(calcstartattb_arg1) = 0
 	return
 
 #deffunc calcdomain
@@ -2151,7 +2155,7 @@
 			cdbitmod TCG_BIT_FOSSIL, c@tcg, 1
 			continue
 		}
-		if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, cnt)) == TCG_SKILL_TYPE_ONGAMESTART ) {
+		if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, cnt)) & TCG_SKILL_TYPE_ONGAMESTART) ) {
 			effac@tcg = cnt
 			eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
 			gosub *card_action_choose_target
@@ -2290,8 +2294,8 @@
 		sac@tcg = 1
 		cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg)++
 	}
-	cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) = limit(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) + cpdata@tcg(TCG_PLAYER_NEXTTURN_MANA, cp@tcg), 0, 10000)
-	cpdata@tcg(TCG_PLAYER_NEXTTURN_MANA, cp@tcg) = 0
+	cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) = limit(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) + specialrulenextturnmana@tcg(cp@tcg), 0, 10000)
+	specialrulenextturnmana@tcg(cp@tcg) = 0
 	repeat maxcard@tcg
 		if ( cdbit(TCG_BIT_GHOST, cnt) != TRUE ) { continue }
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) { continue }
@@ -2304,7 +2308,7 @@
 		card@tcg(TCG_CARD_TURN_COUNT, cnt)++
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_INGRAVE ) {
+		if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_INGRAVE) ) {
 			proctcg "tcg proc/in-grave: effac:" + effac@tcg + "/eff" + eff@tcg
 			cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
 			gosub *card_action_choose_target
@@ -2359,7 +2363,7 @@
 		}
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_TURN_START ) {
+		if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_TURN_START) ) {
 			proctcg "tcg proc/phase-begin: effac:" + effac@tcg + "/eff" + eff@tcg
 			gosub *card_action_choose_target
 		}
@@ -2393,7 +2397,7 @@
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) { continue }
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_INHAND ) {
+		if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_INHAND) ) {
 			proctcg "tcg proc/in-hand: effac:" + effac@tcg + "/eff" + eff@tcg
 			cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
 			gosub *card_action_choose_target
@@ -2417,6 +2421,7 @@
 	return
 
 *phase_end
+	specialrulemanalastturn@tcg(cp@tcg) = cpdata@tcg(TCG_PLAYER_MANA)
 	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) {
 			continue
@@ -2426,7 +2431,7 @@
 		}
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_TURN_END ) {
+		if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_TURN_END) ) {
 			proctcg "tcg proc/phase-end: effac:" + effac@tcg + "/eff" + eff@tcg
 			gosub *card_action_choose_target
 		}

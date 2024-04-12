@@ -2,18 +2,21 @@
 
 # Added
 - Challenge Tweak to revert Split Monster behavior to Vanilla.
--
+- Animated Tachi-e support, and a tweak to draw tachi-e on main screen.
+- Lethal mode for TCG, the loser dies.
 
 # Changed
 - 'z' toggle on equipment now uses MMAh's menu + special enc summary.
 - PVDV/Resistance and other info are displayed when 'l'ooking at them.
 - CNPC drops (hearts, cards, etc.) now have their name shown.
-- CNPC is now loaded in Pet Arena, they are more vocal in it.
+- CNPC is now loaded in Pet Arena, and they are more vocal in it.
 - Allow 'feed' menu with livestock.
-- TCG: Changed Estork&Saimef effect, mimic effect.
+- TCG: Buffed some weaker servants. Changed Estork&Saimef effect, mimic effect.
+  - Gave some Act I bosses new decks.
 
 # Fixed
 - Red Book IDs are reset when out of bound.
+- Tachi-e not showing up in interact menu and showed up wrong in evochat.
 - Custom Spell Animation: fixed anim drawn on map/chat buffer.
 - Summoned Monster Training: Added some uncovered cases.
 - Misc fixes.

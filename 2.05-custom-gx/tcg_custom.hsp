@@ -18,7 +18,7 @@
 		}
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_ONGOING | effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_ONGOINGHANDFIELD ) {
+		if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_ONGOING) ) {
 			gosub *card_action_choose_target
 		}
 	loop
@@ -28,7 +28,7 @@
 		}
 		effac@tcg = cnt
 		eff@tcg = card@tcg(TCG_CARD_EFFECT, cnt)
-		if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_ONGOINGHAND | effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_ONGOINGHANDFIELD ) {
+		if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_ONGOINGHAND) ) {
 			cdbitmod TCG_BIT_FACE_UP, effac@tcg, 1
 			gosub *card_action_choose_target
 		}
@@ -46,17 +46,19 @@
 	if ( cdbit(TCG_BIT_FOSSIL, effac@tcg) ) {
 		return
 	}
-	if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) >= TCG_SKILL_TYPE_BATTLECRY & effref@tcg(TCG_SKILL_TYPE, eff@tcg) <= TCG_SKILL_TYPE_INHAND) | effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_AFTERCOMBAT ) {
+	if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) < TCG_SKILL_TYPE_DEATHRATTLE ) {
 		efllistaddcard 3, effac@tcg
 	}
-	if ( specialrulenoonedies@tcg & effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_DEATHRATTLE ) {
-		return
+	if ( specialrulenoonedies@tcg ) {
+		if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_DEATHRATTLE) ) { return }
 	}
 	if ( cdbit(TCG_BIT_DEVIL, effac@tcg) ) {
 		dmgplayer card@tcg(TCG_CARD_CONTROLLER, effac@tcg), 2
 	}
-	if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_BATTLECRY & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID ) {
-		specialrulelastbattlecry@tcg = eff@tcg
+	if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_BATTLECRY) ) {
+		if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+			specialrulelastbattlecry@tcg = eff@tcg
+		}
 	}
 	makecardlist
 	targettype@tcg = effref@tcg(TCG_SKILL_TARGET, eff@tcg)
@@ -67,9 +69,11 @@
 	if ( (specialruleaitakeover@tcg > 0 | card@tcg(TCG_CARD_CONTROLLER, effac@tcg) != player@tcg) & targettype@tcg >= 100 & targetloc@tcg >= 1 & targettype@tcg \ 10 == 1 ) { targettype@tcg += 1 }
 
 	efffirerepeat@tcg = limit(effref@tcg(TCG_SKILL_REPEAT, eff@tcg), 1, 10)
-	if ( effref@tcg(TCG_SKILL_TYPE, eff@tcg) == TCG_SKILL_TYPE_BATTLECRY & specialrulebattlecrytwice@tcg > 0 ) {
-		specialrulebattlecrytwice@tcg-- 
-		efffirerepeat@tcg *= 2
+	if ( (effref@tcg(TCG_SKILL_TYPE, eff@tcg) & TCG_SKILL_TYPE_BATTLECRY) ) {
+		if ( specialrulebattlecrytwice@tcg > 0 ) {
+			specialrulebattlecrytwice@tcg-- 
+			efffirerepeat@tcg *= 2
+		}
 	}
 	
 	efffired@tcg = 0
@@ -299,7 +303,7 @@
 					if (effref@tcg(TCG_SKILL_EFF, card@tcg(TCG_CARD_EFFECT, cnt)) != TCG_SKILL_EFF_RESURRECT ) { continue }
 				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_BATTLECRY ) {
-					if ( effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, cnt)) != TCG_SKILL_TYPE_BATTLECRY ) { continue }
+					if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, cnt)) & TCG_SKILL_TYPE_BATTLECRY) == FALSE ) { continue }
 				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_CITIZEN ) {
 					if ( cdbit(TCG_BIT_CITIZEN, cnt) != TRUE ) { continue }
@@ -1345,6 +1349,112 @@
 		deck_opponent(CREATURE_ID_CITIZEN) = 2
 		deck_opponent(CREATURE_ID_CITIZEN2) = 2
 		deck_opponent(CREATURE_ID_CITIZEN_OF_CYBER_DOME) = 1
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_ZEOME_THE_FALSE_PROPHET | cdata(CDATA_ID, tc) == CREATURE_ID_ERYSTIA_THE_SCHOLAR_OF_HISTORY ) {
+		deck_opponent(CREATURE_ID_ERYSTIA_THE_SCHOLAR_OF_HISTORY) = 1
+		if ( gdata(GDATA_FLAG_MAIN) >= 170 ) {
+			deck_opponent(CREATURE_ID_ZEOME_THE_FALSE_PROPHET) = 1
+			deck_opponent(CREATURE_ID_SKELETON_MAGICIAN) = 2
+			deck_opponent(CREATURE_ID_MONEY_DECEASED) = 2
+		}
+		if ( gdata(GDATA_FLAG_ASSASSIN_EVENTS_FOR_ALSAPIA_GILPHEM) >= 55 ) {
+			deck_opponent(CREATURE_ID_GILPHEM_THE_MAGIC_STEEL) = 1
+			deck_opponent(CREATURE_ID_GOLDEN_ARMOR) = 2
+			deck_opponent(CREATURE_ID_STONE_GOLEM) = 1
+		} else {
+			deck_opponent(CREATURE_ID_GUARD2) = 3
+		}
+		if ( gdata(GDATA_FLAG_ASSASSIN_EVENTS_FOR_ALSAPIA_GILPHEM) >= 35 ) {
+			deck_opponent(CREATURE_ID_ALSAPIA_THE_MURDERER_MASK) = 1
+			deck_opponent(CREATURE_ID_ZANAN_ASSASSIN) = 4
+		} else {
+			deck_opponent(CREATURE_ID_GUARD) = 3
+		}
+		deck_opponent(CREATURE_ID_WARRIOR_OF_ELEA) = 4
+		deck_opponent(CREATURE_ID_WIZARD_OF_ELEA) = 4
+		deck_opponent(CREATURE_ID_CUTE_FAIRY) = 1
+		deck_opponent(CREATURE_ID_BLACK_ANGEL) = 1
+		deck_opponent(CREATURE_ID_GOLDEN_KNIGHT) = 1
+		deck_opponent(CREATURE_ID_EK_CHUAH) = 2
+		deck_opponent(CREATURE_ID_SAGE_OF_ELEA) = 3
+		deck_opponent(CREATURE_ID_KNIGHT_OF_ELEA) = 3
+		deck_opponent(CREATURE_ID_PHANTOM_OF_END) = 1
+		deck_opponent(CREATURE_ID_SKELETON_HERO) = 2
+		deck_opponent(CREATURE_ID_ZOMBIE_GIRL) = 3
+		deck_opponent(CREATURE_ID_FALLEN_ANGEL) = 2
+		deck_opponent(CREATURE_ID_CRIMSON_DARK_GUARDIAN) = 1
+		deck_opponent(CREATURE_ID_BLUE_DARK_GUARDIAN) = 1
+		deck_opponent(CREATURE_ID_GREEN_DARK_GUARDIAN) = 1
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_ISSIZZLE_THE_DARK_ABOMINATION ) {
+		deck_opponent(CREATURE_ID_ISSIZZLE_THE_DARK_ABOMINATION) = 1
+		deck_opponent(CREATURE_ID_GAMBLER) = 2
+		deck_opponent(CREATURE_ID_CUTE_FAIRY) = 2
+		deck_opponent(CREATURE_ID_LICH) = 2
+		deck_opponent(CREATURE_ID_MASTER_LICH) = 4
+		deck_opponent(CREATURE_ID_SKELETON_WARRIOR) = 2
+		deck_opponent(CREATURE_ID_SKELETON_BERSERKER) = 2
+		deck_opponent(CREATURE_ID_ANCIENT_COFFIN) = 2
+		deck_opponent(CREATURE_ID_DRAGON_ZOMBIE) = 2
+		deck_opponent(CREATURE_ID_SKELETON_HERO) = 2
+		deck_opponent(CREATURE_ID_HEL) = 3
+		deck_opponent(CREATURE_ID_GRIM_REAPER) = 1
+		deck_opponent(CREATURE_ID_SEPA) = 1
+		deck_opponent(CREATURE_ID_SKULL_BEAST) = 1
+		deck_opponent(CREATURE_ID_GASYADOKURO) = 1
+		deck_opponent(CREATURE_ID_HALLOWEEN_CHILDREN) = 1
+		deck_opponent(CREATURE_ID_HALLOWEEN_CHILDREN2) = 2
+		deck_opponent(CREATURE_ID_TOWN_CHILD) = 2
+		deck_opponent(CREATURE_ID_OLD_PERSON) = 2
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_TUWEN_THE_MASTER_OF_THE_PYRAMID ) {
+		deck_opponent(CREATURE_ID_TUWEN_THE_MASTER_OF_THE_PYRAMID) = 1
+		deck_opponent(CREATURE_ID_LESSER_MUMMY) = 1
+		deck_opponent(CREATURE_ID_MUMMY) = 2
+		deck_opponent(CREATURE_ID_GREATER_MUMMY) = 3
+		deck_opponent(CREATURE_ID_CAT) = 1
+		deck_opponent(CREATURE_ID_ANCIENT_COFFIN) = 4
+		deck_opponent(CREATURE_ID_CURSED_COFFIN) = 4
+		deck_opponent(CREATURE_ID_SCORPION) = 1
+		deck_opponent(CREATURE_ID_KING_SCORPION) = 2
+		deck_opponent(CREATURE_ID_CUTE_FAIRY) = 2
+		deck_opponent(CREATURE_ID_ORION_KILLER) = 2
+		deck_opponent(CREATURE_ID_DRAGON_CENTIPEDE) = 2
+		deck_opponent(CREATURE_ID_HEL) = 2
+		deck_opponent(CREATURE_ID_OSIRIS) = 3
+		deck_opponent(CREATURE_ID_UNGOLIANT) = 1
+		deck_opponent(CREATURE_ID_EK_CHUAH) = 1
+		deck_opponent(CREATURE_ID_SAND_WORM) = 1
+		deck_opponent(CREATURE_ID_ROCK_WORM) = 1
+		deck_opponent(CREATURE_ID_DHOLE) = 1
+		deck_opponent(CREATURE_ID_SEPA) = 1
+		deck_opponent(CREATURE_ID_MEGA_GORDIAN_WORM) = 4
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_VESDA_THE_FIRE_DRAGON | cdata(CDATA_ID, tc) == CREATURE_ID_EBON_THE_FIRE_GIANT ) {
+		deck_opponent(CREATURE_ID_VESDA_THE_FIRE_DRAGON) = 1
+		deck_opponent(CREATURE_ID_EBON_THE_FIRE_GIANT) = 1
+		deck_opponent(CREATURE_ID_CYCLOPS) = 2
+		deck_opponent(CREATURE_ID_TITAN) = 2
+		deck_opponent(CREATURE_ID_FIRE_DRAKE) = 3
+		deck_opponent(CREATURE_ID_ICE_DRAKE) = 1
+		deck_opponent(CREATURE_ID_GREEN_DRAGON) = 1
+		deck_opponent(CREATURE_ID_RED_DRAGON) = 4
+		deck_opponent(CREATURE_ID_WHITE_DRAGON) = 1
+		deck_opponent(CREATURE_ID_ELEC_DRAGON) = 1
+		deck_opponent(CREATURE_ID_NETHER_DRAGON) = 1
+		deck_opponent(CREATURE_ID_CHAOS_DRAGON) = 1
+		deck_opponent(CREATURE_ID_CULTIST_OF_FIRE) = 4
+		deck_opponent(CREATURE_ID_ROGUE) = 2
+		deck_opponent(CREATURE_ID_BARD) = 2
+		deck_opponent(CREATURE_ID_GRAND_DRAGON) = 2
+		deck_opponent(CREATURE_ID_FIVE_HEAD_GOD) = 2
+		deck_opponent(CREATURE_ID_FIRE_DRAGON_CHILD) = 4
+		deck_opponent(CREATURE_ID_STAFF) = 2
+		deck_opponent(CREATURE_ID_BELL_OF_EMERGENCY) = 2
 		return 1
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_WHOM_DWELL_IN_THE_VANITY ) {
@@ -2749,8 +2859,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
 		cardrefcost = 2
-		cardrefattack = 2
-		cardrefhp = 2
+		cardrefattack = 1
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_GOOSE
 		cardrefbits = ""
 		return 1
@@ -3104,7 +3214,7 @@
 		cardrefattack = 6
 		cardrefhp = 6
 		cardrefskillid = TCG_EFF_SINAHA
-		cardrefbits = ""
+		cardrefbits = "19,20"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_ARASIEL ) {
@@ -4293,11 +4403,11 @@
 		cardreflvl = 55
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 9
+		cardrefcost = 0
 		cardrefattack = 0
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_ZEOME
-		cardrefbits = ""
+		cardrefbits = "31"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_LARNNEIRE_THE_LISTENER_OF_WIND ) {
@@ -12280,7 +12390,7 @@
 		cardrefcost = 5
 		cardrefattack = 3
 		cardrefhp = 6
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALRANDOMENEMY6DAMAGE
+		cardrefskillid = TCG_EFF_LOYTER
 		cardrefbits = "15,70"
 		return 1
 	}
