@@ -633,19 +633,19 @@ if instr(s,0,%1)!-1{	%c\
 			locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "E")
 		}
 	}
-	if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, tc) > 0 ) {
+	if ( cdata(CDATA_EMO_ICON, getTachiE_arg1_tc) \ 100 == 18 | cdata(CDATA_CONDITION_ANGRY, getTachiE_arg1_tc) > 0 ) {
 		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "A")
 	}
-	if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 21 ) {
+	if ( cdata(CDATA_EMO_ICON, getTachiE_arg1_tc) \ 100 == 21 ) {
 		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "Q")
 	}
-	if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 6 ) {
+	if ( cdata(CDATA_EMO_ICON, getTachiE_arg1_tc) \ 100 == 6 ) {
 		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "F")
 	}
-	if ( cdata(CDATA_EMO_ICON, tc) \ 100 == 17 ) {
+	if ( cdata(CDATA_EMO_ICON, getTachiE_arg1_tc) \ 100 == 17 ) {
 		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "H")
 	}
-	if ( cdata(CDATA_HP, tc) < cdata(CDATA_MAX_HP, tc) / 2 | cdata(CDATA_EMO_ICON, tc) \ 100 == 26 ) {
+	if ( cdata(CDATA_HP, getTachiE_arg1_tc) < cdata(CDATA_MAX_HP, getTachiE_arg1_tc) / 2 | cdata(CDATA_EMO_ICON, getTachiE_arg1_tc) \ 100 == 26 ) {
 		locvar_tachie_usepath = getTachiEF(getTachiE_arg1_tc, "E")
 	}
 	return locvar_tachie_usepath
