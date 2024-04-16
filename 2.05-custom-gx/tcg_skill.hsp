@@ -1261,22 +1261,39 @@
 				if ( rnd(3) == 0 ) { cardno = CREATURE_ID_MESHERA_BETA }
 			}
 			if ( cardno >= 0 ) {
-				evhpbk@tcg = card@tcg(TCG_CARD_HP, ac@tcg)
-				evatkbk@tcg = card@tcg(TCG_CARD_ATTACK, ac@tcg)
+				evhpbk@tcg = card@tcg(TCG_CARD_REF_HP, aeft@tcg)
+				evatkbk@tcg = card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg)
+				evcostbk@tcg = card@tcg(TCG_CARD_REF_COST, aeft@tcg)
 				if ( effref@tcg(TCG_SKILL_POWER, aeff@tcg) == TCG_SKILL_FILTER_MESHERA ) { 
 					evhpbk@tcg += rnd(2)
 					evatkbk@tcg += rnd(2)
 				}
 				racebk@tcg = cardn@tcg(TCG_CARDN_REF_RACE, aeft@tcg)
 				create_card aeft@tcg, cardno
+				if ( effref@tcg(TCG_SKILL_POWER, aeff@tcg) == TCG_EFF_SSIL ) { 
+					evhpbk@tcg = card@tcg(TCG_CARD_HP, aeft@tcg)
+					evatkbk@tcg = card@tcg(TCG_CARD_ATTACK, aeft@tcg)
+					racebk@tcg = cardn@tcg(TCG_CARDN_REF_RACE, aeft@tcg)
+				}
 				cardn@tcg(TCG_CARDN_REF_RACE, aeft@tcg) = racebk@tcg
-				card@tcg(TCG_CARD_REF_HP, ac@tcg) = evhpbk@tcg
-				card@tcg(TCG_CARD_HP, ac@tcg) = evhpbk@tcg
-				card@tcg(TCG_CARD_REF_ATTACK, ac@tcg) = evatkbk@tcg
-				card@tcg(TCG_CARD_ATTACK, ac@tcg) = evatkbk@tcg
+				card@tcg(TCG_CARD_REF_COST, aeft@tcg) = evcostbk@tcg
+				card@tcg(TCG_CARD_COST, aeft@tcg) = evcostbk@tcg
+				card@tcg(TCG_CARD_REF_HP, aeft@tcg) = evhpbk@tcg
+				card@tcg(TCG_CARD_HP, aeft@tcg) = evhpbk@tcg
+				card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg) = evatkbk@tcg
+				card@tcg(TCG_CARD_ATTACK, aeft@tcg) = evatkbk@tcg
 				cdbitmod TCG_BIT_FACE_UP, aeft@tcg, 1
 				if ( card@tcg(TCG_CARD_STATUS, aeft@tcg) != TCG_ACTION_NONE ) {
 					cdbitmod TCG_BIT_EXHAUSTED, aeft@tcg, 1
+				}
+				if ( effref@tcg(TCG_SKILL_POWER, aeff@tcg) == TCG_EFF_SSIL ) {
+					efllistaddcard 22, aeft@tcg
+					if ( card@tcg(TCG_CARD_LOCATION, aeft@tcg) == TCG_LOCATION_DECK ) { 
+						efllistadd 22, 0, deckix@tcg(card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) + 36, deckiy@tcg(card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) + 48 
+					}
+					if ( card@tcg(TCG_CARD_LOCATION, aeft@tcg) == TCG_LOCATION_GRAVEYARD ) { 
+						efllistadd 22, 0, graveix@tcg(card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) + 36, graveiy@tcg(card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) + 48 
+					}
 				}
 				if ( card@tcg(TCG_CARD_LOCATION, aeft@tcg) == TCG_LOCATION_FIELD ) {
 					if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
@@ -1289,6 +1306,8 @@
 						}
 					}
 				}
+				makecardlist
+				tcgdraw
 			}
 		}
 		goto *actionproc_SWEND1

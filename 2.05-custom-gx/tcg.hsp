@@ -2461,6 +2461,17 @@
 #deffunc csfix
 	if ( selectmode@tcg == 2 ) {
 		if ( targetlinenum@tcg <= 0 ) { return }
+		targetlinevalid@tcg = 0
+		repeat targetlinenum@tcg
+			if ( csline@tcg == targetline@tcg(targetcs@tcg) ) { 
+				targetlinevalid@tcg = 1 
+			}
+		loop
+		if ( targetlinevalid@tcg == 0 ) {
+			targetcs@tcg = 0
+			csline@tcg = targetline@tcg(0)
+			cs@tcg = 0 - (csline@tcg == 0)
+		}
 		repeat 6
 			if ( clistmax@tcg(csline@tcg) < 0 | cs@tcg >= clistmax@tcg(csline@tcg) ) {
 				if ( cnt != 0 ) { targetcs@tcg++ }
