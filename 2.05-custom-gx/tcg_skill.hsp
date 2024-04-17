@@ -709,6 +709,7 @@
 					if ( card@tcg(TCG_CARD_REF_DBID, 100 * ap@tcg + cnt) != 0 ) { x@tcg++ }
 				loop
 				x@tcg /= 5
+				x@tcg -= 6
 			}
 			if ( effref@tcg(TCG_SKILL_POWER, aeff@tcg) == -8 ) { 
 				if ( specialrulemanalastturn@tcg(ap@tcg) == 0 ) {
@@ -1080,6 +1081,25 @@
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg & effref@tcg(TCG_SKILL_POWER, aeff@tcg) >= 5 ) {
 			card@tcg(TCG_CARD_EFFECT, aeft@tcg) = effref@tcg(TCG_SKILL_POWER, aeff@tcg)
 			efllistadd 2, 1, card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg), card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg)
+			reconstruct_card_text aeft@tcg
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_4MANA77CONVERSION | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+			card@tcg(TCG_CARD_HP, aeft@tcg) = 7
+			card@tcg(TCG_CARD_ATTACK, aeft@tcg) = 7
+			card@tcg(TCG_CARD_COST, aeft@tcg) = 4
+			card@tcg(TCG_CARD_REF_HP, aeft@tcg) = 7
+			card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg) = 7
+			card@tcg(TCG_CARD_REF_COST, aeft@tcg) = 4
+			card@tcg(TCG_CARD_EFFECT, aeft@tcg) = TCG_EFF_4MANA77
+			efllistadd 2, 4, card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg), card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg)
+			efllistadd 1, 7, card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg), card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg)
+			efllistadd 2, -7, card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg), card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg)
+			reconstruct_card_text aeft@tcg
 		}
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
@@ -1233,7 +1253,7 @@
 						if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
 							effac@tcg = aeft@tcg
 							eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
-							if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+							if ( cancopyeffect(eff@tcg) ) {
 								gosub *card_action_choose_target
 								makecardlist
 								tcgdraw
@@ -1299,7 +1319,7 @@
 					if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
 						effac@tcg = aeft@tcg
 						eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
-						if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+						if ( cancopyeffect(eff@tcg) ) {
 							gosub *card_action_choose_target
 							makecardlist
 							tcgdraw
@@ -1397,7 +1417,7 @@
 					if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
 						effac@tcg = aeft@tcg
 						eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
-						if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+						if ( cancopyeffect(eff@tcg) ) {
 							gosub *card_action_choose_target
 							makecardlist
 							tcgdraw
@@ -1906,6 +1926,48 @@
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
 	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_SUZAKU | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+			if ( card@tcg(TCG_CARD_TURN_COUNT, aeft@tcg) == 0 ) {
+				controllerbk@tcg = card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)
+				cardidbk@tcg = card@tcg(TCG_CARD_REF_DBID, aeft@tcg)
+				repeat 1
+					create_extra_card controllerbk@tcg, cardidbk@tcg
+					if ( cextra@tcg >= 0 ) {
+						card@tcg(TCG_CARD_REF_DBID, cextra@tcg) = CREATURE_ID_CHICKEN
+						card@tcg(TCG_CARD_COST, cextra@tcg) = 0
+						card@tcg(TCG_CARD_HP, cextra@tcg) = 1
+						card@tcg(TCG_CARD_ATTACK, cextra@tcg) = 1
+						card@tcg(TCG_CARD_REF_COST, cextra@tcg) = 0
+						card@tcg(TCG_CARD_REF_HP, cextra@tcg) = 1
+						card@tcg(TCG_CARD_REF_ATTACK, cextra@tcg) = 1
+						cdbitmod TCG_BIT_COMMAND, cextra@tcg, 1
+						card@tcg(TCG_CARD_X, cextra@tcg) = card@tcg(TCG_CARD_X, effac@tcg), card@tcg(TCG_CARD_Y, effac@tcg)
+						card@tcg(TCG_CARD_REF_PIC, cextra@tcg) = -31
+						card@tcg(TCG_CARD_EFFECT, cextra@tcg) = TCG_EFF_SUZAKU_FLAME
+						card@tcg(TCG_CARD_REF_BG, cextra@tcg) = 7
+						carddetailneff@tcg(cextra@tcg) = "Flame of Suzaku  No.???   flame spirit  Rare:None\n[Command Card]\nEffect: Revives Suzaku."
+						card@tcg(TCG_CARD_X_MOVETO, cextra@tcg) = deckix@tcg(card@tcg(TCG_CARD_CONTROLLER, cextra@tcg)), deckiy@tcg(card@tcg(TCG_CARD_CONTROLLER, cextra@tcg))
+						cdbitmod TCG_BIT_FACE_UP, cextra@tcg, 1
+						card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_ANIM
+						tcgdraw
+						cdbitmod TCG_BIT_FACE_UP, cextra@tcg, 0
+						card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_DECK
+					}
+				loop
+			} else {
+				repeat maxcard@tcg
+					if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) { continue }
+					if ( card@tcg(TCG_CARD_REF_DOMAIN, cnt) == 7 ) { continue }
+					dmgcard cnt, 2
+				loop
+
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_RACHAEL_BOOKS_HANDLE | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
@@ -2231,7 +2293,7 @@
 					if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
 						effac@tcg = aeft@tcg
 						eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
-						if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+						if ( cancopyeffect(eff@tcg) ) {
 							gosub *card_action_choose_target
 							makecardlist
 							tcgdraw
@@ -2277,7 +2339,7 @@
 						if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
 							effac@tcg = aeft@tcg
 							eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
-							if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+							if ( cancopyeffect(eff@tcg) ) {
 								gosub *card_action_choose_target
 								makecardlist
 								tcgdraw
@@ -2303,7 +2365,7 @@
 					if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
 						effac@tcg = aeft@tcg
 						eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
-						if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+						if ( cancopyeffect(eff@tcg) ) {
 							gosub *card_action_choose_target
 							makecardlist
 							tcgdraw
@@ -2371,7 +2433,7 @@
 				}
 				if ( card@tcg(TCG_CARD_LOCATION, aeft@tcg) == TCG_LOCATION_FIELD ) {
 					if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
-						if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+						if ( cancopyeffect(eff@tcg) ) {
 							gosub *card_action_choose_target
 							makecardlist
 							tcgdraw
@@ -2386,7 +2448,7 @@
 						if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
 							effac@tcg = aeft@tcg
 							eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
-							if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+							if ( cancopyeffect(eff@tcg) ) {
 								gosub *card_action_choose_target
 								makecardlist
 								tcgdraw
@@ -2413,17 +2475,35 @@
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
 	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_FIRE_BATTLECRY | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( ac@tcg >= 0 & ac@tcg < maxcard@tcg ) {
+			if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+				if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
+					effac@tcg = ac@tcg
+					eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
+					if ( cancopyeffect(eff@tcg) ) {
+						gosub *card_action_choose_target
+						makecardlist
+						tcgdraw
+					}
+				}
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_COPY_EFFECT | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		if ( ac@tcg >= 0 & ac@tcg < maxcard@tcg ) {
 			if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
 				card@tcg(TCG_CARD_EFFECT, ac@tcg) = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
 				aeft@tcg = ac@tcg
-				if ( card@tcg(TCG_CARD_LOCATION, aeft@tcg) == TCG_LOCATION_FIELD ) {
+				if ( card@tcg(TCG_CARD_LOCATION, ac@tcg) == TCG_LOCATION_FIELD ) {
 					if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, aeft@tcg)) & TCG_SKILL_TYPE_BATTLECRY) ) {
-						effac@tcg = aeft@tcg
+						effac@tcg = ac@tcg
 						eff@tcg = card@tcg(TCG_CARD_EFFECT, aeft@tcg)
-						if ( effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_ANDROID & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_TRANSFORMTO & effref@tcg(TCG_SKILL_EFF, eff@tcg) != TCG_SKILL_EFF_MUTATE ) {
+						if ( cancopyeffect(eff@tcg) ) {
 							gosub *card_action_choose_target
 							makecardlist
 							tcgdraw
@@ -2443,10 +2523,10 @@
 				if ( cextra@tcg >= 0 ) {
 					card@tcg(TCG_CARD_HP, cextra@tcg) = 1
 					card@tcg(TCG_CARD_REF_HP, cextra@tcg) = 1
-					card@tcg(TCG_CARD_ATTACK, cextra@tcg) = 1
-					card@tcg(TCG_CARD_REF_ATTACK, cextra@tcg) = 1
+					card@tcg(TCG_CARD_ATTACK, cextra@tcg) = 0
+					card@tcg(TCG_CARD_REF_ATTACK, cextra@tcg) = 0
 					card@tcg(TCG_CARD_EFFECT, cextra@tcg) = TCG_EFF_BEARCUB
-					carddetailneff@tcg(cextra@tcg) = "bear cub  No.???   very small bear baby  Rare:None\nEffect: Deathrattle: All Bears get +1/+1."
+					carddetailneff@tcg(cextra@tcg) = "bear cub  No.???   very small bear baby  Rare:None\nEffect: If in Grave: All Bears gets +1 Attack."
 					putcard cextra@tcg, card@tcg(TCG_CARD_CONTROLLER, cextra@tcg)
 				}
 			}
@@ -2503,8 +2583,24 @@
 		} else {
 			if ( getdecksum(ap@tcg) == 0 & card@tcg(TCG_CARD_REF_DBID, 100 * ap@tcg + 44) != 0 ) {
 				cdbitmod TCG_BIT_FACE_UP, c@tcg, 1
-				cpdata@tcg(TCG_PLAYER_LIFE, 1 - ap@tcg) = 0
-				gameresult@tcg = 5 + (ap@tcg == 1)
+				if ( yaminogemu@tcg == 1 & ap@tcg == TCG_CONTROLLER_PLAYER ) {
+					specialruleusenofatiguerecoil@tcg(ap@tcg) = 1
+					specialruleusealwaysfatigue@tcg(1 - ap@tcg) = 1
+					repeat 10
+						fatigueplayer 1 - ap@tcg
+					loop
+					card@tcg(TCG_CARD_X_MOVETO, ac@tcg) = basex@tcg + 118, basey@tcg + 310
+					card@tcg(TCG_CARD_LOCATION, ac@tcg) = TCG_LOCATION_ANIM
+					cdbitmod TCG_BIT_FACE_UP, ac@tcg, 1
+					tcgdraw
+					efllistaddchat cnvtalk("Well played... " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "."), ac@tcg
+					tcgpass 150
+					saccard ac@tcg, ap@tcg
+					sac@tcg = 0
+				} else {
+					cpdata@tcg(TCG_PLAYER_LIFE, 1 - ap@tcg) = 0
+					gameresult@tcg = 5 + (ap@tcg == 1)
+				}
 				tcgpass 30
 			}
 		}
@@ -2518,7 +2614,7 @@
 			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_DECK & card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_HAND & card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) {
 				continue
 			}
-			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) == cp@tcg ) {
+			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) == ap@tcg ) {
 				continue
 			}
 			if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "bacteria" | card@tcg(TCG_CARD_REF_DBID, cnt) == CREATURE_ID_RENAI_THE_OVER_MESHERA ) {
@@ -2527,8 +2623,23 @@
 			}
 		loop
 		if ( f@tcg == 1 ) {
-			cpdata@tcg(TCG_PLAYER_LIFE, 1 - cp@tcg) = 0
-			gameresult@tcg = 7 + (cp@tcg == 1)
+			if ( yaminogemu@tcg == 1 & ap@tcg == TCG_CONTROLLER_PLAYER ) {
+				specialruleusenofatiguerecoil@tcg(ap@tcg) = 1
+				specialruleusealwaysfatigue@tcg(1 - ap@tcg) = 1
+				repeat 10
+					fatigueplayer 1 - ap@tcg
+				loop
+				card@tcg(TCG_CARD_X_MOVETO, ac@tcg) = basex@tcg + 118, basey@tcg + 310
+				card@tcg(TCG_CARD_LOCATION, ac@tcg) = TCG_LOCATION_ANIM
+				cdbitmod TCG_BIT_FACE_UP, ac@tcg, 1
+				tcgdraw
+				tcgpass 150
+				saccard ac@tcg, ap@tcg
+				sac@tcg = 0
+			} else {
+				cpdata@tcg(TCG_PLAYER_LIFE, 1 - ap@tcg) = 0
+				gameresult@tcg = 7 + (cp@tcg == 1)
+			}
 		}
 		tcgpass 30
 		goto *actionproc_SWEND1
@@ -2560,8 +2671,29 @@
 				}
 			loop
 			if ( p@tcg(0) + p@tcg(1) + p@tcg(2) + p@tcg(3) == 4 ) {
-				cpdata@tcg(TCG_PLAYER_LIFE, 1 - ap@tcg) = 0
-				gameresult@tcg = 9 + (ap@tcg == 1)
+				if ( yaminogemu@tcg == 1 & ap@tcg == TCG_CONTROLLER_PLAYER ) {
+					specialruleusenofatiguerecoil@tcg(ap@tcg) = 1
+					specialruleusealwaysfatigue@tcg(1 - ap@tcg) = 1
+					repeat 10
+						fatigueplayer 1 - ap@tcg
+					loop
+					card@tcg(TCG_CARD_X_MOVETO, ac@tcg) = basex@tcg + 118, basey@tcg + 310
+					card@tcg(TCG_CARD_LOCATION, ac@tcg) = TCG_LOCATION_ANIM
+					cdbitmod TCG_BIT_FACE_UP, ac@tcg, 1
+					tcgdraw
+					tcgpass 150
+					repeat maxcard@tcg
+						if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != card@tcg(TCG_CARD_CONTROLLER, ap@tcg) ) { continue }
+						if ( card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_UNITDEAD_KING ) { continue }
+						if ( card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_UNITDEAD_QUEEN ) { continue }
+						if ( card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_UNITDEAD_JACK ) { continue }
+						if ( card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_UNITDEAD_JOKER ) { continue }
+						saccard cnt, ap@tcg
+					loop
+				} else {
+					cpdata@tcg(TCG_PLAYER_LIFE, 1 - ap@tcg) = 0
+					gameresult@tcg = 9 + (ap@tcg == 1)
+				}
 				goto *actionproc_WEND1
 			}
 		}
@@ -2571,8 +2703,23 @@
 	if ( _switch_val@tcg == TCG_SKILL_EFF_BAN | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		if ( rnd(10) == 0 ) {
-			cpdata@tcg(TCG_PLAYER_LIFE, ap@tcg) = 0
-			gameresult@tcg = 11 + (ap@tcg == 0)
+			if ( yaminogemu@tcg == 1 & ap@tcg == TCG_CONTROLLER_OPPONENT ) {
+				specialruleusenofatiguerecoil@tcg(1 - ap@tcg) = 1
+				specialruleusealwaysfatigue@tcg(ap@tcg) = 1
+				repeat 10
+					fatigueplayer ap@tcg
+				loop
+				card@tcg(TCG_CARD_X_MOVETO, ac@tcg) = basex@tcg + 118, basey@tcg + 310
+				card@tcg(TCG_CARD_LOCATION, ac@tcg) = TCG_LOCATION_ANIM
+				cdbitmod TCG_BIT_FACE_UP, ac@tcg, 1
+				tcgdraw
+				tcgpass 150
+				saccard ac@tcg, ap@tcg
+				sac@tcg = 0
+			} else {
+				cpdata@tcg(TCG_PLAYER_LIFE, ap@tcg) = 0
+				gameresult@tcg = 11 + (ap@tcg == 0)
+			}
 			tcgpass 30
 			goto *actionproc_WEND1
 		}
@@ -2615,27 +2762,29 @@
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
 	}
-	if ( _switch_val@tcg == TCG_SKILL_EFF_JALDABOTH | _switch_sw@tcg ) {
-		_switch_sw@tcg = 0
-		if ( ac@tcg >= 0 & ac@tcg < maxcard@tcg ) {
-			if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
-				if ( card@tcg(TCG_CARD_TURN_COUNT, aeft@tcg) >= 3 ) {
-					cpdata@tcg(TCG_PLAYER_LIFE, aeft@tcg) = 0
-					gameresult@tcg = 15 + (aeft@tcg == 0)
-					tcgpass 30
-					goto *actionproc_WEND1
-				}
-			}
-		}
-		goto *actionproc_SWEND1
-		_switch_sw@tcg++
-	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_GARZEIM | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		dialog "Garziem looks at the clock, \"hmm, you've been playing for " + hour_played + " hours and " + ((timeGetTime() / 1000 - time_warn)/60) + " minutes.\""
 		if ( hour_played >= 24 ) {
-			cpdata@tcg(TCG_PLAYER_LIFE, 1 - ap@tcg) = 0
-			gameresult@tcg = 13 + (ap@tcg == 1)
+			if ( yaminogemu@tcg == 1 & ap@tcg == TCG_CONTROLLER_PLAYER ) {
+				specialruleusenofatiguerecoil@tcg(ap@tcg) = 1
+				specialruleusealwaysfatigue@tcg(1 - ap@tcg) = 1
+				repeat 10
+					fatigueplayer 1 - ap@tcg
+				loop
+				card@tcg(TCG_CARD_X_MOVETO, ac@tcg) = basex@tcg + 118, basey@tcg + 310
+				card@tcg(TCG_CARD_LOCATION, ac@tcg) = TCG_LOCATION_ANIM
+				cdbitmod TCG_BIT_FACE_UP, ac@tcg, 1
+				tcgdraw
+				tcgpass 150
+				card@tcg(TCG_CARD_LOCATION, ac@tcg) = TCG_LOCATION_FIELD
+				makecardlist
+				cardpos 0, -1
+				cardpos 1, -1
+			} else {
+				cpdata@tcg(TCG_PLAYER_LIFE, 1 - ap@tcg) = 0
+				gameresult@tcg = 13 + (ap@tcg == 1)
+			}
 		}
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
@@ -2793,8 +2942,8 @@
 			if ( effref@tcg(TCG_SKILL_FILTER, aeff@tcg) == -13 ) { 
 				if ( card@tcg(TCG_CARD_REF_HP, aeft@tcg) > card@tcg(TCG_CARD_HP, aeft@tcg) ) { x@tcg = 120 }
 			}
-			if ( effref@tcg(TCG_SKILL_FILTER, aeff@tcg) == -14 ) { x@tcg = limit(40 - cpdata@tcg(TCG_PLAYER_DOMAIN, ap@tcg) * 5, 25, 40) - cpdata@tcg(TCG_PLAYER_LIFE, ap@tcg) }
-			if ( effref@tcg(TCG_SKILL_FILTER, aeff@tcg) == -15 ) { x@tcg = limit(40 - cpdata@tcg(TCG_PLAYER_DOMAIN, 1 - ap@tcg) * 5, 25, 40) - cpdata@tcg(TCG_PLAYER_LIFE, 1 - ap@tcg) }
+			if ( effref@tcg(TCG_SKILL_FILTER, aeff@tcg) == -14 ) { x@tcg = limit(cpdata@tcg(TCG_PLAYER_LIFE_TOTAL, ap@tcg) - cpdata@tcg(TCG_PLAYER_LIFE, ap@tcg), 0, 2000) }
+			if ( effref@tcg(TCG_SKILL_FILTER, aeff@tcg) == -15 ) { x@tcg = limit(cpdata@tcg(TCG_PLAYER_LIFE_TOTAL, 1 - ap@tcg) - cpdata@tcg(TCG_PLAYER_LIFE, 1 - ap@tcg), 0, 2000) }
 			if ( effref@tcg(TCG_SKILL_FILTER, aeff@tcg) == -16 ) { 
 				if ( turn@tcg < effref@tcg(TCG_SKILL_POWER, aeff@tcg) ) { x@tcg = -9999 }
 			}
@@ -2873,6 +3022,12 @@
 					if ( cardn@tcg(TCG_CARDN_REF_RACE, clist@tcg(cnt, 0+3*ap@tcg)) == "vehicle" ) { x@tcg++ }
 				loop
 			}
+			if ( effref@tcg(TCG_SKILL_FILTER, aeff@tcg) == -30 ) { 
+				x@tcg = (13000 - cdata(CDATA_HUNGER, CHARA_PLAYER)) / 1000
+				if ( cdata(CDATA_HUNGER, CHARA_PLAYER) < 1000 ) {
+					x@tcg = 999
+				}
+			}
 			x@tcg /= effref@tcg(TCG_SKILL_POWER, aeff@tcg)
 			card@tcg(TCG_CARD_COST, aeft@tcg) = limit(card@tcg(TCG_CARD_COST, aeft@tcg) - x@tcg, 0, TCG_STAT_MAX)
 		}
@@ -2903,6 +3058,22 @@
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
 			card@tcg(TCG_CARD_REF_COST, aeft@tcg) = limit(rnd(rnd(9)+1) + rnd(rnd(6)+1), 0, TCG_STAT_MAX)
 			card@tcg(TCG_CARD_COST, aeft@tcg) = card@tcg(TCG_CARD_REF_COST, aeft@tcg)
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_ONGOING_KEEPSTAT | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+			if ( card@tcg(TCG_CARD_ATTACK, aeft@tcg) > card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg) ) {
+				card@tcg(TCG_CARD_ATTACK, aeft@tcg) = card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg)
+			}
+			if ( card@tcg(TCG_CARD_COST, aeft@tcg) < card@tcg(TCG_CARD_REF_COST, aeft@tcg) ) {
+				card@tcg(TCG_CARD_COST, aeft@tcg) = card@tcg(TCG_CARD_REF_COST, aeft@tcg)
+			}
+			if ( card@tcg(TCG_CARD_HP, aeft@tcg) < card@tcg(TCG_CARD_REF_HP, aeft@tcg) ) {
+				card@tcg(TCG_CARD_REF_HP, aeft@tcg) = card@tcg(TCG_CARD_HP, aeft@tcg)
+			}
 		}
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
@@ -2953,6 +3124,148 @@
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
 	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_JALDABOTH | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
+			specialrulekamui@tcg(aeft@tcg)++
+			if ( specialrulekamui@tcg(aeft@tcg) == 8 ) {
+				if ( cdata(CDATA_ID, tc) == CREATURE_ID_JALDABAOTH_THE_CHAOS_CHILD | cdata(CDATA_ID, tc) == CREATURE_ID_THE_CHAOS_CHILD ) {
+					if ( aeft@tcg == 1 & cdata(CDATA_ID, tc) == CREATURE_ID_THE_CHAOS_CHILD ) {
+						// (probably) Impossible to beat variant.
+						efllistaddchat cnvtalk("I tire of this."), ac@tcg
+						tcgpass 150
+						efllistaddchat cnvtalk("I am finished with your games... All of you shall turn to ash."), ac@tcg
+						tcgpass 150
+						efllistaddchat cnvtalk("<HOROBI NO YARI> Destroy Target Player"), ac@tcg
+						tcgpass 150
+						cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER) = 0
+						gameresult@tcg = 15 + (TCG_CONTROLLER_PLAYER == 0)
+						tcgpass 30
+						goto *actionproc_WEND1
+					}
+					if ( aeft@tcg == 1 & cdata(CDATA_ID, tc) != CREATURE_ID_THE_CHAOS_CHILD ) {
+						// Possible to beat variant.
+						efllistaddchat cnvtalk("I tire of this stupid card game."), ac@tcg
+						tcgpass 150
+						efllistaddchat cnvtalk("But since that I have obtained this tremendous power, that is now a trifling matter..."), ac@tcg
+						tcgpass 150
+						efllistaddchat cnvtalk("<Origin of Chaos> Remove the Chaos Child's Card Text"), ac@tcg
+						tcgpass 150
+						cdbitmod TCG_BIT_ENEMY, ac@tcg, 0
+						cdbitmod TCG_BIT_DEFENDER, ac@tcg, 0
+						cdbitmod TCG_BIT_EVASION, ac@tcg, 0
+						card@tcg(TCG_CARD_EFFECT, ac@tcg) = TCG_EFF_NONE
+						carddetailneff@tcg(ac@tcg) = ""
+						goto *actionproc_WEND1
+					}
+				}
+				if ( yaminogemu@tcg == 1 & aeft@tcg == TCG_CONTROLLER_PLAYER ) {
+					specialruleusenofatiguerecoil@tcg(aeft@tcg) = 1
+					specialruleusealwaysfatigue@tcg(1 - aeft@tcg) = 1
+					repeat 10
+						fatigueplayer 1 - aeft@tcg
+					loop
+				} else {
+					cpdata@tcg(TCG_PLAYER_LIFE, aeft@tcg) = 0
+					gameresult@tcg = 15 + (aeft@tcg == 0)
+				}
+				tcgpass 30
+				goto *actionproc_WEND1
+			}
+			aeftbk@tcg = aeft@tcg
+			cardidbk@tcg = card@tcg(TCG_CARD_REF_DBID, effac@tcg)
+			repeat 1
+				if ( getholdersum(aeftbk@tcg) >= 7 ) { break }
+				create_extra_card aeftbk@tcg, cardidbk@tcg
+				if ( cextra@tcg >= 0 ) {
+					card@tcg(TCG_CARD_COST, cextra@tcg) = 0
+					card@tcg(TCG_CARD_HP, cextra@tcg) = 1
+					card@tcg(TCG_CARD_ATTACK, cextra@tcg) = 1
+					card@tcg(TCG_CARD_REF_COST, cextra@tcg) = 0
+					card@tcg(TCG_CARD_REF_HP, cextra@tcg) = 1
+					card@tcg(TCG_CARD_REF_ATTACK, cextra@tcg) = 1
+					cdbitmod TCG_BIT_ENEMY, cextra@tcg, 0
+					cdbitmod TCG_BIT_REGENERATION, cextra@tcg, 0
+					cdbitmod TCG_BIT_DEFENDER, cextra@tcg, 0
+					cdbitmod TCG_BIT_EVASION, cextra@tcg, 0
+					cdbitmod TCG_BIT_COMMAND, cextra@tcg, 1
+					if ( specialrulekamui@tcg(aeft@tcg) == 1 ) { efllistaddchat cnvtalk("<Sigh of the Creator Gods>"), ac@tcg }
+					if ( specialrulekamui@tcg(aeft@tcg) == 2 ) { efllistaddchat cnvtalk("<Roar of the War Gods>"), ac@tcg }
+					if ( specialrulekamui@tcg(aeft@tcg) == 3 ) { efllistaddchat cnvtalk("<Claws of the Beast Gods>"), ac@tcg }
+					if ( specialrulekamui@tcg(aeft@tcg) == 4 ) { efllistaddchat cnvtalk("<Sentence of the Judicial Gods>"), ac@tcg }
+					if ( specialrulekamui@tcg(aeft@tcg) == 5 ) { efllistaddchat cnvtalk("<Grudge of the Abominable Gods>"), ac@tcg }
+					if ( specialrulekamui@tcg(aeft@tcg) == 6 ) { efllistaddchat cnvtalk("<Commandment of the Hell Gods>"), ac@tcg }
+					if ( specialrulekamui@tcg(aeft@tcg) == 7 ) { efllistaddchat cnvtalk("<End of All Things>"), ac@tcg }
+					card@tcg(TCG_CARD_X, cextra@tcg) = card@tcg(TCG_CARD_X, effac@tcg), card@tcg(TCG_CARD_Y, effac@tcg)
+					kamuilist@tcg = 0, TCG_EFF_KAMUI1, TCG_EFF_KAMUI2, TCG_EFF_KAMUI3, TCG_EFF_KAMUI4, TCG_EFF_KAMUI5, TCG_EFF_KAMUI6, TCG_EFF_KAMUI7
+					card@tcg(TCG_CARD_REF_PIC, cextra@tcg) = -23 - specialrulekamui@tcg(aeft@tcg)
+					card@tcg(TCG_CARD_EFFECT, cextra@tcg) = kamuilist@tcg(specialrulekamui@tcg(aeft@tcg))
+					card@tcg(TCG_CARD_REF_BG, cextra@tcg) = specialrulekamui@tcg(aeft@tcg)
+					carddetailneff@tcg(cextra@tcg) = effdesc@tcg(card@tcg(TCG_CARD_EFFECT, cextra@tcg))
+					gettargetcard cextra@tcg
+				}
+			loop
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_KAMUI | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aefp@tcg == 1 ) {
+			if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
+				cpdata@tcg(TCG_PLAYER_LIFE, aeft@tcg) = cpdata@tcg(TCG_PLAYER_LIFE_TOTAL, aeft@tcg)
+			}
+		}
+		if ( aefp@tcg == 2 ) {
+			if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+				card@tcg(TCG_CARD_ATTACK, aeft@tcg) += card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg)
+				card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg) += card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg)
+				card@tcg(TCG_CARD_HP, aeft@tcg) += card@tcg(TCG_CARD_REF_HP, aeft@tcg)
+				card@tcg(TCG_CARD_REF_HP, aeft@tcg) += card@tcg(TCG_CARD_REF_HP, aeft@tcg)
+				efllistadd 2, 2, card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg), card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg)
+			}
+		}
+		if ( aefp@tcg == 3 ) {
+			if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+				card@tcg(TCG_CARD_HP, aeft@tcg) /= 2
+				card@tcg(TCG_CARD_REF_HP, aeft@tcg) /= 2
+				efllistadd 2, -2, card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg), card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg)
+				if ( card@tcg(TCG_CARD_HP, aeft@tcg) <= 0) {
+					gravecard aeft@tcg
+				}
+			}
+		}
+		if ( aefp@tcg == 4 ) {
+			if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+				tcgpass animespeed@tcg * 10
+				cdbitmod TCG_BIT_PARALYSED, aeft@tcg, 1
+				efllistaddcard 7, aeft@tcg
+				cdbitmod TCG_BIT_DEATHWORD, aeft@tcg, 1
+				efllistaddcard 19, aeft@tcg
+			}
+		}
+		if ( aefp@tcg == 5 ) {
+			if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+				efllistaddcard 22, aeft@tcg
+				tcgpass animespeed@tcg * 10
+				cdbitmod TCG_BIT_INSANE, aeft@tcg, 1
+			}
+		}
+		if ( aefp@tcg == 6 ) {
+			if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+				card@tcg(TCG_CARD_ATTACK, aeft@tcg) /= 2
+				card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg) /= 2
+				efllistadd 2, -2, card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg), card@tcg(TCG_CARD_X, aeft@tcg), card@tcg(TCG_CARD_Y, aeft@tcg)
+			}
+		}
+		if ( aefp@tcg == 7 ) {
+			if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+				gravecard aeft@tcg
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_MIZUKI | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		specialruledrawtwocardsperturn@tcg = 1
@@ -2967,7 +3280,8 @@
 	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_IMMEDIATECOMBAT | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
-		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+		makecardlist
+		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg & ac@tcg >= 0 & ac@tcg < maxcard@tcg ) {
 			cardstack@tcg(TCG_STACK, stack@tcg) = ac@tcg, TCG_ACTION_ATTACKING, cp@tcg, aeft@tcg
 			stack@tcg++
 		}

@@ -6466,18 +6466,20 @@
 
 		/********** ANNA CUSTOM - BEGINNING **********/ // Smart Use of Cooldown Items, will search inventory for others of the same item and use those if available.
 
-		repeat 200, 0
-			if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
-				continue
-			}
-
-			if ( inv(INV_ITEM_ID, cnt) == inv(INV_ITEM_ID, ci) ) {
-				if ( inv(INV_ITEM_CHARGE, cnt) < gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 ) {
-					ci = cnt
-					break
+		if ( inv(INV_ITEM_ID, ci) != ITEM_ID_COFFIN_OF_NECROMANCY ) {
+			repeat 200, 0
+				if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+					continue
 				}
-			}
-		loop
+
+				if ( inv(INV_ITEM_ID, cnt) == inv(INV_ITEM_ID, ci) ) {
+					if ( inv(INV_ITEM_CHARGE, cnt) < gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 ) {
+						ci = cnt
+						break
+					}
+				}
+			loop
+		}
 
 		/********** ANNA CUSTOM - ENDING **********/
 

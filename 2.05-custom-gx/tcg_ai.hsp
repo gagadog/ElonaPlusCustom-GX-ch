@@ -308,6 +308,7 @@
 		attacktarget@tcg = ecc@tcg
 		goto *card_ai_WEND1
 	}
+	gosub *card_resolve_ongoing
 	*card_ai_CARDSKIP
 	ec@tcg++
 	goto *card_ai_WHILE1

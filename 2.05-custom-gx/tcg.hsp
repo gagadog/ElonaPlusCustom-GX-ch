@@ -54,9 +54,9 @@
 			}
 			csfix
 			if ( csline@tcg == 0 | csline@tcg == 3 ) {
-				cs@tcg = limit((mousex + holderspace@tcg - holderix@tcg) / holderspace@tcg - 1, 0 - (csline@tcg == 0), clistmax@tcg(csline@tcg))
+				cs@tcg = limit((mousex + holderspace@tcg - holderix@tcg) / holderspace@tcg - 1, 0 - (csline@tcg == 0), limit(clistmax@tcg(csline@tcg) - 1, 0, 10))
 			} else {
-				cs@tcg = limit((mousex - (basex@tcg + 466 - clistmax@tcg(csline@tcg) * spotspace@tcg / 2)) / spotspace@tcg, 0, clistmax@tcg(csline@tcg))
+				cs@tcg = limit((mousex - (basex@tcg + 466 - clistmax@tcg(csline@tcg) * spotspace@tcg / 2)) / spotspace@tcg, 0, limit(clistmax@tcg(csline@tcg) - 1, 0, 10))
 			}
 			csfix
 		}
@@ -536,8 +536,12 @@
 				if ( c2@tcg == (-1) ) {
 					continue
 				}
-				c1x@tcg = card@tcg(TCG_CARD_X_MOVETO, c1@tcg) - (card@tcg(TCG_CARD_REF_DBID, c1@tcg) == CREATURE_ID_ESTORK_THE_DOGGOD) * 1000 + (card@tcg(TCG_CARD_REF_DBID, c1@tcg) == CREATURE_ID_SAIMEF_THE_DOGGOD) * 1000
-				c2x@tcg = card@tcg(TCG_CARD_X_MOVETO, c2@tcg) - (card@tcg(TCG_CARD_REF_DBID, c2@tcg) == CREATURE_ID_ESTORK_THE_DOGGOD) * 1000 + (card@tcg(TCG_CARD_REF_DBID, c2@tcg) == CREATURE_ID_SAIMEF_THE_DOGGOD) * 1000
+				c1x@tcg = card@tcg(TCG_CARD_X_MOVETO, c1@tcg)
+				c2x@tcg = card@tcg(TCG_CARD_X_MOVETO, c2@tcg)
+				if ( card@tcg(TCG_CARD_REF_DBID, c1@tcg) == CREATURE_ID_ESTORK_THE_DOGGOD ) { c1x@tcg -= 1000 }
+				if ( card@tcg(TCG_CARD_REF_DBID, c2@tcg) == CREATURE_ID_ESTORK_THE_DOGGOD ) { c2x@tcg -= 1000 }
+				if ( card@tcg(TCG_CARD_REF_DBID, c1@tcg) == CREATURE_ID_SAIMEF_THE_DOGGOD ) { c1x@tcg += 1000 }
+				if ( card@tcg(TCG_CARD_REF_DBID, c2@tcg) == CREATURE_ID_SAIMEF_THE_DOGGOD ) { c2x@tcg += 1000 }
 				if ( c2x@tcg < c1x@tcg ) {
 					i@tcg = clist@tcg(cnt, p@tcg)
 					clist@tcg(cnt, p@tcg) = clist@tcg(cnt + 1, p@tcg)
@@ -717,6 +721,12 @@
 					color 0, 0, 0
 					pos x@tcg + 13, y@tcg + 32 - chipc(CHIPC_F, p@tcg) + chipc(CHIPC_HEIGHT, p@tcg) / 6
 					gcopy 5, 0, 960, chipc(CHIPC_WIDTH, p@tcg), chipc(CHIPC_HEIGHT, p@tcg)
+					if ( card@tcg(TCG_CARD_REF_DBID, tcgdrawcard_arg1) == CREATURE_ID_JALDABAOTH_THE_CHAOS_CHILD & cdbit(TCG_BIT_COMMAND, tcgdrawcard_arg1) == 0 ) {
+						pos x@tcg + 13 - 48, y@tcg + 32 - chipc(CHIPC_F, p@tcg) + chipc(CHIPC_HEIGHT, p@tcg) / 6
+						gmode 2, 144, 96
+						gcopy BUFFER_INF, 908 + rnd(3) * 144, 494
+						gmode 2
+					}
 				}
 			}
 			color 255, 255, 255
@@ -1043,6 +1053,11 @@
 			continue
 		}
 		efllist@tcg(4, cnt) -= limitmax(drawpace@tcg(1), efllist@tcg(4, cnt))
+		if ( efllist@tcg(0, cnt) == -1 ) {
+			pos efllist@tcg(5, cnt), efllist@tcg(6, cnt)
+			color 0, 0, 0
+			bmes efllisttalk@tcg(cnt), 120, 255, 120
+		}
 		if ( efllist@tcg(0, cnt) == 1 ) {
 			font lang(cfg_font1, cfg_font2), 20 - en * 2, 1
 			color 0, 0, 0
@@ -1138,11 +1153,28 @@
 	efllistadd efllistadd_arg1, 0, card@tcg(TCG_CARD_X, efllistadd_arg2) + elax@tcg, card@tcg(TCG_CARD_Y, efllistadd_arg2) + elay@tcg
 	return
 
+#deffunc efllistaddchat str efllistadd_argstr, int efllistadd_arg2, int efllistadd_arg3
+	proctcg "tcg efllistaddchat: efllistadd_argstr:" + efllistadd_argstr + "/efllistadd_arg2:" + efllistadd_arg2 + "/efllistadd_arg3:" + efllistadd_arg3
+	if ( efllistadd_arg2 < 0 | efllistadd_arg2 >= maxcard@tcg ) { return }
+	if ( efllistadd_arg3 != 1 & card@tcg(TCG_CARD_LOCATION, efllistadd_arg2) <= 0 ) { return }
+	sprint@tcg = efllistadd_argstr
+	if ( strlen(sprint@tcg) <= 0 ) { return }
+	elax@tcg = 36 - strlen(sprint@tcg) * ((16 - en * 2) / 2 / 2)
+	elay@tcg = -14
+	eflistaddchatstr@tcg = efllistadd_argstr
+	efllistadd -1, 0, card@tcg(TCG_CARD_X, efllistadd_arg2) + elax@tcg, card@tcg(TCG_CARD_Y, efllistadd_arg2) + elay@tcg
+	return
+
 #deffunc efllistadd int efllistadd_arg1, int efllistadd_arg2, int efllistadd_arg3, int efllistadd_arg4, int efllistadd_arg5, int efllistadd_arg6
 	repeat efllistmax@tcg
 		if ( efllist@tcg(4, cnt) <= 0 ) {
 			efllist@tcg(0, cnt) = efllistadd_arg1
 			efllist@tcg(1, cnt) = efllistadd_arg2
+			if ( efllistadd_arg1 == -1 ) {
+				efllisttalk@tcg(cnt) = eflistaddchatstr@tcg
+				efllist@tcg(4, cnt) = 60
+				efllist@tcg(5, cnt) = efllistadd_arg3, efllistadd_arg4
+			}
 			if ( efllistadd_arg1 == 1 ) {
 				efllist@tcg(4, cnt) = 60
 				efllist@tcg(5, cnt) = efllistadd_arg3 + rnd(30), efllistadd_arg4 + rnd(20)
@@ -1175,6 +1207,25 @@
 			break
 		}
 	loop
+	eflistaddchatstr@tcg = ""
+	return
+
+#deffunc reconstruct_card_text int reconstruct_card_text_arg1_aeft
+	if ( reconstruct_card_text_arg1_aeft < 0 | reconstruct_card_text_arg1_aeft >= maxcard@tcg ) { return }
+	carddetailneffbk@tcg = carddetailneff@tcg(aeft@tcg)
+	sdim lines@tcg
+	split carddetailneff@tcg(aeft@tcg), "\n", lines@tcg
+	f@tcg = stat
+	if ( f@tcg >= 1 ) {
+		carddetailneff@tcg(aeft@tcg) = lines@tcg(0)
+		if ( f@tcg >= 2 & instr(carddetailneffbk@tcg, 0, "Bits:  ") != -1 ) {
+			carddetailneff@tcg(aeft@tcg) += "\n" + lines@tcg(1)
+		}
+		carddetailneffbk@tcg = "Effect: " + effdesc@tcg(card@tcg(TCG_CARD_EFFECT, aeft@tcg))
+		talk_conv carddetailneffbk@tcg, 65
+		carddetailneff@tcg(aeft@tcg) += "\n" + carddetailneffbk@tcg
+	}
+	f@tcg = stat
 	return
 
 #deffunc card_ref int card_ref_arg1
@@ -1574,14 +1625,14 @@
 	cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1)++
 	efllistadd 1, cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1), deckix@tcg(fatigueplayer_arg1), deckiy@tcg(fatigueplayer_arg1)
 	dmgplayer fatigueplayer_arg1, cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1)
-	if ( cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1) >= 5 ) {
+	if ( cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1) >= 5 & specialruleusenofatiguerecoil@tcg(1 - fatigueplayer_arg1) == 0 ) {
 		dmgplayer 1 - fatigueplayer_arg1, cpdata@tcg(TCG_PLAYER_FATIGUE, fatigueplayer_arg1) / 5
 	}
 	return
 
 #deffunc getrandomcard int getrandomcard_arg1
 	if ( getdecksum(getrandomcard_arg1) == 0 ) {
-		if ( yaminogemu@tcg == 1 ) {
+		if ( yaminogemu@tcg == 1 | specialruleusefatigue@tcg == 1 ) {
 			fatigueplayer getrandomcard_arg1
 		} else {
 			cpdata@tcg(TCG_PLAYER_LIFE, getrandomcard_arg1) = 0
@@ -2125,16 +2176,20 @@
 	}
 	calcdomain
 	if ( yaminogemu@tcg == 1 ) {
-		lifestake@tcg = cdata(CDATA_HP, CHARA_PLAYER), cdata(CDATA_HP, tc)
+		lifestake@tcg = limit(cdata(CDATA_HP, CHARA_PLAYER), 1, 200000000), limit(cdata(CDATA_HP, tc), 1, 200000000)
 		lifestakebase@tcg = cdata(CDATA_MAX_HP, CHARA_PLAYER), cdata(CDATA_MAX_HP, tc)
 		if ( lifestakebase@tcg(0) < lifestakebase@tcg(1) ) {
-			cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT) = limit(cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT) * lifestakebase@tcg(1) / lifestakebase@tcg(0), cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT), 2000000000)
+			cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT) = limit(cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT) * lifestakebase@tcg(1) / lifestakebase@tcg(0), cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT), 200000000)
 		}
 		if ( lifestakebase@tcg(0) > lifestakebase@tcg(1) ) {
-			cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER) = limit(cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER) * lifestakebase@tcg(0) / lifestakebase@tcg(1), cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER), 2000000000)
+			cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER) = limit(cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER) * lifestakebase@tcg(0) / lifestakebase@tcg(1), cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER), 200000000)
 		}
+		cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER) = limit(cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER) * 30 / limit(30 * lifestakebase@tcg(0) / lifestake@tcg(0), 30, 900), 5, 200000000)
+		cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT) = limit(cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT) * 30 / limit(30 * lifestakebase@tcg(1) / lifestake@tcg(1), 30, 900), 5, 200000000)
 		lifestakestart@tcg = cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_PLAYER), cpdata@tcg(TCG_PLAYER_LIFE, TCG_CONTROLLER_OPPONENT)
 	}
+	cpdata@tcg(TCG_PLAYER_LIFE_TOTAL, 0) = cpdata@tcg(TCG_PLAYER_LIFE, 0)
+	cpdata@tcg(TCG_PLAYER_LIFE_TOTAL, 1) = cpdata@tcg(TCG_PLAYER_LIFE, 1)
 	repeat maxcard@tcg
 		if ( cdbit(TCG_BIT_ASSASSIN, cnt) == TRUE ) {
 			card@tcg(TCG_CARD_CONTROLLER, cnt) = 1 - card@tcg(TCG_CARD_CONTROLLER, cnt)
@@ -2187,6 +2242,22 @@
 			getrandomcard initcp@tcg
 		loop
 	loop
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_JALDABAOTH_THE_CHAOS_CHILD | cdata(CDATA_ID, tc) == CREATURE_ID_THE_CHAOS_CHILD | cdata(CDATA_ID, tc) == CREATURE_ID_AIME_THE_STORY_TELLER ) {
+		f@tcg = 0
+		repeat maxcard@tcg
+			if ( card@tcg(TCG_CARD_REF_DBID, cnt) == CREATURE_ID_JALDABAOTH_THE_CHAOS_CHILD | card@tcg(TCG_CARD_REF_DBID, cnt) == CREATURE_ID_THE_CHAOS_CHILD ) {
+				if ( card@tcg(TCG_CARD_CONTROLLER, cnt) == 0 | f@tcg == 1 ) {
+					gravecard cnt
+				} else {
+					cdbitmod TCG_BIT_ENEMY, cnt, 0
+					putcardfree@tcg = 1
+					putcard cnt, TCG_CONTROLLER_OPPONENT
+					efllistaddchat cnvtalk("Let there be light..."), cnt
+					f@tcg = 1
+				}
+			}
+		loop
+	}
 	*tcgmain_WHILE1
 	cpisme
 	gosub *phase_begin
@@ -2260,8 +2331,8 @@
 	if ( gameresult@tcg == 12 ) { buff = "You are BANNED!" }
 	if ( gameresult@tcg == 13 ) { buff = "You've been playing for too long!" }
 	if ( gameresult@tcg == 14 ) { buff = "You've been playing for too long!" }
-	if ( gameresult@tcg == 15 ) { buff = "You won due to Jaldabaoth' effect." }
-	if ( gameresult@tcg == 16 ) { buff = "You lose due to Jaldabaoth' effect." }
+	if ( gameresult@tcg == 15 ) { buff = "You won due to the Chaos Child's effect." }
+	if ( gameresult@tcg == 16 ) { buff = "You lose due to the Chaos Child's effect." }
 	gosub *re_select
 	tcginit2
 	gosub *tcg_drawInterface
@@ -2281,7 +2352,7 @@
 *phase_begin
 	phase@tcg = 0
 	turn@tcg++
-	if ( turn@tcg > 50 ) {
+	if ( turn@tcg > 50 | specialruleusealwaysfatigue@tcg(ct@tcg) ) {
 		fatigueplayer ct@tcg
 	}
 	tcgdraw
@@ -2463,7 +2534,8 @@
 		if ( targetlinenum@tcg <= 0 ) { return }
 		targetlinevalid@tcg = 0
 		repeat targetlinenum@tcg
-			if ( csline@tcg == targetline@tcg(targetcs@tcg) ) { 
+			if ( csline@tcg == targetline@tcg(cnt) ) {
+				targetcs@tcg = cnt
 				targetlinevalid@tcg = 1 
 			}
 		loop
@@ -3296,6 +3368,9 @@
 	redraw 0
 	gosub *tcg_drawInterface
 	gosub *tcg_drawDeck
+	if ( deckmode@tcg > 0 & eff@tcg >= 0 & eff@tcg < 3000 ) {
+		cardhelp effdesc@tcg(eff@tcg), 10
+	}
 	redraw 1
 	await 30
 	key_check
@@ -3522,6 +3597,9 @@
 		}
 	}
 	*card_player_WHILE1
+	if ( selectmode@tcg == 2 & eff@tcg >= 0 & eff@tcg < 3000 ) {
+		cardhelp effdesc@tcg(eff@tcg), 10
+	}
 	gosub *card_resolve_ongoing
 	tcgdraw
 	cursor@tcg = 1
