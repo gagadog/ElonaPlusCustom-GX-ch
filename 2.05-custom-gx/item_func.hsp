@@ -1867,6 +1867,7 @@
 						case ITEM_ID_DOWSING_OPATOS
 						case ITEM_ID_SCISSORS
 						case ITEM_ID_CROP_MANAGEMENT_TOOLS
+						case ITEM_ID_MEMORY_FRAGMENT
 							check_string_ending = 0
 							swbreak
 						case ITEM_ID_DISH
