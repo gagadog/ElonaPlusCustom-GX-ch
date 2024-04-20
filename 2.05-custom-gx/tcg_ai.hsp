@@ -126,6 +126,8 @@
 				if ( card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) >= cpdata@tcg(TCG_PLAYER_LIFE, cp@tcg) - rnd(5) - rnd(5) ) {
 					p@tcg = 102
 				}
+				// Force a block if it's meant to die.
+				if ( effref@tcg(TCG_SKILL_AI_PREFERENCE, card@tcg(TCG_CARD_EFFECT, c@tcg)) == TCG_SKILL_AI_DIE & cardsurvive@tcg == 0 ) { p@tcg = 103 }
 
 				efllistaddeval 1, p@tcg, c@tcg
 				p@tcg += rnd(2)

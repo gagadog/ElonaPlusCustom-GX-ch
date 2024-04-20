@@ -1,5 +1,6 @@
 *card_resolve_ongoing
 	if ( chainmode@tcg != 0 | selectmode@tcg == 2 ) { return }
+	specialruleeffectdamage@tcg = 0, 0
 	repeat maxcard@tcg
 		card@tcg(TCG_CARD_COST, cnt) = limit(card@tcg(TCG_CARD_REF_COST, cnt), 0, TCG_STAT_MAX)
 		card@tcg(TCG_CARD_REF_ATTACK, cnt) = limit(card@tcg(TCG_CARD_REF_ATTACK, cnt), 0, TCG_STAT_MAX)
@@ -1333,45 +1334,6 @@
 	repeat MAX_CARD
 		deck_opponent(cnt) = 0
 	loop
-	if ( cdata(CDATA_ID, tc) == CREATURE_ID_USER & cdata(CDATA_QUALITY, tc) >= FIX_QUALITY_MIRACLE ) {
-		if ( cdatan(CDATAN_RACE, tc) == "spirit" ) { // Spirit Evolve Deck
-			deck_opponent(CREATURE_ID_SWIMMER) = 2
-			deck_opponent(CREATURE_ID_CAPTAIN) = 1
-			deck_opponent(CREATURE_ID_SAILOR) = 2
-			deck_opponent(CREATURE_ID_JELLYFISH_KRAKEN) = 2
-			deck_opponent(CREATURE_ID_MANTA_RAYARN) = 2
-			deck_opponent(CREATURE_ID_PUTIT) = 4
-
-			deck_opponent(CREATURE_ID_WAR_SPIRIT) = 4
-			deck_opponent(CREATURE_ID_MAGIC_SPIRIT) = 4
-			deck_opponent(CREATURE_ID_GUN_SPIRIT) = 4
-			deck_opponent(CREATURE_ID_CHAOS_SPIRIT) = 4
-			deck_opponent(CREATURE_ID_CHAOS_SEED) = 3
-			deck_opponent(CREATURE_ID_SPIRIT_OF_BREAD) = 3
-			deck_opponent(CREATURE_ID_AIME_THE_STORY_TELLER) = 1
-			return 1
-		}
-		if ( cdatan(CDATAN_RACE, tc) == "wasp" ) { // Ant Deck
-			deck_opponent(CREATURE_ID_SWIMMER) = 2
-			deck_opponent(CREATURE_ID_BARD) = 2
-			deck_opponent(CREATURE_ID_CAPTAIN) = 1
-			deck_opponent(CREATURE_ID_SAILOR) = 2
-			deck_opponent(CREATURE_ID_PUTIT) = 4
-			
-			deck_opponent(CREATURE_ID_QUEEN_GI_ANT) = 4
-			deck_opponent(CREATURE_ID_GI_ANT) = 4
-			deck_opponent(CREATURE_ID_SAMURAI_ANT) = 4
-			deck_opponent(CREATURE_ID_GOLD_ARMOR_ANT) = 3
-			deck_opponent(CREATURE_ID_ALICE_THE_BIG_ANT) = 1
-			deck_opponent(CREATURE_ID_ARIBEL_THE_WHITE_ARMS) = 1
-			deck_opponent(CREATURE_ID_MARY_THE_INSECT_MASTER) = 1
-			deck_opponent(CREATURE_ID_MARKA_THE_SILVER_BEAR) = 1
-
-			deck_opponent(CREATURE_ID_MAGIC_BEE) = 2
-			deck_opponent(CREATURE_ID_OXODE_THE_QUEEN_BEE) = 1
-			return 1
-		}
-	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_MICHES_THE_APPRENTICE ) {
 		deck_opponent(CREATURE_ID_MICHES_THE_APPRENTICE) = 1
 		deck_opponent(CREATURE_ID_YEEK) = 4
@@ -1581,8 +1543,8 @@
 		deck_opponent(CREATURE_ID_WARRIOR) = 2
 		deck_opponent(CREATURE_ID_WIZARD) = 2
 		deck_opponent(CREATURE_ID_BARD) = 2
-		deck_opponent(CREATURE_ID_CITIZEN) = 2
-		deck_opponent(CREATURE_ID_CITIZEN2) = 2
+		deck_opponent(CREATURE_ID_SCHOLAR) = 2
+		deck_opponent(CREATURE_ID_DETECTIVE) = 2
 		return 1
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_SHENA_THE_DRAW | cdata(CDATA_ID, tc) == CREATURE_ID_QURUIZA_THE_RED_EYED_DECEIVER | cdata(CDATA_ID, tc) == CREATURE_ID_CORGON_THE_STEEL_DRAGON ) {
@@ -1868,6 +1830,51 @@
 		deck_opponent(CREATURE_ID_RATIN_THE_FIGHTER_REPORTER) = 1
 		deck_opponent(CREATURE_ID_NECRO_LANCER) = 3
 		deck_opponent(CREATURE_ID_WANGNIN) = 4
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_RODLOB_THE_YEEK_CHIEF ) {
+		deck_opponent(CREATURE_ID_YEEK) = 4
+		deck_opponent(CREATURE_ID_KAMIKAZE_YEEK) = 1
+		deck_opponent(CREATURE_ID_YEEK_WARRIOR) = 4
+		deck_opponent(CREATURE_ID_MASTER_YEEK) = 4
+		deck_opponent(CREATURE_ID_YEEK_ARCHER) = 2
+		deck_opponent(CREATURE_ID_RODLOB_THE_YEEK_CHIEF) = 1
+		deck_opponent(CREATURE_ID_CUTE_FAIRY) = 2
+		deck_opponent(CREATURE_ID_MINER) = 2
+		deck_opponent(CREATURE_ID_BARD) = 1
+		deck_opponent(CREATURE_ID_CAPYBARA) = 3
+		deck_opponent(CREATURE_ID_MEIDA) = 1
+		deck_opponent(CREATURE_ID_OYAUKAMUI) = 1
+		deck_opponent(CREATURE_ID_CATTLE) = 3
+		deck_opponent(CREATURE_ID_MAYU_SIBAYU) = 2
+		deck_opponent(CREATURE_ID_YEEK_HARD_WORKER) = 1
+		deck_opponent(CREATURE_ID_ARCHAYEEK) = 2
+		deck_opponent(CREATURE_ID_ARCHAYEEK_GUNNER) = 1
+		deck_opponent(CREATURE_ID_MASTER_ARCHAYEEK) = 1
+		deck_opponent(CREATURE_ID_LUNATYEEK) = 1
+		deck_opponent(CREATURE_ID_HEROYEEK) = 2
+		deck_opponent(CREATURE_ID_RAPHAEL_THE_WOMANIZER) = 1
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_SSIL_THE_UNDEAD_WITCH ) {
+		deck_opponent(CREATURE_ID_SSIL_THE_UNDEAD_WITCH) = 1
+		deck_opponent(CREATURE_ID_TOWN_CHILD) = 2
+		deck_opponent(CREATURE_ID_OLD_PERSON) = 2
+		deck_opponent(CREATURE_ID_CULTIST_OF_FIRE) = 3
+		deck_opponent(CREATURE_ID_BLACK_CAT) = 1
+		deck_opponent(CREATURE_ID_MINER) = 2
+		deck_opponent(CREATURE_ID_MUTANT) = 4
+		deck_opponent(CREATURE_ID_LITTLE_SISTER) = 1
+		deck_opponent(CREATURE_ID_BARD) = 1
+		deck_opponent(CREATURE_ID_METAMORPHOSE) = 3
+		deck_opponent(CREATURE_ID_BIG_SISTER) = 4
+		deck_opponent(CREATURE_ID_ELEMENT_DRAGON) = 2
+		deck_opponent(CREATURE_ID_SHOGGOTH) = 3
+		deck_opponent(CREATURE_ID_BELL_OF_EMERGENCY) = 2
+		deck_opponent(CREATURE_ID_ABYSSTAR) = 1
+		deck_opponent(CREATURE_ID_SEA_FALLEN_ANGEL) = 1
+		deck_opponent(CREATURE_ID_DAGANOTOSUS) = 1
+		deck_opponent(CREATURE_ID_SP_CHAMPION) = 2
 		return 1
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_MIA_THE_CAT_FREAK | cdata(CDATA_ID, tc) == CREATURE_ID_TALKA_THE_LONG_TWINTAIL | cdata(CDATA_ID, tc) == CREATURE_ID_CACY_THE_CAT_TAMER | cdata(CDATA_ID, tc) == CREATURE_ID_FRISIA_THE_CAT_QUEEN ) {
@@ -2179,6 +2186,68 @@
 		}
 		return 1
 	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_HEINRICH_THE_ARMORED_GENERAL ) {
+		deck_opponent(CREATURE_ID_HEINRICH_THE_ARMORED_GENERAL) = 1
+		deck_opponent(CREATURE_ID_MILIS_CAPTAIN_OF_THE_SPECIAL_FORCES) = 1
+		deck_opponent(CREATURE_ID_SECURITY_OFFICER_ORVILLE) = 1
+		deck_opponent(CREATURE_ID_LEAD_DEVELOPER_DR_GAVELA) = 1
+		deck_opponent(CREATURE_ID_YERLES_MACHINE_INFANTRY) = 3
+		deck_opponent(CREATURE_ID_YERLES_ELITE_MACHINE_INFANTRY) = 2
+		deck_opponent(CREATURE_ID_YERLES_COMBAT_PLANE) = 4
+		deck_opponent(CREATURE_ID_YERLES_LATEST_OUTFIT_SOLDIER) = 1
+		deck_opponent(CREATURE_ID_MILITARY_PUTIT) = 4
+		deck_opponent(CREATURE_ID_PUTIT_TANK) = 3
+		deck_opponent(CREATURE_ID_YERLES_SELF_PROPELLED_GUN) = 2
+		deck_opponent(CREATURE_ID_SECURITY_SYSTEM) = 2
+		deck_opponent(CREATURE_ID_YERLES_MORTAR) = 1
+		deck_opponent(CREATURE_ID_YERLESWOOD_TYPE_M) = 3
+		deck_opponent(CREATURE_ID_MELUGAST_TYPEM) = 1
+		deck_opponent(CREATURE_ID_DESKTOP_NAVY) = 1
+		deck_opponent(CREATURE_ID_DESKTOP_BIRDIE) = 1
+		deck_opponent(CREATURE_ID_MINER) = 2
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_SECURITY_OFFICER_ORVILLE ) {
+		deck_opponent(CREATURE_ID_SECURITY_OFFICER_ORVILLE) = 1
+		deck_opponent(CREATURE_ID_MILITARY_PUTIT) = 4
+		deck_opponent(CREATURE_ID_PUTIT_TANK) = 4
+		deck_opponent(CREATURE_ID_YERLES_MACHINE_INFANTRY) = 3
+		deck_opponent(CREATURE_ID_YERLES_ELITE_MACHINE_INFANTRY) = 2
+		deck_opponent(CREATURE_ID_YERLES_COMBAT_PLANE) = 2
+		deck_opponent(CREATURE_ID_YERLES_LATEST_OUTFIT_SOLDIER) = 3
+		deck_opponent(CREATURE_ID_LITTLE_GIRL) = 4
+		deck_opponent(CREATURE_ID_YOUNGER_SISTER) = 2
+		deck_opponent(CREATURE_ID_YOUNGER_SISTER2) = 1
+		deck_opponent(CREATURE_ID_DEFENDER) = 2
+		deck_opponent(CREATURE_ID_MINER) = 1
+		deck_opponent(CREATURE_ID_BARD) = 2
+		deck_opponent(CREATURE_ID_PLATINA_BELL) = 1
+		deck_opponent(CREATURE_ID_OLDER_SISTER) = 2
+		deck_opponent(CREATURE_ID_OLDER_SISTER2) = 1
+		deck_opponent(CREATURE_ID_H_SISTER2) = 2
+		deck_opponent(CREATURE_ID_LAZY_OLDER_SISTER) = 2
+		deck_opponent(CREATURE_ID_M_GIRL) = 2
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_MILIS_CAPTAIN_OF_THE_SPECIAL_FORCES ) {
+		deck_opponent(CREATURE_ID_MILIS_CAPTAIN_OF_THE_SPECIAL_FORCES) = 1
+		deck_opponent(CREATURE_ID_MILITARY_PUTIT) = 4
+		deck_opponent(CREATURE_ID_PUTIT_TANK) = 4
+		deck_opponent(CREATURE_ID_QUANTUM_CREATURE) = 1
+		deck_opponent(CREATURE_ID_RED_BAPTIST) = 3
+		deck_opponent(CREATURE_ID_RED_DRAGON) = 4
+		deck_opponent(CREATURE_ID_CULTIST_OF_FIRE) = 1
+		deck_opponent(CREATURE_ID_BOMB_ROCK) = 2
+		deck_opponent(CREATURE_ID_CUPID_OF_LOVE) = 2
+		deck_opponent(CREATURE_ID_CUPID_OF_DEATH) = 2
+		deck_opponent(CREATURE_ID_BLACK_ANGEL) = 2
+		deck_opponent(CREATURE_ID_MERCENARY_ARCHER) = 2
+		deck_opponent(CREATURE_ID_LEIKI) = 1
+		deck_opponent(CREATURE_ID_SCHOLAR) = 2
+		deck_opponent(CREATURE_ID_HELLSTLING) = 1
+		deck_opponent(CREATURE_ID_ANGRY_BURGER) = 2
+		return 1
+	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_CAIM_THE_MAD_RICH | cdata(CDATA_ID, tc) == CREATURE_ID_CRIMSON_DARK_GUARDIAN | cdata(CDATA_ID, tc) == CREATURE_ID_BLUE_DARK_GUARDIAN | cdata(CDATA_ID, tc) == CREATURE_ID_GREEN_DARK_GUARDIAN ) {
 		deck_opponent(CREATURE_ID_CAIM_THE_MAD_RICH) = 1
 		deck_opponent(CREATURE_ID_CRIMSON_DARK_GUARDIAN) = 1
@@ -2232,6 +2301,48 @@
 		deck_opponent(CREATURE_ID_LION) = 4
 		deck_opponent(CREATURE_ID_HOLY_BEAST) = 2
 		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_MARKA_THE_SILVER_BEAR | cdata(CDATA_ID, tc) == CREATURE_ID_CONDUCTOR_KOALA ) {
+		deck_opponent(CREATURE_ID_BROWN_BEAR) = 4
+		deck_opponent(CREATURE_ID_GRIZZLY) = 4
+		deck_opponent(CREATURE_ID_DOBIEL) = 4
+		deck_opponent(CREATURE_ID_ARKTOUROS) = 3
+		deck_opponent(CREATURE_ID_CHUPACABURA) = 1
+		deck_opponent(CREATURE_ID_DARK_KOALA) = 2
+		deck_opponent(CREATURE_ID_WENKAMUI) = 1
+		deck_opponent(CREATURE_ID_SHENA_THE_DRAW) = 1
+		deck_opponent(CREATURE_ID_TOWN_CHILD) = 2
+		deck_opponent(CREATURE_ID_OLD_PERSON) = 2
+		deck_opponent(CREATURE_ID_MINER) = 2
+		if ( cdata(CDATA_ID, tc) == CREATURE_ID_MARKA_THE_SILVER_BEAR ) {
+			deck_opponent(CREATURE_ID_WEREWOLF) = 3
+			deck_opponent(CREATURE_ID_DETECTIVE) = 2
+			deck_opponent(CREATURE_ID_MARKA_THE_SILVER_BEAR) = 1
+		}
+		if ( cdata(CDATA_ID, tc) == CREATURE_ID_CONDUCTOR_KOALA ) {
+			deck_opponent(CREATURE_ID_CONDUCTOR_KOALA) = 1
+			deck_opponent(CREATURE_ID_DARK_KOALA) = 4
+		}	
+		return 1
+	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_ALICE_THE_BIG_ANT | cdata(CDATA_ID, tc) == CREATURE_ID_ARIBEL_THE_WHITE_ARMS | cdata(CDATA_ID, tc) == CREATURE_ID_MARY_THE_INSECT_MASTER | cdata(CDATA_ID, tc) == CREATURE_ID_OXODE_THE_QUEEN_BEE ) {
+		deck_opponent(CREATURE_ID_SWIMMER) = 2
+		deck_opponent(CREATURE_ID_BARD) = 2
+		deck_opponent(CREATURE_ID_CAPTAIN) = 1
+		deck_opponent(CREATURE_ID_SAILOR) = 2
+		deck_opponent(CREATURE_ID_PUTIT) = 4
+		deck_opponent(CREATURE_ID_QUEEN_GI_ANT) = 4
+		deck_opponent(CREATURE_ID_GI_ANT) = 4
+		deck_opponent(CREATURE_ID_SAMURAI_ANT) = 4
+		deck_opponent(CREATURE_ID_GOLD_ARMOR_ANT) = 3
+		if ( cdata(CDATA_ID, tc) == CREATURE_ID_ALICE_THE_BIG_ANT | cdata(CDATA_ID, tc) == CREATURE_ID_ARIBEL_THE_WHITE_ARMS | cdata(CDATA_ID, tc) == CREATURE_ID_MARY_THE_INSECT_MASTER ) {
+			deck_opponent(CREATURE_ID_ALICE_THE_BIG_ANT) = 1
+			deck_opponent(CREATURE_ID_ARIBEL_THE_WHITE_ARMS) = 1
+			deck_opponent(CREATURE_ID_MARY_THE_INSECT_MASTER) = 1
+		} else {
+			deck_opponent(CREATURE_ID_MAGIC_BEE) = 2
+			deck_opponent(CREATURE_ID_OXODE_THE_QUEEN_BEE) = 1
+		}
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_ENTHUMESIS ) {
 		deck_opponent(CREATURE_ID_ENTHUMESIS) = 1
@@ -2508,8 +2619,8 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
 		cardrefcost = 1
-		cardrefattack = 2
-		cardrefhp = 2
+		cardrefattack = 0
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_SICKOLDERBROTHER
 		cardrefbits = ""
 		return 1
@@ -2551,9 +2662,9 @@
 		cardrefdomain = 4
 		cardrefcost = 2
 		cardrefattack = 0
-		cardrefhp = 1
-		cardrefskillid = TCG_EFF_DEATHRATTLE_DRAW2CARD
-		cardrefbits = ""
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_MGIRL
+		cardrefbits = "22"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_LAZY_OLDER_SISTER ) {
@@ -2677,7 +2788,7 @@
 		cardrefcost = 2
 		cardrefattack = 2
 		cardrefhp = 2
-		cardrefskillid = TCG_EFF_BATTLECRY_TARGETHANDCREATURECOSTREDUCE
+		cardrefskillid = TCG_EFF_LITTLEGIRL
 		cardrefbits = ""
 		return 1
 	}
@@ -2719,7 +2830,7 @@
 		cardrefcost = 1
 		cardrefattack = 1
 		cardrefhp = 1
-		cardrefskillid = TCG_EFF_BATTLECRY_DEBUFFCHOSENENEMY
+		cardrefskillid = TCG_EFF_YOUNGLADY
 		cardrefbits = ""
 		return 1
 	}
@@ -4940,7 +5051,7 @@
 		cardrefcost = 5
 		cardrefattack = 5
 		cardrefhp = 6
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT5DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT3DAMAGE
 		cardrefbits = "12"
 		return 1
 	}
@@ -8314,9 +8425,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 7
 		cardrefcost = 5
-		cardrefattack = 5
+		cardrefattack = 4
 		cardrefhp = 7
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT5DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT3DAMAGE
 		cardrefbits = "11"
 		return 1
 	}
@@ -8462,11 +8573,11 @@
 		cardreflvl = 130
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 5
-		cardrefcost = 20
+		cardrefcost = 7
 		cardrefattack = 7
 		cardrefhp = 5
-		cardrefskillid = TCG_EFF_NONE
-		cardrefbits = "19"
+		cardrefskillid = TCG_EFF_SEIRYU
+		cardrefbits = "8,30"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_CHAOS_UNICORN_KING_OF_CHAOS ) {
@@ -8589,7 +8700,7 @@
 		cardrefcost = 5
 		cardrefattack = 3
 		cardrefhp = 3
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT5DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT4DAMAGE
 		cardrefbits = "8"
 		return 1
 	}
@@ -9578,7 +9689,7 @@
 		cardrefcost = 3
 		cardrefattack = 5
 		cardrefhp = 3
-		cardrefskillid = TCG_EFF_AFTERCOMBAT_DEALENEMY4DAMAGE
+		cardrefskillid = TCG_EFF_AFTERCOMBAT_DEALENEMY3DAMAGE
 		cardrefbits = ""
 		return 1
 	}
@@ -9780,7 +9891,7 @@
 		cardrefcost = 7
 		cardrefattack = 5
 		cardrefhp = 10
-		cardrefskillid = TCG_EFF_AFTERCOMBAT_DEALENEMY4DAMAGE
+		cardrefskillid = TCG_EFF_AFTERCOMBAT_DEALENEMY3DAMAGE
 		cardrefbits = ""
 		return 1
 	}
@@ -9893,11 +10004,11 @@
 		cardreflvl = 1
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
-		cardrefcost = 1
-		cardrefattack = 2
-		cardrefhp = 2
+		cardrefcost = 2
+		cardrefattack = 0
+		cardrefhp = 1
 		cardrefskillid = TCG_EFF_SILVERFOXBROTHER
-		cardrefbits = ""
+		cardrefbits = "11"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_FRON_THE_TOUR_PLANNER ) {
@@ -9922,7 +10033,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
 		cardrefcost = 1
-		cardrefattack = 1
+		cardrefattack = 0
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_FOXBROTHER
 		cardrefbits = ""
@@ -10148,7 +10259,7 @@
 		cardrefcost = 8
 		cardrefattack = 3
 		cardrefhp = 4
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT5DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT3DAMAGE
 		cardrefbits = "11,16,19,99"
 		return 1
 	}
@@ -10861,7 +10972,7 @@
 		cardrefcost = 5
 		cardrefattack = 5
 		cardrefhp = 6
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT5DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT4DAMAGE
 		cardrefbits = "66"
 		return 1
 	}
@@ -10967,7 +11078,7 @@
 		cardrefcost = 5
 		cardrefattack = 5
 		cardrefhp = 5
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT5DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT4DAMAGE
 		cardrefbits = "11,99"
 		return 1
 	}
@@ -14837,7 +14948,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
 		cardrefcost = 6
-		cardrefattack = 11
+		cardrefattack = 8
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "6,7"
@@ -14851,7 +14962,7 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
 		cardrefcost = 5
-		cardrefattack = 9
+		cardrefattack = 6
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_NONE
 		cardrefbits = "6,8"
@@ -15085,7 +15196,7 @@
 		cardrefcost = 4
 		cardrefattack = 5
 		cardrefhp = 1
-		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT5DAMAGE
+		cardrefskillid = TCG_EFF_BATTLECRY_DEALOPPONENT3DAMAGE
 		cardrefbits = "7"
 		return 1
 	}
@@ -16370,7 +16481,7 @@
 		cardrefcost = 4
 		cardrefattack = 4
 		cardrefhp = 4
-		cardrefskillid = TCG_EFF_TURN_START_DEALOPPONENT4DAMAGE
+		cardrefskillid = TCG_EFF_TURN_START_DEALOPPONENT3DAMAGE
 		cardrefbits = ""
 		return 1
 	}
@@ -17347,7 +17458,7 @@
 		cardrefdomain = 4
 		cardrefcost = 7
 		cardrefattack = 4
-		cardrefhp = 5
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_BATTLECRY_DRAW3CARD
 		cardrefbits = "30,72"
 		return 1
@@ -17363,7 +17474,7 @@
 		cardrefattack = 4
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_MAGICARCHER
-		cardrefbits = "9,30,72"
+		cardrefbits = "9,72"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_HALLOWEEN_CHILDREN ) {
@@ -17403,7 +17514,7 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 3
-		cardrefattack = 10
+		cardrefattack = 7
 		cardrefhp = 1
 		cardrefskillid = TCG_EFF_RAIZEL
 		cardrefbits = "30"
@@ -17418,9 +17529,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
 		cardrefcost = 2
-		cardrefattack = 3
-		cardrefhp = 3
-		cardrefskillid = TCG_EFF_BATTLECRY_DRAW1CARD
+		cardrefattack = 0
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_SCHOLAR
 		cardrefbits = ""
 		return 1
 	}
@@ -17447,7 +17558,7 @@
 		cardrefdomain = 2
 		cardrefcost = 4
 		cardrefattack = 4
-		cardrefhp = 4
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_BATTLECRY_DRAW2CARD
 		cardrefbits = "30,72"
 		return 1

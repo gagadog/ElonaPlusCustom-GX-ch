@@ -1,5 +1,27 @@
 # Upcoming
 
+# Changed:
+- TCG: 
+  - Added dialog for some cards. More dialogs pending.
+  - Lethal TCG: Starting HP is now calculated with both Target/Player HP ratio and current HP percentage.
+  - Lethal TCG: Insta-Victory-Cards now does fatigue damage.
+  - New effect for Mysterious Producer: Evolve Rorans in your Deck.
+  - New effect/event battle for the Chaos Child/Jaldaboth.
+  - Added deck for Rodlob/Ssil/Heinrich/Milis/Orville/Marka/Koala/Alice/Aribel/Mary/Oxode/Enthum/ChaosChild/Jaldaboth/Aime.
+  - Changed card effect of Mgirl/SickBro/FoxBrother/Scholar.
+  - Revamped Bear/LargeAnimal/Beast/Golem cards.
+  - Nerfed HP-burn cards. (Sorry but a full-burn deck win turn 5 with autobattle)
+
+# Fixed
+- Text issues, Thanks to @air1068
+- Smart Cooldown: Fixed wrong necrocoffin used.
+- TCG: 
+  - Fixed mouse control effect targeting bugs.
+  - Deck-out no longer happens with full-hand.
+  - After Combat effect now fires after attacking player.
+
+# 2.22.3.0
+
 # Added
 - Challenge Tweak to revert Split Monster behavior to Vanilla.
 - Animated Tachi-e support, and a tweak to draw tachi-e on main screen.

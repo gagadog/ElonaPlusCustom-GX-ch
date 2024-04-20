@@ -1212,18 +1212,18 @@
 
 #deffunc reconstruct_card_text int reconstruct_card_text_arg1_aeft
 	if ( reconstruct_card_text_arg1_aeft < 0 | reconstruct_card_text_arg1_aeft >= maxcard@tcg ) { return }
-	carddetailneffbk@tcg = carddetailneff@tcg(aeft@tcg)
+	carddetailneffbk@tcg = carddetailneff@tcg(reconstruct_card_text_arg1_aeft)
 	sdim lines@tcg
-	split carddetailneff@tcg(aeft@tcg), "\n", lines@tcg
+	split carddetailneff@tcg(reconstruct_card_text_arg1_aeft), "\n", lines@tcg
 	f@tcg = stat
 	if ( f@tcg >= 1 ) {
-		carddetailneff@tcg(aeft@tcg) = lines@tcg(0)
+		carddetailneff@tcg(reconstruct_card_text_arg1_aeft) = lines@tcg(0)
 		if ( f@tcg >= 2 & instr(carddetailneffbk@tcg, 0, "Bits:  ") != -1 ) {
-			carddetailneff@tcg(aeft@tcg) += "\n" + lines@tcg(1)
+			carddetailneff@tcg(reconstruct_card_text_arg1_aeft) += "\n" + lines@tcg(1)
 		}
-		carddetailneffbk@tcg = "Effect: " + effdesc@tcg(card@tcg(TCG_CARD_EFFECT, aeft@tcg))
+		carddetailneffbk@tcg = "Effect: " + effdesc@tcg(card@tcg(TCG_CARD_EFFECT, reconstruct_card_text_arg1_aeft))
 		talk_conv carddetailneffbk@tcg, 65
-		carddetailneff@tcg(aeft@tcg) += "\n" + carddetailneffbk@tcg
+		carddetailneff@tcg(reconstruct_card_text_arg1_aeft) += "\n" + carddetailneffbk@tcg
 	}
 	f@tcg = stat
 	return
@@ -1546,6 +1546,9 @@
 	if ( cdbit(TCG_BIT_BLEEDING, dmgcard_arg1) ) {
 		dmgcard_dmg++
 	}
+	if ( dmgcard_arg_combat != TRUE ) {
+		dmgcard_dmg += specialruleeffectdamage@tcg(1 - card@tcg(TCG_CARD_CONTROLLER, dmgcard_arg1))
+	}
 	if ( dmgcard_dmg > 0 ) {
 		snd SOUNDLIST_ATK1
 	}
@@ -1587,12 +1590,16 @@
 	}
 	return
 
-#deffunc dmgplayer int dmgplayer_arg1, int dmgplayer_arg2
-	if ( dmgplayer_arg2 > 0 ) {
+#deffunc dmgplayer int dmgplayer_arg1, int dmgplayer_arg2, int dmgplayer_arg_combat
+	dmgplayer_dmg = dmgplayer_arg2
+	if ( dmgplayer_arg_combat != TRUE ) {
+		dmgplayer_dmg += specialruleeffectdamage@tcg(1-dmgplayer_arg1)
+	}
+	if ( dmgplayer_dmg > 0 ) {
 		snd SOUNDLIST_ATK1
 	}
-	efllistadd 1, -dmgplayer_arg2, cpx@tcg(dmgplayer_arg1), cpy@tcg(dmgplayer_arg1)
-	cpdata@tcg(TCG_PLAYER_LIFE, dmgplayer_arg1) -= dmgplayer_arg2
+	efllistadd 1, -dmgplayer_dmg, cpx@tcg(dmgplayer_arg1), cpy@tcg(dmgplayer_arg1)
+	cpdata@tcg(TCG_PLAYER_LIFE, dmgplayer_arg1) -= dmgplayer_dmg
 	if ( cpdata@tcg(TCG_PLAYER_LIFE, dmgplayer_arg1) <= 0 ) {
 		cpdata@tcg(TCG_PLAYER_LIFE, dmgplayer_arg1) = 0
 		if ( dmgplayer_arg1 == 0 ) {
@@ -1631,6 +1638,10 @@
 	return
 
 #deffunc getrandomcard int getrandomcard_arg1
+	p@tcg = getholdersum(getrandomcard_arg1)
+	if ( getholdersum(getrandomcard_arg1) >= 7 & specialruledrawswhenhandfull@tcg != 1 ) {
+		return
+	}
 	if ( getdecksum(getrandomcard_arg1) == 0 ) {
 		if ( yaminogemu@tcg == 1 | specialruleusefatigue@tcg == 1 ) {
 			fatigueplayer getrandomcard_arg1
@@ -1645,9 +1656,6 @@
 		return
 	}
 	p@tcg = getholdersum(getrandomcard_arg1)
-	if ( getholdersum(getrandomcard_arg1) >= 7 & specialruledrawswhenhandfull@tcg != 1 ) {
-		return
-	}
 	c@tcg = -1, 0
 	ctempo@tcg = -1, 0
 	repeat maxcard@tcg
@@ -2239,6 +2247,9 @@
 	repeat 2
 		initcp@tcg = cnt
 		repeat calcstartcard(cnt)
+			if ( initcp@tcg == ct@tcg & cnt == 0 ) {
+				continue
+			}
 			getrandomcard initcp@tcg
 		loop
 	loop
