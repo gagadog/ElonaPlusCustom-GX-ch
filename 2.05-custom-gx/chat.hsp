@@ -13877,7 +13877,7 @@
 		}
 		if ( chatval == 12 ) {
 			chatMore lang("エンチャントはランダムだから、とにかく数が重要ね。店や依頼で手に入れるだけじゃ足りないわ。こつこつネフィアで拾ったり、誰かから奪ったりしないと。その場合は、高品質以上を狙いましょう。鑑定できる道具を持っていれば、その場で確かめてもいいわね。", "Enchantments are random, but the number is important. It's not enough to just get everything from blacksmiths or requests. You can trade with other adventurers, but the best gear can be found in high-level Nefia. Spells, scrolls, or rods of identify let you examine items as you find them.")
-			chatMore lang("軽い装備品なら、粗悪や良質でも自然鑑定上げに使えるかもしれないわね。でも重い装備はよっぽど重量と枠に余裕がない限り、高品質未満だとわかった瞬間捨てたほうがいいわ。その分他のものを拾いましょう。", "If equipment you find is light enough, you might want to keep it with you and identify it passively with Sense Quality. But unless a heavy item is at least Great quality, you should probably just leave it behind so you can carry more valuable loot.")
+			chatMore lang("軽い装備品なら、粗悪や良質でも自然鑑定上げに使えるかもしれないわね。でも重い装備はよっぽど重量と枠に余裕がない限り、高品質未満だとわかった瞬間捨てたほうがいいわ。その分他のものを拾いましょう。", "If equipment you find is light enough, you might want to keep it with you and identify it passively with Analysis. But unless a heavy item is at least Great quality, you should probably just leave it behind so you can carry more valuable loot.")
 			chatMore lang("結婚指輪・首輪、羽、ソックス、スピードの指輪、パンティー、オーロラリング、ヴィンデールクローク、セブンリーグブーツ、フェアリーハットは軽くて固有効果も強いから、粗悪や良質でも拾い集めておきたいわね。特に結婚指輪・首輪は友好を深めるのにも使えるわ。", "Engagement rings and amulets, wings and feathers, sox, speed rings, panties, aurora rings, vindale cloaks, seven league boots, and fairy hats are lightweight and have unique, useful effects, so I'd pick them up regardless of quality. Especially engagement rings and amulets, since they can improve a relationship.")
 			gdata(STARTING_GDATA_FLAG + 330)++
 		}
