@@ -14,6 +14,7 @@
 
 # Fixed
 - Text issues, Thanks to @air1068
+- Key_selcect overflow on ranch animals.
 - Smart Cooldown: Fixed wrong necrocoffin used.
 - TCG: 
   - Fixed mouse control effect targeting bugs.

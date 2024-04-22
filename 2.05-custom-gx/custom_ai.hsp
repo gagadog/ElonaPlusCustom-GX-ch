@@ -1548,11 +1548,15 @@
 	listn(0, CAIAvailableSlots(tc)+4) = "Back"
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
 
-	repeat CAIAvailableSlots(tc) + 4
+	repeat CAIAvailableSlots(tc) + 5
 		key_list(cnt) = key_select(cnt)
 		keyrange = cnt + 1
 		pos wx + 18, wy + 60 + cnt * 19 - 2
-		gcopy 3, cnt * 24 + 72, 30, 24, 18
+		gcopy 3, 0, 30, 24, 18
+		pos wx + 23, wy + 60 + cnt * 19 - 2
+		color 50, 60, 80
+		bmes key_list(cnt), 250, 240, 230
+		color 0, 0, 0
 		cs_list listn(0, cnt), wx + 44, wy + 60 + cnt * 19 - 1, 19
 	loop
 
