@@ -1,25 +1,26 @@
 # Upcoming
 
-# Changed:
-- TCG: 
-  - Added dialog for some cards. More dialogs pending.
-  - Lethal TCG: Starting HP is now calculated with both Target/Player HP ratio and current HP percentage.
-  - Lethal TCG: Insta-Victory-Cards now does fatigue damage.
-  - New effect for Mysterious Producer: Evolve Rorans in your Deck.
-  - New effect/event battle for the Chaos Child/Jaldaboth.
-  - Added deck for Rodlob/Ssil/Heinrich/Milis/Orville/Marka/Koala/Alice/Aribel/Mary/Oxode/Enthum/ChaosChild/Jaldaboth/Aime.
-  - Changed card effect of Mgirl/SickBro/FoxBrother/Scholar.
-  - Revamped Bear/LargeAnimal/Beast/Golem cards.
-  - Nerfed HP-burn cards. (Sorry but a full-burn deck win turn 5 with autobattle)
-
 # Fixed
 - Text issues, Thanks to @air1068
 - Key_selcect overflow on ranch animals.
 - Smart Cooldown: Fixed wrong necrocoffin used.
-- TCG: 
-  - Fixed mouse control effect targeting bugs.
-  - Deck-out no longer happens with full-hand.
-  - After Combat effect now fires after attacking player.
+- Chat Pop-up: Wrong picture used for chara height calculation.
+
+# TCG Change
+- You can now buy cards at general vendors.
+- Fixed mouse control effect targeting bugs.
+- Deck-out no longer happens with full-hand.
+- After Combat effect now fires after attacking player.
+- Added dialog for some cards. More dialogs pending. (Garziem no longer gives you a jumpscare.)
+- Lethal TCG: Starting HP is now calculated with both Target/Player HP ratio and current HP percentage.
+- Lethal TCG: Insta-Victory-Cards now does fatigue damage.
+- New effect for Mysterious Producer: Evolve Rorans in your Deck.
+- New effect/event battle for the Chaos Child/Jaldaboth.
+- Added deck for Rodlob/Ssil/Heinrich/Milis/Orville/Marka/Koala/Alice/Aribel/Mary/Oxode/Enthum/ChaosChild/Jaldaboth/Aime.
+- Changed card effect of Mgirl/SickBro/FoxBrother/Scholar.
+- Lulwy effect now only target 1 of your Hand. Added base effect for Mani,Jure,and Itzpalt.
+- Revamped Bear/LargeAnimal/Beast/Golem cards.
+- Nerfed HP-burn cards. (Sorry but a full-burn deck win turn 5 with autobattle)
 
 # 2.22.3.0
 

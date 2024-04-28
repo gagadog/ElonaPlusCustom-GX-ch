@@ -955,6 +955,7 @@
 	}
 	if ( gdata(GDATA_QUEST_STATUS) != QUEST_STATE_SUCCESS ) {
 		if ( gdata(GDATA_QUEST_TYPE) == 1 ) {
+			locvar_check_quest_pbk = locvar_check_quest_p
 			locvar_check_quest_p = 0
 			repeat MAX_CHARA_TOTAL - MAX_CHARA_SAVE, MAX_CHARA_SAVE
 				if ( cdata(CDATA_RELATION_ORG, cnt) == (-3) ) {
@@ -980,9 +981,11 @@
 				evadd EVENT_QUEST_ELEMINATE
 			}
 			else {
-				txtmore
-				txtef COLOR_BLUE
-				txt lang("[殲滅依頼]残り" + locvar_check_quest_p + "体" + "] ", "" + locvar_check_quest_p + " more to go.")
+				if ( locvar_check_quest_p != locvar_check_quest_pbk ) {
+					txtmore
+					txtef COLOR_BLUE
+					txt lang("[殲滅依頼]残り" + locvar_check_quest_p + "体" + "] ", "" + locvar_check_quest_p + " more to go.")
+				}
 			}
 		}
 		if ( gdata(GDATA_QUEST) == QUEST_TYPE_CONQUER ) {

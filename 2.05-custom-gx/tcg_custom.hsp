@@ -421,6 +421,9 @@
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_ELEAREFUGEELOWCOST ) {
 					if ( cdbit(TCG_BIT_ELEAREFUGEE, cnt) != TRUE | card@tcg(TCG_CARD_COST, cnt) >= 5 ) { continue }
 				}
+				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_MACHINE ) {
+					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "machine" & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "vehicle" & cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "machinegod" & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_ANDROID & card@tcg(TCG_CARD_REF_DBID, cnt) != CREATURE_ID_GARZIEM ) { continue }
+				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_WARRIOR ) {
 					if ( cardn@tcg(TCG_CARDN_REF_CLASS, cnt) != "warrior" ) { continue }
 				}
@@ -1328,6 +1331,260 @@
 	rnddomain@tcg = 0
 	rndlvl@tcg = 0
 	rndfixlvl@tcg = 0 // 2 OR 6
+	return
+
+*chat_purchase_cards
+	if ( length2(effref@tcg) < 100 ) {
+		gosub *tcg_effect_define
+	}
+	targetdeck@tcg = 0
+	carddaily@tcg = 0, 0, 0, 0, 0
+	carddailyc@tcg = 100, 100, 100, 100, 100
+	carddailyt@tcg = "", "", "", "", ""
+	carddailyd@tcg = "", "", "", "", ""
+	randomize gdata(GDATA_YEAR) * 360 + gdata(GDATA_MONTH) * 30 + gdata(GDATA_DAY) + cdata(CDATA_ROLE_RESTOCK, tc)
+	repeat 5
+		gosub *card_filter_reset
+		gosub *card_filter
+		if ( cardno == carddaily@tcg(0) | cardno == carddaily@tcg(1) | cardno == CREATURE_ID_MYSTERIOUS_PRODUCER ) { continue cnt }
+		carddaily@tcg(cnt) = cardno
+		card_ref cardno
+		carddailyt@tcg(cnt) = cardrefn
+		sreplace rtvaln2, rtvaln2, "\n", ""
+		carddailyd@tcg(cnt) = rtvaln2
+		if ( cardrefdomain == 4 ) { carddailyc@tcg(cnt) = 200 }
+		if ( cardrefdomain == 5 ) { carddailyc@tcg(cnt) = 1000 }
+	loop
+	randomize
+	item_find ITEM_ID_DECK, 3, 1
+	if ( stat == (-1) ) {
+		chatMore lang("私たちは実物のカードを販売していません。カードの引き換えにはデッキが必要です。", "We aren't selling physical cards. You need to bring a Deck to redeem the card codes."), strbye
+		goto *chat_end
+	}
+	cardpage@tcg = 0
+	cpimax@tcg = 8
+	dim cardsetprice@tcg, 100
+	sdim cardsetdesc@tcg, 100, 100
+	dim cardsetcontent@tcg, 10, 100
+	*chat_purchase_cards_WHILE
+	cpicurr@tcg = 0
+	buff = lang("以下は交換可能なカードセットのリストである。", "Here's a list of redeemable card sets.")
+	if ( card(0, CREATURE_ID_NOVICE) < 999 ) {
+		currentthing@tcg = 11
+		cardprice@tcg(currentthing@tcg) = 100 * card(0, CREATURE_ID_NOVICE) + 10 * (card(0, CREATURE_ID_NOVICE) == 0)
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_NOVICE
+		cardsetdesc@tcg(currentthing@tcg) = lang("初心者冒険者のカードで、種族やクラスによって効果や見た目が毎ゲーム変わる。技術的に異なるカードだから、好きなだけデッキに入れられるし、30枚の幼女でデッキを組むより気持ち悪くないだろ？", "Card of a novice adventurer, their effect and appearance changes every game according to their race and class. You can put as many of those as you want into your deck because they are technically different cards, and it's less far creepy than a deck of 30 little girls, right?")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚]初心者冒険家のカード", "["+cardprice@tcg(currentthing@tcg)+" Tickets] Card of a novice adventurer.")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_MYSTERIOUS_PRODUCER) < 1 ) {
+		currentthing@tcg = 12
+		cardprice@tcg(currentthing@tcg) = 5000
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_MYSTERIOUS_PRODUCER
+		cardsetdesc@tcg(currentthing@tcg) = lang("謎のプロデューサーのカード。彼の行いを憎む者もいるが、彼はあなたのデッキのローランの可能性を解き放つことができる。", "Cards of a mysterious producer. Some hate him for his deeds, but he can unlock the potential of Rorans in your deck.\nHighly Evolutionary.\n[Targets the following cards:]\nLittle Girl\nYoung Lady\nYounger Sister\nOlder Sister\nGwen the Innocent.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚]謎のプロデューサーのカード", "["+cardprice@tcg(currentthing@tcg)+" Tickets] Card of a Mysterious Producer.")
+		}
+		cpicurr@tcg++
+	}
+	repeat 5
+		if ( card(0, carddaily@tcg(cnt)) < 1 ) {
+			currentthing@tcg = 13 + cnt
+			cardprice@tcg(currentthing@tcg) = carddailyc@tcg(cnt)
+			cardsetcontent@tcg(0, currentthing@tcg) = carddaily@tcg(cnt)
+			cardsetdesc@tcg(currentthing@tcg) = carddailyd@tcg(cnt)
+			if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+				chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚]"+carddailyt@tcg(cnt)+"のカード", "["+cardprice@tcg(currentthing@tcg)+" Tickets] Card of "+carddailyt@tcg(cnt)+".")
+			}
+			cpicurr@tcg++
+		}
+	loop
+	if ( card(0, CREATURE_ID_SP_CHAMPION) < 4 ) {
+		currentthing@tcg = 21
+		cardprice@tcg(currentthing@tcg) = 2400
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_SP_CHAMPION, CREATURE_ID_ABYSS_ANIMAL, CREATURE_ID_FLIGHT_FISH, CREATURE_ID_FLIGHT_FISH, CREATURE_ID_NIGHTMARE_SHARK, CREATURE_ID_RAGING_SHARK, CREATURE_ID_CAPTAIN_SHARK, CREATURE_ID_ORCINUS_ORCA
+		cardsetdesc@tcg(currentthing@tcg) = lang("青以外のカードではブロックされない。彼らは現実のカードと同じようにヘルスをトレードする。", "These bad boys can't be blocked by non-blue cards. They trade health as good as their real life counterparts.\n[Contains]\n1 SP Champion.\n1 Abyss Animal\n6 Sharks (800% Value!)")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]シャークトレード", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Blue Card Set] Shark Trade.")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_CLOUDRAGON) < 4 ) {
+		currentthing@tcg = 22
+		cardprice@tcg(currentthing@tcg) = 1800
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_CLOUDRAGON, CREATURE_ID_CLOUD_BEAST, CREATURE_ID_ELECTRIC_CLOUD, CREATURE_ID_ELECTRIC_CLOUD, CREATURE_ID_CHAOS_CLOUD, CREATURE_ID_WISP, CREATURE_ID_DEMONS_SOUL, CREATURE_ID_KESALANPATHARAN
+		cardsetdesc@tcg(currentthing@tcg) = lang("この厄介なウィスプは相手をスタンロックする。しかも、盤面を埋めるために重複する。", "These annoying wisps stun locks your opponent. And they duplicate to fill the board, ew.\n[Contains]\n1 Clouddragon.\n1 Cloud Beast\n6 Annoying Wisps.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]雲魔物", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Blue Card Set] Eye of the Typhoon.")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_SKOGSRA) < 4 ) {
+		currentthing@tcg = 31
+		cardprice@tcg(currentthing@tcg) = 1200
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_SKOGSRA, CREATURE_ID_ALRAUNE, CREATURE_ID_FIRE_ENT, CREATURE_ID_FIRE_ENT, CREATURE_ID_ICE_ENT, CREATURE_ID_ICE_ENT, CREATURE_ID_GRAND_ENT, CREATURE_ID_HINOCCHIO
+		cardsetdesc@tcg(currentthing@tcg) = lang("森の心を動力源とする樹木。弾力性に富み、スコグスラスの力を借りれば信じられないほど凶暴になる。", "Treants powered by the heart of the forest. Resilient, and if powered by the Skogsras, incredibly violent.\n[Contains]\n1 Skogsra (it's cute).\n1 Alraune (also cute).\n6 Treants (not so cute).")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]スクーグスロー", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Green Card Set] Living Forest.")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_DOBIEL) < 4 ) {
+		currentthing@tcg = 32
+		cardprice@tcg(currentthing@tcg) = 2400
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_DOBIEL, CREATURE_ID_ARKTOUROS, CREATURE_ID_RESTOROID_GIANT_PANDA, CREATURE_ID_DARK_KOALA, CREATURE_ID_BROWN_BEAR, CREATURE_ID_BROWN_BEAR, CREATURE_ID_GRIZZLY, CREATURE_ID_GRIZZLY
+		cardsetdesc@tcg(currentthing@tcg) = lang("クマ、みんなクマが大好き。私もティリスに来る前はペットの熊を飼っていた。穏やかだが強く、子熊が戦いで傷つけられると激しく報復する。", "Bears, everyone love bears. I had a pet bear before I arrived in Tyris.Gentle but strong, they retaliate hard when the bear cubs is harmed in battle.\n[Contains]\n1 Dobiel.\n1 Panda (very rare!).\n6 Bears.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]熊", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Green Card Set] Bear with me.")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_MASTER_YEEK) < 4 ) {
+		currentthing@tcg = 41
+		cardprice@tcg(currentthing@tcg) = 800
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_MASTER_YEEK, CREATURE_ID_KAMIKAZE_YEEK, CREATURE_ID_YEEK_ARCHER, CREATURE_ID_YEEK_ARCHER, CREATURE_ID_YEEK_WARRIOR, CREATURE_ID_YEEK_WARRIOR, CREATURE_ID_YEEK, CREATURE_ID_YEEK
+		cardsetdesc@tcg(currentthing@tcg) = lang("ファイターズギルドの宿敵、イークス。このセットは800枚しかないのに、誰も引き換えようとしない。", "Yeeks, the mortal enemy of Fighters Guild. They come in large bundles, they ruin everything, and they are so common, nobody wants redeem this set even it only costs 800 tickets.\n[Contains]\n8 Cheap Yeeks.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]イーク", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Gray Card Set] Yeeeeeeks!.")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_MINOTAUR_KING) < 4 ) {
+		currentthing@tcg = 42
+		cardprice@tcg(currentthing@tcg) = 1800
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_MINOTAUR_KING, CREATURE_ID_STEEL_MINOTAUR, CREATURE_ID_MINOTAUR_MAGICIAN, CREATURE_ID_MINOTAUR_BOXER, CREATURE_ID_MINOTAUR, CREATURE_ID_MINOTAUR, CREATURE_ID_CATTLE, CREATURE_ID_CATTLE
+		cardsetdesc@tcg(currentthing@tcg) = lang("迷宮のミノタウロス。攻撃力35以上のトランプル持ちのアステリアスに消し飛ばされたこともある......。そのカードはセットには入っていないけど、わかるよね。", "Minotaurs of the maze.\nThey hit incredibly hard, I was once obliterated by a 35+ attack Asterious with Trample... That card is not in the set, but you get the idea.\n[Contains]\n6 Powerful Minotaurs.\n(Bonus) 2 Cattles.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]ミノタウロス", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Gray Card Set] Hazy Maze Days.")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_PERFORMAID_PINCHIEF) < 4 ) {
+		currentthing@tcg = 51
+		cardprice@tcg(currentthing@tcg) = 4000
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_PERFORMAID_PINCHIEF, CREATURE_ID_PERFORMAID_DESWEEPER, CREATURE_ID_PERFORMAID_COCRUEL, CREATURE_ID_PERFORMAID_BLOODRESS, CREATURE_ID_PERFORMAID_BITCHIACK
+		cardsetdesc@tcg(currentthing@tcg) = lang("屋敷のエンターテイナー、エンタメイドたち.残酷さと血でフィールドを支配するエンタメイドたち。彼女たちは需要が高いので、チケット代が少し高くなる。", "Entertainer of the Mansion, Performaids\nThese performaids control the field with cruelty and blood.\nThese girls are in high demand so they cost a bit more tickets.\n[Contains]\n5 Performaids.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]エンタメイド", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Red Card Set] Performaid Grand Theatre.")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_MAG_COUNT) < 4 ) {
+		currentthing@tcg = 52
+		cardprice@tcg(currentthing@tcg) = 1200
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_MAG_COUNT, CREATURE_ID_BLUE_MOAI, CREATURE_ID_MOAI, CREATURE_ID_CLUSTER_BOMB_ROCK, CREATURE_ID_GIGA_BOMB_ROCK, CREATURE_ID_GIGA_BOMB_ROCK, CREATURE_ID_BOMB_ROCK, CREATURE_ID_BOMB_ROCK
+		cardsetdesc@tcg(currentthing@tcg) = lang("爆発物は好きか？ドロー効果のある厄介な吟遊詩人は嫌いですか？この岩を場に叩きつければ、あの吟遊詩人はいなくなる。", "Do you like explosives? Do you hate those pesky bards with draw effects? Well, slam this rock onto the field, and BAM, that bard is gone, you'll learn to love these rocks.\n[Contains]\n1 Mag Count\n2 Moais\n5 Bomb Rocks.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]ロック・アンド・ロール", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Red Card Set] Rock and Roll.")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_HEL) < 4 ) {
+		currentthing@tcg = 61
+		cardprice@tcg(currentthing@tcg) = 1200
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_HEL, CREATURE_ID_MASTER_LICH, CREATURE_ID_LICH, CREATURE_ID_ANCIENT_COFFIN, CREATURE_ID_MUMMY, CREATURE_ID_ZOMBIE, CREATURE_ID_SKELETON_WARRIOR, CREATURE_ID_LIVING_ARMOR
+		cardsetdesc@tcg(currentthing@tcg) = lang("死者の夜、ゾンビがやってくる！相手はすでに死んでいるものを殺すことはできない！", "It's the night of the dead (not halloween), and the zombies are coming! Your opponent can't kill what's already dead! \n[Contains]\n1 Hel\n2 Liches\n1 Coffin\n4 Undeads")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]人間地獄", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Black Card Set] Hell on Earth")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_MEGA_GORDIAN_WORM) < 4 ) {
+		currentthing@tcg = 62
+		cardprice@tcg(currentthing@tcg) = 1200
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_MEGA_GORDIAN_WORM, CREATURE_ID_DRAGON_CENTIPEDE, CREATURE_ID_FIRE_CENTIPEDE, CREATURE_ID_CENTIPEDE, CREATURE_ID_CENTIPEDE, CREATURE_ID_SAND_WORM, CREATURE_ID_ROCK_WORM, CREATURE_ID_DHOLE
+		cardsetdesc@tcg(currentthing@tcg) = lang("このワームは自分のデッキが破壊されると召喚される！これで自分のデッキを破壊しながら相手を破壊できる！(デッキアウトしても負けます)", "These worms are summoned when destroyed in your deck! Now you can destroy your opponent while destroying your own deck! (You still lose when you deck out) \n[Contains]\n1 worm you'd never draw\n7 other worms.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]ワーム", "["+cardprice@tcg(currentthing@tcg)+" Tickets][Black Card Set] Lightsworm")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_YERLES_LATEST_OUTFIT_SOLDIER) < 4 ) {
+		currentthing@tcg = 71
+		cardprice@tcg(currentthing@tcg) = 2400
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_YERLES_LATEST_OUTFIT_SOLDIER, CREATURE_ID_YERLES_COMBAT_PLANE, CREATURE_ID_YERLES_COMBAT_PLANE, CREATURE_ID_YERLES_ELITE_MACHINE_INFANTRY, CREATURE_ID_YERLES_MACHINE_INFANTRY, CREATURE_ID_SECURITY_SYSTEM, CREATURE_ID_YERLES_SELF_PROPELLED_GUN, CREATURE_ID_PUTIT_TANK
+		cardsetdesc@tcg(currentthing@tcg) = lang("イェルス軍が作成した軍宣伝カード！ジュエールの前では使わないように。", "Military Promotion Cards made by the Yerles Army! Don't play them in front of the Jueres.\n[Contains]\n1 Yerles Latest Super Soldier\n2 DIY Yerles Latest Super Soilder\nMany Tanks!")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]イェルス軍", "["+cardprice@tcg(currentthing@tcg)+" Tickets][White Card Set] Machine Force")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_DARK_ELEA) < 4 ) {
+		currentthing@tcg = 72
+		cardprice@tcg(currentthing@tcg) = 1200
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_DARK_ELEA, CREATURE_ID_MOB_OF_ELEA, CREATURE_ID_AVENGER_OF_ELEA, CREATURE_ID_REFUGEE, CREATURE_ID_WARRIOR_OF_ELEA, CREATURE_ID_WIZARD_OF_ELEA, CREATURE_ID_KNIGHT_OF_ELEA, CREATURE_ID_SAGE_OF_ELEA
+		cardsetdesc@tcg(currentthing@tcg) = lang("私の母はこのエレアスのせいで死んだ。彼らのカードは買わないでください。", "My mom died because of these Eleas, don't buy them, they are bad anyways.\n[Contains]\n8 Knife-ears.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]エレア軍", "["+cardprice@tcg(currentthing@tcg)+" Tickets][White Card Set] Elea Remnants")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_EULDERNA_SUMMONKNIGHT) < 4 ) {
+		currentthing@tcg = 73
+		cardprice@tcg(currentthing@tcg) = 3000
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_EULDERNA_SUMMONKNIGHT, CREATURE_ID_SCHOLAR, CREATURE_ID_MAGIC_ARCHER, CREATURE_ID_HIGH_MAGICIAN, CREATURE_ID_HIGH_MAGICIAN, CREATURE_ID_NECRO_DOLL, CREATURE_ID_PUPPET, CREATURE_ID_PUPPET
+		cardsetdesc@tcg(currentthing@tcg) = lang("ウィザーズ・ギャザリング・マジックの王国オイデルナは、高度なカード・アドバンテージ理論を得意とする。彼らは召喚魔法で簡単に手札と盤面を埋める。", "Euldernas, well know for their Wizard's Gathering Magic, excells in their advanced theory of card advantage. They fill their hands and board easily with their Summon Magic. I do wish I could print out money like they do though.\n[Contains]\n5 Wizards of the Coast\n3 Puppets")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]オイデルナ軍", "["+cardprice@tcg(currentthing@tcg)+" Tickets][White Card Set] Magic of Gathering")
+		}
+		cpicurr@tcg++
+	}
+	if ( card(0, CREATURE_ID_ROGUE_BOSS) < 4 ) {
+		currentthing@tcg = 74
+		cardprice@tcg(currentthing@tcg) = 1000
+		cardsetcontent@tcg(0, currentthing@tcg) = CREATURE_ID_ROGUE_BOSS, CREATURE_ID_ROGUE_WARRIOR, CREATURE_ID_ROGUE_ARCHER, CREATURE_ID_ROGUE_WIZARD, CREATURE_ID_BARD, CREATURE_ID_THIEF, CREATURE_ID_JUERE_INFANTRY, CREATURE_ID_JUERE_SWORDMAN
+		cardsetdesc@tcg(currentthing@tcg) = lang("ならず者国家ジュール。彼らの革命やフリーダムに関することを耳にするかもしれない。ジュエールのカードの半分はならず者や盗賊だ。偶然か？", "Juere, the rogue nation. You might hear a thing or two about their Revolution and Liberation things. But to me they are just common bandits, like half of the Jueres cards are rogues and bandits, coincidence? I think not. \n[Contains]\n8 Miscreants.")
+		if ( cpicurr@tcg >= cardpage@tcg * cpimax@tcg & cpicurr@tcg < (cardpage@tcg + 1) * cpimax@tcg) {
+			chatList currentthing@tcg, lang("[チケット"+cardprice@tcg(currentthing@tcg)+"枚][カードセット]ジュール軍", "["+cardprice@tcg(currentthing@tcg)+" Tickets][White Card Set] Rogue Nation")
+		}
+		cpicurr@tcg++
+	}
+	cardpagemax@tcg = (cpicurr@tcg + (cpimax@tcg - 1)) / cpimax@tcg
+	cardpage@tcg = limit(cardpage@tcg, 0, cardpagemax@tcg)
+	if ( cardpage@tcg < cardpagemax@tcg - 1 ) {
+		chatList 1, lang("次のページ。", "Next Page.")
+	}
+	if ( cardpage@tcg > 0 ) {
+		chatList 2, lang("前のページ。", "Prev Page.")
+	}
+	chatList 0, lang("こんなカードは欲しくない。", "I don't want these cards.")
+	gosub *chat_select
+	if ( chatval >= 10 ) {
+		currentthing@tcg = chatval
+		item_find ITEM_ID_MUSIC_TICKET, 3, 1
+		if ( stat != (-1) ) {
+			ci = stat
+			if ( inv(INV_ITEM_NUM, ci) >= cardprice@tcg(currentthing@tcg) ) {
+				chatList 1, lang("チケット"+cardprice@tcg(currentthing@tcg)+"枚を交換する", "Here, take "+cardprice@tcg(currentthing@tcg)+" tickets.")
+			}
+		}
+		chatList 0, lang("交換できるほど持ってない", "You don't have enough for an exchange.")
+		buff = cardsetdesc@tcg(currentthing@tcg)
+		gosub *chat_select
+		if ( chatval == 1 ) {
+			snd SOUNDLIST_PAYGOLD1
+			inv(INV_ITEM_NUM, ci) -= cardprice@tcg(currentthing@tcg)
+			repeat 10
+				if ( cardsetcontent@tcg(cnt, currentthing@tcg) != 0 ) {
+					card(0, cardsetcontent@tcg(cnt, currentthing@tcg)) += 1
+				}
+			loop
+			chatMore lang("この交渉、成立だね！このカードパックをどうぞ！", "A successful negotiation! The cards are added to your deck!"), strbye
+			goto *chat_end
+		}
+		goto *chat_purchase_cards_WHILE
+	}
+	if ( chatval == 1 ) {
+		cardpage@tcg = limit(cardpage@tcg + 1, 0, cardpagemax@tcg)
+		goto *chat_purchase_cards_WHILE
+	}
+	if ( chatval == 2 ) {
+		cardpage@tcg = limit(cardpage@tcg - 1, 0, cardpagemax@tcg)
+		goto *chat_purchase_cards_WHILE
+	}
+	goto *chat_end
 	return
 
 *card_populate_deck_unique
@@ -2353,16 +2610,19 @@
 		deck_opponent(CREATURE_ID_EXILE) = 1
 		deck_opponent(CREATURE_ID_GOLDEN_KNIGHT) = 1
 		deck_opponent(CREATURE_ID_DEFENDER) = 3
+		deck_opponent(CREATURE_ID_GOOSE) = 1
+		deck_opponent(CREATURE_ID_RUDRAS) = 4
+		deck_opponent(CREATURE_ID_ATLAS) = 3
+
 		deck_opponent(CREATURE_ID_EHEKATL) = 1
 		deck_opponent(CREATURE_ID_OPATOS) = 1
 		deck_opponent(CREATURE_ID_KUMIROMI) = 1
 		deck_opponent(CREATURE_ID_MANI) = 1
-		deck_opponent(CREATURE_ID_GOOSE) = 1
 		deck_opponent(CREATURE_ID_JURE) = 1
-		deck_opponent(CREATURE_ID_RUDRAS) = 4
-		deck_opponent(CREATURE_ID_ATLAS) = 3
+		deck_opponent(CREATURE_ID_LULWY) = 1
 		deck_opponent(CREATURE_ID_YACATECT) = 1
 		deck_opponent(CREATURE_ID_ITZPALT) = 1
+
 		deck_opponent(CREATURE_ID_SOPHIA_THE_WISE) = 1
 		deck_opponent(CREATURE_ID_ARASIEL) = 1
 		deck_opponent(CREATURE_ID_SINAHA) = 1
@@ -3524,7 +3784,7 @@
 		cardreflvl = 350
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 6
+		cardrefcost = 7
 		cardrefattack = 9
 		cardrefhp = 7
 		cardrefskillid = TCG_EFF_ITZPALT
@@ -3592,9 +3852,9 @@
 		cardreflvl = 160
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 4
-		cardrefcost = 8
+		cardrefcost = 10
 		cardrefattack = 8
-		cardrefhp = 8
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_DARKARTIFICIALGIANT
 		cardrefbits = ""
 		return 1
@@ -4098,7 +4358,7 @@
 		cardrefdomain = 7
 		cardrefcost = 9
 		cardrefattack = 9
-		cardrefhp = 9
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_DARKARTIFICIALGIANT
 		cardrefbits = ""
 		return 1
@@ -16237,7 +16497,7 @@
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
 		cardrefcost = 6
-		cardrefattack = 6
+		cardrefattack = 4
 		cardrefhp = 4
 		cardrefskillid = TCG_EFF_BATTLECRY_DEALEVERYONE3DAMAGE
 		cardrefbits = "6,7,30"

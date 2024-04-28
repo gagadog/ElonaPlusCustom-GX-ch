@@ -928,6 +928,30 @@
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
 	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_OVERHEAL | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+			card@tcg(TCG_CARD_HP, aeft@tcg) = card@tcg(TCG_CARD_REF_HP, aeft@tcg)
+			card@tcg(TCG_CARD_HP, aeft@tcg) = limit(card@tcg(TCG_CARD_HP, aeft@tcg) + 2, 1, TCG_STAT_MAX)
+			card@tcg(TCG_CARD_REF_HP, aeft@tcg) = limit(card@tcg(TCG_CARD_REF_HP, aeft@tcg) + 2, 1, TCG_STAT_MAX)
+			card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg) = limit(card@tcg(TCG_CARD_REF_ATTACK, aeft@tcg) + 2, 0, TCG_STAT_MAX)
+			repeat 32, 32
+				if ( cnt == TCG_BIT_BLEEDING ) { continue }
+				cdbitmod cnt, aeft@tcg, 0
+			loop
+			if ( cdbit(TCG_BIT_BLEEDING, aeft@tcg) ) {
+				efllistaddcard 18, aeft@tcg
+				efllistaddcard 17, aeft@tcg
+				efllistaddcard 16, aeft@tcg
+				gravecard aeft@tcg
+			} else {
+				cdbitmod TCG_BIT_BLEEDING, aeft@tcg, 1
+				efllistaddcard 18, aeft@tcg
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_HPBECOME1 | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
@@ -956,8 +980,19 @@
 	if ( _switch_val@tcg == TCG_SKILL_EFF_CHANGESIDE | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
-			if ( getspotsum(1 - card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) < 8 ) {
+			if ( card@tcg(TCG_CARD_LOCATION, aeft@tcg) == TCG_LOCATION_FIELD & getspotsum(1 - card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) < 8 ) {
 				card@tcg(TCG_CARD_CONTROLLER, aeft@tcg) = 1 - card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)
+				cardpos 0, -1
+				cardpos 1, -1
+			}
+			if ( card@tcg(TCG_CARD_LOCATION, aeft@tcg) == TCG_LOCATION_HAND & getholdersum(1 - card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)) < 7 ) {
+				card@tcg(TCG_CARD_CONTROLLER, aeft@tcg) = 1 - card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)
+				cardposhand 0, -1
+				cardposhand 1, -1
+			}
+			if ( card@tcg(TCG_CARD_LOCATION, aeft@tcg) != TCG_LOCATION_HAND & card@tcg(TCG_CARD_LOCATION, aeft@tcg) != TCG_LOCATION_FIELD ) {
+				card@tcg(TCG_CARD_CONTROLLER, aeft@tcg) = 1 - card@tcg(TCG_CARD_CONTROLLER, aeft@tcg)
+				cardposgrave -1
 			}
 		}
 		goto *actionproc_SWEND1
@@ -3005,7 +3040,7 @@
 	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_GARZEIM | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
-		dialog "Garziem looks at the clock, \"hmm, you've been playing for " + hour_played + " hours and " + ((timeGetTime() / 1000 - time_warn)/60) + " minutes.\""
+		efllistaddchat "\"Hmm, you've been playing for " + hour_played + " hours and " + ((timeGetTime() / 1000 - time_warn)/60) + " minutes.\"", ac@tcg
 		if ( hour_played >= 24 ) {
 			if ( yaminogemu@tcg == 1 & ap@tcg == TCG_CONTROLLER_PLAYER ) {
 				specialruleusenofatiguerecoil@tcg(ap@tcg) = 1

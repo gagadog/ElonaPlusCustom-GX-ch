@@ -8894,9 +8894,19 @@
 				chatList 1, lang("チケット500枚を交換する", "Here, take 500 tickets.")
 			}
 		}
+		/********** JAMES CUSTOM - TCG - BEGINNING **********/
+		if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_GENERAL | cdata(CDATA_ID, tc) == CREATURE_ID_CHILD_WEL ) {
+			chatList 12346, lang("カードを交換したい", "I want to redeem Cards.")
+		}
+		/********** JAMES CUSTOM - TCG - ENDING **********/
 		chatList 0, lang("交換できるほど持ってない", "You don't have enough for an exchange.")
 		buff = lang("ねぇ、音楽チケットとなにかアイテムを交換しない？", "Hey, want to trade some tickets for stuff?")
 		gosub *chat_select
+		/********** JAMES CUSTOM - TCG - BEGINNING **********/
+		if ( chatval == 12346 ) {
+			goto *chat_purchase_cards
+		}
+		/********** JAMES CUSTOM - TCG - ENDING **********/
 		if ( chatval == 2 ) {
 			snd SOUNDLIST_PAYGOLD1
 			inv(INV_ITEM_NUM, ci) -= 8000
@@ -18966,6 +18976,11 @@
 			if ( cdata(CDATA_ROLE, tc) != ROLE_SHIP_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER & cdata(CDATA_ROLE, tc) != ROLE_SHOP_TRADE ) {
 				chatList 12, lang("投資したい", "Need someone to invest in your shop?")
 			}
+			/********** JAMES CUSTOM - TCG - BEGINNING **********/
+			if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_GENERAL | cdata(CDATA_ID, tc) == CREATURE_ID_CHILD_WEL ) {
+				chatList 12346, lang("カードを交換したい", "I want to redeem Cards.")
+			}
+			/********** JAMES CUSTOM - TCG - ENDING **********/
 		}
 		if ( cdata(CDATA_ROLE, tc) == ROLE_BARTENDER ) {
 			if ( TweakData(TWEAK_GAMEPLAY_CG_DISABLE_THIRST, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
@@ -20335,6 +20350,12 @@
 	}
 
 	/********** ANNA CUSTOM - ENDING **********/
+
+	/********** JAMES CUSTOM - TCG - BEGINNING **********/
+	if ( chatval == 12346 ) {
+		goto *chat_purchase_cards
+	}
+	/********** JAMES CUSTOM - TCG - ENDING **********/
 
 	if ( chatval == 34 ) {
 		chatMore lang("(あなたは、" + name(tc) + "に街で待っているように指示した)", "(You order " + name(tc) + " to wait in town.)")
