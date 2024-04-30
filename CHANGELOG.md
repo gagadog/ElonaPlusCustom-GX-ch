@@ -1,9 +1,10 @@
-# Upcoming
+# 2.22.3.1
 
 # Fixed
 - Text issues, Thanks to @air1068
 - Key_selcect overflow on ranch animals.
 - Smart Cooldown: Fixed wrong necrocoffin used.
+- Unable to turn in quests due to time stop.
 - Chat Pop-up: Wrong picture used for chara height calculation.
 
 # TCG Change

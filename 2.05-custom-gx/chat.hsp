@@ -23810,6 +23810,16 @@
 	goto *chat_default
 
 *chat_quest
+	/********** JAMES CUSTOM - COMPLETE BUGGED QUESTS CAUSED BY TIME STOP - BEGINNING **********/
+	if ( qdata(QDATA_STATUS, rq) == QUEST_STATE_ONGOING ) {
+		if ( qdata(QDATA_EXIST, rq) == QUEST_TYPE_HUNT | qdata(QDATA_EXIST, rq) == QUEST_TYPE_HUNTEX | qdata(QDATA_EXIST, rq) == QUEST_TYPE_HARVEST | qdata(QDATA_EXIST, rq) == QUEST_TYPE_CONQUER | qdata(QDATA_EXIST, rq) == QUEST_TYPE_MINEFIELD | qdata(QDATA_EXIST, rq) == QUEST_TYPE_PARTY ) {
+			qdata(QDATA_STATUS, rq) = QUEST_STATE_SUCCESS
+			val = 3
+			gosub *talk_quest
+			goto *chat_default
+		}
+	}
+	/********** JAMES CUSTOM - COMPLETE BUGGED QUESTS CAUSED BY TIME STOP - ENDING **********/
 	if ( qdata(QDATA_STATUS, rq) == QUEST_STATE_ONGOING ) {
 		buff = lang("頼んでいた依頼は順調" + _kana(1), "What about my contract? Is everything alright?")
 		goto *chat_default
