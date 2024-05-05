@@ -296,6 +296,24 @@
 	boxf@HSP _p1, _p2, _p3, _p4
 	return
 
+#undef circle
+#define global\
+	circle(%1=HIGHDPI_DEF,%2=HIGHDPI_DEF,%3=HIGHDPI_DEF,%4=HIGHDPI_DEF,%5=HIGHDPI_DEF)\
+	HIGHDPI_circle %1, %2, %3, %4, %5
+#deffunc HIGHDPI_circle\
+	int p1, int p2, int p3, int p4, int p5,\
+	local _p1, local _p2, local _p3, local _p4
+	_p1 = HIGHDPI_X(p1)
+	_p2 = HIGHDPI_Y(p2)
+	_p3 = HIGHDPI_X(p3)
+	_p4 = HIGHDPI_Y(p4)
+	if(p1 == HIGHDPI_DEF) : _p1 = 0
+	if(p2 == HIGHDPI_DEF) : _p2 = 0
+	if(p3 == HIGHDPI_DEF) : _p3 = HIGHDPI_ginfo_sx
+	if(p4 == HIGHDPI_DEF) : _p4 = HIGHDPI_ginfo_sy
+	circle@HSP _p1, _p2, _p3, _p4, p5
+	return
+
 #undef line
 #define global\
 	line(%1=HIGHDPI_DEF,%2=HIGHDPI_DEF,%3=HIGHDPI_DEF,%4=HIGHDPI_DEF)\
