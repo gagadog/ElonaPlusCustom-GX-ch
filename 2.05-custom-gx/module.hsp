@@ -1733,6 +1733,28 @@
 								gmode 2
 							}
 						}
+						/********** JAMES CUSTOM - TRANSLUCENT OVERLAPPING ITEM - BEGINNING **********/
+						if ( TweakData(TWEAK_MISC_TRANSLUCENT_ITEM_OVERLAP, TWEAK_CATEGORY_MISC) ) {
+							repeat (chipi(CHIPI_F, locvar_cell_draw_p) + locvar_cell_draw_stackh) / inf_tiles
+								if ( locvar_cell_draw_y - cnt > 0 ) {
+									if ( map(locvar_cell_draw_x, locvar_cell_draw_y - (cnt + 1), 4) != 0 ) {
+										gmode 4, , , 127
+										break
+									}
+									else {
+										if ( map(locvar_cell_draw_x, locvar_cell_draw_y - (cnt + 1), 1) != 0 ) {
+											if ( synccheck(map(locvar_cell_draw_x, locvar_cell_draw_y - (cnt + 1), 1) - 1, -1) ) {
+												if ( charaIsVisible(map(locvar_cell_draw_x, locvar_cell_draw_y - (cnt + 1), 1) - 1) ) {
+													gmode 4, , , 127
+													break
+												}
+											}
+										}
+									}
+								}
+							loop
+						}
+						/********** JAMES CUSTOM - TRANSLUCENT OVERLAPPING ITEM - ENDING **********/
 						if ( chipi(CHIPI_SH, locvar_cell_draw_p) == (-1) ) {
 							pos locvar_cell_draw_dx + 24, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p) + 24
 							locvar_cell_draw_kaiten = 0

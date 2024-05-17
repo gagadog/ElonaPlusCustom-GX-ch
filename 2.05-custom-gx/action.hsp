@@ -2091,10 +2091,30 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_CONFUSE, CHARA_PLAYER) != 0 ) {
+		snd SOUNDLIST_BASH1
 		msgdup++
 		txt lang(" *ごつん* ", " *bump* ")
 		gosub *screen_draw
 	}
+	/********** JAMES CUSTOM - MMAH AUTO WALL DIGGING - BEGINNING **********/
+	if ( TweakData(TWEAK_CONVENIENCE_AUTODIGGER, TWEAK_CATEGORY_CONVENIENCE) & cc == CHARA_PLAYER & key_shift ) {
+		digx = cdata(CDATA_X_NEW, CHARA_PLAYER)
+		digy = cdata(CDATA_Y_NEW, CHARA_PLAYER)
+		if ( digx >= 0 & digx < mdata(0) & digy >= 0 & digy < mdata(1) ) {
+			if ( (chipm(CHIPM_ATTRIB, map(digx, digy, 0)) & CHIPM_ATTRIB_CANT_PASS) == 0 | chipm(CHIPM_ROLE, map(digx, digy, 0)) == MAP_CHIP_ROLE_WATER | mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
+			}
+			else {
+				refx = digx
+				refy = digy
+				tlocx = digx
+				tlocy = digy
+				screenupdate = -1
+				gosub *screen_draw
+				goto *act_dig
+			}
+		}
+	}
+	/********** JAMES CUSTOM - MMAH AUTO WALL DIGGING - BEGINNING **********/
 	goto *pc_turn
 
 *act_move

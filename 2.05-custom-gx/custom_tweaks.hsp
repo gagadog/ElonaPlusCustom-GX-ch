@@ -517,7 +517,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     cs = 0
 	page = 0
 	pagesize = 16
-    listmax = 18
+    listmax = 19
 *ConvenienceTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -545,6 +545,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 14) = "Sort spells by spell type." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_SORT_SPELL_BY_TYPE)
 	listn(0, 15) = "Necromancy zombies goes inside DD-Cemetry when they die." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_NECROMANCY_DD_AUTOSTORE)
 	listn(0, 16) = "Allow leashing temporary allies." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_LEASH_MY_ALLIES)
+	listn(0, 17) = "Auto dig walls when running into them." + GetTStatus(TWEAK_CATEGORY_CONVENIENCE, TWEAK_CONVENIENCE_AUTODIGGER)
 
 	listn(0, listmax - 1) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -618,6 +619,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			}
 			if ( p == 16 ) {
 				s = "Allow leashing temporary allies."
+			}
+			if ( p == 17 ) {
+				s = "Autodig walls when running into them (with shift).\nEnable with caution if you have low mining.\nANd if you don't want to be the cool-aid man don't enable this."
 			}
 
 			if ( p == listmax - 1 ) {
@@ -729,11 +733,16 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tn = TWEAK_CONVENIENCE_LEASH_MY_ALLIES
 		gosub *ToggleTweak
 	}
+	if ( p == 17 ) {
+		tc = TWEAK_CATEGORY_CONVENIENCE
+		tn = TWEAK_CONVENIENCE_AUTODIGGER
+		gosub *ToggleTweak
+	}
 	
-	// if ( p == listmax - 1 ) {
-	// 	snd SOUNDLIST_OK1
-	// 	return
-	// }
+	if ( p == listmax - 1 ) {
+		snd SOUNDLIST_OK1
+		return
+	}
 	page_change *ConvenienceTweakMenu_pgchk
 	if ( key == key_cancel ) {
         return
@@ -1509,7 +1518,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	cs = 0
 	page = 0
 	pagesize = 16
-	listmax = 13
+	listmax = 14
 *MiscTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -1532,6 +1541,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 9) = "(MMA) Use Melee-Weapon-Swing Animation." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_MMA_MELEE_ANIMATIONS)
 	listn(0, 10) = "Load Animated Tachi-E." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_LOAD_ANIMATED_TACHI_E)
 	listn(0, 11) = "Always draw Tachi-E on Main Screen." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_DRAW_TACHI_E_MAINSCREEN)
+	listn(0, 12) = "Draw items with translucency when overlapped with something." + GetTStatus(TWEAK_CATEGORY_MISC, TWEAK_MISC_TRANSLUCENT_ITEM_OVERLAP)
 
 	listn(0, listmax - 1) = "Return."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -1590,6 +1600,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			}
 			if ( p == 11 ) {
 				s = "Draw Tachi-E of destinated character for RP purposes.\nThis will also shift screen center 3 tiles left.\nDoes not work in pet arena."
+			}
+			if ( p == 12 ) {
+				s = "Draw items with 50% transparency when an NPC is behind it."
 			}
 			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
@@ -1681,6 +1694,11 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		ts = 1
 		tm = 4
 		gosub *IncrementTweak
+	}
+	if ( p == 12 ) {
+		tc = TWEAK_CATEGORY_MISC
+		tn = TWEAK_MISC_TRANSLUCENT_ITEM_OVERLAP
+		gosub *ToggleTweak
 	}
 	if ( p == listmax - 1 ) {
 		snd SOUNDLIST_OK1

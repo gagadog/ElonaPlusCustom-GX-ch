@@ -1,3 +1,9 @@
+# Upcoming
+
+# Added
+- Tweak to draw translucent overlapping items.
+- Tweak to auto-dig walls when running.
+
 # 2.22.3.1
 
 # Fixed
