@@ -2600,6 +2600,28 @@
 				gmode 2
 			}
 		}
+		/********** JAMES CUSTOM - TRANSLUCENT OVERLAPPING ITEM - BEGINNING **********/
+		if ( TweakData(TWEAK_MISC_TRANSLUCENT_ITEM_OVERLAP, TWEAK_CATEGORY_MISC) ) {
+			repeat (chipi(CHIPI_F, locvar_cell_draw_p) + locvar_cell_draw_stackh) / inf_tiles
+				if ( locvar_cell_draw_y - cnt > 0 ) {
+					if ( map(locvar_cell_draw_x, locvar_cell_draw_y - (cnt + 1), 4) != 0 ) {
+						gmode 4, , , 127
+						break
+					}
+					else {
+						if ( map(locvar_cell_draw_x, locvar_cell_draw_y - (cnt + 1), 1) != 0 ) {
+							if ( synccheck(map(locvar_cell_draw_x, locvar_cell_draw_y - (cnt + 1), 1) - 1, -1) ) {
+								if ( charaIsVisible(map(locvar_cell_draw_x, locvar_cell_draw_y - (cnt + 1), 1) - 1) ) {
+									gmode 4, , , 127
+									break
+								}
+							}
+						}
+					}
+				}
+			loop
+		}
+		/********** JAMES CUSTOM - TRANSLUCENT OVERLAPPING ITEM - ENDING **********/
 		// Draw the item.
 		pos cell_draw_arg_dx, cell_draw_arg_dy - chipi(CHIPI_F, cell_draw_arg_p) - locvar_cell_draw_stackh
 		if ( chipi(CHIPI_ANIM, cell_draw_arg_p) == 0 ) {
@@ -2613,6 +2635,7 @@
 	return
 
 #deffunc cell_draw_item_parts int cell_draw_arg_dx, int cell_draw_arg_dy, int cell_draw_arg_fp, int cell_draw_arg_p
+	if ( cell_draw_arg_fp < 0 | cell_draw_arg_fp >= MAX_INV_DATA ) { return }
 	// Draw Potioman parts.
 	if ( inv(INV_ITEM_ID, cell_draw_arg_fp) == ITEM_ID_CF_POTIOMAN | inv(INV_ITEM_ID, cell_draw_arg_fp) == ITEM_ID_CRUSH_POTIOMAN | inv(INV_ITEM_ID, cell_draw_arg_fp) == ITEM_ID_BATTLE_POTIOMAN | inv(INV_ITEM_ID, cell_draw_arg_fp) == ITEM_ID_SUPER_POTIOMAN ) {
 		if ( inv(INV_ITEM_PARTS, cell_draw_arg_fp) > 0 ) {
