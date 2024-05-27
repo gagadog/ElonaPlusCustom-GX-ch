@@ -1,8 +1,20 @@
-# Upcoming
+# 2.22.3.2
 
 # Added
 - Tweak to draw translucent overlapping items.
 - Tweak to auto-dig walls when running.
+
+# Fixed
+- (Plus) Crashing during potioman rendering after using a gene machine.
+- Mistake where player only gain necro-kill AP if the necro-minion can get AP.
+
+# TCG Change
+- New decks for the Gods/Neres/Ryutye.
+- Buffed: Defender/Exile/Sophia/Maidsann/Lune/Goose/Gigantes/Mantagoddess/FortressSnail/Werewolves/LastRaven.
+- Buffed Archetypes: Some of the Zaile&Oblivion/Rats/Kobolds/Yith/Orcs/Shell/LizardMan Cards.
+- Nerfed: Valkyrie/LittlerGirl/DarkMissionary/BlackCat/Elder/Michael/Aromalocaris/Oxode/AtlachNacha/Kabuto/Behemoth.
+- Reworked: Witch/Neres/Ryutye/Itzpalt/Cleaner/Amurdad/Clinghost/HellabrynthRuler/StraySoul/Heqet/Peacemaker
+- Fixed some effects not firing correctly: DeckSearchOnEnemyPhase/RaizelDmgCalc/ZaileEffectDelete
 
 # 2.22.3.1
 

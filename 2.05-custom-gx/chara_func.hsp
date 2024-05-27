@@ -7749,40 +7749,40 @@
 					DamagePopupAdd ("AP +" + ( cdata(CDATA_AP_TOTAL, gain_ap_chara_id) - gain_ap_total )), gain_ap_chara_id, DMGPOPUP_HEAL_SP, 0
 					txt "" + name(gain_ap_chara_id) + " obtained " + ( cdata(CDATA_AP_TOTAL, gain_ap_chara_id) - gain_ap_total ) + " AP from the " + gain_ap_source + "."
 				}
-				if ( gain_ap_source == "talk" ) {
-					if ( gdata(GDATA_RIDER) != 0 ) {
-						if ( gain_ap_chara_id == CHARA_PLAYER ) {
-							gain_ap (gain_ap_source + " of yours"), gdata(GDATA_RIDER), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 2, 2, 2, 1,   1, 2, 2, 2, 1
-						}
-						if ( gain_ap_chara_id == gdata(GDATA_RIDER) ) {
-							gain_ap (gain_ap_source + " of your mount"), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 2, 2, 2, 1,   1, 2, 2, 2, 1
-						}
-					}
-					if ( cdata(CDATA_IN_TAGTEAM, gain_ap_chara_id) != 0 ) {
-						gain_ap (gain_ap_source + " of " + his(cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id)) + " tag-team partner"), cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd,  1, 1, 1, 1, 1,   1, 1, 1, 1, 1
-					}
-				}
-				if ( gain_ap_source == "kill" ) {
-					if ( cbit(CHARA_BIT_NECRO, gain_ap_chara_id) == 1 & gain_ap_chara_id != CHARA_PLAYER ) {
-						gain_ap (gain_ap_source + " of your necro-minion"), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd,  1, 3, 3, 3, 2,   0, 0, 0, 0, 0
-						if ( cdata(CDATA_IN_TAGTEAM, gain_ap_chara_id) != 0 ) {
-							gain_ap (gain_ap_source + " of your necro-minion"), cdata(CDATA_TAGTEAM_PARTNER, CHARA_PLAYER), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 1, 1, 1, 1,   0, 0, 0, 0, 0
-						}
-					}
-					if ( gdata(GDATA_RIDER) != 0 ) {
-						if ( gain_ap_chara_id == CHARA_PLAYER ) {
-							gain_ap (gain_ap_source + " of yours"), gdata(GDATA_RIDER), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 1, 1, 1, 1,   1, 1, 1, 1, 1
-						}
-						if ( gain_ap_chara_id == gdata(GDATA_RIDER) ) {
-							gain_ap (gain_ap_source + " of your mount"), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 1, 1, 1, 1,   1, 1, 1, 1, 1
-						}
-					}
-					if ( cdata(CDATA_IN_TAGTEAM, gain_ap_chara_id) != 0 ) {
-						gain_ap (gain_ap_source + " of " + his(cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id)) + " tag-team partner"), cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1
-					}
-				}
 				return TRUE
 			}
+		}
+	}
+	if ( gain_ap_source == "talk" ) {
+		if ( gdata(GDATA_RIDER) != 0 ) {
+			if ( gain_ap_chara_id == CHARA_PLAYER ) {
+				gain_ap (gain_ap_source + " of yours"), gdata(GDATA_RIDER), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 2, 2, 2, 1,   1, 2, 2, 2, 1
+			}
+			if ( gain_ap_chara_id == gdata(GDATA_RIDER) ) {
+				gain_ap (gain_ap_source + " of your mount"), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 2, 2, 2, 1,   1, 2, 2, 2, 1
+			}
+		}
+		if ( cdata(CDATA_IN_TAGTEAM, gain_ap_chara_id) != 0 ) {
+			gain_ap (gain_ap_source + " of " + his(cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id)) + " tag-team partner"), cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd,  1, 1, 1, 1, 1,   1, 1, 1, 1, 1
+		}
+	}
+	if ( gain_ap_source == "kill" ) {
+		if ( cbit(CHARA_BIT_NECRO, gain_ap_chara_id) == 1 & gain_ap_chara_id != CHARA_PLAYER ) {
+			gain_ap (gain_ap_source + " of your necro-minion"), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd,  1, 3, 3, 3, 2,   0, 0, 0, 0, 0
+			if ( cdata(CDATA_IN_TAGTEAM, gain_ap_chara_id) != 0 ) {
+				gain_ap (gain_ap_source + " of your necro-minion"), cdata(CDATA_TAGTEAM_PARTNER, CHARA_PLAYER), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 1, 1, 1, 1,   0, 0, 0, 0, 0
+			}
+		}
+		if ( gdata(GDATA_RIDER) != 0 ) {
+			if ( gain_ap_chara_id == CHARA_PLAYER ) {
+				gain_ap (gain_ap_source + " of yours"), gdata(GDATA_RIDER), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 1, 1, 1, 1,   1, 1, 1, 1, 1
+			}
+			if ( gain_ap_chara_id == gdata(GDATA_RIDER) ) {
+				gain_ap (gain_ap_source + " of your mount"), CHARA_PLAYER, gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, 0,   1, 1, 1, 1, 1,   1, 1, 1, 1, 1
+			}
+		}
+		if ( cdata(CDATA_IN_TAGTEAM, gain_ap_chara_id) != 0 ) {
+			gain_ap (gain_ap_source + " of " + his(cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id)) + " tag-team partner"), cdata(CDATA_TAGTEAM_PARTNER, gain_ap_chara_id), gain_ap_enemy_attr, gain_ap_enemy_lifemana, gain_ap_enemy_speed, gain_ap_enemy_orgspd, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1
 		}
 	}
 	return FALSE
