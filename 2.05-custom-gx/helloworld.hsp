@@ -1,0 +1,6 @@
+#packopt type 0
+#packopt name "helloworld"
+title "hello world"
+mes "hello world"
+dialog "hello world"
+end

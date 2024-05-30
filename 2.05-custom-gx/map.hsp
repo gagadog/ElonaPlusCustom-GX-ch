@@ -12529,7 +12529,7 @@
 		// Hey, theres custom items, this must be an omake map. 
 		// Let's revert the lava and red water tiles as well
 		if ( useritemmax > 0 ) {
-			boxf 0, 816, 0 + 48 * 3 - 1, 864 + 48 - 1 // lava tiles
+			boxf 0, 816, 0 + 48 * 3 - 1, 816 + 48 - 1 // lava tiles
 			boxf 432, 240, 432 + 48 * 3 - 1, 240 + 48 - 1 // water tiles
 			boxf 240, 432, 432 + 48 * 17 - 1, 240 + 48 - 1 // shore tiles
 		}

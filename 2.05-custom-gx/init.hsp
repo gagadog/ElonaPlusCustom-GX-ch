@@ -497,6 +497,7 @@ if instr(s,0,%1)!-1{	%c\
 		// Image index reset is needed, but changing name to "a garbage" doesn't make much sense.
 		// Change the image to that of vestige's and keep the name.
 		cdata(CDATA_PIC, getunid_charid) = xy2pic(1, 33) + ( cdata(CDATA_SEX, getunid_charid) == 1 ) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cdata(CDATA_CHARA_PIC, getunid_charid) = 1
 		/********** JAMES CUSTOM - ENDING **********/
 		// Original:
 		; cdata(CDATA_PIC, getunid_charid) = COLOR_DEFAULT * COLOR_TINT_MULT + 1
@@ -531,9 +532,19 @@ if instr(s,0,%1)!-1{	%c\
 	repeat usernpcmax
 		if ( inv(INV_ITEM_AMUR_CAGE, getunid_ci) == omakechecksum(userdatan(0, cnt)) ) {
 			locvar_getunid_s = userdatan(1, cnt)
+			// Fix figurine/card image upon finding a match
+			if ( inv(INV_ITEM_ID, getunid_ci) == ITEM_ID_CARD | inv(INV_ITEM_ID, getunid_ci) == ITEM_ID_FIGURINE ) {
+				inv(INV_ITEM_COL, getunid_ci) = SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + cnt
+			}
 			break
 		}
 	loop
+	// If no such CNPC is found, set image to image 1 (default player, the guy that looks like mani)
+	if ( locvar_getunid_s == "unknown user" ) {
+		if ( inv(INV_ITEM_ID, getunid_ci) == ITEM_ID_CARD | inv(INV_ITEM_ID, getunid_ci) == ITEM_ID_FIGURINE ) {
+			inv(INV_ITEM_COL, getunid_ci) = 1
+		}
+	}
 	return locvar_getunid_s
 /********** JAMES CUSTOM - DISPLAY USER PARTS NAME - ENDING *********/
 // Using a temporarily loaded custom item list. Fixes the picture of them.

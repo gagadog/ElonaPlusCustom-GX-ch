@@ -358,9 +358,9 @@
 	return 1
 
 #defcfunc hasholdspace int getholdersum_arg1
-	return getholdersum(getholdersum_arg1) < maxholdersum@tcg
+	return getholdersum(getholdersum_arg1) < maxholdersum@tcg(getholdersum_arg1)
 #defcfunc hasspotspace int getspotsum_arg1
-	return getspotsum(getspotsum_arg1) < maxspotsum@tcg
+	return getspotsum(getspotsum_arg1) < maxspotsum@tcg(getspotsum_arg1)
 #defcfunc getholdersum int getholdersum_arg1
 	getsump@tcg = 0
 	repeat maxcard@tcg
@@ -501,6 +501,42 @@
 	gosub *refresh_bg
 	return
 
+#deffunc cardposexile int cardposexile_arg1
+	repeat 2
+		cardposn@tcg = cnt
+		if ( cardposn@tcg != cardposexile_arg1 & cardposexile_arg1 != -1 ) { continue }
+
+		p@tcg = 0
+		if ( landsum@tcg(cardposn@tcg) > 0 ) {
+			repeat landsum@tcg(cardposn@tcg)
+				if ( card@tcg(TCG_CARD_CONTROLLER, landlist@tcg(cnt, cardposn@tcg)) != cardposn@tcg ) { continue }
+				if ( card@tcg(TCG_CARD_LOCATION, landlist@tcg(cnt, cardposn@tcg)) != TCG_LOCATION_EXILE ) { continue }
+				landlist@tcg(p@tcg, cardposn@tcg) = landlist@tcg(cnt, cardposn@tcg)
+				p@tcg++
+			loop
+		}
+
+		landsum@tcg(cardposn@tcg) = p@tcg
+		repeat maxcard@tcg
+			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cardposn@tcg ) { continue }
+			if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_EXILE ) { continue }
+			cnt2@tcg = cnt
+			f@tcg = 1
+			repeat gravesum@tcg(cardposn@tcg)
+				if ( cnt2@tcg == landlist@tcg(cnt, cardposn@tcg) ) {
+					f@tcg = 0
+					break
+				}
+			loop
+			if ( f@tcg ) {
+				landlist@tcg(landsum@tcg(cardposn@tcg), cardposn@tcg) = cnt2@tcg
+				landsum@tcg(cardposn@tcg)++
+			}
+		loop
+	loop
+	gosub *refresh_bg
+	return
+
 #deffunc makecardlist
 	dim clist@tcg, maxcard@tcg, 7
 	dim clistmax@tcg, 7
@@ -558,7 +594,7 @@
 				}
 				c1x@tcg = card@tcg(TCG_CARD_X_MOVETO, c1@tcg)
 				c2x@tcg = card@tcg(TCG_CARD_X_MOVETO, c2@tcg)
-				if ( (maxholdersum@tcg > 7 & (p@tcg == 0 | p@tcg == 3)) | (maxspotsum@tcg > 8 & (p@tcg == 1 | p@tcg == 2)) ) {
+				if ( (maxholdersum@tcg(0) > 7 & p@tcg == 0) | (maxspotsum@tcg(0) > 8 & p@tcg == 1) | (maxholdersum@tcg(1) > 7 & p@tcg == 3) | (maxspotsum@tcg(1) > 8 & p@tcg == 2) ) {
 					c1x@tcg = (-1) * c1@tcg
 					c2x@tcg = (-1) * c2@tcg
 				}
@@ -1428,6 +1464,82 @@
 	loop
 	return create_card_arg1
 
+#deffunc generate_discover_extra_card int create_extra_card_player
+	if ( cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player) + discovercount@tcg > MAX_CARD_EXTRA ) { 
+		cextra@tcg = -1
+		return -1 
+	}
+	cextrabk@tcg = cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player)
+	deckbk@tcg = cpdata@tcg(TCG_PLAYER_DECK, create_extra_card_player)
+	rndracebk@tcg = rndrace@tcg
+	rndclassbk@tcg = rndclass@tcg
+	rndsexbk@tcg = rndsex@tcg
+	rnddomainbk@tcg = rnddomain@tcg
+	rndlvlbk@tcg = rndlvl@tcg
+	rndfixlvlbk@tcg = rndfixlvl@tcg
+	// Generate candidate cards
+	repeat discovercount@tcg
+		discoverc@tcg = discover@tcg(cnt)
+		if ( discoverc@tcg < 0 ) {
+			gosub *card_filter
+			if ( cardno <= 0 | cardno > MAX_CREATURE_ID - 3 ) { continue }
+			discoverc@tcg = cardno
+			
+			rndrace@tcg = rndracebk@tcg
+			rndclass@tcg = rndclassbk@tcg
+			rndsex@tcg = rndsexbk@tcg
+			rnddomain@tcg = rnddomainbk@tcg
+			rndlvl@tcg = rndlvlbk@tcg
+			rndfixlvl@tcg = rndfixlvlbk@tcg
+		}
+		cextra@tcg = create_extra_card_player * MAX_CARD_DECK_TOTAL + MAX_CARD_DECK + cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player)
+		create_card cextra@tcg, discoverc@tcg
+		card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_DISCOVER, create_extra_card_player, deckix@tcg(create_extra_card_player), deckiy@tcg(create_extra_card_player), deckix@tcg(create_extra_card_player), deckiy@tcg(create_extra_card_player)
+		cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player)++
+		cpdata@tcg(TCG_PLAYER_DECK, create_extra_card_player)++
+	loop
+	gosub *card_filter_reset
+	discover_extra_card create_extra_card_player
+	return cextra@tcg
+
+#deffunc discover_extra_card int create_extra_card_player
+	// Select from candidate cards in Anim area.
+	rtval@tcg = -1
+	if ( create_extra_card_player == player@tcg ) {
+		deckmode@tcg = -2
+		deckmodecp@tcg = create_extra_card_player
+		gosub *select_deck
+		cardpos 0, -1
+		cardpos 1, -1
+		cardposhand 0, -1
+		cardposhand 1, -1
+		cardposgrave -1
+		deckmode@tcg = 0
+		deckmodecp@tcg = 0
+		if ( rtval@tcg >= 0 ) { 
+			discover@tcg(0) = card@tcg(TCG_CARD_REF_DBID, rtval@tcg) 
+		}
+	}
+	if ( rtval@tcg < 0 ) {
+		discover@tcg(0) = card@tcg(TCG_CARD_REF_DBID, create_extra_card_player * MAX_CARD_DECK_TOTAL + MAX_CARD_DECK + cextrabk@tcg + rnd(discovercount@tcg))
+	}
+	// Reset temporary cards
+	cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player) = cextrabk@tcg
+	cpdata@tcg(TCG_PLAYER_DECK, create_extra_card_player) = deckbk@tcg
+	repeat maxcard@tcg
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_DISCOVER ) {
+			card@tcg(TCG_CARD_LOCATION, cnt) = TCG_LOCATION_DEFAULT
+			card@tcg(TCG_CARD_REF_DBID, cnt) = 0
+		}
+	loop
+	if ( discover@tcg(0) < 0 ) { 
+		cextra@tcg = -1
+		return -1 
+	}
+	// Generate the selected card
+	create_extra_card create_extra_card_player,  discover@tcg(0)
+	return cextra@tcg
+
 #deffunc create_extra_card int create_extra_card_player, int create_extra_card_id
 	if ( cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player) >= MAX_CARD_EXTRA ) { 
 		cextra@tcg = -1
@@ -1524,6 +1636,9 @@
 	}
 	if ( cardorglocation@tcg == TCG_LOCATION_HAND ) {
 		cardposhand card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1), -1
+	}
+	if ( cardorglocation@tcg == TCG_LOCATION_EXILE ) {
+		cardposexile card@tcg(TCG_CARD_CONTROLLER, gravecard_arg1)
 	}
 	// Fire deathrattle effect
 	if ( cardorglocation@tcg == TCG_LOCATION_FIELD ) {
@@ -1638,18 +1753,33 @@
 	return
 
 #deffunc delbottomcard int delbottomcard_arg1
-	repeat maxcard@tcg
-		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != delbottomcard_arg1 ) {
-			continue
-		}
-		if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_HAND ) {
-			if ( card@tcg(TCG_CARD_X_MOVETO, cnt) < holderix@tcg(delbottomcard_arg1) ) {
-				delcard@tcg = cnt
+	// In Noa's original, left-most card is graved when hand limit is exceeded.
+	// Draw logic is changed to not draw cards when hand is full, so this should only trigger with Itzpalt's effect.
+	// Since hand limit can be increased beyond 7, card orders are no longer determined by the (x_moveto).
+	// Now it deletes a random hand card instead.
+	if ( specialruledrawswhenhandfull@tcg == FALSE ) { return }
+	repeat limit(getholdersum(delbottomcard_arg1) - maxholdersum@tcg(delbottomcard_arg1), 0, 200)
+		delcard@tcg = -1
+		delcardc@tcg = 0
+		repeat maxcard@tcg
+			if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != delbottomcard_arg1 ) {
+				continue
 			}
+			if ( card@tcg(TCG_CARD_LOCATION, cnt) == TCG_LOCATION_HAND ) {
+				delcardc@tcg++
+				if ( rnd(delcardc@tcg) == 0 ) {
+					delcard@tcg = cnt
+				}
+			}
+		loop
+		if ( delcard@tcg < 0 ) {
+			break
 		}
+		card@tcg(TCG_CARD_Y_MOVETO, delcard@tcg) += (-25) + 50 * delbottomcard_arg1
+		tcgdraw
+		card@tcg(TCG_CARD_ANIM, delcard@tcg) = TCG_ANIM_FADE, 18
+		gravecard delcard@tcg
 	loop
-	card@tcg(TCG_CARD_ANIM, delcard@tcg) = TCG_ANIM_FADE, 18
-	gravecard delcard@tcg
 	makecardlist
 	cardposhand delbottomcard_arg1, -1
 	tcgdraw
@@ -1757,8 +1887,10 @@
 	else {
 		cdbitmod TCG_BIT_FACE_UP, gettargetcard_arg1, 0
 	}
-	if ( getholdersum(n@tcg) > maxholdersum@tcg & specialruledrawswhenhandfull@tcg ) {
+	if ( getholdersum(n@tcg) > maxholdersum@tcg(n@tcg) ) {
+		nbk@tcg = n@tcg
 		delbottomcard n@tcg
+		n@tcg = nbk@tcg
 	}
 	if ( cardorglocation@tcg == TCG_LOCATION_FIELD ) {
 		cardpos 0, -1
@@ -2270,17 +2402,27 @@
 		specialrulenosaccingmanaautoinc@tcg = 1 
 		specialrulenoonedies@tcg = 1 
 	} 
-	if ( deck(CREATURE_ID_ITZPALT) > 0 | cdata(CDATA_ID, tc) == CREATURE_ID_ITZPALT ) { 
-		maxholdersum@tcg += 4
-		maxspotsum@tcg += 4
+	if ( deck(CREATURE_ID_ITZPALT) > 0 ) { 
+		maxholdersum@tcg(0) += 4
+		maxspotsum@tcg(0) += 4
+	} 
+	if ( deck(CREATURE_ID_THE_ELEMENT) > 0 ) { 
+		maxholdersum@tcg(0) += 4
+		maxspotsum@tcg(0) += 4
+	} 
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_ITZPALT ) { 
+		maxholdersum@tcg(1) += 4
+		maxspotsum@tcg(1) += 4
+	} 
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_THE_ELEMENT ) { 
+		maxholdersum@tcg(1) += 4
+		maxspotsum@tcg(1) += 4
 	} 
 	if ( deck(CREATURE_ID_THE_ELEMENT) > 0 | cdata(CDATA_ID, tc) == CREATURE_ID_ITZPALT | cdata(CDATA_ID, tc) == CREATURE_ID_THE_ELEMENT ) {
 		specialruledrawswhenhandfull@tcg = 1 
 		specialruledrawtwocardsperturn@tcg = 1 
 		specialruleanyonecanblock@tcg = 1
 		specialruleusefatigue@tcg = 1
-		maxholdersum@tcg += 4
-		maxspotsum@tcg += 4
 	} 
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_ITZPALT | cdata(CDATA_ID, tc) == CREATURE_ID_OPATOS | cdata(CDATA_ID, tc) == CREATURE_ID_MANI | cdata(CDATA_ID, tc) == CREATURE_ID_KUMIROMI | cdata(CDATA_ID, tc) == CREATURE_ID_EHEKATL | cdata(CDATA_ID, tc) == CREATURE_ID_JURE | cdata(CDATA_ID, tc) == CREATURE_ID_LULWY | cdata(CDATA_ID, tc) == CREATURE_ID_YACATECT | cdata(CDATA_ID, tc) == CREATURE_ID_THE_ELEMENT | cdata(CDATA_ID, tc) == CREATURE_ID_BUILDUP_OPATOS | cdata(CDATA_ID, tc) == CREATURE_ID_DEUS_EX_MANINA | cdata(CDATA_ID, tc) == CREATURE_ID_INSANE_KUMIROMI | cdata(CDATA_ID, tc) == CREATURE_ID_GOD_INSIDE_EHEKATL | cdata(CDATA_ID, tc) == CREATURE_ID_BLESSED_JURE | cdata(CDATA_ID, tc) == CREATURE_ID_DEVASTATE_LULWY | cdata(CDATA_ID, tc) == CREATURE_ID_HYPER_YACATECT ) {
 		repeat maxcard@tcg
@@ -3143,6 +3285,10 @@
 	dlistmax@tcg = 0
 	dsc@tcg = 0
 	repeat maxcard@tcg
+		// Deck mode -2: Choose a card from temporary zone.
+		if ( deckmode@tcg == -2 & card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_DISCOVER ) {
+			continue
+		}
 		// Deck mode -1: View deck in combat.
 		// Deck mode 0: Edit Mode
 		// Deck mode 4: Choose a card from deck.
@@ -4011,9 +4157,12 @@
 *DeckExportImportMenu
 	redraw 0
 	cardhelp lang("[カスタムDeck]何をする？", "[Deck] What do you want to do?"), 100
-	promptAdd "Export Deck", "a"
-	promptAdd "Import Deck", "b"
-	promptAdd "Reset Current Deck", "c"
+	promptAdd "Export Deck", "null", 0
+	promptAdd "Import Deck", "null", 1
+	promptAdd "Reset Current Deck", "null", 2
+	if ( gdata(GDATA_WIZARD) ) {
+		promptAdd "Export Card List", "null", 3
+	}
 	val = promptx, prompty, 260, 1
 	gosub *prompt_key
 	gosub *tcg_drawInterface
@@ -4075,6 +4224,62 @@
 			deck(cnt) = 0
 		loop
 		calcdecksize
+		return
+	}
+	if ( rtval == 3 ) {
+		txtfile = exedir + "\\TCG_card_list.txt"
+		buff = ""
+		notesel buff
+		repeat MAX_CARD
+			if ( cnt <= 0 | cnt > MAX_CREATURE_ID - 3 ) {
+				continue
+			}
+			card_ref cnt
+			if ( stat >= 0 ) {
+				sdim lines@tcg
+				split rtvaln2, "\n", lines@tcg
+				f@tcg = stat
+				bits@tcg = ""
+				if ( f@tcg >= 2 & instr(rtvaln2, 0, "Bits:  ") != -1 ) {
+					bits@tcg = lines@tcg(1)
+				}
+				sreplace s@tcg, s@tcg, "\n", "  "
+				sreplace s@tcg, s@tcg, "Effect: ", ""
+				sreplace bits@tcg, bits@tcg, "Bits:  ", ""
+				if ( cnt == 37 ) {
+					cardrefcost = "race dependent"
+					cardrefattack = "race/class dependent"
+					cardrefhp = "race/class dependent"
+					s@tcg = "class dependent"
+					bits@tcg = "class/affliation dependent"
+					cardrefrace = "player race"
+					cardrefclass = "player class"
+				}
+				if ( cnt == 343 ) {
+					cardrefn = "[AKA] [Player Name]"
+					cardrefcost = "race dependent"
+					cardrefattack = "race/class dependent"
+					cardrefhp = "race/class dependent"
+					s@tcg = "class dependent"
+					bits@tcg = "class/affliation dependent"
+					cardrefrace = "player race"
+					cardrefclass = "player class"
+				}
+				if ( cnt == 901 ) {
+					cardrefn = "[Random AKA] [Random Name]"
+					cardrefcost = "race dependent"
+					cardrefattack = "race/class dependent"
+					cardrefhp = "race/class dependent"
+					s@tcg = "class dependent"
+					bits@tcg = "class dependent"
+					cardrefrace = "random race"
+					cardrefclass = "random class"
+				}
+				noteadd "|-"
+				noteadd "|" + cnt + "||" + cardrefn + "||" + cnvcase(domname@tcg(cardrefdomain),3) + "||" + cardrefcost + "||" + cardrefattack + "||" + cardrefhp + "||" + s@tcg + "||" + bits@tcg + "||" + cardrefrace + "||" + cardrefclass + ""
+			}
+		loop
+		notesave txtfile
 		return
 	}
 	return

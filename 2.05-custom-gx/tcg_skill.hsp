@@ -458,7 +458,7 @@
 			if ( rnd(11) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_DISASTER }
 			if ( rnd(12) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_INSANE2 }
 			if ( rnd(13) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_KALI }
-			if ( rnd(14) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_BATTLECRY_HEALPLAYER6DAMAGE }
+			if ( rnd(14) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_GETAPUTIT }
 			if ( rnd(15) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_EXECUTIONER }
 			if ( rnd(16) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_NOBLE }
 			if ( rnd(17) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_GOBLIN }
@@ -474,7 +474,7 @@
 			if ( rnd(27) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_SBOY }
 			if ( rnd(28) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_TOURGUIDE3 }
 			if ( rnd(29) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_SIST }
-			if ( rnd(30) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_SICKOLDERBROTHER }
+			if ( rnd(30) == 0 ) { effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE) = TCG_EFF_DISCOVER8 }
 			effdesc@tcg(TCG_EFF_RYUTYE) = "In-Hand: Ryutye try to remember his Effect. Which is: " + effdesc@tcg(effref@tcg(TCG_SKILL_POWER, TCG_EFF_RYUTYE))
 			repeat maxcard@tcg
 				if ( card@tcg(TCG_CARD_EFFECT, cnt) != TCG_EFF_RYUTYE ) { continue }
@@ -577,9 +577,9 @@
 		_switch_sw@tcg = 0
 		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
 			if ( cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) >= 1 & hasholdspace(aeft@tcg) == TRUE ) {
-				getrandomcard aeft@tcg
 				cpdata@tcg(TCG_PLAYER_MANA, aeft@tcg) -= 1
 				specialrulemanalastturn@tcg(aeft@tcg) = cpdata@tcg(TCG_PLAYER_MANA)
+				getrandomcard aeft@tcg
 			}
 			makecardlist
 			tcgdraw
@@ -1303,6 +1303,38 @@
 			if ( target@tcg >= 0 ) {
 				if ( hasholdspace(card@tcg(TCG_CARD_CONTROLLER, target@tcg)) == TRUE ) {
 					gettargetcard target@tcg
+				}
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_DISCOVER | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
+			if ( hasholdspace(aeft@tcg) & aefp >= 0 ) {
+				repeat aefp@tcg
+					discover@tcg(cnt) = -1
+				loop
+				discovercount@tcg = aefp@tcg
+				generate_discover_extra_card aeft@tcg
+				if ( cextra@tcg >= 0 ) {
+					gettargetcard cextra@tcg
+				}
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_DISCOVER_PUTIT | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
+			if ( hasholdspace(aeft@tcg) ) {
+				discover@tcg = CREATURE_ID_PUTIT, CREATURE_ID_RED_PUTIT, CREATURE_ID_MILITARY_PUTIT, CREATURE_ID_PUTIT_TANK, -1
+				discovercount@tcg = 5
+				generate_discover_extra_card aeft@tcg
+				if ( cextra@tcg >= 0 ) {
+					gettargetcard cextra@tcg
 				}
 			}
 		}
@@ -2210,7 +2242,7 @@
 			aeftbk@tcg = aeft@tcg
 			cardidbk@tcg = card@tcg(TCG_CARD_REF_DBID, effac@tcg)
 			cardpool@tcg = 1, 2, 2
-			cardsgenerated@tcg = limit(maxholdersum@tcg - getholdersum(aeftbk@tcg), 0, limit(effref@tcg(TCG_SKILL_POWER, aeff@tcg), 1, 6))
+			cardsgenerated@tcg = limit(maxholdersum@tcg(aeftbk@tcg) - getholdersum(aeftbk@tcg), 0, limit(effref@tcg(TCG_SKILL_POWER, aeff@tcg), 1, 6))
 			animeseq@tcg = 1
 			repeat cardsgenerated@tcg
 				cardchoice@tcg = rnd(3)

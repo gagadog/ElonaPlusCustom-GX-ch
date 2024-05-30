@@ -1088,23 +1088,27 @@
 				winconsecutiveyami@tcg++
 				txtef COLOR_YELLOW
 				txt "" + winconsecutiveyami@tcg + " consecutive cursed game victory!"
-				txtef COLOR_RED
-				txt "Your opponent is sealed into a card!"
-				flt
-				itemcreate -1, ITEM_ID_CARD, cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 0
-				remain_make ci, tc
-				picols = cdata(CDATA_CHARA_PIC, tc)
-				if ( cdata(CDATA_PIC, tc) >= xy2pic(1, 21) & cdata(CDATA_PIC, tc) <= xy2pic(31, 21) ) {
-					picols = 0
-				}
-				inv(INV_ITEM_COL, ci) = cdata(CDATA_PIC, tc) \ COLOR_TINT_MULT + picols * COLOR_TINT_MULT
-				inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, tc)
-				if ( cdata(CDATA_ID, tc) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, tc)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME		
+				healthrate@tcg = limit(lifestakestart@tcg(0) * 10 / lifestakeend@tcg(0), 10, 300)
+				cdata(CDATA_HP, CHARA_PLAYER) = cdata(CDATA_HP, CHARA_PLAYER) * 10 / healthrate@tcg
 				cdata(CDATA_HP, tc) = (-1)
 				cdata(CDATA_MP, tc) = 0
 				dmghp tc, 10, DAMAGE_FROM_CARD_GAME
-				healthrate@tcg = limit(lifestakestart@tcg(0) * 10 / lifestakeend@tcg(0), 10, 300)
-				cdata(CDATA_HP, CHARA_PLAYER) = cdata(CDATA_HP, CHARA_PLAYER) * 10 / healthrate@tcg
+				if ( cdata(CDATA_EXIST, tc) != CHAR_STATE_ALIVE ) {
+					txtef COLOR_RED
+					txt "Your opponent is sealed into a card!"
+					flt
+					itemcreate -1, ITEM_ID_CARD, cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 0
+					remain_make ci, tc
+					picols = cdata(CDATA_CHARA_PIC, tc)
+					if ( cdata(CDATA_PIC, tc) >= xy2pic(1, 21) & cdata(CDATA_PIC, tc) <= xy2pic(31, 21) ) {
+						picols = 0
+					}
+					inv(INV_ITEM_COL, ci) = cdata(CDATA_PIC, tc) \ COLOR_TINT_MULT + picols * COLOR_TINT_MULT
+					inv(INV_ITEM_SUB_NAME, ci) = cdata(CDATA_ID, tc)
+					if ( cdata(CDATA_ID, tc) == CREATURE_ID_USER ) { inv(INV_ITEM_AMUR_CAGE, ci) = omakechecksum(cdatan(CDATAN_USER_NPC_TAG, tc)) } // JAMES CUSTOM - DISPLAY USER PARTS NAME		
+					s = getcnpcnamebychecksum(ci)
+					cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
+				}
 			} else {
 				healthrate@tcg = limit(lifestakestart@tcg(1) * 10 / lifestakeend@tcg(1), 10, 300)
 				cdata(CDATA_HP, tc) = cdata(CDATA_HP, tc) * 10 / healthrate@tcg
@@ -2882,21 +2886,18 @@
 		deck_opponent(CREATURE_ID_LUNE_THE_MAID_CHIEF) = 1
 		deck_opponent(CREATURE_ID_MAIDSANN) = 2
 		deck_opponent(CREATURE_ID_WEREWOLF) = 4
-		deck_opponent(CREATURE_ID_TOWN_CHILD) = 2
-		deck_opponent(CREATURE_ID_ARENA_MASTER) = 2
-		deck_opponent(CREATURE_ID_WOODEN_GOLEM) = 1
-		deck_opponent(CREATURE_ID_STONE_GOLEM) = 1
+		deck_opponent(CREATURE_ID_BARTENDER) = 2
+		deck_opponent(CREATURE_ID_WARRIOR) = 2
+		deck_opponent(CREATURE_ID_ELDER) = 2
 		deck_opponent(CREATURE_ID_DOG) = 4
+		deck_opponent(CREATURE_ID_SHEEPDOG) = 4
+		deck_opponent(CREATURE_ID_BADGER) = 3
+		deck_opponent(CREATURE_ID_PADANGU) = 2
 		deck_opponent(CREATURE_ID_SILVER_WOLF) = 2
 		deck_opponent(CREATURE_ID_POPPY_THE_LITTLE_DOG) = 1
-		deck_opponent(CREATURE_ID_RUDRAS) = 1
 		deck_opponent(CREATURE_ID_DOG_COP) = 1
-		deck_opponent(CREATURE_ID_SHEEPDOG) = 4
-		deck_opponent(CREATURE_ID_PADANGU) = 4
-		deck_opponent(CREATURE_ID_SHINING_SILVER_WOLF) = 1
-		deck_opponent(CREATURE_ID_HALLOWEEN_CHILDREN) = 2
-		deck_opponent(CREATURE_ID_LEGENDARY_WOLF) = 1
-		deck_opponent(CREATURE_ID_WOLF) = 1
+		deck_opponent(CREATURE_ID_PASCAL) = 1
+		deck_opponent(CREATURE_ID_GANESA) = 2
 		return 1
 	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_KUMIROMI | cdata(CDATA_ID, tc) == CREATURE_ID_INSANE_KUMIROMI | cdata(CDATA_ID, tc) == CREATURE_ID_AMURDAD ) {
@@ -5698,10 +5699,10 @@
 		cardreflvl = 1
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 6
-		cardrefattack = 6
-		cardrefhp = 6
-		cardrefskillid = TCG_EFF_SACRIFICE_SUMMONITSELF
+		cardrefcost = 2
+		cardrefattack = 1
+		cardrefhp = 1
+		cardrefskillid = TCG_EFF_YONORNE
 		cardrefbits = ""
 		return 1
 	}

@@ -1597,7 +1597,15 @@
 		userdatan(0, tg) = s
 		userdatan(1, tg) = s(1)
 		if ( en ) {
-			userdatan(1, tg) = cnpcfilename
+			// James custom: Use file name for default CNPC name so it's easily modifiable.
+			// And when it's temporary, use en name/id for default name.
+			// Japanese creators tends to use meaningless words for id (or as an anti duplicate measure.)
+			//     For example: Cynthia => aaasinsia/シンシア.
+			if ( instr(cnpcfilename, 0, "_tmp_") == (-1) ) {
+				userdatan(1, tg) = cnpcfilename
+			} else {
+				userdatan(1, tg) = s
+			}
 		}
 		noteget s, cnt
 		userdatan(6, tg) = s
