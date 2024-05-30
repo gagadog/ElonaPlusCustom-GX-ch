@@ -1354,7 +1354,7 @@
 	carddailyc@tcg = 100, 100, 100, 100, 100
 	carddailyt@tcg = "", "", "", "", ""
 	carddailyd@tcg = "", "", "", "", ""
-	randomize gdata(GDATA_YEAR) * 360 + gdata(GDATA_MONTH) * 30 + gdata(GDATA_DAY) + cdata(CDATA_ROLE_RESTOCK, tc)
+	randomize ((gdata(GDATA_YEAR) * 360 + gdata(GDATA_MONTH) * 30 + gdata(GDATA_DAY))/7) + cdata(CDATA_ROLE_RESTOCK, tc)
 	repeat 5
 		gosub *card_filter_reset
 		gosub *card_filter
@@ -1366,6 +1366,8 @@
 		carddailyd@tcg(cnt) = rtvaln2
 		if ( cardrefdomain == 4 ) { carddailyc@tcg(cnt) = 200 }
 		if ( cardrefdomain == 5 ) { carddailyc@tcg(cnt) = 1000 }
+		if ( carddaily@tcg(cnt) > 528 ) { carddailyc@tcg(cnt) += carddailyc@tcg(cnt) }
+		if ( carddaily@tcg(cnt) > 918 ) { carddailyc@tcg(cnt) += carddailyc@tcg(cnt) / 2 }
 	loop
 	randomize
 	item_find ITEM_ID_DECK, 3, 1

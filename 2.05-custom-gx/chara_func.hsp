@@ -7749,7 +7749,9 @@
 					DamagePopupAdd ("AP +" + ( cdata(CDATA_AP_TOTAL, gain_ap_chara_id) - gain_ap_total )), gain_ap_chara_id, DMGPOPUP_HEAL_SP, 0
 					txt "" + name(gain_ap_chara_id) + " obtained " + ( cdata(CDATA_AP_TOTAL, gain_ap_chara_id) - gain_ap_total ) + " AP from the " + gain_ap_source + "."
 				}
-				return TRUE
+				if ( gain_ap_source == "destone" ) {
+					return TRUE
+				}
 			}
 		}
 	}
