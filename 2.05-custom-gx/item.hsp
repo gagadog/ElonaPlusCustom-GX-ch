@@ -954,47 +954,47 @@
 						break
 					}
 					if ( p == 1 ) {
-						if ( inv(INV_ITEM_PARTS, ci) < 1 ) {
+						if ( inv(INV_ITEM_PARTS, ci) \ 10 < 1 ) {
 							inv(INV_ITEM_PARTS, ci) += 1
 						}
 					}
 					if ( p == 2 ) {
-						if ( inv(INV_ITEM_PARTS, ci) < 10 ) {
+						if ( inv(INV_ITEM_PARTS, ci) \ 100 < 10 ) {
 							inv(INV_ITEM_PARTS, ci) += 10
 						}
 					}
 					if ( p == 3 ) {
-						if ( inv(INV_ITEM_PARTS, ci) < 100 ) {
+						if ( inv(INV_ITEM_PARTS, ci) \ 1000 < 100 ) {
 							inv(INV_ITEM_PARTS, ci) += 100
 						}
 					}
 					if ( p == 4 ) {
-						if ( inv(INV_ITEM_PARTS, ci) < 1000 ) {
+						if ( inv(INV_ITEM_PARTS, ci) \ 10000 < 1000 ) {
 							inv(INV_ITEM_PARTS, ci) += 1000
 						}
 					}
 					if ( p == 5 ) {
-						if ( inv(INV_ITEM_PARTS, ci) < 10000 ) {
+						if ( inv(INV_ITEM_PARTS, ci) \ 100000 < 10000 ) {
 							inv(INV_ITEM_PARTS, ci) += 10000
 						}
 					}
 					if ( p == 6 ) {
-						if ( inv(INV_ITEM_PARTS, ci) < 100000 ) {
+						if ( inv(INV_ITEM_PARTS, ci) \ 1000000 < 100000 ) {
 							inv(INV_ITEM_PARTS, ci) += 100000
 						}
 					}
 					if ( p == 7 ) {
-						if ( inv(INV_ITEM_PARTS, ci) < 1000000 ) {
+						if ( inv(INV_ITEM_PARTS, ci) \ 10000000 < 1000000 ) {
 							inv(INV_ITEM_PARTS, ci) += 1000000
 						}
 					}
 					if ( p == 8 ) {
-						if ( inv(INV_ITEM_PARTS, ci) < 10000000 ) {
+						if ( inv(INV_ITEM_PARTS, ci) \ 100000000 < 10000000 ) {
 							inv(INV_ITEM_PARTS, ci) += 10000000
 						}
 					}
 					if ( p == 9 ) {
-						if ( inv(INV_ITEM_PARTS, ci) < 100000000 ) {
+						if ( inv(INV_ITEM_PARTS, ci) \ 1000000000 < 100000000 ) {
 							inv(INV_ITEM_PARTS, ci) += 100000000
 						}
 					}

@@ -1380,7 +1380,7 @@
 			if ( p@tcg == TCG_BIT_THIEFGUILD ) { s@tcg += "<Thief Guild> "}
 			if ( p@tcg == TCG_BIT_MAGEGUILD ) { s@tcg += "<Mage Guild> "}
 			if ( p@tcg == TCG_BIT_ZANAN ) { s@tcg += "<Zanan> "}
-			if ( p@tcg == TCG_BIT_BARIUS ) { s@tcg += "<Barius> "}
+			if ( p@tcg == TCG_BIT_LOTHRIAN ) { s@tcg += "<Lothrian> "}
 			if ( p@tcg == TCG_BIT_EULDERNA ) { s@tcg += "<Eulderna> "}
 			if ( p@tcg == TCG_BIT_ELEAREFUGEE ) { s@tcg += "<Elea> "}
 			if ( p@tcg == TCG_BIT_BANDIT ) { s@tcg += "<Bandit> "}
@@ -3066,6 +3066,30 @@
 			y@tcg = cpy@tcg(cnt)
 			pos x@tcg, y@tcg
 			gcopy 7, 264, 144, 72, 120
+			if ( cnt == 0 ) {
+				gmode 2, 32, 48
+				pos x@tcg + 21, y@tcg + 32
+				gcopy 10, 0, 0, 32, 48
+			} else {
+				tc@tcg = cnt * tc
+				locvar_cell_draw_col = (cdata(CDATA_PIC, tc@tcg) - cdata(CDATA_CHARA_PIC, tc@tcg) * COLOR_TINT_MULT) / COLOR_TINT_MULT
+				locvar_cell_draw_p = cdata(CDATA_PIC, tc@tcg) \ COLOR_TINT_MULT + cdata(CDATA_CHARA_PIC, tc@tcg) * COLOR_TINT_MULT
+				if ( cdata(CDATA_PIC, tc@tcg) >= xy2pic(1, 21) & cdata(CDATA_PIC, tc@tcg) <= xy2pic(31, 21) ) {
+					locvar_cell_draw_col = 0
+					locvar_cell_draw_p = cdata(CDATA_PIC, tc@tcg)
+				}
+				if ( locvar_cell_draw_p >= 0 & locvar_cell_draw_p < SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + 240 ) {
+					chara_preparepic locvar_cell_draw_p, locvar_cell_draw_col
+					color 0, 0, 0
+					pos x@tcg + 13, y@tcg + 24 - chipc(CHIPC_F, locvar_cell_draw_p) + chipc(CHIPC_HEIGHT, locvar_cell_draw_p) / 2
+					gcopy 5, 0, 960, chipc(CHIPC_WIDTH, locvar_cell_draw_p), chipc(CHIPC_HEIGHT, locvar_cell_draw_p)
+					color 255, 255, 255
+				}
+			}
+			pos x@tcg, y@tcg
+			gcopy 7, 264, 144, 72, 28
+			pos x@tcg, y@tcg + 88
+			gcopy 7, 264, 232, 72, 28
 			s@tcg = "" + cpdata@tcg(TCG_PLAYER_LIFE, cnt)
 			pos x@tcg + 36 - strlen(s@tcg) * 3, y@tcg + 9 - en
 			mes s@tcg
