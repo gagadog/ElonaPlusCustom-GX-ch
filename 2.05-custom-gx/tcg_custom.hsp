@@ -2673,6 +2673,42 @@
 		deck_opponent(CREATURE_ID_STRANGE_OLD_PERSON) = 1
 		return 1
 	}
+	if ( cdata(CDATA_ID, tc) == CREATURE_ID_HALION_THE_EXTREMIST | cdata(CDATA_ID, tc) == CREATURE_ID_MILOS_OF_THE_FORGOTTEN_WORLD | cdata(CDATA_ID, tc) == CREATURE_ID_CARLA_OF_THE_FORGOTTEN_WORLD ) {
+		deck_opponent(CREATURE_ID_HALION_THE_EXTREMIST) = 1
+		deck_opponent(CREATURE_ID_MILOS_OF_THE_FORGOTTEN_WORLD) = 1
+		deck_opponent(CREATURE_ID_CARLA_OF_THE_FORGOTTEN_WORLD) = 1
+		deck_opponent(CREATURE_ID_WARRIOR_OF_ELEA) = 4
+		deck_opponent(CREATURE_ID_WIZARD_OF_ELEA) = 4
+		deck_opponent(CREATURE_ID_SAGE_OF_ELEA) = 4
+		deck_opponent(CREATURE_ID_KNIGHT_OF_ELEA) = 3
+		deck_opponent(CREATURE_ID_WANDERER_OF_ELEA) = 2
+		deck_opponent(CREATURE_ID_AVENGER_OF_ELEA) = 3
+		deck_opponent(CREATURE_ID_MOB_OF_ELEA) = 4
+		deck_opponent(CREATURE_ID_INSTIGATOR_OF_ELEA) = 2
+		deck_opponent(CREATURE_ID_ELDER) = 2
+		deck_opponent(CREATURE_ID_CUTE_FAIRY) = 2
+		deck_opponent(CREATURE_ID_BARD) = 2
+		deck_opponent(CREATURE_ID_BOUNTY_HUNTER) = 1
+		deck_opponent(CREATURE_ID_STAFF) = 2
+		if ( cdata(CDATA_ID, tc) == CREATURE_ID_HALION_THE_EXTREMIST ) {
+			deck_opponent(CREATURE_ID_BOMB_ROCK) = 4
+			deck_opponent(CREATURE_ID_GIGA_BOMB_ROCK) = 1
+			deck_opponent(CREATURE_ID_CLUSTER_BOMB_ROCK) = 3
+		}
+		if ( cdata(CDATA_ID, tc) == CREATURE_ID_MILOS_OF_THE_FORGOTTEN_WORLD ) {
+			deck_opponent(CREATURE_ID_STRANGE_SCIENTIST) = 1
+			deck_opponent(CREATURE_ID_LITTLE_SISTER) = 1
+			deck_opponent(CREATURE_ID_BIG_DADDY) = 1
+			deck_opponent(CREATURE_ID_BUILDION) = 1
+			deck_opponent(CREATURE_ID_KONIGS_KATZE) = 1
+		}
+		if ( cdata(CDATA_ID, tc) == CREATURE_ID_CARLA_OF_THE_FORGOTTEN_WORLD ) {
+			deck_opponent(CREATURE_ID_CHICKEN) = 4
+			deck_opponent(CREATURE_ID_YOUNG_SWALLOW) = 2
+			deck_opponent(CREATURE_ID_DARK_ELEA) = 2
+		}
+		return 1
+	}
 	if ( cdata(CDATA_ID, tc) == CREATURE_ID_LANKATA_THE_LIGHTNING_OF_BLUE | cdata(CDATA_ID, tc) == CREATURE_ID_ALFRED_THE_CANGNAN_WIND ) {
 		deck_opponent(CREATURE_ID_LANKATA_THE_LIGHTNING_OF_BLUE) = 1
 		deck_opponent(CREATURE_ID_ALFRED_THE_CANGNAN_WIND) = 1
@@ -3062,11 +3098,45 @@
 			cardrefpic = rnd(RANGE_PLAYER_PIC / 2) * 2 + (cardrefsex == "female") + 1
 		}
 	}
-	if ( cardrefskillid == TCG_EFF_PLAYER | ( cardrefskillid == TCG_EFF_NOVICE & cardmode@tcg != 1 ) ) {
-		cardrefbits = "80"
-		if ( gdata(GDATA_FLAG_GUILD_FIGHTER) | (cardrefskillid == TCG_EFF_NOVICE & rnd(4) == 0) ) { cardrefbits = "67,80" }
-		if ( gdata(GDATA_FLAG_GUILD_THIEF) | (cardrefskillid == TCG_EFF_NOVICE & rnd(5) == 0) ) { cardrefbits = "68,80" }
-		if ( gdata(GDATA_FLAG_GUILD_MAGE) | (cardrefskillid == TCG_EFF_NOVICE & rnd(6) == 0) ) { cardrefbits = "69,80" }
+	if ( cnpc@tcg > 0 ) {
+		cardrefno = "???"
+		cardrefn = userdatan(1, (cnpc@tcg - 1))
+		cardrefrace = userdatan(2, (cnpc@tcg - 1))
+		cardrefclass = userdatan(3, (cnpc@tcg - 1))
+		cardrefsex = "male"
+		if ( userdata(3, (cnpc@tcg - 1)) == 1 | (userdata(3, (cnpc@tcg - 1)) & rnd(2) == 0) ) { cardrefsex = "female" }
+		cardreflvl = userdata(2, (cnpc@tcg - 1))
+		cardrefquality = userdata(5, (cnpc@tcg - 1))
+		cardrefdomain = 4 + (userdata(5, (cnpc@tcg - 1)) == 6)
+		cardrefcost = 1 + (userdata(5, (cnpc@tcg - 1)) == 6)
+		cardrefattack = 1 + (userdata(5, (cnpc@tcg - 1)) == 6)
+		cardrefhp = 1 + (userdata(5, (cnpc@tcg - 1)) == 6)
+		cnpclevel@tcg = 10
+		repeat 8
+			if ( userdata(2, (cnpc@tcg - 1)) >= cnpclevel@tcg ) {
+				cardrefcost += 1
+				cardrefattack += 1 + (cnt \ 2)
+				cardrefhp += 1 + (cnt \ 2 == 0)
+			}
+			cnpclevel@tcg *= 2
+		loop
+		dbid = CREATURE_ID_NOVICE
+		cardrefskillid = TCG_EFF_NOVICE
+		if ( userdata(5, (cnpc@tcg - 1)) >= 4 ) {
+			cardrefskillid = TCG_EFF_CNPC
+		}
+		if ( userdata(5, (cnpc@tcg - 1)) >= 5 ) {
+			dbid = CREATURE_ID_USER
+		}
+		cardrefpic = SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + (cnpc@tcg - 1)
+		cardrefpicchar = cardrefpic / 1000
+	}
+	if ( cardrefskillid == TCG_EFF_PLAYER | cardrefskillid == TCG_EFF_CNPC | ( cardrefskillid == TCG_EFF_NOVICE & cardmode@tcg != 1 ) ) {
+		cardrefbits = "84"
+		if ( cardrefskillid == TCG_EFF_PLAYER | cardrefskillid == TCG_EFF_NOVICE ) { cardrefbits = "80" }
+		if ( (cardrefskillid == TCG_EFF_PLAYER & gdata(GDATA_FLAG_GUILD_FIGHTER)) | (cardrefskillid == TCG_EFF_NOVICE & rnd(4) == 0) ) { cardrefbits = "67,80" }
+		if ( (cardrefskillid == TCG_EFF_PLAYER & gdata(GDATA_FLAG_GUILD_THIEF)) | (cardrefskillid == TCG_EFF_NOVICE & rnd(5) == 0) ) { cardrefbits = "68,80" }
+		if ( (cardrefskillid == TCG_EFF_PLAYER & gdata(GDATA_FLAG_GUILD_MAGE)) | (cardrefskillid == TCG_EFF_NOVICE & rnd(6) == 0) ) { cardrefbits = "69,80" }
 		if ( cardrefskillid == TCG_EFF_NOVICE ) { cardrefskillid = TCG_EFF_NONE }
 		if ( cardrefrace == "roran" | cardrefrace == "elea" ) { 
 			cardrefcost -= 1 
@@ -3169,6 +3239,10 @@
 			cardrefskillid = TCG_EFF_SACRIFICE_DRAW1CARD
 			if ( dbid == CREATURE_ID_USER ) { cardrefskillid = TCG_EFF_SACRIFICE_TARGETCREATUREGETDEATHWORD }
 		}
+	}
+	if ( cnpc@tcg > 0 ) {
+		dbid = CREATURE_ID_NOVICE
+		cnpc@tcg = 0
 	}
 	cardrefattack = limit(cardrefattack, 0, TCG_STAT_MAX)
 	cardrefhp = limit(cardrefhp, 1, TCG_STAT_MAX)
@@ -5032,7 +5106,7 @@
 		cardrefattack = 3
 		cardrefhp = 3
 		cardrefskillid = TCG_EFF_HALION
-		cardrefbits = "73"
+		cardrefbits = "73,83"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_LANKATA_THE_LIGHTNING_OF_BLUE ) {
@@ -5115,7 +5189,7 @@
 		cardrefdomain = 2
 		cardrefcost = 3
 		cardrefattack = 4
-		cardrefhp = 2
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_ELEA
 		cardrefbits = "12,73,71"
 		return 1
@@ -5130,7 +5204,7 @@
 		cardrefdomain = 2
 		cardrefcost = 3
 		cardrefattack = 2
-		cardrefhp = 4
+		cardrefhp = 5
 		cardrefskillid = TCG_EFF_ELEA
 		cardrefbits = "9,10,73,71"
 		return 1
@@ -7305,9 +7379,9 @@
 		cardreflvl = 150
 		cardrefquality = FIX_QUALITY_UNIQUE
 		cardrefdomain = 5
-		cardrefcost = 4
-		cardrefattack = 7
-		cardrefhp = 7
+		cardrefcost = 3
+		cardrefattack = 3
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_TOURGUIDE1
 		cardrefbits = ""
 		return 1

@@ -1317,9 +1317,13 @@
 					discover@tcg(cnt) = -1
 				loop
 				discovercount@tcg = aefp@tcg
-				generate_discover_extra_card aeft@tcg
-				if ( cextra@tcg >= 0 ) {
-					gettargetcard cextra@tcg
+				generate_extra_card aeft@tcg
+				discover_extra_card aeft@tcg
+				if ( discoverchoice@tcg >= 0 ) {
+					create_extra_card aeft@tcg,  discoverchoice@tcg
+					if ( cextra@tcg >= 0 ) {
+						gettargetcard cextra@tcg
+					}
 				}
 			}
 		}
@@ -1332,9 +1336,47 @@
 			if ( hasholdspace(aeft@tcg) ) {
 				discover@tcg = CREATURE_ID_PUTIT, CREATURE_ID_RED_PUTIT, CREATURE_ID_MILITARY_PUTIT, CREATURE_ID_PUTIT_TANK, -1
 				discovercount@tcg = 5
-				generate_discover_extra_card aeft@tcg
-				if ( cextra@tcg >= 0 ) {
-					gettargetcard cextra@tcg
+				generate_extra_card aeft@tcg
+				discover_extra_card aeft@tcg
+				if ( discoverchoice@tcg >= 0 ) {
+					create_extra_card aeft@tcg,  discoverchoice@tcg
+					if ( cextra@tcg >= 0 ) {
+						gettargetcard cextra@tcg
+					}
+				}
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_DISCOVER_CNPC | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
+			if ( hasholdspace(aeft@tcg) ) {
+				discovercount@tcg = limit(MAX_CARD_EXTRA - cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg), 0, limit(usernpcmax, 0, 240))
+				if ( discovercount@tcg > 0 ) {
+					repeat usernpcmax
+						discover@tcg(cnt) = cnt + 1
+						if ( cnt >= discovercount@tcg ) {
+							discover@tcg(rnd(discovercount@tcg)) = cnt + 1
+						}
+					loop
+					cextrabk@tcg = cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg)
+					deckbk@tcg = cpdata@tcg(TCG_PLAYER_DECK, aeft@tcg)
+					repeat discovercount@tcg
+						cextra@tcg = aeft@tcg * MAX_CARD_DECK_TOTAL + MAX_CARD_DECK + cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg)
+						cnpc@tcg = discover@tcg(cnt)
+						create_card cextra@tcg, CREATURE_ID_NOVICE
+						card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_DISCOVER, aeft@tcg, deckix@tcg(aeft@tcg), deckiy@tcg(aeft@tcg), deckix@tcg(aeft@tcg), deckiy@tcg(aeft@tcg)
+						cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg)++
+						cpdata@tcg(TCG_PLAYER_DECK, aeft@tcg)++
+					loop
+					discover_extra_card aeft@tcg
+					cnpc@tcg = discover@tcg(discoverchoiceval@tcg)
+					create_extra_card aeft@tcg, CREATURE_ID_NOVICE
+					if ( cextra@tcg >= 0 ) {
+						gettargetcard cextra@tcg
+					}
 				}
 			}
 		}
@@ -2533,10 +2575,11 @@
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
 	}
-	if ( _switch_val@tcg == TCG_SKILL_EFF_GENACOPYINDECK | _switch_sw@tcg ) {
+	if ( _switch_val@tcg == TCG_SKILL_EFF_HALION | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
 			create_extra_card card@tcg(TCG_CARD_CONTROLLER, aeft@tcg), card@tcg(TCG_CARD_REF_DBID, aeft@tcg)
+			dmgplayer card@tcg(TCG_CARD_CONTROLLER, aeft@tcg), -1
 		}
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
@@ -3797,12 +3840,12 @@
 	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_SWAPGENDER | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
-		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
-			if ( cardn@tcg(TCG_CARDN_REF_SEX) == "male" ) {
-				cardn@tcg(TCG_CARDN_REF_SEX) = "female"
+		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {
+			if ( cardn@tcg(TCG_CARDN_REF_SEX, aeft@tcg) == "male" ) {
+				cardn@tcg(TCG_CARDN_REF_SEX, aeft@tcg) = "female"
 			} else {
-				if ( cardn@tcg(TCG_CARDN_REF_SEX) = "female" ) {
-					cardn@tcg(TCG_CARDN_REF_SEX) = "male"
+				if ( cardn@tcg(TCG_CARDN_REF_SEX, aeft@tcg) = "female" ) {
+					cardn@tcg(TCG_CARDN_REF_SEX, aeft@tcg) = "male"
 				}
 			}
 		}

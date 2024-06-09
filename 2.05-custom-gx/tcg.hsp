@@ -1393,6 +1393,7 @@
 			if ( p@tcg == TCG_BIT_SENSEI ) { s@tcg += "<Teacher> "}
 			if ( p@tcg == TCG_BIT_PIRATE ) { s@tcg += "<Pirate> "}
 			if ( p@tcg == TCG_BIT_ELEAMOB ) { s@tcg += "<Elea Mob> "}
+			if ( p@tcg == TCG_BIT_CNPC ) { s@tcg += "<CNPC> "}
 			
 			if ( p@tcg == TCG_BIT_WINDFURY_USABLE ) { s@tcg += "Windfury(1) "}
 			if ( p@tcg == TCG_BIT_ENEMY ) { s@tcg += "[Summoned on Opponent Field] "}
@@ -1464,7 +1465,7 @@
 	loop
 	return create_card_arg1
 
-#deffunc generate_discover_extra_card int create_extra_card_player
+#deffunc generate_extra_card int create_extra_card_player
 	if ( cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player) + discovercount@tcg > MAX_CARD_EXTRA ) { 
 		cextra@tcg = -1
 		return -1 
@@ -1499,7 +1500,6 @@
 		cpdata@tcg(TCG_PLAYER_DECK, create_extra_card_player)++
 	loop
 	gosub *card_filter_reset
-	discover_extra_card create_extra_card_player
 	return cextra@tcg
 
 #deffunc discover_extra_card int create_extra_card_player
@@ -1517,11 +1517,13 @@
 		deckmode@tcg = 0
 		deckmodecp@tcg = 0
 		if ( rtval@tcg >= 0 ) { 
-			discover@tcg(0) = card@tcg(TCG_CARD_REF_DBID, rtval@tcg) 
+			discoverchoiceval@tcg = rtval@tcg - (create_extra_card_player * MAX_CARD_DECK_TOTAL + MAX_CARD_DECK + cextrabk@tcg)
+			discoverchoice@tcg = card@tcg(TCG_CARD_REF_DBID, rtval@tcg)
 		}
 	}
 	if ( rtval@tcg < 0 ) {
-		discover@tcg(0) = card@tcg(TCG_CARD_REF_DBID, create_extra_card_player * MAX_CARD_DECK_TOTAL + MAX_CARD_DECK + cextrabk@tcg + rnd(discovercount@tcg))
+		discoverchoiceval@tcg = rnd(discovercount@tcg)
+		discoverchoice@tcg = card@tcg(TCG_CARD_REF_DBID, create_extra_card_player * MAX_CARD_DECK_TOTAL + MAX_CARD_DECK + cextrabk@tcg + discoverchoiceval@tcg)
 	}
 	// Reset temporary cards
 	cpdata@tcg(TCG_PLAYER_EXTRACARD, create_extra_card_player) = cextrabk@tcg
@@ -1532,12 +1534,10 @@
 			card@tcg(TCG_CARD_REF_DBID, cnt) = 0
 		}
 	loop
-	if ( discover@tcg(0) < 0 ) { 
+	if ( discoverchoice@tcg < 0 ) { 
 		cextra@tcg = -1
 		return -1 
 	}
-	// Generate the selected card
-	create_extra_card create_extra_card_player,  discover@tcg(0)
 	return cextra@tcg
 
 #deffunc create_extra_card int create_extra_card_player, int create_extra_card_id
