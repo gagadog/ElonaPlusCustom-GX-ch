@@ -119,25 +119,27 @@
 	; 	bmes s, 255, 2552, 255
 	; loop
 	// Status effects
-	displaystates = CDATA_CONDITION_GRAVITY, CDATA_CONDITION_INVERT, CDATA_CONDITION_OIL, CDATA_CONDITION_WET, CDATA_CONDITION_ANGRY, CDATA_CONDITION_BIND, CDATA_CONDITION_INSANE, CDATA_CONDITION_SUFFOCATION, CDATA_CONDITION_MPOISON, CDATA_CONDITION_BLEED, CDATA_CONDITION_SLEEP, CDATA_CONDITION_ATROPHY, CDATA_CONDITION_BRAINWASH, CDATA_CONDITION_FEAR, CDATA_CONDITION_DIM, CDATA_CONDITION_POISON, CDATA_CONDITION_CONFUSE, CDATA_CONDITION_BLIND, CDATA_CONDITION_PARALYZE, CDATA_CONDITION_CHILLS, CDATA_CONDITION_WINCE
-	displaytexts  = _congravity, _coninvert, _conoil, _conwet, _conangry, _conbind, _coninsane, _conmochi, _conmpoison, _conbleed, _consleep, _conbrowbeat, _conwash, _confear, _condim, _conpoison, _conconfuse, _conblind, _conparalyze, _conreiki, _conkaen
-	repeat length(displaystates)
-		if ( cdata(displaystates(cnt), txttargetnpc_arg_tc) > 0 ) {
-			s = "" + displaytexts(cnt) + ": " + cdata(displaystates(cnt), txttargetnpc_arg_tc) + lang("ﾀｰﾝ", " stacks ")
-			color 0, 0, 0
-			pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
-			locvar_txttargetnpc_dy++
-			bmes s, 255, 2552, 255
-		}
-	loop
+	if ( trait(TRAIT_NORMAL_DISCERNMENT) != 0 ) {
+		displaystates = CDATA_CONDITION_GRAVITY, CDATA_CONDITION_INVERT, CDATA_CONDITION_OIL, CDATA_CONDITION_WET, CDATA_CONDITION_ANGRY, CDATA_CONDITION_BIND, CDATA_CONDITION_INSANE, CDATA_CONDITION_SUFFOCATION, CDATA_CONDITION_MPOISON, CDATA_CONDITION_BLEED, CDATA_CONDITION_SLEEP, CDATA_CONDITION_ATROPHY, CDATA_CONDITION_BRAINWASH, CDATA_CONDITION_FEAR, CDATA_CONDITION_DIM, CDATA_CONDITION_POISON, CDATA_CONDITION_CONFUSE, CDATA_CONDITION_BLIND, CDATA_CONDITION_PARALYZE, CDATA_CONDITION_CHILLS, CDATA_CONDITION_WINCE
+		displaytexts  = _congravity, _coninvert, _conoil, _conwet, _conangry, _conbind, _coninsane, _conmochi, _conmpoison, _conbleed, _consleep, _conbrowbeat, _conwash, _confear, _condim, _conpoison, _conconfuse, _conblind, _conparalyze, _conreiki, _conkaen
+		repeat length(displaystates)
+			if ( cdata(displaystates(cnt), txttargetnpc_arg_tc) > 0 ) {
+				s = "" + displaytexts(cnt) + ": " + cdata(displaystates(cnt), txttargetnpc_arg_tc) + lang("ﾀｰﾝ", " stacks ")
+				color 0, 0, 0
+				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+				locvar_txttargetnpc_dy++
+				bmes s, 255, 2552, 255
+			}
+		loop
+	}
 	// Aggro
-	if ( ( cdata(CDATA_TARGET, txttargetnpc_arg_tc) != CHARA_PLAYER | cdata(CDATA_RELATION, txttargetnpc_arg_tc) == (-3) ) & cdata(CDATA_AI_AGGRO, txttargetnpc_arg_tc) > 0 ) {
+	if ( ( cdata(CDATA_TARGET, txttargetnpc_arg_tc) != CHARA_PLAYER | cdata(CDATA_RELATION, txttargetnpc_arg_tc) == (-3) ) & cdata(CDATA_AI_AGGRO, txttargetnpc_arg_tc) > 0 & trait(TRAIT_NORMAL_DISCERNMENT) != 0 ) {
 		color 0, 0, 0
 		pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 		locvar_txttargetnpc_dy++
 		bmes "Target: " + cdatan(CDATAN_NAME, cdata(CDATA_TARGET, txttargetnpc_arg_tc)) + "(" + cdata(CDATA_AI_AGGRO, txttargetnpc_arg_tc) + ")", 255, 2552, 255
 	}
-	if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE ) {
+	if ( mdata(MDATA_TYPE) != MAP_TYPE_TOWN & mdata(MDATA_TYPE) != MAP_TYPE_VILLAGE & trait(TRAIT_NORMAL_DISCERNMENT) != 0 ) {
 		// Resistance from MMAH
 		sx = 0
 		repeat 11
@@ -187,6 +189,16 @@
 		locvar_txttargetnpc_dy++
 		bmes s, 255, 2552, 255
 	}
+	if ( trait(TRAIT_NORMAL_DISCERNMENT) != 0 ) {
+		tcbkinfo = tc
+		tc = txttargetnpc_arg_tc
+		txttargetsex
+		tc = tcbkinfo
+		color 0, 0, 0
+		pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+		locvar_txttargetnpc_dy++
+		bmes lang("性別：" + s + "　年齢：" + calcage(txttargetnpc_arg_tc) + "歳　信仰：" + godname(cdata(CDATA_GOD, txttargetnpc_arg_tc)) + " ", "Sex:" + s + " / Age:" + calcage(txttargetnpc_arg_tc) + " / Religion:" + godname(cdata(CDATA_GOD, txttargetnpc_arg_tc)) + ""), 255, 2552, 255
+	}
 	return
 
 #deffunc txttargetnpc int txttargetnpc_arg1, int txttargetnpc_arg2, int txttargetnpc_arg3
@@ -228,14 +240,14 @@
 				locvar_txttargetnpc_dy++
 				bmes s, 255, 2552, 255
 			loop
-	 		********** ORIGINAL - ENDING **********/
-			if ( trait(TRAIT_NORMAL_STAT_DV) != 0 ) {
+			if ( trait(TRAIT_NORMAL_DISCERNMENT) != 0 ) {
 				txttargetsex
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
 				bmes lang("性別：" + s + "　年齢：" + calcage(locvar_txttargetnpc_i) + "歳　信仰：" + godname(cdata(CDATA_GOD, locvar_txttargetnpc_i)) + " ", "Sex:" + s + " / Age:" + calcage(locvar_txttargetnpc_i) + " / Religion:" + godname(cdata(CDATA_GOD, locvar_txttargetnpc_i)) + ""), 255, 2552, 255
 			}
+	 		********** ORIGINAL - ENDING **********/
 			if ( cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i) > 0 ) {
 				/********** JAMES CUSTOM - BEGINNING **********/ // Display extra info
 				txttargetnpcextrainfo cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i), 1

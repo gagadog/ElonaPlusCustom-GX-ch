@@ -1691,7 +1691,7 @@
 	}
 	if ( mode == MODELIST_MAIN ) {
 		if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-			if ( gdata(GDATA_GOD_DETECT) == 0 ) {
+			if ( gdata(GDATA_PRESERVE_PIETY) == 0 ) {
 				if ( rnd(40) == 0 ) {
 					cdata(CDATA_PIETY, CHARA_PLAYER)--
 				}
@@ -1699,7 +1699,7 @@
 			cdata(CDATA_PRAY, CHARA_PLAYER) += 4
 		}
 		else {
-			if ( gdata(GDATA_GOD_DETECT) == 0 ) {
+			if ( gdata(GDATA_PRESERVE_PIETY) == 0 ) {
 				if ( rnd(5) == 0 ) {
 					cdata(CDATA_PIETY, CHARA_PLAYER)--
 				}
@@ -2083,7 +2083,7 @@
 			}
 		}
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 1 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 1 ) {
 		if ( cdata(CDATA_CONDITION_PARALYZE, cc) == 0 ) {
 			if ( rnd(2) == 0 ) {
 				cdata(CDATA_CONDITION_PARALYZE, cc) = 1
@@ -8482,16 +8482,16 @@
 		envonly = 1
 		gosub *music_play
 		if ( TweakData(TWEAK_GAMEPLAY_CG_DISABLE_CURTAIN_CALL, TWEAK_CATEGORY_GAMEPLAY) == TRUE ) {
-			if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) >= 0 ) {
-				cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = -1
+			if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) >= 0 ) {
+				cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = -1
 			}
 			txt lang("終末の日が訪れた。", "Let's Ragnarok!")
 			msg_halt
 		}
 		else {
 			if ( gdata(GDATA_FLAG_CURTAIN_CALL) < 9999 & gdata(GDATA_FLAG_CURTAIN_CALL) >= 0 ) {
-				if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) >= 0 ) {
-					cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = -1
+				if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) >= 0 ) {
+					cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = -1
 				}
 				txt lang("終末の日が訪れた。", "Let's Ragnarok!")
 				msg_halt

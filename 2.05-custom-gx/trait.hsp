@@ -349,7 +349,7 @@
 		}
 		return 1
 	}
-	if ( tid == TRAIT_NORMAL_SKILL_FAITH ) {
+	if ( tid == TRAIT_NORMAL_SPACT_SAINT ) {
 		if ( traitmode == 0 ) {
 			traitref = 0, 0, 1, 1, 0, 100, -1
 			traitrefn2 = lang("聖者", "Saint"), lang("聖者", "Saint")
@@ -439,23 +439,23 @@
 		}
 		return 1
 	}
-	if ( tid == TRAIT_NORMAL_STAT_DV ) {
+	if ( tid == TRAIT_NORMAL_DISCERNMENT ) {
 		if ( traitmode == 0 ) {
 			traitref = 0, 0, 1, 1, 0, 100, -1
 			traitrefn2 = lang("見極め", "Discernment"), lang("見極め", "Discernment"), lang("見極め", "Discernment")
 			if ( trait(tid) >= 0 ) {
-				traitrefn(2) = lang("客商売の中で相手を見極める眼力を磨く", "In your business life, you honed your ability to judge your opponents."), lang("あなたは相手の性別年齢信仰を見抜く", "You can see the other's gender, age, and religion."), lang("あなたは相手の性別年齢信仰を見抜く", "You can see the other's gender, age, and religion."), lang("あなたは相手の性別年齢信仰を見抜く", "You can see the other's gender, age, and religion.")
+				traitrefn(2) = lang("客商売の中で相手を見極める眼力を磨く", "In business life, you learned to judge people's age/sex/faith."), lang("あなたは相手の性別年齢信仰を見抜く", "You can see the other's gender, age, and religion."), lang("あなたは相手の性別年齢信仰を見抜く", "You can see the other's gender, age, and religion."), lang("あなたは相手の性別年齢信仰を見抜く", "You can see the other's gender, age, and religion.")
 			}
 			return 1
 		}
 		return 1
 	}
-	if ( tid == TRAIT_NORMAL_SKILL_EVASION ) {
+	if ( tid == TRAIT_NORMAL_SPACT_SHIKI_ORIGAMI ) {
 		if ( traitmode == 0 ) {
 			traitref = 0, 0, 1, 1, 0, 100, -1
 			traitrefn2 = lang("式折神", "Shiki-Origami"), lang("式折神", "Shiki-Origami"), lang("式折神", "Shiki-Origami")
 			if ( trait(tid) >= 0 ) {
-				traitrefn(2) = lang("謎の書物を読み解き、紙を操る古の魔術を習得する", "You have deciphered mysterious books and mastered the ancient magic of manipulating paper."), lang("あなたは魔法紙を操る", "You know magical papercrafts."), lang("あなたは魔法紙を操る", "You know magical papercrafts."), lang("あなたは魔法紙を操る", "You know magical papercrafts.")
+				traitrefn(2) = lang("謎の書物を読み解き、紙を操る古の魔術を習得する", "You have mastered the ancient arts of manipulating paper."), lang("あなたは魔法紙を操る", "You know magical papercrafts."), lang("あなたは魔法紙を操る", "You know magical papercrafts."), lang("あなたは魔法紙を操る", "You know magical papercrafts.")
 			}
 			return 1
 		}

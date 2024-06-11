@@ -3636,7 +3636,7 @@
 		return
 	}
 	cdata(CDATA_POWER_GAUGE, check_kill_arg2) = -300
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 6 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 6 ) {
 		if ( cdata(CDATA_RELATION_ORG, check_kill_arg1) >= RELATION_HATE & cdata(CDATA_RELATION_ORG, check_kill_arg2) >= RELATION_HATE | (cdata(CDATA_RELATION_ORG, check_kill_arg1) == RELATION_ENEMY & cdata(CDATA_RELATION_ORG, check_kill_arg2) == RELATION_ENEMY) ) {
 			snd SOUNDLIST_PUNISH1
 			dmgcon check_kill_arg1, CONDITION_WINCE, cdata(CDATA_LEVEL, check_kill_arg2) * 5
@@ -4424,7 +4424,7 @@
 		return 0
 	}
 	locvar_dmghp_dmg = dmghp_origin * (1 + (cdata(CDATA_CONDITION_ANGRY, dmghp_charid) > 0))
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 5 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 5 ) {
 		if ( locvar_dmghp_dmg >= 200 ) {
 			locvar_dmghp_dmg = locvar_dmghp_dmg / 200 * (200 - limit(cdata(CDATA_SANITY, dmghp_charid), 0, 100))
 		}
@@ -5445,7 +5445,7 @@
 		if ( cdata(CDATA_CONDITION_ANGRY, dmghp_source) > 0 ) {
 			locvar_dmghp_dmg *= 2
 		}
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 5 ) {
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 5 ) {
 			if ( locvar_dmghp_dmg >= 100 ) {
 				locvar_dmghp_dmg = locvar_dmghp_dmg / 100 * (100 + limit(cdata(CDATA_SANITY, dmghp_source), 0, 100))
 			}
@@ -5942,7 +5942,7 @@
 							cdata(CDATA_CONDITION_PARALYZE, dmghp_charid)++
 						}
 					}
-					if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 1 ) {
+					if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 1 ) {
 						if ( dmghp_charid == CHARA_PLAYER ) {
 							if ( cdata(CDATA_SP, dmghp_charid) >= (-100) ) {
 								cdata(CDATA_SP, dmghp_charid) -= 5

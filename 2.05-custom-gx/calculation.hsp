@@ -1520,7 +1520,7 @@
 			return 0
 		}
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 2 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 2 ) {
 		return 0
 	}
 	if ( cc < MAX_CHARA_FOLLOWER ) {

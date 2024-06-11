@@ -529,7 +529,7 @@
 		if ( charaIsShadowhopSummon(cnt) ) {
 			chara_vanquish cnt
 		}
-		cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = 0
+		cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = 0
 		cbitmod CHARA_BIT_SHADOW_CLONE, cnt, FALSE
 		cbitmod CHARA_BIT_MAGNETISM_S_POLE, cnt, FALSE
 		cbitmod CHARA_BIT_MAGNETISM_N_POLE, cnt, FALSE
@@ -14647,7 +14647,7 @@
 		}
 		return
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == (-1) ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == (-1) ) {
 		if ( rnd(5) == 0 ) {
 			snd SOUNDLIST_BOLT1
 			tuex = rnd(mdata(MDATA_WIDTH))

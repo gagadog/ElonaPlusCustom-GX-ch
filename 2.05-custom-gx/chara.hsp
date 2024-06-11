@@ -269,7 +269,7 @@
 			txt lang("あなたは「" + skillname(SKILL_SPACT_KILLING_DANCE) + "」の能力を得た。", "You have learned a new ability, " + skillname(SKILL_SPACT_KILLING_DANCE) + ".")
 		}
 	}
-	if ( sorg(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 29 & trait(TRAIT_NORMAL_SKILL_FAITH) != 0 ) {
+	if ( sorg(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 29 & trait(TRAIT_NORMAL_SPACT_SAINT) != 0 ) {
 		if ( spact(SKILL_SPACT_PURIFICATION - STARTING_SKILL_SPACT) == 0 ) {
 			spact(SKILL_SPACT_PURIFICATION - STARTING_SKILL_SPACT) = 1
 			txtmore
@@ -277,7 +277,7 @@
 			txt lang("あなたは「" + skillname(SKILL_SPACT_PURIFICATION) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_PURIFICATION) + ".")
 		}
 	}
-	if ( sorg(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 59 & trait(TRAIT_NORMAL_SKILL_FAITH) != 0 ) {
+	if ( sorg(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 59 & trait(TRAIT_NORMAL_SPACT_SAINT) != 0 ) {
 		if ( spact(SKILL_SPACT_ANGEL_HALO - STARTING_SKILL_SPACT) == 0 ) {
 			spact(SKILL_SPACT_ANGEL_HALO - STARTING_SKILL_SPACT) = 1
 			txtmore
@@ -285,7 +285,7 @@
 			txt lang("あなたは「" + skillname(SKILL_SPACT_ANGEL_HALO) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_ANGEL_HALO) + ".")
 		}
 	}
-	if ( sorg(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 79 & trait(TRAIT_NORMAL_SKILL_FAITH) != 0 ) {
+	if ( sorg(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 79 & trait(TRAIT_NORMAL_SPACT_SAINT) != 0 ) {
 		if ( spact(SKILL_SPACT_REPRIMAND - STARTING_SKILL_SPACT) == 0 ) {
 			spact(SKILL_SPACT_REPRIMAND - STARTING_SKILL_SPACT) = 1
 			txtmore
@@ -293,7 +293,7 @@
 			txt lang("あなたは「" + skillname(SKILL_SPACT_REPRIMAND) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_REPRIMAND) + ".")
 		}
 	}
-	if ( sorg(SKILL_NORMAL_LITERACY, CHARA_PLAYER) > 19 & trait(TRAIT_NORMAL_SKILL_EVASION) != 0 ) {
+	if ( sorg(SKILL_NORMAL_LITERACY, CHARA_PLAYER) > 19 & trait(TRAIT_NORMAL_SPACT_SHIKI_ORIGAMI) != 0 ) {
 		if ( spact(SKILL_SPACT_SHIKIORIGAMI_SHURIKEN - STARTING_SKILL_SPACT) == 0 ) {
 			spact(SKILL_SPACT_SHIKIORIGAMI_SHURIKEN - STARTING_SKILL_SPACT) = 1
 			txtmore
@@ -301,7 +301,7 @@
 			txt lang("あなたは「" + skillname(SKILL_SPACT_SHIKIORIGAMI_SHURIKEN) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_SHIKIORIGAMI_SHURIKEN) + ".")
 		}
 	}
-	if ( sorg(SKILL_NORMAL_LITERACY, CHARA_PLAYER) > 59 & trait(TRAIT_NORMAL_SKILL_EVASION) != 0 ) {
+	if ( sorg(SKILL_NORMAL_LITERACY, CHARA_PLAYER) > 59 & trait(TRAIT_NORMAL_SPACT_SHIKI_ORIGAMI) != 0 ) {
 		if ( spact(SKILL_SPACT_SHIKIORIGAMI_AIRPLANE - STARTING_SKILL_SPACT) == 0 ) {
 			spact(SKILL_SPACT_SHIKIORIGAMI_AIRPLANE - STARTING_SKILL_SPACT) = 1
 			txtmore

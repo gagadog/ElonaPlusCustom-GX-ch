@@ -3,7 +3,13 @@
 # Added
 - Ported all changes from Elona+ 2.23.
 
+# Changed
+- Extra NPC info: You now need the discernment feat to see it.
+
 # Fixed
+- (2.23) EN text: Shop import having wrong item displayed. Minute text not having a 0 padded like 23:1.
+- (2.23) God sleep text is searched using uninitializd variables. (`txtgoddream`, `locvar_txtgod_txtgoddream`, also `actsummonspirit` for a similar bug)
+- AI independent action: Adventurers not targeting enemies.
 - Fixed inconsistent CNPC card name/pic upon leaving showroom. Fix "_tmp_" card names.
 - Omake showroom: Deep water tiles not displaying.
 - Custom AI: Jumping drop and Diving drill not selectable.

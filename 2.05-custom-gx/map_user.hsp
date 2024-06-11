@@ -2369,7 +2369,7 @@
 		yaca = 0
 	}
 	txtef COLOR_YELLOW
-	txt lang("[店]" + cdatan(CDATAN_NAME, worker) + "は独自に" + dokuzi + "gold稼ぎ、金庫に保管した。そして" + yaca + "ヤカポイントを獲得した。", "[Shop]" + customer + " customers visited your shop and " + cdatan(CDATAN_NAME, worker) + " sold " + sold + " items. " + cdatan(CDATAN_NAME, worker) + " put " + s + " in the shop strong box. You got " + yaca + " yaca points.")
+	txt lang("[店]" + cdatan(CDATAN_NAME, worker) + "は独自に" + dokuzi + "gold稼ぎ、金庫に保管した。そして" + yaca + "ヤカポイントを獲得した。", "[Shop]" + cdatan(CDATAN_NAME, worker) + " imported and sold some goods for the shop, earning " + dokuzi + " gold and put them in the shop strong box. You got " + yaca + " yaca points.")
 	dokuzi = 0
 	gdata(GDATA_FLAG_YACA_POINTS) += yaca
 	if ( gdata(GDATA_FLAG_YACA_POINTS) >= 100000 ) {

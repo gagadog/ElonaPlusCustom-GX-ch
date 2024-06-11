@@ -18163,7 +18163,7 @@
 	chatMore lang("ほざいているがいい。少しの間だが遊んでやろう。お前たちがどこまで耐えられるか楽しみだな。", "Prattle along while you still can. I'll indulge you for a short while. It will be amusing to see how much suffering you're able to endure."), strmore, findchara(CREATURE_ID_JALDABAOTH_THE_CHAOS_CHILD)
 	txtnew
 	txtef COLOR_RED
-	cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = -2
+	cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = -2
 	txt lang("ヤルダバオート中心に世界が回り始める…。", "The world begins to distort, centering around Jaldabaoth...")
 	gdata(GDATA_FLAG_MAIN) = 865
 	txt lang("声が聞こえる…。", "You can hear someone's voice...")

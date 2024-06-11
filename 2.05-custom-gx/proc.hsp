@@ -311,7 +311,7 @@
 				}
 			}
 			if ( feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_BLADE_STRINGS | feat(FEAT_CELL_SUB_FEATURE_ID) == CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS ) {
-				if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) != 2 ) {
+				if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) != 2 ) {
 					if ( cbit(CHARA_BIT_FLOAT, cc) == TRUE & cdata(CDATA_CONDITION_GRAVITY, cc) == 0 | findbuff(cc, BUFF_GRAVITY_ACCEL) != (-1) ) {
 						if ( sdata(SKILL_NORMAL_DISARM_TRAP, cc) != 0 ) {
 							gosub *calcDisarm
@@ -6197,8 +6197,8 @@
 			gdata(GDATA_FLAG_ABYSS_POWER) -= 400
 			snd SOUNDLIST_ENC
 			animeload 40, 0
-			if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) >= 0 ) {
-				cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = 5
+			if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) >= 0 ) {
+				cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = 5
 			}
 		}
 		if ( rtval == 1 ) {
@@ -20296,8 +20296,8 @@
 			gosub *anime
 		}
 		cdata(CDATA_POWER_GAUGE, cc) -= 80
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) >= 0 ) {
-			cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = 1
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) >= 0 ) {
+			cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = 1
 		}
 		if ( cc == CHARA_PLAYER ) {
 			cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) = 0
@@ -20381,8 +20381,8 @@
 			gosub *anime
 		}
 		cdata(CDATA_POWER_GAUGE, cc) -= 80
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) >= 0 ) {
-			cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = 4
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) >= 0 ) {
+			cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = 4
 		}
 		if ( cc == CHARA_PLAYER ) {
 			cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) = 0
@@ -20482,8 +20482,8 @@
 			gosub *anime
 		}
 		cdata(CDATA_POWER_GAUGE, cc) -= 80
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) >= 0 ) {
-			cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = 2
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) >= 0 ) {
+			cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = 2
 		}
 		if ( cc == CHARA_PLAYER ) {
 			cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) = 0
@@ -21005,12 +21005,12 @@
 		addbuff tc, BUFF_RETENTION, 30, 30
 		snd SOUNDLIST_PRAY1
 		animeload ANIMATION_BLOOD, cc
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) < 0 ) {
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) < 0 ) {
 			txtef COLOR_RED
 			txt lang("現在のフィールド変化は解除できない…。", "The current field state cannot be reset...")
 		}
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) > 0 ) {
-			cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = 0
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) > 0 ) {
+			cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = 0
 			txtef COLOR_GREEN
 			txt lang("フィールド変化が解除された。", "The field state was reset.")
 		}
@@ -23012,8 +23012,8 @@
 			gosub *anime
 		}
 		cdata(CDATA_POWER_GAUGE, cc) -= 80
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) >= 0 ) {
-			cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) = 6
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) >= 0 ) {
+			cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) = 6
 		}
 		if ( cc == CHARA_PLAYER ) {
 			cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) = 0
@@ -23282,7 +23282,7 @@
 		if ( charaGivesExp(tc) & tc != CHARA_PLAYER ) {
 			skillexp SKILL_NORMAL_TACTICS, cc, 40
 		}
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 2 & map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), MAP_FEATS_ON_TILE) == 0 ) {
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 2 & map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), MAP_FEATS_ON_TILE) == 0 ) {
 			if ( cc < MAX_CHARA_FOLLOWER ) {
 				cell_featset cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 0, CELL_FEATURE_TRAP, CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS, cc
 			}
@@ -23300,7 +23300,7 @@
 		txt lang(name(cc) + "は" + name(tc) + "の身体に糸を打ち込んだ。", name(cc) + " put thread in " + name(tc) + ".")
 		animeid = ANIMATION_INNERVATION
 		gosub *anime
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 2 & map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), MAP_FEATS_ON_TILE) == 0 ) {
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 2 & map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), MAP_FEATS_ON_TILE) == 0 ) {
 			if ( cc < MAX_CHARA_FOLLOWER ) {
 				cell_featset cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 0, CELL_FEATURE_TRAP, CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS, cc
 			}
@@ -23369,7 +23369,7 @@
 		notconfuse = 1
 		efid = SKILL_SPACT_DRAW_SHADOW
 		gosub *effect
-		if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 2 & map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), MAP_FEATS_ON_TILE) == 0 ) {
+		if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 2 & map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), MAP_FEATS_ON_TILE) == 0 ) {
 			if ( cc < MAX_CHARA_FOLLOWER ) {
 				cell_featset cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 0, CELL_FEATURE_TRAP, CELL_SUB_FEATURE_TRAP_HOSTILE_BLADE_STRINGS, cc
 			}

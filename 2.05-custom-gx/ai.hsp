@@ -551,6 +551,12 @@
 				if ( TweakData(TWEAK_GAMEPLAY_NECROMANCY_ACTIVE_TARGETING, TWEAK_CATEGORY_GAMEPLAY) == 1 & cbit(CHARA_BIT_NECRO, cc) ) {
 					gosub *findTarget
 				}
+				// If using independent targeting, hired adventurer's won't attack, so let them find target.
+				if ( cdata(CDATA_TARGET, cc) == 0 & TweakData(TWEAK_AI_ALLY_INDEPENDENT_TARGETING, TWEAK_CATEGORY_AI) != FALSE & cbit(CHARA_BIT_NECRO, cc) != TRUE ) {
+					if ( cdata(CDATA_DIRECTIVE_MODE, cc) != DIRECTIVE_MODE_DEFENSIVE & cdata(CDATA_DIRECTIVE_MODE, cc) != DIRECTIVE_MODE_TALKING ) {
+						gosub *findTarget
+					}
+				}
 			}
 			if ( cdata(CDATA_RELATION, cdata(CDATA_TARGET, cc)) > (-3) ) {
 				cdata(CDATA_TARGET, cc) = 0
@@ -3210,7 +3216,7 @@
 	}
 	if ( cdata(CDATA_ID, cc) == CREATURE_ID_AJETALIO_THE_SEMINAR_LECTURER | cdata(CDATA_ID, cc) == CREATURE_ID_HELLSTLING | cdata(CDATA_ID, cc) == CREATURE_ID_ATLACH_NACHA ) {
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 80 ) {
-			if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) != 2 & cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) >= 0 ) {
+			if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) != 2 & cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) >= 0 ) {
 				if ( rnd(3) == 0 ) {
 					act = SKILL_SPACT_WIRE_WORLD
 				}
@@ -3219,7 +3225,7 @@
 	}
 	if ( cdata(CDATA_ID, cc) == CREATURE_ID_GRAVEED_THE_GRAVITY_VALLEY | cdata(CDATA_ID, cc) == CREATURE_ID_GASYADOKURO | cdata(CDATA_ID, cc) == CREATURE_ID_MUSCLE_GOLEM | cdata(CDATA_ID, cc) == CREATURE_ID_ATLAS ) {
 		if ( cdata(CDATA_POWER_GAUGE, cc) >= 80 ) {
-			if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) != 4 & cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) >= 0 ) {
+			if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) != 4 & cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) >= 0 ) {
 				if ( rnd(3) == 0 ) {
 					act = SKILL_SPACT_ROCRUSHER
 				}

@@ -4354,7 +4354,7 @@
 				txt lang("会心の一撃！ ", "Critical Hit!")
 				txtmore
 			}
-			if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 4 ) {
+			if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 4 ) {
 				if ( attackrange == 0 ) {
 					snd SOUNDLIST_CRUSH1
 					map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), MAP_TILE_ID) = xy2pic(32, 17)

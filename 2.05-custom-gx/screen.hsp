@@ -1073,7 +1073,7 @@
 		}
 		bmes locvar_s, 255, 255, 255
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == (-2) ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == (-2) ) {
 		pos inf_clockw + 6, inf_clocky + 50
 		color 0, 0, 0
 		if ( jp ) {
@@ -1083,7 +1083,7 @@
 			bmes "<Order of Chaos>", 235, 5, 155
 		}
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == (-1) ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == (-1) ) {
 		pos inf_clockw + 6, inf_clocky + 50
 		color 0, 0, 0
 		if ( jp ) {
@@ -1093,7 +1093,7 @@
 			bmes "<Doomsday sky>", 235, 235, 235
 		}
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 1 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 1 ) {
 		pos inf_clockw + 6, inf_clocky + 50
 		color 0, 0, 0
 		if ( jp ) {
@@ -1103,7 +1103,7 @@
 			bmes "[E-Mag Cage]", 235, 235, 5
 		}
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 2 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 2 ) {
 		pos inf_clockw + 6, inf_clocky + 50
 		color 0, 0, 0
 		if ( jp ) {
@@ -1113,7 +1113,7 @@
 			bmes "[Wire World]", 235, 235, 235
 		}
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 3 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 3 ) {
 		pos inf_clockw + 6, inf_clocky + 50
 		color 0, 0, 0
 		if ( jp ) {
@@ -1123,7 +1123,7 @@
 			bmes "[Violent Garden]", 5, 235, 5
 		}
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 4 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 4 ) {
 		pos inf_clockw + 6, inf_clocky + 50
 		color 0, 0, 0
 		if ( jp ) {
@@ -1133,7 +1133,7 @@
 			bmes "[Rocrush]", 235, 135, 5
 		}
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 5 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 5 ) {
 		pos inf_clockw + 6, inf_clocky + 50
 		color 0, 0, 0
 		if ( jp ) {
@@ -1143,7 +1143,7 @@
 			bmes "[Crazy Theater]", 235, 5, 235
 		}
 	}
-	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 6 ) {
+	if ( cdata(CDATA_FIELD_EFFECT, CHARA_PLAYER) == 6 ) {
 		pos inf_clockw + 6, inf_clocky + 50
 		color 0, 0, 0
 		if ( jp ) {
@@ -7655,7 +7655,7 @@
 		gdata(GDATA_RES_WEATHER) = 0
 		gdata(GDATA_LIGHT) = 70
 		gdata(GDATA_GOD_TALK) = 0
-		gdata(GDATA_GOD_DETECT) = 0
+		gdata(GDATA_PRESERVE_PIETY) = 0
 	}
 	repeat STARTING_SKILL_SPACT
 		sdata(cnt, r1) = sdata(cnt + STARTING_SKILL_SPACT, r1) / 1000000
@@ -7916,9 +7916,9 @@
 						continue
 					}
 				}
-				if ( rp2 == ENCHANT_SHOW_RELIGION ) {
+				if ( rp2 == ENCHANT_PRESERVE_PIETY ) {
 					if ( r1 == CHARA_PLAYER ) {
-						gdata(GDATA_GOD_DETECT) = 1
+						gdata(GDATA_PRESERVE_PIETY) = 1
 						continue
 					}
 				}

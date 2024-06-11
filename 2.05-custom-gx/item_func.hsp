@@ -2710,7 +2710,7 @@
 			if ( locvar_equipinfo_p == ENCHANT_BANE_GOD ) { locvar_equipinfo_s = lang("神殺し","Godkiller") + ":" + (locvar_equipinfo_pow / 50 + 1) }
 			if ( locvar_equipinfo_p == ENCHANT_BANE_METAL ) { locvar_equipinfo_s = lang("金属殺し","MetalKiller") + ":" + (locvar_equipinfo_pow / 50 + 1) }
 
-			if ( locvar_equipinfo_p == ENCHANT_SHOW_RELIGION ) { locvar_equipinfo_s = lang("信仰を明らか","Reveal Religion") }
+			if ( locvar_equipinfo_p == ENCHANT_PRESERVE_PIETY ) { locvar_equipinfo_s = lang("信仰を明らか","Reveal Religion") }
 			if ( locvar_equipinfo_p == ENCHANT_GOD_SIGNALS ) { locvar_equipinfo_s = lang("神電波","Radiowave") }
 
 			if ( locvar_equipinfo_p == ENCHANT_RAGNAROK ) { locvar_equipinfo_s = lang("終結","Ragnarok") }
