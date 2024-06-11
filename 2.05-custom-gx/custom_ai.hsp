@@ -2560,6 +2560,55 @@
 	}
 	switch cdata(CDATA_ID, tc)
 		// non-evolution segment in ai.hsp. Single Action
+		case CREATURE_ID_KIRIN
+		case CREATURE_ID_SERAPH
+		case CREATURE_ID_CUPID_INSPECTOR
+		case CREATURE_ID_SIST_THE_OLDER_SISTER
+			ActionToFind = SKILL_SPACT_REPRIMAND
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_ISCA_THE_FALLEN_ANGEL
+		case CREATURE_ID_ARKHAI
+		case CREATURE_ID_DOMINION
+			ActionToFind = SKILL_SPACT_ANGEL_HALO
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_HOLY_BEAST
+		case CREATURE_ID_ETHER_GENERATOR
+			ActionToFind = SKILL_SPACT_PURIFICATION
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_HEALER
+		case CREATURE_ID_SISTER
+		case CREATURE_ID_NUN
+		case CREATURE_ID_ROVID
+			ActionToFind = SKILL_SPACT_SAINT_BLADE
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_JUMP_LANDMINE_GIRL
+		case CREATURE_ID_SPEED_HACK_CHEATAH
+		case CREATURE_ID_BLACK_HOPPER_X
+		case CREATURE_ID_FLIGHT_FISH
+		case CREATURE_ID_FLYING_LEECH
+		case CREATURE_ID_SUZAKU
+		case CREATURE_ID_STRIKE_EAGLE
+			ActionToFind = SKILL_SPACT_JUMPING_DROP
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
+		case CREATURE_ID_VINDALIAN_DEATHWORM
+		case CREATURE_ID_WALL_HACK_CHEATAH
+		case CREATURE_ID_SAND_WORM
+		case CREATURE_ID_BAMBOO_SPROUT
+		case CREATURE_ID_BAMBOO_SPEAR_SPIRIT
+			ActionToFind = SKILL_SPACT_DIVING_DRILL
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
 		case CREATURE_ID_GHOST
 		case CREATURE_ID_NINJA
 			ActionToFind = SKILL_SPACT_SHADOW_JUMP
@@ -2670,7 +2719,6 @@
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak
-		case CREATURE_ID_FALLEN_ANGEL
 		case CREATURE_ID_NIGHTMARE_SHEEP
 		case CREATURE_ID_TITANIA
 		case CREATURE_ID_CAMOUFLAGED_IMP
@@ -2813,6 +2861,14 @@
 			gosub *AIAddAction
 			swbreak
 		// non-evolution segment in ai.hsp. Multiple Action
+		case CREATURE_ID_FALLEN_ANGEL
+			ActionToFind = SKILL_SPACT_GROUP_HYPNOSIS
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_ANGEL_HALO
+			gosub *AIFindAction
+			gosub *AIAddAction
+			swbreak
 		case CREATURE_ID_13TH_STEP_GHOST
 			ActionToFind = SKILL_SPACT_SHADOW_JUMP
 			gosub *AIFindAction
@@ -2936,6 +2992,9 @@
 			ActionToFind = SKILL_SPACT_EXCESSIVE_HEAL
 			gosub *AIFindAction
 			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_PURIFICATION
+			gosub *AIFindAction
+			gosub *AIAddAction
 			swbreak
 		case CREATURE_ID_LULWY
 		case CREATURE_ID_DEVASTATE_LULWY
@@ -2986,12 +3045,18 @@
 			ActionToFind = SKILL_SPACT_SUPER_VIBRATING_FIST
 			gosub *AIFindAction
 			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_DIVING_DRILL
+			gosub *AIFindAction
+			gosub *AIAddAction
 			swbreak
 		case CREATURE_ID_BUILDUP_OPATOS
 			ActionToFind = SKILL_SPACT_SPACE_RETENTION
 			gosub *AIFindAction
 			gosub *AIAddAction
 			ActionToFind = SKILL_SPACT_SUPER_VIBRATING_FIST
+			gosub *AIFindAction
+			gosub *AIAddAction
+			ActionToFind = SKILL_SPACT_DIVING_DRILL
 			gosub *AIFindAction
 			gosub *AIAddAction
 			swbreak

@@ -556,8 +556,8 @@
 			y = cnt
 			repeat mdata(MDATA_WIDTH)
 				x = cnt
-				if ( chipm(CHIPM_ROLE, map(x, y, 0)) == MAP_CHIP_ROLE_CROP ) {
-					if ( map(x, y, 6) != 0 ) { // is occupied
+				if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == MAP_CHIP_ROLE_CROP ) {
+					if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) { // is occupied
 						cell_featread x, y
 						if ( feat(1) == CELL_FEATURE_PLANTED_SEED & (feat >= tile_plant + 2 & feat != tile_plant + 3) ) {
                             usecustom = 1
@@ -630,8 +630,8 @@
 				break
 			}
 			if ( (chipm(CHIPM_ATTRIB, tile) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
-				map(tlocx, tlocy, 0) = tile
-				map(tlocx, tlocy, 2) = tile
+				map(tlocx, tlocy, MAP_TILE_ID) = tile
+				map(tlocx, tlocy, MAP_TILE_ID_MEMORY) = tile
 			}
 			else {
 				efid = SKILL_SPELL_WALL_CREATION
@@ -792,7 +792,7 @@
 		if ( stat == (-1) ) {
 			goto *com_home_WHILE2
 		}
-		if ( chipm(CHIPM_ATTRIB, map(tlocx, tlocy, 0)) & CHIPM_ATTRIB_CANT_PASS | map(tlocx, tlocy, 1) != 0 ) {
+		if ( chipm(CHIPM_ATTRIB, map(tlocx, tlocy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS | map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
 			txt lang("その場所には移動させることができない。", "The location is invalid.")
 			tc = tchome
 			tlochomex = tlocx
@@ -801,7 +801,7 @@
 		}
 		tc = tchome
 		map(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 1) = 0
-		map(tlocx, tlocy, 1) = tc + 1
+		map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) = tc + 1
 		cdata(CDATA_X, tc) = tlocx
 		cdata(CDATA_X_ORG, tc) = tlocx
 		cdata(CDATA_Y, tc) = tlocy
@@ -900,11 +900,6 @@
 				txtmore
 				txt lang(cdatan(CDATAN_NAME, c) + "は元々の姿に着替えた。", cdatan(CDATAN_NAME, c) + " changed original cloth.")
 				cbitmod CHARA_BIT_PCC, c, 0
-			}
-			if ( cdata(CDATA_EXIST, c) != CHAR_STATE_DEAD ) {
-				if ( cdatan(CDATAN_RACE, c) == "servant" ) {
-					gdata(GDATA_ACTIVE_GOD_PETS)++
-				}
 			}
 			cdata(CDATA_AREA, c) = gdata(GDATA_AREA)
 			relocate_chara c, -1
@@ -2355,29 +2350,30 @@
 	if ( sold > (110 - gdata(GDATA_RANK_SHOP) / 100) / 10 ) {
 		modrank 5, 30, 2
 	}
+	dokuzi = sdata(SKILL_NORMAL_NEGOTIATION, worker) * 5 + sdata(SKILL_NORMAL_NEGOTIATION, worker) * rnd(6)
+	if ( gdata(GDATA_AREA) == AREA_VALM ) {
+		if ( gdata(GDATA_LEVEL) == 3 ) {
+			dokuzi = 1
+		}
+	}
 	if ( cbit(CHARA_BIT_SHOP_SALES_ROUTE, worker) ) {
-		dokuzi = sdata(SKILL_NORMAL_NEGOTIATION, worker) * 5 + sdata(SKILL_NORMAL_NEGOTIATION, worker) * rnd(6)
-		if ( gdata(GDATA_AREA) == AREA_VALM ) {
-			if ( gdata(GDATA_LEVEL) == 3 ) {
-				dokuzi = 1
-			}
-		}
-		flt
-		itemcreate -1, ITEM_ID_GOLD_PIECE, -1, -1, dokuzi
-		yaca = dokuzi / 100
-		if ( gdata(GDATA_MONTH) == 12 ) {
-			yaca *= 5
-		}
-		if ( gdata(GDATA_FLAG_YACA_POINTS) >= 100000 ) {
-			yaca = 0
-		}
-		txtef COLOR_YELLOW
-		txt lang("[店]" + cdatan(CDATAN_NAME, worker) + "は独自に" + dokuzi + "gold稼ぎ、金庫に保管した。そして" + yaca + "ヤカポイントを獲得した。", "[Shop]" + customer + " customers visited your shop and " + cdatan(CDATAN_NAME, worker) + " sold " + sold + " items. " + cdatan(CDATAN_NAME, worker) + " put " + s + " in the shop strong box. You got " + yaca + " YacaPoints.")
-		dokuzi = 0
-		gdata(GDATA_FLAG_YACA_POINTS) += yaca
-		if ( gdata(GDATA_FLAG_YACA_POINTS) >= 100000 ) {
-			gdata(GDATA_FLAG_YACA_POINTS) = 100000
-		}
+		dokuzi = dokuzi * 3 / 2
+	}
+	flt
+	itemcreate -1, ITEM_ID_GOLD_PIECE, -1, -1, dokuzi
+	yaca = dokuzi / 100
+	if ( gdata(GDATA_MONTH) == 12 ) {
+		yaca *= 5
+	}
+	if ( gdata(GDATA_FLAG_YACA_POINTS) >= 100000 ) {
+		yaca = 0
+	}
+	txtef COLOR_YELLOW
+	txt lang("[店]" + cdatan(CDATAN_NAME, worker) + "は独自に" + dokuzi + "gold稼ぎ、金庫に保管した。そして" + yaca + "ヤカポイントを獲得した。", "[Shop]" + customer + " customers visited your shop and " + cdatan(CDATAN_NAME, worker) + " sold " + sold + " items. " + cdatan(CDATAN_NAME, worker) + " put " + s + " in the shop strong box. You got " + yaca + " yaca points.")
+	dokuzi = 0
+	gdata(GDATA_FLAG_YACA_POINTS) += yaca
+	if ( gdata(GDATA_FLAG_YACA_POINTS) >= 100000 ) {
+		gdata(GDATA_FLAG_YACA_POINTS) = 100000
 	}
 	mode = MODELIST_MAIN
 	file = "shop" + 5 + ".s2"
@@ -2394,8 +2390,8 @@
 	repeat mdata(MDATA_HEIGHT)
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
-			map(cnt, y, 4) = 0
-			map(cnt, y, 9) = 0
+			map(cnt, y, MAP_ITEM_CHIPS) = 0
+			map(cnt, y, MAP_LIGHT_TYPE) = 0
 		loop
 	loop
 	repeat invrange, invhead
@@ -3044,7 +3040,7 @@
 
 			/********** ORIGINAL - BEGINNING **********
 
-			if ( map(x, y, 4) != 0 ) {
+			if ( map(x, y, MAP_ITEM_CHIPS) != 0 ) {
 				continue
 			}
 
@@ -3052,7 +3048,7 @@
 
 			/********** BLOODYSHADE CUSTOM - BEGINNING **********/ // Organize ranch produce.
 
-			if ( map(x, y, 4) != 0 & TweakData(TWEAK_GAMEPLAY_ORGANIZE_RANCH, TWEAK_CATEGORY_GAMEPLAY) == 0 ) {
+			if ( map(x, y, MAP_ITEM_CHIPS) != 0 & TweakData(TWEAK_GAMEPLAY_ORGANIZE_RANCH, TWEAK_CATEGORY_GAMEPLAY) == 0 ) {
 				continue
 			}
 

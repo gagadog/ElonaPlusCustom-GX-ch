@@ -1023,6 +1023,17 @@
 	chipi(CHIPI_ANIM, xy2pic(19, 10)) = 3
 	chipi(CHIPI_ANIM, xy2pic(25, 10)) = 3
 	chipi(CHIPI_ANIM, xy2pic(6, 29)) = 2
+	chipi(CHIPI_ANIM, xy2pic(14, 38)) = 2
+	chipi(CHIPI_ANIM, xy2pic(16, 38)) = 2
+	chipi(CHIPI_ANIM, xy2pic(18, 38)) = 2
+	chipi(CHIPI_ANIM, xy2pic(20, 38)) = 2
+	chipi(CHIPI_ANIM, xy2pic(22, 38)) = 2
+	chipi(CHIPI_ANIM, xy2pic(12, 39)) = 2
+	chipi(CHIPI_ANIM, xy2pic(14, 39)) = 2
+	chipi(CHIPI_ANIM, xy2pic(16, 39)) = 2
+	chipi(CHIPI_ANIM, xy2pic(18, 39)) = 2
+	chipi(CHIPI_ANIM, xy2pic(20, 39)) = 2
+	chipi(CHIPI_ANIM, xy2pic(22, 39)) = 2
 	chipc(CHIPC_F, xy2pic(11, 5)) = 8
 	chipc(CHIPC_F, xy2pic(27, 6)) = 29
 	chipc(CHIPC_F, xy2pic(32, 6)) = 12

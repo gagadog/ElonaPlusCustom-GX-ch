@@ -71,8 +71,8 @@
 		goto *pc_turn
 	}
 	stc = -1
-	if ( map(tlocx, tlocy, 1) != 0 ) {
-		stc = map(tlocx, tlocy, 1) - 1
+	if ( map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+		stc = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		if ( cc == CHARA_PLAYER ) {
 			if ( cdata(CDATA_IN_TAGTEAM, stc) != 0 ) {
 				promptTagTeam
@@ -150,8 +150,8 @@
 	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_MONSTER_BALL | inv(INV_ITEM_ID, ci) == ITEM_ID_LITTLE_BALL ) {
 		snd SOUNDLIST_THROW2
 		cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
-		if ( map(tlocx, tlocy, 1) != 0 ) {
-			tc = map(tlocx, tlocy, 1) - 1
+		if ( map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+			tc = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 				if ( tc != CHARA_PLAYER ) {
 					if ( rnd(cdata(CDATA_HP, tc) + 1) < rnd(cdata(CDATA_HP, cdata(CDATA_TAGTEAM_PARTNER, tc)) + 1) ) {
@@ -372,7 +372,7 @@
 				}
 			}
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_HANDFUL_SNOW ) {
-				if ( map(tlocx, tlocy, 4) != 0 ) {
+				if ( map(tlocx, tlocy, MAP_ITEM_CHIPS) != 0 ) {
 					cell_itemlist tlocx, tlocy
 					f = 0
 					repeat listmax
@@ -394,7 +394,7 @@
 				}
 			}
 			if ( inv(INV_ITEM_ID, ci) == ITEM_ID_HANDFUL_SNOW ) {
-				if ( chipm(CHIPM_ROLE, map(tlocx, tlocy, 0)) == MAP_CHIP_ROLE_SNOW ) {
+				if ( chipm(CHIPM_ROLE, map(tlocx, tlocy, MAP_TILE_ID)) == MAP_CHIP_ROLE_SNOW ) {
 					goto *turn_end
 				}
 				if ( synccheck(tlocx, tlocy) ) {
@@ -501,8 +501,8 @@
 		snd SOUNDLIST_FIRE1
 		inv(INV_ITEM_NUM, ci)--
 		cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
-		if ( map(tlocx, tlocy, 1) != 0 ) {
-			tc = map(tlocx, tlocy, 1) - 1
+		if ( map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+			tc = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			if ( synccheck(tc, -1) ) {
 				txt_hittarget
 			}
@@ -523,8 +523,8 @@
 	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_CHESTNUT & inv(INV_ITEM_PARAM2, ci) == 0 ) {
 		snd SOUNDLIST_THROW2
 		cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
-		if ( map(tlocx, tlocy, 1) != 0 ) {
-			tc = map(tlocx, tlocy, 1) - 1
+		if ( map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+			tc = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 				if ( tc != CHARA_PLAYER ) {
 					if ( rnd(cdata(CDATA_HP, tc) + 1) < rnd(cdata(CDATA_HP, cdata(CDATA_TAGTEAM_PARTNER, tc)) + 1) ) {
@@ -561,8 +561,8 @@
 	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_LULWYS_PHOTO_COLLECTION ) {
 		snd SOUNDLIST_THROW2
 		cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
-		if ( map(tlocx, tlocy, 1) != 0 ) {
-			tc = map(tlocx, tlocy, 1) - 1
+		if ( map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+			tc = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			if ( synccheck(tc, -1) ) {
 				txt lang(name(tc) + "の足元に落ちた。", "It hits " + name(tc) + "!")
 			}
@@ -573,8 +573,8 @@
 	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_DUEL_GLOVE ) {
 		snd SOUNDLIST_THROW2
 		cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
-		if ( map(tlocx, tlocy, 1) != 0 ) {
-			tc = map(tlocx, tlocy, 1) - 1
+		if ( map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+			tc = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			if ( synccheck(tc, -1) ) {
 				txt lang(name(tc) + "の足元に落ちた。", "It hits " + name(tc) + "!")
 			}
@@ -606,8 +606,8 @@
 	if ( inv(INV_ITEM_ID, ci) == ITEM_ID_SOYBEAN | inv(INV_ITEM_ID, ci) == ITEM_ID_TOFU ) {
 		snd SOUNDLIST_THROW2
 		cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
-		if ( map(tlocx, tlocy, 1) != 0 ) {
-			tc = map(tlocx, tlocy, 1) - 1
+		if ( map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+			tc = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			if ( synccheck(tc, -1) ) {
 				txt_hittarget
 			}
@@ -639,8 +639,8 @@
 		goto *turn_end
 	}
 	if ( refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ITEM_FOOD | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_FURNITURE | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_JUNK | refitem(inv(INV_ITEM_ID, ci), DBSPEC_TYPE) == FILTER_ENVIRONMENT ) {
-		if ( map(tlocx, tlocy, 1) != 0 ) {
-			tc = map(tlocx, tlocy, 1) - 1
+		if ( map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+			tc = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 				if ( tc != CHARA_PLAYER ) {
 					if ( rnd(cdata(CDATA_HP, tc) + 1) < rnd(cdata(CDATA_HP, cdata(CDATA_TAGTEAM_PARTNER, tc)) + 1) ) {
@@ -860,6 +860,21 @@
 					}
 				}
 			}
+			return 1
+		}
+	}
+	if ( cc != (-1) ) {
+		if ( inv(INV_ITEM_ID, ci) == ITEM_ID_POTION_PLUG ) {
+			snd SOUNDLIST_GET1
+			ti = ci
+			in = inv(INV_ITEM_NUM, ci)
+			inv(INV_ITEM_NUM, ci) = 0
+			msgkeep = 1
+			txt lang(name(cc) + "は" + itemname(ti, in) + "を拾った。", name(cc) + " pick" + _s(cc) + " " + itemname(ti, in) + " up.")
+			cell_refresh inv(INV_ITEM_X, ci), inv(INV_ITEM_Y, ci)
+			gdata(GDATA_FLAG_TOTAL_POTION_PLUGS) += in
+			txtef COLOR_GREEN
+			txt lang("[ポーションの栓：" + gdata(GDATA_FLAG_TOTAL_POTION_PLUGS) + "個]", "[Remaining plug " + gdata(GDATA_FLAG_TOTAL_POTION_PLUGS) + "]")
 			return 1
 		}
 	}
@@ -1388,7 +1403,7 @@
 	goto *turn_end
 
 *act_bash
-	if ( map(x, y, 5) != 0 ) {
+	if ( map(x, y, MAP_ITEM_CHIPS_MEMORY) != 0 ) {
 		if ( mapitemfind(x, y, ITEM_ID_TREE_FRUIT) != (-1) ) {
 
 			/********** ORIGINAL - BEGINNING **********
@@ -1467,7 +1482,7 @@
 			goto *turn_end
 		}
 	}
-	if ( map(x, y, 5) != 0 ) {
+	if ( map(x, y, MAP_ITEM_CHIPS_MEMORY) != 0 ) {
 		if ( mapitemfind(x, y, ITEM_ID_KITTY_BANK) != (-1) ) {
 			ci = mapitemfind(x, y, ITEM_ID_KITTY_BANK)
 			item_separate ci
@@ -1483,8 +1498,8 @@
 			goto *turn_end
 		}
 	}
-	if ( map(x, y, 1) != 0 ) {
-		tc = map(x, y, 1) - 1
+	if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+		tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		if ( cc == CHARA_PLAYER ) {
 			if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 				promptTagTeam
@@ -1538,10 +1553,10 @@
 		cdata(CDATA_CONDITION_SLEEP, tc) = 0
 		goto *turn_end
 	}
-	if ( map(x, y, 6) != 0 ) {
+	if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
 		cell_featread x, y
 		if ( feat(1) == CELL_FEATURE_POT ) {
-			map(x, y, 6) = 0
+			map(x, y, MAP_FEATS_ON_TILE) = 0
 			spillfrag x, y, 2
 			flt calcobjlv(gdata(GDATA_LEVEL) * (gdata(GDATA_AREA) != AREA_SHELTER)), calcfixlv(FIX_QUALITY_GOOD)
 			flttypemajor = fsetbarrel(rnd(length(fsetbarrel)))
@@ -1631,8 +1646,8 @@
 				if ( x < 0 | x >= mdata(MDATA_WIDTH) ) {
 					continue
 				}
-				if ( map(x, y, 1) != 0 ) {
-					p = map(x, y, 1) - 1
+				if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+					p = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 					if ( cc != p ) {
 						if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), x, y) != 0 ) {
 							listmax2++
@@ -1653,8 +1668,8 @@
 				if ( x < 0 | x >= mdata(MDATA_WIDTH) ) {
 					continue
 				}
-				if ( map(x, y, 1) != 0 ) {
-					p = map(x, y, 1) - 1
+				if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+					p = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 					if ( cc != p ) {
 						if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), x, y) != 0 ) {
 							listmax2++
@@ -1944,7 +1959,7 @@
 			x = cdata(CDATA_X_NEW, CHARA_PLAYER)
 			y = cdata(CDATA_Y_NEW, CHARA_PLAYER)
 			if ( x >= 0 & x < mdata(MDATA_WIDTH) & y >= 0 & y < mdata(MDATA_HEIGHT) ) {
-				if ( map(x, y, 1) == 0 ) {
+				if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) == 0 ) {
 					cellaccess = 1
 				}
 			}
@@ -2101,7 +2116,7 @@
 		digx = cdata(CDATA_X_NEW, CHARA_PLAYER)
 		digy = cdata(CDATA_Y_NEW, CHARA_PLAYER)
 		if ( digx >= 0 & digx < mdata(0) & digy >= 0 & digy < mdata(1) ) {
-			if ( (chipm(CHIPM_ATTRIB, map(digx, digy, 0)) & CHIPM_ATTRIB_CANT_PASS) == 0 | chipm(CHIPM_ROLE, map(digx, digy, 0)) == MAP_CHIP_ROLE_WATER | mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
+			if ( (chipm(CHIPM_ATTRIB, map(digx, digy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 | chipm(CHIPM_ROLE, map(digx, digy, MAP_TILE_ID)) == MAP_CHIP_ROLE_WATER | mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
 			}
 			else {
 				refx = digx
@@ -2181,7 +2196,7 @@
 			}
 		}
 	}
-	if ( map(dx, dy, 6) != 0 ) {
+	if ( map(dx, dy, MAP_FEATS_ON_TILE) != 0 ) {
 		cell_featread dx, dy
 		if ( feat(1) == CELL_FEATURE_DOOR_CLOSED ) {
 			goto *act_openDoor
@@ -2478,7 +2493,7 @@
 				txt lang("完全に灰になっている…。", "It has completely turned to ash...")
 			}
 		}
-		if ( map(x, y, 4) != 0 ) {
+		if ( map(x, y, MAP_ITEM_CHIPS) != 0 ) {
 			if ( cdata(CDATA_CONDITION_BLIND, CHARA_PLAYER) == 0 ) {
 				if ( cfg_autopick ) {
 					if ( adata(ADATA_TYPE, gdata(GDATA_AREA)) != MAP_TYPE_HOME | adata(ADATA_TYPE, gdata(GDATA_AREA)) == AREA_RANCH | adata(ADATA_TYPE, gdata(GDATA_AREA)) == AREA_SHELTER ) {
@@ -2490,7 +2505,7 @@
 						}
 					}
 				}
-				if ( map(x, y, 4) != 0 ) {
+				if ( map(x, y, MAP_ITEM_CHIPS) != 0 ) {
 					txt txtitemoncell(x, y)
 				}
 			}
@@ -2498,7 +2513,7 @@
 				txt lang("地面に何かがあるようだ。", "You sense something under your foot.")
 			}
 		}
-		p = chipm(CHIPM_ROLE, map(x, y, 0))
+		p = chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID))
 		if ( p != MAP_CHIP_ROLE_NONE ) {
 			if ( tname(p) != "" ) {
 				txtmore
@@ -2645,7 +2660,7 @@
 				}
 			}
 		}
-		if ( map(x, y, 6) != 0 ) {
+		if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
 			cell_featread x, y
 			if ( feat(FEAT_CELL_FEATURE_ID) == CELL_FEATURE_DOWNSTAIRS ) {
 				if ( gdata(GDATA_AREA) == AREA_WEST_RASKILIS ) {
@@ -3826,7 +3841,7 @@
 		gosub *screen_draw
 		goto *pc_turn
 	}
-	if ( map(x, y, 1) != 0 ) {
+	if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
 		txt lang("何かが邪魔で閉められない。", "There's something on the floor.")
 		gosub *screen_draw
 		goto *pc_turn
@@ -5755,6 +5770,15 @@
 		enc = inv(STARTING_INV_ITEM_ENCHANT + cnt * 2, cw)
 		if ( enc == ENCHANT_ABSORB_STAMINA ) {
 			p = rnd(inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, cw) / 50 + 1) + 1
+			if ( p <= 0 ) {
+				p = 1
+			}
+			if ( ammoproc == ENCHANT_AMMO_RAPID ) {
+				p /= 2
+			}
+			if ( p <= 1 ) {
+				p = 2
+			}
 			if ( cdata(CDATA_SP, tc) > 0 ) {
 				healsp cc, rnd(2) + 1
 			}
@@ -5770,6 +5794,12 @@
 		}
 		if ( enc == ENCHANT_ABSORB_MP ) {
 			p = (rnd(inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, cw) / 100 + 1) + 20) * limit(orgdmg / 500, 1, 50) - cdata(CDATA_PV, tc)
+			if ( p <= 0 ) {
+				p = 1
+			}
+			if ( ammoproc == ENCHANT_AMMO_RAPID ) {
+				p /= 2
+			}
 			if ( p <= 0 ) {
 				p = 1
 			}
@@ -6008,7 +6038,7 @@
 			if ( x < 0 | x >= mdata(MDATA_WIDTH) ) {
 				continue
 			}
-			if ( map(x, y, 6) != 0 ) {
+			if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
 				cell_featread x, y
 				refx = x
 				refy = y
@@ -6035,7 +6065,7 @@
 						if ( cdata(CDATA_X, cc) == x & cdata(CDATA_Y, cc) == y ) {
 							snd SOUNDLIST_DING2
 							txt lang("なんと小さなメダルを見つけた！", "You find a small coin!")
-							map(x, y, 6) = 0
+							map(x, y, MAP_FEATS_ON_TILE) = 0
 							flt
 							itemcreate -1, ITEM_ID_SMALL_MEDAL, x, y, 0
 						}
@@ -6096,7 +6126,7 @@
 	return
 
 *revealHiddenPath
-	map(refx, refy, 0) = tile_tunnel
+	map(refx, refy, MAP_TILE_ID) = tile_tunnel
 	cell_featset refx, refy, 0, 0
 	return
 
@@ -6592,40 +6622,40 @@
 				repeat mdata(MDATA_WIDTH)
 					dx = cnt
 					f = 0
-					if ( map(dx, dy, 0) == 594 | map(dx, dy, 0) == 168 | map(dx, dy, 0) == 165 | map(dx, dy, 0) == 171 | map(dx, dy, 0) == 174 ) {
-						map(dx, dy, 0) = 187
+					if ( map(dx, dy, MAP_TILE_ID) == 594 | map(dx, dy, MAP_TILE_ID) == 168 | map(dx, dy, MAP_TILE_ID) == 165 | map(dx, dy, MAP_TILE_ID) == 171 | map(dx, dy, MAP_TILE_ID) == 174 ) {
+						map(dx, dy, MAP_TILE_ID) = 187
 						f = 1
 					}
-					if ( map(dx, dy, 0) == 637 | map(dx, dy, 0) == 628 | map(dx, dy, 0) == 642 ) {
-						map(dx, dy, 0) = 185
+					if ( map(dx, dy, MAP_TILE_ID) == 637 | map(dx, dy, MAP_TILE_ID) == 628 | map(dx, dy, MAP_TILE_ID) == 642 ) {
+						map(dx, dy, MAP_TILE_ID) = 185
 						f = 1
 					}
-					if ( map(dx, dy, 0) == 184 | map(dx, dy, 0) == 209 | map(dx, dy, 0) == 214 | map(dx, dy, 0) == 216 | map(dx, dy, 0) == 186 | map(dx, dy, 0) == 189 | map(dx, dy, 0) == 190 ) {
-						map(dx, dy, 0) = 186
+					if ( map(dx, dy, MAP_TILE_ID) == 184 | map(dx, dy, MAP_TILE_ID) == 209 | map(dx, dy, MAP_TILE_ID) == 214 | map(dx, dy, MAP_TILE_ID) == 216 | map(dx, dy, MAP_TILE_ID) == 186 | map(dx, dy, MAP_TILE_ID) == 189 | map(dx, dy, MAP_TILE_ID) == 190 ) {
+						map(dx, dy, MAP_TILE_ID) = 186
 						f = 1
 					}
-					if ( map(dx, dy, 0) >= 396 & map(dx, dy, 0) <= 560 ) {
-						map(dx, dy, 0) = 408
+					if ( map(dx, dy, MAP_TILE_ID) >= 396 & map(dx, dy, MAP_TILE_ID) <= 560 ) {
+						map(dx, dy, MAP_TILE_ID) = 408
 						f = 1
 					}
-					if ( map(dx, dy, 0) >= 560 & map(dx, dy, 0) <= 670 ) {
-						map(dx, dy, 0) = 670
+					if ( map(dx, dy, MAP_TILE_ID) >= 560 & map(dx, dy, MAP_TILE_ID) <= 670 ) {
+						map(dx, dy, MAP_TILE_ID) = 670
 						f = 1
 					}
-					if ( map(dx, dy, 0) == 701 | map(dx, dy, 0) == 671 ) {
+					if ( map(dx, dy, MAP_TILE_ID) == 701 | map(dx, dy, MAP_TILE_ID) == 671 ) {
 						f = 1
 					}
 					if ( f == 0 ) {
-						map(dx, dy, 0) = 45
+						map(dx, dy, MAP_TILE_ID) = 45
 						if ( rnd(10) == 0 ) {
-							map(dx, dy, 0) = 57
+							map(dx, dy, MAP_TILE_ID) = 57
 						}
 						if ( rnd(8) == 0 ) {
-							map(dx, dy, 0) = 56
+							map(dx, dy, MAP_TILE_ID) = 56
 						}
 					}
-					if ( map(dx, dy, 1) != 0 ) {
-						tc = map(dx, dy, 1) - 1
+					if ( map(dx, dy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+						tc = map(dx, dy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 						snd SOUNDLIST_ATK_ICE
 						if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 							if ( tc != CHARA_PLAYER ) {
@@ -6659,7 +6689,7 @@
 					repeat mdata(MDATA_WIDTH)
 						x = cnt
 						p = dist(cdata(CDATA_X, tc), cdata(CDATA_Y, tc), x, y)
-						map(x, y, 2) = map(x, y, 0)
+						map(x, y, MAP_TILE_ID_MEMORY) = map(x, y, MAP_TILE_ID)
 					loop
 				loop
 			loop
@@ -7522,7 +7552,7 @@
 			gosub *screen_draw
 			goto *pc_turn
 		}
-		if ( map(x, y, 6) != 0 ) {
+		if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
 			txt lang("ここには置けない。", "You can't place it here.")
 			goto *pc_turn
 		}
@@ -8011,8 +8041,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( stat == 0 ) {
@@ -9104,8 +9134,8 @@
 			gosub *screen_draw
 			goto *pc_turn
 		}
-		if ( map(x, y, 1) > 0 ) {
-			tc = map(x, y, 1) - 1
+		if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+			tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		}
 		else {
 			txt_impossible
@@ -9180,8 +9210,8 @@
 			gosub *screen_draw
 			goto *pc_turn
 		}
-		if ( map(x, y, 1) > 0 ) {
-			tc = map(x, y, 1) - 1
+		if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+			tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		}
 		else {
 			txt_impossible
@@ -9314,8 +9344,8 @@
 			gosub *screen_draw
 			goto *pc_turn
 		}
-		if ( map(x, y, 1) > 0 ) {
-			tc = map(x, y, 1) - 1
+		if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+			tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		}
 		else {
 			txt_impossible
@@ -9411,8 +9441,8 @@
 			gosub *screen_draw
 			goto *pc_turn
 		}
-		if ( map(x, y, 1) > 0 ) {
-			tc = map(x, y, 1) - 1
+		if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+			tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		}
 		else {
 			txt_impossible
@@ -9714,9 +9744,11 @@
 			skillexp SKILL_NORMAL_MARKSMAN, cc, 50
 		}
 		inv(INV_ITEM_PARAM2, ci)--
+		pnum++
 		if ( inv(INV_ITEM_PARAM3, ci) \ 100 == 3 | inv(INV_ITEM_AMUR_CAGE, ci) == 3 ) {
 			if ( inv(INV_ITEM_PARAM2, ci) > 0 ) {
 				inv(INV_ITEM_PARAM2, ci)--
+				pnum++
 			}
 		}
 		inv(INV_ITEM_LEVEL, ci) = 0
@@ -9730,6 +9762,11 @@
 				}
 			}
 		}
+		flt
+		itemcreate -1, ITEM_ID_POTION_PLUG, cdata(CDATA_X, tc), cdata(CDATA_Y, tc), pnum
+		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+		item_stack -1, ci, 0
+		pnum = 0
 		goto *act_use_SWEND1
 		_switch_sw++
 	}
@@ -9746,7 +9783,7 @@
 			}
 			goto *pc_turn
 		}
-		if ( chipm(CHIPM_ATTRIB, map(tlocx, tlocy, 0)) & CHIPM_ATTRIB_CANT_PASS ) {
+		if ( chipm(CHIPM_ATTRIB, map(tlocx, tlocy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
 			txt lang("そこには撃てない。", "The location is blocked.")
 			gosub *screen_draw
 			goto *pc_turn
@@ -9784,11 +9821,11 @@
 					continue
 				}
 				f = 0
-				if ( map(dx, dy, 0) != 701 & map(dx, dy, 0) != 671 ) {
-					map(dx, dy, 0) = 37
+				if ( map(dx, dy, MAP_TILE_ID) != 701 & map(dx, dy, MAP_TILE_ID) != 671 ) {
+					map(dx, dy, MAP_TILE_ID) = 37
 				}
-				if ( map(dx, dy, 1) != 0 ) {
-					tc = map(dx, dy, 1) - 1
+				if ( map(dx, dy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+					tc = map(dx, dy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 					if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 						if ( tc != CHARA_PLAYER ) {
 							if ( rnd(cdata(CDATA_HP, tc) + 1) < rnd(cdata(CDATA_HP, cdata(CDATA_TAGTEAM_PARTNER, tc)) + 1) ) {
@@ -10035,7 +10072,7 @@
 				f = 0
 			}
 			else {
-				if ( chipm(CHIPM_ATTRIB, map(x, y, 0)) & CHIPM_ATTRIB_CANT_PASS ) {
+				if ( chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
 					f = 0
 				}
 			}
@@ -10046,8 +10083,8 @@
 				continue cnt
 			}
 			tcbk = tc
-			if ( map(x, y, 1) != 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cc != tc ) {
 					if ( gdata(GDATA_RIDER) != 0 ) {
 						if ( gdata(GDATA_RIDER) == cc ) {
@@ -10224,8 +10261,8 @@
 			gosub *screen_draw
 			goto *pc_turn
 		}
-		if ( map(x, y, 1) > 0 ) {
-			tc = map(x, y, 1) - 1
+		if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+			tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		}
 		else {
 			txt_impossible
@@ -10293,8 +10330,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( stat == 0 ) {
@@ -10357,8 +10394,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					txt lang("タッグは吊るせない。", "Can't be hung while in a tag-team.")
 					goto *pc_turn
@@ -10480,8 +10517,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( rtval == 1 ) {
@@ -10563,8 +10600,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_RELATION, tc) == 10 | tc == CHARA_PLAYER ) {
 					txt lang("…さすがにやめておこう。", "...You changed your mind.")
 					goto *act_use_SWEND1
@@ -10636,8 +10673,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( rtval == 1 ) {
@@ -10697,8 +10734,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( rtval == 1 ) {
@@ -10765,8 +10802,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( rtval == 1 ) {
@@ -11112,8 +11149,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( rtval == 1 ) {
@@ -11431,7 +11468,7 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( chipm(CHIPM_ROLE, map(x, y, 0)) != MAP_CHIP_ROLE_WATER ) {
+			if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) != MAP_CHIP_ROLE_WATER ) {
 				txt lang("水に撒こう。", "Let's sprinkle it on water.")
 				goto *act_use_SWEND1
 			}
@@ -11637,8 +11674,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cbit(CHARA_BIT_NECRO, tc) == 1 ) {
 					undlv = 150
 					if ( cdata(CDATA_ID, tc) == CREATURE_ID_UNITDEAD_KING ) {
@@ -11764,8 +11801,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( rtval == 1 ) {
@@ -11850,8 +11887,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( rtval == 1 ) {
@@ -12043,8 +12080,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( tc == CHARA_PLAYER & cc == CHARA_PLAYER | cc == gdata(GDATA_RIDER) ) {
 					if ( gdata(GDATA_RIDER) != 0 ) {
 						tc = gdata(GDATA_RIDER)
@@ -12394,6 +12431,9 @@
 				inv(INV_ITEM_PARTS, ci) = 2
 				inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			}
+			// Ano fixed back slot not generating by reversing the back and body slot.
+			// But it's already fixed using modulo (before 2.23 release)
+			// So no changes here.
 			item_identify ci, ITEM_KNOWN_FULL
 			if ( inv(INV_ITEM_PARTS, cibk2) \ 1000 >= 100 ) {
 				flt
@@ -12937,8 +12977,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( rtval == 1 ) {
@@ -12992,8 +13032,8 @@
 		gosub *prompt_direction
 		f = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
 					promptTagTeam
 					if ( rtval == 1 ) {
@@ -14314,7 +14354,7 @@
 	if ( _switch_val == EFFECT_COMMAND_FLAG | _switch_sw ) {
 		_switch_sw = 0
 		if ( synccheck(cc, -1) ) {
-			txt lang("仲間にどんな指示を出そうか。", "Which instruction do you give to your allies?")
+			txt lang("味方にどんな指示を出そうか。", "Which instruction do you give to your allies?")
 		}
 		txtsettactical 11
 		repeat 11
@@ -14347,11 +14387,6 @@
 			}
 			if ( cc == cnt ) {
 				continue
-			}
-			if ( cc < MAX_CHARA_FOLLOWER ) {
-				if ( cnt >= MAX_CHARA_FOLLOWER ) {
-					continue
-				}
 			}
 			if ( cdata(CDATA_RELATION, cnt) != 10 ) {
 				continue
@@ -14497,8 +14532,8 @@
 			dy = cnt
 			repeat mdata(MDATA_WIDTH)
 				dx = cnt
-				if ( map(dx, dy, 1) != 0 ) {
-					tc = map(dx, dy, 1) - 1
+				if ( map(dx, dy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+					tc = map(dx, dy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 					if ( tc == CHARA_PLAYER ) {
 						continue
 					}
@@ -14513,7 +14548,7 @@
 							txt_guard
 						}
 					}
-					map(dx, dy, 0) = 12
+					map(dx, dy, MAP_TILE_ID) = 12
 					dmg = 300 + (sdata(SKILL_ATTR_PER, cc) / 5 + 5) * ((sdata(SKILL_NORMAL_MARKSMAN, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_ATTR_PER, cc) * 2 + 5) + (limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30
 					if ( synccheck(tc, -1) ) {
 						txtmore
@@ -14591,8 +14626,8 @@
 		f = 0
 		evmode = 0
 		if ( stat != 0 ) {
-			if ( map(x, y, 1) > 0 ) {
-				tc = map(x, y, 1) - 1
+			if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) > 0 ) {
+				tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			}
 		}
 		if ( cdata(CDATA_IN_TAGTEAM, tc) != 0 ) {
@@ -18536,7 +18571,7 @@
 
 	// Mod for collect yield with house board (usecustom = 1 when house board collection)
 		if ( usecustom ) {
-			map(x, y, 6) = 0
+			map(x, y, MAP_FEATS_ON_TILE) = 0
 		}
 		else {
 			map(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 6) = 0
@@ -18609,7 +18644,7 @@
 		}
 	}
 	if ( sdata(SKILL_NORMAL_GARDENING, CHARA_PLAYER) < rnd(p + 1) | rnd(200) < p - saibai | feat(FEAT_CELL_SUB_FEATURE_ID) \ 10 == SEED_TYPE_ARTIFACT ) {
-		map(x, y, 6) = 0
+		map(x, y, MAP_FEATS_ON_TILE) = 0
 		return
 	}
 	saibai = 0

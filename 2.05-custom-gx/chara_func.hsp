@@ -1173,11 +1173,15 @@
 	if ( cdata(CDATA_BURDEN, CHARA_PLAYER) == 1 ) {
 		cdata(CDATA_SPEED_FIX, CHARA_PLAYER) -= 10
 	}
-	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) < gdata(GDATA_FLAG_SHIP_TYPE) & gdata(GDATA_WORLD) == AREA_OCEAN ) {
-		gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) = gdata(GDATA_FLAG_SHIP_TYPE)
+	if ( gdata(GDATA_WORLD) == AREA_OCEAN ) {
+		if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) < gdata(GDATA_FLAG_SHIP_TYPE) ) {
+			gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) = gdata(GDATA_FLAG_SHIP_TYPE)
+		}
 	}
-	if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_WORLD_MAP_VEHICLE_THIS_MONTH) < gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) ) {
-		gdata(GDATA_FLAG_MOST_EXPENSIVE_WORLD_MAP_VEHICLE_THIS_MONTH) = gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND)
+	if ( gdata(GDATA_WORLD) != AREA_OCEAN & adata(ADATA_TYPE, gdata(GDATA_AREA)) == MAP_TYPE_WORLD ) {
+		if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_WORLD_MAP_VEHICLE_THIS_MONTH) < gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) ) {
+			gdata(GDATA_FLAG_MOST_EXPENSIVE_WORLD_MAP_VEHICLE_THIS_MONTH) = gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND)
+		}
 	}
 	if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == VEHICLE_NONE ) {
 		if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD | mdata(MDATA_TYPE) == MAP_TYPE_LOCAL ) {
@@ -1731,13 +1735,13 @@
 	return
 
 #deffunc cell_setchara int cell_setchara_arg1, int cell_setchara_arg2, int cell_setchara_arg3
-	map(cell_setchara_arg2, cell_setchara_arg3, 1) = cell_setchara_arg1 + 1
+	map(cell_setchara_arg2, cell_setchara_arg3, MAP_CHARA_INDEX_PLUS_ONE) = cell_setchara_arg1 + 1
 	cdata(CDATA_X, cell_setchara_arg1) = cell_setchara_arg2
 	cdata(CDATA_Y, cell_setchara_arg1) = cell_setchara_arg3
 	return
 
 #deffunc cell_removechara int cell_removechara_arg1, int cell_removechara_arg2
-	map(cell_removechara_arg1, cell_removechara_arg2, 1) = 0
+	map(cell_removechara_arg1, cell_removechara_arg2, MAP_CHARA_INDEX_PLUS_ONE) = 0
 	return
 
 #deffunc cell_findspace int cell_findspace_arg1, int cell_findspace_arg2, int cell_findspace_arg3
@@ -1752,13 +1756,13 @@
 			if ( locvar_cell_findspace_dx < 0 | locvar_cell_findspace_dx >= mdata(MDATA_WIDTH) ) {
 				continue
 			}
-			if ( map(locvar_cell_findspace_dx, locvar_cell_findspace_dy, 1) != 0 ) {
+			if ( map(locvar_cell_findspace_dx, locvar_cell_findspace_dy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
 				continue
 			}
-			if ( chipm(CHIPM_ATTRIB, map(locvar_cell_findspace_dx, locvar_cell_findspace_dy, 0)) & CHIPM_ATTRIB_CANT_PASS ) {
+			if ( chipm(CHIPM_ATTRIB, map(locvar_cell_findspace_dx, locvar_cell_findspace_dy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
 				continue
 			}
-			if ( chipm(CHIPM_ATTRIB, map(locvar_cell_findspace_dx, locvar_cell_findspace_dy, 6) \ 1000) & CHIPM_ATTRIB_CANT_PASS ) {
+			if ( chipm(CHIPM_ATTRIB, map(locvar_cell_findspace_dx, locvar_cell_findspace_dy, MAP_FEATS_ON_TILE) \ 1000) & CHIPM_ATTRIB_CANT_PASS ) {
 				continue
 			}
 			rtval = locvar_cell_findspace_dx, locvar_cell_findspace_dy
@@ -2775,8 +2779,19 @@
 				f@con = 0
 			}
 		}
-		p@con = rnd(dmgcon_power / 2 + 1) + dmgcon_power / 2
-		p@con = p@con * 100 / (50 + sdata(SKILL_NORMAL_MAGIC_CAPACITY, dmgcon_charid))
+		if ( findbuff(dmgcon_charid, BUFF_HOLY_VEIL) != (-1) ) {
+			f@con = 0
+		}
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
+		res@con = SKILL_RES_NETHER
+		gosub *conCalc
+		if ( f@con == 0 ) {
+			return 0
+		}
+		} else {
+			p@con = rnd(dmgcon_power / 2 + 1) + dmgcon_power / 2
+			p@con = p@con * 100 / (50 + sdata(SKILL_NORMAL_MAGIC_CAPACITY, dmgcon_charid))
+		}
 		p@con = p@con / 5
 		if ( p@con > 0 ) {
 			if ( cdata(CDATA_CONDITION_MPOISON, dmgcon_charid) == 0 ) {
@@ -2784,7 +2799,7 @@
 				if ( synccheck(dmgcon_charid, -1) ) {
 					txtmore
 					txtef COLOR_PURPLE
-					txt lang(name(dmgcon_charid) + "は魔力を漏らし始めた。", name(dmgcon_charid) + " began to leak MP.")
+					txt lang(name(dmgcon_charid) + "は冥界の冷気に侵蝕された。", name(dmgcon_charid) + " " + is(dmgcon_charid) + " eroded by the netherworld energy.")
                     DamagePopupAdd "" + _conmpoison, dmgcon_charid, DMGPOPUP_ADD_CONDITION, CONDITION_MPOISON
 				}
 			}
@@ -3442,11 +3457,11 @@
 		if ( locvar_spillblood_dx < 0 | locvar_spillblood_dx >= mdata(MDATA_WIDTH) | locvar_spillblood_dy < 0 | locvar_spillblood_dy >= mdata(MDATA_HEIGHT) ) {
 			continue
 		}
-		if ( chipm(CHIPM_WALL, map(locvar_spillblood_dx, locvar_spillblood_dy, 0)) ) {
+		if ( chipm(CHIPM_WALL, map(locvar_spillblood_dx, locvar_spillblood_dy, MAP_TILE_ID)) ) {
 			continue
 		}
-		if ( map(locvar_spillblood_dx, locvar_spillblood_dy, 7) \ 10 < 5 ) {
-			map(locvar_spillblood_dx, locvar_spillblood_dy, 7)++
+		if ( map(locvar_spillblood_dx, locvar_spillblood_dy, MAP_BLOOD_AND_DEBRIS) \ 10 < 5 ) {
+			map(locvar_spillblood_dx, locvar_spillblood_dy, MAP_BLOOD_AND_DEBRIS)++
 		}
 	loop
 	return
@@ -3464,11 +3479,11 @@
 		if ( locvar_spillblood_dx < 0 | locvar_spillblood_dx >= mdata(MDATA_WIDTH) | locvar_spillblood_dy < 0 | locvar_spillblood_dy >= mdata(MDATA_HEIGHT) ) {
 			continue
 		}
-		if ( chipm(CHIPM_WALL, map(locvar_spillblood_dx, locvar_spillblood_dy, 0)) ) {
+		if ( chipm(CHIPM_WALL, map(locvar_spillblood_dx, locvar_spillblood_dy, MAP_TILE_ID)) ) {
 			continue
 		}
-		if ( map(locvar_spillblood_dx, locvar_spillblood_dy, 7) / 10 < 4 ) {
-			map(locvar_spillblood_dx, locvar_spillblood_dy, 7) = map(locvar_spillblood_dx, locvar_spillblood_dy, 7) \ 10 + (map(locvar_spillblood_dx, locvar_spillblood_dy, 7) / 10 + 1) * 10
+		if ( map(locvar_spillblood_dx, locvar_spillblood_dy, MAP_BLOOD_AND_DEBRIS) / 10 < 4 ) {
+			map(locvar_spillblood_dx, locvar_spillblood_dy, MAP_BLOOD_AND_DEBRIS) = map(locvar_spillblood_dx, locvar_spillblood_dy, MAP_BLOOD_AND_DEBRIS) \ 10 + (map(locvar_spillblood_dx, locvar_spillblood_dy, MAP_BLOOD_AND_DEBRIS) / 10 + 1) * 10
 		}
 	loop
 	return
@@ -3621,6 +3636,13 @@
 		return
 	}
 	cdata(CDATA_POWER_GAUGE, check_kill_arg2) = -300
+	if ( cdata(CDATA_FRIENDSHIP, CHARA_PLAYER) == 6 ) {
+		if ( cdata(CDATA_RELATION_ORG, check_kill_arg1) >= RELATION_HATE & cdata(CDATA_RELATION_ORG, check_kill_arg2) >= RELATION_HATE | (cdata(CDATA_RELATION_ORG, check_kill_arg1) == RELATION_ENEMY & cdata(CDATA_RELATION_ORG, check_kill_arg2) == RELATION_ENEMY) ) {
+			snd SOUNDLIST_PUNISH1
+			dmgcon check_kill_arg1, CONDITION_WINCE, cdata(CDATA_LEVEL, check_kill_arg2) * 5
+			addbuff check_kill_arg1, BUFF_PUNISHMENT, 10, cdata(CDATA_LEVEL, check_kill_arg2) + 1
+		}
+	}
 	if ( cdata(CDATA_INIT_ATTR, check_kill_arg1) == 0 ) {
 		cdata(CDATA_INIT_ATTR, check_kill_arg1) = sorg(SKILL_ATTR_STR, check_kill_arg1) + sorg(SKILL_ATTR_CON, check_kill_arg1) + sorg(SKILL_ATTR_DEX, check_kill_arg1) + sorg(SKILL_ATTR_PER, check_kill_arg1) + sorg(SKILL_ATTR_LER, check_kill_arg1) + sorg(SKILL_ATTR_WIL, check_kill_arg1) + sorg(SKILL_ATTR_MAG, check_kill_arg1) + sorg(SKILL_ATTR_CHA, check_kill_arg1)
 	}
@@ -3954,7 +3976,7 @@
 	return locvar_item_fire_f
 
 #deffunc mapitem_fire int mapitem_fire_arg1, int mapitem_fire_arg2
-	if ( map(mapitem_fire_arg1, mapitem_fire_arg2, 4) == 0 ) {
+	if ( map(mapitem_fire_arg1, mapitem_fire_arg2, MAP_ITEM_CHIPS) == 0 ) {
 		return
 	}
 	inv_getheader -1
@@ -3973,7 +3995,7 @@
 	if ( locvar_item_acid_ci != (-1) ) {
 		item_fire -1, locvar_item_acid_ci
 		if ( stat == 1 ) {
-			if ( map(mapitem_fire_arg1, mapitem_fire_arg2, 8) == 0 ) {
+			if ( map(mapitem_fire_arg1, mapitem_fire_arg2, MAP_MEF_INDEX_PLUS_ONE) == 0 ) {
 				addmef mapitem_fire_arg1, mapitem_fire_arg2, 5, 24, rnd(10) + 5, 100, cc
 			}
 		}
@@ -4067,7 +4089,7 @@
 	return locvar_item_fire_f
 
 #deffunc mapitem_cold int mapitem_cold_arg1, int mapitem_cold_arg2
-	if ( map(mapitem_cold_arg1, mapitem_cold_arg2, 4) == 0 ) {
+	if ( map(mapitem_cold_arg1, mapitem_cold_arg2, MAP_ITEM_CHIPS) == 0 ) {
 		return
 	}
 	inv_getheader -1
@@ -4111,8 +4133,8 @@
 		if ( locvar_copy_chara_x < 0 | locvar_copy_chara_x >= mdata(MDATA_WIDTH) ) {
 			continue
 		}
-		if ( map(locvar_copy_chara_x, locvar_copy_chara_y, 1) == 0 ) {
-			if ( (chipm(CHIPM_ATTRIB, map(locvar_copy_chara_x, locvar_copy_chara_y, 0)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
+		if ( map(locvar_copy_chara_x, locvar_copy_chara_y, MAP_CHARA_INDEX_PLUS_ONE) == 0 ) {
+			if ( (chipm(CHIPM_ATTRIB, map(locvar_copy_chara_x, locvar_copy_chara_y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
 				locvar_copy_chara_f = 1
 				break
 			}
@@ -4128,7 +4150,7 @@
 	repeat 10
 		cdatan(cnt, locvar_copy_chara_c) = cdatan(cnt, copy_chara_arg1)
 	loop
-	map(locvar_copy_chara_x, locvar_copy_chara_y, 1) = locvar_copy_chara_c + 1
+	map(locvar_copy_chara_x, locvar_copy_chara_y, MAP_CHARA_INDEX_PLUS_ONE) = locvar_copy_chara_c + 1
 	cdata(CDATA_X, locvar_copy_chara_c) = locvar_copy_chara_x
 	cdata(CDATA_Y, locvar_copy_chara_c) = locvar_copy_chara_y
 	cdata(CDATA_IMPRESSION, locvar_copy_chara_c) = 0
@@ -5496,22 +5518,24 @@
 
     /********** RUIN0X11 CUSTOM - ENDING **********/
 
-	if ( locvar_dmghp_ele == SKILL_RES_NETHER ) {
-		if ( dmghp_source >= DAMAGE_FROM_CHARA ) {
-			if ( locvar_dmghp_dmg > 0 ) {
-				if ( cdata(CDATA_HP, dmghp_charid) > 0 ) {
-					locvar_dmghp_healn = limit(locvar_dmghp_dmg, 1, 100000) / 10 * (100 + limit(dmghp_element_power, 1, 10000)) / 100 + 10
-					if ( locvar_dmghp_healn > cdata(CDATA_HP, dmghp_source) / 15 + 1 ) {
-						locvar_dmghp_healn = cdata(CDATA_HP, dmghp_source) / 15 + 1
+	if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+		if ( locvar_dmghp_ele == SKILL_RES_NETHER ) {
+			if ( dmghp_source >= DAMAGE_FROM_CHARA ) {
+				if ( locvar_dmghp_dmg > 0 ) {
+					if ( cdata(CDATA_HP, dmghp_charid) > 0 ) {
+						locvar_dmghp_healn = limit(locvar_dmghp_dmg, 1, 100000) / 10 * (100 + limit(dmghp_element_power, 1, 10000)) / 100 + 10
+						if ( locvar_dmghp_healn > cdata(CDATA_HP, dmghp_source) / 15 + 1 ) {
+							locvar_dmghp_healn = cdata(CDATA_HP, dmghp_source) / 15 + 1
+						}
+						if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+							locvar_dmghp_healn = limit(rnd(locvar_dmghp_dmg * (150 + dmghp_element_power * 2) / 1000 + 10), 1, cdata(CDATA_HP, dmghp_source) / 15 + rnd(5))
+						}
+						txtmore
+						txtef COLOR_BROWN
+						txt "(" + locvar_dmghp_healn + " drained)"
+						healhp dmghp_source, locvar_dmghp_healn
+						locvar_dmghp_healn = 0
 					}
-					if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
-						locvar_dmghp_healn = limit(rnd(locvar_dmghp_dmg * (150 + dmghp_element_power * 2) / 1000 + 10), 1, cdata(CDATA_HP, dmghp_source) / 15 + rnd(5))
-					}
-					txtmore
-					txtef COLOR_BROWN
-					txt "(" + locvar_dmghp_healn + " drained)"
-					healhp dmghp_source, locvar_dmghp_healn
-					locvar_dmghp_healn = 0
 				}
 			}
 		}
@@ -5553,6 +5577,20 @@
 					cdata(CDATA_POWER_GAUGE, dmghp_source) += 2
 				}
 			}
+		}
+	}
+	if ( cbit(CHARA_BIT_SANDBAG, dmghp_charid) == TRUE ) {
+		if ( sanddmg == 0 ) {
+			if ( dmghp_source == CHARA_PLAYER ) {
+				sandturn++
+			}
+		}
+		if ( sandturn > 0 ) {
+			sanddmg += locvar_dmghp_dmg
+		}
+		if ( sandturn > 21 ) {
+			sandturn = 0
+			sanddmg = 0
 		}
 	}
 	if ( dmghp_source >= DAMAGE_FROM_CHARA ) {
@@ -6021,6 +6059,11 @@
 			if ( locvar_dmghp_ele == SKILL_RES_SOUND ) {
 				dmgcon dmghp_charid, CONDITION_DIM, rnd(dmghp_element_power + 1)
 			}
+			if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			if ( locvar_dmghp_ele == SKILL_RES_NETHER ) {
+				dmgcon dmghp_charid, CONDITION_MPOISON, rnd(dmghp_element_power + 1)
+			}
+			}
 			if ( locvar_dmghp_ele == SKILL_RES_POISON ) {
 				dmgcon dmghp_charid, CONDITION_POISON, rnd(dmghp_element_power + 1)
 			}
@@ -6354,6 +6397,12 @@
 					ndeathcause = lang("溶けて液体になった。", "melted down")
 				}
 			}
+			if ( dmghp_source == DAMAGE_FROM_REMNANT ) {
+				txt lang(name(dmghp_charid) + "は属性の残滓に呑まれて死んだ。", name(dmghp_charid) + " was consumed by the remnants of the elements and died..")
+				if ( dmghp_charid == CHARA_PLAYER ) {
+					ndeathcause = lang("属性の残滓に呑まれて死んだ。", "consumed by the remnants of the elements")
+				}
+			}
 			if ( dmghp_source == DAMAGE_FROM_SUICIDE ) {
 				txt lang(name(dmghp_charid) + "はバラバラになった。", name(dmghp_charid) + " shatter" + _s(dmghp_charid) + ".")
 				if ( dmghp_charid == CHARA_PLAYER ) {
@@ -6427,15 +6476,17 @@
 				}
 			}
 		}
-		if ( locvar_dmghp_ele == SKILL_RES_NETHER ) {
-			if ( dmghp_source >= DAMAGE_FROM_CHARA ) {
-				if ( locvar_dmghp_dmg > 0 ) {
-					locvar_dmghp_healn = limit(rnd(locvar_dmghp_dmg * (150 + dmghp_element_power * 2) / 1000 + 10), 1, cdata(CDATA_MAX_HP, dmghp_source) / 10 + rnd(5))
-					if ( locvar_dmghp_healn > cdata(CDATA_MAX_HP, dmghp_charid) / 10 + 1 ) {
-						locvar_dmghp_healn = cdata(CDATA_MAX_HP, dmghp_charid) / 10 + 1
+		if ( TweakData(TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			if ( locvar_dmghp_ele == SKILL_RES_NETHER ) {
+				if ( dmghp_source >= DAMAGE_FROM_CHARA ) {
+					if ( locvar_dmghp_dmg > 0 ) {
+						locvar_dmghp_healn = limit(rnd(locvar_dmghp_dmg * (150 + dmghp_element_power * 2) / 1000 + 10), 1, cdata(CDATA_MAX_HP, dmghp_source) / 10 + rnd(5))
+						if ( locvar_dmghp_healn > cdata(CDATA_MAX_HP, dmghp_charid) / 10 + 1 ) {
+							locvar_dmghp_healn = cdata(CDATA_MAX_HP, dmghp_charid) / 10 + 1
+						}
+						healhp cc, locvar_dmghp_healn
+						locvar_dmghp_healn = 0
 					}
-					healhp cc, locvar_dmghp_healn
-					locvar_dmghp_healn = 0
 				}
 			}
 		}

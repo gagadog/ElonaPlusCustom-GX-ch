@@ -1326,6 +1326,7 @@
 		skillinit SKILL_NORMAL_MINING, r1, 4
 	}
 	if ( necrop2 > 0 ) {
+		skillinit SKILL_NORMAL_CONTROL_MAGIC, r1, 2
 		if ( necrop2 == ITEM_ID_BONE ) {
 			skillinit SKILL_NORMAL_TACTICS, r1, 2
 		}
@@ -1727,6 +1728,9 @@
 	}
 	regen = 1
 	if ( cdata(CDATA_CONDITION_SLEEP, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_SLEEP, r1) > 100 ) {
+			cdata(CDATA_CONDITION_SLEEP, r1) = 100
+		}
 		healcon r1, CONDITION_SLEEP, 1
 		if ( cdata(CDATA_CONDITION_SLEEP, r1) > 0 ) {
 			cdata(CDATA_EMO_ICON, r1) = 14 + 100
@@ -1735,6 +1739,9 @@
 		healmp r1, 1, FALSE
 	}
 	if ( cdata(CDATA_CONDITION_POISON, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_POISON, r1) > 100 ) {
+			cdata(CDATA_CONDITION_POISON, r1) = 100
+		}
 		dmghp r1, cdata(CDATA_MAX_HP, r1) / 15 + 2, DAMAGE_FROM_POISON
 		healcon r1, CONDITION_POISON, 1
 		if ( cdata(CDATA_CONDITION_POISON, r1) > 0 ) {
@@ -1743,6 +1750,9 @@
 		regen = 0
 	}
 	if ( cdata(CDATA_CONDITION_MPOISON, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_MPOISON, r1) > 100 ) {
+			cdata(CDATA_CONDITION_MPOISON, r1) = 100
+		}
 		dmgmp r1, rnd(2 + sdata(SKILL_ATTR_MAG, r1) / 10)
 		healcon r1, CONDITION_MPOISON, 1
 		if ( cdata(CDATA_CONDITION_MPOISON, r1) > 0 ) {
@@ -1751,6 +1761,9 @@
 		regen = 0
 	}
 	if ( cdata(CDATA_CONDITION_SUFFOCATION, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_SUFFOCATION, r1) > 100 ) {
+			cdata(CDATA_CONDITION_SUFFOCATION, r1) = 100
+		}
 		if ( cdata(CDATA_CONDITION_SUFFOCATION, r1) \ 3 == 0 ) {
 			if ( synccheck(r1, -1) ) {
 				chatc@DP = r1
@@ -1781,6 +1794,9 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_ANGRY, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_ANGRY, r1) > 100 ) {
+			cdata(CDATA_CONDITION_ANGRY, r1) = 100
+		}
 		cdata(CDATA_CONDITION_ANGRY, r1)--
 		if ( cdata(CDATA_CONDITION_ANGRY, r1) == 0 ) {
 			if ( synccheck(r1, -1) ) {
@@ -1789,6 +1805,9 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_INVERT, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_INVERT, r1) > 100 ) {
+			cdata(CDATA_CONDITION_INVERT, r1) = 100
+		}
 		cdata(CDATA_CONDITION_INVERT, r1)--
 		if ( cdata(CDATA_CONDITION_INVERT, r1) == 0 ) {
 			if ( synccheck(r1, -1) ) {
@@ -1797,6 +1816,9 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_BIND, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_BIND, r1) > 100 ) {
+			cdata(CDATA_CONDITION_BIND, r1) = 100
+		}
 		cdata(CDATA_CONDITION_BIND, r1)--
 		dmgsp r1, 1
 		if ( cdata(CDATA_CONDITION_BIND, r1) == 0 ) {
@@ -1814,6 +1836,9 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_BRAINWASH, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_BRAINWASH, r1) > 100 ) {
+			cdata(CDATA_CONDITION_BRAINWASH, r1) = 100
+		}
 		cdata(CDATA_CONDITION_BRAINWASH, r1)--
 		if ( cdata(CDATA_CONDITION_BRAINWASH, r1) == 0 ) {
 			if ( synccheck(r1, -1) ) {
@@ -1827,6 +1852,9 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_ATROPHY, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_ATROPHY, r1) > 100 ) {
+			cdata(CDATA_CONDITION_ATROPHY, r1) = 100
+		}
 		cdata(CDATA_CONDITION_ATROPHY, r1)--
 		if ( cdata(CDATA_CONDITION_ATROPHY, r1) == 0 ) {
 			if ( synccheck(r1, -1) ) {
@@ -1862,12 +1890,18 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_BLIND, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_BLIND, r1) > 100 ) {
+			cdata(CDATA_CONDITION_BLIND, r1) = 100
+		}
 		healcon r1, CONDITION_BLIND, 1
 		if ( cdata(CDATA_CONDITION_BLIND, r1) > 0 ) {
 			cdata(CDATA_EMO_ICON, r1) = 10 + 100
 		}
 	}
 	if ( cdata(CDATA_CONDITION_PARALYZE, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_PARALYZE, r1) > 100 ) {
+			cdata(CDATA_CONDITION_PARALYZE, r1) = 100
+		}
 		regen = 0
 		healcon r1, CONDITION_PARALYZE, 1
 		if ( cdata(CDATA_CONDITION_PARALYZE, r1) > 0 ) {
@@ -1880,32 +1914,44 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_CONFUSE, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_CONFUSE, r1) > 100 ) {
+			cdata(CDATA_CONDITION_CONFUSE, r1) = 100
+		}
 		healcon r1, CONDITION_CONFUSE, 1
 		if ( cdata(CDATA_CONDITION_CONFUSE, r1) > 0 ) {
 			cdata(CDATA_EMO_ICON, r1) = 11 + 100
 		}
 	}
 	if ( cdata(CDATA_CONDITION_FEAR, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_FEAR, r1) > 100 ) {
+			cdata(CDATA_CONDITION_FEAR, r1) = 100
+		}
 		healcon r1, CONDITION_FEAR, 1
 		if ( cdata(CDATA_CONDITION_FEAR, r1) > 0 ) {
 			cdata(CDATA_EMO_ICON, r1) = 13 + 100
 		}
 	}
 	if ( cdata(CDATA_CONDITION_DIM, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_DIM, r1) > 100 ) {
+			cdata(CDATA_CONDITION_DIM, r1) = 100
+		}
 		healcon r1, CONDITION_DIM, 1
 		if ( cdata(CDATA_CONDITION_DIM, r1) > 0 ) {
 			cdata(CDATA_EMO_ICON, r1) = 12 + 100
 		}
 	}
 	if ( cdata(CDATA_CONDITION_DRUNK, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_DRUNK, r1) > 100 ) {
+			cdata(CDATA_CONDITION_DRUNK, r1) = 100
+		}
 		healcon r1, CONDITION_DRUNK, 1
 		if ( cdata(CDATA_CONDITION_DRUNK, r1) > 0 ) {
 			cdata(CDATA_EMO_ICON, r1) = 6 + 100
 		}
 	}
 	if ( cdata(CDATA_CONDITION_BLEED, r1) > 0 ) {
-		if ( cdata(CDATA_CONDITION_BLEED, r1) > 10000 ) {
-			cdata(CDATA_CONDITION_BLEED, r1) = 10000
+		if ( cdata(CDATA_CONDITION_BLEED, r1) > 100 ) {
+			cdata(CDATA_CONDITION_BLEED, r1) = 100
 		}
 		if ( cdata(CDATA_HP, r1) != 0 ) {
 			dmghp r1, rnd(limit(cdata(CDATA_HP, r1) / 10, 1, 20000) * (1 + cdata(CDATA_CONDITION_BLEED, r1) / 4) / 10 + 3) + 1, DAMAGE_FROM_BLEED
@@ -1937,12 +1983,18 @@
 		refreshspeed r1
 	}
 	if ( cdata(CDATA_CONDITION_WINCE, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_WINCE, r1) > 100 ) {
+			cdata(CDATA_CONDITION_WINCE, r1) = 100
+		}
 		healcon r1, CONDITION_WINCE, 1
 		if ( cdata(CDATA_CONDITION_WINCE, r1) > 0 ) {
 			cdata(CDATA_EMO_ICON, r1) = 28 + 100
 		}
 	}
 	if ( cdata(CDATA_CONDITION_CHILLS, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_CHILLS, r1) > 100 ) {
+			cdata(CDATA_CONDITION_CHILLS, r1) = 100
+		}
 		healcon r1, CONDITION_CHILLS, 1
 		if ( cdata(CDATA_CONDITION_CHILLS, r1) > 0 ) {
 			cdata(CDATA_EMO_ICON, r1) = 29 + 100
@@ -1984,6 +2036,9 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_OIL, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_OIL, r1) > 100 ) {
+			cdata(CDATA_CONDITION_OIL, r1) = 100
+		}
 		healcon r1, CONDITION_OIL, 1
 		if ( cdata(CDATA_CONDITION_OIL, r1) == 0 ) {
 			r1 = r1
@@ -2130,6 +2185,9 @@
 		}
 	}
 	if ( cdata(CDATA_CONDITION_INSANE, r1) > 0 ) {
+		if ( cdata(CDATA_CONDITION_INSANE, r1) > 100 ) {
+			cdata(CDATA_CONDITION_INSANE, r1) = 100
+		}
 		if ( synccheck(r1, -1) ) {
 			if ( rnd(3) == 0 ) {
 				txtmore

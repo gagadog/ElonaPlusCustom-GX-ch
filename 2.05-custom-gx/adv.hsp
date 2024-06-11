@@ -162,6 +162,7 @@
 	}
 	relocate_chara rc, f
 	oc = stat
+	cdata(CDATA_FAME, rc) = cdata(CDATA_RELATION_ORG, rc) - 100
 	cdata(CDATA_RELATION, rc) = 10
 	cdata(CDATA_RELATION_ORG, rc) = 10
 	cdata(CDATA_ROLE, rc) = ROLE_NONE
@@ -175,9 +176,6 @@
 	cbitmod CHARA_BIT_BRUSHED, rc, 0
 	cbitmod CHARA_BIT_LIVESTOCK, rc, 0
 	cbitmod CHARA_BIT_LABOR_CAMP, rc, 0
-	if ( cdata(CDATA_ALLIED, rc) == 0 ) {
-		cdata(CDATA_FAME, rc) = (cdata(CDATA_FAME, rc) + 1) / 1000 + 1
-	}
 	cdata(CDATA_ALLIED, rc) = 100
 	if ( cdata(CDATA_JOIN_DATE_MONTH, rc) == 0 ) {
 		cdata(CDATA_JOIN_DATE_MONTH, rc) = gdata(GDATA_MONTH)

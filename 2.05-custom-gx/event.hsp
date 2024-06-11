@@ -946,8 +946,33 @@
 		skillexp SKILL_NORMAL_FAITH, CHARA_PLAYER, 1000, 6, 1000
 		s = lang("信仰の深まり", "Gaining Faith")
 		file = "bg_re12"
-		buff = lang("夢の中で、あなたは偉大なる者の穏やかな威光に触れた。", "In your dream, a saint comes out and blesses you.")
-		chatList 1, lang("神よ", "Great.")
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_MANI ) {
+			file = "god1"
+		}
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_LULWY ) {
+			file = "god2"
+		}
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_ITZPALT ) {
+			file = "god3"
+		}
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_EHEKATL ) {
+			file = "god4"
+		}
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_OPATOS ) {
+			file = "god5"
+		}
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_JURE ) {
+			file = "god6"
+		}
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_KUMIROMI ) {
+			file = "god7"
+		}
+		if ( cdata(CDATA_GOD, CHARA_PLAYER) == GOD_YACATECT ) {
+			file = "god8"
+		}
+		txtgod cdata(CDATA_GOD, CHARA_PLAYER), GOD_TEXT_DREAM
+		buff = lang("夢の中で、あなたは偉大なる者の威光に触れた。", "In your dream, you received the blessings of your Divine God.")
+		chatList 1, lang("神よ", "I am grateful.")
 		gosub *re_select
 		goto *random_eventProc_SWEND1
 	}
@@ -3514,6 +3539,11 @@
 				txt lang("名声値を" + p + "失った。", "You lose " + p + " fame.")
 				txtmore
 				modkarma CHARA_PLAYER, (-30) * 2
+			}
+			if ( gdata(GDATA_FLAG_MOST_EXPENSIVE_WORLD_MAP_VEHICLE_THIS_MONTH) != 0 | gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) != 0 ) {
+				txt lang("陸と海の乗り物の維持費がリセットされた。それぞれ今月使った中で一番高額のものが次の税金に適用される。", "Ship and vehicle maintenance costs have been reset. The most expensive ship and vehicle maintenance cost incurred this month will be applied to the next tax.")
+				gdata(GDATA_FLAG_MOST_EXPENSIVE_WORLD_MAP_VEHICLE_THIS_MONTH) = 0
+				gdata(GDATA_FLAG_MOST_EXPENSIVE_SHIP_THIS_MONTH) = 0
 			}
 		}
 		else {

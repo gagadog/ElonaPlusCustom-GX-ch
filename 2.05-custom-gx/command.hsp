@@ -1,9 +1,9 @@
 #defcfunc txtitemoncell int txtitemoncell_arg1, int txtitemoncell_arg2
 	cell_itemoncell txtitemoncell_arg1, txtitemoncell_arg2
 	if ( stat <= 3 ) {
-		if ( map(txtitemoncell_arg1, txtitemoncell_arg2, 5) < 0 ) {
+		if ( map(txtitemoncell_arg1, txtitemoncell_arg2, MAP_ITEM_CHIPS_MEMORY) < 0 ) {
 			rtvaln = ""
-			locvar_txtitemoncell_p = -map(txtitemoncell_arg1, txtitemoncell_arg2, 5), 0
+			locvar_txtitemoncell_p = -map(txtitemoncell_arg1, txtitemoncell_arg2, MAP_ITEM_CHIPS_MEMORY), 0
 			locvar_txtitemoncell_i = locvar_txtitemoncell_p \ 1000 + RANGE_INV2, locvar_txtitemoncell_p / 1000 \ 1000 + RANGE_INV2, locvar_txtitemoncell_p / 1000000 \ 1000 + RANGE_INV2
 			repeat 3
 				if ( locvar_txtitemoncell_i(cnt) == 999 + RANGE_INV2 ) {
@@ -202,8 +202,8 @@
 			return
 		}
 	}
-	if ( map(txttargetnpc_arg1, txttargetnpc_arg2, 1) != 0 ) {
-		locvar_txttargetnpc_i = map(txttargetnpc_arg1, txttargetnpc_arg2, 1) - 1
+	if ( map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+		locvar_txttargetnpc_i = map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_CHARA_INDEX_PLUS_ONE) - 1
         if ( charaIsVisible(locvar_txttargetnpc_i) ) {
 			tc = locvar_txttargetnpc_i
 			txttargetlevel
@@ -229,6 +229,13 @@
 				bmes s, 255, 2552, 255
 			loop
 	 		********** ORIGINAL - ENDING **********/
+			if ( trait(TRAIT_NORMAL_STAT_DV) != 0 ) {
+				txttargetsex
+				color 0, 0, 0
+				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
+				locvar_txttargetnpc_dy++
+				bmes lang("性別：" + s + "　年齢：" + calcage(locvar_txttargetnpc_i) + "歳　信仰：" + godname(cdata(CDATA_GOD, locvar_txttargetnpc_i)) + " ", "Sex:" + s + " / Age:" + calcage(locvar_txttargetnpc_i) + " / Religion:" + godname(cdata(CDATA_GOD, locvar_txttargetnpc_i)) + ""), 255, 2552, 255
+			}
 			if ( cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i) > 0 ) {
 				/********** JAMES CUSTOM - BEGINNING **********/ // Display extra info
 				txttargetnpcextrainfo cdata(CDATA_TAGTEAM_PARTNER, locvar_txttargetnpc_i), 1
@@ -250,26 +257,26 @@
 			}
 		}
 	}
-	if ( map(txttargetnpc_arg1, txttargetnpc_arg2, 5) != 0 ) {
+	if ( map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_ITEM_CHIPS_MEMORY) != 0 ) {
 		color 0, 0, 0
 		pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 		locvar_txttargetnpc_dy++
 		bmes txtitemoncell(txttargetnpc_arg1, txttargetnpc_arg2), 255, 2552, 255
 	}
-	if ( map(txttargetnpc_arg1, txttargetnpc_arg2, 6) != 0 ) {
+	if ( map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_FEATS_ON_TILE) != 0 ) {
 		if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-			if ( map(txttargetnpc_arg1, txttargetnpc_arg2, 6) / 1000 \ 100 == 15 ) {
-				locvar_txttargetnpc_p = map(txttargetnpc_arg1, txttargetnpc_arg2, 6) / 100000 \ 100 + map(txttargetnpc_arg1, txttargetnpc_arg2, 6) / 10000000 * 100
+			if ( map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_FEATS_ON_TILE) / 1000 \ 100 == 15 ) {
+				locvar_txttargetnpc_p = map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_FEATS_ON_TILE) / 100000 \ 100 + map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_FEATS_ON_TILE) / 10000000 * 100
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
 				bmes mapname(locvar_txttargetnpc_p, 1), 255, 2552, 255
 			}
-			if ( map(txttargetnpc_arg1, txttargetnpc_arg2, 6) / 1000 \ 100 == 34 ) {
+			if ( map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_FEATS_ON_TILE) / 1000 \ 100 == 34 ) {
 				color 0, 0, 0
 				pos 100, windowh - inf_verh - 45 - locvar_txttargetnpc_dy * 20
 				locvar_txttargetnpc_dy++
-				bmes txtbuilding(map(txttargetnpc_arg1, txttargetnpc_arg2, 6) / 100000 \ 100, map(txttargetnpc_arg1, txttargetnpc_arg2, 6) / 10000000), 255, 2552, 255
+				bmes txtbuilding(map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_FEATS_ON_TILE) / 100000 \ 100, map(txttargetnpc_arg1, txttargetnpc_arg2, MAP_FEATS_ON_TILE) / 10000000), 255, 2552, 255
 			}
 		}
 	}
@@ -601,10 +608,10 @@
 	else {
 		rc = -1
 		repeat 1
-			if ( map(tlocx, tlocy, 1) <= 1 ) {
+			if ( map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) <= 1 ) {
 				break
 			}
-			rc = map(tlocx, tlocy, 1) - 1
+			rc = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			if ( synccheck(rc, -1) == 0 ) {
 				if ( cdata(CDATA_TAGTEAM_PARTNER, rc) < 0 ) {
 					break
@@ -792,7 +799,7 @@
 	}
 	if ( key == key_enter ) {
 		if ( findlocmode == 1 ) {
-			if ( cansee == 0 | (chipm(CHIPM_ATTRIB, map(tlocx, tlocy, 0)) & CHIPM_ATTRIB_CANT_PASS) ) {
+			if ( cansee == 0 | (chipm(CHIPM_ATTRIB, map(tlocx, tlocy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) ) {
 				txt_cantsee
 				goto *findLocation_WHILE1_CONTINUE
 			}
@@ -2416,7 +2423,7 @@
 	}
 	if ( cbit(CHARA_BIT_SHOP_SALES_ROUTE, tc) == 1 ) {
 		list(0, listmax) = 1, 99998
-		listn(0, listmax) = lang("[営業]", "[SHOP]") + lang("あなたは独自の販売ルートを持つ[毎日独自に稼ぐ]", "You got your own sales route. [Earn Gold Independently Each Day]")
+		listn(0, listmax) = lang("[営業]", "[SHOP]") + lang("あなたは独自の商品調達ルートを持つ[独自の稼ぎ増加]", "You got your own sales route. [Earn Gold Independently Each Day]")
 		listmax++
 	}
 	if ( cbit(CHARA_BIT_SHOP_STRONG_ALLY, tc) == 1 ) {
@@ -5593,7 +5600,7 @@
 		gosub *screen_draw
 		goto *pc_turn
 	}
-	tc = map(x, y, 1)
+	tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE)
 	if ( tc == CHARA_PLAYER ) {
 		txt strinteractfail
 		gosub *screen_draw
@@ -5648,7 +5655,7 @@
 		gosub *screen_draw
 		goto *pc_turn
 	}
-	tc = map(x, y, 1)
+	tc = map(x, y, MAP_CHARA_INDEX_PLUS_ONE)
 	if ( tc == CHARA_PLAYER ) {
 		txt strinteractfail
 		gosub *screen_draw
@@ -5839,6 +5846,13 @@
 		if ( gdata(GDATA_AREA) != AREA_SHOW_HOUSE ) {
 			if ( cbit(CHARA_BIT_SANDBAG, tc) ) {
 				promptAdd lang("縄を解く", "Release"), "null", 9
+			}
+		}
+		if ( gdata(GDATA_AREA) != AREA_CAMP ) {
+			if ( cdata(CDATA_FAME, tc) <= (-90) ) {
+				if ( cbit(CHARA_BIT_LOCKED_UP, tc) ) {
+					promptAdd lang("檻から解き放つ", "Release"), "null", 30
+				}
 			}
 		}
 	}
@@ -6686,6 +6700,31 @@
 	if ( p == 13 ) {
 		necromancyZombieToCoffin tc, "push"
 		gosub *screen_draw
+		goto *pc_turn
+	}
+	if ( p == 30 ) {
+		cdata(CDATA_RELATION_ORG, tc) = cdata(CDATA_FAME, tc) + 100
+		cdata(CDATA_FAME, tc) = 1
+		cdata(CDATA_RELATION, tc) = cdata(CDATA_RELATION_ORG, tc)
+		cdata(CDATA_ALLIED, tc) = 0
+		cdata(CDATA_X_ORG, tc) = cdata(CDATA_X, tc)
+		cdata(CDATA_Y_ORG, tc) = cdata(CDATA_Y, tc)
+		cbitmod CHARA_BIT_LOCKED_UP, tc, FALSE
+		flt
+		itemcreate -1, ITEM_ID_FLOAT_CAGE, cdata(CDATA_X, tc), cdata(CDATA_Y, tc), 0
+		inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
+		snd SOUNDLIST_ENC
+		txt lang(name(tc) + "を檻から出した。もはや" + name(tc) + "は連行対象ではない。", "You let " + name(tc) + " out of the cage. " + name(tc) + " is now free...")
+		if ( cbit(CHARA_BIT_PCC, tc) == TRUE ) {
+			txtef COLOR_YELLOW
+			txtmore
+			txt lang(cdatan(CDATAN_NAME, tc) + "は元々の姿に着替えた。", cdatan(CDATAN_NAME, tc) + " changed to their original shape.")
+			cbitmod CHARA_BIT_PCC, tc, FALSE
+		}
+		cdata(CDATA_AREA, tc) = gdata(GDATA_AREA)
+		relocate_chara tc, -1
+		cdata(CDATA_RELATION, tc) = RELATION_DISLIKE
+		cdata(CDATA_RELATION_ORG, tc) = RELATION_DISLIKE
 		goto *pc_turn
 	}
 	if ( p == 15 ) {
@@ -10002,7 +10041,11 @@
 			cdata(CDATA_SANITY, cc) = 100
 		}
 		if ( cc < MAX_CHARA_FOLLOWER ) {
-			s = "" + cdata(CDATA_HP, cc) + "/" + cdata(CDATA_MP, cc), "" + sdata(SKILL_ATTR_LIFE, cc) + "(" + sorg(SKILL_ATTR_LIFE, cc) + ")", "" + sdata(SKILL_ATTR_MANA, cc) + "(" + sorg(SKILL_ATTR_MANA, cc) + ")", "" + cdata(CDATA_SANITY, cc) + "" + lang("%", " %"), "" + cdata(CDATA_SPEED, cc) + "(" + sorg(SKILL_ATTR_SPD, cc) + ")", "" + cdata(CDATA_FAME, cc), "" + cdata(CDATA_KARMA, CHARA_PLAYER), "" + cdata(CDATA_SHOP_INVEST, cc) + "" + lang("階相当", " level"), ""
+			meisei = cdata(CDATA_FAME, cc)
+			if ( meisei < 0 ) {
+				meisei = 0
+			}
+			s = "" + cdata(CDATA_HP, cc) + "/" + cdata(CDATA_MP, cc), "" + sdata(SKILL_ATTR_LIFE, cc) + "(" + sorg(SKILL_ATTR_LIFE, cc) + ")", "" + sdata(SKILL_ATTR_MANA, cc) + "(" + sorg(SKILL_ATTR_MANA, cc) + ")", "" + cdata(CDATA_SANITY, cc) + "" + lang("%", " %"), "" + cdata(CDATA_SPEED, cc) + "(" + sorg(SKILL_ATTR_SPD, cc) + ")", "" + meisei, "" + cdata(CDATA_KARMA, CHARA_PLAYER), "" + cdata(CDATA_SHOP_INVEST, cc) + "" + lang("階相当", " level"), ""
 		}
 		else {
 			if ( cdata(CDATA_ALLIED, cc) == 0 ) {
@@ -12421,7 +12464,7 @@
 				p = tc
 			}
 			if ( invctrl == 27 ) {
-				p = map(tlocx, tlocy, 1) - 1
+				p = map(tlocx, tlocy, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( p == 0 | p == (-1) ) {
 					continue
 				}
@@ -12973,6 +13016,14 @@
 						continue
 					}
 					if ( reftype != FILTER_ITEM_FOOD ) {
+						continue
+					}
+				}
+				if ( invctrl(1) == 32 ) {
+					if ( reftype != FILTER_ITEM_SPELLBOOK ) {
+						continue
+					}
+					if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_RECIPE | inv(INV_ITEM_ID, cnt) == ITEM_ID_ANCIENT_BOOK | inv(INV_ITEM_ID, cnt) == ITEM_ID_SPELLBOOK_WISHING ) {
 						continue
 					}
 				}
@@ -13689,8 +13740,8 @@
 							break
 						}
 						x = cnt
-						if ( chipm(CHIPM_ROLE, map(x, y, 0)) == MAP_CHIP_ROLE_CROP ) {
-							if ( map(x, y, 6) == 0 ) { // is not occupied
+						if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == MAP_CHIP_ROLE_CROP ) {
+							if ( map(x, y, MAP_FEATS_ON_TILE) == 0 ) { // is not occupied
 								feat = tile_plant, CELL_FEATURE_PLANTED_SEED, inv(INV_ITEM_MATERIAL, ci)
 								gosub *item_seedNextGrowth
 

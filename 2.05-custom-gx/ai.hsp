@@ -62,6 +62,13 @@
 	// JAMES CUSTOM - Prevent foe from spamming angered flavor text
 	jamesangerhack = 0
 	chatc@DP = 0
+	if ( cdata(CDATA_ROLE, cc) == ROLE_ADVENTURER ) {
+		if ( cdata(CDATA_RELATION, cc) != RELATION_ALLY ) {
+			if ( cdata(CDATA_DIRECTIVE_MODE, cc) != DIRECTIVE_MODE_OFFENSIVE ) {
+				cdata(CDATA_DIRECTIVE_MODE, cc) = DIRECTIVE_MODE_OFFENSIVE
+			}
+		}
+	}
 	if ( cdata(CDATA_CHAIN_ATTACK_COUNT, cc) != 0 ) {
 		cdata(CDATA_CHAIN_ATTACK_COUNT, cc) = 0
 	}
@@ -1218,7 +1225,7 @@
 				if ( x < 0 | x >= mdata(MDATA_WIDTH) ) {
 					continue
 				}
-				c = map(x, y, 1) - 1
+				c = map(x, y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 				if ( c <= 0 ) {
 					continue
 				}
@@ -1950,7 +1957,7 @@
 				if ( x < mdata(MDATA_WIDTH) ) {
 					if ( y >= 0 ) {
 						if ( y < mdata(MDATA_HEIGHT) ) {
-							if ( map(x, y, 6) != 0 ) {
+							if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
 								cell_featread x, y
 								if ( feat(1) == CELL_FEATURE_DOOR_CLOSED ) {
 									snd SOUNDLIST_BASH1
@@ -1961,8 +1968,8 @@
 									}
 								}
 							}
-							if ( chipm(CHIPM_ATTRIB, map(x, y, 0)) & CHIPM_ATTRIB_CANT_PASS ) {
-								map(x, y, 0) = tile_tunnel
+							if ( chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
+								map(x, y, MAP_TILE_ID) = tile_tunnel
 								snd SOUNDLIST_CRUSH1
 								animeid = ANIMATION_CRUSH
 								gosub *anime
@@ -3261,6 +3268,34 @@
 						act = SKILL_SPACT_TIME_STOP
 					}
 				}
+			}
+		}
+	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_HEALER | cdata(CDATA_ID, cc) == CREATURE_ID_SISTER | cdata(CDATA_ID, cc) == CREATURE_ID_NUN | cdata(CDATA_ID, cc) == CREATURE_ID_ROVID ) {
+		if ( rnd(5) == 0 ) {
+			if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, tc), cdata(CDATA_Y, tc)) <= 3 ) {
+				act = SKILL_SPACT_SAINT_BLADE
+			}
+		}
+	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_HOLY_BEAST | cdata(CDATA_ID, cc) == CREATURE_ID_JURE | cdata(CDATA_ID, cc) == CREATURE_ID_BLESSED_JURE | cdata(CDATA_ID, cc) == CREATURE_ID_ETHER_GENERATOR ) {
+		if ( rnd(10) == 0 ) {
+			act = SKILL_SPACT_PURIFICATION
+		}
+	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_ISCA_THE_FALLEN_ANGEL | cdata(CDATA_ID, cc) == CREATURE_ID_ARKHAI | cdata(CDATA_ID, cc) == CREATURE_ID_DOMINION | cdata(CDATA_ID, cc) == CREATURE_ID_FALLEN_ANGEL ) {
+		if ( cdata(CDATA_POWER_GAUGE, cc) >= 15 ) {
+			if ( cdata(CDATA_POWER_GAUGE, tc) >= 90 ) {
+				if ( rnd(3) == 0 ) {
+					act = SKILL_SPACT_ANGEL_HALO
+				}
+			}
+		}
+	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_KIRIN | cdata(CDATA_ID, cc) == CREATURE_ID_SERAPH | cdata(CDATA_ID, cc) == CREATURE_ID_CUPID_INSPECTOR | cdata(CDATA_ID, cc) == CREATURE_ID_SIST_THE_OLDER_SISTER ) {
+		if ( cdata(CDATA_POWER_GAUGE, cc) >= 80 ) {
+			if ( rnd(3) == 0 ) {
+				act = SKILL_SPACT_REPRIMAND
 			}
 		}
 	}

@@ -269,6 +269,46 @@
 			txt lang("あなたは「" + skillname(SKILL_SPACT_KILLING_DANCE) + "」の能力を得た。", "You have learned a new ability, " + skillname(SKILL_SPACT_KILLING_DANCE) + ".")
 		}
 	}
+	if ( sorg(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 29 & trait(TRAIT_NORMAL_SKILL_FAITH) != 0 ) {
+		if ( spact(SKILL_SPACT_PURIFICATION - STARTING_SKILL_SPACT) == 0 ) {
+			spact(SKILL_SPACT_PURIFICATION - STARTING_SKILL_SPACT) = 1
+			txtmore
+			txtef COLOR_YELLOW
+			txt lang("あなたは「" + skillname(SKILL_SPACT_PURIFICATION) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_PURIFICATION) + ".")
+		}
+	}
+	if ( sorg(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 59 & trait(TRAIT_NORMAL_SKILL_FAITH) != 0 ) {
+		if ( spact(SKILL_SPACT_ANGEL_HALO - STARTING_SKILL_SPACT) == 0 ) {
+			spact(SKILL_SPACT_ANGEL_HALO - STARTING_SKILL_SPACT) = 1
+			txtmore
+			txtef COLOR_YELLOW
+			txt lang("あなたは「" + skillname(SKILL_SPACT_ANGEL_HALO) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_ANGEL_HALO) + ".")
+		}
+	}
+	if ( sorg(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 79 & trait(TRAIT_NORMAL_SKILL_FAITH) != 0 ) {
+		if ( spact(SKILL_SPACT_REPRIMAND - STARTING_SKILL_SPACT) == 0 ) {
+			spact(SKILL_SPACT_REPRIMAND - STARTING_SKILL_SPACT) = 1
+			txtmore
+			txtef COLOR_YELLOW
+			txt lang("あなたは「" + skillname(SKILL_SPACT_REPRIMAND) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_REPRIMAND) + ".")
+		}
+	}
+	if ( sorg(SKILL_NORMAL_LITERACY, CHARA_PLAYER) > 19 & trait(TRAIT_NORMAL_SKILL_EVASION) != 0 ) {
+		if ( spact(SKILL_SPACT_SHIKIORIGAMI_SHURIKEN - STARTING_SKILL_SPACT) == 0 ) {
+			spact(SKILL_SPACT_SHIKIORIGAMI_SHURIKEN - STARTING_SKILL_SPACT) = 1
+			txtmore
+			txtef COLOR_YELLOW
+			txt lang("あなたは「" + skillname(SKILL_SPACT_SHIKIORIGAMI_SHURIKEN) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_SHIKIORIGAMI_SHURIKEN) + ".")
+		}
+	}
+	if ( sorg(SKILL_NORMAL_LITERACY, CHARA_PLAYER) > 59 & trait(TRAIT_NORMAL_SKILL_EVASION) != 0 ) {
+		if ( spact(SKILL_SPACT_SHIKIORIGAMI_AIRPLANE - STARTING_SKILL_SPACT) == 0 ) {
+			spact(SKILL_SPACT_SHIKIORIGAMI_AIRPLANE - STARTING_SKILL_SPACT) = 1
+			txtmore
+			txtef COLOR_YELLOW
+			txt lang("あなたは「" + skillname(SKILL_SPACT_SHIKIORIGAMI_AIRPLANE) + "」の能力を得た。", "You have learned new ability, " + skillname(SKILL_SPACT_SHIKIORIGAMI_AIRPLANE) + ".")
+		}
+	}
 	if ( sorg(SKILL_NORMAL_LITERACY, CHARA_PLAYER) > 29 ) {
 		if ( spact(SKILL_SPACT_KIJIN_SHIBARI - STARTING_SKILL_SPACT) == 0 ) {
 			spact(SKILL_SPACT_KIJIN_SHIBARI - STARTING_SKILL_SPACT) = 1
@@ -1829,8 +1869,8 @@
 				else {
 					x = rnd(mdata(MDATA_WIDTH))
 					y = rnd(mdata(MDATA_HEIGHT))
-					if ( map(x, y, 1) != 0 ) {
-						map(x, y, 1) = 0
+					if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+						map(x, y, MAP_CHARA_INDEX_PLUS_ONE) = 0
 					}
 				}
 			}
@@ -1863,8 +1903,8 @@
 			continue
 		}
 		if ( mdata(MDATA_TILE_FILE) == 3 ) {
-			if ( map(x, y, 0) <= 395 ) {
-				chipm(CHIPM_ATTRIB, map(x, y, 0)) = 0
+			if ( map(x, y, MAP_TILE_ID) <= 395 ) {
+				chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) = 0
 			}
 		}
 		if ( mdata(MDATA_TILE_FILE) == 2 ) {
@@ -1877,17 +1917,17 @@
 				chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) = CHIPM_ATTRIB_DEFAULT
 			}
 		}
-		if ( chipm(CHIPM_ATTRIB, map(x, y, 0)) & CHIPM_ATTRIB_CANT_PASS ) {
+		if ( chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
 			if ( rc == CHARA_PLAYER | (rc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, rc) >= FIX_QUALITY_MIRACLE) ) {
 				breakx = x
 				breaky = y
 			}
 			continue
 		}
-		if ( map(x, y, 1) != 0 ) {
+		if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
 			continue
 		}
-		if ( map(x, y, 6) != 0 ) {
+		if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
 			cell_featread x, y
 			if ( feat(1) == CELL_FEATURE_DOOR_CLOSED ) {
 				if ( rc >= MAX_CHARA_FOLLOWER & cdata(CDATA_QUALITY, rc) >= FIX_QUALITY_MIRACLE ) {
@@ -1896,7 +1936,7 @@
 				}
 				continue
 			}
-			if ( chipm(CHIPM_ATTRIB, map(x, y, 6) \ 1000) & CHIPM_ATTRIB_CANT_PASS ) {
+			if ( chipm(CHIPM_ATTRIB, map(x, y, MAP_FEATS_ON_TILE) \ 1000) & CHIPM_ATTRIB_CANT_PASS ) {
 				continue
 			}
 			if ( feat(1) == CELL_FEATURE_DOWNSTAIRS ) {
@@ -1923,7 +1963,7 @@
 		}
 		cdata(CDATA_X_ORG, rc) = x
 		cdata(CDATA_Y_ORG, rc) = y
-		map(x, y, 1) = rc + 1
+		map(x, y, MAP_CHARA_INDEX_PLUS_ONE) = rc + 1
 		cdata(CDATA_X, rc) = x
 		cdata(CDATA_Y, rc) = y
 		p = 1
@@ -1936,16 +1976,16 @@
 				y = breaky
 				cdata(CDATA_X_ORG, rc) = x
 				cdata(CDATA_Y_ORG, rc) = y
-				map(x, y, 1) = rc + 1
+				map(x, y, MAP_CHARA_INDEX_PLUS_ONE) = rc + 1
 				cdata(CDATA_X, rc) = x
 				cdata(CDATA_Y, rc) = y
 				p = 1
 				placefail = 0
-				if ( chipm(CHIPM_ATTRIB, map(x, y, 0)) & CHIPM_ATTRIB_CANT_PASS ) {
-					map(x, y, 0) = tile_tunnel
+				if ( chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
+					map(x, y, MAP_TILE_ID) = tile_tunnel
 					txt lang(name(rc) + "は壁を破壊した！", name(rc) + " crush" + _s(rc, 1) + " the wall!")
 				}
-				if ( map(x, y, 6) != 0 ) {
+				if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
 					cell_featread x, y
 					if ( feat(1) == CELL_FEATURE_DOOR_CLOSED ) {
 						cell_featset x, y, 0, 0, 0, 0
@@ -2009,8 +2049,8 @@
 				else {
 					x = rnd(mdata(MDATA_WIDTH))
 					y = rnd(mdata(MDATA_HEIGHT))
-					if ( map(x, y, 1) != 0 ) {
-						map(x, y, 1) = 0
+					if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+						map(x, y, MAP_CHARA_INDEX_PLUS_ONE) = 0
 					}
 				}
 			}
@@ -2042,14 +2082,14 @@
 		if ( x < 0 | y < 0 | x >= mdata(MDATA_WIDTH) | y >= mdata(MDATA_HEIGHT) ) {
 			continue
 		}
-		if ( chipm(CHIPM_ATTRIB, map(x, y, 0)) & CHIPM_ATTRIB_CANT_PASS ) {
+		if ( chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
 			continue
 		}
-		if ( map(x, y, 1) != 0 ) {
+		if ( map(x, y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
 			continue
 		}
-		if ( map(x, y, 6) != 0 ) {
-			if ( chipm(CHIPM_ATTRIB, map(x, y, 6) \ 1000) & CHIPM_ATTRIB_CANT_PASS ) {
+		if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
+			if ( chipm(CHIPM_ATTRIB, map(x, y, MAP_FEATS_ON_TILE) \ 1000) & CHIPM_ATTRIB_CANT_PASS ) {
 				continue
 			}
 			cell_featread x, y
@@ -2070,7 +2110,7 @@
 		}
 		cdata(CDATA_X_ORG, rc) = x
 		cdata(CDATA_Y_ORG, rc) = y
-		map(x, y, 1) = rc + 1
+		map(x, y, MAP_CHARA_INDEX_PLUS_ONE) = rc + 1
 		cdata(CDATA_X, rc) = x
 		cdata(CDATA_Y, rc) = y
 		p = 1
@@ -2346,6 +2386,10 @@
 	if ( cdata(CDATA_ID, rc) == CREATURE_ID_GRYFFON_CHILD | cdata(CDATA_ID, rc) == CREATURE_ID_FIRE_DRAGON_CHILD | cdata(CDATA_ID, rc) == CREATURE_ID_BLACK_CAT | cdata(CDATA_ID, rc) == CREATURE_ID_PUTIT_TANK | cdata(CDATA_ID, rc) == CREATURE_ID_CHILD_BOAR | cdata(CDATA_ID, rc) == CREATURE_ID_R_CLEANER | cdata(CDATA_ID, rc) == CREATURE_ID_SPACE_HORNED_OWL | cdata(CDATA_ID, rc) == CREATURE_ID_FLIGHT_FISH | cdata(CDATA_ID, rc) == CREATURE_ID_DARK_DOME | cdata(CDATA_ID, rc) == CREATURE_ID_BISQUE_DOLL | cdata(CDATA_ID, rc) == CREATURE_ID_MAGIC_BEE | cdata(CDATA_ID, rc) == CREATURE_ID_RESTOROID_PASSENGER_PIGEON | cdata(CDATA_ID, rc) == CREATURE_ID_RESTOROID_DODO ) {
 		cdata(CDATA_HEIGHT, rc) = rnd(20) + 30
 		cdata(CDATA_WEIGHT, rc) = rnd(2) + 2
+	}
+	if ( cdata(CDATA_ID, rc) == CREATURE_ID_KAMIORIDURU | cdata(CDATA_ID, rc) == CREATURE_ID_KAMISHURIKEN | cdata(CDATA_ID, rc) == CREATURE_ID_KAMIHIKOUKI ) {
+		cdata(CDATA_HEIGHT, rc) = rnd(10) + 20
+		cdata(CDATA_WEIGHT, rc) = 0
 	}
 	if ( cdata(CDATA_ID, rc) == CREATURE_ID_SILVER_CAT | cdata(CDATA_ID, rc) == CREATURE_ID_STRAY_CAT | cdata(CDATA_ID, rc) == CREATURE_ID_BAMBOO_SPROUT | cdata(CDATA_ID, rc) == CREATURE_ID_CHAOS_SEED | cdata(CDATA_ID, rc) == CREATURE_ID_KARATA_THE_SEMINAR_MASCOT | cdata(CDATA_ID, rc) == CREATURE_ID_NURSING_MOTH ) {
 		cdata(CDATA_HEIGHT, rc) = rnd(10) + 20

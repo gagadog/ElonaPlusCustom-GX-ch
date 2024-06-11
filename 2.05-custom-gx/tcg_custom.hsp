@@ -17100,6 +17100,45 @@
 		return 1
 	}
 	// spirit
+	if ( dbid == CREATURE_ID_KAMIHIKOUKI ) {
+		cardrefrace = "spirit"
+		cardrefclass = "warrior"
+		cardreflvl = 5
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 2
+		cardrefattack = 3
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_PAPERPLANE
+		cardrefbits = "7,103"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_KAMISHURIKEN ) {
+		cardrefrace = "spirit"
+		cardrefclass = "predator"
+		cardreflvl = 4
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 1
+		cardrefattack = 1
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_PAPERSHURIKEN
+		cardrefbits = "7,103"
+		return 1
+	}
+	if ( dbid == CREATURE_ID_KAMIORIDURU ) {
+		cardrefrace = "spirit"
+		cardrefclass = "wizard"
+		cardreflvl = 3
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 4
+		cardrefcost = 2
+		cardrefattack = 2
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_PAPERCRANE
+		cardrefbits = "7,103"
+		return 1
+	}
 	if ( dbid == CREATURE_ID_BAMBOO_SPEAR_SPIRIT ) {
 		cardrefrace = "spirit"
 		cardrefclass = "predator"

@@ -88,24 +88,24 @@
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
 			x = cnt
-			if ( map(x, y, 0) == 0 ) {
-				map(x, y, 0) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
+			if ( map(x, y, MAP_TILE_ID) == 0 ) {
+				map(x, y, MAP_TILE_ID) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
 				continue
 			}
-			if ( map(x, y, 0) >= 100 ) {
-				map(x, y, 0) = tile_tunnel + (rnd(tile_tunnel(2)) == 0) * rnd(tile_tunnel(1))
+			if ( map(x, y, MAP_TILE_ID) >= 100 ) {
+				map(x, y, MAP_TILE_ID) = tile_tunnel + (rnd(tile_tunnel(2)) == 0) * rnd(tile_tunnel(1))
 				continue
 			}
-			if ( map(x, y, 0) == 1 ) {
-				map(x, y, 0) = tile_wall + (rnd(tile_wall(2)) == 0) * rnd(tile_wall(1))
+			if ( map(x, y, MAP_TILE_ID) == 1 ) {
+				map(x, y, MAP_TILE_ID) = tile_wall + (rnd(tile_wall(2)) == 0) * rnd(tile_wall(1))
 				continue
 			}
-			if ( map(x, y, 0) == 3 ) {
-				map(x, y, 0) = tile_room + (rnd(tile_room(2)) == 0) * rnd(tile_room(1))
+			if ( map(x, y, MAP_TILE_ID) == 3 ) {
+				map(x, y, MAP_TILE_ID) = tile_room + (rnd(tile_room(2)) == 0) * rnd(tile_room(1))
 				continue
 			}
-			if ( map(x, y, 0) == 4 ) {
-				map(x, y, 0) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
+			if ( map(x, y, MAP_TILE_ID) == 4 ) {
+				map(x, y, MAP_TILE_ID) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
 				continue
 			}
 		loop
@@ -475,8 +475,8 @@
 	repeat mdata(MDATA_HEIGHT)
 		locvar_map_reload_y = cnt
 		repeat mdata(MDATA_WIDTH)
-			map(cnt, locvar_map_reload_y, 8) = 0
-			map(cnt, locvar_map_reload_y, 9) = 0
+			map(cnt, locvar_map_reload_y, MAP_MEF_INDEX_PLUS_ONE) = 0
+			map(cnt, locvar_map_reload_y, MAP_LIGHT_TYPE) = 0
 		loop
 	loop
 	repeat 200
@@ -500,7 +500,7 @@
 		locvar_map_reload_x = cmapdata(1, cnt)
 		locvar_map_reload_y = cmapdata(2, cnt)
 		if ( cmapdata(4, cnt) == 0 ) {
-			if ( map(locvar_map_reload_x, locvar_map_reload_y, 4) == 0 ) {
+			if ( map(locvar_map_reload_x, locvar_map_reload_y, MAP_ITEM_CHIPS) == 0 ) {
 				flt
 				itemcreate -1, cmapdata(0, cnt), locvar_map_reload_x, locvar_map_reload_y, 0
 				if ( stat != 0 ) {
@@ -786,7 +786,7 @@
 	locvar_map_line_tx = map_line_arg1
 	locvar_map_line_ty = map_line_arg2
 	repeat
-		map(locvar_map_line_tx, locvar_map_line_ty, 0) = 100
+		map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = 100
 		if ( locvar_map_line_tx > map_line_arg3 ) {
 			locvar_map_line_tx--
 			continue
@@ -824,10 +824,10 @@
 				break
 			}
 			if ( locvar_map_line_tx == map_makesimpleroom_arg1 | locvar_map_line_ty == map_makesimpleroom_arg2 | locvar_map_line_tx == map_makesimpleroom_arg1 + map_makesimpleroom_arg3 + 2 | locvar_map_line_ty == map_makesimpleroom_arg2 + map_makesimpleroom_arg4 + 2 ) {
-				map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg6
+				map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg6
 				continue
 			}
-			map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg5
+			map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg5
 		loop
 	loop
 	return locvar_map_makesimpleroom_f
@@ -836,10 +836,10 @@
 	if ( map_digcheck_arg1 < 1 | map_digcheck_arg2 < 1 | map_digcheck_arg1 > mdata(MDATA_WIDTH) - 2 | map_digcheck_arg2 > mdata(MDATA_HEIGHT) - 2 ) {
 		return 0
 	}
-	if ( map(map_digcheck_arg1, map_digcheck_arg2, 0) == 100 ) {
+	if ( map(map_digcheck_arg1, map_digcheck_arg2, MAP_TILE_ID) == 100 ) {
 		return 100
 	}
-	return map(map_digcheck_arg1, map_digcheck_arg2, 0) == 0
+	return map(map_digcheck_arg1, map_digcheck_arg2, MAP_TILE_ID) == 0
 
 #deffunc map_nextdir1 int map_nextdir1_arg1, int map_nextdir1_arg2
 	if ( locvar_map_line_tx >= map_nextdir1_arg1 - 4 & locvar_map_line_tx <= map_nextdir1_arg1 + 4 ) {
@@ -1015,11 +1015,11 @@
 		repeat mdata(MDATA_WIDTH)
 			locvar_map_ovservemap_x = cnt
 			pos locvar_map_ovservemap_x * 24, locvar_map_ovservemap_y * 24
-			if ( map(locvar_map_ovservemap_x, locvar_map_ovservemap_y, 0) == tile_wall ) {
+			if ( map(locvar_map_ovservemap_x, locvar_map_ovservemap_y, MAP_TILE_ID) == tile_wall ) {
 				color 0, 0, 255
 				mes "#"
 			}
-			if ( map(locvar_map_ovservemap_x, locvar_map_ovservemap_y, 0) == tile_tunnel ) {
+			if ( map(locvar_map_ovservemap_x, locvar_map_ovservemap_y, MAP_TILE_ID) == tile_tunnel ) {
 				color 80, 80, 80
 				mes "*"
 			}
@@ -1081,9 +1081,9 @@
 		if ( map_digcheck(locvar_map_digtoentrance1_dx, locvar_map_digtoentrance1_dy) ) {
 			locvar_map_line_tx = locvar_map_digtoentrance1_dx
 			locvar_map_line_ty = locvar_map_digtoentrance1_dy
-			map(locvar_map_digtoentrance1_dx, locvar_map_digtoentrance1_dy, 0) = 100
+			map(locvar_map_digtoentrance1_dx, locvar_map_digtoentrance1_dy, MAP_TILE_ID) = 100
 			if ( rnd(200) < rdhiddenpath ) {
-				map(locvar_map_digtoentrance1_dx, locvar_map_digtoentrance1_dy, 0) = 4
+				map(locvar_map_digtoentrance1_dx, locvar_map_digtoentrance1_dy, MAP_TILE_ID) = 4
 				cell_featset locvar_map_digtoentrance1_dx, locvar_map_digtoentrance1_dy, 0, CELL_FEATURE_HIDDEN_PATH
 			}
 			if ( map_digtoentrance1_arg5 == 0 ) {
@@ -1136,7 +1136,7 @@
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
 			x = cnt
-			map(x, y, 2) = tile_fog + (rnd(tile_fog(2)) == 0) * rnd(tile_fog(1))
+			map(x, y, MAP_TILE_ID_MEMORY) = tile_fog + (rnd(tile_fog(2)) == 0) * rnd(tile_fog(1))
 		loop
 	loop
 	return
@@ -1182,13 +1182,13 @@
 				f = 0
 				break
 			}
-			if ( map(dx, dy, 0) == 1 ) {
+			if ( map(dx, dy, MAP_TILE_ID) == 1 ) {
 				f = 0
 				break
 			}
 		loop
 		if ( f == 1 ) {
-			map(x, y, 0) = 3
+			map(x, y, MAP_TILE_ID) = 3
 			if ( roomdoor != 3 ) {
 				cell_featset x, y, tile_doorclosed, CELL_FEATURE_DOOR_CLOSED, rnd(limit(gdata(GDATA_LEVEL) * 3 / 2 + 1, 1, 300))
 			}
@@ -1303,7 +1303,7 @@
 			}
 		}
 		if ( roompos == 0 ) {
-			if ( map(x, y, 0) != 3 ) {
+			if ( map(x, y, MAP_TILE_ID) != 3 ) {
 				continue
 			}
 		}
@@ -1406,7 +1406,7 @@
 					}
 				}
 			}
-			map(x, y, 0) = tile
+			map(x, y, MAP_TILE_ID) = tile
 		loop
 	loop
 	if ( roomdoor == 1 ) {
@@ -1462,15 +1462,15 @@
 			locvar_map_placeupstairs_x = map_randsite_arg1
 			locvar_map_placeupstairs_y = map_randsite_arg2
 		}
-		if ( (chipm(CHIPM_ATTRIB, map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 0)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
-			if ( map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 6) == 0 & map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 4) == 0 ) {
+		if ( (chipm(CHIPM_ATTRIB, map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
+			if ( map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_FEATS_ON_TILE) == 0 & map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_ITEM_CHIPS) == 0 ) {
 				locvar_map_randsite_f = 1
 				break
 			}
 		}
 	loop
 	if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-		if ( range_tileWater(map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 0)) | range_tileRoad(map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 0)) ) {
+		if ( range_tileWater(map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_TILE_ID)) | range_tileRoad(map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_TILE_ID)) ) {
 			locvar_map_randsite_f = 0
 		}
 	}
@@ -1604,15 +1604,15 @@
 			locvar_map_placeupstairs_x = map_fever_arg1
 			locvar_map_placeupstairs_y = map_fever_arg2
 		}
-		if ( (chipm(CHIPM_ATTRIB, map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 0)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
-			if ( map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 6) == 0 & map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 4) == 0 ) {
+		if ( (chipm(CHIPM_ATTRIB, map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
+			if ( map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_FEATS_ON_TILE) == 0 & map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_ITEM_CHIPS) == 0 ) {
 				locvar_map_randsite_f = 1
 				break
 			}
 		}
 	loop
 	if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-		if ( range_tileWater(map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 0)) | range_tileRoad(map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, 0)) ) {
+		if ( range_tileWater(map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_TILE_ID)) | range_tileRoad(map(locvar_map_placeupstairs_x, locvar_map_placeupstairs_y, MAP_TILE_ID)) ) {
 			locvar_map_randsite_f = 0
 		}
 	}
@@ -1669,8 +1669,8 @@
 		locvar_map_trap_dx = map_trap_arg1
 		locvar_map_trap_dy = map_trap_arg2
 	}
-	if ( (chipm(CHIPM_ATTRIB, map(locvar_map_trap_dx, locvar_map_trap_dy, 0)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
-		if ( map(locvar_map_trap_dx, locvar_map_trap_dy, 6) == 0 ) {
+	if ( (chipm(CHIPM_ATTRIB, map(locvar_map_trap_dx, locvar_map_trap_dy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
+		if ( map(locvar_map_trap_dx, locvar_map_trap_dy, MAP_FEATS_ON_TILE) == 0 ) {
 			if ( map_trap_arg3 == 0 ) {
 				locvar_map_trap_trap = rnd(10)
 			}
@@ -1718,8 +1718,8 @@
 		locvar_map_trap_dx = map_web_arg1
 		locvar_map_trap_dy = map_web_arg2
 	}
-	if ( (chipm(CHIPM_ATTRIB, map(locvar_map_trap_dx, locvar_map_trap_dy, 0)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
-		if ( map(locvar_map_trap_dx, locvar_map_trap_dy, 6) == 0 ) {
+	if ( (chipm(CHIPM_ATTRIB, map(locvar_map_trap_dx, locvar_map_trap_dy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
+		if ( map(locvar_map_trap_dx, locvar_map_trap_dy, MAP_FEATS_ON_TILE) == 0 ) {
 			addmef locvar_map_trap_dx, locvar_map_trap_dy, 1, 11, -1, map_web_arg3
 			return 1
 		}
@@ -1743,8 +1743,8 @@
 		locvar_map_trap_dx = map_barrel_arg1
 		locvar_map_trap_dy = map_barrel_arg2
 	}
-	if ( (chipm(CHIPM_ATTRIB, map(locvar_map_trap_dx, locvar_map_trap_dy, 0)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
-		if ( map(locvar_map_trap_dx, locvar_map_trap_dy, 6) == 0 ) {
+	if ( (chipm(CHIPM_ATTRIB, map(locvar_map_trap_dx, locvar_map_trap_dy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
+		if ( map(locvar_map_trap_dx, locvar_map_trap_dy, MAP_FEATS_ON_TILE) == 0 ) {
 			cell_featset locvar_map_trap_dx, locvar_map_trap_dy, tile_pot, CELL_FEATURE_POT
 			return 1
 		}
@@ -1796,13 +1796,13 @@
 					continue cnt
 				}
 			}
-			map(dx, dy, 0) = 3
+			map(dx, dy, MAP_TILE_ID) = 3
 			roomexist(p) = 1
 			dx += x
 			dy += y
 			roomentrancex(p) = dx
 			roomentrancey(p) = dy
-			map(dx, dy, 0) = 100
+			map(dx, dy, MAP_TILE_ID) = 100
 			if ( cnt == 0 ) {
 				tx = dx
 				ty = dy
@@ -1843,7 +1843,7 @@
 		}
 		dx = tx + roomx(cr)
 		dy = ty + roomy(cr)
-		if ( map(dx, dy, 0) == 1 ) {
+		if ( map(dx, dy, MAP_TILE_ID) == 1 ) {
 			continue
 		}
 		cell_featset dx, dy, tile_doorclosed, CELL_FEATURE_DOOR_CLOSED, rnd(limit(gdata(GDATA_LEVEL) * 3 / 2 + 1, 1, 300))
@@ -2040,7 +2040,7 @@
 			if ( sx > mdata(MDATA_WIDTH) - 1 ) {
 				break
 			}
-			map(sx, sy, 2) = map(sx, sy, 0)
+			map(sx, sy, MAP_TILE_ID_MEMORY) = map(sx, sy, MAP_TILE_ID)
 			cell_show sx, sy, 1
 		loop
 	loop
@@ -2165,10 +2165,10 @@
 				x = cnt
 				if ( mapeditorrader == 3 ) {
 					pos dx + x * p, dy + y * p
-					gzoom p, p, 0, map(x, y, 0) \ 33 * 16 + 816, map(x, y, 0) / 33 * 16, 16, 16
+					gzoom p, p, 0, map(x, y, MAP_TILE_ID) \ 33 * 16 + 816, map(x, y, MAP_TILE_ID) / 33 * 16, 16, 16
 				}
 				else {
-					pget map(x, y, 0) \ 33 * 16 + 816 + 8, map(x, y, 0) / 33 * 16 + 8
+					pget map(x, y, MAP_TILE_ID) \ 33 * 16 + 816 + 8, map(x, y, MAP_TILE_ID) / 33 * 16 + 8
 					if ( p == 1 ) {
 						pset x + dx, y + dy
 					}
@@ -2225,13 +2225,13 @@
 							if ( x == mx & y == my ) {
 								continue
 							}
-							if ( map(x, y, 0) == map(mx, my, 0) ) {
-								map(x, y, 0) = tile
+							if ( map(x, y, MAP_TILE_ID) == map(mx, my, MAP_TILE_ID) ) {
+								map(x, y, MAP_TILE_ID) = tile
 							}
 						loop
 					loop
 				}
-				map(mx, my, 0) = tile
+				map(mx, my, MAP_TILE_ID) = tile
 				coastflag = 0
 				goto *mapEditor_main_WHILE1_CONTINUE
 			}
@@ -2274,7 +2274,7 @@
 	if ( a == 512 ) {
 		if ( mouse_x < 816 ) {
 			if ( meditmode == 0 ) {
-				tile = map(mx, my, 0)
+				tile = map(mx, my, MAP_TILE_ID)
 			}
 			if ( meditmode == 1 | meditmode == 2 | meditmode == 3 ) {
 				repeat 400
@@ -2584,7 +2584,7 @@
 	repeat mdata(MDATA_HEIGHT)
 		p = cnt
 		repeat mdata(MDATA_WIDTH)
-			map(cnt, p, 0) = tile + (rnd(tile(2)) == 0) * rnd(tile(1))
+			map(cnt, p, MAP_TILE_ID) = tile + (rnd(tile(2)) == 0) * rnd(tile(1))
 		loop
 	loop
 	return
@@ -2594,7 +2594,7 @@
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
 			x = cnt
-			map(x, y, 2) = tile
+			map(x, y, MAP_TILE_ID_MEMORY) = tile
 		loop
 	loop
 	return
@@ -2621,7 +2621,7 @@
 			if ( x >= length(mapbk) ) {
 				break
 			}
-			mapbk(x, y, 0) = map(x, y, 0)
+			mapbk(x, y, 0) = map(x, y, MAP_TILE_ID)
 		loop
 	loop
 	dim map, mdata(MDATA_WIDTH), mdata(MDATA_HEIGHT), 10
@@ -2630,7 +2630,7 @@
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
 			x = cnt
-			map(x, y, 0) = mapbk(x, y, 0)
+			map(x, y, MAP_TILE_ID) = mapbk(x, y, 0)
 		loop
 	loop
 	dim mapbk
@@ -2703,8 +2703,8 @@
 		y = cnt + 1
 		repeat mdata(MDATA_WIDTH) - 2
 			x = cnt + 1
-			if ( map(x, y, 0) >= 285 & map(x, y, 0) < 363 ) {
-				map(x, y, 0) = 264
+			if ( map(x, y, MAP_TILE_ID) >= 285 & map(x, y, MAP_TILE_ID) < 363 ) {
+				map(x, y, MAP_TILE_ID) = 264
 			}
 		loop
 	loop
@@ -2712,29 +2712,29 @@
 		y = cnt + 1
 		repeat mdata(MDATA_WIDTH) - 2
 			x = cnt + 1
-			if ( map(x, y, 0) == 264 ) {
+			if ( map(x, y, MAP_TILE_ID) == 264 ) {
 				if ( map(x + 1, y, 0) < 264 | map(x + 1, y, 0) >= 363 ) {
-					map(x, y, 0) = coasttile + 1
+					map(x, y, MAP_TILE_ID) = coasttile + 1
 				}
 				if ( map(x - 1, y, 0) < 264 | map(x - 1, y, 0) >= 363 ) {
-					map(x, y, 0) = coasttile
+					map(x, y, MAP_TILE_ID) = coasttile
 				}
 				if ( map(x, y + 1, 0) < 264 | map(x, y + 1, 0) >= 363 ) {
-					map(x, y, 0) = coasttile + 3
+					map(x, y, MAP_TILE_ID) = coasttile + 3
 				}
 				if ( map(x, y - 1, 0) < 264 | map(x, y - 1, 0) >= 363 ) {
-					map(x, y, 0) = coasttile + 2
+					map(x, y, MAP_TILE_ID) = coasttile + 2
 				}
 			}
-			if ( map(x, y, 0) == 77 ) {
+			if ( map(x, y, MAP_TILE_ID) == 77 ) {
 				map(x, y + 1, 0) = coasttile
 				map(x, y - 1, 0) = coasttile
 			}
-			if ( map(x, y, 0) == 78 ) {
+			if ( map(x, y, MAP_TILE_ID) == 78 ) {
 				map(x, y + 1, 0) = 270
 				map(x, y - 1, 0) = 264
 			}
-			if ( map(x, y, 0) == 79 ) {
+			if ( map(x, y, MAP_TILE_ID) == 79 ) {
 				map(x, y + 1, 0) = coasttile + 1
 				map(x, y - 1, 0) = coasttile + 1
 			}
@@ -2744,105 +2744,105 @@
 		y = cnt + 1
 		repeat mdata(MDATA_WIDTH) - 2
 			x = cnt + 1
-			if ( map(x, y, 0) == 264 ) {
+			if ( map(x, y, MAP_TILE_ID) == 264 ) {
 				if ( map(x, y + 1, 0) == coasttile ) {
 					if ( map(x - 1, y, 0) == coasttile + 3 ) {
-						map(x, y, 0) = coasttile + 8
+						map(x, y, MAP_TILE_ID) = coasttile + 8
 					}
 				}
 				if ( map(x, y + 1, 0) == coasttile + 1 ) {
 					if ( map(x + 1, y, 0) == coasttile + 3 ) {
-						map(x, y, 0) = coasttile + 9
+						map(x, y, MAP_TILE_ID) = coasttile + 9
 					}
 				}
 				if ( map(x, y - 1, 0) == coasttile ) {
 					if ( map(x - 1, y, 0) == coasttile + 2 ) {
-						map(x, y, 0) = coasttile + 10
+						map(x, y, MAP_TILE_ID) = coasttile + 10
 					}
 				}
 				if ( map(x, y - 1, 0) == coasttile + 1 ) {
 					if ( map(x + 1, y, 0) == coasttile + 2 ) {
-						map(x, y, 0) = coasttile + 11
+						map(x, y, MAP_TILE_ID) = coasttile + 11
 					}
 				}
 			}
-			if ( map(x, y, 0) == coasttile ) {
+			if ( map(x, y, MAP_TILE_ID) == coasttile ) {
 				if ( map(x, y + 1, 0) == coasttile + 3 ) {
 					map(x, y + 1, 0) = coasttile + 7
 				}
 			}
-			if ( map(x, y, 0) == coasttile + 1 ) {
+			if ( map(x, y, MAP_TILE_ID) == coasttile + 1 ) {
 				if ( map(x, y + 1, 0) == coasttile + 3 ) {
 					map(x, y + 1, 0) = coasttile + 6
 				}
 			}
-			if ( map(x, y, 0) == coasttile + 2 ) {
+			if ( map(x, y, MAP_TILE_ID) == coasttile + 2 ) {
 				if ( map(x, y + 1, 0) == coasttile ) {
-					map(x, y, 0) = coasttile + 5
+					map(x, y, MAP_TILE_ID) = coasttile + 5
 				}
 			}
-			if ( map(x, y, 0) == coasttile + 2 ) {
+			if ( map(x, y, MAP_TILE_ID) == coasttile + 2 ) {
 				if ( map(x, y + 1, 0) == coasttile + 1 ) {
-					map(x, y, 0) = coasttile + 4
+					map(x, y, MAP_TILE_ID) = coasttile + 4
 				}
 			}
-			if ( map(x, y, 0) == coasttile + 3 | map(x, y, 0) == coasttile + 7 ) {
+			if ( map(x, y, MAP_TILE_ID) == coasttile + 3 | map(x, y, MAP_TILE_ID) == coasttile + 7 ) {
 				if ( map(x + 1, y + 1, 0) == coasttile + 3 ) {
 					map(x + 1, y, 0) = coasttile + 8
 					map(x + 1, y + 1, 0) = coasttile + 7
 				}
 			}
-			if ( map(x, y, 0) == coasttile + 3 | map(x, y, 0) == coasttile + 6 ) {
+			if ( map(x, y, MAP_TILE_ID) == coasttile + 3 | map(x, y, MAP_TILE_ID) == coasttile + 6 ) {
 				if ( map(x - 1, y + 1, 0) == coasttile + 3 ) {
 					map(x - 1, y, 0) = coasttile + 9
 					map(x - 1, y + 1, 0) = coasttile + 6
 				}
 			}
-			if ( map(x, y, 0) == coasttile + 2 | map(x, y, 0) == coasttile + 5 ) {
+			if ( map(x, y, MAP_TILE_ID) == coasttile + 2 | map(x, y, MAP_TILE_ID) == coasttile + 5 ) {
 				if ( map(x + 1, y - 1, 0) == coasttile + 2 ) {
 					map(x + 1, y, 0) = coasttile + 10
 					map(x + 1, y - 1, 0) = coasttile + 5
 				}
 			}
-			if ( map(x, y, 0) == coasttile + 2 | map(x, y, 0) == coasttile + 4 ) {
+			if ( map(x, y, MAP_TILE_ID) == coasttile + 2 | map(x, y, MAP_TILE_ID) == coasttile + 4 ) {
 				if ( map(x - 1, y - 1, 0) == coasttile + 2 ) {
 					map(x - 1, y, 0) = coasttile + 11
 					map(x - 1, y - 1, 0) = coasttile + 4
 				}
 			}
-			if ( map(x, y, 0) == 264 ) {
+			if ( map(x, y, MAP_TILE_ID) == 264 ) {
 				if ( map(x, y + 1, 0) == coasttile ) {
 					if ( map(x - 1, y, 0) == coasttile + 7 ) {
-						map(x, y, 0) = coasttile + 8
+						map(x, y, MAP_TILE_ID) = coasttile + 8
 					}
 				}
 				if ( map(x, y + 1, 0) == coasttile + 1 ) {
 					if ( map(x + 1, y, 0) == coasttile + 6 ) {
-						map(x, y, 0) = coasttile + 9
+						map(x, y, MAP_TILE_ID) = coasttile + 9
 					}
 				}
 				if ( map(x, y - 1, 0) == coasttile ) {
 					if ( map(x - 1, y, 0) == coasttile + 5 ) {
-						map(x, y, 0) = coasttile + 10
+						map(x, y, MAP_TILE_ID) = coasttile + 10
 					}
 				}
 				if ( map(x, y - 1, 0) == coasttile + 1 ) {
 					if ( map(x + 1, y, 0) == coasttile + 4 ) {
-						map(x, y, 0) = coasttile + 11
+						map(x, y, MAP_TILE_ID) = coasttile + 11
 					}
 				}
 			}
-			if ( map(x, y, 0) == coasttile + 2 ) {
+			if ( map(x, y, MAP_TILE_ID) == coasttile + 2 ) {
 				if ( map(x, y + 1, 0) == coasttile + 3 ) {
 					if ( (264 <= map(x - 1, y, 0) & map(x - 1, y, 0) < 363) == 0 ) {
 						if ( (264 <= map(x - 1, y + 1, 0) & map(x - 1, y + 1, 0) < 363) == 0 ) {
-							map(x, y, 0) = coasttile + 5
+							map(x, y, MAP_TILE_ID) = coasttile + 5
 							map(x, y + 1, 0) = coasttile + 7
 						}
 					}
 					if ( (264 <= map(x + 1, y, 0) & map(x + 1, y, 0) < 363) == 0 ) {
 						if ( (264 <= map(x + 1, y + 1, 0) & map(x + 1, y + 1, 0) < 363) == 0 ) {
-							map(x, y, 0) = coasttile + 4
+							map(x, y, MAP_TILE_ID) = coasttile + 4
 							map(x, y + 1, 0) = coasttile + 6
 						}
 					}
@@ -2854,53 +2854,53 @@
 		y = cnt + 1
 		repeat mdata(MDATA_WIDTH) - 2
 			x = cnt + 1
-			if ( map(x, y, 0) >= 285 & map(x, y, 0) < 297 ) {
-				if ( map(x, y, 0) == coasttile ) {
-					map(x, y, 0) = selectcoast(map(x - 1, y, 0))
+			if ( map(x, y, MAP_TILE_ID) >= 285 & map(x, y, MAP_TILE_ID) < 297 ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x - 1, y, 0))
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 1 ) {
-					map(x, y, 0) = selectcoast(map(x + 1, y, 0)) + 1
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 1 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x + 1, y, 0)) + 1
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 2 ) {
-					map(x, y, 0) = selectcoast(map(x, y - 1, 0)) + 2
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 2 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x, y - 1, 0)) + 2
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 3 ) {
-					map(x, y, 0) = selectcoast(map(x, y + 1, 0)) + 3
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 3 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x, y + 1, 0)) + 3
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 4 ) {
-					map(x, y, 0) = selectcoast(map(x + 1, y, 0)) + 4
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 4 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x + 1, y, 0)) + 4
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 5 ) {
-					map(x, y, 0) = selectcoast(map(x - 1, y, 0)) + 5
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 5 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x - 1, y, 0)) + 5
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 6 ) {
-					map(x, y, 0) = selectcoast(map(x + 1, y, 0)) + 6
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 6 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x + 1, y, 0)) + 6
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 7 ) {
-					map(x, y, 0) = selectcoast(map(x - 1, y, 0)) + 7
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 7 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x - 1, y, 0)) + 7
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 8 ) {
-					map(x, y, 0) = selectcoast(map(x - 1, y + 1, 0)) + 8
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 8 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x - 1, y + 1, 0)) + 8
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 9 ) {
-					map(x, y, 0) = selectcoast(map(x + 1, y + 1, 0)) + 9
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 9 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x + 1, y + 1, 0)) + 9
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 10 ) {
-					map(x, y, 0) = selectcoast(map(x - 1, y - 1, 0)) + 10
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 10 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x - 1, y - 1, 0)) + 10
 					continue
 				}
-				if ( map(x, y, 0) == coasttile + 11 ) {
-					map(x, y, 0) = selectcoast(map(x + 1, y - 1, 0)) + 11
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 11 ) {
+					map(x, y, MAP_TILE_ID) = selectcoast(map(x + 1, y - 1, 0)) + 11
 					continue
 				}
 			}
@@ -2926,8 +2926,8 @@
 			y = cnt + 1
 			repeat mdata(MDATA_WIDTH) - 2
 				x = cnt + 1
-				if ( map(x, y, 0) >= coasttile & map(x, y, 0) < coasttile + 12 ) {
-					map(x, y, 0) = coasttile(1)
+				if ( map(x, y, MAP_TILE_ID) >= coasttile & map(x, y, MAP_TILE_ID) < coasttile + 12 ) {
+					map(x, y, MAP_TILE_ID) = coasttile(1)
 				}
 			loop
 		loop
@@ -2935,28 +2935,28 @@
 			y = cnt + 1
 			repeat mdata(MDATA_WIDTH) - 2
 				x = cnt + 1
-				if ( 264 <= map(x, y, 0) & map(x, y, 0) < 363 ) {
+				if ( 264 <= map(x, y, MAP_TILE_ID) & map(x, y, MAP_TILE_ID) < 363 ) {
 					continue
 				}
-				if ( chipm(CHIPM_ROLE, map(x, y, 0)) == coasttile(3) ) {
+				if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == coasttile(3) ) {
 					if ( chipm(CHIPM_ROLE, map(x + 1, y, 0)) == coasttile(2) ) {
 						if ( chipm(CHIPM_ROLE_SUB, map(x + 1, y, 0)) != MAP_CHIP_ROLE_COAST ) {
-							map(x, y, 0) = coasttile + 1
+							map(x, y, MAP_TILE_ID) = coasttile + 1
 						}
 					}
 					if ( chipm(CHIPM_ROLE, map(x - 1, y, 0)) == coasttile(2) ) {
 						if ( chipm(CHIPM_ROLE_SUB, map(x - 1, y, 0)) != MAP_CHIP_ROLE_COAST ) {
-							map(x, y, 0) = coasttile
+							map(x, y, MAP_TILE_ID) = coasttile
 						}
 					}
 					if ( chipm(CHIPM_ROLE, map(x, y + 1, 0)) == coasttile(2) ) {
 						if ( chipm(CHIPM_ROLE_SUB, map(x, y + 1, 0)) != MAP_CHIP_ROLE_COAST ) {
-							map(x, y, 0) = coasttile + 3
+							map(x, y, MAP_TILE_ID) = coasttile + 3
 						}
 					}
 					if ( chipm(CHIPM_ROLE, map(x, y - 1, 0)) == coasttile(2) ) {
 						if ( chipm(CHIPM_ROLE_SUB, map(x, y - 1, 0)) != MAP_CHIP_ROLE_COAST ) {
-							map(x, y, 0) = coasttile + 2
+							map(x, y, MAP_TILE_ID) = coasttile + 2
 						}
 					}
 				}
@@ -2966,109 +2966,109 @@
 			y = cnt + 1
 			repeat mdata(MDATA_WIDTH) - 2
 				x = cnt + 1
-				if ( chipm(CHIPM_ROLE, map(x, y, 0)) == coasttile(3) ) {
-					if ( chipm(CHIPM_ROLE_SUB, map(x, y, 0)) != MAP_CHIP_ROLE_COAST ) {
+				if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == coasttile(3) ) {
+					if ( chipm(CHIPM_ROLE_SUB, map(x, y, MAP_TILE_ID)) != MAP_CHIP_ROLE_COAST ) {
 						if ( map(x, y + 1, 0) == coasttile ) {
 							if ( map(x - 1, y, 0) == coasttile + 3 ) {
-								map(x, y, 0) = coasttile + 8
+								map(x, y, MAP_TILE_ID) = coasttile + 8
 							}
 						}
 						if ( map(x, y + 1, 0) == coasttile + 1 ) {
 							if ( map(x + 1, y, 0) == coasttile + 3 ) {
-								map(x, y, 0) = coasttile + 9
+								map(x, y, MAP_TILE_ID) = coasttile + 9
 							}
 						}
 						if ( map(x, y - 1, 0) == coasttile ) {
 							if ( map(x - 1, y, 0) == coasttile + 2 ) {
-								map(x, y, 0) = coasttile + 10
+								map(x, y, MAP_TILE_ID) = coasttile + 10
 							}
 						}
 						if ( map(x, y - 1, 0) == coasttile + 1 ) {
 							if ( map(x + 1, y, 0) == coasttile + 2 ) {
-								map(x, y, 0) = coasttile + 11
+								map(x, y, MAP_TILE_ID) = coasttile + 11
 							}
 						}
 					}
 				}
-				if ( map(x, y, 0) == coasttile ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile ) {
 					if ( map(x, y + 1, 0) == coasttile + 3 ) {
 						map(x, y + 1, 0) = coasttile + 7
 					}
 				}
-				if ( map(x, y, 0) == coasttile + 1 ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 1 ) {
 					if ( map(x, y + 1, 0) == coasttile + 3 ) {
 						map(x, y + 1, 0) = coasttile + 6
 					}
 				}
-				if ( map(x, y, 0) == coasttile + 2 ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 2 ) {
 					if ( map(x, y + 1, 0) == coasttile ) {
-						map(x, y, 0) = coasttile + 5
+						map(x, y, MAP_TILE_ID) = coasttile + 5
 					}
 				}
-				if ( map(x, y, 0) == coasttile + 2 ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 2 ) {
 					if ( map(x, y + 1, 0) == coasttile + 1 ) {
-						map(x, y, 0) = coasttile + 4
+						map(x, y, MAP_TILE_ID) = coasttile + 4
 					}
 				}
-				if ( map(x, y, 0) == coasttile + 3 | map(x, y, 0) == coasttile + 7 ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 3 | map(x, y, MAP_TILE_ID) == coasttile + 7 ) {
 					if ( map(x + 1, y + 1, 0) == coasttile + 3 ) {
 						map(x + 1, y, 0) = coasttile + 8
 						map(x + 1, y + 1, 0) = coasttile + 7
 					}
 				}
-				if ( map(x, y, 0) == coasttile + 3 | map(x, y, 0) == coasttile + 6 ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 3 | map(x, y, MAP_TILE_ID) == coasttile + 6 ) {
 					if ( map(x - 1, y + 1, 0) == coasttile + 3 ) {
 						map(x - 1, y, 0) = coasttile + 9
 						map(x - 1, y + 1, 0) = coasttile + 6
 					}
 				}
-				if ( map(x, y, 0) == coasttile + 2 | map(x, y, 0) == coasttile + 5 ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 2 | map(x, y, MAP_TILE_ID) == coasttile + 5 ) {
 					if ( map(x + 1, y - 1, 0) == coasttile + 2 ) {
 						map(x + 1, y, 0) = coasttile + 10
 						map(x + 1, y - 1, 0) = coasttile + 5
 					}
 				}
-				if ( map(x, y, 0) == coasttile + 2 | map(x, y, 0) == coasttile + 4 ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 2 | map(x, y, MAP_TILE_ID) == coasttile + 4 ) {
 					if ( map(x - 1, y - 1, 0) == coasttile + 2 ) {
 						map(x - 1, y, 0) = coasttile + 11
 						map(x - 1, y - 1, 0) = coasttile + 4
 					}
 				}
-				if ( chipm(CHIPM_ROLE, map(x, y, 0)) == coasttile(3) ) {
-					if ( chipm(CHIPM_ROLE_SUB, map(x, y, 0)) != MAP_CHIP_ROLE_COAST ) {
+				if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == coasttile(3) ) {
+					if ( chipm(CHIPM_ROLE_SUB, map(x, y, MAP_TILE_ID)) != MAP_CHIP_ROLE_COAST ) {
 						if ( map(x, y + 1, 0) == coasttile ) {
 							if ( map(x - 1, y, 0) == coasttile + 7 ) {
-								map(x, y, 0) = coasttile + 8
+								map(x, y, MAP_TILE_ID) = coasttile + 8
 							}
 						}
 						if ( map(x, y + 1, 0) == coasttile + 1 ) {
 							if ( map(x + 1, y, 0) == coasttile + 6 ) {
-								map(x, y, 0) = coasttile + 9
+								map(x, y, MAP_TILE_ID) = coasttile + 9
 							}
 						}
 						if ( map(x, y - 1, 0) == coasttile ) {
 							if ( map(x - 1, y, 0) == coasttile + 5 ) {
-								map(x, y, 0) = coasttile + 10
+								map(x, y, MAP_TILE_ID) = coasttile + 10
 							}
 						}
 						if ( map(x, y - 1, 0) == coasttile + 1 ) {
 							if ( map(x + 1, y, 0) == coasttile + 4 ) {
-								map(x, y, 0) = coasttile + 11
+								map(x, y, MAP_TILE_ID) = coasttile + 11
 							}
 						}
 					}
 				}
-				if ( map(x, y, 0) == coasttile + 2 ) {
+				if ( map(x, y, MAP_TILE_ID) == coasttile + 2 ) {
 					if ( map(x, y + 1, 0) == coasttile + 3 ) {
 						if ( chipm(CHIPM_ROLE, map(x - 1, y, 0)) == coasttile(2) ) {
 							if ( chipm(CHIPM_ROLE, map(x - 1, y + 1, 0)) == coasttile(2) ) {
-								map(x, y, 0) = coasttile + 5
+								map(x, y, MAP_TILE_ID) = coasttile + 5
 								map(x, y + 1, 0) = coasttile + 7
 							}
 						}
 						if ( chipm(CHIPM_ROLE, map(x + 1, y, 0)) == coasttile(2) ) {
 							if ( chipm(CHIPM_ROLE, map(x + 1, y + 1, 0)) == coasttile(2) ) {
-								map(x, y, 0) = coasttile + 4
+								map(x, y, MAP_TILE_ID) = coasttile + 4
 								map(x, y + 1, 0) = coasttile + 6
 							}
 						}

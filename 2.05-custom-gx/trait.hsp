@@ -351,14 +351,16 @@
 	}
 	if ( tid == TRAIT_NORMAL_SKILL_FAITH ) {
 		if ( traitmode == 0 ) {
-			traitref = 0, 0, 2, 1, 0, 100, -1
-			traitrefn2 = lang("信者", "Believer"), lang("狂信者", "Zealot")
+			traitref = 0, 0, 1, 1, 0, 100, -1
+			traitrefn2 = lang("聖者", "Saint"), lang("聖者", "Saint")
 			if ( trait(tid) >= 0 ) {
-				traitrefn(2) = lang("神官の下で修行し信仰を深める", "Training under a priest deepens your faith."), lang("あなたは信仰に篤い[信仰+4]", "You really believe in god. [Faith+4]"), lang("あなたは猛烈な信者だ[信仰+8]", "You are a zealot. [Faith+8]")
+				traitrefn(2) = lang("神官の下で修行し神聖な力を行使できるようになる", "Training under a priest has taught you sacred skills."), lang("あなたは神聖な力を行使する", "You wield divine power."), lang("あなたは神聖な力を行使する", "You wield divine power.")
 			}
 			return 1
 		}
-		sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) = limit(sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) + trait(tid) * 4, sdata(SKILL_NORMAL_FAITH, CHARA_PLAYER) > 0, 9999)
+		if ( spact(SKILL_SPACT_SAINT_BLADE - STARTING_SKILL_SPACT) == 0 ) {
+			spact(SKILL_SPACT_SAINT_BLADE - STARTING_SKILL_SPACT) = 1
+		}
 		return 1
 	}
 	if ( tid == TRAIT_NORMAL_STAT_LUC ) {
@@ -439,29 +441,27 @@
 	}
 	if ( tid == TRAIT_NORMAL_STAT_DV ) {
 		if ( traitmode == 0 ) {
-			traitref = 0, 0, 3, 1, 0, 100, -1
-			traitrefn2 = lang("見極め", "Dodge"), lang("見極めの熟練者", "Improved Dodge"), lang("見極めの達人", "Greater Dodge")
+			traitref = 0, 0, 1, 1, 0, 100, -1
+			traitrefn2 = lang("見極め", "Discernment"), lang("見極め", "Discernment"), lang("見極め", "Discernment")
 			if ( trait(tid) >= 0 ) {
-				traitrefn(2) = lang("敵の動きを見極めDVを上昇させる", "You learn how to dodge attacks."), lang("あなたは見切れる[DV+4]", "You can somewhat dodge enemy attacks. [DV+4]"), lang("あなたはかなり見切れる[DV+8]", "You can dodge enemy attacks. [DV+8]"), lang("あなたの見切りは伝説的だ[DV+12]", "You can really dodge enemy attacks. [DV+12]")
+				traitrefn(2) = lang("客商売の中で相手を見極める眼力を磨く", "In your business life, you honed your ability to judge your opponents."), lang("あなたは相手の性別年齢信仰を見抜く", "You can see the other's gender, age, and religion."), lang("あなたは相手の性別年齢信仰を見抜く", "You can see the other's gender, age, and religion."), lang("あなたは相手の性別年齢信仰を見抜く", "You can see the other's gender, age, and religion.")
 			}
 			return 1
 		}
-		cdata(CDATA_DV, CHARA_PLAYER) = limit(cdata(CDATA_DV, CHARA_PLAYER) + trait(tid) * 4, cdata(CDATA_DV, CHARA_PLAYER) > 0, 9999)
 		return 1
 	}
 	if ( tid == TRAIT_NORMAL_SKILL_EVASION ) {
 		if ( traitmode == 0 ) {
-			traitref = 0, 0, 3, 1, 0, 100, -1
-			traitrefn2 = lang("回避の修練者", "Evade"), lang("回避の熟練者", "Improved Evade"), lang("回避の達人", "Greater Evade")
+			traitref = 0, 0, 1, 1, 0, 100, -1
+			traitrefn2 = lang("式折神", "Shiki-Origami"), lang("式折神", "Shiki-Origami"), lang("式折神", "Shiki-Origami")
 			if ( trait(tid) >= 0 ) {
-				traitrefn(2) = lang("回避の技術に磨きをかける", "You improve your evasion skill."), lang("あなたは回避に長けている[回避+2]", "You can somewhat evade enemy attacks. [Evasion+2]"), lang("あなたは華麗に回避する[回避+4]", "You can evade enemy attacks. [Evasion+4]"), lang("あなたは回避の達人だ[回避+6]", "You can really evade enemy attacks. [Evasion+6]")
-			}
-			if ( sorg(SKILL_NORMAL_EVASION, CHARA_PLAYER) == 0 ) {
-				return -1
+				traitrefn(2) = lang("謎の書物を読み解き、紙を操る古の魔術を習得する", "You have deciphered mysterious books and mastered the ancient magic of manipulating paper."), lang("あなたは魔法紙を操る", "You know magical papercrafts."), lang("あなたは魔法紙を操る", "You know magical papercrafts."), lang("あなたは魔法紙を操る", "You know magical papercrafts.")
 			}
 			return 1
 		}
-		sdata(SKILL_NORMAL_EVASION, CHARA_PLAYER) = limit(sdata(SKILL_NORMAL_EVASION, CHARA_PLAYER) + trait(tid) * 2, sdata(SKILL_NORMAL_EVASION, CHARA_PLAYER) > 0, 9999)
+		if ( spact(SKILL_SPACT_SHIKIORIGAMI_CRANE - STARTING_SKILL_SPACT) == 0 ) {
+			spact(SKILL_SPACT_SHIKIORIGAMI_CRANE - STARTING_SKILL_SPACT) = 1
+		}
 		return 1
 	}
 	if ( tid == TRAIT_NORMAL_OTHER_CANNIBALISM ) {

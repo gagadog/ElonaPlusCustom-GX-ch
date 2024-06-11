@@ -2570,12 +2570,6 @@
 	cpdata@tcg(TCG_PLAYER_MANA, cp@tcg) = limit(cpdata@tcg(TCG_PLAYER_MAX_MANA, cp@tcg) + specialrulenextturnmana@tcg(cp@tcg), 0, 10000)
 	specialrulenextturnmana@tcg(cp@tcg) = 0
 	repeat maxcard@tcg
-		if ( cdbit(TCG_BIT_GHOST, cnt) != TRUE ) { continue }
-		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) { continue }
-		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) { continue }
-		gettargetcard cnt
-	loop
-	repeat maxcard@tcg
 		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) { continue }
 		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_GRAVEYARD ) { continue }
 		card@tcg(TCG_CARD_TURN_COUNT, cnt)++
@@ -2640,6 +2634,12 @@
 			proctcg "tcg proc/phase-begin: effac:" + effac@tcg + "/eff" + eff@tcg
 			gosub *card_action_choose_target
 		}
+	loop
+	repeat maxcard@tcg
+		if ( cdbit(TCG_BIT_GHOST, cnt) != TRUE ) { continue }
+		if ( card@tcg(TCG_CARD_CONTROLLER, cnt) != cp@tcg ) { continue }
+		if ( card@tcg(TCG_CARD_LOCATION, cnt) != TCG_LOCATION_FIELD ) { continue }
+		gettargetcard cnt
 	loop
 	makecardlist
 	tcgdraw

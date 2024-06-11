@@ -730,14 +730,14 @@
 	return
 
 #deffunc addmef int addmef_arg1, int addmef_arg2, int addmef_arg3, int addmef_arg4, int addmef_arg5, int addmef_arg6, int addmef_arg7, int addmef_arg8, int addmef_arg9, int addmef_arg10
-	locvar_addmef_p = map(addmef_arg1, addmef_arg2, 0)
+	locvar_addmef_p = map(addmef_arg1, addmef_arg2, MAP_TILE_ID)
 	if ( addmef_arg3 == 5 ) {
 		if ( chipm(CHIPM_ROLE, locvar_addmef_p) == MAP_CHIP_ROLE_WATER ) {
 			return
 		}
 	}
-	if ( map(addmef_arg1, addmef_arg2, 8) != 0 ) {
-		locvar_delmef_i = map(addmef_arg1, addmef_arg2, 8) - 1
+	if ( map(addmef_arg1, addmef_arg2, MAP_MEF_INDEX_PLUS_ONE) != 0 ) {
+		locvar_delmef_i = map(addmef_arg1, addmef_arg2, MAP_MEF_INDEX_PLUS_ONE) - 1
 	}
 	else {
 		locvar_delmef_i = -1
@@ -753,7 +753,7 @@
 		}
 	}
 	mef(0, locvar_delmef_i) = addmef_arg3, addmef_arg4 + addmef_arg10 * 10000, addmef_arg1, addmef_arg2, addmef_arg5, addmef_arg6, addmef_arg7, addmef_arg8, addmef_arg9
-	map(addmef_arg1, addmef_arg2, 8) = locvar_delmef_i + 1
+	map(addmef_arg1, addmef_arg2, MAP_MEF_INDEX_PLUS_ONE) = locvar_delmef_i + 1
 	return
 
 #deffunc cell_featset int cell_featset_arg1, int cell_featset_arg2, int cell_featset_arg3, int cell_featset_arg4, int cell_featset_arg5, int cell_featset_arg6
@@ -761,35 +761,35 @@
 		locvar_cell_featset_feat = cell_featset_arg3
 	}
 	else {
-		locvar_cell_featset_feat = map(cell_featset_arg1, cell_featset_arg2, 6) \ 1000
+		locvar_cell_featset_feat = map(cell_featset_arg1, cell_featset_arg2, MAP_FEATS_ON_TILE) \ 1000
 	}
 	if ( cell_featset_arg4 != (-1) ) {
 		locvar_cell_featset_feat(1) = cell_featset_arg4
 	}
 	else {
-		locvar_cell_featset_feat(1) = map(cell_featset_arg1, cell_featset_arg2, 6) / 1000 \ 100
+		locvar_cell_featset_feat(1) = map(cell_featset_arg1, cell_featset_arg2, MAP_FEATS_ON_TILE) / 1000 \ 100
 	}
 	if ( cell_featset_arg5 != (-1) ) {
 		locvar_cell_featset_feat(2) = cell_featset_arg5
 	}
 	else {
-		locvar_cell_featset_feat(2) = map(cell_featset_arg1, cell_featset_arg2, 6) / 100000 \ 100
+		locvar_cell_featset_feat(2) = map(cell_featset_arg1, cell_featset_arg2, MAP_FEATS_ON_TILE) / 100000 \ 100
 	}
 	if ( cell_featset_arg6 != (-1) ) {
 		locvar_cell_featset_feat(3) = cell_featset_arg6
 	}
 	else {
-		locvar_cell_featset_feat(3) = map(cell_featset_arg1, cell_featset_arg2, 6) / 10000000
+		locvar_cell_featset_feat(3) = map(cell_featset_arg1, cell_featset_arg2, MAP_FEATS_ON_TILE) / 10000000
 	}
-	map(cell_featset_arg1, cell_featset_arg2, 6) = locvar_cell_featset_feat + locvar_cell_featset_feat(1) * 1000 + locvar_cell_featset_feat(2) * 100000 + locvar_cell_featset_feat(3) * 10000000
+	map(cell_featset_arg1, cell_featset_arg2, MAP_FEATS_ON_TILE) = locvar_cell_featset_feat + locvar_cell_featset_feat(1) * 1000 + locvar_cell_featset_feat(2) * 100000 + locvar_cell_featset_feat(3) * 10000000
 	return
 
 #deffunc cell_featread int cell_featread_arg1, int cell_featread_arg2, int
-	feat = map(cell_featread_arg1, cell_featread_arg2, 6) \ 1000, map(cell_featread_arg1, cell_featread_arg2, 6) / 1000 \ 100, map(cell_featread_arg1, cell_featread_arg2, 6) / 100000 \ 100, map(cell_featread_arg1, cell_featread_arg2, 6) / 10000000
+	feat = map(cell_featread_arg1, cell_featread_arg2, MAP_FEATS_ON_TILE) \ 1000, map(cell_featread_arg1, cell_featread_arg2, MAP_FEATS_ON_TILE) / 1000 \ 100, map(cell_featread_arg1, cell_featread_arg2, MAP_FEATS_ON_TILE) / 100000 \ 100, map(cell_featread_arg1, cell_featread_arg2, MAP_FEATS_ON_TILE) / 10000000
 	return 0
 
 #deffunc cell_featclear int cell_featclear_arg1, int cell_featclear_arg2
-	map(cell_featclear_arg1, cell_featclear_arg2, 6) = 0
+	map(cell_featclear_arg1, cell_featclear_arg2, MAP_FEATS_ON_TILE) = 0
 	return
 
 #deffunc cell_check int cell_check_arg1, int cell_check_arg2
@@ -802,17 +802,17 @@
 		cellaccessover = 0
 		return
 	}
-	if ( map(cell_check_arg1, cell_check_arg2, 1) != 0 ) {
-		cellchara = map(cell_check_arg1, cell_check_arg2, 1) - 1
+	if ( map(cell_check_arg1, cell_check_arg2, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+		cellchara = map(cell_check_arg1, cell_check_arg2, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		cellaccess = 0
 	}
-	if ( map(cell_check_arg1, cell_check_arg2, 6) != 0 ) {
-		cellfeat = map(cell_check_arg1, cell_check_arg2, 6) / 1000 \ 100
-		if ( chipm(CHIPM_ATTRIB, map(cell_check_arg1, cell_check_arg2, 6) \ 1000) & CHIPM_ATTRIB_CANT_PASS ) {
+	if ( map(cell_check_arg1, cell_check_arg2, MAP_FEATS_ON_TILE) != 0 ) {
+		cellfeat = map(cell_check_arg1, cell_check_arg2, MAP_FEATS_ON_TILE) / 1000 \ 100
+		if ( chipm(CHIPM_ATTRIB, map(cell_check_arg1, cell_check_arg2, MAP_FEATS_ON_TILE) \ 1000) & CHIPM_ATTRIB_CANT_PASS ) {
 			cellaccess = 0
 		}
 	}
-	if ( chipm(CHIPM_ATTRIB, map(cell_check_arg1, cell_check_arg2, 0)) & CHIPM_ATTRIB_CANT_PASS ) {
+	if ( chipm(CHIPM_ATTRIB, map(cell_check_arg1, cell_check_arg2, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
 		cellaccess = 0
 	}
 	return
@@ -835,8 +835,8 @@
 	}
 	locvar_cell_swap_tc = cell_swap_arg2
 	if ( locvar_cell_swap_tc == (-1) ) {
-		if ( map(cell_swap_arg3, cell_swap_arg4, 1) != 0 ) {
-			locvar_cell_swap_tc = map(cell_swap_arg3, cell_swap_arg4, 1) - 1
+		if ( map(cell_swap_arg3, cell_swap_arg4, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+			locvar_cell_swap_tc = map(cell_swap_arg3, cell_swap_arg4, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		}
 	}
 	if ( locvar_cell_swap_tc != (-1) ) {
@@ -851,7 +851,7 @@
 		locvar_cell_swap_x2 = cell_swap_arg3
 		locvar_cell_swap_y2 = cell_swap_arg4
 	}
-	map(locvar_cell_swap_x2, locvar_cell_swap_y2, 1) = cell_swap_arg1 + 1
+	map(locvar_cell_swap_x2, locvar_cell_swap_y2, MAP_CHARA_INDEX_PLUS_ONE) = cell_swap_arg1 + 1
 	cdata(CDATA_X, cell_swap_arg1) = locvar_cell_swap_x2
 	cdata(CDATA_Y, cell_swap_arg1) = locvar_cell_swap_y2
 	if ( cell_swap_arg1 == 0 | locvar_cell_swap_tc == 0 ) {
@@ -873,8 +873,8 @@
 	return
 
 #deffunc cell_movechara int cell_movechara_arg1, int cell_movechara_arg2, int cell_movechara_arg3
-	if ( map(cell_movechara_arg2, cell_movechara_arg3, 1) != 0 ) {
-		locvar_cell_movechara_rc = map(cell_movechara_arg2, cell_movechara_arg3, 1) - 1
+	if ( map(cell_movechara_arg2, cell_movechara_arg3, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+		locvar_cell_movechara_rc = map(cell_movechara_arg2, cell_movechara_arg3, MAP_CHARA_INDEX_PLUS_ONE) - 1
 		if ( locvar_cell_movechara_rc == cell_movechara_arg1 ) {
 			return
 		}
@@ -907,17 +907,17 @@
 		if ( route_info_arg1 < 0 | route_info_arg2 < 0 | route_info_arg1 >= mdata(MDATA_WIDTH) | route_info_arg2 >= mdata(MDATA_HEIGHT) ) {
 			return 0
 		}
-		if ( chipm(CHIPM_ATTRIB, map(route_info_arg1, route_info_arg2, 0)) & CHIPM_ATTRIB_CANT_SEE ) {
+		if ( chipm(CHIPM_ATTRIB, map(route_info_arg1, route_info_arg2, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_SEE ) {
 			return 0
 		}
-		if ( map(route_info_arg1, route_info_arg2, 6) != 0 ) {
+		if ( map(route_info_arg1, route_info_arg2, MAP_FEATS_ON_TILE) != 0 ) {
 			cell_featread route_info_arg1, route_info_arg2
 			if ( chipm(CHIPM_ATTRIB, feat) & CHIPM_ATTRIB_CANT_SEE ) {
 				return 0
 			}
 		}
-		if ( map(route_info_arg1, route_info_arg2, 8) != 0 ) {
-			if ( mef(0, map(route_info_arg1, route_info_arg2, 8) - 1) == 9 ) {
+		if ( map(route_info_arg1, route_info_arg2, MAP_MEF_INDEX_PLUS_ONE) != 0 ) {
+			if ( mef(0, map(route_info_arg1, route_info_arg2, MAP_MEF_INDEX_PLUS_ONE) - 1) == 9 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 348) == 0 ) {
 					return 0
 				}
@@ -993,7 +993,7 @@
 					continue
 				}
 				if ( efid != SKILL_SPACT_MP_BREATH & efid != SKILL_SPACT_GRAVITON_BUSTER ) {
-					if ( chipm(CHIPM_ATTRIB, map(tx, ty, 0)) & CHIPM_ATTRIB_CANT_SEE ) {
+					if ( chipm(CHIPM_ATTRIB, map(tx, ty, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_SEE ) {
 						continue
 					}
 				}
@@ -1160,7 +1160,7 @@
 	if ( locvar_cell_shownull_dy <= -inf_tiles | locvar_cell_shownull_dy >= windowh - inf_verh ) {
 		return
 	}
-	locvar_cell_show_ground = map(cell_show_x, cell_show_y, 2)
+	locvar_cell_show_ground = map(cell_show_x, cell_show_y, MAP_TILE_ID_MEMORY)
 	locvar_cell_show_sel = 2
 	gmode 0, inf_tiles, inf_tiles
 	pos locvar_cell_shownull_dx, locvar_cell_shownull_dy
@@ -1187,8 +1187,8 @@
 	}
 	gmode 2, inf_tiles, inf_tiles
 	if ( cell_show_see ) {
-		if ( map(cell_show_x, cell_show_y, 7) != 0 ) {
-			locvar_cell_shownull_p = map(cell_show_x, cell_show_y, 7) \ 10, map(cell_show_x, cell_show_y, 7) / 10
+		if ( map(cell_show_x, cell_show_y, MAP_BLOOD_AND_DEBRIS) != 0 ) {
+			locvar_cell_shownull_p = map(cell_show_x, cell_show_y, MAP_BLOOD_AND_DEBRIS) \ 10, map(cell_show_x, cell_show_y, MAP_BLOOD_AND_DEBRIS) / 10
 			if ( locvar_cell_shownull_p(1) ) {
 				gcopy 5, locvar_cell_shownull_p(1) * inf_tiles + 288, 1152
 			}
@@ -1200,15 +1200,15 @@
 			}
 		}
 	}
-	if ( map(cell_show_x, cell_show_y, 6) != 0 ) {
-		if ( map(cell_show_x, cell_show_y, 2) == map(cell_show_x, cell_show_y, 0) ) {
-			locvar_cell_shownull_p = map(cell_show_x, cell_show_y, 6) \ 1000
+	if ( map(cell_show_x, cell_show_y, MAP_FEATS_ON_TILE) != 0 ) {
+		if ( map(cell_show_x, cell_show_y, MAP_TILE_ID_MEMORY) == map(cell_show_x, cell_show_y, MAP_TILE_ID) ) {
+			locvar_cell_shownull_p = map(cell_show_x, cell_show_y, MAP_FEATS_ON_TILE) \ 1000
 			if ( locvar_cell_shownull_p != 999 & locvar_cell_shownull_p != 0 ) {
 				pos locvar_cell_shownull_dx, locvar_cell_shownull_dy
 				gcopy 2, locvar_cell_shownull_p \ 33 * inf_tiles, locvar_cell_shownull_p / 33 * inf_tiles
 			}
 			if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-				locvar_cell_shownull_p = map(cell_show_x, cell_show_y, 6) / 100000 \ 100 + map(cell_show_x, cell_show_y, 6) / 10000000 * 100
+				locvar_cell_shownull_p = map(cell_show_x, cell_show_y, MAP_FEATS_ON_TILE) / 100000 \ 100 + map(cell_show_x, cell_show_y, MAP_FEATS_ON_TILE) / 10000000 * 100
 				if ( adata(ADATA_ID, locvar_cell_shownull_p) == AREA_RANDOM_DUNGEON ) {
 					if ( adata(ADATA_DEEPEST, locvar_cell_shownull_p) == adata(ADATA_MAX_LEVEL, locvar_cell_shownull_p) ) {
 						pos locvar_cell_shownull_dx + 16, locvar_cell_shownull_dy - 16
@@ -1229,8 +1229,8 @@
 		}
 	}
 	if ( cell_show_see ) {
-		if ( map(cell_show_x, cell_show_y, 8) != 0 ) {
-			locvar_cell_shownull_p = map(cell_show_x, cell_show_y, 8) - 1
+		if ( map(cell_show_x, cell_show_y, MAP_MEF_INDEX_PLUS_ONE) != 0 ) {
+			locvar_cell_shownull_p = map(cell_show_x, cell_show_y, MAP_MEF_INDEX_PLUS_ONE) - 1
 			pos locvar_cell_shownull_dx, locvar_cell_shownull_dy
 			if ( mef(1, locvar_cell_shownull_p) > 10000 ) {
 				preparePicItem mef(1, locvar_cell_shownull_p) \ 10000, mef(1, locvar_cell_shownull_p) / 10000
@@ -1241,23 +1241,23 @@
 			}
 		}
 	}
-	if ( map(cell_show_x, cell_show_y, 5) != 0 ) {
-		locvar_cell_shownull_p = wpeek(map(cell_show_x, cell_show_y, 5), 0)
-		locvar_cell_show_i = wpeek(map(cell_show_x, cell_show_y, 5), 2)
+	if ( map(cell_show_x, cell_show_y, MAP_ITEM_CHIPS_MEMORY) != 0 ) {
+		locvar_cell_shownull_p = wpeek(map(cell_show_x, cell_show_y, MAP_ITEM_CHIPS_MEMORY), 0)
+		locvar_cell_show_i = wpeek(map(cell_show_x, cell_show_y, MAP_ITEM_CHIPS_MEMORY), 2)
 		locvar_cell_draw_stackh = 0
 		
 		cell_draw_item_simple locvar_cell_shownull_dx, locvar_cell_shownull_dy, locvar_cell_shownull_p, locvar_cell_show_i, 0
 	}
 
-	if ( map(cell_show_x, cell_show_y, 1) != 0 ) {
-		if ( synccheck(map(cell_show_x, cell_show_y, 1) - 1, -1) | cell_show_see ) {
-			locvar_cell_show_c = map(cell_show_x, cell_show_y, 1) - 1
+	if ( map(cell_show_x, cell_show_y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+		if ( synccheck(map(cell_show_x, cell_show_y, MAP_CHARA_INDEX_PLUS_ONE) - 1, -1) | cell_show_see ) {
+			locvar_cell_show_c = map(cell_show_x, cell_show_y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 			locvar_cell_show_c = charaIsVisible(locvar_cell_show_c)
 			if ( locvar_cell_show_c != 0 ) {
 				cell_draw_chara locvar_cell_show_c, locvar_cell_shownull_dx, locvar_cell_shownull_dy, locvar_cell_show_ground, 0
 			}
-			if ( cdata(CDATA_IN_TAGTEAM, map(cell_show_x, cell_show_y, 1) - 1) != 0 ) {
-				locvar_cell_show_c = cdata(CDATA_TAGTEAM_PARTNER, map(cell_show_x, cell_show_y, 1) - 1)
+			if ( cdata(CDATA_IN_TAGTEAM, map(cell_show_x, cell_show_y, MAP_CHARA_INDEX_PLUS_ONE) - 1) != 0 ) {
+				locvar_cell_show_c = cdata(CDATA_TAGTEAM_PARTNER, map(cell_show_x, cell_show_y, MAP_CHARA_INDEX_PLUS_ONE) - 1)
 				locvar_cell_show_c = charaIsVisible(locvar_cell_show_c)
 				if ( locvar_cell_show_c != 0 ) {
 					cell_draw_chara locvar_cell_show_c, locvar_cell_shownull_dx, locvar_cell_shownull_dy, locvar_cell_show_ground, 0
@@ -1545,7 +1545,7 @@
 				continue
 			}
 			// Draw the tile of the cell.
-			locvar_cell_draw_ground = map(locvar_cell_draw_x, locvar_cell_draw_y, 2)
+			locvar_cell_draw_ground = map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_TILE_ID_MEMORY)
 			locvar_cell_draw_sel = 2
 			gmode 0, inf_tiles, inf_tiles
 			pos locvar_cell_draw_dx, locvar_cell_draw_dy
@@ -1570,10 +1570,10 @@
 			}
 			// Draw the blood and debris of the cell.
 			gmode 2, inf_tiles, inf_tiles
-			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 7) != 0 ) {
+			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_BLOOD_AND_DEBRIS) != 0 ) {
 				if ( mapsync(locvar_cell_draw_x, locvar_cell_draw_y) == msync ) {
 					screendrawhack = 204
-					locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, 7) \ 10, map(locvar_cell_draw_x, locvar_cell_draw_y, 7) / 10
+					locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_BLOOD_AND_DEBRIS) \ 10, map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_BLOOD_AND_DEBRIS) / 10
 					if ( locvar_cell_draw_p(1) ) {
 						gcopy 5, locvar_cell_draw_p(1) * inf_tiles + 288, 1152
 					}
@@ -1607,16 +1607,16 @@
 				}
 			}
 			// Draw map feats like doors/traps/plants
-			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 6) != 0 ) {
-				if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 2) == map(locvar_cell_draw_x, locvar_cell_draw_y, 0) ) {
+			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_FEATS_ON_TILE) != 0 ) {
+				if ( map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_TILE_ID_MEMORY) == map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_TILE_ID) ) {
 					screendrawhack = 206
-					locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, 6) \ 1000
+					locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_FEATS_ON_TILE) \ 1000
 					if ( locvar_cell_draw_p != 999 & locvar_cell_draw_p != 0 ) {
 						pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipm(CHIPM_F, locvar_cell_draw_p)
 						gcopy 2, locvar_cell_draw_p \ 33 * inf_tiles, locvar_cell_draw_p / 33 * inf_tiles, inf_tiles, 48 + chipm(CHIPM_H, locvar_cell_draw_p)
 					}
 					if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD ) {
-						locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, 6) / 100000 \ 100 + map(locvar_cell_draw_x, locvar_cell_draw_y, 6) / 10000000 * 100
+						locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_FEATS_ON_TILE) / 100000 \ 100 + map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_FEATS_ON_TILE) / 10000000 * 100
 						if ( adata(ADATA_ID, locvar_cell_draw_p) == AREA_RANDOM_DUNGEON ) {
 							if ( adata(ADATA_DEEPEST, locvar_cell_draw_p) == adata(ADATA_MAX_LEVEL, locvar_cell_draw_p) ) {
 								pos locvar_cell_draw_dx + 16, locvar_cell_draw_dy - 16
@@ -1637,10 +1637,10 @@
 				}
 			}
 			// Draw the MEF, map effect like fire/acid.
-			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 8) != 0 ) {
+			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_MEF_INDEX_PLUS_ONE) != 0 ) {
 				if ( mapsync(locvar_cell_draw_x, locvar_cell_draw_y) == msync ) {
 					screendrawhack = 207
-					locvar_cell_draw_p2 = map(locvar_cell_draw_x, locvar_cell_draw_y, 8) - 1
+					locvar_cell_draw_p2 = map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_MEF_INDEX_PLUS_ONE) - 1
 					locvar_cell_draw_p = mef(1, locvar_cell_draw_p2) \ 10000, mef(1, locvar_cell_draw_p2) / 10000
 					pos locvar_cell_draw_dx, locvar_cell_draw_dy - chipi(CHIPI_F, locvar_cell_draw_p)
 					if ( chipi(CHIPI_ANIM, locvar_cell_draw_p) ) {
@@ -1656,13 +1656,13 @@
 				}
 			}
 			// Draw the cell item in the memory MAP_ITEM_CHIPS_MEMORY, index 5, (actual item is at MAP_ITEM_CHIPS index 4, refreshed when checking pov)
-			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 5) != 0 ) {
+			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_ITEM_CHIPS_MEMORY) != 0 ) {
 				screendrawhack = 208
 				locvar_cell_draw_stackh = 0
 				// If 2-3 item is on the floorstack. MAP_ITEM_CHIPS_MEMORY is negative.
 				// And the MAP_ITEM_CHIPS_MEMORY stores 3 indices of the item.
 				// Refer to "cell_refresh" function to see how item indices are stored.
-				if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 5) < 0 ) {
+				if ( map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_ITEM_CHIPS_MEMORY) < 0 ) {
 					// Do not search for item indicess when another inventory file is in effect. Draw a dummy bag instead.
 					if ( mode == MODELIST_SHOP | mode == MODELIST_TXT_ADV ) {
 						locvar_cell_draw_i = 0
@@ -1671,7 +1671,7 @@
 					}
 					screendrawhack = 2081
 					// Split the indices and draw the item.
-					locvar_cell_draw_p = -map(locvar_cell_draw_x, locvar_cell_draw_y, 5)
+					locvar_cell_draw_p = -map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_ITEM_CHIPS_MEMORY)
 					locvar_cell_draw_flooritem = locvar_cell_draw_p \ 1000 + RANGE_INV2, locvar_cell_draw_p / 1000 \ 1000 + RANGE_INV2, locvar_cell_draw_p / 1000000 \ 1000 + RANGE_INV2
 					repeat 3
 						locvar_cell_draw_cnt2 = 2 - cnt
@@ -1696,8 +1696,8 @@
 				else {
 					// If theres more than 3 item, a dummy bag is stored (363, 0) in a 2x2byte format.
 					// If theres only 1 item. the item pic and color is stored (pic, col) in a 2x2byte format.
-					locvar_cell_draw_i = wpeek(map(locvar_cell_draw_x, locvar_cell_draw_y, 5), 2)
-					locvar_cell_draw_p = wpeek(map(locvar_cell_draw_x, locvar_cell_draw_y, 5), 0)
+					locvar_cell_draw_i = wpeek(map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_ITEM_CHIPS_MEMORY), 2)
+					locvar_cell_draw_p = wpeek(map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_ITEM_CHIPS_MEMORY), 0)
 					inv_getheader -1
 					repeat invrange, invhead
 						if ( inv(INV_ITEM_NUM, cnt) > 0 ) {
@@ -1825,7 +1825,7 @@
 				locvar_cell_draw_lx++
 				continue
 			}
-			locvar_cell_draw_ground = map(locvar_cell_draw_x, locvar_cell_draw_y, 2)
+			locvar_cell_draw_ground = map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_TILE_ID_MEMORY)
 			locvar_cell_draw_sel = 2
 			gmode 0, inf_tiles, inf_tiles
 			pos locvar_cell_draw_dx, locvar_cell_draw_dy
@@ -1844,20 +1844,20 @@
 			}
 			/********** JAMES CUSTOM - RENDERING ORDER - ENDING **********/
 			// Draw the non-player character on current cell.
-			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 1) != 0 ) {
-				if ( synccheck(map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1, -1) | ( cell_draw2_ignore_seen & map(locvar_cell_draw_x, locvar_cell_draw_y, 0) == map(locvar_cell_draw_x, locvar_cell_draw_y, 2) ) ) {
+			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
+				if ( synccheck(map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_CHARA_INDEX_PLUS_ONE) - 1, -1) | ( cell_draw2_ignore_seen & map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_TILE_ID) == map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_TILE_ID_MEMORY) ) ) {
 					screendrawhack = 210
-					locvar_cell_draw_c = map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1
+					locvar_cell_draw_c = map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 					/********** JAMES CUSTOM - RENDERING ORDER - BEGINNING **********/
 					// Draw the tagteam partner before tagteam leader. Moved player tag draw to cell_draw_player
 					if ( cdata(CDATA_IN_TAGTEAM, locvar_cell_draw_c) != 0 & locvar_cell_draw_c != CHARA_PLAYER ) {
-						locvar_cell_draw_c = cdata(CDATA_TAGTEAM_PARTNER, map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1)
+						locvar_cell_draw_c = cdata(CDATA_TAGTEAM_PARTNER, map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_CHARA_INDEX_PLUS_ONE) - 1)
 						locvar_cell_draw_c = charaIsVisible(locvar_cell_draw_c)
 						if ( locvar_cell_draw_c != 0 ) {
 							screendrawhack = 211
 							cell_draw_chara locvar_cell_draw_c, locvar_cell_draw_dx, locvar_cell_draw_dy, locvar_cell_draw_ground, locvar_cell_draw_ani
 						}
-						locvar_cell_draw_c = map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1
+						locvar_cell_draw_c = map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_CHARA_INDEX_PLUS_ONE) - 1
 					}
 					/********** JAMES CUSTOM - RENDERING ORDER - ENDING **********/
 					locvar_cell_draw_c = charaIsVisible(locvar_cell_draw_c)
@@ -1867,9 +1867,9 @@
 						cell_draw_chara_detail_info locvar_cell_draw_c, locvar_cell_draw_dx, locvar_cell_draw_dy, locvar_cell_draw_ground
 					}
 					// Draw the tagteam partner, if theres any. (Moved player tag draw to cell_draw_player)
-					// if ( cdata(CDATA_IN_TAGTEAM, map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1) != 0 ) {
-					if ( cdata(CDATA_IN_TAGTEAM, map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1) != 0 & (map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1 != CHARA_PLAYER) ) {
-						locvar_cell_draw_c = cdata(CDATA_TAGTEAM_PARTNER, map(locvar_cell_draw_x, locvar_cell_draw_y, 1) - 1)
+					// if ( cdata(CDATA_IN_TAGTEAM, map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_CHARA_INDEX_PLUS_ONE) - 1) != 0 ) {
+					if ( cdata(CDATA_IN_TAGTEAM, map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_CHARA_INDEX_PLUS_ONE) - 1) != 0 & (map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_CHARA_INDEX_PLUS_ONE) - 1 != CHARA_PLAYER) ) {
+						locvar_cell_draw_c = cdata(CDATA_TAGTEAM_PARTNER, map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_CHARA_INDEX_PLUS_ONE) - 1)
 						locvar_cell_draw_c = charaIsVisible(locvar_cell_draw_c)
 						if ( locvar_cell_draw_c != 0 ) {
 							screendrawhack = 213
@@ -1880,9 +1880,9 @@
 				}
 			}
 			// Draw the tile light effect, it is changed on cell_refresh, and cleared when map reloads. 
-			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, 9) != 0 ) {
+			if ( map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_LIGHT_TYPE) != 0 ) {
 				screendrawhack = 214
-				locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, 9)
+				locvar_cell_draw_p = map(locvar_cell_draw_x, locvar_cell_draw_y, MAP_LIGHT_TYPE)
 				if ( gdata(GDATA_HOUR) > 17 | gdata(GDATA_HOUR) < 6 | lightdata(LIGHTDATA_TIME, locvar_cell_draw_p) ) {
 					if ( mapsync(locvar_cell_draw_x, locvar_cell_draw_y) == msync | cell_draw2_ignore_seen != FALSE ) {
 						locvar_cell_draw_light -= (6 - limit(dist(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), locvar_cell_draw_x, locvar_cell_draw_y), 0, 6)) * lightdata(LIGHTDATA_POWER, locvar_cell_draw_p)
@@ -2330,6 +2330,21 @@
 				gcopy BUFFER_INF, 1440 - cell_draw_hp_bar, 500, cell_draw_hp_bar, 3
 				if ( cdata(CDATA_HUNGER, cell_draw_arg_c) > 10000 ) {
 					gcopy BUFFER_INF, 1440 - cell_draw_hp_bar, 595, cell_draw_hp_bar, 3
+				}
+				// Draw the command shield icons.
+				// base x: 9,  y: 25
+				// CDATA_IN_TAGTEAM == 1:	x + 13
+				if ( cdata(CDATA_DIRECTIVE_MODE, cell_draw_arg_c) == DIRECTIVE_MODE_DEFENSIVE ) {
+					pos cell_draw_arg_dx + 9 + locvar_draw_cell_tagyshift * 13, cell_draw_arg_dy + 25
+					gcopy BUFFER_INF, 1410, 517, 9, 6
+				}
+				if ( cdata(CDATA_DIRECTIVE_MODE, cell_draw_arg_c) == DIRECTIVE_MODE_INTERCEPT ) {
+					pos cell_draw_arg_dx + 9 + locvar_draw_cell_tagyshift * 13, cell_draw_arg_dy + 25
+					gcopy BUFFER_INF, 1420, 517, 9, 6
+				}
+				if ( cdata(CDATA_DIRECTIVE_MODE, cell_draw_arg_c) == DIRECTIVE_MODE_TALKING ) {
+					pos cell_draw_arg_dx + 9 + locvar_draw_cell_tagyshift * 13, cell_draw_arg_dy + 25
+					gcopy BUFFER_INF, 1430, 517, 9, 6
 				}
 			}
 			else {

@@ -319,30 +319,30 @@
 		return
 	}
 	locvar_cell_refresh_p = 0
-	map(cell_refresh_x, cell_refresh_y, 4) = 0
-	map(cell_refresh_x, cell_refresh_y, 9) = 0
+	map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS) = 0
+	map(cell_refresh_x, cell_refresh_y, MAP_LIGHT_TYPE) = 0
 	inv_getheader -1
 	repeat invrange, invhead
 		if ( inv(INV_ITEM_NUM, cnt) > 0 ) {
 			if ( inv(INV_ITEM_X, cnt) == cell_refresh_x & inv(INV_ITEM_Y, cnt) == cell_refresh_y ) {
 				floorstack(locvar_cell_refresh_p) = cnt
 				locvar_cell_refresh_p++
-				wpoke map(cell_refresh_x, cell_refresh_y, 4), 0, inv(INV_ITEM_PIC, cnt)
-				wpoke map(cell_refresh_x, cell_refresh_y, 4), 2, inv(INV_ITEM_COL, cnt)
+				wpoke map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS), 0, inv(INV_ITEM_PIC, cnt)
+				wpoke map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS), 2, inv(INV_ITEM_COL, cnt)
 				if ( ilight(inv(INV_ITEM_ID, cnt)) != LIGHT_TYPE_NONE ) {
-					map(cell_refresh_x, cell_refresh_y, 9) = ilight(inv(INV_ITEM_ID, cnt))
+					map(cell_refresh_x, cell_refresh_y, MAP_LIGHT_TYPE) = ilight(inv(INV_ITEM_ID, cnt))
 				}
 				/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - BEGINNING *********/
 				if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_OMAKE_CUSTOM_ITEM & inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cnt) < useritemmax & useritemmax > 0 ) {
-					map(cell_refresh_x, cell_refresh_y, 9) = useritemdata(13, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cnt))
+					map(cell_refresh_x, cell_refresh_y, MAP_LIGHT_TYPE) = useritemdata(13, inv(INV_ITEM_OMAKE_CUSTOM_ITEM_ID, cnt))
 				}
 				/********** JAMES CUSTOM - DISPLAY CUSTOM ITEM FROM OMAKE - ENDING *********/
 			}
 		}
 	loop
 	if ( locvar_cell_refresh_p > 3 ) {
-		wpoke map(cell_refresh_x, cell_refresh_y, 4), 0, 363
-		wpoke map(cell_refresh_x, cell_refresh_y, 4), 2, 0
+		wpoke map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS), 0, 363
+		wpoke map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS), 2, 0
 	}
 	else {
 		if ( locvar_cell_refresh_p > 1 ) {
@@ -367,15 +367,15 @@
 					}
 				loop
 			loop
-			map(cell_refresh_x, cell_refresh_y, 4) = floorstack(locvar_cell_refresh_n(0)) - RANGE_INV2
-			map(cell_refresh_x, cell_refresh_y, 4) += (floorstack(locvar_cell_refresh_n(1)) - RANGE_INV2) * 1000
+			map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS) = floorstack(locvar_cell_refresh_n(0)) - RANGE_INV2
+			map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS) += (floorstack(locvar_cell_refresh_n(1)) - RANGE_INV2) * 1000
 			if ( locvar_cell_refresh_p > 2 ) {
-				map(cell_refresh_x, cell_refresh_y, 4) += (floorstack(locvar_cell_refresh_n(2)) - RANGE_INV2) * 1000000
+				map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS) += (floorstack(locvar_cell_refresh_n(2)) - RANGE_INV2) * 1000000
 			}
 			else {
-				map(cell_refresh_x, cell_refresh_y, 4) += 999 * 1000000
+				map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS) += 999 * 1000000
 			}
-			map(cell_refresh_x, cell_refresh_y, 4) *= -1
+			map(cell_refresh_x, cell_refresh_y, MAP_ITEM_CHIPS) *= -1
 		}
 	}
 	return
@@ -2131,7 +2131,7 @@
 	}
 	if ( locvar_itemowner_a == FILTER_CONTAINER ) {
 		if ( inv(INV_ITEM_PARAM1, itemname_itemid) != 0 ) {
-			if ( inv(INV_ITEM_PARAM2, itemname_itemid) != 0 ) {
+			if ( inv(INV_ITEM_PARAM2, itemname_itemid) > 1 ) {
 				if ( inv(INV_ITEM_ID, itemname_itemid) != ITEM_ID_CARD_PACK & inv(INV_ITEM_ID, itemname_itemid) != ITEM_ID_MYSTERIOUS_ENVELOPE ) {
 					locvar_itemowner_s += lang(" Lock-Lv", " Lock-Lv. ") + inv(INV_ITEM_PARAM2, itemname_itemid)
 				}

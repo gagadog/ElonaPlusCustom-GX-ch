@@ -607,8 +607,15 @@
 #define global	SKILL_SPACT_GOD_CHARGE_ROD	855
 #define global	SKILL_SPACT_JUMPING_DROP	856
 #define global	SKILL_SPACT_DIVING_DRILL	857
+#define global	SKILL_SPACT_SAINT_BLADE	858
+#define global	SKILL_SPACT_PURIFICATION	859
+#define global	SKILL_SPACT_ANGEL_HALO	860
+#define global	SKILL_SPACT_REPRIMAND	861
+#define global	SKILL_SPACT_SHIKIORIGAMI_CRANE	862
+#define global	SKILL_SPACT_SHIKIORIGAMI_SHURIKEN	863
+#define global	SKILL_SPACT_SHIKIORIGAMI_AIRPLANE	864
 
-#define global	MAX_SKILL	(SKILL_SPACT_DIVING_DRILL + 1)
+#define global	MAX_SKILL	(SKILL_SPACT_SHIKIORIGAMI_AIRPLANE + 1)
 
 // Absolute skill limits
 #define global	MAX_SPACT_COUNT	500 // Maximum number of spact slots available in the array, beginning at STARTING_SKILL_SPACT, meaning the effective max skillid is 1099 (1100 if you really push it)
@@ -829,6 +836,7 @@
 #define global	DAMAGE_FROM_PERSUASION_HIGH	-31
 #define global	DAMAGE_FROM_JALDABAOTH	-32
 #define global	DAMAGE_FROM_JALDABAOTH_SHIELDED	-33
+#define global	DAMAGE_FROM_REMNANT	-34
 
 #define global	DAMAGE_FROM_CARD_GAME	-10000
 
@@ -3254,6 +3262,17 @@
 #define global	MEF_TYPE_OCEAN_SHIP	10
 #define global	MEF_TYPE_OCEAN_DRIFTERS	11
 #define global	MEF_TYPE_OCEAN_BIG_CATCH	12
+#define global	MEF_TYPE_REMNANT_FIRE	13
+#define global	MEF_TYPE_REMNANT_COLD	14
+#define global	MEF_TYPE_REMNANT_LIGHTNING	15
+#define global	MEF_TYPE_REMNANT_DARKNESS	16
+#define global	MEF_TYPE_REMNANT_MIND	17
+#define global	MEF_TYPE_REMNANT_POISON	18
+#define global	MEF_TYPE_REMNANT_NETHER	19
+#define global	MEF_TYPE_REMNANT_SOUND	20
+#define global	MEF_TYPE_REMNANT_NERVE	21
+#define global	MEF_TYPE_REMNANT_CHAOS	22
+#define global	MEF_TYPE_REMNANT_MAGIC	23
 
 // Areas
 #define global	MAX_AREA_COUNT	500
@@ -3557,6 +3576,7 @@
 #define global	GOD_KUMIROMI	7
 #define global	GOD_YACATECT	8
 
+#define global	GOD_TEXT_DREAM	0
 #define global	GOD_TEXT_BETRAY	1
 #define global	GOD_TEXT_TAKE_OVER	2
 #define global	GOD_TEXT_TAKE_OVER_FAIL	3
@@ -5931,8 +5951,9 @@
 #define global	ITEM_ID_DEED_CAMP	1296
 #define global	ITEM_ID_SPLENDID_CHAIN	1297
 #define global	ITEM_ID_TOIL_ENERGY_DRINK	1298
+#define global	ITEM_ID_POTION_PLUG	1299
 
-#define global	MAX_ITEM_ID	(ITEM_ID_TOIL_ENERGY_DRINK + 3)
+#define global	MAX_ITEM_ID	(ITEM_ID_POTION_PLUG + 3)
 
 // Creatures
 #define global	CREATURE_ID_BUG	0 // Also doubles as RANDOM
@@ -7048,8 +7069,11 @@
 #define global	CREATURE_ID_RESTOROID_DIRE_WOLF	1110
 #define global	CREATURE_ID_RESTOROID_SABER_TIGER	1111
 #define global	CREATURE_ID_RESTOROID_KAPPA	1112
+#define global	CREATURE_ID_KAMIORIDURU	1113
+#define global	CREATURE_ID_KAMISHURIKEN	1114
+#define global	CREATURE_ID_KAMIHIKOUKI	1115
 
-#define global	MAX_CREATURE_ID	(CREATURE_ID_RESTOROID_KAPPA + 3)
+#define global	MAX_CREATURE_ID	(CREATURE_ID_KAMIHIKOUKI + 3)
 
 // Buffer
 #define global	BUFFER_SCREEN	0

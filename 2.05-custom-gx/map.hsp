@@ -546,6 +546,8 @@
 		}
 		cdata(CDATA_GUARD_BREAK, cnt) = 0
 		gdata(GDATA_FLAG_MINEFIELD_QUEST_LEVEL) = 0
+		sandturn = 0
+		sanddmg = 0
 		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 			continue
 		}
@@ -1234,7 +1236,7 @@
 	repeat mdata(MDATA_HEIGHT)
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
-			map(cnt, y, 7) = 0
+			map(cnt, y, MAP_BLOOD_AND_DEBRIS) = 0
 		loop
 	loop
 	fmode = 2
@@ -1359,7 +1361,7 @@
 			y = cnt
 			repeat mdata(MDATA_WIDTH)
 				x = cnt
-				if ( map(x, y, 6) / 1000 \ 100 == 32 ) {
+				if ( map(x, y, MAP_FEATS_ON_TILE) / 1000 \ 100 == 32 ) {
 					if ( maxmedal < 30 ) {
 						medalbk(0, maxmedal) = x, y
 						maxmedal++
@@ -1426,7 +1428,7 @@
 			y = cnt
 			repeat mdata(MDATA_WIDTH)
 				x = cnt
-				map(x, y, 1) = 0
+				map(x, y, MAP_CHARA_INDEX_PLUS_ONE) = 0
 			loop
 		loop
 		importmode = 0
@@ -1601,7 +1603,7 @@
 		repeat mdata(MDATA_HEIGHT)
 			p = cnt
 			repeat mdata(MDATA_WIDTH)
-				map(cnt, p, 0) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
+				map(cnt, p, MAP_TILE_ID) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
 			loop
 		loop
 		map_placeplayer
@@ -3515,7 +3517,7 @@
 		repeat mdata(MDATA_HEIGHT)
 			p = cnt
 			repeat mdata(MDATA_WIDTH)
-				map(cnt, p, 0) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
+				map(cnt, p, MAP_TILE_ID) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
 			loop
 		loop
 		mdatan(MDATAN_NAME) = ""
@@ -8998,7 +9000,7 @@
 		repeat mdata(MDATA_HEIGHT)
 			y = cnt
 			repeat mdata(MDATA_WIDTH)
-				map(cnt, y, 2) = map(cnt, y, 0)
+				map(cnt, y, MAP_TILE_ID_MEMORY) = map(cnt, y, MAP_TILE_ID)
 			loop
 		loop
 	}
@@ -9032,10 +9034,10 @@
 								if ( x < 0 | y < 0 | x >= mdata(MDATA_WIDTH) | y >= mdata(MDATA_HEIGHT) ) {
 									continue
 								}
-								if ( range_tileRoad(map(x, y, 0)) ) {
+								if ( range_tileRoad(map(x, y, MAP_TILE_ID)) ) {
 									continue
 								}
-								if ( map(x, y, 0) > 16 ) {
+								if ( map(x, y, MAP_TILE_ID) > 16 ) {
 									continue
 								}
 								i = 1
@@ -9393,7 +9395,7 @@
 		repeat mdata(MDATA_HEIGHT)
 			y = cnt
 			repeat mdata(MDATA_WIDTH)
-				map(cnt, y, 1) = 0
+				map(cnt, y, MAP_CHARA_INDEX_PLUS_ONE) = 0
 			loop
 		loop
 		repeat MAX_CHARA_TOTAL
@@ -12246,11 +12248,11 @@
 					repeat mdata(MDATA_HEIGHT)
 						y = cnt
 						repeat mdata(MDATA_WIDTH)
-							if ( map(cnt, y, 0) != 0 ) {
+							if ( map(cnt, y, MAP_TILE_ID) != 0 ) {
 								cell_featread cnt, y
 								x = cnt
 								gosub *mapchip_init
-								if ( chipm(CHIPM_ROLE, map(x, y, 0)) == MAP_CHIP_ROLE_COMPOST ) {
+								if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == MAP_CHIP_ROLE_COMPOST ) {
 									cell_itemlist x, y
 									f = 0
 									repeat listmax
@@ -12289,7 +12291,7 @@
 				repeat mdata(MDATA_HEIGHT)
 					y = cnt
 					repeat mdata(MDATA_WIDTH)
-						if ( map(cnt, y, 6) != 0 ) {
+						if ( map(cnt, y, MAP_FEATS_ON_TILE) != 0 ) {
 							cell_featread cnt, y
 							if ( feat(1) >= CELL_FEATURE_SAMPLING_SPOT_DETECTION & feat(1) <= CELL_FEATURE_SAMPLING_SPOT_GARDENING ) {
 								cell_featclear cnt, y
@@ -12434,7 +12436,7 @@
 			repeat mdata(MDATA_HEIGHT)
 				y = cnt
 				repeat mdata(MDATA_WIDTH)
-					if ( map(cnt, y, 6) != 0 ) {
+					if ( map(cnt, y, MAP_FEATS_ON_TILE) != 0 ) {
 						cell_featread cnt, y
 						x = cnt
 						if ( feat(1) == CELL_FEATURE_PLANTED_SEED ) {
@@ -12443,7 +12445,7 @@
 									break
 								}
 								gosub *mapchip_init
-								if ( chipm(CHIPM_ROLE, map(x, y, 0)) == MAP_CHIP_ROLE_CROP ) {
+								if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == MAP_CHIP_ROLE_CROP ) {
 									val = 1
 								}
 								else {
@@ -12881,13 +12883,13 @@
 				if ( x <= 0 | y <= 0 | x >= mdata(MDATA_WIDTH) - 1 | y >= mdata(MDATA_HEIGHT) - 1 ) {
 					continue
 				}
-				if ( range_tileRoad(map(x, y, 0)) ) {
+				if ( range_tileRoad(map(x, y, MAP_TILE_ID)) ) {
 					continue
 				}
-				if ( chipm(CHIPM_ATTRIB, map(x, y, 0)) & CHIPM_ATTRIB_CANT_PASS ) {
+				if ( chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS ) {
 					continue
 				}
-				if ( map(x, y, 6) != 0 ) {
+				if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
 					continue
 				}
 				adata(ADATA_X, p) = x
@@ -12923,7 +12925,7 @@
 			else {
 				map(x, y, MAP_FEATS_ON_TILE) = 0
 			}
-			map(x, y, 9) = 0
+			map(x, y, MAP_LIGHT_TYPE) = 0
 		loop
 	loop
 	return
@@ -14460,13 +14462,13 @@
 			if ( x <= 5 | y <= 5 | x >= mdata(MDATA_WIDTH) - 6 | y >= mdata(MDATA_HEIGHT) - 6 ) {
 				continue
 			}
-			if ( range_tileRoad(map(x, y, 0)) ) {
+			if ( range_tileRoad(map(x, y, MAP_TILE_ID)) ) {
 				continue
 			}
-			if ( map(x, y, 0) > 16 ) {
+			if ( map(x, y, MAP_TILE_ID) > 16 ) {
 				continue
 			}
-			if ( map(x, y, 6) \ 1000 != 0 ) {
+			if ( map(x, y, MAP_FEATS_ON_TILE) \ 1000 != 0 ) {
 				continue
 			}
 			p = 1
@@ -14552,7 +14554,7 @@
 		adata(ADATA_RESTORE_POS, p) = 0
 		adata(ADATA_BOSS, p) = 0
 		adata(ADATA_NAME, p) = rnd(length(mapnamerd))
-		map(x, y, 6) = 1
+		map(x, y, MAP_FEATS_ON_TILE) = 1
 		if ( adata(ADATA_TYPE, p) == MAP_TYPE_DUNGEON ) {
 			adata(ADATA_ICON, p) = xy2pic(1, 4)
 			adata(ADATA_TILESET, p) = 0

@@ -67,7 +67,7 @@
 	_sleep = lang("睡眠可", "Sleepy"), lang("要睡眠", "Need Sleep"), lang("要睡眠", "Need Sleep!")
 	_consick = lang("病　気", "Sick"), lang("重　病", "Very Sick")
 	_conpoison = lang("　毒", "Poisoned"), lang("猛　毒", "Poisoned Bad!")
-	_conmpoison = lang("魔　漏", "MPoison"), lang("放　出", "Emission")
+	_conmpoison = lang("侵　蝕", "Erosion")
 	_condim = lang("朦　朧", "Dim"), lang("混　濁", "Muddled"), lang("気　絶", "Unconscious")
 	_conangry = lang("激　怒", "Fury"), lang("狂　乱", "Berserk")
 	_conroudou = lang("労　働", "T-Energy")
@@ -348,6 +348,35 @@
 		return
 	}
 	s = lang("目隠しして座っていても勝てる。", "You can absolutely beat " + him2(tc) + " with your eyes closed and arms crossed.")
+	return
+
+#deffunc txttargetsex
+	if ( cdatan(CDATAN_NEWSEX, tc) == lang("両性具有", "hermaphorodite") ) {
+		s = lang("両性具有", "hermaphorodite")
+	}
+	if ( cdatan(CDATAN_NEWSEX, tc) == lang("なし", "none") ) {
+		s = lang("性別不明", "unknown")
+	}
+	if ( cdatan(CDATAN_NEWSEX, tc) == lang("男性", "male") ) {
+		s = lang("男性", "male")
+	}
+	if ( cdatan(CDATAN_NEWSEX, tc) == lang("女性", "female") ) {
+		s = lang("女性", "female")
+	}
+	if ( cdatan(CDATAN_NEWSEX, tc) == lang("自称男性", "male?") ) {
+		s = lang("自称男性", "male?")
+	}
+	if ( cdatan(CDATAN_NEWSEX, tc) == lang("自称女性", "female?") ) {
+		s = lang("自称女性", "female?")
+	}
+	if ( cdatan(CDATAN_NEWSEX, tc) == "" ) {
+		if ( cdata(CDATA_SEX, tc) == 0 ) {
+			s = cnven(strmale)
+		}
+		else {
+			s = cnven(strfemale)
+		}
+	}
 	return
 
 #deffunc txttargetsp
@@ -1598,7 +1627,7 @@
 			s(cnt) = lang("審美眼[交換レート上昇]", "Aesthetic Sense [Increase Exchange Rate]")
 		}
 		if ( p(cnt) == 3 ) {
-			s(cnt) = lang("独自販売[毎日独自に稼ぐ]", "Independent [Earns Gold Passively]")
+			s(cnt) = lang("調達[独自の稼ぎ増加]", "TraitProcurement")
 		}
 		if ( p(cnt) == 4 ) {
 			s(cnt) = lang("提携力[同行時に売買強化]", "Strong Ties [Increases Sell Value When In Party]")
@@ -10326,7 +10355,7 @@
 			txt lang("「いいぞ」", cnvtalk("Nice kill.")), lang("「分解してみたくならないか？」", cnvtalk("Don't you want to decompose it?")), lang("「その魂なら質の良い機械が組めそうだ」", cnvtalk("Ah, this soul could be a good component for a new machine."))
 		}
 		if ( txtgod_godid == GOD_LULWY ) {
-			txt lang("「不潔ね。血を拭いなさいよ」", cnvtalk("How dirty. Wipe the blood off your hands.")), lang("「アハハ！ミンチミンチィ！」", cnvtalk("Aha! Mince! Mince!.")), lang("「まあ、いけない子猫ちゃん」", cnvtalk("Bad kitty."))
+			txt lang("「不潔ね。血を拭いなさいよ」", cnvtalk("How dirty. Wipe the blood off your hands.")), lang("「アハハ！ミンチミンチィ！」", cnvtalk("Aha! Mince! Mince!")), lang("「まあ、いけない子猫ちゃん」", cnvtalk("Bad kitty."))
 		}
 		if ( txtgod_godid == GOD_ITZPALT ) {
 			txt lang("「なかなかのものだ」", cnvtalk("Impressive.")), lang("「そして魂は元素へと還る」", cnvtalk("And so the soul returns to the element.")), lang("「高らかに我が名を唱えよ。屍に炎と安息を」", cnvtalk("Chant my name proudly. Flame and eternal rest for the dead."))
@@ -10338,13 +10367,39 @@
 			txt lang("「フハハハ！」", cnvtalk("Mwahaha!")), lang("「逝け！逝け！フハハハッ！」", cnvtalk("Die! Die! Mwahahaha!")), lang("「フハーン！」", cnvtalk("Muhan!"))
 		}
 		if ( txtgod_godid == GOD_JURE ) {
-			txt lang("「や、やるじゃない」", cnvtalk("N-Not bad, for you")), lang("「や、やめてよ。気持ち悪い」", cnvtalk("S-Stop it. Disgusting...")), lang("「こっち来ないで！」", cnvtalk("Don't look at me!"))
+			txt lang("「や、やるじゃない」", cnvtalk("N-Not bad, for you.")), lang("「や、やめてよ。気持ち悪い」", cnvtalk("S-Stop it. Disgusting...")), lang("「こっち来ないで！」", cnvtalk("Don't look at me!"))
 		}
 		if ( txtgod_godid == GOD_YACATECT ) {
 			txt lang("「ああ〜もったいないわぁ」", cnvtalk("Aah, what a waste...")), lang("「ようやった！お姉ちゃん感激やで」", cnvtalk("You did it! I'm inspired by you~!")), lang("「じぶん、なかなかやるなぁ」", cnvtalk("We're pretty good..."))
 		}
 		if ( txtgod_godid == GOD_KUMIROMI ) {
 			txt lang("「汚れたね」", cnvtalk("You got dirty.")), lang("「ほどほどに」", cnvtalk("Don't kill too much.")), lang("「…これが…君の望んでいた結果？」", cnvtalk("...are you satisfied now?"))
+		}
+	}
+	if ( txtgod_flavor == GOD_TEXT_DREAM ) {
+		if ( txtgod_godid == GOD_MANI ) {
+			txt lang("「スリープ状態の意識にアクセスしてみたが…ふむ」", cnvtalk("Do androids dream of electric sheep?")), lang("「夢か。私にもそんなものを見ていた頃があったな…」", cnvtalk("There was a time when I was dreaming too...")), lang("「まだ脳のデフラグが終わらないのか」", cnvtalk("Haven't you finished defragmenting your brain yet?"))
+		}
+		if ( txtgod_godid == GOD_LULWY ) {
+			txt lang("「夢だからメチャクチャにしてもいいわよね」", cnvtalk("It's a dream, so no safe words, alright?")), lang("「アハハ！休息は楽しめているかしら？」", cnvtalk("Aha! Are you enjoying your break?")), lang("「生きたままシルフ達に食われる夢へ変えてやってもいいのよ」", cnvtalk("Shall I add some hungry sylphs to your dream?"))
+		}
+		if ( txtgod_godid == GOD_ITZPALT ) {
+			txt lang("「…魔法を授けに来たわけではない」", cnvtalk("...I did not bring a spell, but a blessing.")), lang("「汝、深き眠りの異界を目指すのならば一切の畏れを捨てよ」", cnvtalk("If you want to reach the otherworld of deep sleep, throw away all fear.")), lang("「夢幻の中にあっても高らかに我が名を唱えよ」", cnvtalk("Chant my name proudly even in a dream."))
+		}
+		if ( txtgod_godid == GOD_EHEKATL ) {
+			txt lang("「あそぼ！あそぼ！」", cnvtalk("Let's play! Play!")), lang("「紫色の羊さんには気をつけてね！てね！」", cnvtalk("Be careful of the purple sheep! Sheep!")), lang("「うっみゅーん！寝てるの？本当に寝てるの？」", cnvtalk("Meooow? Are you sleeping? Are you really sleeping?"))
+		}
+		if ( txtgod_godid == GOD_OPATOS ) {
+			txt lang("「フハハハ！付いて来たぞぉ、夢の中までも！」", cnvtalk("Muwahaha! I've come here, in your dreams!")), lang("「フゥハハハハーッ！胸を貸そう」", cnvtalk("Mwahahaha! Dream wrestling time!")), lang("「フハー！ドリーム・イメージトレーニングの時間だっ」", cnvtalk("Muha! It's time for dream image training."))
+		}
+		if ( txtgod_godid == GOD_JURE ) {
+			txt lang("「なによ…ジロジロ見ないで！」", cnvtalk("What...don't stare at me!")), lang("「ち、ちゃんと寝てるか確認しに来ただけなんだから！」", cnvtalk("I was just making sure you were sleeping properly!")), lang("「深い眠りで心と体を癒しなさいよ」", cnvtalk("Heal your body and mind with deep sleep."))
+		}
+		if ( txtgod_godid == GOD_YACATECT ) {
+			txt lang("「どぉも！夢の中まで見回りヤカちゃんやで〜」", cnvtalk("Do-mo! Yaca-chan patrols even in your dreams~.")), lang("「ちゃんと休んどるやん。よしよーし」", cnvtalk("You're resting properly. Okay, okay.")), lang("「ねぇんねん〜ころりよ〜♪おこぉろ〜りよ〜♪」", cnvtalk("Twinkle twinkle little coin~ How I wonder where you are..."))
+		}
+		if ( txtgod_godid == GOD_KUMIROMI ) {
+			txt lang("「今…君の寝顔も見ているよ…」", cnvtalk("Now... I'm watching your sleeping face...")), lang("「ねぇ…夢でも…逢えたね…」", cnvtalk("Hey...even in a dream...we met...")), lang("「…眠っていたら抵抗できない…よね？」", cnvtalk("...If you're asleep, you can't resist...right?"))
 		}
 	}
 	if ( txtgod_flavor == GOD_TEXT_SLEEP ) {

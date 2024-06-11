@@ -1,4 +1,43 @@
 *db_card
+	if ( dbid == CREATURE_ID_KAMIHIKOUKI ) {
+		cardreftype = 10
+		cardrefskill = lang("低級の神や精霊を宿らせた折り紙。横風を受けようがまっすぐに飛んでいく。先端が刺さるとちょっと痛いなんてものではなく、魔力を集中させて爆発するのでとても危険。", "Origami paper in which minor deities or spirits dwell. It flies straight ahead regardless of the crosswind. The tip is not only a little painful when it stings, but also very dangerous because it explodes when it concentrates magic power.")
+		cardrefdomain = 6
+		cardrefrare = 60
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("紙風飛行機", "kamihikouki")
+		cardrefpic = xy2pic(27, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1115 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_KAMISHURIKEN ) {
+		cardreftype = 10
+		cardrefskill = lang("低級の神や精霊を宿らせた折り紙。端がノコギリのようにギザギザになっており、皮膚を切り裂き血を吸い上げる構造。高速で回転しながら飛んでいくので危険。", "Origami paper in which minor deities or spirits dwell. It has jagged edges like a hacksaw, and is designed to cut through the skin and suck up blood. It flies while spinning at high speed, making it dangerous.")
+		cardrefdomain = 6
+		cardrefrare = 60
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("荒紙手裏剣", "kamishuriken")
+		cardrefpic = xy2pic(26, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1114 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_KAMIORIDURU ) {
+		cardreftype = 10
+		cardrefskill = lang("低級の神や精霊を宿らせた折り紙。不思議な動きと魔術で相手を惑わせたり、大量に送りつけることで保管や処分に想像以上のコストをかけさせることが可能。", "Origami paper in which minor deities or spirits dwell. It uses illusionary movements and magic to bewitch opponents, and can be dispatched in large quantities causing them to incur unimaginable costs for storage and disposal.")
+		cardrefdomain = 6
+		cardrefrare = 60
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("幻惑折鶴", "kamioriduru")
+		cardrefpic = xy2pic(25, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1113 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
 	if ( dbid == CREATURE_ID_RESTOROID_KAPPA ) {
 		cardreftype = 10
 		cardrefskill = lang("水質汚染で数が減っていたところをキュウリ農家に駆除され、野生の個体は絶滅。寿司屋に捕まって地下で強制労働させられていた個体も、過酷な労働環境には耐えられなかった。皿も奪われて店の食器にされていたらしい。", "Extinct from the wild, when their numbers were declining due to water pollution, they were exterminated by cucumber farmers. Individuals caught by sushi restaurants and forced to work underground could not withstand the harsh working conditions. They were also apparently robbed of their plates and used as shop crockery.")

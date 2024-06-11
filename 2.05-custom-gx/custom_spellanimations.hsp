@@ -453,7 +453,7 @@
                             continue
                         }
                     }
-                    if ( (map(anidx, anidy, 1) == 0) & ((chipm(CHIPM_ATTRIB, map(anidx, anidy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0) ) {
+                    if ( (map(anidx, anidy, MAP_CHARA_INDEX_PLUS_ONE) == 0) & ((chipm(CHIPM_ATTRIB, map(anidx, anidy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0) ) {
                         continue
                     }
                     if ( anix == anidx & aniy == anidy ) {

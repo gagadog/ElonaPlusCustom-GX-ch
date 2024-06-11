@@ -1,3 +1,21 @@
+# 2.23.1.0
+
+# Added
+- Ported all changes from Elona+ 2.23.
+
+# Fixed
+- Fixed inconsistent CNPC card name/pic upon leaving showroom. Fix "_tmp_" card names.
+- Omake showroom: Deep water tiles not displaying.
+- Custom AI: Jumping drop and Diving drill not selectable.
+
+# TCG Change
+- Added character pic to TCG interface.
+- Added discover mechanics. Changed Yonorne's effect for that.
+- Added CNPC cards (via discover). Changed Arma's effect for that.
+- Buffed the Eleas.
+- Fixed Lethal generating blank cards / generating cards when target's not dead.
+- Fixed Maid/Hardgay/Lankata/Alfred effect not firing correctly.
+
 # 2.22.3.2
 
 # Added

@@ -963,6 +963,9 @@
 							inv(INV_ITEM_PARTS, ci) += 10
 						}
 					}
+					// Ano fixed back slot not generating by reversing the back and body slot.
+					// But it's already fixed using modulo (before 2.23 release)
+					// So no changes here.
 					if ( p == 3 ) {
 						if ( inv(INV_ITEM_PARTS, ci) \ 1000 < 100 ) {
 							inv(INV_ITEM_PARTS, ci) += 100
@@ -2106,7 +2109,7 @@
 			if ( val(1) == (-1) ) {
 				sx = rnd(mdata(MDATA_WIDTH) - 2) + 2
 				sy = rnd(mdata(MDATA_HEIGHT) - 2) + 2
-				if ( map(sx, sy, 4) != 0 ) {
+				if ( map(sx, sy, MAP_ITEM_CHIPS) != 0 ) {
 					continue
 				}
 			}
@@ -2131,12 +2134,12 @@
 					break
 				}
 			}
-			if ( map(sx, sy, 6) != 0 ) {
-				if ( map(sx, sy, 6) / 1000 \ 100 == 22 | map(sx, sy, 6) / 1000 \ 100 == 20 | map(sx, sy, 6) / 1000 \ 100 == 21 ) {
+			if ( map(sx, sy, MAP_FEATS_ON_TILE) != 0 ) {
+				if ( map(sx, sy, MAP_FEATS_ON_TILE) / 1000 \ 100 == 22 | map(sx, sy, MAP_FEATS_ON_TILE) / 1000 \ 100 == 20 | map(sx, sy, MAP_FEATS_ON_TILE) / 1000 \ 100 == 21 ) {
 					continue
 				}
 			}
-			if ( (chipm(CHIPM_ATTRIB, map(sx, sy, 0)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
+			if ( (chipm(CHIPM_ATTRIB, map(sx, sy, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) == 0 ) {
 				p = 1
 				inv(INV_ITEM_X, ci) = sx
 				inv(INV_ITEM_Y, ci) = sy

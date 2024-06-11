@@ -689,7 +689,7 @@
 	encDisp ENCHANT_BANE_DRAGON,                  4, lang("竜族に対して強力な威力を発揮する", "inflicts massive damage to dragons."), val(1) / 50
 	encDisp ENCHANT_BANE_UNDEAD,                  4, lang("不死者に対して強力な威力を発揮する", "inflicts massive damage to undeads."), val(1) / 50
 	encDisp ENCHANT_BANE_FLYING,                  4, lang("空中の敵に対して威力を発揮する", "inflicts massive damage to enemy in flight."), val(1) / 50
-	encDisp ENCHANT_SHOW_RELIGION,                4, lang("他者の信仰を明らかにする", "reveals religion.")
+	encDisp ENCHANT_SHOW_RELIGION,                4, lang("信仰の深さの自然減少を防ぐ", "prevents the natural decline in Piety.")
 	encDisp ENCHANT_DRUNK_LISTENER,               4, lang("深い音色で聴衆を酔わす", "makes audience drunk with haunting tones.")
 	encDisp ENCHANT_BANE_GOD,                     4, lang("神に対して強力な威力を発揮する", "inflicts massive damage to gods."), val(1) / 50
 	encDisp ENCHANT_REFLECT_MAGIC,                4, lang("魔法攻撃された時、相手にその属性のダメージを与える", "deals magic damage to the magic attacker."), val(1) / 50

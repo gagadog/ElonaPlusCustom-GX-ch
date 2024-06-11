@@ -4,7 +4,106 @@
 	}
 	dbsum = 0
 	dbmax = 0
-// *db_creature_RESTOROID_RESTOROID_KAPPA
+// *db_creature_KAMIHIKOUKI
+	if ( 5 > objlv ) {
+		goto *db_creature_KAMISHURIKEN
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_KAMISHURIKEN
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_KAMISHURIKEN
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "spirit" ) {
+			goto *db_creature_KAMISHURIKEN
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_KAMIHIKOUKI + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_KAMISHURIKEN
+		}
+	}
+	dbsum += 60000 / (500 + abs(objlv - 5) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_KAMIHIKOUKI, dbsum
+	dbmax++
+
+*db_creature_KAMISHURIKEN
+	if ( 4 > objlv ) {
+		goto *db_creature_KAMIORIDURU
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_KAMIORIDURU
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_KAMIORIDURU
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "spirit" ) {
+			goto *db_creature_KAMIORIDURU
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_KAMISHURIKEN + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_KAMIORIDURU
+		}
+	}
+	dbsum += 60000 / (500 + abs(objlv - 4) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_KAMISHURIKEN, dbsum
+	dbmax++
+
+*db_creature_KAMIORIDURU
+	if ( 3 > objlv ) {
+		goto *db_creature_RESTOROID_KAPPA
+	}
+	if ( fltselect != 1 ) {
+		goto *db_creature_RESTOROID_KAPPA
+	}
+	if ( flttypemajor != FILTER_NOTHING ) {
+		if ( flttypemajor != FILTER_NOTHING ) {
+			goto *db_creature_RESTOROID_KAPPA
+		}
+	}
+	if ( fltnrace != "" ) {
+		if ( fltnrace != "spirit" ) {
+			goto *db_creature_RESTOROID_KAPPA
+		}
+	}
+	if ( filtermax != 0 ) {
+		dbtmp = 1
+		repeat filtermax
+			if ( instr(filter_creature(CREATURE_ID_KAMIORIDURU + 2), 0, filtern(cnt)) == (-1) ) {
+				dbtmp = 0
+				break
+			}
+		loop
+		if ( dbtmp == 0 ) {
+			goto *db_creature_RESTOROID_KAPPA
+		}
+	}
+	dbsum += 60000 / (500 + abs(objlv - 3) * 400) + 1
+	dblist(0, dbmax) = CREATURE_ID_KAMIORIDURU, dbsum
+	dbmax++
+
+*db_creature_RESTOROID_KAPPA
 	if ( 31 > objlv ) {
 		goto *db_creature_RESTOROID_SABER_TIGER
 	}
@@ -35748,6 +35847,218 @@
 	return
 
 *db_creature2
+	if ( dbid == CREATURE_ID_KAMIHIKOUKI ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 6
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 60
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("紙風飛行機", "kamihikouki")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "spirit"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1149
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_KAMIHIKOUKI
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 5
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 10
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 0
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = SKILL_SPACT_CLOSE_SUICIDE
+			cdata(CDATA_ACT_INDEX, rc) = 1
+			cdatan(CDATAN_NAME, rc) = lang("紙風飛行機", "kamihikouki")
+			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "spirit"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "warrior"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			sdata(SKILL_RES_FIRE, rc) = 50
+			if ( 0 != 0 ) {
+				sdata(rsres0, rc) = 50
+			}
+			if ( 0 != 0 ) {
+				sdata(rsres0, rc) = 50
+			}
+			cdata(CDATA_PIC, rc) = xy2pic(27, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_KAMISHURIKEN ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 6
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 60
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("荒紙手裏剣", "kamishuriken")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "spirit"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1148
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_KAMISHURIKEN
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 4
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 10
+			cdata(CDATA_AI_DISTANCE, rc) = 1
+			cdata(CDATA_AI_SUB, rc) = 0
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = SKILL_SPACT_CLASH_RUSH
+			cdata(CDATA_ACT_INDEX, rc) = 1
+			cdatan(CDATAN_NAME, rc) = lang("荒紙手裏剣", "kamishuriken")
+			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "spirit"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "predator"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			cdata(CDATA_ELEMENT, rc) = SKILL_RESDMG_CUT * 100000 + 30
+			sdata(SKILL_RES_FIRE, rc) = 50
+			if ( 0 != 0 ) {
+				sdata(rsres0, rc) = 50
+			}
+			if ( 0 != 0 ) {
+				sdata(rsres0, rc) = 50
+			}
+			cdata(CDATA_PIC, rc) = xy2pic(26, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
+	if ( dbid == CREATURE_ID_KAMIORIDURU ) {
+		if ( dbmode == DBMODE_REF_SPEC ) {
+			if ( dbspec == DBSPEC_CHARA_LOOT ) {
+				return 6
+			}
+			if ( dbspec == DBSPEC_CHARA_COL ) {
+				return 0
+			}
+			if ( dbspec == DBSPEC_CHARA_RARE ) {
+				return 60
+			}
+			if ( dbspec == DBSPEC_CHARA_NAME_ORG ) {
+				return lang("幻惑折鶴", "kamioriduru")
+			}
+			if ( dbspec == DBSPEC_CHARA_FILTER ) {
+				return "" + ""
+			}
+			return 0
+		}
+		if ( dbmode == DBMODE_REF ) {
+			dbidn = "spirit"
+			dbmode = DBMODE_REF
+			gosub *db_race
+			cpicref = 1147
+			cpicref += 0 * 1000
+			return
+		}
+		if ( dbmode == DBMODE_SET ) {
+			cdata(CDATA_ID, rc) = CREATURE_ID_KAMIORIDURU
+			if ( initlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = initlv
+			}
+			else {
+				cdata(CDATA_LEVEL, rc) = 3
+			}
+			if ( voidlv != 0 ) {
+				cdata(CDATA_LEVEL, rc) = voidlv * (100 + cdata(CDATA_LEVEL, rc) * 2) / 100
+			}
+			cdata(CDATA_PORTRAIT, rc) = -1
+			cdata(CDATA_AI_CALM, rc) = 1
+			cdata(CDATA_AI_MOVE_FREQ, rc) = 10
+			cdata(CDATA_AI_DISTANCE, rc) = 3
+			cdata(CDATA_AI_SUB, rc) = 5
+			creaturepack = FILTER_NOTHING
+			cdata(STARTING_CDATA_ACT_MAIN, rc) = SKILL_SPELL_MIND_THORN
+			cdata(STARTING_CDATA_ACT_SUB, rc) = SKILL_SPELL_NIGHTMARE
+			cdata(CDATA_ACT_INDEX, rc) = 11
+			cdatan(CDATAN_NAME, rc) = lang("幻惑折鶴", "kamioriduru")
+			cdata(CDATA_RELATION, rc) = RELATION_ENEMY
+			cdata(CDATA_RELATION_ORG, rc) = RELATION_ENEMY
+			cdata(CDATA_ALIGNMENT, rc) = -10000
+			dbidn = "spirit"
+			dbmode = DBMODE_SET
+			gosub *db_race
+			dbidn = "wizard"
+			dbmode = DBMODE_SET
+			gosub *db_class
+			sdata(SKILL_RES_FIRE, rc) = 50
+			if ( 0 != 0 ) {
+				sdata(rsres0, rc) = 50
+			}
+			if ( 0 != 0 ) {
+				sdata(rsres0, rc) = 50
+			}
+			cdata(CDATA_PIC, rc) = xy2pic(25, 34)
+			cdata(CDATA_PIC, rc) += 0 * 1000
+			cspecialeq = 0
+			return
+		}
+		return 0
+	}
 	if ( dbid == CREATURE_ID_RESTOROID_KAPPA ) {
 		if ( dbmode == DBMODE_REF_SPEC ) {
 			if ( dbspec == DBSPEC_CHARA_LOOT ) {
@@ -121722,6 +122033,13 @@
 	// This causes weird bugs in almost every version of CGX, so if you don't want to change every reference to "filter_creature".
 	// Just change filter_creature(bullshit_number) to filter_creature(new_creature_id + 2) like the ones below.
 	// Make sure the filter matches or you will get bugs like fairys spawning in lake dungeons or something.
+
+	filter_creature(CREATURE_ID_KAMIHIKOUKI + 2) = ""
+	HMMBITON cbitorg(CHARA_BIT_FLOAT / 32, CREATURE_ID_KAMIHIKOUKI), CHARA_BIT_FLOAT \ 32
+	filter_creature(CREATURE_ID_KAMISHURIKEN + 2) = ""
+	HMMBITON cbitorg(CHARA_BIT_FLOAT / 32, CREATURE_ID_KAMISHURIKEN), CHARA_BIT_FLOAT \ 32
+	filter_creature(CREATURE_ID_KAMIORIDURU + 2) = ""
+	HMMBITON cbitorg(CHARA_BIT_FLOAT / 32, CREATURE_ID_KAMIORIDURU), CHARA_BIT_FLOAT \ 32
 
 	filter_creature(CREATURE_ID_RESTOROID_KAPPA + 2) = ""
 	filter_creature(CREATURE_ID_RESTOROID_SABER_TIGER + 2) = ""

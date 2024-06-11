@@ -725,13 +725,13 @@
 	repeat mdata(MDATA_HEIGHT)
 		p = cnt
 		repeat mdata(MDATA_WIDTH)
-			map(cnt, p, 0) = 3
+			map(cnt, p, MAP_TILE_ID) = 3
 		loop
 	loop
 	repeat rnd(mdata(MDATA_WIDTH) * mdata(MDATA_HEIGHT) / 30)
 		x = rnd(mdata(MDATA_WIDTH))
 		y = rnd(mdata(MDATA_HEIGHT))
-		map(x, y, 0) = 1
+		map(x, y, MAP_TILE_ID) = 1
 	loop
 	if ( gdata(GDATA_RETURN_AREA) == AREA_NOYEL ) {
 		tile_room = 45, 6
@@ -777,7 +777,7 @@
 	repeat mdata(MDATA_HEIGHT)
 		p = cnt
 		repeat mdata(MDATA_WIDTH)
-			map(cnt, p, 0) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
+			map(cnt, p, MAP_TILE_ID) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
 		loop
 	loop
 	if ( qdata(QDATA_VAR, gdata(GDATA_QUEST_REF)) == 0 ) {
@@ -861,8 +861,8 @@
 	repeat 70 + rnd(20)
 		x = rnd(mdata(MDATA_WIDTH))
 		y = rnd(mdata(MDATA_HEIGHT))
-		if ( map(x, y, 0) != 30 & map(x, y, 0) != 31 ) {
-			if ( map(x, y, 4) == 0 ) {
+		if ( map(x, y, MAP_TILE_ID) != 30 & map(x, y, MAP_TILE_ID) != 31 ) {
+			if ( map(x, y, MAP_ITEM_CHIPS) == 0 ) {
 				if ( gdata(GDATA_RETURN_AREA) == AREA_NOYEL ) {
 					if ( rnd(8) ) {
 						flt
@@ -932,7 +932,7 @@
 	repeat mdata(MDATA_HEIGHT)
 		p = cnt
 		repeat mdata(MDATA_WIDTH)
-			map(cnt, p, 0) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
+			map(cnt, p, MAP_TILE_ID) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
 		loop
 	loop
 	mdatan(MDATAN_NAME) = lang("街周辺の畑", "Farmland")
@@ -993,8 +993,8 @@
 				if ( x >= mdata(MDATA_WIDTH) ) {
 					break
 				}
-				map(x, y, 0) = tile
-				if ( rnd(10) != 0 | map(x, y, 4) != 0 ) {
+				map(x, y, MAP_TILE_ID) = tile
+				if ( rnd(10) != 0 | map(x, y, MAP_ITEM_CHIPS) != 0 ) {
 					continue
 				}
 				if ( rnd(4) ) {
@@ -1022,8 +1022,8 @@
 	repeat 70 + rnd(20)
 		x = rnd(mdata(MDATA_WIDTH))
 		y = rnd(mdata(MDATA_HEIGHT))
-		if ( map(x, y, 0) != 30 & map(x, y, 0) != 31 ) {
-			if ( map(x, y, 4) == 0 ) {
+		if ( map(x, y, MAP_TILE_ID) != 30 & map(x, y, MAP_TILE_ID) != 31 ) {
+			if ( map(x, y, MAP_ITEM_CHIPS) == 0 ) {
 				if ( gdata(GDATA_RETURN_AREA) == AREA_NOYEL ) {
 					if ( rnd(8) ) {
 						flt
@@ -1087,9 +1087,9 @@
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
 			x = cnt
-			map(x, y, 0) = 1
+			map(x, y, MAP_TILE_ID) = 1
 			if ( x > p & y > p & x + 1 < mdata(MDATA_WIDTH) - p & y + 1 < mdata(MDATA_HEIGHT) - p ) {
-				map(x, y, 0) = 100
+				map(x, y, MAP_TILE_ID) = 100
 			}
 		loop
 	loop
@@ -1117,7 +1117,7 @@
 			y = p + cnt
 			repeat mdata(MDATA_WIDTH) - p * 2
 				x = p + cnt
-				map(x, y, 0) = 1
+				map(x, y, MAP_TILE_ID) = 1
 			loop
 		loop
 	}
@@ -1134,9 +1134,9 @@
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
 			x = cnt
-			map(x, y, 0) = 1
+			map(x, y, MAP_TILE_ID) = 1
 			if ( x > p & y > p & x + 1 < mdata(MDATA_WIDTH) - p & y + 1 < mdata(MDATA_HEIGHT) - p ) {
-				map(x, y, 0) = 100
+				map(x, y, MAP_TILE_ID) = 100
 			}
 		loop
 	loop
@@ -1164,7 +1164,7 @@
 			y = p + cnt
 			repeat mdata(MDATA_WIDTH) - p * 2
 				x = p + cnt
-				map(x, y, 0) = 1
+				map(x, y, MAP_TILE_ID) = 1
 			loop
 		loop
 	}
@@ -1175,7 +1175,7 @@
 	map_initialize
 	dx = mdata(MDATA_WIDTH) / 2
 	dy = mdata(MDATA_HEIGHT) / 2
-	map(dx, dy, 0) = 3
+	map(dx, dy, MAP_TILE_ID) = 3
 	p = 0
 	repeat rdtunnel
 		if ( rnd(rdval(2)) == 0 ) {
@@ -1209,7 +1209,7 @@
 				dy = 1
 			}
 		}
-		map(dx, dy, 0) = 3
+		map(dx, dy, MAP_TILE_ID) = 3
 	loop
 	map_createroom
 	if ( stat == 0 ) {
@@ -1229,7 +1229,7 @@
 		repeat 100
 			x = rnd(mdata(MDATA_WIDTH))
 			y = rnd(mdata(MDATA_HEIGHT))
-			if ( map(x, y, 0) == 3 ) {
+			if ( map(x, y, MAP_TILE_ID) == 3 ) {
 				dx = rnd(rdroomsizemax) + rdroomsizemin
 				dy = rnd(rdroomsizemax) + rdroomsizemin
 				rx = rnd(dx)
@@ -1247,7 +1247,7 @@
 		repeat ry
 			dx = x
 			repeat rx
-				map(dx, dy, 0) = 3
+				map(dx, dy, MAP_TILE_ID) = 3
 				dx++
 			loop
 			dy++
@@ -1267,7 +1267,7 @@
 			if ( x == 0 | y == 0 | x + 1 == mdata(MDATA_WIDTH) | y + 1 == mdata(MDATA_HEIGHT) ) {
 				continue
 			}
-			map(x, y, 0) = 3
+			map(x, y, MAP_TILE_ID) = 3
 		loop
 	loop
 	p = rnd(mdata(MDATA_WIDTH) / 2) + 2, rnd(mdata(MDATA_WIDTH) / 2) + mdata(MDATA_WIDTH) / 2 - 2
@@ -1298,7 +1298,7 @@
 			if ( x == 0 | y == 0 | x + 1 == mdata(MDATA_WIDTH) | y + 1 == mdata(MDATA_HEIGHT) ) {
 				continue
 			}
-			map(x, y, 0) = 100
+			map(x, y, MAP_TILE_ID) = 100
 		loop
 	loop
 	repeat rdroomnum
@@ -1313,10 +1313,10 @@
 			y = dy + cnt
 			repeat 4
 				x = dx + cnt
-				if ( map(x, y, 0) != tile_tunnel | map(x, y, 4) != 0 ) {
+				if ( map(x, y, MAP_TILE_ID) != tile_tunnel | map(x, y, MAP_ITEM_CHIPS) != 0 ) {
 					p(0) = 0
 				}
-				if ( map(x, y, 0) != tile_room | map(x, y, 4) != 0 ) {
+				if ( map(x, y, MAP_TILE_ID) != tile_room | map(x, y, MAP_ITEM_CHIPS) != 0 ) {
 					p(1) = 0
 				}
 			loop
@@ -1330,7 +1330,7 @@
 					x = dx + cnt
 					if ( n < 2 ) {
 						if ( cnt != 0 & cnt != 3 & cnt2 != 0 & cnt2 != 3 ) {
-							map(x, y, 0) = 473
+							map(x, y, MAP_TILE_ID) = 473
 						}
 					}
 					if ( n == 2 ) {
@@ -1338,17 +1338,17 @@
 							break
 						}
 						if ( cnt == 1 & cnt2 == 1 ) {
-							map(x, y, 0) = 664
+							map(x, y, MAP_TILE_ID) = 664
 						}
 						else {
-							map(x, y, 0) = 206
+							map(x, y, MAP_TILE_ID) = 206
 							flt
 							itemcreate -1, ITEM_ID_BARREL, x, y, 0
 						}
 					}
 					if ( n == 3 ) {
 						if ( cnt == 1 & cnt2 == 1 ) {
-							map(x, y, 0) = 204
+							map(x, y, MAP_TILE_ID) = 204
 							flt
 							itemcreate -1, ITEM_ID_FANCY_LAMP, x, y, 0
 						}
@@ -1356,7 +1356,7 @@
 					if ( n == 4 ) {
 						if ( cnt == 1 & cnt2 == 1 ) {
 							flt
-							map(x, y, 0) = 69
+							map(x, y, MAP_TILE_ID) = 69
 							itemcreate -1, ITEM_ID_PLANT_ADORNED_PILLAR, x, y, 0
 						}
 					}
@@ -1404,7 +1404,7 @@
 		if ( rnd(2) == 0 ) {
 			x = rnd(rw) + rx
 			y = rnd(rh) + ry
-			if ( map(x, y, 4) == 0 ) {
+			if ( map(x, y, MAP_ITEM_CHIPS) == 0 ) {
 				flt
 				itemcreate -1, ITEM_ID_GRAND_PIANO, x, y, 0
 			}
@@ -1412,7 +1412,7 @@
 		if ( rnd(3) == 0 ) {
 			x = rnd(rw) + rx
 			y = rnd(rh) + ry
-			if ( map(x, y, 4) == 0 ) {
+			if ( map(x, y, MAP_ITEM_CHIPS) == 0 ) {
 				flt
 				itemcreate -1, ITEM_ID_CASINO_TABLE, x, y, 0
 			}
@@ -1420,7 +1420,7 @@
 		if ( rnd(2) == 0 ) {
 			x = rnd(rw) + rx
 			y = rnd(rh) + ry
-			if ( map(x, y, 4) == 0 ) {
+			if ( map(x, y, MAP_ITEM_CHIPS) == 0 ) {
 				flt
 				itemcreate -1, ITEM_ID_NARROW_DINING_TABLE, x, y, 0
 			}
@@ -1428,7 +1428,7 @@
 		if ( rnd(3) == 0 ) {
 			x = rnd(rw) + rx
 			y = rnd(rh) + ry
-			if ( map(x, y, 4) == 0 ) {
+			if ( map(x, y, MAP_ITEM_CHIPS) == 0 ) {
 				flt
 				itemcreate -1, ITEM_ID_BARBECUE_SET, x, y, 0
 			}
@@ -1444,10 +1444,10 @@
 			cdata(CDATA_GOLD, rc) = cdata(CDATA_LEVEL, rc) * (20 + rnd(20))
 		loop
 	loop
-	map(17, 27, 0) = 144
-	map(18, 27, 0) = 144
-	map(19, 27, 0) = 144
-	map(20, 27, 0) = 144
+	map(17, 27, MAP_TILE_ID) = 144
+	map(18, 27, MAP_TILE_ID) = 144
+	map(19, 27, MAP_TILE_ID) = 144
+	map(20, 27, MAP_TILE_ID) = 144
 	gdata(GDATA_LEVEL_START_ON) = 7
 	mapstartx = rnd(mdata(MDATA_WIDTH) / 3) + mdata(MDATA_WIDTH) / 3
 	mapstarty = rnd(mdata(MDATA_HEIGHT) / 3) + mdata(MDATA_HEIGHT) / 3
@@ -1456,7 +1456,7 @@
 	repeat 25 + rnd(10)
 		x = rnd(mdata(MDATA_WIDTH))
 		y = rnd(mdata(MDATA_HEIGHT))
-		if ( map(x, y, 4) != 0 | (chipm(CHIPM_ATTRIB, map(x, y, 0)) & CHIPM_ATTRIB_CANT_PASS) ) {
+		if ( map(x, y, MAP_ITEM_CHIPS) != 0 | (chipm(CHIPM_ATTRIB, map(x, y, MAP_TILE_ID)) & CHIPM_ATTRIB_CANT_PASS) ) {
 			continue
 		}
 		flt
@@ -1875,7 +1875,7 @@
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
 			x = cnt
-			map(x, y, 6) = 0
+			map(x, y, MAP_FEATS_ON_TILE) = 0
 		loop
 	loop
 	return
@@ -1984,7 +1984,7 @@
 		y = 2 + cnt
 		repeat w
 			x = cnt + dx
-			map(x, y, 0) = 100
+			map(x, y, MAP_TILE_ID) = 100
 		loop
 		if ( p <= 0 ) {
 			if ( rnd(2) ) {
@@ -2023,7 +2023,7 @@
 	repeat
 		x = rnd(mdata(MDATA_WIDTH))
 		y = rnd(15)
-		if ( map(x, y, 0) == 100 ) {
+		if ( map(x, y, MAP_TILE_ID) == 100 ) {
 			map_placeupstairs x, y
 			break
 		}
@@ -2031,7 +2031,7 @@
 	repeat
 		x = rnd(mdata(MDATA_WIDTH))
 		y = mdata(MDATA_HEIGHT) - rnd(15) - 1
-		if ( map(x, y, 0) == 100 ) {
+		if ( map(x, y, MAP_TILE_ID) == 100 ) {
 			map_placedownstairs x, y
 			break
 		}
@@ -2121,7 +2121,7 @@
 					y = sdigy - _bold * 2 + cnt - _bold + 4
 					repeat _bold - 1
 						x = sdigx + cnt - _bold + 4
-						map(x, y, 0) = 100
+						map(x, y, MAP_TILE_ID) = 100
 					loop
 				loop
 			}
@@ -2131,7 +2131,7 @@
 					y = sdigy + cnt - _bold + 4
 					repeat _bold * 3 - 1
 						x = sdigx + cnt - _bold + 4
-						map(x, y, 0) = 100
+						map(x, y, MAP_TILE_ID) = 100
 					loop
 				loop
 			}
@@ -2141,7 +2141,7 @@
 					y = sdigy + cnt - _bold + 4
 					repeat _bold - 1
 						x = sdigx + cnt - _bold + 4
-						map(x, y, 0) = 100
+						map(x, y, MAP_TILE_ID) = 100
 					loop
 				loop
 			}
@@ -2151,7 +2151,7 @@
 					y = sdigy + cnt - _bold + 4
 					repeat _bold * 2
 						x = sdigx + cnt - _bold * 2 - _bold + 4
-						map(x, y, 0) = 100
+						map(x, y, MAP_TILE_ID) = 100
 					loop
 				loop
 			}
@@ -2186,12 +2186,12 @@
 	repeat
 		x = rnd(mdata(MDATA_WIDTH))
 		y = rnd(mdata(MDATA_HEIGHT))
-		if ( map(x, y, 0) != 100 ) {
+		if ( map(x, y, MAP_TILE_ID) != 100 ) {
 			continue
 		}
 		dx = rnd(mdata(MDATA_WIDTH))
 		dy = rnd(mdata(MDATA_HEIGHT))
-		if ( map(dx, dy, 0) != 100 ) {
+		if ( map(dx, dy, MAP_TILE_ID) != 100 ) {
 			continue
 		}
 		if ( dist(x, y, dx, dy) < 10 ) {
@@ -2217,7 +2217,7 @@
 		repeat
 			x = rnd(mdata(MDATA_WIDTH))
 			y = rnd(mdata(MDATA_HEIGHT))
-			if ( map(x, y, 0) != 100 ) {
+			if ( map(x, y, MAP_TILE_ID) != 100 ) {
 				continue
 			}
 			w = 10 + rnd(4)
@@ -2233,77 +2233,77 @@
 					}
 					tx = dx - 1
 					ty = dy
-					if ( map(tx, ty, 0) != t ) {
-						if ( map(tx, ty, 0) != 0 ) {
-							if ( map(tx, ty, 0) != 100 ) {
+					if ( map(tx, ty, MAP_TILE_ID) != t ) {
+						if ( map(tx, ty, MAP_TILE_ID) != 0 ) {
+							if ( map(tx, ty, MAP_TILE_ID) != 100 ) {
 								continue
 							}
 						}
 					}
 					tx = dx + 1
 					ty = dy
-					if ( map(tx, ty, 0) != t ) {
-						if ( map(tx, ty, 0) != 0 ) {
-							if ( map(tx, ty, 0) != 100 ) {
+					if ( map(tx, ty, MAP_TILE_ID) != t ) {
+						if ( map(tx, ty, MAP_TILE_ID) != 0 ) {
+							if ( map(tx, ty, MAP_TILE_ID) != 100 ) {
 								continue
 							}
 						}
 					}
 					tx = dx
 					ty = dy - 1
-					if ( map(tx, ty, 0) != t ) {
-						if ( map(tx, ty, 0) != 0 ) {
-							if ( map(tx, ty, 0) != 100 ) {
+					if ( map(tx, ty, MAP_TILE_ID) != t ) {
+						if ( map(tx, ty, MAP_TILE_ID) != 0 ) {
+							if ( map(tx, ty, MAP_TILE_ID) != 100 ) {
 								continue
 							}
 						}
 					}
 					tx = dx
 					ty = dy + 1
-					if ( map(tx, ty, 0) != t ) {
-						if ( map(tx, ty, 0) != 0 ) {
-							if ( map(tx, ty, 0) != 100 ) {
+					if ( map(tx, ty, MAP_TILE_ID) != t ) {
+						if ( map(tx, ty, MAP_TILE_ID) != 0 ) {
+							if ( map(tx, ty, MAP_TILE_ID) != 100 ) {
 								continue
 							}
 						}
 					}
 					tx = dx - 1
 					ty = dy - 1
-					if ( map(tx, ty, 0) != t ) {
-						if ( map(tx, ty, 0) != 0 ) {
-							if ( map(tx, ty, 0) != 100 ) {
+					if ( map(tx, ty, MAP_TILE_ID) != t ) {
+						if ( map(tx, ty, MAP_TILE_ID) != 0 ) {
+							if ( map(tx, ty, MAP_TILE_ID) != 100 ) {
 								continue
 							}
 						}
 					}
 					tx = dx + 1
 					ty = dy - 1
-					if ( map(tx, ty, 0) != t ) {
-						if ( map(tx, ty, 0) != 0 ) {
-							if ( map(tx, ty, 0) != 100 ) {
+					if ( map(tx, ty, MAP_TILE_ID) != t ) {
+						if ( map(tx, ty, MAP_TILE_ID) != 0 ) {
+							if ( map(tx, ty, MAP_TILE_ID) != 100 ) {
 								continue
 							}
 						}
 					}
 					tx = dx - 1
 					ty = dy + 1
-					if ( map(tx, ty, 0) != t ) {
-						if ( map(tx, ty, 0) != 0 ) {
-							if ( map(tx, ty, 0) != 100 ) {
+					if ( map(tx, ty, MAP_TILE_ID) != t ) {
+						if ( map(tx, ty, MAP_TILE_ID) != 0 ) {
+							if ( map(tx, ty, MAP_TILE_ID) != 100 ) {
 								continue
 							}
 						}
 					}
 					tx = dx + 1
 					ty = dy + 1
-					if ( map(tx, ty, 0) != t ) {
-						if ( map(tx, ty, 0) != 0 ) {
-							if ( map(tx, ty, 0) != 100 ) {
+					if ( map(tx, ty, MAP_TILE_ID) != t ) {
+						if ( map(tx, ty, MAP_TILE_ID) != 0 ) {
+							if ( map(tx, ty, MAP_TILE_ID) != 100 ) {
 								continue
 							}
 						}
 					}
-					map(dx, dy, 0) = t
+					map(dx, dy, MAP_TILE_ID) = t
 				loop
 			loop
 			break
@@ -2313,10 +2313,10 @@
 		y = cnt * 2
 		repeat mdata(MDATA_WIDTH) / 2 - 2
 			x = cnt * 2
-			if ( map(x, y, 0) < 100 ) {
+			if ( map(x, y, MAP_TILE_ID) < 100 ) {
 				continue
 			}
-			if ( map(x, y, 6) != 0 ) {
+			if ( map(x, y, MAP_FEATS_ON_TILE) != 0 ) {
 				continue
 			}
 			if ( map(x - 1, y, 0) >= 100 ) {

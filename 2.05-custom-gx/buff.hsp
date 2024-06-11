@@ -896,10 +896,11 @@
 				return
 			}
 			else {
-				buffdesc = lang("ﾊﾟﾜｰ" + locvar_calcbuff_p + "の呪い(hex)への抵抗/怯み耐性", "Hex protection (power: " + locvar_calcbuff_p + ")/RES+ wince")
+				buffdesc = lang("ﾊﾟﾜｰ" + locvar_calcbuff_p + "デバフ抵抗/耐怯み/耐侵蝕", "HexProtect(power: " + locvar_calcbuff_p + ")/RES+ wince/RES+ erosion")
 				return
 			}
 		}
+		cdata(CDATA_CONDITION_MPOISON, calcbuff_charid) = 0
 		return
 	}
 	if ( calcbuff_buffid == BUFF_NIGHTMARE ) {

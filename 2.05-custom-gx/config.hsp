@@ -609,7 +609,7 @@
 	}
 	if ( submenu == 6 ) {
 		q = lang("メッセージとログ", "Message&Log")
-		s = lang("ﾒｯｾｰｼﾞに分表示追加", "Add time info"), lang("過去のﾒｯｾｰｼﾞの透過", "Transparency"), lang("起動時の注意書き", "Disclaimer at startup"), "Capitalize item names", ""
+		s = lang("ログに時刻表示追加", "Add time info"), lang("過去のﾒｯｾｰｼﾞの透過", "Transparency"), lang("起動時の注意書き", "Disclaimer at startup"), "Capitalize item names", ""
 		dx = 440
 		dy = 300
 	}

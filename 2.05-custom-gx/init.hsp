@@ -1471,7 +1471,7 @@ if instr(s,0,%1)!-1{	%c\
 					}
 				}
 				/********** JAMES CUSTOM - JOB QUESTS - ENDING **********/
-				msgtemp = "[" + gdata(GDATA_MIN) + "] " + msgtemp
+				msgtemp = "[" + gdata(GDATA_HOUR) + ":" + gdata(GDATA_MIN) + "] " + msgtemp
 			}
 			else {
 				msglen = 2

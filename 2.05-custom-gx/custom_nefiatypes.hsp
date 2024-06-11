@@ -3,13 +3,13 @@
 		return 0
 	}
 	cell_featread istileempty_x, istileempty_y
-	return ( map(istileempty_x, istileempty_y, 0) == 3 | map(istileempty_x, istileempty_y, 0) >= 90 | feat(1) == CELL_FEATURE_DOOR_CLOSED )
+	return ( map(istileempty_x, istileempty_y, MAP_TILE_ID) == 3 | map(istileempty_x, istileempty_y, MAP_TILE_ID) >= 90 | feat(1) == CELL_FEATURE_DOOR_CLOSED )
 
 #defcfunc istilewall int istileempty_x, int istileempty_y
 	if ( istileempty_x < 0 | istileempty_y < 0 | istileempty_x >= mdata(MDATA_WIDTH) | istileempty_y >= mdata(MDATA_HEIGHT) ) {
 		return 1
 	}
-	return ( map(istileempty_x, istileempty_y, 0) != 3 & map(istileempty_x, istileempty_y, 0) < 90 )
+	return ( map(istileempty_x, istileempty_y, MAP_TILE_ID) != 3 & map(istileempty_x, istileempty_y, MAP_TILE_ID) < 90 )
 
 #deffunc cleanatile int digatile_x, int digatile_y, int digatile_tile
 	if ( digatile_x <= 0 | digatile_y <= 0 | digatile_x >= mdata(MDATA_WIDTH) - 1 | digatile_y >= mdata(MDATA_HEIGHT) - 1 ) {
@@ -25,7 +25,7 @@
 		}
 	loop
 	if ( digatile_tile > 0 ) {
-		map(digatile_x, digatile_y, 0) = digatile_tile
+		map(digatile_x, digatile_y, MAP_TILE_ID) = digatile_tile
 	}
 	cell_refresh digatile_x, digatile_y
     return 1
@@ -34,7 +34,7 @@
 	if ( digatile_x <= 0 | digatile_y <= 0 | digatile_x >= mdata(MDATA_WIDTH) - 1 | digatile_y >= mdata(MDATA_HEIGHT) - 1 ) {
 		return 0
 	}
-	map(digatile_x, digatile_y, 0) = digatile_tile
+	map(digatile_x, digatile_y, MAP_TILE_ID) = digatile_tile
     cell_featset digatile_x, digatile_y, 0, 0, 0, 0
 	return 1
 
@@ -231,139 +231,139 @@
 		y = cnt
 		repeat mdata(MDATA_WIDTH)
 			x = cnt
-			if ( map(x, y, 0) == 475 & tile_default == 475 ) {
+			if ( map(x, y, MAP_TILE_ID) == 475 & tile_default == 475 ) {
 				if ( rnd(2) == 0 ) {
-					map(x, y, 0) = 508
+					map(x, y, MAP_TILE_ID) = 508
 				}
 			}
-			if ( map(x, y, 0) == 0 ) {
-				map(x, y, 0) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
+			if ( map(x, y, MAP_TILE_ID) == 0 ) {
+				map(x, y, MAP_TILE_ID) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
 				if ( tile_wall == 475 & rnd(5) == 0 ) {
 					if ( y > 0 ) {
 						if ( map(x, y-1, 0) == 475 | map(x, y-1, 0) == 508 ) {
-							map(x, y, 0) = 508
+							map(x, y, MAP_TILE_ID) = 508
 						}
 					}
 				}
 				continue
 			}
-			if ( map(x, y, 0) >= 100 ) {
-				map(x, y, 0) = tile_tunnel + (rnd(tile_tunnel(2)) == 0) * rnd(tile_tunnel(1))
+			if ( map(x, y, MAP_TILE_ID) >= 100 ) {
+				map(x, y, MAP_TILE_ID) = tile_tunnel + (rnd(tile_tunnel(2)) == 0) * rnd(tile_tunnel(1))
 				continue
 			}
-			if ( map(x, y, 0) == 1 ) {
-				map(x, y, 0) = tile_wall + (rnd(tile_wall(2)) == 0) * rnd(tile_wall(1))
+			if ( map(x, y, MAP_TILE_ID) == 1 ) {
+				map(x, y, MAP_TILE_ID) = tile_wall + (rnd(tile_wall(2)) == 0) * rnd(tile_wall(1))
 				if ( tile_wall == 475 & rnd(5) == 0 ) {
 					if ( y > 0 ) {
 						if ( map(x, y-1, 0) == 475 | map(x, y-1, 0) == 508 ) {
-							map(x, y, 0) = 508
+							map(x, y, MAP_TILE_ID) = 508
 						}
 					}
 				}
 				continue
 			}
-			if ( map(x, y, 0) == 3 ) {
-				map(x, y, 0) = tile_room + (rnd(tile_room(2)) == 0) * rnd(tile_room(1))
+			if ( map(x, y, MAP_TILE_ID) == 3 ) {
+				map(x, y, MAP_TILE_ID) = tile_room + (rnd(tile_room(2)) == 0) * rnd(tile_room(1))
 				continue
 			}
-			if ( map(x, y, 0) == 4 ) {
-				map(x, y, 0) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
+			if ( map(x, y, MAP_TILE_ID) == 4 ) {
+				map(x, y, MAP_TILE_ID) = tile_default + (rnd(tile_default(2)) == 0) * rnd(tile_default(1))
 				continue
 			}
-			if ( map(x, y, 0) == 80 ) {
-				map(x, y, 0) = tile_wall_wood@NT
+			if ( map(x, y, MAP_TILE_ID) == 80 ) {
+				map(x, y, MAP_TILE_ID) = tile_wall_wood@NT
 				continue
 			}
-			if ( map(x, y, 0) == 81 ) {
-				map(x, y, 0) = tile_wall_brick@NT
+			if ( map(x, y, MAP_TILE_ID) == 81 ) {
+				map(x, y, MAP_TILE_ID) = tile_wall_brick@NT
 				continue
 			}
-			if ( map(x, y, 0) == 82 ) {
-				map(x, y, 0) = tile_wall_dungeon@NT
+			if ( map(x, y, MAP_TILE_ID) == 82 ) {
+				map(x, y, MAP_TILE_ID) = tile_wall_dungeon@NT
 				continue
 			}
 			// void
-			if ( map(x, y, 0) == 83 ) {
-				map(x, y, 0) = 736
+			if ( map(x, y, MAP_TILE_ID) == 83 ) {
+				map(x, y, MAP_TILE_ID) = 736
 				continue
 			}
 			// water
-			if ( map(x, y, 0) == 84 ) {
-				map(x, y, 0) = 594
+			if ( map(x, y, MAP_TILE_ID) == 84 ) {
+				map(x, y, MAP_TILE_ID) = 594
 				if ( y > 1 ) {
 					if ( map(x, y-1, 0) != 84 & map(x, y-1, 0) != 628 & map(x, y-1, 0) != 594 & map(x, y-1, 0) != 637 ) {
-						map(x, y, 0) = 628
+						map(x, y, MAP_TILE_ID) = 628
 						if ( tile_default == 475 ) {
-							map(x, y, 0) = 637
+							map(x, y, MAP_TILE_ID) = 637
 						}
 					}
 				}
 				continue
 			}
 			// lava
-			if ( map(x, y, 0) == 85 ) {
-				map(x, y, 0) = 561
+			if ( map(x, y, MAP_TILE_ID) == 85 ) {
+				map(x, y, MAP_TILE_ID) = 561
 				if ( y > 1 & y < mdata(MDATA_HEIGHT) - 1 & tile_room == 38 ) {
 					// If tile below is lava, tile above is not lava
 					if ( map(x, y+1, 0) == 85 & map(x, y-1, 0) != 85 & map(x, y-1, 0) != 642 & map(x, y-1, 0) != 561 ) {
-						map(x, y, 0) = 642
+						map(x, y, MAP_TILE_ID) = 642
 					}
 				}
 				continue
 			}
 			// trees
-			if ( map(x, y, 0) == 86 ) {
-				map(x, y, 0) = 475
+			if ( map(x, y, MAP_TILE_ID) == 86 ) {
+				map(x, y, MAP_TILE_ID) = 475
 				if ( rnd(5) == 0 ) {
 					if ( y > 0 ) {
 						if ( map(x, y-1, 0) == 475 | map(x, y-1, 0) == 508 ) {
-							map(x, y, 0) = 508
+							map(x, y, MAP_TILE_ID) = 508
 						}
 					}
 				}
 				continue
 			}
 			// smoothwall
-			if ( map(x, y, 0) == 87 ) {
-				map(x, y, 0) = 643
+			if ( map(x, y, MAP_TILE_ID) == 87 ) {
+				map(x, y, MAP_TILE_ID) = 643
 				if ( y < mdata(MDATA_HEIGHT) - 2 ) {
 					if ( map(x, y+1, 0) != 83 & map(x, y+1, 0) != 84 & map(x, y+1, 0) != 85 ) {
-						map(x, y, 0) = 644
+						map(x, y, MAP_TILE_ID) = 644
 					}
 				}
 				continue
 			}
 			// Boxes
-			if ( map(x, y, 0) == 88 ) {
-				map(x, y, 0) = 662 + rnd(4)
+			if ( map(x, y, MAP_TILE_ID) == 88 ) {
+				map(x, y, MAP_TILE_ID) = 662 + rnd(4)
 				if ( rnd(5) == 0 ) {
-					map(x, y, 0) = 632
+					map(x, y, MAP_TILE_ID) = 632
 				}
 				continue
 			}
 			// Boxes (Open)
-			if ( map(x, y, 0) == 89 ) {
-				map(x, y, 0) = 633 + rnd(2)
+			if ( map(x, y, MAP_TILE_ID) == 89 ) {
+				map(x, y, MAP_TILE_ID) = 633 + rnd(2)
 				if ( rnd(3) == 0 ) {
-					map(x, y, 0) = 631
+					map(x, y, MAP_TILE_ID) = 631
 				}
 				continue
 			}
-			if ( map(x, y, 0) == 90 ) {
-				map(x, y, 0) = tile_room_wood@NT + (rnd(tile_room_wood@NT(2)) == 0) * rnd(tile_room_wood@NT(1))
+			if ( map(x, y, MAP_TILE_ID) == 90 ) {
+				map(x, y, MAP_TILE_ID) = tile_room_wood@NT + (rnd(tile_room_wood@NT(2)) == 0) * rnd(tile_room_wood@NT(1))
 				continue
 			}
-			if ( map(x, y, 0) == 91 ) {
-				map(x, y, 0) = tile_room_brick@NT
+			if ( map(x, y, MAP_TILE_ID) == 91 ) {
+				map(x, y, MAP_TILE_ID) = tile_room_brick@NT
 				continue
 			}
-			if ( map(x, y, 0) == 92 ) {
-				map(x, y, 0) = tile_room_dungeon@NT
+			if ( map(x, y, MAP_TILE_ID) == 92 ) {
+				map(x, y, MAP_TILE_ID) = tile_room_dungeon@NT
 				continue
 			}
 			// sand
-			if ( map(x, y, 0) == 93 ) {
-				map(x, y, 0) = 19 + ( rnd(3) == 0 ) * rnd(4)
+			if ( map(x, y, MAP_TILE_ID) == 93 ) {
+				map(x, y, MAP_TILE_ID) = 19 + ( rnd(3) == 0 ) * rnd(4)
 				if (x > 1) {
 					if ( map(x - 1, y, 0) == 165 ) {
 						us@NT = 0 // upper is water
@@ -378,46 +378,46 @@
 								ls@NT = 1
 							}
 						}
-						if ( us@NT == 0 & ls@NT == 0) { map(x, y, 0) = 308 }
-						if ( us@NT == 0 & ls@NT == 1) { map(x, y, 0) = 311 }
-						if ( us@NT == 1 & ls@NT == 0) { map(x, y, 0) = 305 }
-						if ( us@NT == 1 & ls@NT == 1) { map(x, y, 0) = 302 }
+						if ( us@NT == 0 & ls@NT == 0) { map(x, y, MAP_TILE_ID) = 308 }
+						if ( us@NT == 0 & ls@NT == 1) { map(x, y, MAP_TILE_ID) = 311 }
+						if ( us@NT == 1 & ls@NT == 0) { map(x, y, MAP_TILE_ID) = 305 }
+						if ( us@NT == 1 & ls@NT == 1) { map(x, y, MAP_TILE_ID) = 302 }
 					}
 				}
 				continue
 			}
 			// shallow water
-			if ( map(x, y, 0) == 94 ) {
-				map(x, y, 0) = 165
+			if ( map(x, y, MAP_TILE_ID) == 94 ) {
+				map(x, y, MAP_TILE_ID) = 165
 				continue
 			}
 			// deep water
-			if ( map(x, y, 0) == 95 ) {
-				map(x, y, 0) = 168
+			if ( map(x, y, MAP_TILE_ID) == 95 ) {
+				map(x, y, MAP_TILE_ID) = 168
 				continue
 			}
 			// red carpet
-			if ( map(x, y, 0) == 96 ) {
-				map(x, y, 0) = 222
+			if ( map(x, y, MAP_TILE_ID) == 96 ) {
+				map(x, y, MAP_TILE_ID) = 222
 				continue
 			}
 			// stairs
-			if ( map(x, y, 0) == 97 ) {
-				map(x, y, 0) = 216
+			if ( map(x, y, MAP_TILE_ID) == 97 ) {
+				map(x, y, MAP_TILE_ID) = 216
 				continue
 			}
 			// 1x1 carpet
-			if ( map(x, y, 0) == 98 ) {
+			if ( map(x, y, MAP_TILE_ID) == 98 ) {
 				p = rnd(4)
-				if (p == 0) { map(x, y, 0) = 101 }
-				if (p == 1) { map(x, y, 0) = 201 }
-				if (p == 2) { map(x, y, 0) = 203 }
-				if (p == 3) { map(x, y, 0) = 204 }
+				if (p == 0) { map(x, y, MAP_TILE_ID) = 101 }
+				if (p == 1) { map(x, y, MAP_TILE_ID) = 201 }
+				if (p == 2) { map(x, y, MAP_TILE_ID) = 203 }
+				if (p == 3) { map(x, y, MAP_TILE_ID) = 204 }
 				continue
 			}
 			// display area
-			if ( map(x, y, 0) == 99 ) {
-				map(x, y, 0) = 387
+			if ( map(x, y, MAP_TILE_ID) == 99 ) {
+				map(x, y, MAP_TILE_ID) = 387
 				continue
 			}
 		loop
@@ -1120,11 +1120,11 @@
 			}
 			if ( matrix_ca(locvar_map_line_dx, locvar_map_line_dy) == 1) {
 				if ( map_makesimpleroom_arg6 >= 0 ) {
-					map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg6
+					map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg6
 				}
 			} else {
 				if ( map_makesimpleroom_arg5 >= 0 ) {
-					map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg5
+					map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg5
 				}
 			}
 		loop
@@ -1198,7 +1198,7 @@
 					repeat dighole_pathx
 						x = sdigx + cnt
 						if ( x < 0 | y < 0 | x >= mdata(MDATA_WIDTH) | y >= mdata(MDATA_HEIGHT) ) { continue }
-						map(x, y, 0) = dighole_tile
+						map(x, y, MAP_TILE_ID) = dighole_tile
 					loop
 				loop
 			}
@@ -1209,7 +1209,7 @@
 					repeat (dighole_pathx * 2 + dighole_blockx)
 						x = sdigx + cnt
 						if ( x < 0 | y < 0 | x >= mdata(MDATA_WIDTH) | y >= mdata(MDATA_HEIGHT) ) { continue }
-						map(x, y, 0) = dighole_tile
+						map(x, y, MAP_TILE_ID) = dighole_tile
 					loop
 				loop
 			}
@@ -1220,7 +1220,7 @@
 					repeat dighole_pathx
 						x = sdigx + cnt
 						if ( x < 0 | y < 0 | x >= mdata(MDATA_WIDTH) | y >= mdata(MDATA_HEIGHT) ) { continue }
-						map(x, y, 0) = dighole_tile
+						map(x, y, MAP_TILE_ID) = dighole_tile
 					loop
 				loop
 			}
@@ -1231,7 +1231,7 @@
 					repeat (dighole_pathx * 2 + dighole_blockx)
 						x = sdigx + (dighole_pathx-1) - cnt
 						if ( x < 0 | y < 0 | x >= mdata(MDATA_WIDTH) | y >= mdata(MDATA_HEIGHT) ) { continue }
-						map(x, y, 0) = dighole_tile
+						map(x, y, MAP_TILE_ID) = dighole_tile
 					loop
 				loop
 			}
@@ -2177,11 +2177,11 @@
 			}
 			if ( locvar_map_line_tx == map_makesimpleroom_arg1 | locvar_map_line_ty == map_makesimpleroom_arg2 | locvar_map_line_tx == map_makesimpleroom_arg1 + map_makesimpleroom_arg3 - 1 | locvar_map_line_ty == map_makesimpleroom_arg2 + map_makesimpleroom_arg4 - 1 ) {
 				if ( map_makesimpleroom_arg6 >= 0 ) {
-					map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg6
+					map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg6
 				}	
 			} else {
 				if ( map_makesimpleroom_arg5 >= 0 ) {
-					map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg5
+					map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg5
 				}	
 			}
 		loop
@@ -2207,20 +2207,20 @@
 			map_makesimpleroom_distm1 = locvar_map_line_dx * locvar_map_line_dx * (map_makesimpleroom_arg4-1) * (map_makesimpleroom_arg4-1) + locvar_map_line_dy * locvar_map_line_dy * (map_makesimpleroom_arg3-1) * (map_makesimpleroom_arg3-1)
 			if ( map_makesimpleroom_distp1 <= map_makesimpleroom_radp1 + 1) {
 				if ( map_makesimpleroom_arg6 >= 0 ) {
-					map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg6
+					map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg6
 				}  
 			}
 			if ( map_makesimpleroom_arg5 == map_makesimpleroom_arg6 | map_makesimpleroom_arg5 < 0 ) {
 				continue
 			}
 			if ( map_makesimpleroom_distm1 <= map_makesimpleroom_radm1 & locvar_map_line_dx < map_makesimpleroom_arg3 & locvar_map_line_dx > (-1) * map_makesimpleroom_arg3 & locvar_map_line_dy < map_makesimpleroom_arg4 & locvar_map_line_dy > (-1) * map_makesimpleroom_arg4 ) {
-				map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg5
+				map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg5
 			}
 			if ( (locvar_map_line_dx == map_makesimpleroom_arg3 - 1 | (-1) * locvar_map_line_dx == map_makesimpleroom_arg3 - 1 ) & locvar_map_line_dy < map_makesimpleroom_arg4 / 2 & locvar_map_line_dy * (-1) < map_makesimpleroom_arg4 / 2 ) {
-				map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg5
+				map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg5
 			}
 			if ( (locvar_map_line_dy == map_makesimpleroom_arg4 - 1 | (-1) * locvar_map_line_dy == map_makesimpleroom_arg4 - 1 ) & locvar_map_line_dx < map_makesimpleroom_arg3 / 2 & locvar_map_line_dx * (-1) < map_makesimpleroom_arg3 / 2 ) {
-				map(locvar_map_line_tx, locvar_map_line_ty, 0) = map_makesimpleroom_arg5
+				map(locvar_map_line_tx, locvar_map_line_ty, MAP_TILE_ID) = map_makesimpleroom_arg5
 			}
 		loop
 	loop
@@ -2373,11 +2373,11 @@
 			x = roomx(cr) + cnt
 			if ( x < 0 | y < 0 | x >= mdata(MDATA_WIDTH) | y >= mdata(MDATA_HEIGHT) ) { continue }
 			if ( map_makesimpleroom_arg5 >= 0 ) {
-				map(x, y, 0) = map_makesimpleroom_arg5
+				map(x, y, MAP_TILE_ID) = map_makesimpleroom_arg5
 			}
 			if ( cnt == 0 | cnt2 == 0 | cnt == roomwidth(cr) - 1 | cnt2 == roomheight(cr) - 1 ) {
 				if ( map_makesimpleroom_arg6 >= 0 ) {
-					map(x, y, 0) = map_makesimpleroom_arg6
+					map(x, y, MAP_TILE_ID) = map_makesimpleroom_arg6
 				}
 			}
 		loop
@@ -2461,7 +2461,7 @@
 			continue
 		}
 		if ( f == 1 ) {
-			map(x, y, 0) = 3
+			map(x, y, MAP_TILE_ID) = 3
 			if ( roomdoor != 3 ) {
 				cell_featset x, y, tile_doorclosed, CELL_FEATURE_DOOR_CLOSED, rnd(limit(gdata(GDATA_LEVEL) * 3 / 2 + 1, 1, 300))
 			}
@@ -2827,13 +2827,13 @@
 
 	// Cleanup
 	repeat mdata(MDATA_WIDTH)
-		map(cnt, 0, 0) = 82
+		map(cnt, 0, MAP_TILE_ID) = 82
 		map(cnt, mdata(MDATA_HEIGHT) - 1, 0) = 82
 		cleanatile cnt, 0
 		cleanatile cnt, mdata(MDATA_HEIGHT) - 1
 	loop
 	repeat mdata(MDATA_HEIGHT)
-		map(0, cnt, 0) = 82
+		map(0, cnt, MAP_TILE_ID) = 82
 		map(mdata(MDATA_WIDTH) - 1, cnt, 0) = 82
 		cleanatile 0, cnt
 		cleanatile mdata(MDATA_WIDTH) - 1, cnt
@@ -3333,7 +3333,7 @@
 		repeat 500
 			x = rnd(mdata(MDATA_WIDTH))
 			y = rnd(6)
-			if ( map(x, y, 0) == 100 ) {
+			if ( map(x, y, MAP_TILE_ID) == 100 ) {
 				if ( upstairs_loc@NT == 0 )  {map_placeupstairs x, y }
 				if ( downstairs_loc@NT == 0 )  {map_placedownstairs x, y }
 				break
@@ -3345,7 +3345,7 @@
 		repeat 500
 			y = rnd(mdata(MDATA_HEIGHT))
 			x = mdata(MDATA_WIDTH) - rnd(6) - 1
-			if ( map(x, y, 0) == 100 ) {
+			if ( map(x, y, MAP_TILE_ID) == 100 ) {
 				if ( upstairs_loc@NT == 1 )  {map_placeupstairs x, y }
 				if ( downstairs_loc@NT == 1 )  {map_placedownstairs x, y }
 				break
@@ -3357,7 +3357,7 @@
 		repeat 500
 			x = rnd(mdata(MDATA_WIDTH))
 			y = mdata(MDATA_HEIGHT) - rnd(6) - 1
-			if ( map(x, y, 0) == 100 ) {
+			if ( map(x, y, MAP_TILE_ID) == 100 ) {
 				if ( upstairs_loc@NT == 2 )  {map_placeupstairs x, y }
 				if ( downstairs_loc@NT == 2 )  {map_placedownstairs x, y }
 				break
@@ -3369,7 +3369,7 @@
 		repeat 500
 			y = rnd(mdata(MDATA_HEIGHT))
 			x = rnd(6)
-			if ( map(x, y, 0) == 100 ) {
+			if ( map(x, y, MAP_TILE_ID) == 100 ) {
 				if ( upstairs_loc@NT == 3 )  {map_placeupstairs x, y }
 				if ( downstairs_loc@NT == 3 )  {map_placedownstairs x, y }
 				break
@@ -3694,15 +3694,15 @@
 	beginx@NT =  passlen@NT + 1
 	beginy@NT =  2
 	repeat mdata(MDATA_HEIGHT)
-		map(0, cnt, 0) = voidtile@NT
-		map(1, cnt, 0) = voidtile@NT
+		map(0, cnt, MAP_TILE_ID) = voidtile@NT
+		map(1, cnt, MAP_TILE_ID) = voidtile@NT
 		map(mdata(MDATA_WIDTH) - 3, cnt, 0) = voidtile@NT
 		map(mdata(MDATA_WIDTH) - 2, cnt, 0) = voidtile@NT
 		map(mdata(MDATA_WIDTH) - 1, cnt, 0) = voidtile@NT
 	loop 
 	repeat mdata(MDATA_WIDTH)
-		map(cnt, 0, 0) = voidtile@NT
-		map(cnt, 1, 0) = voidtile@NT
+		map(cnt, 0, MAP_TILE_ID) = voidtile@NT
+		map(cnt, 1, MAP_TILE_ID) = voidtile@NT
 		map(cnt, mdata(MDATA_HEIGHT) - 3, 0) = voidtile@NT
 		map(cnt, mdata(MDATA_HEIGHT) - 2, 0) = voidtile@NT
 		map(cnt, mdata(MDATA_HEIGHT) - 1, 0) = voidtile@NT
@@ -3815,8 +3815,8 @@
 	dighole_custom 2, 1, 2, floors@NT, 1, 1, 12, 4, 100
 	
 	repeat mdata(MDATA_HEIGHT)
-		map(0, cnt, 0) = 100
-		map(1, cnt, 0) = 100
+		map(0, cnt, MAP_TILE_ID) = 100
+		map(1, cnt, MAP_TILE_ID) = 100
 		map(mdata(MDATA_WIDTH)-2, cnt, 0) = 100
 		map(mdata(MDATA_WIDTH)-1, cnt, 0) = 100
 	loop
@@ -3828,10 +3828,10 @@
 	loop
 	
 	repeat mdata(MDATA_HEIGHT)
-		map(0, cnt, 0) = 0
+		map(0, cnt, MAP_TILE_ID) = 0
 		map(mdata(MDATA_WIDTH)-1, cnt, 0) = 0
 		if ( cnt \ 5 == 1 ) {
-			map(1, cnt, 0) = 98
+			map(1, cnt, MAP_TILE_ID) = 98
 			map(mdata(MDATA_WIDTH)-2, cnt, 0) = 98
 
 			cell_featset 1, cnt, 0, CELL_FEATURE_TRAP, CELL_SUB_FEATURE_TRAP_TELEPORT
@@ -3846,7 +3846,7 @@
 			cell_refresh mdata(MDATA_WIDTH)-2, cnt
 			nooracle = 0
 		} else {
-			map(1, cnt, 0) = 1
+			map(1, cnt, MAP_TILE_ID) = 1
 			map(mdata(MDATA_WIDTH)-2, cnt, 0) = 1
 		}
 	loop

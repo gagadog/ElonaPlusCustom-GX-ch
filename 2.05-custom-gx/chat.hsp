@@ -22058,7 +22058,7 @@
 					chatMore lang("……。", "......")
 					chatMore lang("集計完了。結果は…。", "Final tally complete. The results are as follows:")
 					chatList 1, lang("不正だー！？", "That's fraud!")
-					chatList 0, lang("集計ミスでは？", "Could it be a counting error?")
+					chatList 0, lang("投票率100％超えは集計ミスでは？", "Could 600% vote be a counting error?")
 					buff = lang("改善必要：15票。問題なし：105票。投票率：600％。よって現状の職場環境には問題がないと判断する。ほら、これで気が済んだろ。", "Needs improvement: 15 votes. No issues: 105 votes. Percentage voted: 600%. Therefore, we conclude that there are no issues with the current work environment. See, nothing to worry about.")
 					chatesc = 0
 					gosub *chat_select
@@ -24589,9 +24589,6 @@
 				s += lang(" 活性度:" + cdata(CDATA_HIRE_DATE, tc) + " ", " Activity:" + cdata(CDATA_HIRE_DATE, tc) + " ")
 			}
 			s += "\n     Restocks in: " + ( cdata(CDATA_ROLE_RESTOCK, tc) - (gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12)) + " hours"
-		}
-		if ( gdata(GDATA_GOD_DETECT) ) {
-			s += " (" + godname(cdata(CDATA_GOD, tc)) + ")"
 		}
 		if ( scenemode ) {
 			s = actor(0, rc)
