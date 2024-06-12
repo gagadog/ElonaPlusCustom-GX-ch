@@ -2511,3 +2511,5 @@
 	qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) = qdata(QDATA_PARAM2, gdata(GDATA_QUEST_REF)) * (100 + ptp) / 100
 	return
 
+#defcfunc calcLevelDmg int calcleveldmg_arg1_cc
+	return (limit(cdata(CDATA_LEVEL, calcleveldmg_arg1_cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, calcleveldmg_arg1_cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, calcleveldmg_arg1_cc), 1, 2000) * 3) + 30

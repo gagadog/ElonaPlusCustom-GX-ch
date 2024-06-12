@@ -1853,7 +1853,7 @@
 			cell_swap cc, tc
 			snd SOUNDLIST_BASH1
 			txt lang(name(cc) + "は" + name(tc) + "を轢いた。", name(cc) + " ran over " + name(tc) + ".")
-			dmghp tc, (sdata(SKILL_ATTR_WIL, cc) / 5 + 5) * ((sdata(SKILL_ACTIVE_RIDING, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_ATTR_SPD, cc) + 5) + (limit(cdata(CDATA_LEVEL, cc) - 50, 1, 2000) + limit(cdata(CDATA_LEVEL, cc) - 100, 1, 2000)) * 2 * sqrt(limit(cdata(CDATA_LEVEL, cc), 1, 2000) * 3) + 30, cc, SKILL_RESDMG_CRUSH, 1000
+			dmghp tc, (sdata(SKILL_ATTR_WIL, cc) / 5 + 5) * ((sdata(SKILL_ACTIVE_RIDING, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_ATTR_SPD, cc) + 5) + calcLevelDmg(cc), cc, SKILL_RESDMG_CRUSH, 1000
 			if ( cdata(CDATA_CONDITION_WINCE, tc) <= 0 ) {
 				cdata(CDATA_CONDITION_WINCE, tc) = 10
 				txt lang(name(tc) + "は怯んだ。", name(tc) + " " + is(tc) + " faltered.")
