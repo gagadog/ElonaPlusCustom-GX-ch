@@ -1714,7 +1714,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
     cs = 0
     page = 0
     pagesize = 16
-    listmax = 7
+    listmax = 8
 *ChallengeTweakMenu_pgchk
 	redraw 0
 	page_check
@@ -1732,6 +1732,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 3) = "Make travelling harder." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_HARCORE_TRAVELLING, "Miles Travelled")
 	listn(0, 4) = "Pets die permanently." + GetTStatusProgress(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_PETS_DIE_PERMANENTLY, "Friends Buried")
 	listn(0, 5) = "Split Monsters split (like in Vanilla)." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT, "Copies Summoned")
+	listn(0, 6) = "Powerful ambush spawns (like during Etherwind)." + GetTStatusProgress(TWEAK_CATEGORY_CHALLENGE, TWEAK_CHALLENGE_SUPERAMBUSH, "Godly Encounters")
 
 	listn(0, listmax - 1) = "Go back."
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0
@@ -1772,6 +1773,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			}
 			if ( p == 5 ) {
 				s = "Split Monsters no longer has a HP threshold handicap.\nExpect things to get out of hand fast.\nThis applies to your allies too."
+			}
+			if ( p == 6 ) {
+				s = "Ambush spawn godly enemies like during Etherwinds.\nVery deadly for new characters, free loot for end game."
 			}
 			if ( p == listmax - 1 ) {
 				s = "Return to the previous menu."
@@ -1826,6 +1830,11 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	if ( p == 5 ) {
 		tc = TWEAK_CATEGORY_CHALLENGE
 		tn = TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT
+		gosub *ToggleTweakChallenge
+	}
+	if ( p == 6 ) {
+		tc = TWEAK_CATEGORY_CHALLENGE
+		tn = TWEAK_CHALLENGE_SUPERAMBUSH
 		gosub *ToggleTweakChallenge
 	}
 

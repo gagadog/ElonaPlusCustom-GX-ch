@@ -3942,9 +3942,10 @@
 			}
 			repeat 2 + kaisuu
 				flt calcobjlv(encounterlv), calcfixlv(FIX_QUALITY_GOOD)
-				if ( gdata(GDATA_WEATHER) == WEATHER_ETHER ) {
+				if ( gdata(GDATA_WEATHER) == WEATHER_ETHER | TweakData(TWEAK_CHALLENGE_SUPERAMBUSH, TWEAK_CATEGORY_CHALLENGE) > 0 ) {
 					if ( range_tileRoad(gdata(GDATA_WORLD_TILE)) ) {
 						if ( rnd(3) == 0 ) {
+							if ( TweakData(TWEAK_CHALLENGE_SUPERAMBUSH, TWEAK_CATEGORY_CHALLENGE) ) { TweakData(TWEAK_CHALLENGE_SUPERAMBUSH, TWEAK_CATEGORY_CHALLENGE)++ }
 							fixlv = FIX_QUALITY_GODLY
 						}
 					}
