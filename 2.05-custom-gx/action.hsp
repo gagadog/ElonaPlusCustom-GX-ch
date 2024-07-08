@@ -12869,7 +12869,7 @@
 			}
 		}
 		if ( cdata(CDATA_DV_FIX, tc) >= 200 ) {
-			txt lang("DV補正200以上には使っても効果がない。", "There is no effect even if used against opponents with Dvfix 200 or more...")
+			txt lang("DV補正200以上には使っても効果がない。", "There would be no effect if used on someone with Dvfix 200 or more...")
 			gosub *screen_draw
 			goto *pc_turn
 		}
@@ -12938,7 +12938,7 @@
 			}
 		}
 		if ( cdata(CDATA_PV_FIX, tc) >= 200 ) {
-			txt lang("PV補正200以上には使っても効果がない。", "There is no effect even if used against opponents with Pvfix 200 or more...")
+			txt lang("PV補正200以上には使っても効果がない。", "There would be no effect if used on someone with Pvfix 200 or more...")
 			gosub *screen_draw
 			goto *pc_turn
 		}
