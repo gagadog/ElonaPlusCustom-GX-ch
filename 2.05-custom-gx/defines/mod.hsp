@@ -7095,6 +7095,7 @@
 #define global	TWEAK_CATEGORY_GAMEPLAY	2
 #define global	TWEAK_CATEGORY_AI	3
 #define global	TWEAK_CATEGORY_CHALLENGE	3
+#define global	TWEAK_CATEGORY_TCG	3
 #define global	TWEAK_CATEGORY_MISC	4
 #define global	TWEAK_CATEGORY_MAX	(TWEAK_CATEGORY_MISC + 1)
 
@@ -7183,6 +7184,10 @@
 #define global	TWEAK_CHALLENGE_HARCORE_TRAVELLING	103
 #define global	TWEAK_CHALLENGE_VANILLA_MONSTER_SPLIT	104
 #define global	TWEAK_CHALLENGE_SUPERAMBUSH	105
+// Use the following 3 to track TCG progress.
+#define global	TWEAK_TCG_WIN_STREAK	106
+#define global	TWEAK_TCG_WIN_UNIQUE	107
+#define global	TWEAK_TCG_WIN_LETHAL	108
 
 #define global	TWEAK_MISC_RANDOM_START_MP3	0
 #define global	TWEAK_MISC_WEATHER_EVERYWHERE	1

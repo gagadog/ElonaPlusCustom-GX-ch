@@ -1,3 +1,14 @@
+# 2.23.1.1
+
+# Added
+- Tweak for stronger ambush spawns.
+
+# Fixed
+- PV/DV fixer messages thanks to @air1068
+- 's'earch not disarming quest traps.
+- Saint blade not being PVDV damage.
+- TCG winstreaks not being persistent.
+
 # 2.23.1.0
 
 # Added
