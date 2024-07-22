@@ -412,7 +412,7 @@
 			}
 			// Omake: For multiline/color 'haha!|[255,200,0]putit!'.
 			if ( buff != "" & buff != "default" ) {
-				if ( customtalk_dbmode > 1000 | customtalk_dbmode == 106 ) {
+				if ( customtalk_dbmode > 1000 | customtalk_dbmode == DBMODE_FLAVOR_DIALOG | customtalk_dbmode == DBMODE_FLAVOR_DIALOG_B | customtalk_dbmode == DBMODE_FLAVOR_DIALOG_E | customtalk_dbmode == DBMODE_FLAVOR_DIALOG_F | customtalk_dbmode == DBMODE_FLAVOR_DIALOG_H | customtalk_dbmode == DBMODE_FLAVOR_MEAL | customtalk_dbmode == DBMODE_FLAVOR_TAG | customtalk_dbmode == DBMODE_FLAVOR_TAG_EVO ) {
 				}
 				else {
 					tcolbk = tcol@txtfunc(0), tcol@txtfunc(1), tcol@txtfunc(2)
