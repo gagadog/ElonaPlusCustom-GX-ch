@@ -2180,18 +2180,18 @@
 			}
 			if ( animeskill == SKILL_WEAPON_STAVE ) {
 				if ( animenum \ 2 ) {
-					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(ap / 4 - cnt \ (ap / 2)) / limitmin((ap - 1) * 2, 1)
-					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(ap / 4 - cnt \ (ap / 2)) / limitmin((ap - 1) * 2, 1)
-					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (ap / 4 - cnt \ (ap / 2)) / limitmin(ap - 1, 1)
-					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (ap / 4 - cnt \ (ap / 2)) / limitmin(ap - 1, 1)
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(ap / 4 - cnt \ limitmin((ap / 2), 1) ) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(ap / 4 - cnt \ limitmin((ap / 2), 1) ) / limitmin((ap - 1) * 2, 1)
+					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (ap / 4 - cnt \ limitmin((ap / 2), 1) ) / limitmin(ap - 1, 1)
+					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (ap / 4 - cnt \ limitmin((ap / 2), 1) ) / limitmin(ap - 1, 1)
 					animex += (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles / 5
 					animey -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles / 5
 				}
 				else {
-					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(cnt \ (ap / 2) - ap / 4) / limitmin((ap - 1) * 2, 1)
-					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(cnt \ (ap / 2) - ap / 4) / limitmin((ap - 1) * 2, 1)
-					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (cnt \ (ap / 2) - ap / 4) / limitmin(ap - 1, 1)
-					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (cnt \ (ap / 2) - ap / 4) / limitmin(ap - 1, 1)
+					animex -= (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * abs(cnt \ limitmin((ap / 2), 1)  - ap / 4) / limitmin((ap - 1) * 2, 1)
+					animey -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * abs(cnt \ limitmin((ap / 2), 1)  - ap / 4) / limitmin((ap - 1) * 2, 1)
+					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles * (cnt \ limitmin((ap / 2), 1)  - ap / 4) / limitmin(ap - 1, 1)
+					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles * (cnt \ limitmin((ap / 2), 1)  - ap / 4) / limitmin(ap - 1, 1)
 					animex -= (cdata(CDATA_Y, tc) - cdata(CDATA_Y, cc)) * inf_tiles / 5
 					animey += (cdata(CDATA_X, tc) - cdata(CDATA_X, cc)) * inf_tiles / 5
 				}
@@ -2223,10 +2223,10 @@
 			}
 			if ( animeskill == SKILL_WEAPON_STAVE ) {
 				if ( animenum \ 2 ) {
-					grotate 1, 0, 960, atan(cdata(CDATA_X, tc) - cdata(CDATA_X, cc), cdata(CDATA_Y, cc) - cdata(CDATA_Y, tc)) - 0.8 + 3.2 * (ap / 4 - cnt \ (ap / 2)) / limitmin(ap, 1), inf_tiles, inf_tiles
+					grotate 1, 0, 960, atan(cdata(CDATA_X, tc) - cdata(CDATA_X, cc), cdata(CDATA_Y, cc) - cdata(CDATA_Y, tc)) - 0.8 + 3.2 * (ap / 4 - cnt \ limitmin((ap / 2), 1) ) / limitmin(ap, 1), inf_tiles, inf_tiles
 				}
 				else {
-					grotate 1, 0, 960, atan(cdata(CDATA_X, tc) - cdata(CDATA_X, cc), cdata(CDATA_Y, cc) - cdata(CDATA_Y, tc)) + 0.8 + 3.2 * (cnt \ (ap / 2) - ap / 4) / limitmin(ap, 1), inf_tiles, inf_tiles
+					grotate 1, 0, 960, atan(cdata(CDATA_X, tc) - cdata(CDATA_X, cc), cdata(CDATA_Y, cc) - cdata(CDATA_Y, tc)) + 0.8 + 3.2 * (cnt \ limitmin((ap / 2), 1)  - ap / 4) / limitmin(ap, 1), inf_tiles, inf_tiles
 				}
 			}
 			if ( animeskill != SKILL_WEAPON_SHORTSWORD & animeskill != SKILL_WEAPON_POLEARM & animeskill != SKILL_WEAPON_STAVE ) {

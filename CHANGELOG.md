@@ -1,3 +1,9 @@
+# Upcoming
+
+# Fixed
+- MMA staff melee animation crash when animation duration is too low.
+- Omake text coloring causing evochat text not appearing.
+
 # 2.23.1.1
 
 # Added
