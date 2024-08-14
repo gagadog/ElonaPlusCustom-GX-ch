@@ -1015,13 +1015,20 @@
 						locvar_itemowner_s += "/bugged/"
 						return
 					}
-					if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_CARD ) {
-						locvar_itemowner_s += lang("No." + inv(INV_ITEM_SUB_NAME, itemowner_itemid) + " ", "No." + inv(INV_ITEM_SUB_NAME, itemowner_itemid) + " ")
+					if ( jp ) {
+						if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_CARD ) {
+							locvar_itemowner_s += "No." + inv(INV_ITEM_SUB_NAME, itemowner_itemid) + " "
+						}
 					}
 					if ( inv(INV_ITEM_PROPERTY, itemowner_itemid) != PROP_QUEST ) {
 						locvar_itemowner_s += lang("", " of ") + refchara(inv(INV_ITEM_SUB_NAME, itemowner_itemid), DBSPEC_CHARA_NAME_ORG, 1)
 						if ( jp ) {
 							locvar_itemowner_s += "の"
+						}
+					}
+					if ( en ) {
+						if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_CARD ) {
+							locvar_itemowner_s += " (No." + inv(INV_ITEM_SUB_NAME, itemowner_itemid) + ")"
 						}
 					}
 					if ( inv(INV_ITEM_ID, itemowner_itemid) == ITEM_ID_NECRO_PARTS & jp ) {
@@ -1954,15 +1961,15 @@
 		}
 		if ( inv(INV_ITEM_PARAM2, itemname_itemid) != 0 ) {
 			if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_MYSTERIOUS_FOSSIL | inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_MEMORY_FRAGMENT | inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_MANA_DESTONE | inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_FIGHTING_DESTONE | inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_DEVIL_FRAGMENT ) {
-				locvar_itemowner_s += "(LV." + inv(INV_ITEM_PARAM2, itemname_itemid) + ")"
+				locvar_itemowner_s += " (Lv." + inv(INV_ITEM_PARAM2, itemname_itemid) + ")"
 			}
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_TRAINING_TICKET ) {
-			locvar_itemowner_s += "(LV." + inv(INV_ITEM_PARAM2, itemname_itemid) + ")"
+			locvar_itemowner_s += " (Lv." + inv(INV_ITEM_PARAM2, itemname_itemid) + ")"
 		}
 		if ( inv(INV_ITEM_ID, itemname_itemid) == ITEM_ID_AWAKE_DESTONE ) {
 			locvar_itemname_init = (inv(INV_ITEM_PARAM2, itemname_itemid) + inv(INV_ITEM_PARAM3, itemname_itemid) + inv(INV_ITEM_AMUR_CAGE, itemname_itemid)) / 10
-			locvar_itemowner_s += " (LV." + locvar_itemname_init + ")"
+			locvar_itemowner_s += "  (Lv." + locvar_itemname_init + ")"
 		}
 		if ( ibit(ITEM_BIT_CHARGE_ITEM, itemname_itemid) == 1 ) {
 			locvar_itemowner_s += lang("(残り" + inv(INV_ITEM_CHARGE, itemname_itemid) + "回)", " (Charges: " + inv(INV_ITEM_CHARGE, itemname_itemid) + ")")

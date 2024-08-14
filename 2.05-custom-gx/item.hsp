@@ -1893,7 +1893,7 @@
 				if ( gdata(GDATA_MIN) \ 2 == 1 ) {
 					txt lang(name(cc) + "は必死に自我を保とうとしている。", name(cc) + " desperately tried to maintain the sense of self.")
 					txtvalid = 0
-					txt lang("「やめろ…出ていけぇ…」", cnvtalk("Stop...get out..."))
+					txt lang("「やめろ…出ていけぇ…」", cnvtalk("Stop...get it out..."))
 				}
 			}
 		}

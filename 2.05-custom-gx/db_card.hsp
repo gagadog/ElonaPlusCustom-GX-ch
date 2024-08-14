@@ -1,7 +1,7 @@
 *db_card
 	if ( dbid == CREATURE_ID_SAIKYO_NEZUMI ) {
 		cardreftype = 10
-		cardrefskill = lang("サイキョウという地方出身の妖怪ネズミ。特技は催眠や予言。頻繁に最強だと誤解されて面倒くさいトラブルに巻き込まれ、誤解を解いたら解いたでそのたびに勝手に失望されてきた。積年の屈辱から、実際に最強になってやろうと決意し努力を続けている。", "")
+		cardrefskill = lang("サイキョウという地方出身の妖怪ネズミ。特技は催眠や予言。頻繁に最強だと誤解されて面倒くさいトラブルに巻き込まれ、誤解を解いたら解いたでそのたびに勝手に失望されてきた。積年の屈辱から、実際に最強になってやろうと決意し努力を続けている。", "Yokai rats hail from a region called Saikyo. Its specialities are hypnosis and foretelling. They are frequently misunderstood due to Saikyo means the strongest and get into trouble, and each time they have been let down when their misunderstandings are cleared up. After years of humiliation, he has decided to actually become the strongest and is continuing his efforts.")
 		cardrefdomain = 6
 		cardrefrare = 1
 		cardrefcost = 1
@@ -14,7 +14,7 @@
 	}
 	if ( dbid == CREATURE_ID_ULTIMATE_EXPERIMENTAL ) {
 		cardreftype = 10
-		cardrefskill = lang("生化学文明でも動物実験にはモルモットが使われていた。究極強化実験の素体にしたところ、想定以上のパワーアップを遂げて研究所を脱走した、という記録が残っている。どうやら野外で繁殖したらしく、現代でもその子孫がプイプイ言わせている。", "")
+		cardrefskill = lang("生化学文明でも動物実験にはモルモットが使われていた。究極強化実験の素体にしたところ、想定以上のパワーアップを遂げて研究所を脱走した、という記録が残っている。どうやら野外で繁殖したらしく、現代でもその子孫がプイプイ言わせている。", "In biochemical civilisation, guinea pigs were also used for animal experiments. There is a record of a guinea pig that escaped from a research institute after becoming more powerful than expected when used as an baseline specimen for ultimate enhancement experiments. Apparently, they were bred in the field, and their offspring are still making pui-pui sounds even today.")
 		cardrefdomain = 6
 		cardrefrare = 3
 		cardrefcost = 1
@@ -27,7 +27,7 @@
 	}
 	if ( dbid == CREATURE_ID_MOUNTAIN_SHAKER ) {
 		cardreftype = 10
-		cardrefskill = lang("脚が規格外の発達を遂げており、本気の蹴りは山が揺れるほどの衝撃。もしも鳴り動いた山からこのネズミが降りてきたら、拍子抜けしていないで深刻に考えたほうがよい。こいつの蹴りでも倒せないほどのバケモノにすみかを追われてきた可能性がある。", "")
+		cardrefskill = lang("脚が規格外の発達を遂げており、本気の蹴りは山が揺れるほどの衝撃。もしも鳴り動いた山からこのネズミが降りてきたら、拍子抜けしていないで深刻に考えたほうがよい。こいつの蹴りでも倒せないほどのバケモノにすみかを追われてきた可能性がある。", "Its legs are substandardly developed and its serious kicks have enough impact to shake a mountain. If this rat comes down from a moving mountain that rumbles, don't just take it easy, take it seriously. It may have been chased from its home by a monster that even its kicks cannot defeat.")
 		cardrefdomain = 6
 		cardrefrare = 5
 		cardrefcost = 1
@@ -40,7 +40,7 @@
 	}
 	if ( dbid == CREATURE_ID_DOPING_GUINEA_PIG ) {
 		cardreftype = 10
-		cardrefskill = lang("エウダーナでポーション開発に用いられていた実験動物。度重なる実験の中で変異し、投与された薬物を貯蔵・合成する臓器…通称、ポーションぶくろが形成されている。体内合成した麻痺薬をまき散らして研究員たちを無力化し、脱走した。", "")
+		cardrefskill = lang("エウダーナでポーション開発に用いられていた実験動物。度重なる実験の中で変異し、投与された薬物を貯蔵・合成する臓器…通称、ポーションぶくろが形成されている。体内合成した麻痺薬をまき散らして研究員たちを無力化し、脱走した。", "Experimental animals used for potion development in Eulderna. They mutated during repeated experiments and formed organs that store and synthesise the administered drugs... commonly known as a potion bag. They disperse the paralysing drugs synthesised in their bodies, incapacitating the researchers, and then escaped.")
 		cardrefdomain = 6
 		cardrefrare = 90
 		cardrefcost = 1
@@ -53,7 +53,7 @@
 	}
 	if ( dbid == CREATURE_ID_GUNDEGU ) {
 		cardreftype = 10
-		cardrefskill = lang("ネズミの中でも目と耳が特に良く、斥候として傭兵活動を行う。社交性も高く、よく仲間で集まって作戦会議をしている。", "")
+		cardrefskill = lang("ネズミの中でも目と耳が特に良く、斥候として傭兵活動を行う。社交性も高く、よく仲間で集まって作戦会議をしている。", "They have particularly good eyes and ears among rats, and perform mercenary work as scouts. They are also highly sociable and often get together with their friends for strategy meetings.")
 		cardrefdomain = 6
 		cardrefrare = 100
 		cardrefcost = 1
@@ -66,7 +66,7 @@
 	}
 	if ( dbid == CREATURE_ID_RUSH_RAT ) {
 		cardreftype = 10
-		cardrefskill = lang("人型の巨大ドブネズミ。中に人など入っていない。直接戦闘はあまり得意ではなく、獲物が他の生物と戦っているところを見計らって全力で接近して襲い掛かる。どうでもいいが、大型のネズミがラット、小型のネズミがマウスという区分である。", "")
+		cardrefskill = lang("人型の巨大ドブネズミ。中に人など入っていない。直接戦闘はあまり得意ではなく、獲物が他の生物と戦っているところを見計らって全力で接近して襲い掛かる。どうでもいいが、大型のネズミがラット、小型のネズミがマウスという区分である。", "Humanoid giant gerbils. There are no humans inside. They are not very good at direct combat, and will approach and attack at full speed when their prey is fighting other creatures. The large rats are classified as rats and the small ones as mice, although this is not important.")
 		cardrefdomain = 6
 		cardrefrare = 100
 		cardrefcost = 1
@@ -79,7 +79,7 @@
 	}
 	if ( dbid == CREATURE_ID_HIGH_JUMP_RAT ) {
 		cardreftype = 10
-		cardrefskill = lang("長い後ろ足で立ちあがり、ぴょんぴょん飛び跳ねて移動するネズミ。本気を出すとかなりの高度まで垂直跳躍でき、身体の小ささもあるので見失うこと間違いなし。落下の勢いを乗せたカカト落としで敵の頭蓋骨を粉砕する。", "")
+		cardrefskill = lang("長い後ろ足で立ちあがり、ぴょんぴょん飛び跳ねて移動するネズミ。本気を出すとかなりの高度まで垂直跳躍でき、身体の小ささもあるので見失うこと間違いなし。落下の勢いを乗せたカカト落としで敵の頭蓋骨を粉砕する。", "Rats that stand up on their long hind legs and move around by hopping around. When it gets serious, it can leap vertically to a considerable altitude, and its small body is sure to lose sight of you. They crush the skulls of their enemies with a dropkick that carries the momentum of their fall.")
 		cardrefdomain = 6
 		cardrefrare = 100
 		cardrefcost = 1
@@ -92,7 +92,7 @@
 	}
 	if ( dbid == CREATURE_ID_HUGE_CHINCHILLA ) {
 		cardreftype = 10
-		cardrefskill = lang("クソデカいネズミの一種。敵に襲われると臭い液体を噴射して抵抗する。身体が大きく運動能力も高いため、もしも飼うならクソデカい家具とクソデカい家が必要になる。", "")
+		cardrefskill = lang("クソデカいネズミの一種。敵に襲われると臭い液体を噴射して抵抗する。身体が大きく運動能力も高いため、もしも飼うならクソデカい家具とクソデカい家が必要になる。", "A type of rat that is damn large in size. When attacked by enemies, they resist by spraying smelly liquid. Because of their large size and athleticism, if you want to keep one, you will need damn big furnitures and a damn big house.")
 		cardrefdomain = 6
 		cardrefrare = 100
 		cardrefcost = 1

@@ -680,8 +680,8 @@
 			}
 			itemcount++
 		loop
-		title "atype["+adata(ADATA_TYPE, gdata(GDATA_AREA))+"];\n" + "Rdtype["+rdtype+"];\n" + "Mapseed["+mapseed@NT+"];\n" + "monstercount["+monstercount@NT+"];\n"  + "itemcount["+itemcount+"];\n"  + "furniturecount["+furniturecount@NT+"];\n"  + "mobdensity["+mobdensity+"];\n"  + "itemdensity["+itemdensity+"];\n"
 		if ( FALSE ) {
+			title "atype["+adata(ADATA_TYPE, gdata(GDATA_AREA))+"];" + "Rdtype["+rdtype+"];" + "Mapseed["+mapseed@NT+"];" + "monstercount["+monstercount@NT+"];"  + "itemcount["+itemcount+"];"  + "furniturecount["+furniturecount@NT+"];"  + "mobdensity["+mobdensity+"];"  + "itemdensity["+itemdensity+"];"
 			repeat 999999
 				locvar_outputmapimage_filename = exedir + strf("mapinfo_%06d.txt", cnt)
 				exist locvar_outputmapimage_filename

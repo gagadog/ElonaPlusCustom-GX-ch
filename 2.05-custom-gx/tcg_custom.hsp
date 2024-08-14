@@ -226,6 +226,9 @@
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_RATLOWCOST ) {
 					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "rat" | card@tcg(TCG_CARD_REF_COST, cnt) > 3 ) { continue }
 				}
+				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_RATNOCOST ) {
+					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "rat" | card@tcg(TCG_CARD_COST, cnt) > 0 ) { continue }
+				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_ORC ) {
 					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "orc" ) { continue }
 				}
@@ -10470,10 +10473,10 @@
 		cardreflvl = 185
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
-		cardrefcost = 8
-		cardrefattack = 8
-		cardrefhp = 9
-		cardrefskillid = TCG_EFF_BATTLECRY_HEALPLAYER1DAMAGE
+		cardrefcost = 7
+		cardrefattack = 2
+		cardrefhp = 6
+		cardrefskillid = TCG_EFF_RATPOWER
 		cardrefbits = ""
 		return 1
 	}
@@ -10484,9 +10487,9 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
 		cardrefcost = 7
-		cardrefattack = 5
-		cardrefhp = 10
-		cardrefskillid = TCG_EFF_NONE
+		cardrefattack = 3
+		cardrefhp = 6
+		cardrefskillid = TCG_EFF_RATFILL
 		cardrefbits = ""
 		return 1
 	}
@@ -10496,10 +10499,10 @@
 		cardreflvl = 167
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
-		cardrefcost = 7
-		cardrefattack = 5
-		cardrefhp = 10
-		cardrefskillid = TCG_EFF_NONE
+		cardrefcost = 8
+		cardrefattack = 3
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_BATTLECRY_BOUNCEALOT
 		cardrefbits = ""
 		return 1
 	}
@@ -10509,10 +10512,10 @@
 		cardreflvl = 118
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
-		cardrefcost = 5
-		cardrefattack = 6
-		cardrefhp = 6
-		cardrefskillid = TCG_EFF_BATTLECRY_DRAW1CARD
+		cardrefcost = 4
+		cardrefattack = 2
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_RATRUSH
 		cardrefbits = ""
 		return 1
 	}
@@ -10523,10 +10526,10 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
 		cardrefcost = 4
-		cardrefattack = 7
+		cardrefattack = 3
 		cardrefhp = 3
-		cardrefskillid = TCG_EFF_NONE
-		cardrefbits = ""
+		cardrefskillid = TCG_EFF_BATTLECRY_SUMMONACOPY
+		cardrefbits = "8"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_RUSH_RAT ) {
@@ -10536,10 +10539,10 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
 		cardrefcost = 3
-		cardrefattack = 3
-		cardrefhp = 5
-		cardrefskillid = TCG_EFF_NONE
-		cardrefbits = ""
+		cardrefattack = 2
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_BATTLECRY_SUMMONACOPY
+		cardrefbits = "11,20"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_HIGH_JUMP_RAT ) {
@@ -10549,10 +10552,10 @@
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
 		cardrefcost = 2
-		cardrefattack = 3
-		cardrefhp = 4
-		cardrefskillid = TCG_EFF_NONE
-		cardrefbits = ""
+		cardrefattack = 2
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_NOLIMIT
+		cardrefbits = "7,20"
 		return 1
 	}
 	if ( dbid == CREATURE_ID_HUGE_CHINCHILLA ) {
@@ -10561,10 +10564,10 @@
 		cardreflvl = 23
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 6
-		cardrefcost = 1
-		cardrefattack = 2
-		cardrefhp = 2
-		cardrefskillid = TCG_EFF_NONE
+		cardrefcost = 4
+		cardrefattack = 1
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_BATTLECRY_BOUNCETARGETOPPCARD
 		cardrefbits = ""
 		return 1
 	}
