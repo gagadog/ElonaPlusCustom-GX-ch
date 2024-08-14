@@ -10464,6 +10464,110 @@
 		return 1
 	}
 	// rat
+	if ( dbid == CREATURE_ID_SAIKYO_NEZUMI ) {
+		cardrefrace = "rat"
+		cardrefclass = "priest"
+		cardreflvl = 185
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 6
+		cardrefcost = 8
+		cardrefattack = 8
+		cardrefhp = 9
+		cardrefskillid = TCG_EFF_BATTLECRY_HEALPLAYER1DAMAGE
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_ULTIMATE_EXPERIMENTAL ) {
+		cardrefrace = "rat"
+		cardrefclass = "predator"
+		cardreflvl = 178
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 6
+		cardrefcost = 7
+		cardrefattack = 5
+		cardrefhp = 10
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_MOUNTAIN_SHAKER ) {
+		cardrefrace = "rat"
+		cardrefclass = "predator"
+		cardreflvl = 167
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 6
+		cardrefcost = 7
+		cardrefattack = 5
+		cardrefhp = 10
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_DOPING_GUINEA_PIG ) {
+		cardrefrace = "rat"
+		cardrefclass = "wizard"
+		cardreflvl = 118
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 6
+		cardrefcost = 5
+		cardrefattack = 6
+		cardrefhp = 6
+		cardrefskillid = TCG_EFF_BATTLECRY_DRAW1CARD
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_GUNDEGU ) {
+		cardrefrace = "rat"
+		cardrefclass = "gunner"
+		cardreflvl = 96
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 6
+		cardrefcost = 4
+		cardrefattack = 7
+		cardrefhp = 3
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RUSH_RAT ) {
+		cardrefrace = "rat"
+		cardrefclass = "predator"
+		cardreflvl = 64
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 6
+		cardrefcost = 3
+		cardrefattack = 3
+		cardrefhp = 5
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_HIGH_JUMP_RAT ) {
+		cardrefrace = "rat"
+		cardrefclass = "warrior"
+		cardreflvl = 36
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 6
+		cardrefcost = 2
+		cardrefattack = 3
+		cardrefhp = 4
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = ""
+		return 1
+	}
+	if ( dbid == CREATURE_ID_HUGE_CHINCHILLA ) {
+		cardrefrace = "rat"
+		cardrefclass = "predator"
+		cardreflvl = 23
+		cardrefquality = FIX_QUALITY_GOOD
+		cardrefdomain = 6
+		cardrefcost = 1
+		cardrefattack = 2
+		cardrefhp = 2
+		cardrefskillid = TCG_EFF_NONE
+		cardrefbits = ""
+		return 1
+	}
 	if ( dbid == CREATURE_ID_RAT2 ) {
 		cardrefrace = "rat"
 		cardrefclass = "thief"

@@ -868,14 +868,14 @@
 	rplistdef(length(rplistdef)) = 1 * EXT_RECIPES + rpid
 	rpdatan(rpid) = lang("魔剣転生", "evil sword")
 	rpdata(RPDATA_ITEM, rpid) = ITEM_ID_SKULL_SWORD, 20 + 1 * 10000
-	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_ANATOMY, 2, SKILL_NORMAL_ALCHEMY, 6
+	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_MAGIC_DEVICE, 2, SKILL_NORMAL_ALCHEMY, 6
 	rpdata(RPDATA_MAT + 0, rpid) = ITEM_ID_BROKEN_SWORD, ITEM_ID_BONE_FRAGMENT
 
 	rpid++
 	rplistdef(length(rplistdef)) = 1 * EXT_RECIPES + rpid
 	rpdatan(rpid) = lang("真・魔剣転生", "true evil sword")
 	rpdata(RPDATA_ITEM, rpid) = ITEM_ID_VIOLENT_SKULL_SWORD, 30 + 1 * 10000
-	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_ANATOMY, 30, SKILL_NORMAL_ALCHEMY, 45
+	rpdata(RPDATA_SKILL + 0 * 2, rpid) = SKILL_NORMAL_MAGIC_DEVICE, 30, SKILL_NORMAL_ALCHEMY, 45
 	rpdata(RPDATA_MAT + 0, rpid) = RF_MAKENN, RF_MAKENN, ITEM_ID_ORE_PIECE
 
 	rpid++
@@ -2281,7 +2281,6 @@
 		if ( rpdata(RPDATA_ITEM, rpid) == ITEM_ID_SKULL_SWORD ) {
 			flt
 			itemcreate -1, ITEM_ID_SKULL_SWORD, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
-			inv(INV_ITEM_PARAM2, ci) = sdata(SKILL_NORMAL_ALCHEMY, CHARA_PLAYER)
 			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			item_identify ci, ITEM_KNOWN_FULL
 
@@ -2295,7 +2294,6 @@
 		if ( rpdata(RPDATA_ITEM, rpid) == ITEM_ID_VIOLENT_SKULL_SWORD ) {
 			flt
 			itemcreate -1, ITEM_ID_VIOLENT_SKULL_SWORD, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
-			inv(INV_ITEM_PARAM2, ci) = sdata(SKILL_NORMAL_ALCHEMY, CHARA_PLAYER)
 			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			item_identify ci, ITEM_KNOWN_FULL
 
@@ -2309,7 +2307,6 @@
 		if ( rpdata(RPDATA_ITEM, rpid) == ITEM_ID_MAGISTUS ) {
 			flt
 			itemcreate -1, ITEM_ID_MAGISTUS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
-			inv(INV_ITEM_PARAM2, ci) = sdata(SKILL_NORMAL_ALCHEMY, CHARA_PLAYER) + sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER)
 			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			item_identify ci, ITEM_KNOWN_FULL
 
@@ -2323,7 +2320,6 @@
 		if ( rpdata(RPDATA_ITEM, rpid) == ITEM_ID_TRISMAGISTUS ) {
 			flt
 			itemcreate -1, ITEM_ID_TRISMAGISTUS, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
-			inv(INV_ITEM_PARAM2, ci) = sdata(SKILL_NORMAL_ALCHEMY, CHARA_PLAYER) + sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER)
 			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_NORMAL
 			item_identify ci, ITEM_KNOWN_FULL
 

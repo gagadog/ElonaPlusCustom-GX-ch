@@ -1,4 +1,108 @@
 *db_card
+	if ( dbid == CREATURE_ID_SAIKYO_NEZUMI ) {
+		cardreftype = 10
+		cardrefskill = lang("サイキョウという地方出身の妖怪ネズミ。特技は催眠や予言。頻繁に最強だと誤解されて面倒くさいトラブルに巻き込まれ、誤解を解いたら解いたでそのたびに勝手に失望されてきた。積年の屈辱から、実際に最強になってやろうと決意し努力を続けている。", "")
+		cardrefdomain = 6
+		cardrefrare = 1
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("サイキョウネズミ", "saikyo nezumi")
+		cardrefpic = xy2pic(32, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1123 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_ULTIMATE_EXPERIMENTAL ) {
+		cardreftype = 10
+		cardrefskill = lang("生化学文明でも動物実験にはモルモットが使われていた。究極強化実験の素体にしたところ、想定以上のパワーアップを遂げて研究所を脱走した、という記録が残っている。どうやら野外で繁殖したらしく、現代でもその子孫がプイプイ言わせている。", "")
+		cardrefdomain = 6
+		cardrefrare = 3
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("究極実験体モルティモット", "ultimate experimental")
+		cardrefpic = xy2pic(29, 34) + COLOR_BLACK * COLOR_TINT_MULT
+		cardrefrace = "1122 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_MOUNTAIN_SHAKER ) {
+		cardreftype = 10
+		cardrefskill = lang("脚が規格外の発達を遂げており、本気の蹴りは山が揺れるほどの衝撃。もしも鳴り動いた山からこのネズミが降りてきたら、拍子抜けしていないで深刻に考えたほうがよい。こいつの蹴りでも倒せないほどのバケモノにすみかを追われてきた可能性がある。", "")
+		cardrefdomain = 6
+		cardrefrare = 5
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("大山鳴動鼠", "mountain shaker")
+		cardrefpic = xy2pic(30, 34) + COLOR_BLACK * COLOR_TINT_MULT
+		cardrefrace = "1121 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_DOPING_GUINEA_PIG ) {
+		cardreftype = 10
+		cardrefskill = lang("エウダーナでポーション開発に用いられていた実験動物。度重なる実験の中で変異し、投与された薬物を貯蔵・合成する臓器…通称、ポーションぶくろが形成されている。体内合成した麻痺薬をまき散らして研究員たちを無力化し、脱走した。", "")
+		cardrefdomain = 6
+		cardrefrare = 90
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("ドーピングモルモット", "doping guinea pig")
+		cardrefpic = xy2pic(29, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1120 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_GUNDEGU ) {
+		cardreftype = 10
+		cardrefskill = lang("ネズミの中でも目と耳が特に良く、斥候として傭兵活動を行う。社交性も高く、よく仲間で集まって作戦会議をしている。", "")
+		cardrefdomain = 6
+		cardrefrare = 100
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("ガンデグー", "gundegu")
+		cardrefpic = xy2pic(28, 34) + COLOR_BROWN * COLOR_TINT_MULT
+		cardrefrace = "1119 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_RUSH_RAT ) {
+		cardreftype = 10
+		cardrefskill = lang("人型の巨大ドブネズミ。中に人など入っていない。直接戦闘はあまり得意ではなく、獲物が他の生物と戦っているところを見計らって全力で接近して襲い掛かる。どうでもいいが、大型のネズミがラット、小型のネズミがマウスという区分である。", "")
+		cardrefdomain = 6
+		cardrefrare = 100
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("ラッシュラット", "rush rat")
+		cardrefpic = xy2pic(31, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1118 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_HIGH_JUMP_RAT ) {
+		cardreftype = 10
+		cardrefskill = lang("長い後ろ足で立ちあがり、ぴょんぴょん飛び跳ねて移動するネズミ。本気を出すとかなりの高度まで垂直跳躍でき、身体の小ささもあるので見失うこと間違いなし。落下の勢いを乗せたカカト落としで敵の頭蓋骨を粉砕する。", "")
+		cardrefdomain = 6
+		cardrefrare = 100
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("カットビネズミ", "high jump rat")
+		cardrefpic = xy2pic(30, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1117 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
+	if ( dbid == CREATURE_ID_HUGE_CHINCHILLA ) {
+		cardreftype = 10
+		cardrefskill = lang("クソデカいネズミの一種。敵に襲われると臭い液体を噴射して抵抗する。身体が大きく運動能力も高いため、もしも飼うならクソデカい家具とクソデカい家が必要になる。", "")
+		cardrefdomain = 6
+		cardrefrare = 100
+		cardrefcost = 1
+		cardrefattack = 690
+		cardrefhp = 3
+		cardrefn = lang("クソデカチンチラ", "huge chinchilla")
+		cardrefpic = xy2pic(28, 34) + COLOR_DEFAULT * COLOR_TINT_MULT
+		cardrefrace = "1116 effect:" + skillname(cardrefattack) + " "
+		return 1
+	}
 	if ( dbid == CREATURE_ID_KAMIHIKOUKI ) {
 		cardreftype = 10
 		cardrefskill = lang("低級の神や精霊を宿らせた折り紙。横風を受けようがまっすぐに飛んでいく。先端が刺さるとちょっと痛いなんてものではなく、魔力を集中させて爆発するのでとても危険。", "Origami paper in which minor deities or spirits dwell. It flies straight ahead regardless of the crosswind. The tip is not only a little painful when it stings, but also very dangerous because it explodes when it concentrates magic power.")
@@ -3329,7 +3433,7 @@
 	}
 	if ( dbid == CREATURE_ID_LOTHRIAN_AGENT ) {
 		cardreftype = 10
-		cardrefskill = lang("ヴァリアスが失脚した際に解体された、ロスリア騎士団が母体。ヴァリアスの復権に伴って密かに再招集され、影で様々な任務を遂行していた。エウダーナから流入した魔鎧を改良した物を着用している。", "The parent company is the Knights of Lothria which was disbanded when Vallius was deposed. He was secretly recalled with the return of Vallius and carried out various missions in the shadows. He wears a modified version of the magical armor that came in from Eulderna.")
+		cardrefskill = lang("ヴァリウスが失脚した際に解体された、ロスリア騎士団が母体。ヴァリウスの復権に伴って密かに再招集され、影で様々な任務を遂行していた。エウダーナから流入した魔鎧を改良した物を着用している。", "The parent company is the Knights of Lothria which was disbanded when Vallius was deposed. He was secretly recalled with the return of Vallius and carried out various missions in the shadows. He wears a modified version of the magical armor that came in from Eulderna.")
 		cardrefdomain = 5
 		cardrefrare = 20
 		cardrefcost = 0
@@ -13277,11 +13381,11 @@
 		cardrefskill = lang("雑食性の小動物。高い繁殖力と何でも食べてしまうその性質によって、大繁殖を起こし農作物を喰いつくす事もある。身体が割と大きく、猫に挑むこともある。", "Small omnivorous animals. Due to their high fertility and their propensity to eat anything, they can breed in large numbers and devour crops.They are rather large and can challenge cats.")
 		cardrefdomain = 1
 		cardrefrare = 100
-		cardrefcost = 0
+		cardrefcost = 1
 		cardrefattack = 690
 		cardrefhp = 3
 		cardrefn = lang("ネズミ", "rat")
-		cardrefpic = xy2pic(24, 7) + COLOR_BROWN * COLOR_TINT_MULT
+		cardrefpic = xy2pic(32, 34) + COLOR_BROWN * COLOR_TINT_MULT
 		cardrefrace = "167 effect:" + skillname(cardrefattack) + " "
 		return 1
 	}

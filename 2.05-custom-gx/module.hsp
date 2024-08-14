@@ -2427,6 +2427,10 @@
 			gmode 5, inf_tiles, inf_tiles, 120 + rnd(100)
 			gcopy BUFFER_INF, 192 + 48 * 11 + rnd(1) * inf_tiles, 704
 		}
+		if ( cdata(CDATA_DIRECTIVE_MODE, CHARA_PLAYER) == DIRECTIVE_MODE_INTERCEPT ) {
+			pos cell_draw_arg_dx + 9, cell_draw_arg_dy + 25
+			gcopy BUFFER_INF, 1420, 517, 9, 6
+		}
 	}
 	// Pregnancy indicator
 	if ( cdata(CDATA_PREGNANCY_PROGRESS, cell_draw_arg_c) <= (-1000000) & cdata(CDATA_PREGNANCY_PROGRESS, cell_draw_arg_c) > (-2000000) ) {

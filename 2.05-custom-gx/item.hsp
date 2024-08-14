@@ -1272,6 +1272,15 @@
 				inv(INV_ITEM_PARAM1, ci) = EVITEM_HEART_MAGIC
 			}
 		}
+		if ( rnd(20) == 0 ) {
+			if ( gdata(GDATA_FLAG_RARE_DROP) == 100 ) {
+				flt
+				itemcreate -1, ITEM_ID_TRAINING_TICKET, cdata(CDATA_X, rc), cdata(CDATA_Y, rc), 0
+				if ( stat != 0 ) {
+					inv(INV_ITEM_PARAM2, ci) = limit(cdata(CDATA_LEVEL, rc) / 2 + rnd(cdata(CDATA_LEVEL, rc) / 2 + 1), 1, 50)
+				}
+			}
+		}
 		if ( cdata(CDATA_LEVEL, rc) > 29 ) {
 			if ( rnd(400) == 0 ) {
 				if ( gdata(GDATA_FLAG_RARE_DROP) == 100 ) {
@@ -1753,7 +1762,7 @@
 							}
 							if ( p == (-1) ) {
 								if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_CORPSE | inv(INV_ITEM_PARAM1, cnt) / 1000 == 2 | inv(INV_ITEM_PARAM1, cnt) / 1000 == 3 | inv(INV_ITEM_PARAM1, cnt) / 1000 == 6 ) {
-									if ( chipm(CHIPM_ROLE, map(inv(INV_ITEM_X, cnt), inv(INV_ITEM_Y, cnt), 0)) == MAP_CHIP_ROLE_DRYROCK ) {
+									if ( chipm(CHIPM_ROLE, map(inv(INV_ITEM_X, cnt), inv(INV_ITEM_Y, cnt), 0)) == MAP_CHIP_ROLE_DRYROCK & adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH ) {
 										if ( gdata(GDATA_WEATHER) != WEATHER_CLEAR ) {
 											continue
 										}
@@ -1872,6 +1881,36 @@
 		}
 	}
 	return
+
+	*brainParasite
+		if ( rnd(10) == 0 ) {
+			if ( synccheck(cc, -1) ) {
+				if ( gdata(GDATA_MIN) \ 2 == 0 ) {
+					txt lang(name(cc) + "は不安げに頭を押さえた。", name(cc) + " pat" + _s(cc) + " " + his(cc) + " head uneasily.")
+					txtvalid = 0
+					txt lang("「そうか、頭の中に寄生虫が！」", cnvtalk("There must've been a parasite in my head!"))
+				}
+				if ( gdata(GDATA_MIN) \ 2 == 1 ) {
+					txt lang(name(cc) + "は必死に自我を保とうとしている。", name(cc) + " desperately tried to maintain the sense of self.")
+					txtvalid = 0
+					txt lang("「やめろ…出ていけぇ…」", cnvtalk("Stop...get out..."))
+				}
+			}
+		}
+		if ( mdata(MDATA_TYPE) != MAP_TYPE_WORLD ) {
+			if ( rnd(5) == 0 ) {
+				if ( synccheck(cc, -1) ) {
+					txtef COLOR_RED2
+					txt lang(name(cc) + "は脳髄を寄生虫に侵され思考がおかしくなっている！", "The brain parasite has messed up " + name(cc) + " thinking!")
+					txtvalid = 0
+					txt lang("「そうか、これは世界中に広めるべき祝福なんだ」", cnvtalk("This is a blessing that should be spread throughout the world!"))
+				}
+				cdata(CDATA_CONDITION_BRAINWASH, cc) += 15
+				cdata(CDATA_CONDITION_CONFUSE, cc) += 15
+				cdata(CDATA_CONDITION_DIM, cc) += 15
+			}
+		}
+		return
 
 *pregnant
 	if ( rnd(15) == 0 ) {
@@ -4445,6 +4484,48 @@
 	}
 	return
 
+*eatBrainParasite
+	if ( synccheck(cc, -1) ) {
+		txt lang("何かが" + name(cc) + "の体内に入り込んだ。", "Something gets into " + name(cc) + your(cc) + " brain.")
+	}
+	tc = cc
+	gosub *brainParasite_effect
+	return
+
+*brainParasite_effect
+	if ( cdata(CDATA_PREGNANCY_PROGRESS, tc) <= (-1000000) ) {
+		if ( synccheck(tc, -1) ) {
+			txt lang("しかしすぐに分解された。", "But it was immediately turned into fetus nutrients.")
+		}
+		return
+	}
+	if ( tc == CHARA_PLAYER ) {
+		if ( trait(TRAIT_ETHER_BLOOMING_FLOWER) != 0 ) {
+			if ( synccheck(tc, -1) ) {
+				txt lang("しかしすぐに花の養分に変えられた。", "But it was immediately turned into flower nutrients.")
+			}
+			return
+		}
+	}
+	if ( encfind(tc, ENCHANT_RES_PREGNANCY) != (-1) ) {
+		if ( synccheck(tc, -1) ) {
+			txt lang("しかしすぐに弾き出した。", "But " + he(tc) + " eject" + _s(tc) + " it out quickly.")
+		}
+		return
+	}
+	if ( cbit(CHARA_BIT_BRAIN_PARASITE, tc) == FALSE ) {
+		txtef COLOR_RED
+		txt lang(name(tc) + "は脳髄に寄生された。", name(tc) + " get" + _s(tc) + " parasitized in the brain.")
+		if ( meal == 0 ) {
+			animeload 8, tc
+		}
+		cbitmod CHARA_BIT_BRAIN_PARASITE, tc, TRUE
+		if ( tc == CHARA_PLAYER ) {
+			spact(SKILL_SPACT_BRAIN_PARASITIZE - STARTING_SKILL_SPACT) = 1
+		}
+	}
+	return
+
 *eatAlien
 	if ( synccheck(cc, -1) ) {
 		txt lang("何かが" + name(cc) + "の体内に入り込んだ。", "Something gets into " + name(cc) + your(cc) + " body.")
@@ -4479,7 +4560,7 @@
 	}
 	if ( cbit(CHARA_BIT_PREGNANT, tc) == 0 ) {
 		txtef COLOR_YELLOW
-		txt lang(name(tc) + "は寄生された。", name(tc) + " get" + _s(tc) + " pregnant.")
+		txt lang(name(tc) + "は寄生された。", name(tc) + " get" + _s(tc) + " parasitized in the abdomen.")
 		if ( meal == 0 ) {
 			animeload ANIMATION_FIZZLE, tc
 		}

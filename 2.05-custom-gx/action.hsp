@@ -691,19 +691,18 @@
 				}
 			}
 			else {
-				if ( inv(INV_ITEM_ID, ci) != ITEM_ID_MAGISTUS & inv(INV_ITEM_ID, ci) != ITEM_ID_TRISMAGISTUS & inv(INV_ITEM_ID, ci) != ITEM_ID_OHUDA & inv(INV_ITEM_ID, ci) != ITEM_ID_PRESENT & inv(INV_ITEM_ID, ci) != ITEM_ID_WILD_FLOWER ) {
+				if ( inv(INV_ITEM_ID, ci) != ITEM_ID_BOMB_BARREL & inv(INV_ITEM_ID, ci) != ITEM_ID_MAGISTUS & inv(INV_ITEM_ID, ci) != ITEM_ID_TRISMAGISTUS & inv(INV_ITEM_ID, ci) != ITEM_ID_OHUDA & inv(INV_ITEM_ID, ci) != ITEM_ID_PRESENT & inv(INV_ITEM_ID, ci) != ITEM_ID_WILD_FLOWER ) {
 					dmghp tc, limit(sdata(SKILL_WEAPON_THROWING, cc) / 5, 1, 200) * limit(inv(INV_ITEM_WEIGHT, ci) / 1000, 1, 500) + rnd(inv(INV_ITEM_WEIGHT, ci) / 1000 + sdata(SKILL_WEAPON_THROWING, cc) + 1), cc
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_SKULL_SWORD | inv(INV_ITEM_ID, ci) == ITEM_ID_VIOLENT_SKULL_SWORD ) {
-					if ( inv(INV_ITEM_PARAM2, ci) == 0 ) {
-						inv(INV_ITEM_PARAM2, ci) = 1
+					if ( inv(INV_ITEM_PARAM2, ci) != 0 ) {
+						inv(INV_ITEM_PARAM2, ci) = 0
 					}
-					if ( inv(INV_ITEM_ID, ci) == ITEM_ID_SKULL_SWORD ) {
-						dmghp tc, limit(sdata(SKILL_WEAPON_THROWING, cc) / 5, 1, 200) * limit(inv(INV_ITEM_PARAM2, ci) / 4, 1, 500) + rnd(inv(INV_ITEM_PARAM2, ci) / 4 + sdata(SKILL_WEAPON_THROWING, cc) + 1), cc, SKILL_RES_NETHER, 1000
-					}
+					chara_guardbreak tc, 15
+					dmghp tc, (sdata(SKILL_WEAPON_THROWING, cc) / 5 + 5) * ((sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 2 + 5) + (calcLevelDmg(cc) + 1) / 2, cc, SKILL_RESDMG_CRUSH, 1000
 					if ( inv(INV_ITEM_ID, ci) == ITEM_ID_VIOLENT_SKULL_SWORD ) {
-						dmghp tc, limit(sdata(SKILL_WEAPON_THROWING, cc) / 5, 1, 200) * limit(inv(INV_ITEM_PARAM2, ci) / 4, 1, 500) * 2 + rnd(inv(INV_ITEM_PARAM2, ci) / 4 + sdata(SKILL_WEAPON_THROWING, cc) + 1), cc, SKILL_RES_NETHER, 1000
-						dmghp tc, limit(sdata(SKILL_WEAPON_THROWING, cc) / 5, 1, 200) * limit(inv(INV_ITEM_PARAM2, ci) / 4, 1, 500) + rnd(inv(INV_ITEM_PARAM2, ci) / 4 + sdata(SKILL_WEAPON_THROWING, cc) + 1), cc, SKILL_RES_MAGIC, 1000
+						dmghp tc, (sdata(SKILL_WEAPON_THROWING, cc) / 5 + 5) * ((sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 2 + 5) + (calcLevelDmg(cc) + 1) / 3, cc, SKILL_RES_NETHER, 1000
+						dmghp tc, (sdata(SKILL_WEAPON_THROWING, cc) / 5 + 5) * ((sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) + 1) / 5 + 5) + rnd(sdata(SKILL_NORMAL_MAGIC_DEVICE, cc) * 2 + 5) + (calcLevelDmg(cc) + 1) / 3, cc, SKILL_RES_MAGIC, 1000
 					}
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_OHUDA ) {
@@ -746,21 +745,29 @@
 						dmghp tc, sdata(SKILL_WEAPON_THROWING, cc) * (10 + inv(INV_ITEM_LEVEL, ci)) / 5, cc, SKILL_RESDMG_CUT, 400 * (10 + inv(INV_ITEM_LEVEL, ci)) / 10
 					}
 				}
+				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_BOMB_BARREL ) {
+					tcbk = tc
+					efpori = (sdata(SKILL_NORMAL_DISARM_TRAP, CHARA_PLAYER) + sdata(SKILL_NORMAL_GENE_ENGINEER, CHARA_PLAYER) + cdata(CDATA_LEVEL, CHARA_PLAYER)) * 6 + 5
+					efid = SKILL_SPELL_FIRE_BALL
+					efp = (sdata(SKILL_NORMAL_DISARM_TRAP, CHARA_PLAYER) + sdata(SKILL_NORMAL_GENE_ENGINEER, CHARA_PLAYER) + cdata(CDATA_LEVEL, CHARA_PLAYER)) * 6 + 5
+					gosub *effect
+					tc = tcbk
+				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_MAGISTUS ) {
 					tcbk = tc
-					efpori = inv(INV_ITEM_PARAM2, ci) * 6 + 5
+					efpori = (sdata(SKILL_NORMAL_MAGIC_DEVICE, CHARA_PLAYER) + sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + cdata(CDATA_LEVEL, CHARA_PLAYER)) * 6 + 5
 					efid = SKILL_SPELL_MAGIC_STORM
-					efp = inv(INV_ITEM_PARAM2, ci) * 6 + 5
+					efp = (sdata(SKILL_NORMAL_MAGIC_DEVICE, CHARA_PLAYER) + sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + cdata(CDATA_LEVEL, CHARA_PLAYER)) * 6 + 5
 					gosub *effect
 					tc = tcbk
 				}
 				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_TRISMAGISTUS ) {
 					tcbk = tc
 					magist = 3
-					efpori = inv(INV_ITEM_PARAM2, ci) * 6 + 5
+					efpori = (sdata(SKILL_NORMAL_MAGIC_DEVICE, CHARA_PLAYER) + sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + cdata(CDATA_LEVEL, CHARA_PLAYER)) * 6 + 5
 					repeat 3
 						efid = SKILL_SPELL_MAGIC_STORM
-						efp = inv(INV_ITEM_PARAM2, ci) * 6 + 5
+						efp = (sdata(SKILL_NORMAL_MAGIC_DEVICE, CHARA_PLAYER) + sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + cdata(CDATA_LEVEL, CHARA_PLAYER)) * 6 + 5
 						gosub *effect
 					loop
 					magist = 0
@@ -1056,17 +1063,22 @@
 			snd SOUNDLIST_PAYGOLD1
 			cdata(CDATA_GOLD, CHARA_PLAYER) -= sellgold
 			cdata(CDATA_GOLD, tc) += sellgold
-			if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_TRADE ) {
-				if ( inv(INV_ITEM_PARAM2, ti) == 0 ) {
-					p = sellgold + cdata(CDATA_SHOP_INVEST, tc)
-					repeat 30
-						if ( p >= calcinvestvalue() ) {
-							p -= calcinvestvalue()
-							cdata(CDATA_ROLE_SHOP_LEVEL, tc) += rnd(2) + 2
-						}
-					loop
-					cdata(CDATA_SHOP_INVEST, tc) = p
+			if ( cdata(CDATA_ROLE, tc) != ROLE_SHIP_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER ) {
+				p = 0
+				repeat 200
+					if ( cdata(CDATA_GOLD, tc) >= calcinvestnpc() + 1750 + limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 10, 200) * 125 ) {
+						cdata(CDATA_GOLD, tc) -= calcinvestnpc()
+						cdata(CDATA_ROLE_SHOP_LEVEL, tc) += 3
+						p += 3
+					}
+					else {
+						break
+					}
+				loop
+				if ( p > 0 ) {
+					txt lang(name(tc) + "は売り上げを使って店の規模を" + p + "上げた。", name(tc) + " increased their shop level by " + p + " based on recent sales.")
 				}
+				p = 0
 			}
 			if ( refitem(inv(INV_ITEM_ID, ti), DBSPEC_TYPE) == FILTER_CARGO_TRADE ) {
 				inv(INV_ITEM_PARAM2, ti) = calcitemvalue(ti, 0)
@@ -2519,16 +2531,36 @@
 				txtmore
 				txt lang("足元には" + tname(p) + "がある。", "You walk into " + tname(p) + ".")
 			}
+			if ( map(x, y, MAP_TILE_ID) == xy2pic(30, 0) | map(x, y, MAP_TILE_ID) == xy2pic(31, 0) ) {
+				if ( mdata(MDATA_TILE_FILE) == 1 | mdata(MDATA_TILE_FILE) == 3 ) {
+					if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CROP ) {
+						txt lang("植物の栽培に適していそうだ。", "The crop tile seems suitable for growing plants.")
+					}
+					else {
+						txt lang("それは畑でのみ機能する。", "The crop tile only works in Crop Properties you own.")
+					}
+				}
+			}
 			if ( map(x, y, MAP_TILE_ID) == xy2pic(20, 10) ) {
 				if ( mdata(MDATA_TILE_FILE) == 1 | mdata(MDATA_TILE_FILE) == 3 ) {
-					txt lang("有機物を置いておくと肥料に変わりそうだ。", "If organic matter is placed here, it will turn into fertilizer.")
+					if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CROP ) {
+						txt lang("有機物を置いておくと肥料に変わりそうだ。", "If organic matter is placed here, it will turn into fertilizer.")
+					}
+					else {
+						txt lang("それは畑でのみ機能する。", "The composite only works in Crop Properties you own.")
+					}
 				}
- 			}
+			}
 			if ( map(x, y, MAP_TILE_ID) == xy2pic(29, 0) ) {
 				if ( mdata(MDATA_TILE_FILE) == 1 | mdata(MDATA_TILE_FILE) == 3 ) {
-					txt lang("料理素材を置いておくと乾物に変わりそうだ。", "If cooking ingredients are placed here, they will turn into dry food.")
+					if ( adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_RANCH ) {
+						txt lang("料理素材を置いておくと乾物に変わりそうだ。", "If cooking ingredients are placed here, they will turn into dry food.")
+					}
+					else {
+						txt lang("それは畑でのみ機能する。", "The drying rack only works in Crop Properties you own.")
+					}
 				}
- 			}
+			}
 			if ( mdata(MDATA_TYPE) == MAP_TYPE_WORLD & gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) > VEHICLE_NONE ) {
 				snd SOUNDLIST_DRAG01
 				if ( gdata(GDATA_FLAG_WORLD_MAP_VEHICLE_KIND) == VEHICLE_MAGIC_LOCOMOTIVE ) {
@@ -9077,13 +9109,6 @@
 		if ( inv(INV_ITEM_PARAM2, ci) == 0 ) {
 			inv(INV_ITEM_PARAM2, ci) = 1
 		}
-		if ( tc == CHARA_PLAYER ) {
-			if ( sorg(inv(INV_ITEM_PARAM1, ci), tc) == 0 ) {
-				txt lang("あなたは対応するスキルを覚えようとしたが、拒絶反応が出てあきらめた…。", name(tc) + " has no corresponding skill, and gave up because of the rejection reaction...")
-				gosub *screen_draw
-				goto *pc_turn
-			}
-		}
 		if ( sorg(inv(INV_ITEM_PARAM1, ci), tc) == 0 ) {
 			snd SOUNDLIST_OFFER2
 			animeload 23, tc
@@ -10817,6 +10842,20 @@
 				if ( cdata(CDATA_POWER_GAUGE, tc) < 50 ) {
 					txt_impossible
 					goto *act_use_SWEND1
+				}
+				if ( inv(INV_ITEM_ID, ci) >= ITEM_ID_DELTA_SHIFT_CORE ) {
+					addbuff tc, BUFF_SPEED, cdata(CDATA_LEVEL, tc) * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 200
+					addbuff tc, BUFF_HERO, cdata(CDATA_LEVEL, tc) * 5 * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 200
+					addbuff tc, BUFF_GEM_POWER, cdata(CDATA_LEVEL, tc) * 5 * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 200
+					addbuff tc, BUFF_CONCENTRATION, cdata(CDATA_LEVEL, tc) * 5 * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 200
+					addbuff tc, BUFF_DIVINE_WISDOM, cdata(CDATA_LEVEL, tc) * 5 * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 200
+				}
+				if ( inv(INV_ITEM_ID, ci) == ITEM_ID_OMEGA_SHIFT_CORE ) {
+					addbuff tc, BUFF_SPEED, cdata(CDATA_LEVEL, tc) * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 150
+					addbuff tc, BUFF_HERO, cdata(CDATA_LEVEL, tc) * 5 * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 150
+					addbuff tc, BUFF_GEM_POWER, cdata(CDATA_LEVEL, tc) * 5 * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 150
+					addbuff tc, BUFF_CONCENTRATION, cdata(CDATA_LEVEL, tc) * 5 * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 150
+					addbuff tc, BUFF_DIVINE_WISDOM, cdata(CDATA_LEVEL, tc) * 5 * sqrt(cdata(CDATA_LEVEL, tc) + 1) + 10, 150
 				}
 				if ( cdata(CDATA_SHIFT_FORM, tc) > SHIFT_FORM_NONE ) {
 					repeat MAX_BLESSINGS + MAX_HEXES
@@ -16660,7 +16699,8 @@
 					}
 					if ( evmode == 72 ) {
 						evname = lang("エレクトリカルマウス", "Electrical Mouse")
-						cdata(CDATA_PIC, tc) = xy2pic(24, 7) + COLOR_YELLOW * COLOR_TINT_MULT
+						cdata(CDATA_CHARA_PIC, tc) = 1
+						cdata(CDATA_PIC, tc) = xy2pic(28, 34) + COLOR_YELLOW2 * COLOR_TINT_MULT
 						evold = lang("ネズミ", "rat")
 						skillmod SKILL_ATTR_SPD, tc, 20000
 						skillmod SKILL_ATTR_MAG, tc, 30000
@@ -16871,7 +16911,8 @@
 					}
 					if ( evmode == 89 ) {
 						evname = lang("火鼠", "Fire Rat")
-						cdata(CDATA_PIC, tc) = xy2pic(7, 22)
+						cdata(CDATA_CHARA_PIC, tc) = 0
+ 						cdata(CDATA_PIC, tc) = xy2pic(7, 22)
 						evold = lang("ネズミ", "rat")
 						skillmod SKILL_ATTR_SPD, tc, 20000
 						skillmod SKILL_ATTR_CON, tc, 20000
@@ -18576,6 +18617,10 @@
 		else {
 			map(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 6) = 0
 		}
+		return
+	}
+	if ( adata(ADATA_ID, gdata(GDATA_AREA)) != AREA_CROP ) {
+		map(cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), MAP_FEATS_ON_TILE) = 0
 		return
 	}
 	saibai = 0

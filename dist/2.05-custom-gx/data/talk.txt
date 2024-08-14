@@ -1104,6 +1104,37 @@ If you cast an ice bolt at a fish on the ground, it will turn into frozen fish.
 The prices at my shop are lower than the ones you'll find anywhere else!
 %END
 
+%%SKILLTRAINER,JP			/common Trainer
+どこのトレイナーでも訓練はできる{が}、覚えられるスキルは街やギルドごとに異なる{よ}。
+訓練すればスキルの潜在能力が大きく上がる{よ}。潜在能力が低すぎると経験値が得られないこともある{のだ}。
+潜在能力が高ければ高いほど経験値が多く得られる{のだ}。実戦経験を積む前に高めておきたい{な}。
+潜在能力を何パーセントくらいでキープするかは、{you}のプラチナ硬貨獲得量で調整するべき{だろ}。
+ペットを訓練させたい？それならペットに金貨や宝石や訓練券を持たせて自主性に任せるべき{だな}。
+鍛えたスキルの数だけ、{you}のやれることが広がる{よ}。スキルが一定値以上で会得できる技能もある{のだ}。
+役に立たないスキルなど無い…{が}、自分にとっての優先順位は考えるべき{だ}。
+%END
+
+%%SKILLTRAINER,EN			/common Trainer
+You can train with any trainer, but the skills you can learn vary depending on the town and guild.
+Training will greatly increase the skill's potential. If the potential is too low, you may not gain any experience practicing.
+The higher your potential, the more experience points you'll get. You'll want to increase it before gaining actual combat experience.
+You should adjust the percentage of your potential you want to keep at depending on how many platinum coins you earn.
+Want to train your pet? Then you should give it gold coins, gems, and training vouchers and let it do its own thing.
+The more skills you train, the more you'll be able to do. There are also skills that can only be acquired once your skill level reaches a certain level.
+There are no useless skills... but you should think about your own priorities.
+%END
+
+%ASKILLTRAINER,JP			/common Trainer
+この世は結局、才能が全て！凡人が訓練なんかしても無意味{だ}。
+他人の訓練で忙しくなければ、{me}だって自分の潜在能力を伸ばしている{よ}。
+訓練代でプラチナ硬貨ばかり貰う{が}、それだけじゃ生活していけない{よ}…。
+%END
+
+%ASKILLTRAINER,EN			/common Trainer
+In the end, talent is everything in this world! There's no point training for average people.
+If I wasn't busy training others, I'd be developing my own potential too.
+I get a lot of platinum coins for training, but I can't make a living off that only...
+%END
 
 %SENTI,JP			/Senti
 神々の大戦では多くの神がこの地で散ったとされている。
@@ -1600,6 +1631,19 @@ Ebon had a little brother... and his name was Obon! The two of them battled fier
 
 %MAID,EN
 Welcome home, {player}. You have {ref} waiting for you. Do you want to meet a guest now?
+%END
+
+
+%INMATE,JP			/Camp
+くっ、殺せ！
+家に帰りたい{よ}…。
+いつか脱走してやる{のだ}。
+%END%
+
+%INMATE,EN			/Camp
+Ugh! Just kill me already!
+I wanna go back home...
+Someday, I'll leave this hellhole.
 %END
 
 

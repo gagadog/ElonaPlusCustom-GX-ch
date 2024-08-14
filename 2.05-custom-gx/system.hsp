@@ -944,6 +944,14 @@
 			}
 		}
 	}
+	if ( gdata(GDATA_VERSION) < 6340 ) {
+		repeat 16
+			snd SOUNDLIST_ENC
+			if ( cdata(CDATA_ROCK_THROWING, cnt) > 0 ) {
+				cbitmod CHARA_BIT_ENHANCED_ROCK_THROWING, cnt, TRUE
+			}
+		loop
+	}
 	if ( gdata(GDATA_VERSION) != VERSION_NUMBER ) {
 		gdata(GDATA_WORLD_RENEW) = 1
 	}

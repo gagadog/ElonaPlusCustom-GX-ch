@@ -465,13 +465,29 @@
 			sy -= 20
 		}
 	}
+	if ( cbit(CHARA_BIT_PREGNANT, CHARA_PLAYER) ) {
+		color 20, 100, 50
+		pos sx, sy
+		gcopy BUFFER_INF, 0 + en * 84, 416, 65 + en * 30, 15
+		pos sx + 6, sy + 1
+		mes _conparasite
+		sy -= 20
+	}
+	if ( cbit(CHARA_BIT_BRAIN_PARASITE, CHARA_PLAYER) ) {
+		color 20, 50, 100
+		pos sx, sy
+		gcopy BUFFER_INF, 0 + en * 84, 416, 65 + en * 30, 15
+		pos sx + 6, sy + 1
+		mes _conbparasite
+		sy -= 20
+	}
 	if ( cbit(CHARA_BIT_ANOREXIA, CHARA_PLAYER) ) {
 		color 200, 100, 50
 		if ( cdata(CDATA_VOMIT, CHARA_PLAYER) > 0 ) {
 			pos sx, sy
 			gcopy BUFFER_INF, 0 + en * 84, 416, 65 + en * 30, 15
 			pos sx + 6, sy + 1
-			mes _vomit(limit(cdata(CDATA_VOMIT, CHARA_PLAYER) / 3, 0, length(_vomit) - 1))
+			mes _vomit(limit(cdata(CDATA_VOMIT, CHARA_PLAYER) / 3, 0, 10))
 			sy -= 20
 		}
 		else {
@@ -7283,7 +7299,7 @@
 				if ( rangedist <= 1 ) {
 					ltp = 20
 				}
-				if ( cdata(CDATA_ROCK_THROWING, cc) != 0 ) {
+				if ( cbit(CHARA_BIT_ENHANCED_ROCK_THROWING, cc) ) {
 					if ( inv(INV_ITEM_ID, cw) == ITEM_ID_STONE | inv(INV_ITEM_ID, cw) == ITEM_ID_VANILLA_ROCK ) {
 						ltp += 50
 					}
@@ -7295,7 +7311,7 @@
 				}
 			}
 			else {
-				if ( cdata(CDATA_ROCK_THROWING, cc) != 0 & (inv(INV_ITEM_ID, cw) == ITEM_ID_STONE | inv(INV_ITEM_ID, cw) == ITEM_ID_VANILLA_ROCK) ) {
+				if ( cbit(CHARA_BIT_ENHANCED_ROCK_THROWING, cc) != 0 & (inv(INV_ITEM_ID, cw) == ITEM_ID_STONE | inv(INV_ITEM_ID, cw) == ITEM_ID_VANILLA_ROCK) ) {
 					dmgmulti = dmgmulti * (rangemap(rangedist) / 2 + 150) / 100
 					if ( encharge == 100 ) {
 						dmgmulti = dmgmulti2 * 3 / 2
@@ -7527,7 +7543,7 @@
 		if ( zero2 == 200 ) {
 			pierce = limit(pierce + prot / 4 - dist(motox, motoy, cdata(CDATA_X, tc), cdata(CDATA_Y, tc)) * 10, 10, 100)
 		}
-		if ( cdata(CDATA_ROCK_THROWING, cc) != 0 ) {
+		if ( cbit(CHARA_BIT_ENHANCED_ROCK_THROWING, cc) != 0 ) {
 			if ( inv(INV_ITEM_ID, cw) == ITEM_ID_STONE | inv(INV_ITEM_ID, cw) == ITEM_ID_VANILLA_ROCK ) {
 				pierce = 70
 				snd SOUNDLIST_BASH1
@@ -7754,7 +7770,6 @@
 	cdata(CDATA_IMMUNE_DAMAGE, r1) = 0
 	cdata(CDATA_ENHANCE_SPELL, r1) = 0
 	cdata(CDATA_ENHANCE_BREATH, r1) = 0
-	cdata(CDATA_ROCK_THROWING, r1) = 0
 	cdata(CDATA_REFLECT_DAMAGE, r1) = 0
 	cdata(CDATA_SHIELD_PARRY, r1) = 0
 	cdata(CDATA_REMOTE_BLOW, r1) = 0
@@ -7771,6 +7786,7 @@
 	cdata(CDATA_CRIT_CHANCE, r1) = 0
 	cbitmod CHARA_BIT_BLUE_SPIRIT, r1, 0
 	cbitmod CHARA_BIT_QUICK_SHOOTING, r1, 0
+	cbitmod CHARA_BIT_ENHANCED_ROCK_THROWING, r1, 0
 	repeat MAX_EQUIP_SLOT_TOTAL, CDATA_STARTING_EQUIP_SLOTS
 		if ( cdata(cnt, r1) \ EXT_EQUIP_SLOTS == 0 ) {
 			continue
@@ -8010,7 +8026,7 @@
 					continue
 				}
 				if ( rp2 == ENCHANT_ROCK_THROWING ) {
-					cdata(CDATA_ROCK_THROWING, r1) += inv(STARTING_INV_ITEM_ENCHANT + cnt * 2 + 1, rp)
+					cbitmod CHARA_BIT_ENHANCED_ROCK_THROWING, r1, TRUE
 					continue
 				}
 				if ( rp2 == ENCHANT_EXTRA_MELEE ) {
@@ -8066,6 +8082,9 @@
 		if ( cbit(CHARA_BIT_PREGNANT, r1) == 0 ) {
 			spact(SKILL_SPACT_PREGNANT - STARTING_SKILL_SPACT) = 0
 		}
+		if ( cbit(CHARA_BIT_BRAIN_PARASITE, r1) == 0 ) {
+			spact(SKILL_SPACT_BRAIN_PARASITIZE - STARTING_SKILL_SPACT) = 0
+		}
 		if ( trait(TRAIT_ETHER_BLADE_HANDS) != 0 ) {
 			spact(SKILL_SPACT_DECAPITATION - STARTING_SKILL_SPACT) = 1
 		}
@@ -8093,10 +8112,10 @@
 				if ( cdata(CDATA_HIRE_DATE, r1) > 10 ) {
 					cdata(CDATA_HIRE_DATE, r1) = 0
 				}
-				if ( cnt == 18 ) {
+				if ( cnt == 18 - 10 ) {
 					sdata(10 + cnt, r1) = sdata(10 + cnt, r1) * (10 - cdata(CDATA_HIRE_DATE, r1)) / 10
 				}
-				if ( cnt != 18 & cnt != 19 ) {
+				if ( cnt != 18 - 10 & cnt != 19 - 10 ) {
 					sdata(10 + cnt, r1) = sdata(10 + cnt, r1) / (cdata(CDATA_HIRE_DATE, r1) + 1)
 				}
 			}

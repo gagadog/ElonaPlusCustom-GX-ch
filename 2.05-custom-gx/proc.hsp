@@ -5726,6 +5726,9 @@
 	}
 	else {
 		gain = (rnd(100 / 2 + 1) + 100 / 2) * (90 + sdata(SKILL_NORMAL_MEMORIZATION, cc) + (sdata(SKILL_NORMAL_MEMORIZATION, cc) > 0) * 20) / 200 + 100
+		if ( gain > 999 ) {
+			gain = 999
+		}
 		skillgain cc, efid, 1, gain
 		txt lang("魔法のストックが" + gain + "増えた。", "You gain " + gain + " spell stocks.")
 		gosub *expMemorize
@@ -8353,6 +8356,7 @@
 						dmghp tc, role(dice1, dice2, bonus), cc, ele, elep
 						dmgcon tc, CONDITION_BLEED, 75
 					}
+					healcon cc, CONDITION_BLEED, 75
 				}
 				if ( efid != SKILL_SPACT_DRAIN_BLOOD ) {
 					dmghp tc, role(dice1, dice2, bonus) + (calcLevelDmg(cc) + 1) / 3, cc, ele, elep
@@ -8360,6 +8364,30 @@
 				if ( efid == SKILL_SPACT_VORACITY_FANG ) {
 					dmgcon tc, CONDITION_BLEED, 75
 					cdata(CDATA_HUNGER, cc) += 150
+					if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
+						p = 11 - 10
+						if ( cdata(CDATA_QUALITY, tc) >= FIX_QUALITY_MIRACLE | encfind(tc, 6 * 10000 + 10 + p) != (-1) ) {
+							p = -1
+						}
+						if ( sdata(SKILL_ATTR_CON, tc) < sorg(SKILL_ATTR_PER, tc) / 2 ) {
+							p = -1
+						}
+						if ( p != (-1) ) {
+							i = sorg(10 + p, tc) - cdata(STARTING_CDATA_ATTR + p, tc)
+							if ( i > 0 ) {
+								efp = (elep + 1) / 4 + 20
+								i = i * efp / 2000 + 5
+								cdata(STARTING_CDATA_ATTR + p, tc) -= i
+							}
+							if ( synccheck(tc, -1) ) {
+								txtmore
+								txtef COLOR_PURPLE
+								txt lang(name(tc) + "は弱くなった。", name(tc) + " " + is(tc) + " weakened.")
+							}
+							r1 = tc
+							gosub *charaRefresh
+						}
+					}
 				}
 				if ( efid == SKILL_SPACT_MEMORY_POISON ) {
 					if ( cdata(CDATA_EXIST, tc) == CHAR_STATE_ALIVE ) {
@@ -8657,22 +8685,25 @@
 							dbid = CREATURE_ID_PERFORMAID_BLOODRESS + rnd(3)
 						}
 						if ( cdata(CDATA_ID, cc) == CREATURE_ID_OBLIVION_RUDE_BEAST ) {
-							dbid = ITEM_ID_PETHOUSE
+							dbid = CREATURE_ID_OBLIVION_BEAST
 						}
 						if ( cdata(CDATA_ID, cc) == CREATURE_ID_HOT_MUSHROOM_TEACHER ) {
-							dbid = ITEM_ID_ALPHA_SHIFT_CORE
+							dbid = CREATURE_ID_FANG_FUNGUS
 						}
 						if ( cdata(CDATA_ID, cc) == CREATURE_ID_YAYAUHQUI_TEZCATLIPOCA ) {
-							dbid = ITEM_ID_DEED_DISCARDED_RANCH
+							dbid = CREATURE_ID_TALON_SOLDIER
 						}
 						if ( cdata(CDATA_ID, cc) == CREATURE_ID_RATS_BRINGER ) {
-							dbid = ITEM_ID_ROD_UNCURSE
+							dbid = CREATURE_ID_RUSH_RAT
 						}
 						if ( cdata(CDATA_ID, cc) == CREATURE_ID_POWERFUL_GREAT_WYRM ) {
-							dbid = ITEM_ID_SPELLBOOK_WATER_BEAM
+							dbid = CREATURE_ID_POWERFUL_GREAT_WYRM
 						}
 						if ( cdata(CDATA_ID, cc) == CREATURE_ID_MESHERA_PLANT ) {
 							dbid = CREATURE_ID_MESHERA_UNFINISHED
+						}
+						if ( cdata(CDATA_ID, cc) == CREATURE_ID_RUSH_RAT ) {
+							dbid = CREATURE_ID_RUSH_RAT
 						}
 					}
 					if ( efid == SKILL_SPELL_SUMMON_SPIRIT ) {
@@ -9206,37 +9237,37 @@
 						}
 					}
 					if ( ele == SKILL_RES_FIRE ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_FIRE, xy2pic(14, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_FIRE, xy2pic(14, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_COLD ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_COLD, xy2pic(16, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_COLD, xy2pic(16, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_LIGHTNING ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_LIGHTNING, xy2pic(18, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_LIGHTNING, xy2pic(18, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_DARKNESS ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_DARKNESS, xy2pic(20, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_DARKNESS, xy2pic(20, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_MIND ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_MIND, xy2pic(22, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_MIND, xy2pic(22, 38), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_POISON ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_POISON, xy2pic(12, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_POISON, xy2pic(12, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_NETHER ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_NETHER, xy2pic(14, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_NETHER, xy2pic(14, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_SOUND ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_SOUND, xy2pic(16, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_SOUND, xy2pic(16, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_NERVE ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_NERVE, xy2pic(18, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_NERVE, xy2pic(18, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_CHAOS ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_CHAOS, xy2pic(20, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_CHAOS, xy2pic(20, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( ele == SKILL_RES_MAGIC ) {
-						addmef dx, dy, MEF_TYPE_REMNANT_MAGIC, xy2pic(22, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10
+						addmef dx, dy, MEF_TYPE_REMNANT_MAGIC, xy2pic(22, 39), 3 + rnd(3), sdata(SKILL_ATTR_CON, cc) + (calcLevelDmg(cc) + 1) / 10, cc
 					}
 					if ( map(dx, dy, MAP_CHARA_INDEX_PLUS_ONE) != 0 ) {
 						tc = map(dx, dy, MAP_CHARA_INDEX_PLUS_ONE) - 1
@@ -9563,8 +9594,35 @@
 		}
 		goto *effect_end
 	}
+	if ( _switch_val == SKILL_SPACT_BRAIN_PARASITIZE | _switch_sw ) {
+		_switch_sw = 0
+		snd SOUNDLIST_CRACK
+		hostileaction cc, tc
+		chara_guardbreak tc, 10
+		if ( cdata(CDATA_ID, tc) == CREATURE_ID_JURE | cdata(CDATA_ID, tc) == CREATURE_ID_JURE ) {
+			repeat 245
+				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+					continue
+				}
+				if ( cdata(CDATA_ID, cnt) == CREATURE_ID_ROVID ) {
+					snd SOUNDLIST_AMMO
+					txt lang(cdatan(CDATAN_NAME, cnt) + "「絶対防衛！」", cdatan(CDATAN_NAME, cnt) + " says: \"Absolute protect!\"")
+					goto *effect_end
+				}
+			loop
+		}
+		if ( synccheck(tc, -1) ) {
+			txt lang(name(cc) + "は" + name(tc) + "の皮膚を突き刺して何かを送り込んだ！", name(cc) + " stab" + _s(cc) + " " + name(tc) + " in the skin and injected something!")
+		}
+		gosub *brainParasite_effect
+		goto *effect_end
+		_switch_sw++
+	}
 	if ( _switch_val == SKILL_SPACT_PREGNANT | _switch_sw ) {
 		_switch_sw = 0
+		snd SOUNDLIST_CRACK
+		hostileaction cc, tc
+		chara_guardbreak tc, 10
 		if ( cdata(CDATA_ID, tc) == CREATURE_ID_JURE | cdata(CDATA_ID, tc) == CREATURE_ID_BLESSED_JURE ) {
 			repeat MAX_CHARA_TOTAL
 				if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
@@ -9578,7 +9636,7 @@
 			loop
 		}
 		if ( synccheck(tc, -1) ) {
-			txt lang(name(cc) + "は" + name(tc) + "の口の中に何かを送り込んだ！", name(cc) + " put" + _s(cc) + " something into " + name(tc) + your(tc) + " body!")
+			txt lang(name(cc) + "は" + name(tc) + "の口の中に何かを送り込んだ！", name(cc) + " put" + _s(cc) + " something into " + name(tc) + your(tc) + " mouth!")
 		}
 		if ( cc == CHARA_PLAYER ) {
 			ninsin = cdata(CDATA_INFANT, cc)
@@ -12292,21 +12350,17 @@
 		if ( cc != CHARA_PLAYER ) {
 			goto *effect_end
 		}
-		if ( cdata(CDATA_POWER_GAUGE, cc) < 98 ) {
-			txt_nothinghappens
-			return 0
-		}
-		if ( cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) == 0 ) {
-			cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) = 1
-			txtef COLOR_GREEN
-			txt lang(name(cc) + "は次の攻撃に意識を集中させた！", name(cc) + " put" + _s(cc) + " all of " + his(cc) + " strength into the next blow!")
+		snd SOUNDLIST_ENC
+		if ( cdata(CDATA_DIRECTIVE_MODE, CHARA_PLAYER) == DIRECTIVE_MODE_OFFENSIVE ) {
+			cdata(CDATA_DIRECTIVE_MODE, CHARA_PLAYER) = DIRECTIVE_MODE_INTERCEPT
+			txtef COLOR_ORANGE
+			txt lang("あなたはゲージ技を温存することにした。", "You decide to save your power gauge.")
 		}
 		else {
-			cdata(CDATA_EVOLUTION_STAGE, CHARA_PLAYER) = 0
-			txt lang(name(cc) + "は次の攻撃に意識を集中させていたが、やっぱりやめた。", name(cc) + " decide" + _s(cc) + " not to put all of " + his(cc) + " strength into the next blow.")
+			cdata(CDATA_DIRECTIVE_MODE, CHARA_PLAYER) = DIRECTIVE_MODE_OFFENSIVE
+			txtef COLOR_RED
+			txt lang("あなたはゲージ技を積極的に使っていくことにした。", "You decide to use your power gauge aggressively.")
 		}
-		snd SOUNDLIST_ENC
-		animeload ANIMATION_CHAOS_CHILD, cc
 		return 0
 	}
 	if ( _switch_val == SKILL_SPACT_MANA_SLASH | _switch_sw ) {
@@ -19087,6 +19141,15 @@
 				await 20
 			loop
 			necrolv = sdata(SKILL_NORMAL_LITERACY, CHARA_PLAYER) + (sdata(SKILL_NORMAL_CONTROL_MAGIC, CHARA_PLAYER) + 10) / 2
+			if ( efid == SKILL_SPACT_SHIKIORIGAMI_CRANE ) {
+				necrolv = necrolv * 6 / 10
+			}
+			if ( efid == SKILL_SPACT_SHIKIORIGAMI_SHURIKEN ) {
+				necrolv = necrolv * 9 / 10
+			}
+			if ( efid == SKILL_SPACT_SHIKIORIGAMI_AIRPLANE ) {
+				necrolv = necrolv * 12 / 10
+			}
 			if ( necrolv > gdata(GDATA_DEEPEST_LEVEL) * 3 / 2 ) {
 				necrolv = gdata(GDATA_DEEPEST_LEVEL) * 3 / 2
 			}

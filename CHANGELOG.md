@@ -1,4 +1,7 @@
-# Upcoming
+# 2.24.1.0
+
+# Added
+- Ported all changes from Elona+ 2.24.
 
 # Fixed
 - MMA staff melee animation crash when animation duration is too low.

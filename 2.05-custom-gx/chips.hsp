@@ -736,7 +736,7 @@
 
 	sdim tname, 16, MAX_MAP_CHIP_ROLE
 	tname(MAP_CHIP_ROLE_DRYROCK) = lang("日干し岩", "a dryrock")
-	tname(MAP_CHIP_ROLE_CROP) = lang("畑", "a field")
+	tname(MAP_CHIP_ROLE_CROP) = lang("畑の土", "a field")
 	tname(MAP_CHIP_ROLE_COMPOST) = lang("コンポスト", "a compost")
 
 	dim chipc, 6, SPRITE_SHEET_COLS_CHARA * SPRITE_SHEET_ROWS_CHARA + 240

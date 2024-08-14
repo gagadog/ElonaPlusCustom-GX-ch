@@ -2141,9 +2141,14 @@
 		listn(0, listmax) = locvar_com_trait_bit + lang("あなたは変装している", "You are disguising yourself.")
 		listmax++
 	}
-	if ( cbit(CHARA_BIT_PREGNANT, tc) == 1 ) {
+	if ( cbit(CHARA_BIT_PREGNANT, tc) == TRUE ) {
 		list(0, listmax) = 1, 99999
-		listn(0, listmax) = locvar_com_trait_bit + lang("あなたは寄生されている", "You are pregnant.")
+		listn(0, listmax) = lang("[bit]", "[bit]") + lang("あなたは腹に寄生されている", "You are infected with abdominal parasites.")
+		listmax++
+	}
+	if ( cbit(CHARA_BIT_BRAIN_PARASITE, tc) == TRUE ) {
+		list(0, listmax) = 1, 99999
+		listn(0, listmax) = lang("[bit]", "[bit]") + lang("あなたは脳髄に寄生されている", "You are infected with brain parasites.")
 		listmax++
 	}
 	if ( cbit(CHARA_BIT_ANOREXIA, tc) == 1 ) {
@@ -14441,7 +14446,7 @@
 					}
 				}
 				if ( reftype == FILTER_JUNK ) {
-					if ( inv(INV_ITEM_ID, ci) != ITEM_ID_MAGATAMA & inv(INV_ITEM_ID, ci) != ITEM_ID_MAGAQUA & inv(INV_ITEM_ID, ci) != ITEM_ID_SKILL_TICKET & inv(INV_ITEM_ID, ci) != ITEM_ID_BIO_BATTERY & inv(INV_ITEM_ID, ci) != ITEM_ID_MAGAICE & inv(INV_ITEM_ID, ci) != ITEM_ID_SPLENDID_CHAIN ) {
+					if ( inv(INV_ITEM_ID, ci) != ITEM_ID_MAGATAMA & inv(INV_ITEM_ID, ci) != ITEM_ID_MAGAQUA & inv(INV_ITEM_ID, ci) != ITEM_ID_SKILL_TICKET & inv(INV_ITEM_ID, ci) != ITEM_ID_BIO_BATTERY & inv(INV_ITEM_ID, ci) != ITEM_ID_MAGAICE & inv(INV_ITEM_ID, ci) != ITEM_ID_SPLENDID_CHAIN & inv(INV_ITEM_ID, ci) != ITEM_ID_TRAINING_TICKET ) {
 						f = 3
 					}
 				}

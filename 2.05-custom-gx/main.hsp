@@ -18,9 +18,9 @@
 #include "mock_defines.hsp"
 #endif
 
-#define global VARIANT_NAME "ElonaPlus Custom-GX 2.23.1.1"
-#define global VARIANT_TITLE "Elona+ Custom-GX 2.23.1.1"
-#define global VERSION_STRING "6.33"
+#define global VARIANT_NAME "ElonaPlus Custom-GX 2.24.1.0"
+#define global VARIANT_TITLE "Elona+ Custom-GX 2.24.1.0"
+#define global VERSION_STRING "6.34"
 #define global VERSION_NUMBER int(double(VERSION_STRING) * 1000)
 #define global NET_VERSION	200000
 
@@ -934,9 +934,9 @@
 	if ( sound != SOUNDLIST_NONE ) {
 		snd sound
 	}
-	if ( gdata(STARTING_GDATA_FLAG + 381) != 0 ) {
-		gdata(STARTING_GDATA_FLAG + 381) = 0
-	}
+	if ( cbit(CHARA_BIT_QUICK_RESTORE, CHARA_PLAYER) ) {
+		cbitmod CHARA_BIT_QUICK_RESTORE, CHARA_PLAYER, FALSE
+ 	}
 	gspd = cdata(CDATA_SPEED, CHARA_PLAYER) * (100 + cdata(CDATA_TIME_SCALE, CHARA_PLAYER)) / 100
 	if ( gspd < 10 ) {
 		gspd = 10
@@ -1498,7 +1498,7 @@
 			gdata(STARTING_GDATA_FLAG + 326) = 100
 		}
 		if ( gdata(GDATA_AREA) != AREA_SEMINAR | gdata(GDATA_LEVEL) == 1 ) {
-			gdata(STARTING_GDATA_FLAG + 330) = 0
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE) = 0
 		}
 		if ( mdata(MDATA_TYPE) == MAP_TYPE_TOWN ) {
 			detect = 0
@@ -2288,6 +2288,9 @@
 		}
 		if ( cbit(CHARA_BIT_PREGNANT, cc) ) {
 			gosub *pregnant
+		}
+		if ( cbit(CHARA_BIT_BRAIN_PARASITE, cc) ) {
+			gosub *brainParasite
 		}
 	}
 	if ( cdata(CDATA_ROW_ACT, cc) != ACTION_NONE ) {

@@ -378,6 +378,10 @@
 	locvar_calcitemvalue_tiep = 0
 	return locvar_calcitemvalue_value
 
+#defcfunc calcinvestnpc int calcinvestnpc_count
+	locvar_calcitemvalue_value = (limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) * limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) + 500) / 3
+	return locvar_calcitemvalue_value
+	
 #defcfunc calcinvestvalue int
 	locvar_calcinvestvalue_invwari = 0
 	repeat MAX_CHARA_FOLLOWER - 1, 1
@@ -394,7 +398,7 @@
 			locvar_calcinvestvalue_invwari += limit(sdata(SKILL_NORMAL_INVESTING, cnt), 0, sdata(SKILL_NORMAL_INVESTING, CHARA_PLAYER))
 		}
 	loop
-	locvar_calcitemvalue_value = limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 1, 200) * limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 1, 200) * 15 + 200
+	locvar_calcitemvalue_value = limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) * limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) + 500
 	if ( locvar_calcitemvalue_value > 500000 ) {
 		locvar_calcitemvalue_value = 500000
 	}
@@ -402,13 +406,13 @@
 	locvar_calcinvestvalue_invwari = 0
 	return locvar_calcitemvalue_value
 
-#defcfunc calcinvestvalue50 int
+#defcfunc calcinvestvalue50 int calcinvestvalue50_arg0
 	locvar_calcinvestvalue_invwari = 0
-	repeat MAX_CHARA_FOLLOWER - 1, 1
+	repeat 16 - 1, 1
 		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 			continue
 		}
-		if ( dist(cdata(CDATA_X, locvar_calcinvestvalue_cc), cdata(CDATA_Y, locvar_calcinvestvalue_cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
+		if ( dist(cdata(CDATA_X, locvar_calcinvestvalue_cc), cdata(CDATA_Y, locvar_calcinvestvalue_cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG, SKILL_SPACT_CHEER) \ 1000 + 1 ) {
 			continue
 		}
 		if ( fov_los(cdata(CDATA_X, locvar_calcinvestvalue_cc), cdata(CDATA_Y, locvar_calcinvestvalue_cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) == 0 ) {
@@ -420,7 +424,42 @@
 	loop
 	locvar_calcinvestvalue50_value50 = 0
 	repeat 20
-		locvar_calcitemvalue_value = limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 25, 1, 200) * limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 1, 200) * 15 + 200
+		locvar_calcitemvalue_value = limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) * limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) + 500
+		if ( locvar_calcitemvalue_value > 500000 ) {
+			locvar_calcitemvalue_value = 500000
+		}
+		locvar_calcinvestvalue50_value50 += locvar_calcitemvalue_value * 100 / (100 + sdata(SKILL_NORMAL_INVESTING, CHARA_PLAYER) * 10 + locvar_calcinvestvalue_invwari * 2) + 200
+	loop
+	locvar_calcinvestvalue_invwari = 0
+	return locvar_calcinvestvalue50_value50
+
+#defcfunc calcinvestvalueg int calcinvestvalueg_count
+	locvar_calcinvestvalue_invwari = 0
+	repeat 16 - 1, 1
+		if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+			continue
+		}
+		if ( dist(cdata(CDATA_X, locvar_calcinvestvalue_cc), cdata(CDATA_Y, locvar_calcinvestvalue_cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG, SKILL_SPACT_CHEER) \ 1000 + 1 ) {
+			continue
+		}
+		if ( fov_los(cdata(CDATA_X, locvar_calcinvestvalue_cc), cdata(CDATA_Y, locvar_calcinvestvalue_cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) == 0 ) {
+			continue
+		}
+		if ( sdata(SKILL_NORMAL_INVESTING, cnt) > 0 ) {
+			locvar_calcinvestvalue_invwari += limit(sdata(SKILL_NORMAL_INVESTING, cnt), 0, sdata(SKILL_NORMAL_INVESTING, CHARA_PLAYER))
+		}
+	loop
+	locvar_calcinvestvalue50_value50 = 0
+	repeat 20
+		if ( gdata(GDATA_FLAG_GUILD_THIEF) == 1 ) {
+			locvar_calcitemvalue_value = limit(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER) + 50, 1, 250) * limit(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER) + 50, 1, 250) + 500
+		}
+		if ( gdata(GDATA_FLAG_GUILD_FIGHTER) == 1 ) {
+			locvar_calcitemvalue_value = limit(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER) + 50, 1, 250) * limit(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER) + 50, 1, 250) + 500
+		}
+		if ( gdata(GDATA_FLAG_GUILD_MAGE) == 1 ) {
+			locvar_calcitemvalue_value = limit(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER) + 50, 1, 250) * limit(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER) + 50, 1, 250) + 500
+		}
 		if ( locvar_calcitemvalue_value > 500000 ) {
 			locvar_calcitemvalue_value = 500000
 		}
@@ -744,7 +783,7 @@
 	return locvar_calcitemvalue_value
 
 #defcfunc calclearncost int, int, int calclearncost_arg1
-	locvar_calcitemvalue_value = limit(5 + gdata(GDATA_LEARNED), 5, 15)
+	locvar_calcitemvalue_value = 5
 	if ( calclearncost_arg1 ) {
 		locvar_calcitemvalue_value = locvar_calcitemvalue_value * 2 / 3
 	}

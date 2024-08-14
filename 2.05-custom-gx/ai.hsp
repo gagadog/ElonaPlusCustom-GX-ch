@@ -1738,6 +1738,53 @@
 			}
 			if ( cdata(CDATA_AI_CALM, cc) != 11 ) {
 				if ( rnd(20) == 0 ) {
+					pettrain = -1
+					inv_getheader cc
+					repeat invrange, invhead
+						if ( inv(INV_ITEM_NUM, cnt) == 0 ) {
+							continue
+						}
+						if ( inv(INV_ITEM_ID, cnt) == ITEM_ID_TRAINING_TICKET ) {
+							if ( inv(INV_ITEM_PARAM2, cnt) >= cdata(CDATA_LEVEL, cc) ) {
+								pettrain = cnt
+								break
+							}
+						}
+					loop
+					if ( pettrain > (-1) ) {
+						inv(INV_ITEM_NUM, pettrain)--
+						snd SOUNDLIST_DING3
+						txtef COLOR_SKY_BLUE
+						txt lang(cdatan(CDATAN_NAME, cc) + "は訓練券を使って訓練所に通い、潜在能力を伸ばした！", cdatan(CDATAN_NAME, cc) + " used a training ticket at a trainer and developed " + his(cc) + " potential!")
+						modgrowth cc, SKILL_ATTR_STR, 15
+						modgrowth cc, SKILL_ATTR_CON, 15
+						modgrowth cc, SKILL_ATTR_DEX, 15
+						modgrowth cc, SKILL_ATTR_PER, 15
+						modgrowth cc, SKILL_ATTR_LER, 15
+						modgrowth cc, SKILL_ATTR_WIL, 15
+						modgrowth cc, SKILL_ATTR_MAG, 15
+						modgrowth cc, SKILL_ATTR_CHA, 15
+						repeat 112 - 100, 100
+							if ( sorg(cnt, cc) == 0 ) {
+								continue
+							}
+							modgrowth cc, cnt, 20
+						loop
+						repeat 191 - 150, 150
+							if ( sorg(cnt, cc) == 0 ) {
+								continue
+							}
+							modgrowth cc, cnt, 20
+						loop
+						repeat 302 - 300, 300
+							if ( sorg(cnt, cc) == 0 ) {
+								continue
+							}
+							modgrowth cc, cnt, 20
+						loop
+						r1 = cc
+						gosub *charaRefresh
+					}
 					kiso = cdata(CDATA_INIT_ATTR, cc) * 8 + cdata(CDATA_INIT_SPEED, cc) * 10 + cdata(CDATA_INIT_LIFEMANA, cc) * 8
 					if ( kiso > 20000 ) {
 						kiso = 20000
@@ -1749,39 +1796,41 @@
 					if ( hiyou < kiso * 50 / 100 ) {
 						hiyou = kiso * 50 / 100
 					}
-					if ( cdata(CDATA_GOLD, cc) >= hiyou ) {
-						cdata(CDATA_GOLD, cc) -= hiyou
-						snd SOUNDLIST_DING3
-						txtef COLOR_SKY_BLUE
-						txt lang(cdatan(CDATAN_NAME, cc) + "は" + hiyou + "gp使って訓練所に通い、潜在能力を伸ばした！", cdatan(CDATAN_NAME, cc) + " spent " + hiyou + "gp to visit a trainer and develop " + his(cc) + " potential!")
-						modgrowth cc, SKILL_ATTR_STR, 15
-						modgrowth cc, SKILL_ATTR_CON, 15
-						modgrowth cc, SKILL_ATTR_DEX, 15
-						modgrowth cc, SKILL_ATTR_PER, 15
-						modgrowth cc, SKILL_ATTR_LER, 15
-						modgrowth cc, SKILL_ATTR_WIL, 15
-						modgrowth cc, SKILL_ATTR_MAG, 15
-						modgrowth cc, SKILL_ATTR_CHA, 15
-						repeat MAX_SKILL_WEAPON - STARTING_SKILL_WEAPON, STARTING_SKILL_WEAPON
-							if ( sorg(cnt, cc) == 0 ) {
-								continue
-							}
-							modgrowth cc, cnt, 20
-						loop
-						repeat MAX_SKILL_NORMAL - STARTING_SKILL_NORMAL, STARTING_SKILL_NORMAL
-							if ( sorg(cnt, cc) == 0 ) {
-								continue
-							}
-							modgrowth cc, cnt, 20
-						loop
-						repeat MAX_SKILL_ACTIVE - STARTING_SKILL_ACTIVE, STARTING_SKILL_ACTIVE
-							if ( sorg(cnt, cc) == 0 ) {
-								continue
-							}
-							modgrowth cc, cnt, 20
-						loop
-						r1 = cc
-						gosub *charaRefresh
+					if ( pettrain == (-1) ) {
+						if ( cdata(CDATA_GOLD, cc) >= hiyou ) {
+							cdata(CDATA_GOLD, cc) -= hiyou
+							snd SOUNDLIST_DING3
+							txtef COLOR_SKY_BLUE
+							txt lang(cdatan(CDATAN_NAME, cc) + "は" + hiyou + "gp使って訓練所に通い、潜在能力を伸ばした！", cdatan(CDATAN_NAME, cc) + " spent " + hiyou + "gp to visit a trainer and develop " + his(cc) + " potential!")
+							modgrowth cc, SKILL_ATTR_STR, 15
+							modgrowth cc, SKILL_ATTR_CON, 15
+							modgrowth cc, SKILL_ATTR_DEX, 15
+							modgrowth cc, SKILL_ATTR_PER, 15
+							modgrowth cc, SKILL_ATTR_LER, 15
+							modgrowth cc, SKILL_ATTR_WIL, 15
+							modgrowth cc, SKILL_ATTR_MAG, 15
+							modgrowth cc, SKILL_ATTR_CHA, 15
+							repeat 112 - 100, 100
+								if ( sorg(cnt, cc) == 0 ) {
+									continue
+								}
+								modgrowth cc, cnt, 20
+							loop
+							repeat 191 - 150, 150
+								if ( sorg(cnt, cc) == 0 ) {
+									continue
+								}
+								modgrowth cc, cnt, 20
+							loop
+							repeat 302 - 300, 300
+								if ( sorg(cnt, cc) == 0 ) {
+									continue
+								}
+								modgrowth cc, cnt, 20
+							loop
+							r1 = cc
+							gosub *charaRefresh
+						}
 					}
 				}
 			}
@@ -2184,9 +2233,7 @@
 			goto *ai_followMove
 		}
 	}
-	if ( cdata(CDATA_DIRECTIVE_MODE, cc) == DIRECTIVE_MODE_INTERCEPT ) {
-		gosub *ai_useShiftCore
-	}
+	gosub *ai_useShiftCore
 	powai = charaCanGauge(tc)
 	if ( cbit(CHARA_BIT_AWAKE_PROXIMITY_ATTACK, cc) ) {
 		act = ACTION_MELEE
@@ -3122,7 +3169,7 @@
 			}
 		}
 	}
-	if ( cdata(CDATA_ID, cc) == CREATURE_ID_JUMP_LANDMINE_GIRL | cdata(CDATA_ID, cc) == CREATURE_ID_SPEED_HACK_CHEATAH | cdata(CDATA_ID, cc) == CREATURE_ID_BLACK_HOPPER_X | cdata(CDATA_ID, cc) == CREATURE_ID_FLIGHT_FISH | cdata(CDATA_ID, cc) == CREATURE_ID_FLYING_LEECH | cdata(CDATA_ID, cc) == CREATURE_ID_SUZAKU | cdata(CDATA_ID, cc) == CREATURE_ID_STRIKE_EAGLE ) {
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_JUMP_LANDMINE_GIRL | cdata(CDATA_ID, cc) == CREATURE_ID_SPEED_HACK_CHEATAH | cdata(CDATA_ID, cc) == CREATURE_ID_BLACK_HOPPER_X | cdata(CDATA_ID, cc) == CREATURE_ID_FLIGHT_FISH | cdata(CDATA_ID, cc) == CREATURE_ID_FLYING_LEECH | cdata(CDATA_ID, cc) == CREATURE_ID_SUZAKU | cdata(CDATA_ID, cc) == CREATURE_ID_STRIKE_EAGLE | cdata(CDATA_ID, cc) == CREATURE_ID_HIGH_JUMP_RAT ) {
 		if ( cdata(CDATA_CONDITION_POISON, cc) == 0 & cdata(CDATA_CONDITION_BLEED, cc) == 0 & cdata(CDATA_CONDITION_SUFFOCATION, cc) == 0 ) {
 			if ( rnd(5) == 0 ) {
 				act = SKILL_SPACT_JUMPING_DROP
@@ -3133,6 +3180,22 @@
 		if ( cdata(CDATA_CONDITION_POISON, cc) == 0 & cdata(CDATA_CONDITION_BLEED, cc) == 0 & cdata(CDATA_CONDITION_SUFFOCATION, cc) == 0 ) {
 			if ( rnd(5) == 0 ) {
 				act = SKILL_SPACT_DIVING_DRILL
+			}
+		}
+	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_GUNDEGU ) {
+		if ( cdata(CDATA_POWER_GAUGE, cc) < 95 ) {
+			if ( cdata(CDATA_POWER_GAUGE, cc) >= 50 ) {
+				if ( rnd(10) == 0 ) {
+					act = SKILL_SPACT_FIRE_A_VOLLEY
+				}
+			}
+		}
+	}
+	if ( cdata(CDATA_ID, cc) == CREATURE_ID_ULTIMATE_EXPERIMENTAL ) {
+		if ( rnd(15) == 0 ) {
+			if ( findbuff(cc, BUFF_KILLING_DANCE) == (-1) ) {
+				act = SKILL_SPACT_KILLING_DANCE
 			}
 		}
 	}

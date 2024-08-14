@@ -1268,7 +1268,7 @@
 			return
 		}
 		if ( dbmode == DBMODE_REF_CM ) {
-			buff = lang("妖精は可憐で非力で儚い生物です。彼女達は、人間族と比べて高い魔力と回避力、目にも止まらぬすばしっこさを持ち、ほぼ全ての耐性に高い抵抗力を持っています。反面、妖精は重さ1s以上の装備を身につけることができず、防御力をあげるのは困難です。その体力の低さからも、まともな物理攻撃を一度でもくらうと危機に陥るでしょう。", "Fairies are cute, mysterious, and fragile. Compared to the human race, they are gifted with superior skills of using magic and evading. In contrast, the lack of physical power makes it difficult for them to carry even the smallest of things, making it impossible for them to wear equipment weighing more than 1s. Fairies have outstanding resistances to all elements.")
+			buff = lang("妖精は可憐で非力で儚い生物です。彼女達は、人間族と比べて高い魔力と回避力、目にも止まらぬすばしっこさを持ち、ほぼ全ての耐性に高い抵抗力を持っています。反面、妖精は重さ2sを超える装備を身につけることができず、防御力をあげるのは困難です。その体力の低さからも、まともな物理攻撃を一度でもくらうと危機に陥るでしょう。", "Fairies are cute, mysterious, and fragile. Compared to the human race, they are gifted with superior skills of using magic and evading. In contrast, the lack of physical power makes it difficult for them to carry even the smallest of things, making it impossible for them to wear equipment weighing more than 1s. Fairies have outstanding resistances to all elements.")
 			ref1 = 390
 			ref2 = 390
 			ref2 = 390
@@ -1621,7 +1621,7 @@
 			return
 		}
 		if ( dbmode == DBMODE_REF_CM ) {
-			buff = lang("ジューアは、元は盗賊や悪人のあつまりであり、今もならず者国家として嫌われる国です。彼らは束縛されることを嫌い、自分の意思を尊重し、自由に生きることを好みます。ジューアは手先が器用で、鋭い感覚と高い学習能力を持ち、多彩な技術に精通しています。彼らはパフォーマンスをすることで生計をたてることができ、食事をゆっくりと消化し、採取スポットでより長い時間採取できます。", "The Juere are a people wild and free. Scorning the \"weaker\" laws of others, they quickly learn the tricks and technologies of others before ever moving onwards. Their pride makes them great performers, and are used to being hungry for long periods of time. Nimble of hand, and Bold of character, no two Juere are ever the same.")
+			buff = lang("ジューアは、元は盗賊や悪人のあつまりであり、今もならず者国家として嫌われる国です。彼らは束縛されることを嫌い、自分の意思を尊重し、自由に生きることを好みます。ジューアは手先が器用で、鋭い感覚と高い学習能力を持ち、多彩な技術に精通しています。彼らはパフォーマンスをすることで生計をたてることができ、空腹に強く、採取スポットでより長い時間採取できます。", "The Juere are a people wild and free. Scorning the \"weaker\" laws of others, they quickly learn the tricks and technologies of others before ever moving onwards. Their pride makes them great performers, and are used to being hungry for long periods of time. Nimble of hand, and Bold of character, no two Juere are ever the same.")
 			ref1 = 9
 			ref2 = 9
 			ref2 = 10

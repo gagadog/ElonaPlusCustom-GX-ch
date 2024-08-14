@@ -36,6 +36,7 @@ Number,Japanese title,English title,		1=randomly generated
 29,次元間力観測実験報告書,Dimensional Energy Report,	0
 30,依頼についてのアドバイス,Quest Advice,		0
 31,釣り入門,Fishing Introduction,		0
+32,収容者矯正の手引,Inmate Correction Manual,		1
 %END
 
 /Translation Note
@@ -53,7 +54,7 @@ Text written after %**,EN will be displayed in the English version of Elona.
 
 
 
-I'll start writing in my diary from 
+I'll start writing in my diary from
 today on!
 %END
 
@@ -114,7 +115,7 @@ Beginner's Guide
 
 <This book is weathered and yellow
 with age>
-	
+
 I leave this book here in the off
 chance that should I not survive my
 final adventure, others may learn
@@ -138,7 +139,7 @@ some advice should be parted to you.
 Now where to begin?
 
 I won't know from which way you came
-from so it's best to give you the 
+from so it's best to give you the
 local landmarks;
 
 If you follow the trail from here to
@@ -146,30 +147,30 @@ the South-East you find Vernis. It's
 a mining town, but it should still
 have some shops, a tavern and an inn.
 You should be able to find some work
-there, as well as food, gear, and 
+there, as well as food, gear, and
 even a friend or two. The innslady I
 recall was having some trouble with
 local ruffians the last time I was
-there. 
+there.
 
-East of Vernis is what the locals 
+East of Vernis is what the locals
 call the "Puppy Cave". It's well...
 always changing. A local mage called
 it a "Hausdorff-Besicovitch fractal
-plane", whatever that means. 
-If you leave the cave and come back, 
+plane", whatever that means.
+If you leave the cave and come back,
 or go up or down floors, it will
-change all the creatures, items, 
-walls, and exits. You can find quite 
-a bit of stuff if you don't mind 
-hopping in and out. 
+change all the creatures, items,
+walls, and exits. You can find quite
+a bit of stuff if you don't mind
+hopping in and out.
 
 The "Puppy" of this cave is fairly
 deep in, and a child in town would
 love to get it back, but it kept
 getting itself killed when I tried.
-It always reappeared on that floor 
-when I left and came back, but I 
+It always reappeared on that floor
+when I left and came back, but I
 gave up after a few tries. Maybe
 you can do it. Just don't get lost.
 
@@ -188,28 +189,28 @@ with loathsome critters. Just don't
 go blindly into them, check them out
 BEFORE going in. Preparation is a key
 difference from a live Adventurer and
-a dead one. 
+a dead one.
          -== Geography ==-
 If you follow the roads from Vernis:
 -Port Kapul is to the west. 3-5 days
   Good Business there as it's a port
   Fighters Guild and an Arena
-  
+
 -Palmia is to the East. 2-3 days
   Big City, lots to see and do
   King lives here
   Has Arena
-  
+
 -Yowyn is to the South-East. 2-3 days
   Farm Town, not a lot to do unless
   you like turnips and Harvesting.
   Note to self: Clean out Yeek's Nest
   AGAIN... worse than rabbits they be
-  
+
 -Lumiest is South-East of Palmia
   On an Island
   Lots of mages live there
-  
+
 -Derphy is South-west of Vernis
   No roads lead there
   Wretched hive of scum and villainy
@@ -219,7 +220,7 @@ If you follow the roads from Vernis:
   Bring a sandwich, it's a long walk
   Snow is slow going
   Don't poke the Fire Giant. Bad juju
-  
+
       -== Work and Jobs ==-
 While you may want to go about
 slaying dragons and saving damsels,
@@ -233,20 +234,20 @@ out in this business. Example:
   -->GET THE ITEM AT YOUR FEET!<--
      Deliver item to recipient
      Collect reward
-Note that forgetting the item to 
-deliver is very BAD, but not the end 
+Note that forgetting the item to
+deliver is very BAD, but not the end
 of the world. If you are very lucky,
 the local shops or fields may have
 what you are looking for. They won't
-know the difference, trust me. 
+know the difference, trust me.
 Also note how many days you have to
 deliver things. Running from Lumiest
 to Port Kapul is NOT fun, and you may
 simply not be fast enough yet to do
-the really high paying ones. 
+the really high paying ones.
 
 Hunting can range from easy to very
-VERY hard. The money offered is a 
+VERY hard. The money offered is a
 good way to tell how bad it will be.
 Be careful doing these, as it takes
 just one nasty critter to get you.
@@ -265,7 +266,7 @@ accepting, you may just be able to
 buy what you need before doing the
 job.
 
-Harvesting LOOKS easy, but it can be 
+Harvesting LOOKS easy, but it can be
 very hard. Waste no time, and go as
 unburdened as possible. Speed is the
 key for these jobs.
@@ -287,14 +288,14 @@ dungeons. If you are hungry just exit
 the town or dungeon, eat, and enter.
 
 -Be cheap. 'b'ash fruit bearing trees
-in towns and fields for fruit, and 
+in towns and fields for fruit, and
 scavenge whatever plantlife you can
 outside. That armor is not going to
 come to you if you keep eating cakes
-and pies. 
+and pies.
 
 -The meat of many monsters is edible.
-Women love Putit flesh for what it 
+Women love Putit flesh for what it
 does for their skin. Some isn't so
 good for you, but if you're hungry...
 
@@ -325,11 +326,11 @@ become famous enough, you'll get a
 salary of money and items twice a
 month. The salary will be dropped off
 in the chest in your home. However,
-with salary also comes taxes. Take 
-the bill in hand and cash in pocket 
-to the local embassy just north of 
-Palmia and pay it there. Don't let 
-your bills add up as the taxmen are 
+with salary also comes taxes. Take
+the bill in hand and cash in pocket
+to the local embassy just north of
+Palmia and pay it there. Don't let
+your bills add up as the taxmen are
 worse than any dragon or demon.
 
 -Should your skills start to plateau,
@@ -343,7 +344,7 @@ are in short supply these days.
 
 -And finally, beware the weather. Oh,
 a little rain may have never killed
-anybody, but with heavy rain comes 
+anybody, but with heavy rain comes
 lightning that can blind you and the
 great thunder which can confuse you.
 Try not to get lost while in one.
@@ -477,7 +478,7 @@ money this old curator will help you
 out with this handy, unbiased manual.
 
 In your wanton and overly hedonistic
-destruction of the local flora and 
+destruction of the local flora and
 fauna (henceforth known in this guide
 as "adventuring") you might have come
 across some of the following:
@@ -487,12 +488,12 @@ Item b.) Card   of <Fauna>
 
 If so, then you may have barely given
 them a glance before shoving them in
-your sack if ill-gotten gains and 
+your sack if ill-gotten gains and
 simply gone back to "adventuring".
 No doubt you have sold them for more
 tankards of ale and legs of mutton,
 but the more intelligent among you
-might collect them into a pile and 
+might collect them into a pile and
 ponder "Why do monsters have these?"
 
 The answer: Vanity! And Magic!
@@ -501,20 +502,20 @@ And it is these things that we shall
 profit from. And it's so simple even
 an adventurer can do it!
 
-Still, just in case, I have written 
+Still, just in case, I have written
 down the exact steps to minimize any
 unfortunate mishaps that might arise.
 
 Step 1.) Purchase a deed of a Museum.
    This step is what chokes out the
    small fry from the serious doers.
-   
+
 Step 2.) 'r'ecite the deed upon the
    spot on the world you wish your
    museum to be. Let the gnomes do
    the building, it won't take long.
 
-Step 3.) Aesthetically place all the 
+Step 3.) Aesthetically place all the
    Cards and Figures you have found
    inside the museum. Neatness is a
    virtue, though not necessary.
@@ -523,13 +524,13 @@ Step 4.) Profit!
 
 That should do it as far as the basic
 setup requires. If you want even more
-information about specific queries, 
+information about specific queries,
 merely read on to learn more!
       -== Notes and Caveats ==-
 
 Whilst having more than one museum is
 certainly possible, only your first
-one will make any money. 
+one will make any money.
 
 Figures are worth more than cards
 most times anyway.
@@ -540,27 +541,27 @@ and utterly ineffectual.
 
 The mightier the monster, the better
 value the card and Figure. Rare are
-the Figures with a Name or Title on 
-them. These so-called "Unique" 
-Figures indeed are best. And in 
-order to encourage more museums to 
-showcase these, I've set up a trust 
+the Figures with a Name or Title on
+them. These so-called "Unique"
+Figures indeed are best. And in
+order to encourage more museums to
+showcase these, I've set up a trust
 that will reward museums based on the
 number of Unique Figures that they
-have on display, paid out on the 
+have on display, paid out on the
 first of every month.
 
-Back on the topic, while having a 
-dragon's card is nice, having ten 
-is just tacky. Variety is key. 
+Back on the topic, while having a
+dragon's card is nice, having ten
+is just tacky. Variety is key.
 The more duplicates you have,
 the less they are worth.
 
 Oh and one more thing... the gnomes
 that build your museum have somewhat,
-oh, narrow tastes. You may have to 
-bring in a <house board> or 
-<register> to sculpt it into your 
+oh, narrow tastes. You may have to
+bring in a <house board> or
+<register> to sculpt it into your
 own grandiose vision.
 
 
@@ -603,7 +604,7 @@ Happy Curating!
 %END
 
 %5,EN
-Crimberry Addiction and You	
+Crimberry Addiction and You
 A Schmidt Education Pamphlet
 
 Every year more and more people are
@@ -613,7 +614,7 @@ harmless Crimberry.
 Known by an ancient Nefian dialect as
 Kur-amu-beri, which should just go to
 show its long and sordid history with
-our land and peoples, the Crimberry 
+our land and peoples, the Crimberry
 is a strong hallucinogen with many
 different applications.
 
@@ -633,12 +634,12 @@ And of course, no one thinks of the
 poor children who get involved in our
 seemingly "adult" activities. They've
 even created a new way to "enjoy" the
-devilish berries; 
+devilish berries;
 
 They copy the wild yeeks and dry them
 then shove the dried berry up their
 nose. This "snorting" of Crimberries
-will lead to the proliferation of 
+will lead to the proliferation of
 excess aggression, and will lead more
 desparate individuals to become known
 as "adventurers" commiting insane
@@ -649,9 +650,9 @@ legalized, if only for their sacred
 "rituals", this must stop!
 
         FOR OUR CHILDREN!
-        
+
         FOR OUR FUTURE!
-        
+
 CONTACT YOUR LOCAL MAGISTRATE TODAY!
 	Petition the King!
 %END
@@ -664,7 +665,7 @@ CONTACT YOUR LOCAL MAGISTRATE TODAY!
 
 
 
-目がまわる、目がまわる、目がまわる 
+目がまわる、目がまわる、目がまわる
 %END
 
 %6,EN
@@ -715,19 +716,19 @@ Chronicled by Dr. Schmidt, PhDM
 Effect is well known and medicinal.
 However, the ability of said effects
 is based entirely on it's so called
-"consecrated" state, which has been 
+"consecrated" state, which has been
 clinically proven to be a real effect
 and not merely a placebo.
 Effect: All-around enhancement
 
 * Morgia [MOJIA DIPSACUS PILOSUS]
-Massive hormone Stimulant. Increases 
+Massive hormone Stimulant. Increases
 muscle mass, strength and endurance.
 Blind-Test subjects received various
 "consecrated" state herbs and thusly
 received differing returns. This only
 goes to prove that Gods do in fact
-exist, and that all our science is 
+exist, and that all our science is
 meaningless in their might.
 Effect: Strength and Endurance
 	enhancement
@@ -745,14 +746,14 @@ who ingest it seem to be more "aware"
 and levels of perception may be up.
 More testing is needed to determine
 all side effects.
-Effect: Perception enhancement 
+Effect: Perception enhancement
 
 
 * Alraunia [ARURONIA MARTYNIA LUTEA]
-Hormone-activated. Aphrodisiac. 
-Thus extremely popular with the 
+Hormone-activated. Aphrodisiac.
+Thus extremely popular with the
 locals. Oddly enough, it also appears
-to have some ability at improving 
+to have some ability at improving
 memory. Research still pending grant.
 Effect: Memory and Libido
 	enhancement
@@ -760,8 +761,8 @@ Effect: Memory and Libido
 * Stomafilla [SUTOMAFIRIA HYPOGAEA]
 Upon contact with the stomach, the
 herb expands and fills the cavity,
-leading the consumer to feel very 
-"bloated". Long term use and the 
+leading the consumer to feel very
+"bloated". Long term use and the
 nutritional level of the plant has
 yet to be verified. There are also
 reports of it enhancing the user's
@@ -837,19 +838,19 @@ Rewritten by Schmidt the Fence
 
 So, you think you can own a shop? I
 know, sitting on your arse all day
-hawking wares seems easy enough. 
+hawking wares seems easy enough.
 
 But then riddle me this genius:
-If it's so easy, why is there only 
+If it's so easy, why is there only
 one shop per type in every town?
 
-The answer is simple: 
+The answer is simple:
       Only the strong Survive!
 (Well, that and the high taxes...)
 
-Store operation is so difficult, 
+Store operation is so difficult,
 only the meanest and cut-throat can
-survive in town. You however, have 
+survive in town. You however, have
 an advantage over us town-shops:
      You will be outside!
 And while that sounds less than ideal
@@ -884,13 +885,13 @@ to do it. You should choose a worker
 based on how good they look, and how
 good a negotiator they are, as they
 are the vital two things in any good
-sale. 
+sale.
 
 Now that you have such a goon,
 go to the register in the shop.
-Assign that person to the job. 
+Assign that person to the job.
 
-The other part is also simple, to 
+The other part is also simple, to
 SELL Stuff you need to HAVE stuff.
 So go get stuff and and leave it in
 your shop.
@@ -903,7 +904,7 @@ your shop.
 Your Salesperson stays at the shop
 and cannot come with you.
 
-Selling stuff makes money(natch) 
+Selling stuff makes money(natch)
 and also raises shop rank.
 
 A higher shop rank brings in
@@ -915,7 +916,7 @@ shop is of a higher rank.
 
 The number of customers that will
 stop by the shop also depends on
-the shop's rank and the 
+the shop's rank and the
 shopkeeper's Charisma.
 
 How much a customer is willing to
@@ -923,20 +924,20 @@ cough up for an item depends on the
 shopkeep's Negotiation skill.
 
 The potentials of the shopkeeper's
-Negotiation skill and Charisma stat 
-can be topped up by spending bronze 
+Negotiation skill and Charisma stat
+can be topped up by spending bronze
 coins at the register.
 
 Investigate your allies to find the
 prettiest and bestest negotiator.
-It used to cost an arm and a leg, 
+It used to cost an arm and a leg,
 but these days it's a mere 100gp.
 You young 'uns are lucky.
 
 On days that the shop sells
 something, the shopkeeper will earn
-experience, which can go towards 
-acquiring up to two special 
+experience, which can go towards
+acquiring up to two special
 shopkeeper feats.
 
 That's not all! Rack up YacaPoints
@@ -947,34 +948,34 @@ which every shop should come with
 thanks to the agreement with the
 Temple of Yacatect.
 
-Due to a vicious spat with the 
-local Furniture Union, we cannot 
-sell any spare furniture out of 
+Due to a vicious spat with the
+local Furniture Union, we cannot
+sell any spare furniture out of
 town. We in town can still buy and
-sell it. The same goes for cargo. 
-Whatever goes in your cart, 
+sell it. The same goes for cargo.
+Whatever goes in your cart,
 doesn't go in the shop.
 
 Anything else, garbage, junk, even
-rotten stuff can be sold if you can 
+rotten stuff can be sold if you can
 find a sucker for it. If it's on
-the floor, it'll be fair game to 
+the floor, it'll be fair game to
 the customers.
 
 So if there's some item in the
 shop that you don't want customers
-to go layin' their paws on, you'll 
+to go layin' their paws on, you'll
 want to mark it off as a display
-item with a rope divider or glass 
+item with a rope divider or glass
 case tile. Those you can find when
 redesigning the shop. They're
-probably somewhere in the 9th and 
+probably somewhere in the 9th and
 10th rows in the list from the top.
 
 Due to your shop permit, you can
 ONLY sell a maximum of 10 items at
 a time. You can expand on this for
-a mere 2000gp for an additional 
+a mere 2000gp for an additional
 ten slots, and every subsequent
 1000gp for each 10 slots after.
 
@@ -983,7 +984,7 @@ Base cost:            200,000 gp
 Maintenance cost:     5,000 gp/month
 Income per rank:      ??? gp/month**
 
-**Why ??? for income? 'Cause that's 
+**Why ??? for income? 'Cause that's
 where you come in bub!
 
 With luck, you too will be living
@@ -1061,55 +1062,55 @@ Easy Gardnin'
 by Valentina Schmidt
 
 Thinkin' bout growin' yer own food?
-Whether yer jist lookin' ta fool 
-around with a bit o' herbs or ta 
-raise some serious garden stuff 
-like I have all my life, ya got the 
+Whether yer jist lookin' ta fool
+around with a bit o' herbs or ta
+raise some serious garden stuff
+like I have all my life, ya got the
 right book.
 
 First, ya got ta pick a time an'
 place ta plant some seeds. Seeds
 are best planted when it's raining
-an' on field tiles. Seeds planted 
-during rain are gonna wilt less 
+an' on field tiles. Seeds planted
+during rain are gonna wilt less
 often, and those planted on
 a field that's found on farms an'
-those abandoned ranches will leave 
+those abandoned ranches will leave
 a new seedling behind more often
 after harvest.
-Once ya've planted some seeds, it's 
-time ta watch em grow. If yer lucky 
-an' all goes well, the seed will 
-sprout an' grow over the course of 
-along half a month ta a month an' 
-bear fruit. If yer jist starting 
-off an' don't got none of a 
-Gardnin' Skill much - then ya'll 
-find near all of yer crops wilting 
+Once ya've planted some seeds, it's
+time ta watch em grow. If yer lucky
+an' all goes well, the seed will
+sprout an' grow over the course of
+along half a month ta a month an'
+bear fruit. If yer jist starting
+off an' don't got none of a
+Gardnin' Skill much - then ya'll
+find near all of yer crops wilting
 afore harvest, but don't give up.
 
-Lastly is what I expect is 
-ev'rybody's favorite part. 
-Harvestin'. But first, know that 
-any plant that has fruited ain't 
-gonna wilt ever until ya harvest 
-it. An' what ya harvest will change 
-with the season. Meanin' the same 
-plant from the same seed is gonna 
+Lastly is what I expect is
+ev'rybody's favorite part.
+Harvestin'. But first, know that
+any plant that has fruited ain't
+gonna wilt ever until ya harvest
+it. An' what ya harvest will change
+with the season. Meanin' the same
+plant from the same seed is gonna
 give different things next season.
 
-Harvestin' is where yer skill 
-matters the most. If ya got 
-a-plenty of it, ya'll find the crop 
-leavin' behind a seedlin' after 
+Harvestin' is where yer skill
+matters the most. If ya got
+a-plenty of it, ya'll find the crop
+leavin' behind a seedlin' after
 harvest more often.
 
-Leave organic stuff on a compost 
-fer a few days ta turn it inta 
-fertilizer. Use that on yer crops 
-an' they'll be done growed up in no 
-time at all - aye, an' I really 
-mean no time. There won't even be 
+Leave organic stuff on a compost
+fer a few days ta turn it inta
+fertilizer. Use that on yer crops
+an' they'll be done growed up in no
+time at all - aye, an' I really
+mean no time. There won't even be
 time fer em ta wilt.
 
 Ya'll find the crop management tools
@@ -1120,28 +1121,28 @@ types of items. Try it out yerself
 ta see which treatment results in
 what crops.
 
-As yer Gardnin' skill increases, 
+As yer Gardnin' skill increases,
 the quality of fruits an' vegetables
-ya harvest will increase. An' that 
+ya harvest will increase. An' that
 also means heapin' gangs of dad-
-blasted wild animals are gonna come 
-a-visitin' like yeeks to Yowyn, so 
-be careful that ya don't git eat 
-up. Git em once an' they won't come 
+blasted wild animals are gonna come
+a-visitin' like yeeks to Yowyn, so
+be careful that ya don't git eat
+up. Git em once an' they won't come
 back fer a while though.
 
-There's all sortsa crazy seeds an' 
-crops ta be found an' growed in 
-Norf Tyris. Good luck with your 
+There's all sortsa crazy seeds an'
+crops ta be found an' growed in
+Norf Tyris. Good luck with your
 farm, and happy tillin'!
 
 
 
 P.S. I've heared tell that ya should
-also harvest on a rainy day. Does 
+also harvest on a rainy day. Does
 it actually have any effect? My
-Pappy said his Pappy's Uncah 
-sweared up and down that it does, 
+Pappy said his Pappy's Uncah
+sweared up and down that it does,
 but dogged if I know.
 %END
 
@@ -1167,7 +1168,7 @@ but dogged if I know.
 You Water Wasting Jackals! Curse you!
 By Schmidt the Water Bandit
 
-Where I come from water is life! 
+Where I come from water is life!
 Waterholes are protected to the death
 down to the last woman and child!
 
@@ -1179,11 +1180,11 @@ waste so much it's sinful!
 Water should be blessed, given to all
 your gods as tribute! Do you people
 even know all the things you can do
-with dirty water? 
+with dirty water?
 
 I suspect not.
 
-Nor will you if you simply toss it 
+Nor will you if you simply toss it
 all away like dung from a diseased
 camel.
 
@@ -1281,47 +1282,47 @@ A Ranching guide for the Greenhorns
 	3rd Edition
 	By Cattle Baron Schmidt
 
-Howdy all! I write this guide for 
-the same reason I rustle cattle 
-about: Money. Plenty of good 
-royalties to be had if one takes 
-the time to put pen to paper. 
-Still, while I can't give ALL my 
-secrets to you as it'd put me out 
+Howdy all! I write this guide for
+the same reason I rustle cattle
+about: Money. Plenty of good
+royalties to be had if one takes
+the time to put pen to paper.
+Still, while I can't give ALL my
+secrets to you as it'd put me out
 of business, but I can't get you to
 by my next book if I don't give at
 least the basics.
 
-To begin with, you'll at least 
+To begin with, you'll at least
 eighty thousand or so to purchase a
 deed to a ranch. Less, if you are a
 good talker or rather attractive.
 
-Then, with deed in hand, find the 
+Then, with deed in hand, find the
 best place for it you can find.
-While it cannot be within town 
-limits, as you do NOT want people 
-asking nosy questions on what 
+While it cannot be within town
+limits, as you do NOT want people
+asking nosy questions on what
 exactly it is you are breeding, or
-other such moral or ethical-type 
+other such moral or ethical-type
 dilemmas.
 
 Once you are at the spot of choice,
-merely 'r'ead the deed and claim 
+merely 'r'ead the deed and claim
 your land.
 
 -== The Joys & Perils of Breeding ==-
 
 Good Breeding is a fine art, and is
 what separates us from the savages.
-No where more true is this rule 
+No where more true is this rule
 than at a ranch.
 
 Any animal assigned to be a "breeder"
 will stay on the ranch, and, in time,
-produce milk, eggs, shit, and other 
-bits. And no, I am not going to try 
-to explain how mammals will lay eggs 
+produce milk, eggs, shit, and other
+bits. And no, I am not going to try
+to explain how mammals will lay eggs
 or how exactly you milk a twenty-ton
 firebreathing lizard. I don't rightly
 try to answer those sort of questions
@@ -1331,7 +1332,7 @@ accept the fact and move on.
 Now, those items can be sold for fair
 coin, but the real profit is in the
 breeding and rightly so. This isn't a
-farm after all. Now, with the coming 
+farm after all. Now, with the coming
 of the Etherwind, breeding has become
 a very simple process. Not like the
 old days, when you had to keep track
@@ -1359,22 +1360,22 @@ gazillion more of them.
 
 I did say that all you have to do to
 get them to breed is to leave them
-to their own devices. So feeding them 
+to their own devices. So feeding them
 is optional - I dunno they probably
-eat sunlight or something - but if 
-you do give them a livestock feed 
-it'll fatten them up. Or you can use 
-that register on the ranch to split 
+eat sunlight or something - but if
+you do give them a livestock feed
+it'll fatten them up. Or you can use
+that register on the ranch to split
 that feed amongst every animal there.
-Won't fill them up as much, but gets 
+Won't fill them up as much, but gets
 the job done.
 
-If you want to get really good 
-quality meat, what you have to do is 
-brush them once in a while. Grab a 
-big brush, and give them a nice 
-rubbing. Of course, you need to know 
-how to do the Rub special 'a'ction 
+If you want to get really good
+quality meat, what you have to do is
+brush them once in a while. Grab a
+big brush, and give them a nice
+rubbing. Of course, you need to know
+how to do the Rub special 'a'ction
 in order for you to do that.
 
 Sometimes you'll manage to breed
@@ -1388,29 +1389,29 @@ You'll know what they're good or bad
 at by paying attention during
 brushing. Those qualities will be
 exhibited while they're on the
-ranch. If they're the breeder, 
-they'll produce more animals with 
+ranch. If they're the breeder,
+they'll produce more animals with
 similar qualities.
 
 Newborns on the ranch will start out
 small, so 'T'hrow some milk their way
 to make sure they grow up big and
-strong. If you do, the meat and milk 
+strong. If you do, the meat and milk
 they give will improve.
 You'll want to keep the ranch clean.
-Ranch animals need space to lay eggs 
-and uh... milk themselves. Can't do 
+Ranch animals need space to lay eggs
+and uh... milk themselves. Can't do
 that if there's shit all over the
 place, can they?
 
 Leaving their shit around will cause
-them to get sick and crap even more. 
-It'll also make the other animals 
-on the ranch sick. Disinfecting the 
-ranch will both prevent that from 
-happening AND heal the sick animals. 
-But if you can't afford that, then 
-you might wanna quarantine or 
+them to get sick and crap even more.
+It'll also make the other animals
+on the ranch sick. Disinfecting the
+ranch will both prevent that from
+happening AND heal the sick animals.
+But if you can't afford that, then
+you might wanna quarantine or
 cull them.
 
 It's a good idea to keep an eye on
@@ -1431,45 +1432,45 @@ below:
 'i'nteract with it and get it to join
 you on your travels.
 
-Gene Engineering with zero risk to 
+Gene Engineering with zero risk to
 the originals.
 
-Profit by taking it to a slave 
-trader if, I might add, you know 
-where to go where no one asks any 
-questions. They fetch more if they 
-are tame - so you might want to make 
-sure they're servile and have a 
+Profit by taking it to a slave
+trader if, I might add, you know
+where to go where no one asks any
+questions. They fetch more if they
+are tame - so you might want to make
+sure they're servile and have a
 decent bond with you.
 
-Or you can kill it and the odds of 
-a carcass being salvageable are 
-much better than duking it out in 
+Or you can kill it and the odds of
+a carcass being salvageable are
+much better than duking it out in
 the wild.
 
-Sacrifice it alive to your God - a 
+Sacrifice it alive to your God - a
 favourite of the Gods since time
-immemorial. Unlike offering pieces 
-of a corpse on an altar, weight 
-won't matter here. Instead, it's 
-apparently scored based on the its 
-bond with you and the quality of 
+immemorial. Unlike offering pieces
+of a corpse on an altar, weight
+won't matter here. Instead, it's
+apparently scored based on the its
+bond with you and the quality of
 its meat.
 
 
 As a side note, sometimes the ranch
-animals get a little antsy when one 
-of them is killed. Just pop out of 
-the ranch and come back, and you'll 
+animals get a little antsy when one
+of them is killed. Just pop out of
+the ranch and come back, and you'll
 find that they have settled down.
 
 -== The Drydock. Waste Nothing ==-
 
 A benefit of having a ranch is having
 a drydock at your disposal. Now I put
-mine in the southeast corner so the 
+mine in the southeast corner so the
 wind will blow the stench away from
-my estate. I assume it will be the 
+my estate. I assume it will be the
 same for you (you'd best hope so).
 In any other trade a rotten carcass
 would be nothing but a loss.
@@ -1477,11 +1478,11 @@ would be nothing but a loss.
 
 
 
-Not so with a ranch, where nothing 
-goes to waste. Simply dump your 
-rotten meat into the drydock to 
-cure, and in no time at all you'll 
-have delicious, lightweight, 
+Not so with a ranch, where nothing
+goes to waste. Simply dump your
+rotten meat into the drydock to
+cure, and in no time at all you'll
+have delicious, lightweight,
 adventurer-sought-after Jerky!
 
 	-== In Conclusion ==-
@@ -1494,7 +1495,7 @@ then grasp them.
 In my next book, which will be soon
 available, I will highlight the more
 subtle tricks to the trade, like how
-exactly you prevent a twenty-ton, 
+exactly you prevent a twenty-ton,
 fire-breathing, living force of
 Destruction and Death from simply
 leaving the ranch after setting all
@@ -1598,13 +1599,13 @@ RSVP not required, but come prepared.
 
 <This has been written on papyrus>
 
-You have gotten a bit of a name for 
+You have gotten a bit of a name for
 yourself young one, and you are even
 now growing stronger. Soon I, in my
 age beyond ages, might not be a match
 for you. And sensibly, I won't take
-that risk later. But I do so love a 
-fresh challenge every now and then. 
+that risk later. But I do so love a
+fresh challenge every now and then.
 
 So hear this.
 
@@ -1613,20 +1614,20 @@ Seek my Pyramid! Challenge my maze!
 Of course you should have a reason
 more than simply my word of challenge.
 
-How about treasure? Ah, I knew that 
+How about treasure? Ah, I knew that
 would do it. Within my Labyrinth lies
 much treasure if you can find it. It
 lies within much risk, but any reward
 without risk is hollow and cold as is.
 
-And there is what I carry as well, 
+And there is what I carry as well,
 though I feel it fair to warn you
 that I have played this game for a
 long, long time and have yet to lose.
 
 Oh and one more thing, should you not
-be properly entered within the great 
-Book of the Dead before entering, 
+be properly entered within the great
+Book of the Dead before entering,
 those within shall ensure that you
 become so, promptly indeed.
 
@@ -1774,9 +1775,9 @@ Action! Adventure! It's Card Battles!
 <By DeckMaster Schmidt>
 
 Have you been looking for a game that
-your kids can play that doesn't 
+your kids can play that doesn't
 involve lawn darts, a dead yeek, and
-a bit of twine? 
+a bit of twine?
 
 WELL SEEK NO MORE!
 
@@ -1787,13 +1788,146 @@ hairstyles that require exstensive
 Gene-engineering to even be possible!
 
 Sequal to the once popular game
-Monster Duels, which is in turn 
+Monster Duels, which is in turn
 the sequal to Wizards & Magic!
 
 Become the King of Games!
 
-- Coming as soon as the Etherwind
-permits long-haul cargo. -
+Each player starts the game with
+a deck of 30-60 creature Cards
+
+There are 6 Domains, you starting
+hand number and life is inversely
+proportional to the number of Domains.
+(Neutral and Legendary doesn't count.)
+
+Up to X copies of same card allowed:
+Normal:X=4 Neutral:X=2 Legendary:X=1
+
+The first player to reduce their
+opponent's life to 0 wins. If there
+are no cards in the deck at the time
+of the draw, the player's life is
+reduced to 0.
+
+
+There are 4 phases:
+- Begin Phase - Draw Phase
+- Main Phase - End Phase
+
+Begin Phase:
+Activate all turn-start effect.
+Unexhaust all cards on the Field.
+Player's Mana restore to max Mana.
+
+Draw Phase:
+Player draw 1 card.
+Activate all in-hand effect.
+
+During Main Phase, you can:
+Spend the Mana Cost to play Cards.
+Sacrifice a Card to gain 1 max Mana.
+Attack with your creatures.
+
+End Phase:
+Activate all turn-end effect.
+Card action:
+Card are exhausted upon summon.
+Exhausted card cannot attack, but
+they can defend incoming attacks.
+Attacked creatures cannot block
+until next Begin Phase.
+Creatures with 0 health after
+combat is send to graveyard.
+
+Controls:
+Enter Key: Select.
+Cancel Key: Skip Turn / Defense
+/ Randomize Effect Target.
+s Key: Surrender
+UP: Play / Attack / Defend.
+DOWN: Sacrifice Card.
+
+Card Description:
+Top: Card Mana Cost
+Bottom: Attack / Health
+
+Skill Keywords:
+
+Battlecry: Activate when Summoned.
+Deathrattle: Activate when Graved.
+Sacrifice: Activate when Sacrificed.
+On-Draw: Activate when draw this.
+In-Hand: Activate after draw phase.
+Ongoing: Activate passively on Field.
+Aftercombat: Activate after combat,
+On-Kill: Activate after combat,
+when opponent is defeated and this
+card survives.
+
+
+
+
+
+
+
+
+Positive Card Bits:
+
+- Regeneration: HP restore to max
+in Begin Phase.
+- Armor: Negate positive damage once.
+- Flying: Cannot be blocked by
+creature without flying or reach.
+- Intimidate: Can only be blocked by
+Cards within the same Domain.
+- Reach: Can block flying Cards.
+- Lifelink: Give player life=damage.
+- Haste: Not Exhausted on Summon.
+- Trample: Deal player excess damage.
+- First-Strike: Deal damage on the
+first round of combat only.
+- Dual-Strike: Deal damage in the
+first round and normal round.
+- Deathtouch: Damage to Card +999.
+
+
+Positive Card Bits:
+
+- Windfury: First Attack won't exhaust.
+- Vigilance: Can always block.
+- Defender: Always block. No attack.
+- Critical: Attackx3 with 1/6 chance.
+- Barrier: Receive no effect damage.
+- Evasion: Opponent cannot target it.
+- Split: Summon a copy if survive.
+- Rider: Armor/+2 Attack. Lose this
+bit and 2 health when damaged.
+
+
+
+
+
+
+
+
+
+Negative Card Bits:
+
+- Deathword: Grave this after 3 turn.
+- Gravity: Can always be blocked.
+- Bleeding: Take +1 Damage.
+- Poisoned: Take 1 Damage Begin Phase.
+- Kamikaze: Battlecry - Kill itself.
+- Paralysed: Cannot defend this turn.
+- Frozen: Cannot attack this turn.
+- Silenced: Effect cannot activate.
+- Confused: Cannot Attack/Defend or
+use Effect this turn. Doesn't Exhaust.
+- Insane: Switch side upon second
+time inflicted with Insane.
+
+
 %END
 
 
@@ -1883,7 +2017,7 @@ South Tyris, Elona
 Wily Mujaf's Thesis
 	by <Caim>
 
-I saw the town get turned into a 
+I saw the town get turned into a
 smouldering pile of rubble. I was
 hoping for just one more chance.
 Fact is, I didn't get it. Because
@@ -1892,7 +2026,7 @@ refusing to die. Look, her rib cage's
 still intact and everything. Didn't
 eat into it at all. Good as new.
 Crazy stuff, if you ask me. Now, you
-receive four options. First is 
+receive four options. First is
 especially attractive and will not
 try to kill you. Next up, stunning...
 character to go with her looks. Third
@@ -2174,7 +2308,7 @@ been many documented cases of
 skilled dungeon-delvers coming down
 with the disorder since ancient
 times (see footnote 1).
- 
+
 For that reason, some countries
 forbid entrance to dungeons while
 others limit dungeon access to
@@ -3141,7 +3275,7 @@ damn       to hel
 戦闘は、必ず指揮が届く範囲内で行うこと。
 他の指示に備え、火力は温存して戦え。くれ
 ぐれも敵を深追いしてはならない。
- 
+
 　最後は＜交渉態勢＞。敵を直接攻撃せずに
 話術や歌で戦意を削ぐこと。敵の疲弊や撤退
 を狙う。
@@ -3176,7 +3310,7 @@ enemies. Destroy every enemy that
 you come across. Be on the offensive
 and pursue your targets. Use
 everything you got, and leave no
-enemy standing. 
+enemy standing.
 
 Next is "Defense". Do not attack.
 Under no circumstances will any of
@@ -3276,16 +3410,16 @@ Fell The Enemy.
 pull off an extra-strong attack when
 it's white.
 
-But that is not all there is to it, 
-for the White Gauge is not the final 
-stage. Beyond it is the Pale Green 
-Gauge, which will allow the User to 
+But that is not all there is to it,
+for the White Gauge is not the final
+stage. Beyond it is the Pale Green
+Gauge, which will allow the User to
 have control over Time itself.
 
 
 
-You will eventually understand what 
-I mean. That is, if you ever get on 
+You will eventually understand what
+I mean. That is, if you ever get on
 my level. And I shall be there
 waiting.
 %END
@@ -3354,81 +3488,81 @@ Necromanual
 
 Chess has gotten boring.
 
-Necromancy is also quickly becoming 
+Necromancy is also quickly becoming
 a forgotten art - and that will
 not do - so perhaps I could teach
-you, dear reader, a thing or two 
+you, dear reader, a thing or two
 about it.
 
-To start, place a piece of a monster 
-into a coffin. Next, using a mana 
-crystal, shape the body into the 
-desired form with Alchemy. Finally, 
+To start, place a piece of a monster
+into a coffin. Next, using a mana
+crystal, shape the body into the
+desired form with Alchemy. Finally,
 garnish generously with malice.
 
-That's all there is, really, if all 
+That's all there is, really, if all
 that you want is an army of mass-
-produced undead. To make a true 
-work of art, however, will require 
-you to have a sophisticated taste, 
-complete knowledge of necromancy, 
-and years of experience. Choosing 
-the perfect monster part to use is 
-certainly not a task for beginners. 
-The special nanomachines and 
-bacteria you need are also rather 
+produced undead. To make a true
+work of art, however, will require
+you to have a sophisticated taste,
+complete knowledge of necromancy,
+and years of experience. Choosing
+the perfect monster part to use is
+certainly not a task for beginners.
+The special nanomachines and
+bacteria you need are also rather
 hard to come by these days.
 
-Just keep in mind that you can't 
-make something big if you start 
-from a low quality piece monster 
-part. Stretching will only get you 
-that far before it starts to 
+Just keep in mind that you can't
+make something big if you start
+from a low quality piece monster
+part. Stretching will only get you
+that far before it starts to
 collapse on itself.
 
 
 
-Undead that you've made can be 
-remodeled by the further addition 
-of one monster part. How it's 
-remodeled depends on what kind of 
-part is added, so you may want to 
-experiment with that. Don't worry, 
-you can always remodel with a 
-different part if it's not to your 
+Undead that you've made can be
+remodeled by the further addition
+of one monster part. How it's
+remodeled depends on what kind of
+part is added, so you may want to
+experiment with that. Don't worry,
+you can always remodel with a
+different part if it's not to your
 liking.
 
-These undead don't have the 
-capacity to think, and will tend to 
-stand around until they receive 
-explicit instructions from you. Be 
-sure to tell them which humans they 
-should be attacking. If they do 
-defeat something, you can have good 
-experience and a good time without 
+These undead don't have the
+capacity to think, and will tend to
+stand around until they receive
+explicit instructions from you. Be
+sure to tell them which humans they
+should be attacking. If they do
+defeat something, you can have good
+experience and a good time without
 even lifting a finger.
 
-There is power in numbers. Create 
-enough of them and you can 
-immediately replace any that fall 
-in combat. Results in an 
-unrelenting horde that will 
+There is power in numbers. Create
+enough of them and you can
+immediately replace any that fall
+in combat. Results in an
+unrelenting horde that will
 mercilessly crush your enemies.
 
-You could heal them at the cost 
-of your own life, but that's 
-probably not a good idea when 
-you're up against something that 
-single-handedly can take on your 
-army of undead. In these cases, 
-you might want to blow up them up 
-instead. Watch adversaries get 
-tossed about like a rag doll, 
-explosion after explosion. Costly, 
-yes, but you cannot put a price 
+You could heal them at the cost
+of your own life, but that's
+probably not a good idea when
+you're up against something that
+single-handedly can take on your
+army of undead. In these cases,
+you might want to blow up them up
+instead. Watch adversaries get
+tossed about like a rag doll,
+explosion after explosion. Costly,
+yes, but you cannot put a price
 tag on fun.
 
-That's about it. Now go try it 
+That's about it. Now go try it
 for yourself. Shoo.
 %END
 
@@ -3470,46 +3604,46 @@ for yourself. Shoo.
 The secrets of the journal
 	by a PRO journalist
 
-I see you've gotten your hands on 
-the latest fad that everybody's 
-gotta have - the Autoscribing 
-Journal. But have you been putting 
+I see you've gotten your hands on
+the latest fad that everybody's
+gotta have - the Autoscribing
+Journal. But have you been putting
 it to good use?
 
-The journal doesn't just list the 
-quests undertaken by you - it also 
-has the difficulty of each one of 
+The journal doesn't just list the
+quests undertaken by you - it also
+has the difficulty of each one of
 them.
 
-The level (Lv) indicated is that 
-of the target monster's, buuuut 
-you probably don't have to be 
-of that level to defeat it. If 
-you're armed to the teeth, you 
-could manage with, eh, maybe 60% 
-of the monster's level? Not all 
-quests involve combat, so there's 
+The level (Lv) indicated is that
+of the target monster's, buuuut
+you probably don't have to be
+of that level to defeat it. If
+you're armed to the teeth, you
+could manage with, eh, maybe 60%
+of the monster's level? Not all
+quests involve combat, so there's
 that too.
 
-The journal also automagically 
-keeps track of the number of times 
-the holder has done something. 
-Turn on Record in the Settings, 
+The journal also automagically
+keeps track of the number of times
+the holder has done something.
+Turn on Record in the Settings,
 and you'll be good to go.
 
-It's also got an uplink to town 
-informers, so you can also check 
-up on what your colleagues are 
-doing while on the go. Oh, and 
-it also has your guild quotas and 
+It's also got an uplink to town
+informers, so you can also check
+up on what your colleagues are
+doing while on the go. Oh, and
+it also has your guild quotas and
 rankings.
 
 
 
 
-So yeah, have a look at it when you 
-forget where you're supposed to go 
-or if you wanna see how you've been 
+So yeah, have a look at it when you
+forget where you're supposed to go
+or if you wanna see how you've been
 doing.
 %END
 
@@ -3564,70 +3698,70 @@ SOR110 Introduction to Sorcery
 
 Mana
 =====
-A primordial source of power 
-omnipresent in the world, found in 
-the ocean, in the atmosphere, and 
-within the earth. Living organisms 
-sequester mana, and it may also get 
-passed between organisms through 
-predation and other means. This is 
-known as the mana cycle. Mana 
-sequestered within an organism may 
-not exceed its capacity for it; 
-any excess is excreted to the 
+A primordial source of power
+omnipresent in the world, found in
+the ocean, in the atmosphere, and
+within the earth. Living organisms
+sequester mana, and it may also get
+passed between organisms through
+predation and other means. This is
+known as the mana cycle. Mana
+sequestered within an organism may
+not exceed its capacity for it;
+any excess is excreted to the
 environment.
 
 
-Dead organisms do not retain mana. 
-Upon death, mana previously 
-contained within the organism will 
-begin diffusing out and back into 
+Dead organisms do not retain mana.
+Upon death, mana previously
+contained within the organism will
+begin diffusing out and back into
 the environment.
 
-As the main use of mana is to 
-convert it to MP, many sorcerers 
-use the terms MP and mana 
+As the main use of mana is to
+convert it to MP, many sorcerers
+use the terms MP and mana
 interchangeably.
 
 Magic
 ======
-A form of energy that mana is 
-converted into that is required 
-for performing sorcery. Without 
-conversion, mana cannot be 
-efficiently used for spells and 
-can only be used for the most 
+A form of energy that mana is
+converted into that is required
+for performing sorcery. Without
+conversion, mana cannot be
+efficiently used for spells and
+can only be used for the most
 rudimentary of purposes.
 
-The affinity of an entity for 
-magic is also happens to be called 
-Magic (sometimes also known as the 
-Magic attribute) but this 
-terminology is fairly new and came 
-into popular use only about 100 
+The affinity of an entity for
+magic is also happens to be called
+Magic (sometimes also known as the
+Magic attribute) but this
+terminology is fairly new and came
+into popular use only about 100
 years ago.
 
 MP
 ===
-Magic points. Unit of measurement 
+Magic points. Unit of measurement
 for amount of Magic energy.
 
 Divine power
 =============
-Energy that gods require to use 
-their powers. The current theory 
-is that it is extracted from 
-offerings of their faithful and 
-combined with mana. It is similar 
-in some ways to magic, but is 
-otherwise a completely different 
-form of energy. Sorcerers in our 
-country have yet to discover how 
+Energy that gods require to use
+their powers. The current theory
+is that it is extracted from
+offerings of their faithful and
+combined with mana. It is similar
+in some ways to magic, but is
+otherwise a completely different
+form of energy. Sorcerers in our
+country have yet to discover how
 to harness this power.
 
-As an analogy, if mana were water, 
-then MP would be bottles of water, 
-and divine power would be bottles 
+As an analogy, if mana were water,
+then MP would be bottles of water,
+and divine power would be bottles
 of soda.
 %END
 
@@ -3691,48 +3825,48 @@ of soda.
 %27,EN
 You dig mining?
 	by Borzoi J. Hammer
-	
-Borzoi here. And when it comes to 
+
+Borzoi here. And when it comes to
 mining, I'm the BEST.
 
-You dig mining? 'cuz I sure do. 
-It trains constitution. You come 
-across stuff. And best of all, if 
-you got no path, you can just 
+You dig mining? 'cuz I sure do.
+It trains constitution. You come
+across stuff. And best of all, if
+you got no path, you can just
 MAKE ONE.
 
-And didja know that mining in 
-different places will get you 
+And didja know that mining in
+different places will get you
 different stuff? Betcha didn't.
 
-These Cave and Lake nefia are 
-filled with ores, so you'll want 
-to go to these places if you want 
-to give stuff to the Gods of the 
-Earth or Healin'. Or if that's not 
-your thing, you could give 'em a 
+These Cave and Lake nefia are
+filled with ores, so you'll want
+to go to these places if you want
+to give stuff to the Gods of the
+Earth or Healin'. Or if that's not
+your thing, you could give 'em a
 little polish by tossing them in
-a fusion pot and they'll fetch some 
+a fusion pot and they'll fetch some
 good coin.
 
-Forest nefia are full of food that 
-you won't find anywhere else. 
-Acorns never rot so you can keep 
-some in your pockets at all times. 
-Then there's valuable golden acorns 
-too. Gold! Must've been hidden 
-there by a squirrel or summat. You 
-might even luck out and find a rare 
+Forest nefia are full of food that
+you won't find anywhere else.
+Acorns never rot so you can keep
+some in your pockets at all times.
+Then there's valuable golden acorns
+too. Gold! Must've been hidden
+there by a squirrel or summat. You
+might even luck out and find a rare
 four leafed clover.
 
-Fortress and Tower nefia are made 
-of stone, so guess what you get 
-when you mine there? Stone! Heard 
-you can sculpt these with uh... 
-"item fusion", but I don't 
-understand these artsy kinda 
-things. You'll also find safes 
-that people hid in there a long 
+Fortress and Tower nefia are made
+of stone, so guess what you get
+when you mine there? Stone! Heard
+you can sculpt these with uh...
+"item fusion", but I don't
+understand these artsy kinda
+things. You'll also find safes
+that people hid in there a long
 time ago.
 
 Nest nefia will have the remains
@@ -3741,13 +3875,13 @@ there. And a whole load of shit,
 which you're gonna have to wade
 through to find anything good.
 
-People bury their dead in the 
-walls of Cemeteries. Prolly just 
-out of habit for those people 
-used to stashing their stuff in 
-walls. Dig around for offerings and 
-coffins. Are you gonna get cursed 
-for doing that, you ask? Pssh 
+People bury their dead in the
+walls of Cemeteries. Prolly just
+out of habit for those people
+used to stashing their stuff in
+walls. Dig around for offerings and
+coffins. Are you gonna get cursed
+for doing that, you ask? Pssh
 'course not. Waste not, want not.
 
 Mines yield ores. But not regular
@@ -3756,17 +3890,17 @@ Wouldn't have become a nefia if
 they didn't, eh? There's lotsa
 clay here for pottery and stuff.
 
-Lesee... oh right. Towns. Mine 
-there and you might come across 
-the coins and gold bars that the 
-folk have stashed away. After all, 
-you can't store money in shelves, 
-'cuz those would get stolen, 
-shelves and everything. So walls 
-are where them people hide them 
+Lesee... oh right. Towns. Mine
+there and you might come across
+the coins and gold bars that the
+folk have stashed away. After all,
+you can't store money in shelves,
+'cuz those would get stolen,
+shelves and everything. So walls
+are where them people hide them
 life savings.
 
-So what are you waiting for? 
+So what are you waiting for?
 Start mining!
 %END
 
@@ -3829,78 +3963,78 @@ Start mining!
 What's in a performance?
 	by a nameless travelling performer
 
-I'm going to jot down a couple of 
-ways of completing Performing 
-quests in here just so that I don't 
-forget. I've heard people say that 
-all you need to do is to keep 
-performing to a person until he's 
-satisfied or bored, but I'm just 
+I'm going to jot down a couple of
+ways of completing Performing
+quests in here just so that I don't
+forget. I've heard people say that
+all you need to do is to keep
+performing to a person until he's
+satisfied or bored, but I'm just
 not Speedy enough for that. So.
 
-PERFORMING: perform with an 
-instrument of your choice. You 
-might find one at the event grounds, 
-but it might not be in the right 
-place so it's best to bring one 
-yourself. What instrument you use 
-may determine whether patrons are 
-satisfied with your Performance or 
-not. If they are, they will 
-shower you with gold and items. 
-I've also heard fables of the 
+PERFORMING: perform with an
+instrument of your choice. You
+might find one at the event grounds,
+but it might not be in the right
+place so it's best to bring one
+yourself. What instrument you use
+may determine whether patrons are
+satisfied with your Performance or
+not. If they are, they will
+shower you with gold and items.
+I've also heard fables of the
 legendary Stradivarius improving
-the quality of items thrown at 
+the quality of items thrown at
 you...
 
-ENSEMBLE: sing with your pets. 
-It'll be good experience for them, 
-and you don't need an instrument 
-either. It's a group effort so it's 
-easier to succeed than a regular 
-solo Performance, and if you're 
-skilled enough the items thrown 
-will be of better quality too. But 
-doing this takes quite a bit of 
-time and stamina, so be sure not 
-to waste an ensemble on a deserted 
-area. It also means you won't score 
-as many Points with the client if 
+ENSEMBLE: sing with your pets.
+It'll be good experience for them,
+and you don't need an instrument
+either. It's a group effort so it's
+easier to succeed than a regular
+solo Performance, and if you're
+skilled enough the items thrown
+will be of better quality too. But
+doing this takes quite a bit of
+time and stamina, so be sure not
+to waste an ensemble on a deserted
+area. It also means you won't score
+as many Points with the client if
 you're not quick enough.
 
-PREACHING: spread the Word about 
-your God and captivate people with 
-a gilded tongue. Pets seem to gain 
-experience from this. If people are 
-satisfied with your preaching, 
-they'll give you quite a fair amount 
-of alms. Meaning gold. No items 
-though. If you're so convincing 
-that people convert to your faith, 
-then those people are going to be 
+PREACHING: spread the Word about
+your God and captivate people with
+a gilded tongue. Pets seem to gain
+experience from this. If people are
+satisfied with your preaching,
+they'll give you quite a fair amount
+of alms. Meaning gold. No items
+though. If you're so convincing
+that people convert to your faith,
+then those people are going to be
 even more satisfied.
 
-FASCINATION DANCE: this one's 
-quicker than Performing and 
-satisfies people more easily, so 
-it's great for scoring Points with 
-the client. If you're Charismatic, 
-then all the better. There's just 
-a bit of a problem with this - 
+FASCINATION DANCE: this one's
+quicker than Performing and
+satisfies people more easily, so
+it's great for scoring Points with
+the client. If you're Charismatic,
+then all the better. There's just
+a bit of a problem with this -
 people become too transfixed on
-your gyrating hips to give you 
+your gyrating hips to give you
 any money.
 
-FIRE BREATHING: did the best I 
-could while on fire, but nobody 
+FIRE BREATHING: did the best I
+could while on fire, but nobody
 even bat an eye...
 
-It's my dream to become a great 
-performer and bring smiles to 
-people's faces wherever I go, but 
-so far it's only been bringing 
-rocks. Thrown in my direction. And 
-Mum's been telling me to come 
+It's my dream to become a great
+performer and bring smiles to
+people's faces wherever I go, but
+so far it's only been bringing
+rocks. Thrown in my direction. And
+Mum's been telling me to come
 home...
 
 (The document ends here.)
@@ -3969,18 +4103,18 @@ Experimental Characterization of
 	by Gavela et al.
 
 
-Dimensional energy is a form of 
+Dimensional energy is a form of
 energy capable of trans-dimensional
 interaction with objects, including
-people. Its existence has long 
-been theorized but has lacked 
+people. Its existence has long
+been theorized but has lacked
 definitive experimental evidence.
 
-Here we present its 
+Here we present its
 characterization via Verde-Hermann
-experiments with a novel 
-dimensional warp unit. We also 
-explore the potential 
+experiments with a novel
+dimensional warp unit. We also
+explore the potential
 ramifications and applications of
 this technology.
 
@@ -3989,59 +4123,59 @@ To test Verde-Hermann's postulate
 that measurement of dimensional
 energy is difficult due to the
 dampening of dimensional energy by
-the inter-dimensional barrier, we 
+the inter-dimensional barrier, we
 perturbed the barrier with a
-dimensional warp unit and 
-conducted the first and second 
+dimensional warp unit and
+conducted the first and second
 Verde-Hermann tests. The
-observational unit used is 
+observational unit used is
 outlined in Appendix 1.
 
 From the data (Appendices 1 to 6),
-we have determined that 
+we have determined that
 dimensional energy is weakened
-by a factor of approximately 
+by a factor of approximately
 0.0025% under normal circumstances.
 
 
 In the second test, we determined
 at a high confidence level that it
 is likely that dimensional
-energy strength is inversely 
-proportional to dimensional 
-warpage, conforming to Ariane's 
-Laws of Energy. However, we also 
-find that when two analogous 
-objects A and B are moved such that 
-they are in the same dimension, 
+energy strength is inversely
+proportional to dimensional
+warpage, conforming to Ariane's
+Laws of Energy. However, we also
+find that when two analogous
+objects A and B are moved such that
+they are in the same dimension,
 rapid dissipation of dimensional
 energy occurs. Further experiments
-are needed to elucidate the 
+are needed to elucidate the
 mechanism for this phenomenon.
 
-As dimensional energy flows down 
-the potential gradient, we find 
+As dimensional energy flows down
+the potential gradient, we find
 find that there is the possibility
-that limitless energy can be 
+that limitless energy can be
 harnessed if dimensions can be linked.
 
-However, we urge caution in the 
-long-term harnessing of dimensional 
+However, we urge caution in the
+long-term harnessing of dimensional
 energy as the effects on the
-affected dimensions are yet 
+affected dimensions are yet
 unknown. Furthermore, even if the
-harnessing power causes no direct 
-effects, it may be deemed an act 
-of aggression by inhabitants in 
+harnessing power causes no direct
+effects, it may be deemed an act
+of aggression by inhabitants in
 the other dimension.
 
-To conclude, further research is 
-needed for determining how 
+To conclude, further research is
+needed for determining how
 analogous existences are linked in
-multi-dimensional space, and to 
+multi-dimensional space, and to
 study the mechanism for that
-linkage to develop a practical 
-trans-dimensional communications 
+linkage to develop a practical
+trans-dimensional communications
 tool.
 %END
 
@@ -4146,131 +4280,131 @@ Quest Advice
 	by Worried dad
 
 Son,
-    I know you've been planning to 
-leave. I've managed to scrounge up 
+    I know you've been planning to
+leave. I've managed to scrounge up
 some money - you can find it at the
-bottom of your belongings. It 
-should tide you over until you can 
-establish an income from taking 
+bottom of your belongings. It
+should tide you over until you can
+establish an income from taking
 quests in towns.
 
-    You should know that there are 
+    You should know that there are
 several types of quests though:
 
 - Item requests
-    The key to these is to have the 
-item before taking on the quest. 
-They often ask for stuff that can be 
-found lying around in the 
+    The key to these is to have the
+item before taking on the quest.
+They often ask for stuff that can be
+found lying around in the
 wilderness or in shops.
-When going out to the wilderness, 
-you don't have to fight every wild 
+When going out to the wilderness,
+you don't have to fight every wild
 animal you come across.
 
 - Belongings requests
-    Ask a guard where you can find 
-the person who has the requested 
-item. Then talk to that guy, and 
-exchange some of your items for it. 
-Or, you can get it from just about 
+    Ask a guard where you can find
+the person who has the requested
+item. Then talk to that guy, and
+exchange some of your items for it.
+Or, you can get it from just about
 anywhere - from the wilderness or
-shops - the quest giver won't know 
+shops - the quest giver won't know
 the difference.
 
 - Cooked dish requests
-    It's going to be hard to have 
-ingredients to cook the dishes they 
-want when you don't even have 
+    It's going to be hard to have
+ingredients to cook the dishes they
+want when you don't even have
 enough to eat yourself. Take on
-these quests when you're not 
-struggling. If you're lucky, you 
-might find the ingredient you need 
+these quests when you're not
+struggling. If you're lucky, you
+might find the ingredient you need
 in a shop in town.
 
 - Harvesting requests
-    These are filled with wild 
-animals, so you'll need to be able 
-to fend them off at the very least. 
-These are decent for training 
-because you'll be pulling up lots 
+    These are filled with wild
+animals, so you'll need to be able
+to fend them off at the very least.
+These are decent for training
+because you'll be pulling up lots
 of crops from the ground.
-Exceed quota by several times and 
-they'll pay you more. They might 
+Exceed quota by several times and
+they'll pay you more. They might
 even give you a bronze coin too.
-But going over is going to be hard 
+But going over is going to be hard
 when you're just starting off.
-If you forget where the delivery 
-chest is, don't panic - just look 
+If you forget where the delivery
+chest is, don't panic - just look
 around with the * key.
 - Monster slaying requests
-    Before taking these on, make 
+    Before taking these on, make
 sure you are fully equipped with
-decent armour. If you have a pet, 
-make sure they are equipped as well 
-by handing them equipment while 
-'i'nteracting with them (using the 
+decent armour. If you have a pet,
+make sure they are equipped as well
+by handing them equipment while
+'i'nteracting with them (using the
 'i' key). If you don't, these WILL
 kill you. Yes, even the easiest ones.
 
 - Item delivery requests
-    You'll need to go to another 
-town to complete these. Have enough 
-food and be combat ready. Know  
+    You'll need to go to another
+town to complete these. Have enough
+food and be combat ready. Know
 where you are and where you're going.
-In the destination town, you can 
-ask guards where the delivery 
+In the destination town, you can
+ask guards where the delivery
 recipient is. If you don't deliver
-in time, they'll accuse you of 
+in time, they'll accuse you of
 pocketing the item.
 - Escort requests
-    This one will also need you to 
-go to another town. If the escorted 
-target dies, the quest is failed. 
-These can be profitable if it's 
-only a short jog to the destination 
-and the client isn't in any sort of 
+    This one will also need you to
+go to another town. If the escorted
+target dies, the quest is failed.
+These can be profitable if it's
+only a short jog to the destination
+and the client isn't in any sort of
 danger.
 
 - Hole and mine removal requests
-    You won't last without the 
-Disarm Trap skill. Either that or 
-spells or items that allow you to 
+    You won't last without the
+Disarm Trap skill. Either that or
+spells or items that allow you to
 Sense or Detect Objects.
 
 - Performing requests
-    These are hard if you can't 
-perform, preach, or dance. If a 
-high level person sees you messing 
-up, he might kill you. So even if 
-you can perform, be sure to perform 
-only to beggars and old people 
+    These are hard if you can't
+perform, preach, or dance. If a
+high level person sees you messing
+up, he might kill you. So even if
+you can perform, be sure to perform
+only to beggars and old people
 until you get proficient at it.
 
 
 
 
-    That's about all that I know. 
+    That's about all that I know.
 There's a cram school south of Vernis
-where you can attend some seminars 
+where you can attend some seminars
 to learn more, so you might want
-to go there when you have some 
+to go there when you have some
 money to spare after finishing some
 quests.
 
-    It really didn't have to come 
-to this - the quarrel with Mom 
-about getting a pet putit and 
+    It really didn't have to come
+to this - the quarrel with Mom
+about getting a pet putit and
 everything.
 
     If you don't manage, please
 don't be stubborn - come home.
 Given how headstrong you are,
-you'd probably rather resort to 
-begging on the streets, but know 
-that I'm worried about you. Do be 
-careful out there, and watch your 
-back. There are plenty of people 
-out there who thrive on preying on 
+you'd probably rather resort to
+begging on the streets, but know
+that I'm worried about you. Do be
+careful out there, and watch your
+back. There are plenty of people
+out there who thrive on preying on
 others.
 
     And also know that whatever
@@ -4340,44 +4474,157 @@ from the trainer in Vernis!
 
 Next, you'll need to buy some
 fishing rod and bait. Water flea
-is best for beginners. 'B'lend  
-(Shift + b key) one to attach it to 
-your rod. One water flea is good 
+is best for beginners. 'B'lend
+(Shift + b key) one to attach it to
+your rod. One water flea is good
 for 15-24 uses.
 
 
-The pricier and better baits won't 
-work if your Fishing skill isn't up 
-to snuff. Generally, you can switch 
-to a better bait every 10 skill 
-levels. If all you're reeling in is 
-junk, that means you don't have 
-enough skill to use that bait yet. 
-And junk is... junk! There's no use 
+The pricier and better baits won't
+work if your Fishing skill isn't up
+to snuff. Generally, you can switch
+to a better bait every 10 skill
+levels. If all you're reeling in is
+junk, that means you don't have
+enough skill to use that bait yet.
+And junk is... junk! There's no use
 for it.
 
-As for the fish - the amount 
+As for the fish - the amount
 they'll fetch when sold depends on
-their size and weight. There's no 
-choosing the size of fish that bite 
+their size and weight. There's no
+choosing the size of fish that bite
 though. It's all up to Lady Ehekatl!
 
 Fish will also go bad in about
-8 hours, so you'll want to cook 
-them and cook often. Or you can 
-carry them around in a cooler box. 
-If you've got more fish than you 
-can carry (wow!), pop them in a 
-puddle on the ground. They won't go 
+8 hours, so you'll want to cook
+them and cook often. Or you can
+carry them around in a cooler box.
+If you've got more fish than you
+can carry (wow!), pop them in a
+puddle on the ground. They won't go
 bad that way, ever!
 
 Speaking of those fish in a puddle...
 you can do some tricks with them.
-I like to give mine ground bait, 
-crafted in a fusion pot. Fish will 
+I like to give mine ground bait,
+crafted in a fusion pot. Fish will
 grow in quality when you do, and
-they might even spit out a useful 
-item or two for you! If you're the 
-sort who never feeds their fishies, 
+they might even spit out a useful
+item or two for you! If you're the
+sort who never feeds their fishies,
 you're missing out!
 %END
+
+
+#####################################
+%32,JP
+収容者矯正の手引
+	written by センパイ管理官
+
+　収容所の管理官デビューおめでとう！
+これからは、めぼしい子は檻にしまって収容所
+までどんどん運んじゃおうね！
+　収容所で素直になった子は、どんなにあなた
+を嫌っていても従うしかなくなっちゃう。
+愛玩用のコレクションにしてもいいし、仲間に
+だってなってくれるよ。
+
+　え？仲間にするだけなら手間をかけずに
+奴隷を買ってくる？支配の魔法があるから
+いらない？
+　分かってないなー。最初から従順な子や
+魔法で従順にした子を使うのとは違うよー。
+嫌がっている子を仕方なく労働させることで
+しか得られないエナジーがあるの！
+
+　よーし、まずはボードを使ってみようか？
+
+　捕まえてきた子を檻から出したら、労働強度を
+設定して労働させよう！どうせ誰も逃げられない
+から、3日くらい放置してから様子を見に来て。
+　設定労働強度が高いほど、労働エナジーが多く
+溜まるよ。でも高いほど生命力を消費しちゃう
+から、死人が出たら新しい子を補充するのを
+忘れちゃだめだよ？
+　収容所内の物は特に獲得エナジーには影響
+しないから、レイアウトはお好みでオッケー。
+　あとは…素直ないい子ほど熱心に労働して
+労働エナジーを多く生んでくれるよ。
+　素直な子へ矯正するのはとってもカンタン！
+見せしめに何人か処刑するだけ！処刑用の子も
+含めて、とにかく頭数を揃えると楽になるかな。
+
+　どう、やれそう？じゃあ、悪い子をみーんな
+矯正していこっか？
+
+
+%END
+
+%32,EN
+Inmate Correction Manual
+Written by Manager Senpai
+
+Congratulations on your debut 
+as an inmate supervisor! 
+From now on, you'll be able to 
+keep the most promising children 
+in cages and take them to 
+the camps!
+
+Once they've become obedient 
+in the camps, they'll have no 
+choice but to obey you, no 
+matter how much they dislike 
+you. They can become your 
+loyal pets! Or friends, even!
+
+Huh? Just buy a slave to skip 
+the hassle if you just want 
+a friend? You don't want a gulag 
+because you have the magic of 
+domination?
+
+Alright, let's use the board 
+first, shall we?
+
+After you let the captured 
+kids out of their cages, set 
+the labour intensity and make 
+them work! No one can escape 
+anyway, so leave them for about 
+three days and then come back 
+to check on them.
+
+The higher the labour intensity 
+you set, the more labour energy 
+you'll accumulate. But the higher 
+the intensity, the more life force 
+you consume, so don't forget to 
+replenish the with new ones when 
+people die, okay?
+
+The things in the camps don't 
+particularly affect the Energy 
+you gain, so you can arrange the 
+layout however you like.
+
+Also... the more obedient and 
+good children are, it's more 
+likely they will work hard and 
+produce more Labour Energy.
+
+It's very easy to correct them 
+to be honest and upstanding! 
+Just make them as an example by
+Executing them! It will be easier 
+if we have less of them anyways, 
+including the ones for the executions.
+
+How do you think you can do it? 
+Well, let's correct all the damn 
+kids, shall we?
+
+
+%END
+#####################################

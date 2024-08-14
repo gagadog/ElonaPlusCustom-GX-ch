@@ -614,8 +614,9 @@
 #define global	SKILL_SPACT_SHIKIORIGAMI_CRANE	862
 #define global	SKILL_SPACT_SHIKIORIGAMI_SHURIKEN	863
 #define global	SKILL_SPACT_SHIKIORIGAMI_AIRPLANE	864
+#define global	SKILL_SPACT_BRAIN_PARASITIZE	865
 
-#define global	MAX_SKILL	(SKILL_SPACT_SHIKIORIGAMI_AIRPLANE + 1)
+#define global	MAX_SKILL	(SKILL_SPACT_BRAIN_PARASITIZE + 1)
 
 // Absolute skill limits
 #define global	MAX_SPACT_COUNT	500 // Maximum number of spact slots available in the array, beginning at STARTING_SKILL_SPACT, meaning the effective max skillid is 1099 (1100 if you really push it)
@@ -1417,8 +1418,10 @@
 #define global	TRAIT_NORMAL_SPACT_UNCONTROL	5
 #define global	TRAIT_NORMAL_SPACT_BLADE_STRINGS	6
 #define global	TRAIT_NORMAL_STAT_PV	7
+#define global	TRAIT_NORMAL_STAT_DV    8 // Obsolete
 #define global	TRAIT_NORMAL_DISCERNMENT	8
 #define global	TRAIT_NORMAL_SPACT_GRAVITY_ACCEL	9
+#define global	TRAIT_NORMAL_SKILL_EVASION    10 // Obsolete
 #define global	TRAIT_NORMAL_SPACT_SHIKI_ORIGAMI	10
 #define global	TRAIT_NORMAL_STAT_MANA	11
 #define global	TRAIT_NORMAL_SKILL_CASTING	12
@@ -1426,6 +1429,7 @@
 #define global	TRAIT_NORMAL_SPACT_FIRE_BREATH	14
 #define global	TRAIT_NORMAL_RES_DARKNESS	15
 #define global	TRAIT_NORMAL_SKILL_NEGOTIATION	16
+#define global	TRAIT_NORMAL_SPACT_FAITH	17 // Obsolete
 #define global	TRAIT_NORMAL_SPACT_SAINT	17
 #define global	TRAIT_NORMAL_RES_POISON	18
 #define global	TRAIT_NORMAL_SKILL_DUAL_WIELD	19
@@ -1742,6 +1746,7 @@
 #define global	INV_ITEM_AMUR_CAGE	31
 #define global	INV_ITEM_OMAKE_CUSTOM_ITEM_ID	31
 #define global	INV_ITEM_OMAKE_CUSTOM_ITEM_CHECKSUM	32
+#define global	INV_ITEM_SHOP_SAMPLE	32  // Obsolete
 #define global	INV_ITEM_PARTS	32
 #define global	INV_ITEM_NEED_SLEEP	33
 #define global	INV_ITEM_CHARA_PIC	34
@@ -2206,7 +2211,10 @@
 #define global	CHARA_BIT_LOCKED_UP	1040
 #define global	CHARA_BIT_LABOR_CAMP	1041
 #define global	CHARA_BIT_TOIL_ENERGY_DRINK	1042
+#define global	CHARA_BIT_FLAG_BOMB_BARREL	1043
 #define global	CHARA_BIT_QUICK_RESTORE	1043
+#define global	CHARA_BIT_ENHANCED_ROCK_THROWING	1044
+#define global	CHARA_BIT_BRAIN_PARASITE	1045
 
 // Database modes
 #define global	DBMODE_NONE	0
@@ -2370,6 +2378,7 @@
 #define global	ENCHANT_GOD_SIGNALS	56
 #define global	ENCHANT_BANE_DRAGON	57
 #define global	ENCHANT_BANE_UNDEAD	58
+#define global  ENCHANT_SHOW_RELIGION  59
 #define global	ENCHANT_PRESERVE_PIETY	59
 #define global	ENCHANT_DRUNK_LISTENER	60
 #define global	ENCHANT_BANE_GOD	61
@@ -2626,6 +2635,7 @@
 #define global	FILTER_RACE_KUSOSUGI	50
 #define global	FILTER_RACE_SEAMONSTER_DOLPHIN_SOLDIER	51
 #define global	FILTER_RACE_SEAMONSTER_DAGANOTOSUS	52
+#define global	FILTER_RACE_RAT_GUNDEGU	53
 
 #define global	FILTER_WEAPON	10000
 #define global	FILTER_WEAPON_HEAVY_SWORD	10001
@@ -3330,6 +3340,7 @@
 #define global	AREA_SOUTH_TYRIS	44
 #define global	AREA_ST_NORTH_BORDER	45
 #define global	AREA_SMOKE_AND_PIPE	46
+#define global	AREA_TEST_WORLD	47 // Obsolete
 #define global	AREA_OCEAN	47
 #define global	AREA_TW_NORTH_BORDER	48
 #define global	AREA_REMIDO	49
@@ -3767,6 +3778,7 @@
 #define global	CDATA_SPEED_FIX	39
 #define global	CDATA_ALIGNMENT	40
 #define global	CDATA_SKILLPOINT	41
+#define global	CDATA_SP_EARNED	42 // Obsolete
 #define global	CDATA_PREGNANCY_PROGRESS	42
 #define global	CDATA_INV_WEIGHT	43
 #define global	CDATA_CARRY_LIMIT	44
@@ -3785,6 +3797,7 @@
 #define global	CDATA_REMOTE_BLOW	57
 #define global	CDATA_ALLIED	58
 #define global	CDATA_SPRITE_SIZE_MILK	59
+#define global	CDATA_DRAIN_HP	60 // Obsolete
 #define global	CDATA_GUARD_BREAK	60
 #define global	CDATA_GOD	61
 #define global	CDATA_PIETY	62
@@ -3914,6 +3927,7 @@
 #define global	CDATA_DAMAGE_FIX	184
 #define global	CDATA_DIRECTIVE_MODE_ORG	185
 #define global	CDATA_MASTER_SERVANT2	186
+#define global  CDATA_TAMER_WHIP_PICKUP  187  // Obsolete
 #define global	CDATA_PREGNANCY_MALE_CHILD	187
 #define global	CDATA_TONE_SEX	188
 #define global	CDATA_SPINDLE_COMBINATION_A	189
@@ -3934,15 +3948,18 @@
 #define global	CDATA_MOVE_DIR	204
 #define global	CDATA_X_DEST	205
 #define global	CDATA_Y_DEST	206
+#define global	CDATA_GUILD_INVEST_MAGE	207
+#define global	CDATA_GUILD_INVEST_WARRIOR	208
+#define global	CDATA_GUILD_INVEST_THIEF	209
 #define global	CDATA_AI_MOVE_FREQ	207
 #define global	CDATA_AI_DISTANCE	208
 #define global	CDATA_AI_SUB	209
 #define global	CDATA_ACT_RANGE	210
 #define global	CDATA_ACT_HEAL	211
 #define global	CDATA_ACT_INDEX	212
+#define global  CDATA_TAMER_WHIP_EAT  213  // Obsolete
 #define global	CDATA_PREGNANCY_FEMALE_CHILD	213
 #define global	CDATA_EVOLUTION_STAGE	214
-
 #define global	STARTING_CDATA_ACT_MAIN	215
 #define global	RANGE_CDATA_ACT_MAIN	5
 #define global	STARTING_CDATA_ACT_SUB	220
@@ -4025,6 +4042,7 @@
 #define global	CDATA_HOME	438
 #define global	CDATA_SALES_EXP	439
 #define global	CDATA_SALES_FEATS	440
+#define global  CDATA_CONDITION_SEPPUKU  441 // Obsolete
 #define global	CDATA_HEART_LOCK_RELATION	441
 #define global	CDATA_TOBACCO_DEPENDENCE	442
 #define global	CDATA_DRUG_DEPENDENCE	443
@@ -4233,6 +4251,7 @@
 #define global	GDATA_MAP_VERSION	184
 #define global	GDATA_GOD_TALK	185
 #define global	GDATA_VOID_BOSS	186
+#define global  GDATA_GOD_DETECT  187 // Obsolete
 #define global	GDATA_PRESERVE_PIETY	187
 #define global	GDATA_DOJO_TURNS	188
 #define global	GDATA_DEEPEST_LEVEL	189
@@ -4493,7 +4512,7 @@
 
 #define global	GDATA_FLAG_MINEFIELD_QUEST_LEVEL	(STARTING_GDATA_FLAG + 379)
 #define global	GDATA_FLAG_PET_ANNIVERSARY_ACTIVE	(STARTING_GDATA_FLAG + 380)
-#define global	GDATA_FLAG_BOMB_BARRELS_EXPLODED	(STARTING_GDATA_FLAG + 381)
+#define global	GDATA_FLAG_BOMB_BARRELS_EXPLODED	(GDATA_FLAG_BOMB_BARRELS_EXPLODED)
 #define global	GDATA_FLAG_LEOLD_JOB_TIER	(STARTING_GDATA_FLAG + 382)
 #define global	GDATA_FLAG_LEOLD_JOB_STAGE	(STARTING_GDATA_FLAG + 383)
 #define global	GDATA_FLAG_SLEEP_PREVENTION	(STARTING_GDATA_FLAG + 384)
@@ -5953,8 +5972,9 @@
 #define global	ITEM_ID_SPLENDID_CHAIN	1297
 #define global	ITEM_ID_TOIL_ENERGY_DRINK	1298
 #define global	ITEM_ID_POTION_PLUG	1299
+#define global	ITEM_ID_TRAINING_TICKET	1300
 
-#define global	MAX_ITEM_ID	(ITEM_ID_POTION_PLUG + 3)
+#define global	MAX_ITEM_ID	(ITEM_ID_TRAINING_TICKET + 3)
 
 // Creatures
 #define global	CREATURE_ID_BUG	0 // Also doubles as RANDOM
@@ -7073,8 +7093,16 @@
 #define global	CREATURE_ID_KAMIORIDURU	1113
 #define global	CREATURE_ID_KAMISHURIKEN	1114
 #define global	CREATURE_ID_KAMIHIKOUKI	1115
+#define global	CREATURE_ID_HUGE_CHINCHILLA	1116
+#define global	CREATURE_ID_HIGH_JUMP_RAT	1117
+#define global	CREATURE_ID_RUSH_RAT	1118
+#define global	CREATURE_ID_GUNDEGU	1119
+#define global	CREATURE_ID_DOPING_GUINEA_PIG	1120
+#define global	CREATURE_ID_MOUNTAIN_SHAKER	1121
+#define global	CREATURE_ID_ULTIMATE_EXPERIMENTAL	1122
+#define global	CREATURE_ID_SAIKYO_NEZUMI	1123
 
-#define global	MAX_CREATURE_ID	(CREATURE_ID_KAMIHIKOUKI + 3)
+#define global	MAX_CREATURE_ID	(CREATURE_ID_SAIKYO_NEZUMI + 3)
 
 // Buffer
 #define global	BUFFER_SCREEN	0

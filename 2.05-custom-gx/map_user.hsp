@@ -1888,15 +1888,6 @@
 		if ( mdata(MDATA_TILE_FILE) == 1 & cnt == 267 ) {
 			f = 0
 		}
-		if ( chipm(CHIPM_ROLE, cnt) == MAP_CHIP_ROLE_CROP ) {
-			f = 0
-		}
-		if ( chipm(CHIPM_ROLE, cnt) == MAP_CHIP_ROLE_DRYROCK ) {
-			f = 0
-		}
-		if ( chipm(CHIPM_ROLE, cnt) == MAP_CHIP_ROLE_COMPOST ) {
-			f = 0
-		}
 		if ( f ) {
 			list(0, p) = cnt
 			p++
@@ -2218,7 +2209,7 @@
 				break
 			}
 			if ( inv(INV_ITEM_VALUE, ci) > int(listn(1, cnt2)) * 2 * (3 + eye) / 3 + 300 * eye ) {
-				yaca += inv(INV_ITEM_VALUE, ci) / 1000
+				yaca += limit(inv(INV_ITEM_VALUE, ci), 1, 500000) / 1000
 				f = 1
 				break
 			}
@@ -2236,13 +2227,14 @@
 		if ( f == 0 ) {
 			itemcreate -1, ITEM_ID_GOLD_PIECE, -1, -1, int(listn(1, cnt))
 			income += int(listn(1, cnt))
+			yaca += limit(int(listn(1, cnt)), 1, 500000) / 1000
 		}
 		else {
 			income(1)++
 		}
 	loop
 	eye = 0
-	yaca += income / 1000 + customer / 10
+	yaca += customer / 10
 	if ( gdata(GDATA_MONTH) == 12 ) {
 		yaca *= 5
 	}

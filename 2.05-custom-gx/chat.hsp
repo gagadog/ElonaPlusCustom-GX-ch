@@ -1806,13 +1806,14 @@
 		if ( chatval == 3 ) {
 			chatMore lang("…本当に食べてしまったのか？", "Err... you really ate that thing? Oh well..."), lang("えー", "What!")
 			chatMore lang("食料以外のアイテムも、同様にxキーで操作することになる。例えば巻物や魔法書は「読む」のメニューから、杖は「振る」のメニューから使用できる。", "You can also use other items by pressing [x]. For example, if you want to read a book, press [x], hit [9] a few times to select the <Read> menu, then choose a book you want to read.")
+			chatMore lang("足元のアイテムはget…gキーで拾え、手持ちのアイテムはdrop…dキーで足元に落とすことができる。所持制限があるので、使用頻度の低いアイテムは持ち歩かない方がいいだろう。", "You can pick up items at your feet with pressing the [g]et, and drop items you're holding with [d]rop. There is a carrying limit, so it's best not to carry around items you don't use often.")
 			chatMore lang("次はzキーでの行動について説明しよう。", "Next, let me explain the behavior of the [z] key.")
 			gdata(GDATA_FLAG_TUTORIAL) = 2
 			goto *chat_unique
 		}
 		if ( chatval == 4 ) {
 			chatMore lang("（ロミアスはにやりと笑った。どうやら、この偽物の金塊は彼がいつの間にか埋めたらしい…）", "(Lomias grins. Looks like he buried it unnoticed.)")
-			chatMore lang("次は戦闘について教えるが、戦う前にまずアイテムを装備し、準備を整えなければならない。使い古しだが、君のために弓と矢を用意した。射撃武器のほとんどは、例えば銃なら弾丸のように、対応した矢・弾を装備する必要がある。", "Okay, I will now tell you how to fight. Before the combat starts, you need to equip weapons. Take my old bow and arrows and equip them.")
+			chatMore lang("次は戦闘について教えるが、戦う前にまずアイテムを装備し、準備を整えなければならない。使い古しだが、君のために弓と矢を用意した。射撃武器は手スロットにも装備できるが、遠隔攻撃をする場合は遠隔スロットに装備してくれ。また、対応した矢や弾を矢弾スロットに装備する必要がある。", "Okay, I will now tell you how to fight. Before the combat starts, you need to equip weapons. Take my old bow and arrows and equip them.")
 			flt
 			itemcreate -1, ITEM_ID_LONG_BOW, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			inv(INV_ITEM_STATUS, ci) = ITEM_STATUS_CURSED
@@ -4828,9 +4829,15 @@
 	}
 	if ( _switch_val == CREATURE_ID_REVLUS_THE_MAGE_GUILDMASTER | _switch_sw ) {
 		_switch_sw = 0
+		if ( cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER) < 50 ) {
+			cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER) = 50
+		}
 		if ( gdata(GDATA_FLAG_GUILD_MAGE) == 1 ) {
-			chatList 2, lang("挨拶する", "Let's Talk.")
-			chatList 1, lang("投資したい", "Need someone to invest in your guild?")
+			chatList 3, lang("挨拶する", "Let's Talk.")
+			if ( cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER) < 200 ) {
+				chatList 2, lang("【今月の一斉訓練】", "<Guild mass training>")
+			}
+			chatList 1, lang("50規模投資する(" + calcinvestvalueg() + strgold + ")", "Invest 50 (" + calcinvestvalueg() + strgold + ")")
 			chatList 0, lang("ギルドを脱退したい", "I want to leave your guild...")
 			buff = lang("…。", "...")
 			gosub *chat_select
@@ -4860,11 +4867,74 @@
 					goto *chat_end
 				}
 			}
-			if ( chatval == 1 ) {
-				chatMore lang("未実装！", "Under development!"), strbye
+			if ( chatval == 2 ) {
+				if ( cdata(CDATA_ROLE_SHOP_LEVEL, tc) == 0 ) {
+					cdata(CDATA_ROLE_SHOP_LEVEL, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12
+				}
+				if ( gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 < cdata(CDATA_ROLE_SHOP_LEVEL, tc) ) {
+					chatMore lang("次回の一斉訓練は、" + cnvdate(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 1) + "以降で計画していますよ。", "The next guild mass training is planned for after " + cnvdate(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 1) + "."), strbye
+				}
+				if ( gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 >= cdata(CDATA_ROLE_SHOP_LEVEL, tc) ) {
+					chatMore lang("おや、もうそんな時期ですか。ではさっそく一斉訓練を開始します。ギルドの規模に応じて潜在能力が回復するでしょう。", "Huh, it's that time of month again? Now, let's begin the guild mass training. Our potential will recover depending on the size of this guild."), strmore, 
+					cdata(CDATA_ROLE_SHOP_LEVEL, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 30 * 24
+					pote = limit(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER), 50, 200)
+					redraw 0
+					gosub *screen_draw
+					gosub *screen_fade
+					gsel BUFFER_BUF
+					pos 0, 0
+					picload exedir + "graphic\\face1" + devfile + ".bmp", 1
+					gsel BUFFER_SCREEN
+					repeat 245
+						if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+							continue
+						}
+						if ( cdata(CDATA_RELATION, cnt) < RELATION_DISLIKE ) {
+							continue
+						}
+						modgrowth cnt, SKILL_ATTR_STR, pote
+						modgrowth cnt, SKILL_ATTR_CON, pote
+						modgrowth cnt, SKILL_ATTR_DEX, pote
+						modgrowth cnt, SKILL_ATTR_PER, pote
+						modgrowth cnt, SKILL_ATTR_LER, pote
+						modgrowth cnt, SKILL_ATTR_WIL, pote
+						modgrowth cnt, SKILL_ATTR_MAG, pote
+						modgrowth cnt, SKILL_ATTR_CHA, pote
+						modgrowth cnt, SKILL_ATTR_SPD, pote
+					loop
+					snd SOUNDLIST_DING3
+				}
 				goto *chat_end
 			}
-			if ( chatval == 2 ) {
+			if ( chatval == 1 ) {
+				if ( cdata(CDATA_GOLD, CHARA_PLAYER) < calcinvestvalueg() ) {
+					snd SOUNDLIST_FAIL1
+					goto *chat_end
+				}
+				costexp = (limit(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER) + 50, 1, 250) * limit(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER) + 50, 1, 250) + 500) * 20
+				snd SOUNDLIST_PAYGOLD1
+				cdata(CDATA_GOLD, CHARA_PLAYER) -= calcinvestvalueg()
+				imp = sqrt(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER) + sdata(SKILL_NORMAL_INVESTING, CHARA_PLAYER) + 4)
+				modimp tc, (sqrt(imp + 4) + 1) * 20
+				cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER) += 50
+				skillexp SKILL_NORMAL_INVESTING, CHARA_PLAYER, costexp / 100
+				repeat 16 - 1, 1
+					if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+						continue
+					}
+					if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG, SKILL_SPACT_CHEER) \ 1000 + 1 ) {
+						continue
+					}
+					if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) == 0 ) {
+						continue
+					}
+					skillexp SKILL_NORMAL_INVESTING, cnt, costexp / 200
+				loop
+				txtef COLOR_PINK
+				txt lang("" + cdatan(CDATAN_NAME, tc) + "はあなたに大変感謝しているようだ！", cdatan(CDATAN_NAME, tc) + " seems very grateful to you!")
+				goto *chat_end
+			}
+			if ( chatval == 3 ) {
 				if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
 					chatMore lang("新しく入った方ですか。頑張ってください。", "One of the new arrivals? Do your best."), strbye
 					goto *chat_end
@@ -4915,9 +4985,15 @@
 	}
 	if ( _switch_val == CREATURE_ID_FRAY_THE_FIGHTER_GUILDMASTER | _switch_sw ) {
 		_switch_sw = 0
+		if ( cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER) < 50 ) {
+			cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER) = 50
+		}
 		if ( gdata(GDATA_FLAG_GUILD_FIGHTER) == 1 ) {
-			chatList 2, lang("挨拶する", "Let's Talk.")
-			chatList 1, lang("投資したい", "Need someone to invest in your guild?")
+			chatList 3, lang("挨拶する", "Let's Talk.")
+			if ( cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER) < 200 ) {
+				chatList 2, lang("【今月の一斉訓練】", "<Guild mass training>")
+			}
+			chatList 1, lang("50規模投資する(" + calcinvestvalueg() + strgold + ")", "Invest 50 (" + calcinvestvalueg() + strgold + ")")
 			chatList 0, lang("ギルドを脱退したい", "I want to leave your guild...")
 			buff = lang("…。", "...")
 			gosub *chat_select
@@ -4947,11 +5023,74 @@
 					goto *chat_end
 				}
 			}
-			if ( chatval == 1 ) {
-				chatMore lang("未実装！", "Under development!"), strbye
+			if ( chatval == 2 ) {
+				if ( cdata(CDATA_ROLE_SHOP_LEVEL, tc) == 0 ) {
+					cdata(CDATA_ROLE_SHOP_LEVEL, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12
+				}
+				if ( gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 < cdata(CDATA_ROLE_SHOP_LEVEL, tc) ) {
+					chatMore lang("次回の一斉訓練は、" + cnvdate(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 1) + "以降で計画していますよ。", "The next guild mass training is planned for after " + cnvdate(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 1) + "."), strbye
+				}
+				if ( gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 >= cdata(CDATA_ROLE_SHOP_LEVEL, tc) ) {
+					chatMore lang("おや、もうそんな時期ですか。ではさっそく一斉訓練を開始します。ギルドの規模に応じて潜在能力が回復するでしょう。", "Huh, it's that time of month again? Now, let's begin the guild mass training. Our potential will recover depending on the size of this guild."), strmore, 
+					cdata(CDATA_ROLE_SHOP_LEVEL, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 30 * 24
+					pote = limit(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER), 50, 200)
+					redraw 0
+					gosub *screen_draw
+					gosub *screen_fade
+					gsel BUFFER_BUF
+					pos 0, 0
+					picload exedir + "graphic\\face1" + devfile + ".bmp", 1
+					gsel BUFFER_SCREEN
+					repeat 245
+						if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+							continue
+						}
+						if ( cdata(CDATA_RELATION, cnt) < RELATION_DISLIKE ) {
+							continue
+						}
+						modgrowth cnt, SKILL_ATTR_STR, pote
+						modgrowth cnt, SKILL_ATTR_CON, pote
+						modgrowth cnt, SKILL_ATTR_DEX, pote
+						modgrowth cnt, SKILL_ATTR_PER, pote
+						modgrowth cnt, SKILL_ATTR_LER, pote
+						modgrowth cnt, SKILL_ATTR_WIL, pote
+						modgrowth cnt, SKILL_ATTR_MAG, pote
+						modgrowth cnt, SKILL_ATTR_CHA, pote
+						modgrowth cnt, SKILL_ATTR_SPD, pote
+					loop
+					snd SOUNDLIST_DING3
+				}
 				goto *chat_end
 			}
-			if ( chatval == 2 ) {
+			if ( chatval == 1 ) {
+				if ( cdata(CDATA_GOLD, CHARA_PLAYER) < calcinvestvalueg() ) {
+					snd SOUNDLIST_FAIL1
+					goto *chat_end
+				}
+				costexp = (limit(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER) + 50, 1, 250) * limit(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER) + 50, 1, 250) + 500) * 20
+				snd SOUNDLIST_PAYGOLD1
+				cdata(CDATA_GOLD, CHARA_PLAYER) -= calcinvestvalueg()
+				imp = sqrt(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER) + sdata(SKILL_NORMAL_INVESTING, CHARA_PLAYER) + 4)
+				modimp tc, (sqrt(imp + 4) + 1) * 20
+				cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER) += 50
+				skillexp SKILL_NORMAL_INVESTING, CHARA_PLAYER, costexp / 100
+				repeat 16 - 1, 1
+					if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+						continue
+					}
+					if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG, SKILL_SPACT_CHEER) \ 1000 + 1 ) {
+						continue
+					}
+					if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) == 0 ) {
+						continue
+					}
+					skillexp SKILL_NORMAL_INVESTING, cnt, costexp / 200
+				loop
+				txtef COLOR_PINK
+				txt lang("" + cdatan(CDATAN_NAME, tc) + "はあなたに大変感謝しているようだ！", cdatan(CDATAN_NAME, tc) + " seems very grateful to you!")
+				goto *chat_end
+			}
+			if ( chatval == 3 ) {
 				if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
 					chatMore lang("新人か。精進するように。", "A new recruit. Diligence is the way."), strbye
 					goto *chat_end
@@ -5002,9 +5141,15 @@
 	}
 	if ( _switch_val == CREATURE_ID_SIN_THE_THIEF_GUILDMASTER | _switch_sw ) {
 		_switch_sw = 0
+		if ( cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER) < 50 ) {
+			cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER) = 50
+		}
 		if ( gdata(GDATA_FLAG_GUILD_THIEF) == 1 ) {
-			chatList 2, lang("挨拶する", "Let's Talk.")
-			chatList 1, lang("投資したい", "Need someone to invest in your guild?")
+			chatList 3, lang("挨拶する", "Let's Talk.")
+			if ( cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER) < 200 ) {
+				chatList 2, lang("【今月の一斉訓練】", "<Guild mass training>")
+			}
+			chatList 1, lang("50規模投資する(" + calcinvestvalueg() + strgold + ")", "Invest 50 (" + calcinvestvalueg() + strgold + ")")
 			chatList 0, lang("ギルドを脱退したい", "I want to leave your guild...")
 			buff = lang("…。", "...")
 			gosub *chat_select
@@ -5034,11 +5179,74 @@
 					goto *chat_end
 				}
 			}
-			if ( chatval == 1 ) {
-				chatMore lang("未実装！", "Under development!"), strbye
+			if ( chatval == 2 ) {
+				if ( cdata(CDATA_ROLE_SHOP_LEVEL, tc) == 0 ) {
+					cdata(CDATA_ROLE_SHOP_LEVEL, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12
+				}
+				if ( gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 < cdata(CDATA_ROLE_SHOP_LEVEL, tc) ) {
+					chatMore lang("次回の一斉訓練は、" + cnvdate(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 1) + "以降で計画していますよ。", "The next guild mass training is planned for after " + cnvdate(cdata(CDATA_ROLE_SHOP_LEVEL, tc), 1) + "."), strbye
+				}
+				if ( gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 >= cdata(CDATA_ROLE_SHOP_LEVEL, tc) ) {
+					chatMore lang("おや、もうそんな時期ですか。ではさっそく一斉訓練を開始します。ギルドの規模に応じて潜在能力が回復するでしょう。", "Huh, it's that time of month again? Now, let's begin the guild mass training. Our potential will recover depending on the size of this guild."), strmore, 
+					cdata(CDATA_ROLE_SHOP_LEVEL, tc) = gdata(GDATA_HOUR) + gdata(GDATA_DAY) * 24 + gdata(GDATA_MONTH) * 24 * 30 + gdata(GDATA_YEAR) * 24 * 30 * 12 + 30 * 24
+					pote = limit(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER), 50, 200)
+					redraw 0
+					gosub *screen_draw
+					gosub *screen_fade
+					gsel BUFFER_BUF
+					pos 0, 0
+					picload exedir + "graphic\\face1" + devfile + ".bmp", 1
+					gsel BUFFER_SCREEN
+					repeat 245
+						if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+							continue
+						}
+						if ( cdata(CDATA_RELATION, cnt) < RELATION_DISLIKE ) {
+							continue
+						}
+						modgrowth cnt, SKILL_ATTR_STR, pote
+						modgrowth cnt, SKILL_ATTR_CON, pote
+						modgrowth cnt, SKILL_ATTR_DEX, pote
+						modgrowth cnt, SKILL_ATTR_PER, pote
+						modgrowth cnt, SKILL_ATTR_LER, pote
+						modgrowth cnt, SKILL_ATTR_WIL, pote
+						modgrowth cnt, SKILL_ATTR_MAG, pote
+						modgrowth cnt, SKILL_ATTR_CHA, pote
+						modgrowth cnt, SKILL_ATTR_SPD, pote
+					loop
+					snd SOUNDLIST_DING3
+				}
 				goto *chat_end
 			}
-			if ( chatval == 2 ) {
+			if ( chatval == 1 ) {
+				if ( cdata(CDATA_GOLD, CHARA_PLAYER) < calcinvestvalueg() ) {
+					snd SOUNDLIST_FAIL1
+					goto *chat_end
+				}
+				costexp = (limit(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER) + 50, 1, 250) * limit(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER) + 50, 1, 250) + 500) * 20
+				snd SOUNDLIST_PAYGOLD1
+				cdata(CDATA_GOLD, CHARA_PLAYER) -= calcinvestvalueg()
+				imp = sqrt(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER) + sdata(SKILL_NORMAL_INVESTING, CHARA_PLAYER) + 4)
+				modimp tc, (sqrt(imp + 4) + 1) * 20
+				cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER) += 50
+				skillexp SKILL_NORMAL_INVESTING, CHARA_PLAYER, costexp / 100
+				repeat 16 - 1, 1
+					if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
+						continue
+					}
+					if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG, SKILL_SPACT_CHEER) \ 1000 + 1 ) {
+						continue
+					}
+					if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) == 0 ) {
+						continue
+					}
+					skillexp SKILL_NORMAL_INVESTING, cnt, costexp / 200
+				loop
+				txtef COLOR_PINK
+				txt lang("" + cdatan(CDATAN_NAME, tc) + "はあなたに大変感謝しているようだ！", cdatan(CDATAN_NAME, tc) + " seems very grateful to you!")
+				goto *chat_end
+			}
+			if ( chatval == 3 ) {
 				if ( gdata(GDATA_RANK_GUILD) > 8000 ) {
 					chatMore lang("貴様が新入りか。ヘマはするなよ。", "Yer still a newbie. Don't screw up."), strbye
 					goto *chat_end
@@ -5155,7 +5363,7 @@
 			chatList 2, lang("ノルマを報告する", "About my task.")
 		}
 		chatList 0, strbye
-		buff = lang("ようこそ魔術士ギルドへ、" + ranktitle(8) + "の" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…どうぞ中にお入り下さい。", "Welcome to the Mages Guild, " + ranktitle(8) + " " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "... Please come in.")
+		buff = lang("ようこそ魔術士ギルドへ、" + ranktitle(8) + "の" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…毎月の一斉訓練には、なるべく顔を出すように。ギルドマスターも忙しくて忘れがちなので、気づいたら声をかけてあげてください。", "Welcome to the Mages Guild, " + ranktitle(8) + " " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "... Please try to attend the monthly mass training as much as possible. Our guild master is also busy and tends to forget, so please call out to him if you have the time.")
 		gosub *chat_select
 		if ( chatval == 1 ) {
 			gdata(GDATA_FLAG_SUB_MAGE_1) = 1
@@ -5170,11 +5378,11 @@
 				goto *chat_unique
 			}
 			gdata(GDATA_FLAG_SUB_MAGE_1) = 0
-			flt 51 - gdata(GDATA_RANK_GUILD) / 200
+			flt 51 - gdata(GDATA_RANK_GUILD) / 200 + limit(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER), 50, 200) / 10
 			flttypemajor = FILTER_ITEM_SPELLBOOK
 			itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			flt
-			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 1000
+			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 500 + limit(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER), 50, 200) * 10
 			flt
 			itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(4 - gdata(GDATA_RANK_GUILD) / 2500, 1, 4)
 			txt_questcompleted
@@ -5253,7 +5461,7 @@
 			chatList 2, lang("ノルマを報告する", "About my task.")
 		}
 		chatList 0, strbye
-		buff = lang("ようこそ盗賊ギルドへ、" + ranktitle(8) + "の" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…どうぞ中にお入り下さい。", "Welcome to the Thieves Guild, " + ranktitle(8) + " " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "... Please come in.")
+		buff = lang("ようこそ盗賊ギルドへ、" + ranktitle(8) + "の" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…毎月の一斉訓練には、なるべく顔を出すように。ギルドマスターも忙しくて忘れがちなので、気づいたら声をかけてあげてください。", "Welcome to the Thieves Guild, " + ranktitle(8) + " " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "... Please try to attend the monthly mass training as much as possible. Our guild master is also busy and tends to forget, so please call out to him if you have the time.")
 		gosub *chat_select
 		if ( chatval == 1 ) {
 			gdata(GDATA_FLAG_SUB_THIEF_1) = 1
@@ -5268,13 +5476,13 @@
 				goto *chat_unique
 			}
 			gdata(GDATA_FLAG_SUB_THIEF_1) = 0
-			flt 51 - gdata(GDATA_RANK_GUILD) / 200
+			flt 51 - gdata(GDATA_RANK_GUILD) / 200 + limit(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER), 50, 200) / 10
 			flttypemajor = FILTER_FURNITURE
 			itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			flt
-			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 1000
+			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 500 + limit(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER), 50, 200) * 10
 			flt
-			itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(3 - gdata(GDATA_RANK_GUILD) / 3000, 1, 3)
+			itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(4 - gdata(GDATA_RANK_GUILD) / 2500, 1, 4)
 			txt_questcompleted
 			txtmore
 			txt_questitem
@@ -5354,7 +5562,7 @@
 			chatList 2, lang("ノルマを報告する", "About my task.")
 		}
 		chatList 0, strbye
-		buff = lang("ようこそ戦士ギルドへ、" + ranktitle(8) + "の" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…どうぞ中にお入り下さい。", "Welcome to the Fighters Guild, " + ranktitle(8) + " " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "... Please come in.")
+		buff = lang("ようこそ戦士ギルドへ、" + ranktitle(8) + "の" + cdatan(CDATAN_NAME, CHARA_PLAYER) + "…毎月の一斉訓練には、なるべく顔を出すように。ギルドマスターも忙しくて忘れがちなので、気づいたら声をかけてあげてください。", "Welcome to the Fighters Guild, " + ranktitle(8) + " " + cdatan(CDATAN_NAME, CHARA_PLAYER) + "... Please try to attend the monthly mass training as much as possible. Our guild master is also busy and tends to forget, so please call out to her if you have the time.")
 		gosub *chat_select
 		if ( chatval == 1 ) {
 			gdata(GDATA_FLAG_GUILD_FIGHTER_NORMA) = 1
@@ -5371,11 +5579,11 @@
 				goto *chat_unique
 			}
 			gdata(GDATA_FLAG_SUB_FIGHTER_1) = 0
-			flt 51 - gdata(GDATA_RANK_GUILD) / 200, calcfixlv(FIX_QUALITY_GREAT)
+			flt 51 - gdata(GDATA_RANK_GUILD) / 200 + limit(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER), 50, 200) / 10, calcfixlv(FIX_QUALITY_GREAT)
 			flttypemajor = FILTER_WEAPON
 			itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			flt
-			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 1000
+			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 500 + limit(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER), 50, 200) * 10
 			flt
 			itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(4 - gdata(GDATA_RANK_GUILD) / 2500, 1, 4)
 			txt_questcompleted
@@ -6733,9 +6941,33 @@
 			}
 			if ( mdata(MDATA_CITY_COMPLAINTS) > 0 ) {
 				chatList 0, lang("管理コマンド", "I want to run the town management.")
+				chatList 3, lang("管理代行者の人気度は？", "How popular is my management?")
 			}
 			buff = lang("うああー。施設の点検めんどくせー。適当にやっとけばいいかー。", "Man, the inspection of the underground passage is such a pain. Maybe the bare minimum will be enough."), strbye
 			gosub *chat_select
+			if ( chatval == 3 ) {
+				imp = 0
+				repeat 245
+					if ( cnt < 16 ) {
+						continue
+					}
+					if ( cdata(CDATA_ROLE, cnt) == ROLE_NONE ) {
+						continue
+					}
+					if ( cbit(CHARA_BIT_NECRO, cnt) == TRUE ) {
+						continue
+					}
+					if ( cdata(CDATA_ROLE, cnt) == ROLE_ADVENTURER ) {
+						continue
+					}
+					if ( cbit(CHARA_BIT_GUARD_TEMP, cnt) == TRUE ) {
+						continue
+					}
+					imp += cdata(CDATA_IMPRESSION, cnt)
+				loop
+				chatMore lang("今のところ、人気度は" + imp + "ってところだな。上げたいなら、皆に媚びていくといいぞ！", "Right now, your popularity is about " + imp + ". If you want keep increase it, you should try your hardest to please everyone!"), strbye
+				goto *chat_end
+			}
 			if ( chatval == 2 ) {
 				chatMore lang("へへっ…。", "Hum..."), strbye
 				goto *chat_end
@@ -8952,11 +9184,11 @@
 				goto *chat_unique
 			}
 			gdata(GDATA_FLAG_SUB_MAGE_1) = 0
-			flt 51 - gdata(GDATA_RANK_GUILD) / 200
+			flt 51 - gdata(GDATA_RANK_GUILD) / 200 + limit(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER), 50, 200) / 10
 			flttypemajor = FILTER_ITEM_SPELLBOOK
 			itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			flt
-			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 1000
+			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 500 + limit(cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER), 50, 200) * 10
 			flt
 			itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(4 - gdata(GDATA_RANK_GUILD) / 2500, 1, 4)
 			txt_questcompleted
@@ -8995,13 +9227,13 @@
 				goto *chat_unique
 			}
 			gdata(GDATA_FLAG_SUB_THIEF_1) = 0
-			flt 51 - gdata(GDATA_RANK_GUILD) / 200
+			flt 51 - gdata(GDATA_RANK_GUILD) / 200 + limit(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER), 50, 200) / 10
 			flttypemajor = FILTER_FURNITURE
 			itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			flt
-			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 1000
+			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 500 + limit(cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER), 50, 200) * 10
 			flt
-			itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(3 - gdata(GDATA_RANK_GUILD) / 3000, 1, 3)
+			itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(4 - gdata(GDATA_RANK_GUILD) / 2500, 1, 4)
 			txt_questcompleted
 			txtmore
 			txt_questitem
@@ -9040,11 +9272,11 @@
 				goto *chat_unique
 			}
 			gdata(GDATA_FLAG_SUB_FIGHTER_1) = 0
-			flt 51 - gdata(GDATA_RANK_GUILD) / 200, calcfixlv(FIX_QUALITY_GREAT)
+			flt 51 - gdata(GDATA_RANK_GUILD) / 200 + limit(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER), 50, 200) / 10, calcfixlv(FIX_QUALITY_GREAT)
 			flttypemajor = FILTER_WEAPON
 			itemcreate -1, ITEM_ID_DUMMY, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 0
 			flt
-			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 1000
+			itemcreate -1, ITEM_ID_GOLD_PIECE, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), 10000 - gdata(GDATA_RANK_GUILD) + 500 + limit(cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER), 50, 200) * 10
 			flt
 			itemcreate -1, ITEM_ID_PLATINUM_COIN, cdata(CDATA_X, CHARA_PLAYER), cdata(CDATA_Y, CHARA_PLAYER), limit(4 - gdata(GDATA_RANK_GUILD) / 2500, 1, 4)
 			txt_questcompleted
@@ -13627,7 +13859,7 @@
 	}
 	if ( _switch_val == CREATURE_ID_AJETALIO_THE_SEMINAR_LECTURER | _switch_sw ) {
 		_switch_sw = 0
-		if ( gdata(STARTING_GDATA_FLAG + 330) == 100 ) {
+		if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) == 100 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 				chatMore lang("生活講座担当、アジタリオ・ラーンクリスです。長いのでアジラーって呼んでください。みなさん、これからよろしく。", "Daily life course director, Ajetalio Lanclis. Please, just call me Ajira. Everyone, best regards from now.")
 				chatMore lang("まずは冒険の基本中の基本、食料の調達方法について話しますね。", "First of all, we will talk about the basics of adventure and how to procure food.")
@@ -13657,7 +13889,7 @@
 				chatMore lang("店を構える際には、店主を任せるために交渉スキルを持つ仲間も用意しましょう。店物件は１店舗でも充分なので、早めに欲しい物件ですね。専門店を複数並べて収益を増加させる手もありますが、それは余裕ができてからでいいでしょう。", "When setting up a store, be sure to assign a shopkeeper with good Charisma and Negotiation. Even one store is enough, so it's a property you want early. Eventually, if you feel like it, you could get even higher profits with multiple specialty shops.")
 				chatMore lang("それと並行して、サブ収入として生産系のスキルや採掘、釣り、演奏などから好みのものを冒険の合間に上達させていきましょう。こだわりがなければ全部やったほうが効率がいいくらいです。迷宮でアイテムを集めるほどの戦力や気力が無いような時でも、これらの手段は使えますからね。", "Along with that, work on crafting skills: Mining, Fishing, Performer, etc. Do what you enjoy doing and sell the results. Even if you aren't strong enough to gather items in a dungeon, you can still get by like this.")
 			}
-			gdata(STARTING_GDATA_FLAG + 330) = 101
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE) = 101
 		}
 		if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 			chatList 0, lang("食べちゃダメなものは？", "What things shouldn't I eat?")
@@ -13666,7 +13898,8 @@
 			chatList 3, lang("アジラーの好きな食べ物は？", "What's your favorite food?")
 		}
 		if ( gdata(STARTING_GDATA_FLAG + 329) == 2 ) {
-			chatList 4, lang("どういう依頼を受ければいいの？", "Which quests should I undertake?")
+			// chatList 4, lang("どういう依頼を受ければいいの？", "Which quests should I undertake?")
+			chatList 4, lang("ネフィアにはどんな種類があるの？", "Are there different types of Nefia?")
 			chatList 5, lang("カルマが減るとどうなるの？", "What happens when my karma gets low?")
 			chatList 6, lang("発言力って？", "What is authority?")
 			chatList 7, lang("街が大変なことになったら？", "What happens when all hell breaks loose inside towns?")
@@ -13690,35 +13923,39 @@
 			chatMore lang("あと、腐ったものを食べると能力が永続的に下がります。腐っていても消化できるようになる装備もありますが、クーラーボックスや四次元にしまって腐らないように対策しましょう。", "Also, if you eat rotten food your attributes will decrease. Even though there's equipment that helps with digesting rotten food, it's better to put your food inside a cooler box or a 4 dimensional pocket so it doesn't rot to begin with.")
 			chatMore lang("ただし、特定のアンデッドの死体は見た目上腐っていなくても腐っているので気をつけて。骨のやつなんかは大丈夫ですが、動く死体系のやつらは腐っていますよ。", "However, some body parts of undead corpses that may not look rotten can still make you sick due to the nature of the undead, so be careful. Bones are fine though, but the rest of the corpse will be rotten.")
 			chatMore lang("他にはエイリアンなどの寄生生物の死体を食べると寄生、輝くハリねずみやウィスプなんかはエーテル病を進行させます。発狂したり毒になる死体もあります。怖いですか？でもプチ系や馬系みたいに能力に経験値が入るものや、サソリや妖精みたいに属性耐性を得られる特殊なものもあるので、対策を用意したうえで色々食べて覚えていきましょう。", "Eating alien or parasitic corpses will give you parasites and eating shining hedgehogs or wisps will give you Ether disease. There's also corpses that will make you go mad or poison you. Are you scared yet? However eating putits, horses, or similar things can increase your abilities and give experience points, and eating scorpions, fairies or similar things can increase your elemental resistances. Remember all of this and plan ahead your meals.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 1 ) {
 			chatMore lang("死にますね。お腹の減っていることに気づかず歩き続けて死ぬ冒険者は多いんですよ。そんな馬鹿なことはないだろうと思うかもしれませんが、結構多いんです。餓死中になる前に、何か胃に入れておきましょう。特に戦闘中は食事するのが困難になるので、腹ごしらえを出来る時にしておいて下さい。", "You gotta eat or you'll die. There's a lot of adventurers that don't notice that they get hungry and starve to death during their travels. You'd think such foolishness wouldn't exist, but apparently it's quite common. If you're about to die from starvation, just eat something. Because it's difficult to eat during combat, try to eat whenever you're able to.")
 			chatMore lang("ああ、仲間は主人から必要最低限の生命エネルギーを分けられているので、吐きすぎない限り餓死しませんよ。と言っても聴診器で診た時に青緑色なら、お腹が空いている証拠です。食料に結構余裕がある場合は与えたほうがいいでしょう。食べさせた方が強くなりますよ。", "Oh, and allies will share enough life energy with their master to keep them alive, and as long as they don't vomit too much they can't die from hunger. If you do a checkup with a stethoscope and the result is blueish-green, then the belly is empty. If it's possible, you should eat high quality food. Eating good food strengthens your body.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 2 ) {
 			chatMore lang("料理スキルがあるなら、調理器具を使うことで料理ができます。料理すると、腐るまでのタイムリミットと心身を鍛える効果が大幅に伸びるので、できるようになっておきたいですね。腐ったもので料理の練習をしてもいいでしょう。調理器具によって、どこまでの料理を作れるか限界があるので一度道具説明欄を見て下さい。", "If you have the Cooking skill, you can cook using cooking utensils. Cooked food decays much more slowly and strengthens you more, so it's a useful skill. Depending on the cooking utensils, there is a limit to how good of a dish you can make, so use [X] to examine them.")
 			chatMore lang("料理とは少し違うけれど、ミキサーを使えば野菜や果物をジュースにすることもできますよ。お腹はあまり膨れませんが、その分多く栄養を摂取できます。呪われていたり腐っている物でも無害化して有効活用できます。", "It's a little different from cooking, but you can also turn fruits and vegetables into juice with a juice mixer. Although they aren't particularly filling, they're still nutritious. Even cursed or rotten things can be made into juice without any problems.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 3 ) {
 			chatMore lang("えぇぇ…僕の好物ですか？そ、そうですね。ハーブでしょうか。腐らないし軽いし、心身も鍛えられるんですよ。料理に合成すると最高ですね。", "My favorite kind of food? That'd be herbs. They're light, they don't rot, and they strengthen your mind and body. They're even more amazing when combined with other food.")
 		}
 		if ( chatval == 4 ) {
-			chatMore lang("最初は調達依頼がオススメですね。必ず依頼物を確保してから受けること。街から街へ難なく移動できる食料・装備が整ったら、配達依頼もやっていきましょう。失敗するとカルマが減るので、移動日数をちゃんと計算に入れて受けましょう。", "At first, it's recommended to fulfill requests for items. Be sure to have the requested item handy. Once you have food and equipment and can travel between towns without difficulty, start doing delivery requests. If you fail, you'll lose karma, so check the deadline carefully.")
-			chatMore lang("その辺の野外にいる野生動物を軽くあしらえるようになったら、収穫依頼もいいですね。作物を引き抜く際にちょっと身体も鍛えられます。ノルマの数倍のスコアを出せば報酬が増えたりブロンズ硬貨ももらえたりするんですけど、最初は難しいでしょうね。収穫依頼もこなせるようになったら、討伐依頼や短距離の護衛依頼に手を出してもいいかもしれません。", "If you can handle wild animals, you can also do harvest requests. Picking crops is a good way to get stronger. If you score several times the quota you'll get more rewards and bronze coins, but at first it'll be difficult. If you're strong enough, you might want to take requests for killing monsters or escort requests for nearby towns.")
-			chatMore lang("芸人依頼は演奏スキルを最低でも５くらいにしてから挑みましょう。レベルの高い人に聴かせると殺されかねないので、練習でも本番でも聴かせる相手は選んで下さい。", "Start doing party requests after getting your perform skill to at least about 5. If you perform near high-level people, you may be killed, so please be careful who you perform near to, both when practicing and during a request.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			chatMore lang("大別して、地殻変動で出たり消えたりするランダムネフィアと、地殻変動で消えない固定ネフィアがあります。", "There are two types in general - random Nefia that appear and disappear with tectonic diastrophisms, and unique ones that stay static.")
+			chatMore lang("ランダムネフィアは３層で構成され、最下層のボスを倒せば攻略完了となり宝が手に入ります。ボスを倒す前に最下層から逃げると、失敗となり攻略不能になります。あと、ランダムネフィアの表層以外の階層には、金貨が集められている箇所が必ず存在します。なんだかネフィアが冒険者を誘っているみたいで不気味ですが…ありがたく拾っておきましょう。", "Random Nefia have 3 floors and a boss on the bottom floor that drops treasure when defeated. If you escaped from the last floor before defeating the boss, you'll fail to clear the Nefia and won't be able to try it again. Random Nefia also have gold pieces scattered throughout them - but never on their first floor. They're like bait to attract adventurers... creepy if you ask me, but hey it's free money.")
+			chatMore lang("固定ネフィアは位置も固定されており動きません。外見や名前が固有のものが多いので、ランダムネフィアとはそこで判別してください。２層程度の浅いものから４０層以上あるものまで様々です。独自のルールや環境を持っている固定ネフィアもあります。", "Unique Nefia will always be on the same spot. Most of them also have a unique appearance that allows you to tell them apart from random Nefia. Inside, they can range anywhere from 2 to 40 or more floors. Some of them even impose special conditions or have unique environments.")
+			chatMore lang("ランダムネフィアは元となった遺跡に応じて８タイプあります。それぞれ住み着いている種族が違うので、目当ての魔物を探す時は対応したタイプのネフィアを探すといいでしょう。固定ネフィアは基本的に種族のごった煮ですが、そうでないものもあったりと一概には言えませんね。", "Random Nefia can be classified into 8 types, depending on the ruins that they are based on. Nefia type dictates the races of monsters that inhabit it, so if you're searching for certain types of monsters, you can narrow down the Nefia you need to search. In general, unique Nefia are inhabited by every monster race, but there are some exceptions.")
+			; chatMore lang("最初は調達依頼がオススメですね。必ず依頼物を確保してから受けること。街から街へ難なく移動できる食料・装備が整ったら、配達依頼もやっていきましょう。失敗するとカルマが減るので、移動日数をちゃんと計算に入れて受けましょう。", "At first, it's recommended to fulfill requests for items. Be sure to have the requested item handy. Once you have food and equipment and can travel between towns without difficulty, start doing delivery requests. If you fail, you'll lose karma, so check the deadline carefully.")
+			; chatMore lang("その辺の野外にいる野生動物を軽くあしらえるようになったら、収穫依頼もいいですね。作物を引き抜く際にちょっと身体も鍛えられます。ノルマの数倍のスコアを出せば報酬が増えたりブロンズ硬貨ももらえたりするんですけど、最初は難しいでしょうね。収穫依頼もこなせるようになったら、討伐依頼や短距離の護衛依頼に手を出してもいいかもしれません。", "If you can handle wild animals, you can also do harvest requests. Picking crops is a good way to get stronger. If you score several times the quota you'll get more rewards and bronze coins, but at first it'll be difficult. If you're strong enough, you might want to take requests for killing monsters or escort requests for nearby towns.")
+			; chatMore lang("芸人依頼は演奏スキルを最低でも５くらいにしてから挑みましょう。レベルの高い人に聴かせると殺されかねないので、練習でも本番でも聴かせる相手は選んで下さい。", "Start doing party requests after getting your perform skill to at least about 5. If you perform near high-level people, you may be killed, so please be careful who you perform near to, both when practicing and during a request.")
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 5 ) {
 			chatMore lang("カルマが−３１まで下がると、犯罪者として指名手配されます。街中のガードが一斉に殺しに来て、店の人も物を売ってくれなくなります。ガードを一蹴できる強さと、変装手段を確保するまではカルマを下げすぎないよう慎重に行動してください。", "If your karma is -31 or lower, you will be considered a criminal. Guards in towns will attack you and shopkeepers will refuse to do business with you. Be careful not to let your karma drop too low, unless you're strong enough to defeat guards and have a way to disguise yourself.")
 			chatMore lang("もし、思いがけず犯罪者になってしまったら。このゼミから南西にある、ダルフィという街を拠点にして依頼などでカルマを上げてください。ダルフィにはガードがおらず、犯罪者でも店も使えますからね。", "If you accidentally become a criminal, raise your karma by taking requests in the city of Derphy, which is southwest of this seminar. There are no guards in Derphy, and the shopkeepers will still do business with you.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 6 ) {
 			chatMore lang("発言力は街への貢献度の証。そこの管理者や長に話しかけることで、発言力を使って街の管理代行を行うことができます。…と言ってもまだできたばかりの制度で、やれることは少ないんですけどね。現段階では、依頼のついでで貯まっていくものだと認識してください。", "Authority is a proof of the degree of contribution to the city. By talking to the manager or the chief there, you can use authority to manage the city. ...Although, to be honest, there's very little you can do with it at the present stage. Perhaps in the future some use will be added, but for now it's mostly just something that accumulates when completing requests.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 7 ) {
 			chatMore lang("街が大火事になったり、モンスターが湧いて虐殺が始まることがよくあります。よくないことだけど、よくあることなんです。…ごほん。火の消し方とモンスターの出現を止める方法を教えておきましょう。", "Fire blazes through the city, monsters rampage, complete genocide... Terrible. Also distressingly commonplace. Let me tell you how to put out fires and stop monsters from appearing.")
@@ -13726,52 +13963,52 @@
 			chatMore lang("続いてモンスターが湧く場合。井戸を飲んだ時に出てきたものは、倒してしまえば終わりです。しかしモンスターを無限に召喚する装備を付けた冒険者が徘徊していることがあります。これは、犯人を見つけてその装備を没収しましょう。", "If monsters appear when you drink from a well, you can just kill them. If they show up at other times, there might be a nearby adventurer wearing equipment that summons monsters. Track the adventurer down and trade for or pickpocket the equipment.")
 			chatMore lang("エイリアンなどの寄生生物が腹から出てくることもあります。腹にいる間なら毒や染料、硫酸を飲むことで完全駆除できますよ。寄生されている人には渡せば素直に飲んでくれます。むしろ飲ませないと宿主が生きている限り無限に産まれてくるんです。", "Parasites like aliens can infest people. They can be removed by drinking poison, dye, or sulfuric acid. If you give one of those to an infested person, they'll drink it. If you don't, they'll spawn monsters forever, so be sure to cure everyone who's infested.")
 			chatMore lang("寄生生物がすでに産まれすぎていたり、モンスターがモンスターを召喚したり、分裂して増殖しているケースもありますね。相手が倒せる強さなら、壁生成で囲って各個撃破しましょう。倒せない場合、街から脱出してください。５日ほどして様子を見に行くと、いなくなっているはずです。もし少し残っていたら、また日を改めましょう。", "Sometimes parasitic organisms or monsters that summon more monsters will overrun a town. If you can kill them, try using spells or rods of Wall Creation to isolate them and defeat them one by one. If not, just leave and wait about 5 days, and things should be back to normal when you return.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 8 ) {
 			chatMore lang("違う神の祭壇に捧げものをすることで、その祭壇を乗っ取って上書きすることができます。何も考えていないと、次に信仰したい神の祭壇が無くなることもあるでしょう。神の祭壇は特定の場所に置いてある分か、ネフィアでごく稀に生成されるものしかありません。後者が目当ての神のものである確率は単純に考えて八分の一です。代わりを確保していない状態で無計画に乗っ取るのは止めておきましょう。", "If you sacrifice to your god at the altar of a different god, your god can claim the altar. This gives extra piety, but be careful, or you might lose access to a god! You'd have to spend ages looking through Nefia to find an altar to them later. Just don't mess with the altars at the Truce Ground, alright?")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 9 ) {
 			chatMore lang("信仰スキルは、夢を通じて神の偉大さを感じることで受動的に上昇します。また、信仰スキル１０以上の時にレベルアップすれば、広域技能の説法を習得できます。説法で聴衆を満足させることができれば、信仰スキルを能動的に上昇させられますよ。", "Faith is trained passively by meeting saints in your dreams. Also, if you have a Faith of 10 or higher, you can master the art of preaching. If you can preach successfully to an audience, you can actively train your Faith skill.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 10 ) {
 			chatMore lang("最初は、捧げものが簡単で生存能力を強化してくれるオパートスやジュア、生計を助けてくれるヤカテクトがいいでしょうね。アイテムを大人買いできる資金ができてきたらマニやルルウィ、イツパロトルも簡単です。エヘカトルは釣りができるようになってから、クミロミは農業ができるようになってからが無難です。", "At first, it'd be nice to worship Opatos or Jure, who are easy to gain piety with and enhance your survivability, and Yacatect to help make money. Mani, Lulwy, and Itzpalt are also easy when you can afford to buy items to offer to them. Ehekatl needs Fishing, and Kumiromi needs Gardening and a farm.")
 			chatMore lang("多くの冒険者は、神々を何柱か信仰してご褒美をもらった後に最終信仰を決めていますね。全ての神を信仰コンプリートする者も少なくありません。神々は能力も性格も個性的なので、最終的には自分のスタイルに合っている神を選ぶといいでしょう。もちろん、面白さとか可愛さとかで決めてもいいんですけどね。", "Many adventurers collect rewards from all eight gods before deciding who to truly believe in. Gods have individual personalities, so you might want to stay with a god that fits your personality. Or you can just go with whatever sounds fun.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 11 ) {
 			chatMore lang("…これはファッションです。腐って変色しているわけではないのです。", "...This is fashion. It is not rotten and discolored.")
 		}
 		if ( chatval == 12 ) {
 			chatMore lang("店以外の物件では畑、牧場がいいでしょう。前者は栽培スキル、後者は解剖学スキルが必要ですが、いいお小遣いになりますよ。特に畑は、充分な栽培スキルがあればハーブも増産できますしね。", "After the shop, it'd be nice to have farms and ranches. The former requires Gardening, while the latter requires Anatomy, but both are worthwhile. Especially farms, since you can grow herbs with enough Gardening.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 13 ) {
 			chatMore lang("交易には、各地の交易店でのみ売れる交易品が必要です。交易品は旅糧以外の（荷車）アイテムのことで、荷車に積まれます。街ごとに安いもの高いものが違うので、荷車の積載限界まで積んで別の街まで運び、差額を利用して稼ぐことになります。交易品を工具で自作したり、盗賊団から強奪すれば効率が上がります。", "Trade uses cargo items, which can only be sold to traders in towns and are carried in your cart like traveler's food. Each city has a type of cargo that's cheaper there, so you can fill your cart with it and sell it for a profit in another city. You can also craft cargo yourself, or defeat bandit groups and take their cargo.")
 			chatMore lang("ただし、「交易だけ」で大儲けするのは大変です。生活費分くらいは余裕で稼げますが、基本は街から街へ移動するついでに併用して行うものですよ。なお、他所からの交易品を売却すると、額に応じて街の経済が活性化し、一時的に他店の品物数も増えます。そちら目当てで交易するのもいいでしょう。", "Still, it's hard to make a living solely through trade. It's generally more of a bit of extra profit for adventurers who'd be travelling between towns anyway. Selling cargo from distant places also boosts the economy of a town, so the local stores will have more things for sale.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 14 ) {
 			chatMore lang("所持金に余裕があるなら、地面に落ちている金貨は拾わずに仲間に拾わせるといいでしょう。勝手に訓練に行ってくれるようになります。…これは育成講座の分野ですかね？", "If you have plenty of money, when you find gold coins lying around, let your allies pick them up instead. When you're in a city, they'll spend the money on training to keep their skills sharp.")
 			chatMore lang("後は、装備を強化して性能を底上げしていきましょう。＋６までは対応する巻物で強化できますが、武具店で＋１０まで強化できます。現行でいい感じの防具などは、ケチらずに強化しておくと後で仲間のお下がりとして重宝しますよ。また、装備している物の平均＋値は力の解放…ゲージ技の威力にも影響します。平均＋１０でダメージが５倍以上まで伸びるので、憶えておきましょう。", "It's also vitally important to enhance your equipment. Even if you get new gear later, you can give your old things to an ally. Scrolls can enhance gear up to +6, but a blacksmith can enhance gear up to +10. Also, the average enhancement level of your gear determines the power of Gauge Release attacks. Remember, a +10 weapon is at least five times stronger, and each + on everything else you have equipped makes you more durable.")
 			chatMore lang("…っと。これは道具講座の分野ですね。つまり、お金は生計を立てるだけでなく、様々な戦力強化にも絡んでくる材料なんです。惜しまずにちゃんと使っていきましょう。先に安定した収入基盤さえ作っておけば、また稼げるんですから。", "Money isn't just important for survival, but also for getting stronger. The sooner you get a steady source of income, the better. Gotta spend money to make money, y'know.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 15 ) {
 			chatMore lang("お金があり余ってきたら、よく使う店に投資しましょう。自宅に招いてる店に投資するようにすれば、特定の街に縛られずに引っ越しができますよ。投資すると扱う品物の質や数が向上します。規模１５０もあれば十分でしょう。", "When you can afford it, invest in stores you use often. You can invite merchants to your house to have a better selection than you'd get in a city. Investing improves the quality and quantity of goods available. A rank of 150 should be enough.")
 			chatMore lang("それでも余ったら？うーん…仲間を増やしてみるとか、複数の武具店やブラックマーケットにさらに投資するとか？特に何もなければ、貯金箱に入れておいたほうがいいですよ。現在の所持金に応じて税金が増えるだけですからね。", "With your remaining money... Well, you could hire more allies, invest in blacksmiths, or maybe a black market? If you don't need to spend the money, you should put it in a kitty bank. You're only taxed based on the money you're carrying.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
-		if ( gdata(STARTING_GDATA_FLAG + 330) <= 102 ) {
+		if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) <= 102 ) {
 			chatMore lang("じゃあ質問のある人は直接聞きに来てください。", "Now, if anyone has further questions, please come and ask directly.")
 		}
 		goto *chat_end
 	}
 	if ( _switch_val == CREATURE_ID_CRESCE_THE_SEMINAR_LECTURER | _switch_sw ) {
 		_switch_sw = 0
-		if ( gdata(STARTING_GDATA_FLAG + 330) == 100 ) {
+		if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) == 100 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 				chatMore lang("道具講座担当のクレッシェ・ルカンよ。れっしぇーって呼んでね！", "Cresce Lucan, item instructor. Please, call me Cresce!")
 				chatMore lang("冒険者を始めたばかりだと、どの道具が重要でどの道具がさほど重要でないのか、わからないと思うの。だから用意するべき道具を簡単に説明しておくわね。", "If you just started adventuring, you don't know which items are important and which ones aren't. So, I'll briefly explain the items you need.")
@@ -13798,7 +14035,7 @@
 				chatMore lang("高品質、奇跡、神器には特別な力…エンチャントがランダムで付与されるわ。奇跡と神器はランダムアーティファクトと呼ばれていて、高品質以下よりも本体性能もエンチャント面も上限が上なの。特別は固定アーティファクトと呼ばれ、性能が固定されているわ。", "Great, miracle, and godly items have random enchantments. Miracle and godly items are called \"random artifacts\" or \"randarts\", and are stronger than other items of the same type. Unique items are called \"fixed artifacts\" or \"fixedarts\", and their effects never vary.")
 				chatMore lang("最終的には奇跡以降で装備欄を埋めることになるわね。高品質は奇跡にランクアップさせる方法もあるから、いいエンチャントがついていたら取っておいてね。", "It's possible to upgrade a great item to a miracle item, so if you see a great item with a nice enchantment, save it. Someday you'll be equipped with nothing but powerful artifacts...")
 			}
-			gdata(STARTING_GDATA_FLAG + 330) = 101
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE) = 101
 		}
 		if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 			chatList 0, lang("集めるべき巻物は？", "Which kind of scrolls should I collect?")
@@ -13829,16 +14066,16 @@
 		if ( chatval == 0 ) {
 			chatMore lang("巻物はとても軽いうえに、スキルがなくても使えるから駆け出し時代に重宝するの。特に鑑定、素材変化、魔法の地図、物質感知、帰還、解呪、武器防具強化、不思議、マテリアル生成あたりをこつこつ集めておくと後で便利よ。よく出る割に単価の高い神託は、交換や売却にも使えるわ。", "Scrolls are lightweight and require no skills, so they're useful for new adventurers. Keep scrolls of identify, change material, magical map, detect objects, return, remove curse, weapon/armor enchanting, and wonder. Scrolls of oracle are valuable and can be sold or traded for items held by other adventurers.")
 			chatMore lang("大抵は代用手段があるけれど、巻物は軽いから落ちてるのは全回収でオッケー。あと成長、能力獲得、羽の生えた巻物はレアよ。最初はなるべく使わずに、後で必要になる時まで温存しておきたいところね。家具の本棚は家に置くと本や巻物を収納できるから整理整頓に便利よ。", "Basic scrolls aren't as important later on, but they're light, so they can be kept for emergencies. The rarer scrolls are growth, gain attribute, and flying scrolls. If you find those, save them until you need them. Bookshelves in your house are a convenient way to store books and scrolls.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 1 ) {
 			chatMore lang("ポーションは軽くていっぱい持てるの。一部のポーションは魔道具スキルで効果が伸びるから取っておくといいわ。回復系とバフ系、デバフ系、状態異常系、空き瓶、耐酸性コーティング液、耐熱コーティング液…とにかく数を用意しておきたいわね。軽いから落ちてるのは全回収でオッケーよ。", "Potions are light, so you can carry plenty of them. Some potions are strengthened by your Magic Device skill. There are potions that heal or strengthen you, potions that damage or weaken enemies you throw them at, potions that fireproof or acidproof your equipment... There's quite a variety.")
 			chatMore lang("あと水、エーテル抗体、潜在能力、下落、進化、ヘルメスの血、スピードリンクはレアだから取りこぼしのないようにね。家具の「ポーションの棚」は家に置くとポーションを収納できるから手に入れておきたいわ。", "Also, potions of water, cure corruption, descent, evolution, hermes' blood, and speed upper are rare, so hang onto them. If you have a rack of potions in your house, you can store potions in it.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 2 ) {
 			chatMore lang("寝具と調理器具にはランクがあって、それぞれ効果に差があるわ。最初は軽い低ランク品でもいいけれど、多少無理してでも高ランク品に替えていきたいわね。街中にある高ランク品を使うことも、視野に入れておいてね。", "Beds and cooking utensils have ranks, with higher ranks giving better results. If you identify them, you can examine them with [X] to see their rank. The best cooking utensil of all is the barbecue set, and the best kind of bed is the happy bed. Keep in mind that you can find such high-ranked tools in cities and use them even if they don't belong to you.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 3 ) {
 			chatMore lang("…。", "...")
@@ -13848,18 +14085,18 @@
 			chatMore lang("杖の場合、魔道具スキルが効果だけでなく成功率にも影響するわ。微妙に重いし残り回数が違うとスタックしないから少な目にね。杖の残り回数は充填の巻物や技能の魔力の充填で増やせるわ。魔力の充填は魔道具スキルレベル２０以上の時レベルアップで習得よ。", "With rods, your Magic Device skill will affect both the effect and the success rate. They're heavier than scrolls and don't stack if they have different charges, but they can be recharged with scrolls and the Fill Charge ability. Draw Charge and Fill Charge are obtained when you level up if your Magic Device skill is at least 20.")
 			chatMore lang("回復系と壁生成、テレポート、変化、鑑定の杖は便利ね。それでも残り回数を充填できるようになったら４、５本で充分かな。杖主体で戦う気がないのなら、攻撃系の杖は魔道具上げや残り回数の抽出、元素の神への捧げものに使うといいわ。", "Rods of healing, wall creation, teleport, change creature, and identify are useful. If you don't want to use attack magic rods, you could use Draw Charge on them, or sacrifice them to Itzpalt.")
 			chatMore lang("支配の杖は敵を仲間に引き込むレア杖だけど、魔道具スキルのレベルが支配できる相手のレベルに関わってくるわ。スキルが低いと絶対成功しないから、使うつもりならスキルを上げておきましょう。", "Rods of domination are rare rods that turn enemies into permanent allies, but you need decent Magic Device skill for them to work on high-level opponents.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 5 ) {
 			chatMore lang("バックパックの重量に応じて重荷、圧迫、超過、潰れと変化していくの。重荷くらいなら問題ないけれど、圧迫以降は速度が大きく下がって戦闘が不利になるわ。超過になると歩いているだけでたまに大ダメージを受けるようになるから、そのまま行動してると事故死に一直線よ。どうしても超過で移動しなきゃいけない場合は、時々荷物を降ろして休憩しましょうね。", "Depending on the weight of your backpack, you'll go from Burden to Burden! to Overweight to Overweight!. Burden isn't too bad, but Overweight greatly decreases your speed and does constant damage. Carrying too much can and will kill you, especially when travelling, so be careful.")
 			chatMore lang("ちなみに重量挙げスキルは、重荷以上の時にしか成長しないの。うまく荷物を調整して、普段は重荷で活動・強敵と戦う時は重荷解除、ってできるようにしておきたいわね。", "By the way, the Weight Lifting skill is only trained while Burdened or worse, but heavier loads don't train it faster. If you're fighting enemies while carrying a heavy load, you might want to drop excess items to get your normal speed back.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 6 ) {
 			chatMore lang("すぐに使わない道具は、わが家や倉庫に置いておきましょう。死んで落としたり、燃やされたりするわ。軽い巻物やポーションも半分くらいは保管しておいた方がいいわ。ただし場所によってものを置ける数に限界があるの。必要に応じて倉庫を建てるか、掃除されない場所に仮置きするといいわ。", "Store items you don't need to keep with you in your home or a storage house. That way they won't be lost or destroyed. However, you can only store so many items, depending on the type of building. If your house is full, you should build a storage house, or leave items in some other safe location.")
 			chatMore lang("掃除されない場所かどうかは、不要なものを一週間ほど置いて確認してみましょう？大抵の街は置いたものが片づけられてしまうけれど、地下は対象外だったりするのよ。", "Don't leave your items in a town! They'll be cleared out within a week, at least for most towns. However, some towns have underground areas that are safe to use as storage.")
 			chatMore lang("そうそう！置ける道具の種類数は、場所によって決まっているの。限界ギリギリのところに新しい物が生成されると、古い物がいくつか破壊されてしまうわ。これはマップだけじゃなくて、給料箱とかお店の金庫の中も同じなの。定期的に整理整頓して、余裕をもたせておきましょうね。", "Listen up! The number of items that can be stored at a building varies based on the type of building. Once you reach the limit, if new items are created, some of the old ones will be destroyed. That also goes for shop strongboxes and your salary box. Be careful with your item storage!")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 7 ) {
 			chatMore lang("保持指定は、調べる…ｘキーで一覧を表示している最中に＊キーでできるわよ。もう一度＊キーで解除されるわ。", "Use [X] to open the Examine menu and then press [*] to toggle No-Drop for the selected item.")
@@ -13869,18 +14106,18 @@
 			chatMore lang("杖や巻物は祝福すると効果が強化されるのよ。特に成長、素材変化、羽の生えた巻物はまとめて祝福してから使いたいわ。", "Blessing rods and scrolls will enhance their effects. It's especially important for scrolls of growth, scrolls of change material and superior material, and flying scrolls.")
 			chatMore lang("祝福された食品・飲み物は、たまに幸運の日が訪れることがあるの。でもそれ狙いでわざわざ祝福するほどではないわ。祝福されたポーションは効果が上昇するけれど、特に肉体・精神復活と潜在能力、ヘルメスの血は祝福してから使った方がいいわね。", "Sometimes eating blessed food will briefly increase your Luck, but don't waste holy water on that. Blessing potions increases the effect, especially for potions of restore body or mind, potential, and hermes' blood.")
 			chatMore lang("祝福された武器は攻撃力と命中力が、防具は回避力と防御力がわずかにアップするわ。呪いで上書きされちゃうしまとめて祝福できないから、祝福された水が余っていない限り、他の道具に回した方が無難ね。", "Blessed weapons will be more accurate and powerful, and blessed armor will slightly increase your DV and PV. Curses overwrite blessings and you can't bless all your gear at once, so unless you have plenty of holy water you might want to save it for something else.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 9 ) {
 			chatMore lang("使えそうなのは装備を重くできる呪われた羽の巻物や、体重を重くできる呪われた鈍足とかかしら。呪縛の巻物で呪われた水を作っておくと、呪いたい時に便利よ。", "If you want your equipment to be heavier, you can use a cursed flying scroll. If you need to curse an item, you can read a scroll of curse or mix unholy water with it.")
 			chatMore lang("ちなみに呪縛の巻物が呪うのは所持品からランダム。と、いうことは…？もし所持品が水だけなら…？", "Incidentally, scrolls of curse target a random item you're carrying or wearing. So, what if you drop everything but some bottles of water...?")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 10 ) {
 			chatMore lang("＋値ね。基本的に、数値が高いと価格が跳ね上がるわ。食品なら料理、装備や家具なら高級な素材に素材変化するとさらに価格が上がるの。そして、栄養のある食品の場合は元々の能力鍛え効果も強化されるわよ。", "Enhancement value. The higher the number, the stronger and more valuable the item is. Food will strengthen you more, weapons will be more accurate, and other pieces of equipment will slightly improve your DV and PV. You can enhance equipment to +6 with scrolls, or to +10 at blacksmith shops.")
 			chatMore lang("装備の場合は＋の数値分、性能が強化されているってことでもあるわ。武器なら攻撃力と命中力が、防具なら回避力と防御力が少しアップしているの。最大値は＋１０。強化の巻物を使うか、武具店で強化してもらえるわよ。", "Incidentally, the Cooking skill can also be used to improve the quality and value of food, while equipment and furniture can be improved by using a scroll to change their material to a better one.")
 			chatMore lang("酸攻撃を受けると装備の＋値が減ったり−になったりするの。当然、性能も低下。素材変化で、一度でも耐酸能力のある素材に変えれば別の素材に変えても持続するわよ。もしくは耐酸性コーティング液を混ぜておきましょう。", "If you get hit with acid, your equipment will lose enhancement value, or even go into negatives. Naturally, this makes your gear less effective. Some materials are naturally acidproof, and changing an item's material can add acidproofing, but won't remove it. You can also mix acidproof liquid with your equipment.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 11 ) {
 			chatMore lang("喧嘩売ってんのか殺すぞ。", "Don't make me kill you. They'd dock my pay.")
@@ -13889,31 +14126,31 @@
 			chatMore lang("エンチャントはランダムだから、とにかく数が重要ね。店や依頼で手に入れるだけじゃ足りないわ。こつこつネフィアで拾ったり、誰かから奪ったりしないと。その場合は、高品質以上を狙いましょう。鑑定できる道具を持っていれば、その場で確かめてもいいわね。", "Enchantments are random, but the number is important. It's not enough to just get everything from blacksmiths or requests. You can trade with other adventurers, but the best gear can be found in high-level Nefia. Spells, scrolls, or rods of identify let you examine items as you find them.")
 			chatMore lang("軽い装備品なら、粗悪や良質でも自然鑑定上げに使えるかもしれないわね。でも重い装備はよっぽど重量と枠に余裕がない限り、高品質未満だとわかった瞬間捨てたほうがいいわ。その分他のものを拾いましょう。", "If equipment you find is light enough, you might want to keep it with you and identify it passively with Analysis. But unless a heavy item is at least Great quality, you should probably just leave it behind so you can carry more valuable loot.")
 			chatMore lang("結婚指輪・首輪、羽、ソックス、スピードの指輪、パンティー、オーロラリング、ヴィンデールクローク、セブンリーグブーツ、フェアリーハットは軽くて固有効果も強いから、粗悪や良質でも拾い集めておきたいわね。特に結婚指輪・首輪は友好を深めるのにも使えるわ。", "Engagement rings and amulets, wings and feathers, sox, speed rings, panties, aurora rings, vindale cloaks, seven league boots, and fairy hats are lightweight and have unique, useful effects, so I'd pick them up regardless of quality. Especially engagement rings and amulets, since they can improve a relationship.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 13 ) {
 			chatMore lang("素材によって色々な効果があるわ。それに装備の能力も素材に応じて倍率がかかるの。倍率だから、元の性能が低いカテゴリ…指輪や首輪なんかは足りない耐性を???う素材を、元の性能が高いカテゴリは装備能力の高くなる素材を選ぶといいわ。", "Each material has a different effect, and can also strengthen or weaken different aspects of equipment. For jewelry, choose a material that improves your resistances. For weapons and armor, the material should improve their performance.")
 			chatMore lang("素材変化の巻物はランダムだけど、祝福した方が上位の素材が出やすいの。他には素材槌っていう対応した素材に確定で変えるものもあるけれど…レアなのよねぇ。", "Scrolls that change material work in a fixed cycle of material types, with scrolls other than inferior material adding two additional materials to the cycle when blessed. There are also material kits that change an item to a specific material, but those are rare.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 14 ) {
 			chatMore lang("マテリアルは重さのない特殊な材料よ。そのままでは使えないけれど、錬金術の道具や工具、宝石加工ツール、裁縫セットで道具を自作する際に必要になるわ。今持っているマテリアルは、mキー…materialで確認できるの。", "Crafting materials are weightless and stored in your material inventory, which you can check with the [m] key. You can't interact with them like normal items. They're used with the Alchemy, Carpentry, Jeweler, and Tailoring skills.")
 			chatMore lang("マテリアルはネフィア内にある採取スポットでsキー…search（探す）を行うと手に入るわ。採取スポットの種類に応じて釣り、採掘、栽培、生化学、探知のスキルが必要よ。浅い階層では上位のマテリアルは取れないことと、ネフィアのタイプによって取れる種類が変わることに気をつけて。あと、採取に成功しても失敗しても対応スキルに経験値が入るから、取っておきましょう。", "Material gathering spots can be found in Nefia and harvested by searching them with [s]. Depending on the type of spot you might need Fishing, Mining, Gardening, Gene Engineer, or Detection. You need to go deep into Nefia to get the best materials, and the types of materials that can be found depend on the type of Nefia. Harvesting also trains the related skill, even if you fail to collect materials.")
 			chatMore lang("工作、錬金術、裁縫、宝石細工のスキルが上がれば、マテリアルで自作できるものも増えていくわ。自作することでも経験値が入るから、積極的に採取スポットで材料を集めていきましょう。仲良くなった仲間がスキルを持っていれば、マテリアルを集めてきてくれることもあるのよ。", "The higher your Carpentry, Alchemy, Tailoring, and Jeweler skills get, the more items you can make from more types of materials, letting you train your skills even higher, so be sure to collect all the materials you can. If your allies have certain skills, they'll collect materials as well.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 15 ) {
 			chatMore lang("合成の壺なんかを使うと、道具同士を合成して新しいものを自作したり、特殊効果を付与することができたりするわ。特定のスキルや道具が必要になるけれど、本当に色々なことが可能よ。一度確認してみるといいわ。", "A pot for fusion lets you combine items to make new ones or add a special effect to an item. You need specific skills and tools, but you can make a lot of useful things with it. Be sure to check it out at least once.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
-		if ( gdata(STARTING_GDATA_FLAG + 330) <= 102 ) {
+		if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) <= 102 ) {
 			chatMore lang("質問のある人はいるかしら？いたら聞きに来てね。", "Does anybody have more questions? If you do, come and ask.")
 		}
 		goto *chat_end
 	}
 	if ( _switch_val == CREATURE_ID_IDURU_THE_SEMINAR_LECTURER | _switch_sw ) {
 		_switch_sw = 0
-		if ( gdata(STARTING_GDATA_FLAG + 330) == 100 ) {
+		if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) == 100 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 				chatMore lang("育成講座担当のイヅル・グンバイだ、よろしくな。師範とでも呼んでくれよ。さて、初回はcキー…characterで確認できる能力値について簡単に教えておくぞ。", "I'm Iduru Gumbye. Please call me \"Mr. Gumbye\". Welcome to the training lecture. Well, to start, let me briefly tell you about the character screen, which you can check with [c].")
 				chatMore lang("筋力や耐久といった値が主能力。主能力は対応したスキルや能力、行動を行うことで自然に成長していくんだ。潜在能力は、その能力がどのくらい伸びやすいかを示している。Supreme（至高）は伸びやすさが最大に達した状態だ。そしてHopeless（絶望的）は最低レベルに伸びにくくなっている状態だな。潜在が下がってきたら回復しないと、主能力が全然伸びなくなるぞ。", "Things like Strength and Constitution are your main stats. Potential shows how easy it is to raise something. \"Superb\" is the best, \"Hopeless\" is the worst. Stats go up naturally by using corresponding skills and abilities.")
@@ -13939,7 +14176,7 @@
 				chatMore lang("だけどある程度能力が上がった後は、潜在や元の経験値量を上げないと最終経験値が微々たるものになってしまうんだ。切り捨てでゼロにすら成り得る。初回で教えたスキルトラックも使って、経験値の入り方を確認するのもいいだろうな。", "However, after the skill has improved to some extent, progress will drop off or halt completely unless you increase potential or do something more demanding. It might be good to use the skill tracker I mentioned in a previous course to monitor progress.")
 				chatMore lang("元の経験値量については…主能力の「習得」が高いと、経験値が稀に増えることがある。あと、召喚された魔物や分裂体からは一切経験値が入らないので気をつけてくれ。こんなところかな？", "In addition, based on your Learning stat, there's a small chance for experience gained to be boosted. However, monsters that have been summoned or split off from other monsters will not provide experience.")
 			}
-			gdata(STARTING_GDATA_FLAG + 330) = 101
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE) = 101
 		}
 		if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 			chatList 0, lang("おすすめのスキルは？", "Which skills do you recommend?")
@@ -13971,15 +14208,15 @@
 			chatMore lang("むうー…どのスキルも使い道があるからなぁ。優先的に取るべきなのは、生存力・成長力に関わる料理、持てる重量を増やす重量挙げ、出費を抑える交渉、他スキルの成長を助ける旅歩き、かな。", "Don't think like that. It's important to get every single skill. Still, you should prioritize some over others. Cooking to increase your stats, Weight Lifting to carry more items, Negotiation to help your finances, and Traveling to help all your skills grow.")
 			chatMore lang("そこまで揃ったら、探索に役立つ自然鑑定、鍵開け、採掘、魔道具などのスキルを、そして目指すスタイルが決まったらそれに合わせたスキルを取ろうか。…まぁ、難しいことは考えず、全部取っても構わないぞ。早期から持っておけば他のスタイルに切り換えるのも楽だろうな。", "Once you have those, you might want adventure-related skills like Analysis, Lockpicking, Mining, Magic Device, and whatever sort of fighting style you prefer. ...Well, don't worry about it too much. Like I said, you want to get every skill eventually, so even switching your fighting style entirely wouldn't be a problem.")
 			chatMore lang("街ごとにトレイナーの教えてくれるスキルは違うんだ。今挙げたスキルならここからすぐ北にあるヴェルニース、東南東にあるヨウィン、西北西にあるポート・カプールで全部揃うけれど、他の街のトレイナーにも確認してみるといいぞ。", "Each town's trainer teaches different skills. The skills I was talking about before can be learned in Vernis just north of here, Yowyn to the southeast, and Port Kapul to the northwest, but you should also check out the trainers in other cities.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 1 ) {
 			chatMore lang("例外もあるけれど、技能は主能力やスキルが一定値以上の時にレベルアップすると習得できるんだ。aキー…abilityから発動できる通常技能と、Ｗ(Shift+w)キー…Wideで発動できる広域技能がある。技能が増えてきたら、使わないものは*キーで非表示にしておくといいだろう。", "Most abilities are learned by leveling up with a stat or skill above a certain value. Normal abilities can be used with [a], and wide-area abilities can be used with [W]. Abilities you don't use can be hidden with [*].")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 2 ) {
 			chatMore lang("うん！プラチナ硬貨は、主に依頼を達成した時に手に入るぞ。貰える枚数は依頼によって違うが、芸人依頼以外は名声１万とか２万とかごとに増えるからね。他にはネフィアを攻略したり、プラチナベルを倒すことでも手に入るけど、まぁ依頼報酬が基本かな。", "Platinum coins are mainly received by completing requests in towns. More difficult requests generally give more platinum coins. You can also get platinum coins by clearing Nefia or defeating a platina bell, but requests are the main source.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 3 ) {
 			chatMore lang("あー…それか。最初、イヅル・グンバイだからって「いづるん」というあだ名をつけられそうになってな。いい歳してそれは恥ずかしかったから、実家で呼ばれ慣れてる「師範」がいいと駄々をこねさせてもらった。", "Oh ... that? At first, it is likely to be given a nickname of \"Izuru\" because it is an idle gumbah. I was embarrassed when I was a good age, so I wasted my mind when I was used to my parents' home and I was used to it.")
@@ -13987,73 +14224,73 @@
 		if ( chatval == 4 ) {
 			chatMore lang("仲間の能力を上げたいなら、ランクの高い料理をこまめに与えるといいな。ハーブもいいぞ！潜在能力を高めに保っていれば、食事で能力値２００くらいまではスクスク成長するだろう。", "If you want to improve your allies' stats, feed them well-cooked dishes regularly. Herbs are good too! Also, be sure that they're able to buy training. An ally with the Pickpocket skill will collect extra money from defeated enemies to help cover the cost.")
 			chatMore lang("聴診器を使えばわかるんだが、青緑色の時は食事可能、桃色の時は満腹だ。腹がすいたらすぐに食わせることができるように、料理は多く持っておくんだ。足りなきゃ果物の木やパン屋から調達しような。ランクの高い料理は仲のいい仲間と一緒に食事することもできる。能力上昇効果はそのままで満腹になりにくいので、活用してみてくれ。", "If you use a stethoscope on an ally, you can tell when they're hungry because their pink HP bar will turn turquoise. Keep plenty of food handy and feed them as soon as they get hungry. If you're low on food, collect fruit from fruit trees or buy food from bakeries.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 5 ) {
 			chatMore lang("スキルの潜在能力を高く維持して、対応した行動をとらせよう。特に、戦闘スキルは交戦しないとなかなか伸びないからな。育てたい仲間が交戦する前に、敵を片っ端から先制攻撃で倒したりしないように。経験を積む機会をちゃんと与えてやるのも育成のうちだぞ。", "Keep their skill potentials high and practice, practice, practice. You'll need to let them get into fights if you want to train their combat skills. And remember, defensive skills won't be trained if you're just defeating weak enemies with a single blow.")
 			chatMore lang("一応、旅歩きスキルを覚えさせていれば旅の中で見識を深め、少しずつ他のスキルも成長していくな。だけどあくまで補助的な経験でしかないから、旅歩きだけで上げようとするのは逆にしんどいぞ。色々な経験をさせてやれるよう、心がけてれば自然と育つもんさ。", "With the Traveling skill, by traveling from town to town, all skills will slowly increase. However, Traveling by itself isn't enough to get stronger. Still, it'll add up over time. Every little bit helps.")
 			chatMore lang("仲間に新しいスキルを覚えさせる方法はまたの機会に説明するよ。それまでに、誰がどのスキルを持っているかをちゃんと把握しておこう。仲間に干渉…iキーから情報を開示してもらえるぞ。", "Unfortunately, city trainers won't teach new skills to allies, but I'll explain a possible way to achieve that in another lesson. In the meantime, work on the skills they already have.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 6 ) {
 			chatMore lang("潜在能力が低いままだと、頑張っても経験値が少ないから効率が悪いんだ。お金や宝石類を持たせれば、街で勝手に訓練して主能力とスキルの潜在を高めるぞ。余ってる場合は拾わせてあげよう。", "Without potential, your allies won't get stronger. Let them pick up gold coins or give them ores like mica and rubynus to sell, and when in a town they'll buy training to increase the potential of their stats and skills.")
 			chatMore lang("訓練に必要な費用は、当人の初期能力…ＩＮＩＴに応じて変わるんだ。ＩＮＩＴが低ければ低いほど、訓練費も少なくて済む。強く成長した後も初期能力依存だから増えない。むしろ魅力が高まればそこからさらに減るのさ。", "The cost of training depends on INI, the ally's initial power. Even as they grow stronger, the cost of training won't increase. In fact, as their Charisma goes up, the cost will decrease.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 7 ) {
 			chatMore lang("死んでしまった仲間は、街のバーテンダーが有料で蘇生してくれるぞ。復活の書か、復活の魔法があれば自分でも蘇生できるけど、まぁ前者はレアだし後者は使いこなせるようになるまでが大変だな。", "If your allies die, town bartenders will revive them for a fee. If you have a book of resurrection or can cast the spell Resurrection you can revive them yourself, but both of those are hard to come by.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 8 ) {
 			chatMore lang("仲間に活躍させたり、特定の贈り物をすることで友好度が上がる。友好度が高いと色々と判定が有利になるし、料理スキルがあれば朝食を、裁縫・大工スキルがあれば防具を作ってくれるようになったり、魂の友以上になると結婚もできるようになるんだ。媚薬をぶつけることでも上がるけれど、媚薬だけではお友達までにしかなれないから注意だぞ。", "Friendship increases by letting allies fight for you and by giving them gifts. With high friendship, allies with Cooking will cook breakfast, and allies with Tailoring and Carpentry will craft armor for you. If you become Soul Mates, you can marry an ally. You can also use an aphrodisiac to make someone like you, but I don't recommend it.")
 			chatMore lang("地面にあるものを我慢させ、もし手を出したら押しのけることで、主従度が上がる。いわばシツケだな。色々と従順になるが、友好度でほぼ代用できる。主人として接するのか、対等な立場として接するのか。そこをハッキリさせる、くらいの感覚でいいんじゃないかな。", "Allies that have been instructed not to interact with items on the ground might sometimes do so anyway. For example, an ally that's hungry might start eating food on the ground. Depending on whether you push that ally away from the food or let them continue eating, it would affect your master/servant relationship. Do you want a submissive ally, or a willful one? ...Or maybe you don't care about that stuff and just want your ally to stop causing trouble? In that case, just use a tamer's whip on them.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 9 ) {
 			chatMore lang("タッグを組ませると、ベースにした仲間が移動権を握って行動を共にする。もし二人の攻撃間合いが一致していれば、追随側は移動を省略して攻撃に専念できるわけだ。一致していないと足を引っ張り合うことになるけれどな。強制的に速度が遅いほうに合わせられるから、なるべく速度の近い組み合わせにするといい。", "With a tag team, an ally occupies the same space as you or another ally. The one who makes the team moves and acts normally, so the ally who joins the tag team doesn't need to move around and can focus on attacking.")
 			chatMore lang("似たような戦闘タイプ…特に近接型を組ませて戦闘効率を上げるのは基本だな。庇いあうことで生存力が上がり、取得物が分配されたりするので弱い仲間を強い仲間と組ませて保護してもいいぞ。", "It's important to keep the tactics used by allies in mind when forming a tag team. When done correctly, they can be much stronger. They'll also protect each other, so you can pair weak allies with strong allies to help them survive.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 10 ) {
 			chatMore lang("進化には特定のアイテムが必要なんだ。その仲間に対応しているかは使ってみないとわからないし、そもそも対応する進化アイテムがないやつも多い。進化アイテムは特定の敵が落とすぞ。友好度が高くないと進化を拒否されるから仲良くなっておこうな。", "Evolution requires special jewels called Evolution Hearts, which are dropped by certain enemies. Evolution is only available for certain kinds of creatures, and only if you've formed a strong bond of friendship with them.")
 			chatMore lang("進化すると単純に能力が上がったり、新たな技能を習得するケースもある。姿や名前が変わるけれど、扱い的には元のままで変わっていないから誤解しちゃだめだぞ。", "Evolution increases stats and sometimes grants new abilities. It changes your ally's appearance and name, but it's still the same ally as before, so don't worry.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 11 ) {
 			chatMore lang("あまり浸透していないけれど、仲間にスキルを覚えさせる方法としては能力合成っていうのがあるんだ。他の仲間を分解して能力を移植する、生化学文明時代の技術だな。仲間のレベル以上の生化学スキルが必要だ。確か、ポート・カプールの学者が個人レベルでも使えるように研究していたはずだぞ。", "Though it's not well known, with knowledge of Gene Engineer it's possible for allies to learn new skills. It uses technology from the era of biochemistry civilization to decompose beings and transplant their abilities. I heard of it from a scholarly acquaintance of mine from Port Kapul.")
 			chatMore lang("能力を合成することで、素体からスキルや装備部位を移植できる。さらに、素体の主能力が上回っていれば最大で３種類＆１０上昇する。料理で上がらなくなる前に、生化学を鍛えてこちらに切り替えていこう。間違って強くしたい方を分解しないように、話しかけて大事な仲間に指定しておくのを忘れずに。あと、視界内にいないと能力が上昇したかどうかわからないから気をつけてくれよ。", "Theoretically, you could transplant new skills and even body parts into an ally, as well as empower them. Of course, before doing anything that dangerous you'd want to talk to the ally you want to keep and make them a precious ally so they wouldn't end up getting accidentally decomposed!")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 12 ) {
 			chatMore lang("魔法は、夢で覚えるか、不思議な巻物で覚えるか、魔法書を解読して覚えるかだ。前者ふたつはランダムなのでおまけ程度に考えて、魔法書をメインにしたいな。いずれにしても、手に入れたストックを使い切るとその魔法を再補充する必要があるぞ。", "Spells can be learned from dreams, from scrolls of wonder, or from spellbooks. The former two are random, so as a rule you'll get most of your spell stocks from spellbooks.")
 			chatMore lang("魔法書には種類ごとに難易度があって、相応の読書スキルが必要なんだ。解読に失敗するとＭＰに大ダメージを受けたり魔物が召喚されたりすることもある。何度も失敗するレベルのものを強行したり、倒せない魔物が湧くと困る場所で読んだりしないように。", "Spellbooks have difficulty levels for each type, with more difficult books requiring a higher Literacy skill. Failing to read a book may drain your MP or summon dangerous enemies, so be careful where you read, and don't keep trying to study a book after failing repeatedly.")
 			chatMore lang("解読で得られる魔法ストックの量は、暗記スキルで増えるから取っておこう。収穫と願いの魔法書以外は充填である程度使いまわすことができるし、一度解読したものは魔術士ギルドに入れば作家から予約して買えるぞ。", "Reading a spellbook increases your spell stocks based on your Memorization skill. Also, if you join the Mages' Guild, you can put in requests with their spell writer for copies of specific spellbooks, although you can't request spellbooks of Wizard's Harvest or Wish.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 13 ) {
 			chatMore lang("魔法は使うことで経験値が入り、レベルアップする。詠唱スキルが低いと詠唱成功率が微妙だから、積極的に唱えていこう。魔法にも潜在能力があって、cキーのリストから確認できるぞ。魔法の潜在能力は、スキルなどとは違い睡眠をとることで少しずつ回復していく。", "Casting spells enough times increases their level, which improves their power and success rate. You can check the potential of your spells in the character menu accessed with [c]. The potential of spells is recovered when you sleep.")
 			chatMore lang("街の魔術士にプラチナ硬貨を払えば、魔法実習ができる。実習ではストックを消費せずに複数の魔法に経験値が入るぞ。珍しい魔法や普段使っていない魔法も鍛えられるんだ。レベルアップすると詠唱成功率と効果が上昇するから最初に何回か受けておくのもいいだろう。ただし消費ＭＰもちょっと増えるから注意だ。", "You can pay a town wizard platinum coins for a magic practice session. This trains multiple spells without using spell stocks. It's a good way to quickly improve your spells. However, keep in mind that higher level spells cost slightly more MP to cast.")
 			chatMore lang("ちなみに、仲間の魔法は種類に関係なく一括管理されているぞ。魔法レベル＝詠唱スキルレベルに簡略化されているから、その仲間の詠唱スキルを上げていこう。範囲魔法を使う場合は、自分も仲間も魔力制御スキルが必須レベルなので忘れずに。", "By the way, you don't have to worry about any of this for spellcasting allies. All they need is the Casting skill. Oh, and if you or your allies will be using bolt spells or area spells, the Control Magic skill is essential.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 14 ) {
 			chatMore lang("ＡＰっていうのは能力の覚醒に必要なポイントだ。一定の強さ以上の敵を倒すことで入手できるぞ。倒した時に何かがひらめくような感覚があるからわかるはずだ。", "AP are Awakening Points, which you can get by defeating strong enemies. You'll see a quick flash when you gain AP.")
 			chatMore lang("入手には色々と細かい条件があるけれど、だいたいＩＮＩＴや速度が自分より高い相手が対象になるんだ。つまり、ＩＮＩＴが低い…最初は弱い者ほどＡＰが貯まりやすいってことだな。", "To put it simply, gaining AP is mostly based on INI, particularly Speed INI. That is, someone who started out weak and slow will have a head start gaining AP.")
 			chatMore lang("噂ではＡＰを使って能力強化やスキル成長、特殊なフィート取得ができるって話だけれど…。少なくともノースティリスでそんなことができるという者は知らないぞ。もし本当なら、育成のために積極的に強い敵を倒してＡＰを入手していきたいな。", "It's rumored that AP can be used to improve your skills, gain new abilities, and unlock unique powers... However, I don't think there's anyone in North Tyris capable of doing such a thing. Maybe someday, if you travel to new lands, you might discover the secret of AP...")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 15 ) {
 			chatMore lang("恥ずかしいから師範と呼んでほしい…！！", "Please try to remember that I'm your teacher...!")
 			chatMore lang("あー…実家の道場はずっと南の方にあってね。有料だけど仲間を枠から外して預けることができる。冒険している間に少しずつ鍛えてもらえるし、有料で全員まとめて潜在を回復させたりもできる。宣伝じゃないけど、まぁ活用してみてくれ。", "...Oh, my parents run a dojo to the south, near the border with South Tyris. There's a fee, but you can leave up to 150 allies there. They'll get a tiny bit stronger over time, and you can also restore their potentials for an additional fee. Ah, sorry; didn't mean to sound like a salesperson there...")
 		}
-		if ( gdata(STARTING_GDATA_FLAG + 330) <= 102 ) {
+		if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) <= 102 ) {
 			chatMore lang("何か質問があったら聞きに来てくれ。", "If you have any more questions, please come and ask.")
 		}
 		goto *chat_end
 	}
 	if ( _switch_val == CREATURE_ID_MITO_THE_SEMINAR_LECTURER | _switch_sw ) {
 		_switch_sw = 0
-		if ( gdata(STARTING_GDATA_FLAG + 330) == 100 ) {
+		if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) == 100 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 				chatMore lang("こんにちは！ミトリンこと、戦闘講座担当ミト・リディアンだよ。よろしくね。", "Hello! I'm Mito Lydian, combat course instructor. Let's begin!")
 				chatMore lang("戦闘は、生計を整えて道具をそろえて育成した先にあるものだから、他の先生たちの講座を先に体験してからのほうがスムーズかもね。", "Because battle comes after earning a living and learning about items, it might be easier to hear other teachers' lectures first.")
@@ -14076,7 +14313,7 @@
 				chatMore lang("みんなはこの先、冒険の中で本当に色々な敵と戦うことになるよ。単純なステータスや防御力や回避力だけじゃない、特殊な能力を持っていたりする敵も多いから、対策を知らないと苦戦するかも。", "You're eventually going to run into all kinds of enemies in your travels. Enemies that can dodge or block attacks, enemies that can resist magic, and even enemies with unique abilities, so you're bound to run into trouble if you don't at least have a backup plan.")
 				chatMore lang("相手が『』《》つきじゃないなら、状態異常や変化の杖でどうにでも処理できるんだけど、ね。最後となる、第４回では具体的にそういう厄介な敵の対処法を教えるね。", "If the enemy does not have <> or {} you can handle anything with a rod of change monster, but in this final session we will teach how to deal with certain particularly troublesome enemies.")
 			}
-			gdata(STARTING_GDATA_FLAG + 330) = 101
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE) = 101
 		}
 		if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 			chatList 0, lang("上手く逃げるには？", "How do I escape combat successfully?")
@@ -14108,41 +14345,41 @@
 			chatMore lang("テレポートが基本だけど、巻物は盲目の時には読めないし、魔法は混乱の時や沈黙を受けている時には使えないよ。両方を用意しておくか、確実に杖を使えるようにしておこう。", "Teleporting is the easiest, but it can be blocked. Scrolls can't be read if you're blind, while spells can't be cast if you're silenced and are difficult to cast if you're confused. Rods of teleportation can be used reliably with good Magic Device skill, but some places simply block teleportation entirely.")
 			chatMore lang("ただ、テレポートはどこに飛ぶかランダムだから死んじゃう寸前じゃなくて、余裕を持って使おう。ショートテレポートや空間歪曲はすぐ近くに移動する可能性が特に高いから、過信しないようにね。", "However, where you end up when teleporting is random, so try to use it before things get too bad and make sure to have enough room around you before using it. Short Teleport and Dimensional Move have a high chance of only moving you a short distance, so don't get too overconfident.")
 			chatMore lang("敵との距離が離れている場合は、壁生成や扉生成でさえぎって追撃を防ぐのも有効だよ。モグラの魔物や、名前に『』や《》がつく変異種には破壊されちゃうけど。煙玉を投げて煙幕を張れば、遠距離攻撃のほとんどを無効化できるね。", "Keeping your distance from enemies and utilizing walls and doors to obstruct their path when they're chasing you is also effective. However, certain special enemies can destroy things in their path.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 1 ) {
 			chatMore lang("＊キーで「見る」と、相手とのおおよそのレベル差がわかるよ。でも装備や戦い方で体感的な強さが大きく変わるから、本当に目安でしかないの。インサイトレンズっていう道具を使えば相手の能力値は確認できるけど、レアだから…。分析スキルが高いなら、相手との物理戦闘を通じてComplete状態にすれば、能力を確認することもできるよ。", "Press [*] to look at your target and get a description of their level compared to yours. However, it's only a guidance and a fight can drastically change depending on the gear you use. You can however use an insight lens to find out more detailed statistics about your target.")
 			chatMore lang("攻撃方法とかは、実際に戦って覚えるしかないの。名前や見た目からある程度推測できる部分もあるよ。行動を把握する前に力任せに倒しちゃうと、後でパワーアップして出てきた時に痛い目を見るかも…？相手の力を見極めて知識として蓄積していくのも、戦闘では大事なことだよ。", "You can guess at an opponent's abilities from their name and appearance, but the only surefire way to learn what they can do is to fight them and learn firsthand. But if you just take out enemies without paying attention to their abilities, you might be in for a painful surprise later on. It's important to learn and remember just what kind of threat is posed by each type of foe you battle.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 2 ) {
 			chatMore lang("最初の最初は、街の外…野外にEnterして、食料を拾いつつ野生動物と戦ってみよう。囲まれないように気をつけてね、死んじゃうよ。やどかりやかぶと虫を安定して倒せるようになってきたら、このゼミのすぐ北西にある「子犬の洞窟」に挑戦してみよう。底まで潜るのに必要な食料や補助アイテムの量を、感覚でつかんでおこうね。", "In the beginning, in the wilderness outside the city, you can fight against wild animals while gathering food. Be careful not to be surrounded, or you'll die. Later, when you're stronger, you can challenge the \"Puppy Cave\" just northwest of this seminar. Be sure to bring enough food and supplies before going deep into dungeons.")
 			chatMore lang("子犬の洞窟を楽々探索できるようになったら、その辺の手ごろなネフィアに挑戦してみて。冒険者として、自分がどの辺りまで潜れる力があるのかは定期的に把握しておこう。準備万端ならそうそう死にはしないし、きつかったら撤退して、挑む階層を少し下げればいいからね。", "If you find the Puppy Cave easy, try exploring low-level Nefia around that area. As an adventurer, try to have an idea of how dangerous of a Nefia you can explore safely. If you're having trouble, retreat and go back to less dangerous Nefia.")
 			chatMore lang("覚えておいてほしいのは、ネフィアの入口の階層レベルは挑戦推奨レベルとは違うってこと。今まで倒せた敵のレベルがｃキーのキャラシートに戦力評価として記録されているから、そっちを目安にしよう。", "Remember, the level of a Nefia doesn't mean the recommended level for an adventurer, it's only a general guide. Also, some items and materials can only be found in Nefia of a certain level. Work to become stronger and conquer the most dangerous Nefia!")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 3 ) {
 			chatMore lang("主能力の速度が行動回数に影響しているの。この差が大きいと敵に連続で行動されちゃう。攻撃が激しくなるのは当然として、行動ターンが多く回ってくるから体力の自然回復も増えるんだよ。加速や鈍足、乗馬を使って差を埋めようね。", "Your Speed stat determines how quickly you act. An enemy much faster than you will be able to attack you repeatedly. An extremely fast enemy could heal damage faster than you could inflict it. Increase your speed with potions, rods, and spells of Speed. The Riding skill is also an option.")
 			chatMore lang("ただ、行動ターンが多く回ってくるってことは毒や出血、地面の酸でもりもり削られるってことでもあるの。速いけど体力の少ない敵は、染料や毒薬をぶつければあっけなく倒せたりするから試してみてね！", "However, effects like poison, cuts, and acid floors occur on an enemy's time, not your time. You might be able to defeat a fast but weak enemy by throwing dyes or poisons. Give it a try!")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 4 ) {
 			chatMore lang("物理攻撃に対する強さとして、回避力のＤＶと防御力のＰＶがあるね。回避力を捨てて防御力だけ上げるか、回避力を上げて最低限の防御力は確保するか選ぼう。全ての物理攻撃を完全回避するのはむずかしいから、防御力を捨てる選択肢はないかなぁ。聖なる盾やフェザーで補ってもいいけどね。", "To protect against physical attacks, you have DV, Defense Value, and PV, Protection Value. DV helps you dodge attacks, and PV reduces the damage you take. You might want to specialize in one or the other, although it's hard to dodge every single attack, so I wouldn't recommend ignoring PV altogether.")
 			chatMore lang("あとは、各属性の耐性も少しずつ上げていこう。全く耐性のない属性攻撃は致命傷になるよ。火炎と冷気に至っては、耐性が低いと属性攻撃で持ち物を失うことがあるの。ダメージは減らせないけど、耐火ブランケットと耐冷ブランケットを持っておけば回数分持ち物を守ってくれるよ。余裕があれば仲間にも持たせてあげてね。", "Later on, you'll want to increase your elemental resistances. Having no resistance to an element can prove fatal. With less than Superb resistance to fire and ice, you might even lose items, although you can prevent this with fireproof and coldproof blankets. If you have extra blankets, you can give them to allies.")
 			chatMore lang("最終的には全部の耐性を可能な限り上げたいけれど、装備が揃うまでは属性耐性のポーションや魔法で補ったり、複数の装備を付け替えて対応することも考えようね。", "It'd be great to have every resistance at Superb, but that might take a long time. Casting Attribute Shield and drinking potions of resistance can help in the meantime, or you can rearrange your equipment if you know an enemy that uses a specific element is ahead.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 5 ) {
 			chatMore lang("実用的な回復手段をどれだけ用意できるか…これも重要だね。最低でも一度にＨＰを半分以上回復させる手段がないと、思わぬダメージを受けた時に立て直すのが難しいよ。杖、魔法、ポーション、特定の技能。それぞれ一長一短があるからこのうち２つ以上は使いこなせるようにしておこう。巻物は…回復量が伸びないから最初のうちだけかな。", "Recovery measures are very important. If you don't have a way to recover at least 50% of your HP, you'll be in trouble if you get ambushed. Rods, spells, scrolls, potions, and certain abilities can heal you. Each has advantages and disadvantages, so it's good to use at least two kinds. Scrolls are only useful for beginners, though, since they only heal a fixed amount.")
 			chatMore lang("残りＨＰの管理は死なないための基本だよ。仲間にはちゃんと聴診器を使っておこうね。コールファミリアという技能を使えば仲間を退避させることもできるよ。", "Managing HP is important to stay alive. Be sure to use a stethoscope on your allies. In a pinch, you can send allies home with the Call Familiar ability.")
 			chatMore lang("ＭＰの回復は魔力の杖でいいとして…ＳＰの急激な回復は難しいから消耗に気をつけてね。リジェネレーションで自動回復量を上げることも考えよう。最後の手段として、祈りがチャージされていればpキー…pray(祈る)でＨＰ・ＭＰ・ＳＰを全回復できるから神への捧げものはしておこうね。", "You can recover MP with a scroll or rod of mana, but it's difficult to recover SP. You can recover a little SP passively by casting Regeneration, or actively by casting Restore Body. As a last resort, if you have a god and your prayer is charged, you can recover all HP/MP/SP by praying with [p].")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 6 ) {
 			chatMore lang("状態異常は色々あるけれど、戦闘においては属性攻撃で発症したりするね。耐性が低かったり何度も受けると、長引いたり効果が増したりするの。だいたいはターン経過で消えるけど、回復を行うことでさらに短くできるよ。", "Status ailments can be caused by various things, but in battle the most common cause would be elemental attacks. With low resistance or many attacks, the duration will be increased. Status ailments go away over time, but you can cure most statuses instantly with healing effects.")
 			chatMore lang("無効化するエンチャントのついた装備を身に着けるのが理想的だけど、それまでは無効効果のあるバフをあらかじめかけておくくらいかなぁ。麻痺や睡眠は行動不能になるし、盲目は何も見えなくなるし、混乱時に魔法を使うと自滅するし、毒や出血は放っておくと死にかけるし、どれも危険だよ。", "Ideally you'd wear equipment with an enchantment that grants immunity, but until then you can use buffs that prevent statuses. For example, Hero prevents Fear and Confusion, and Concentration prevents Sleep and Confusion.")
 			chatMore lang("逆に、相手に麻痺や盲目をかけることができればかなり有利に戦えるってことだよね。『』や《》のついている相手にはほぼ効かないけど、効く相手には一発で効くから、無力化したい相手に状態異常ポーションをぶつけたりしてみよう。", "On the other hand, if you can paralyze or blind an opponent, you'll have an easy fight. It's nearly impossible on <> or {} enemies, but otherwise it's a reliable tactic to neutralize your foes.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 7 ) {
 			chatMore lang("へっ！？", "Ehh!?")
@@ -14152,45 +14389,45 @@
 		if ( chatval == 8 ) {
 			chatMore lang("種族特性で回避力が元から高いモンスターがいるんだよね。わかりやすいのだと、コウモリとか。魔法は必中だから魔法使いだとあんまり問題ないんだけどね。", "Some kinds of enemies, like bats, have high evasive power. They'll dodge most normal attacks, so use magic or abilities.")
 			chatMore lang("会心の一撃が出れば物理攻撃も必中だけど、出るまで殴り続けるのも大変だよ。通常攻撃を介さないタイプの攻撃技能は必中だから試してみてね。他には…睡眠状態にすれば避けられないよ。", "You could just try attacking them repeatedly until you eventually hit them, but there's no time for that in serious combat. Abilities and spells never miss, so use those instead. Of course, sleeping enemies can't dodge attacks...")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 9 ) {
 			chatMore lang("種族特性で防御力が元から高いモンスターがいるんだよね。わかりやすいのだと、やどかりとか。魔法は防御無視だから魔法使いだとあんまり問題ないんだけどね。", "Some kinds of enemies are nearly immune to physical attacks. Of course, a mage's spells bypass such defenses.")
 			chatMore lang("完全貫通が出れば防御力の大半を無視できるけれど、装備に完全貫通エンチャントがないとまず出ないよ。通常攻撃を介さないタイプの攻撃技能の中には、防御無視のもあるから試してみてね。防御力を下げる魔法やアイテムも使おう。", "If you land a *vorpal* hit on an enemy, most of their defenses will be bypassed, but it requires the \"absolute piercing attack\" enchantment on your equipment to happen. You can also use spells and thrown potions to weaken enemies' defenses.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 10 ) {
 			chatMore lang("回復行動を連打する、倒すのが困難な相手とも戦うことがあるかもね。ちょっとやそっと火力を上げたくらいじゃ突破できないけれど、だったら瞬間火力を大幅に上げればいいの。腐ったトマトをぶつけたり、一部の技能を使うことで激怒状態になるよ。激怒状態では与えるダメージも受けるダメージも２倍…あとはわかるかな？", "You might encounter an opponent who heals himself every time he's near death. Against an enemy like that, the Fury status, which doubles damage dealt and received, is useful. You can give your party the Fury status with the Rampage ability, and inflict it by throwing a tomato. ...Get the idea?")
 			chatMore lang("あとは相手にターンを回さないのも有効だね。時を止めている間に準備をしたり、麻痺が入った瞬間を狙って畳みかけよう。『』《》つきにも鈍足は低確率で入るから、速度差をつけて行動回数を増やしてもいいね。", "Preventing the enemy from acting also gives you a chance to recover. Enemies with <> or {} are highly resistant to bad statuses, so you could try boosting your speed instead.")
 			chatMore lang("ＨＰ下のパワーゲージが貯まると、技能の力の解放で必中・防御無視のゲージ技が出せるのは知ってるかな？そして、突撃体勢の仲間はゲージ技を使うけれど、迎撃体勢にすると使わない。…つまり、迎撃で仲間にゲージを貯めさせてタイミングよくコマンドフラッグで切り替えれば、全員でゲージ技を連続して叩き込めるんだよ。", "If the gauge under your HP bar reaches 100%, you can use <Gauge Release> to perform a powerful attack. Also, pets set to Onslaught will use <Gauge Release>, but pets set to Intercept will not. In other words, with careful use of a command flag, your party could save up and unleash multiple powerful attacks at once.")
 			chatMore lang("最後に、持久戦になるけどマナを吸収する武器で攻撃し続けて、マナの反動で大ダメージを与えるって手もあるね。今挙げたのはどれも同時に行えるから、ギリギリまで削ってから重複させれば突破できると思うよ。ただし、事前に準備していないとできない戦法だってことは忘れないでね？", "Finally, although it'd take a long time, if you use weapons or abilities that drain MP, you could eventually kill an enemy by draining all its MP to cause magic reaction. However, it's a tactic that needs to be prepared in advance.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 11 ) {
 			chatMore lang("バックパック内の物をＴキー（shift+t）…Throwで投げつける場合は、投擲スキルを鍛えておこうね。ポーションやモンスターボール、投擲アイテムを外さずにぶつけられるよ。距離が遠いほど外れやすいから、投擲が低い間はなるべく至近距離から投げよう。", "You can throw carried items with [T]. This uses, and trains, the Throwing skill. Potions, monster balls, and other items can be thrown directly from your backpack. Unless you have good Throwing skill, you'll want to be close to an enemy when throwing an item.")
 			chatMore lang("重量物をぶつける攻撃は、必中＆防御無視だから意外なところで役に立つかもね。基本は重いものほどダメージが大きいけれど、それとは別に出血させる栗や属性ダメージを与えるアイテムなんかもあるよ。", "Throwing a heavy object might be useful since it bypasses defense. There are also other items, such as chestnuts, that have special effects when thrown.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 12 ) {
 			chatMore lang("物理攻撃した時に棘が刺さるタイプの敵は、もちろん遠距離から攻撃すればオーケーだよ。通常攻撃を介さない攻撃技能でも大丈夫。魔法を反射してくる敵は魔法の属性まで反射してくるから、自分の耐性が低かったり状態異常を無効にできない属性の魔法で攻撃するのはやめておこう。", "Some enemies are covered in thorns that cut you if you melee them. Use a spell or ranged attack to fight them. There's a similar defense against spells, but it's quite rare.")
 			chatMore lang("それから、射撃に対して先制射撃でカウンターしてくる敵もいるよ。これは状態異常で射撃できないようにしちゃえば大丈夫！…どれも１発１発のカウンターダメージは大したものじゃないけれど、連続攻撃するのはやめておこうね。", "There are also enemies that instantly counter ranged attacks with their own ranged attack. However, you're safe if they're unable to attack because of a status condition. One counterattack won't do much damage, but they add up, so don't fight carelessly.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 13 ) {
 			chatMore lang("隣接した時に自爆する敵と、ダメージを受けた時に自爆する敵がいるよ。爆弾岩はその両方を兼ね備えているね。遠距離から先制攻撃で仕留めるか、それができないならポーションを投げたり水魔法を使って濡らそう。濡れていると自爆できないからね。", "Some enemies explode when low on health. They also generally explode when a nearby enemy explodes. A type of enemy called \"bomb rocks\" can appear in large numbers and explode in a massive and incredibly deadly chain reaction. Fight exploding enemies from a good ways off, or you can use a thrown potion or water spell to soak them. Wet enemies can't explode.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 14 ) {
 			chatMore lang("状態異常の時でも分裂する敵と、状態異常の時は分裂しない敵がいるよ。どちらにしてもある程度大きいダメージを与えると分裂するから、一撃で削り取れない場合は、先にスリップダメージで削ろう。それが面倒なら、その敵の周囲を壁生成で囲っちゃおう。スペースがないと分裂できないからね。", "Some enemies split into multiple enemies when hit. Some of these won't split if they have a status condition, but not all. You can try slowly weakening it before killing it with a single blow, or use a spell or rod of Wall Creation so that it has no room to split off.")
 			chatMore lang("分裂体は何も装備していないし何もドロップしない、そして経験値も得られないから、わざと分裂させる価値はないかな。さっさと本体を片づけちゃおう。", "Incidentally, monsters that split off from another monster drop no items and give no experience, so don't bother trying to split them on purpose.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
 		if ( chatval == 15 ) {
 			chatMore lang("最終的には透明視を可能にするエンチャントのついた装備が欲しいね。それまでは、何かいると感じたら物質感知の巻物・魔法を使って見つけよう。後手に回っちゃうけどね。", "Finding a helmet or ring that lets you see invisible enemies is important, but until you get one you can use a scroll or spell of Detect Objects. It'll do as a temporary measure.")
 			chatMore lang("他には、濡れ状態にすれば透明が解除されるよ。水魔法とかで辺りに水を撒き散らせるなら、やってみよう。", "You can temporarily turn invisible foes visible by getting them wet. You can throw cheap potions or use water magic from spells or rods.")
-			gdata(STARTING_GDATA_FLAG + 330)++
+			gdata(GDATA_FLAG_TRAINING_COURSE_STATE)++
 		}
-		if ( gdata(STARTING_GDATA_FLAG + 330) <= 102 ) {
+		if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) <= 102 ) {
 			chatMore lang("質問がある人は聞きに来てねー！", "People with questions, come over to ask!")
 		}
 		goto *chat_end
@@ -14208,7 +14445,7 @@
 			gdata(STARTING_GDATA_FLAG + 346) = 1000
 			goto *chat_end
 		}
-		if ( gdata(STARTING_GDATA_FLAG + 330) != 0 ) {
+		if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) != 0 ) {
 			chatMore lang("一度にたくさん覚えるのは大変だよね？だから同じ人が受講できるのは一日に一回までなんだよ。今日教わったことをさっそく活かしてみよう！", "It's tough to memorize a lot at once, isn't it? That's why you can only take one course a day. Make the most of what you learned today!")
 			goto *chat_end
 		}
@@ -14313,7 +14550,7 @@
 					goto *chat_end
 				}
 				chatMore lang("しっかり勉強してきてね！聞き流したらお金がムダになっちゃうぞ！", "Make sure to study hard now! If you don't pay attention you'll just waste your money!")
-				gdata(STARTING_GDATA_FLAG + 330) = 100
+				gdata(GDATA_FLAG_TRAINING_COURSE_STATE) = 100
 				snd SOUNDLIST_PAYGOLD1
 				cdata(CDATA_GOLD, CHARA_PLAYER) -= gp0
 				mdata(MDATA_DOWNSTAIRS_POS) = cdata(CDATA_Y, CHARA_PLAYER) * 1000 + cdata(CDATA_X, CHARA_PLAYER)
@@ -14336,7 +14573,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 1 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 331) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 104 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 104 ) {
 						karata = 1
 					}
 				}
@@ -14345,7 +14582,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 1 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 2 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 332) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 105 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 105 ) {
 						karata = 2
 					}
 				}
@@ -14354,7 +14591,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 1 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 3 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 333) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 104 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 104 ) {
 						karata = 3
 					}
 				}
@@ -14363,7 +14600,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 1 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 4 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 334) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 105 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 105 ) {
 						karata = 4
 					}
 				}
@@ -14372,7 +14609,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 2 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 335) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 104 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 104 ) {
 						karata = 5
 					}
 				}
@@ -14381,7 +14618,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 2 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 2 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 336) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 104 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 104 ) {
 						karata = 6
 					}
 				}
@@ -14390,7 +14627,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 2 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 3 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 337) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 104 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 104 ) {
 						karata = 7
 					}
 				}
@@ -14399,7 +14636,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 2 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 4 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 338) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 105 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 105 ) {
 						karata = 8
 					}
 				}
@@ -14408,7 +14645,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 3 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 339) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 104 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 104 ) {
 						karata = 9
 					}
 				}
@@ -14417,7 +14654,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 3 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 2 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 340) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 105 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 105 ) {
 						karata = 10
 					}
 				}
@@ -14426,7 +14663,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 3 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 3 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 341) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 105 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 105 ) {
 						karata = 11
 					}
 				}
@@ -14435,7 +14672,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 3 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 4 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 342) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 104 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 104 ) {
 						karata = 12
 					}
 				}
@@ -14444,7 +14681,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 4 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 1 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 343) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 105 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 105 ) {
 						karata = 13
 					}
 				}
@@ -14453,7 +14690,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 4 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 2 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 344) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 104 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 104 ) {
 						karata = 14
 					}
 				}
@@ -14462,7 +14699,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 4 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 3 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 345) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 105 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 105 ) {
 						karata = 15
 					}
 				}
@@ -14471,7 +14708,7 @@
 		if ( gdata(STARTING_GDATA_FLAG + 328) == 4 ) {
 			if ( gdata(STARTING_GDATA_FLAG + 329) == 4 ) {
 				if ( gdata(STARTING_GDATA_FLAG + 346) == 0 ) {
-					if ( gdata(STARTING_GDATA_FLAG + 330) >= 105 ) {
+					if ( gdata(GDATA_FLAG_TRAINING_COURSE_STATE) >= 105 ) {
 						karata = 16
 					}
 				}
@@ -16201,7 +16438,7 @@
 				goto *chat_end
 			}
 			if ( chatval == 4 ) {
-				chatMore lang("基本的に状態異常は時間経過や回復魔法・アイテムで少しずつ治っていく。しかし寄生の場合は毒薬や染料、硫酸を飲めば治療することが出来る。他人が寄生されている場合でも、それらを渡せば自分から飲んでくれるはずだ。", "Basically, status effects can be restored by either waiting for time to pass or using restorative magic and items to recover bit by bit. Except being impregnated you need to drink poison, dyes or acids to cure it. If others are infect as well, if you give it to them they'll drink it.")
+				chatMore lang("基本的に状態異常は時間経過や回復魔法・アイテムで少しずつ治っていく。しかし寄生の場合は毒薬や染料、硫酸を飲めば治療することが出来る。他人が寄生されている場合でも、それらを渡せば自分から飲んでくれるはずだ。脳髄に寄生された場合は毒物を飲んでも無駄なので、神経に直接ダメージを与えて駆除するしかないだろうな…。", "Basically, status effects can be restored by either waiting for time to pass or using restorative magic and items to recover bit by bit. Except being impregnated you need to drink poison, dyes or acids to cure it. If others are infect as well, if you give it to them they'll drink it. If the parasite is in the brain, poison would be useless, the only way to get rid of it would be to damage the nerves directly...")
 				chatMore lang("それと、他の冒険者は俺と違って執念深い。うっかり怒らせると、倒してもマップを変えても出会うたびに襲い掛かってくるだろう。そうなるとアイテムや魔法で変装するしかないぞ。仲が悪いと自宅に放火されたりするらしいな。", "Also, unlike me, other Adventurers are vicious. If you somehow make them angry, they'll still come after you even after defeating them or changing maps. If that happens the only thing you can do is disguise yourself with magic or objects. They'll set fire to your house if they aren't your friend.")
 				chatMore lang("成長には休息も重要だ。冒険が一段落したらなるべく質のいいベッドで寝るといいだろう。ただしベッドは「使わなければ」意味がないぞ！寝てる間に装備が呪われたりしたら、すぐに癒し手のところへ行き解呪してもらうんだな。", "Resting is important to growth. After you complete an adventure you should sleep in the best you can find. But it's meaningless unless you use it! If your equipment is cursed while you sleep, you should quickly get over to a healer to uncurse it.")
 			}
@@ -18973,7 +19210,7 @@
 			if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_BLACKMARKET ) {
 				chatList 86, lang("「キセル」が欲しい", "I want a kiseru.")
 			}
-			if ( cdata(CDATA_ROLE, tc) != ROLE_SHIP_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER & cdata(CDATA_ROLE, tc) != ROLE_SHOP_TRADE ) {
+			if ( cdata(CDATA_ROLE, tc) != ROLE_SHIP_MERCHANT & cdata(CDATA_ROLE, tc) != ROLE_SHOP_WANDER ) {
 				chatList 12, lang("投資したい", "Need someone to invest in your shop?")
 			}
 			/********** JAMES CUSTOM - TCG - BEGINNING **********/
@@ -19136,7 +19373,7 @@
 		}
 		if ( cdata(CDATA_ROLE, tc) == ROLE_TRAINER ) {
 			chatList 17, lang("訓練したい", "Train me.")
-			chatList 30, lang("新しい能力を覚えたい", "What skills can you teach me?")
+			chatList 30, lang("新しいスキルを覚えたい", "What skills can you teach me?")
 		}
 		if ( cdata(CDATA_ROLE, tc) == ROLE_MAYOR ) {
 			if ( mdata(MDATA_CITY_COMPLAINTS) == 0 ) {
@@ -19144,6 +19381,7 @@
 			}
 			if ( mdata(MDATA_CITY_COMPLAINTS) > 0 ) {
 				chatList 74, lang("街の管理コマンド", "I want to run the town management.")
+				chatList 141, lang("管理代行者の人気は？", "How popular is my management?")
 			}
 		}
 		if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_DEED ) {
@@ -21946,6 +22184,29 @@
 		}
 		goto *chat_end
 	}
+	if ( chatval == 141 ) {
+		imp = 0
+		repeat 245
+			if ( cnt < 16 ) {
+				continue
+			}
+			if ( cdata(CDATA_ROLE, cnt) == ROLE_NONE ) {
+				continue
+			}
+			if ( cbit(CHARA_BIT_NECRO, cnt) == TRUE ) {
+				continue
+			}
+			if ( cdata(CDATA_ROLE, cnt) == ROLE_ADVENTURER ) {
+				continue
+			}
+			if ( cbit(CHARA_BIT_GUARD_TEMP, cnt) == TRUE ) {
+				continue
+			}
+			imp += cdata(CDATA_IMPRESSION, cnt)
+		loop
+		chatMore lang("今のところ、人気度は" + imp + "ってところ" + _dana(3) + "。皆が喜ぶことをすれば増えていく" + _ga(3) + "、時には嫌われてでもやらなきゃいけないこともあると思う" + _nda(3) + "。", "Right now, your popularity is " + imp + ". If you do something that makes everyone happy, your popularity will increase, but there will be times when you have to do something even if you are hated..."), strbye
+		goto *chat_end
+	}
 	if ( chatval == 108 ) {
 		kaiwa = rnd(5)
 		if ( cdata(CDATA_SEX, tc) == 0 ) {
@@ -23904,6 +24165,7 @@
 			qdata(QDATA_PARAM2, rq) = cdata(CDATA_ID, rc)
 		}
 		qdata(QDATA_STATUS, rq) = QUEST_STATE_ONGOING
+		modimp tc, 7
 		if ( qdata(QDATA_DEADLINE, rq) == (-1) ) {
 			goto *chat_instaQuest
 		}
@@ -24054,43 +24316,51 @@
 	chatesc = 1
 	gosub *chat_select
 	if ( chatval == 1 ) {
+		costexp = limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) * limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) + 500
 		snd SOUNDLIST_PAYGOLD1
 		cdata(CDATA_GOLD, CHARA_PLAYER) -= calcinvestvalue()
-		gosub *expInvesting
-		cdata(CDATA_ROLE_SHOP_LEVEL, tc) += rnd(2) + 2
-		repeat MAX_CHARA_FOLLOWER - 1, 1
+		imp = sqrt(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + sdata(SKILL_NORMAL_INVESTING, CHARA_PLAYER) + 4)
+		modimp tc, sqrt(imp + 4) + 1
+		cdata(CDATA_ROLE_SHOP_LEVEL, tc) += 2 + rnd(2)
+		skillexp SKILL_NORMAL_INVESTING, CHARA_PLAYER, costexp / 100
+		repeat 16 - 1, 1
 			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 				continue
 			}
-			if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
+			if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG, SKILL_SPACT_CHEER) \ 1000 + 1 ) {
 				continue
 			}
 			if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) == 0 ) {
 				continue
 			}
-			skillexp SKILL_NORMAL_INVESTING, cnt, 300
+			skillexp SKILL_NORMAL_INVESTING, cnt, costexp / 200
 		loop
+		txtef COLOR_PINK
+		txt lang("" + cdatan(CDATAN_NAME, tc) + "はあなたに感謝しているようだ…。", cdatan(CDATAN_NAME, tc) + " seems grateful to you...")
 		buff = lang(_thanks(2), "Thanks!")
 	}
 	if ( chatval == 2 ) {
+		costexp = (limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) * limit(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + 50, 1, 250) + 500) * 20
 		snd SOUNDLIST_PAYGOLD1
 		cdata(CDATA_GOLD, CHARA_PLAYER) -= calcinvestvalue50()
-		repeat 20
-			gosub *expInvesting
-		loop
+		imp = sqrt(cdata(CDATA_ROLE_SHOP_LEVEL, tc) + sdata(SKILL_NORMAL_INVESTING, CHARA_PLAYER) + 4)
+		modimp tc, (sqrt(imp + 4) + 1) * 20
 		cdata(CDATA_ROLE_SHOP_LEVEL, tc) += 50
-		repeat MAX_CHARA_FOLLOWER - 1, 1
+		skillexp SKILL_NORMAL_INVESTING, CHARA_PLAYER, costexp / 100
+		repeat 16 - 1, 1
 			if ( cdata(CDATA_EXIST, cnt) != CHAR_STATE_ALIVE ) {
 				continue
 			}
-			if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG_RANGE, SKILL_SPACT_CHEER) \ EXT_SDATAREF + 1 ) {
+			if ( dist(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) > sdataref(SKILL_DATAREF_TG, SKILL_SPACT_CHEER) \ 1000 + 1 ) {
 				continue
 			}
 			if ( fov_los(cdata(CDATA_X, cc), cdata(CDATA_Y, cc), cdata(CDATA_X, cnt), cdata(CDATA_Y, cnt)) == 0 ) {
 				continue
 			}
-			skillexp SKILL_NORMAL_INVESTING, cnt, 6000
+			skillexp SKILL_NORMAL_INVESTING, cnt, costexp / 200
 		loop
+		txtef COLOR_PINK
+		txt lang("" + cdatan(CDATAN_NAME, tc) + "はあなたに大変感謝しているようだ！", cdatan(CDATAN_NAME, tc) + " seems very grateful to you!")
 		buff = lang(_thanks(2), "Thanks!")
 	}
 	if ( chatval != 2 & chatval != 1 ) {
@@ -24581,6 +24851,17 @@
 		if ( cdata(CDATA_ROLE, tc) == ROLE_SHOP_TRADE ) {
 			if ( cdata(CDATA_ROLE_SHOP_LEVEL, tc) == 0 ) {
 				cdata(CDATA_ROLE_SHOP_LEVEL, tc) = 10
+			}
+		}
+		if ( cdata(CDATA_ROLE, tc) == ROLE_SPECIAL ) {
+			if ( cdata(CDATA_ID, tc) == CREATURE_ID_REVLUS_THE_MAGE_GUILDMASTER ) {
+				s += lang(" ギルド規模:", " Guild Size:") + cdata(CDATA_GUILD_INVEST_MAGE, CHARA_PLAYER)
+			}
+			if ( cdata(CDATA_ID, tc) == CREATURE_ID_FRAY_THE_FIGHTER_GUILDMASTER ) {
+				s += lang(" ギルド規模:", " Guild Size:") + cdata(CDATA_GUILD_INVEST_WARRIOR, CHARA_PLAYER)
+			}
+			if ( cdata(CDATA_ID, tc) == CREATURE_ID_SIN_THE_THIEF_GUILDMASTER ) {
+				s += lang(" ギルド規模:", " Guild Size:") + cdata(CDATA_GUILD_INVEST_THIEF, CHARA_PLAYER)
 			}
 		}
 		if ( cdata(CDATA_ROLE, tc) >= ROLE_SHOP_MIN & cdata(CDATA_ROLE, tc) < ROLE_GUEST_MIN | cdata(CDATA_ROLE, tc) == ROLE_GUEST_MERCHANT ) {

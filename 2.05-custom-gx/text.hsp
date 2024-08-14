@@ -71,6 +71,8 @@
 	_condim = lang("朦　朧", "Dim"), lang("混　濁", "Muddled"), lang("気　絶", "Unconscious")
 	_conangry = lang("激　怒", "Fury"), lang("狂　乱", "Berserk")
 	_conroudou = lang("労　働", "T-Energy")
+	_conparasite = lang("寄　生", "Parasite")
+	_conbparasite = lang("脳髄寄生", "B-Parasite")
 	_conmatou = lang("メタル", "Metal")
 	_condupli = lang("杖複製", "Dupli")
 	_conmuteki = lang("無　敵", "Invulnerable")
@@ -7713,6 +7715,16 @@
 		if ( gdata(GDATA_AREA) == AREA_RUST_PLAZA ) {
 			p = instr(buff, 0, "%CAVE," + lang("JP", "EN"))
 			break
+		}
+		if ( cdata(CDATA_ROLE, tc) == ROLE_TRAINER ) {
+			if ( gdata(GDATA_MONTH) == 4 ) {
+				p = instr(buff, 0, "%ASKILLTRAINER," + lang("JP", "EN"))
+				break
+			}
+			else {
+				p = instr(buff, 0, "%SKILLTRAINER," + lang("JP", "EN"))
+				break
+			}
 		}
 		if ( cdata(CDATA_ROLE, tc) >= ROLE_SHOP_MIN & cdata(CDATA_ROLE, tc) < ROLE_GUEST_MIN | cdata(CDATA_ROLE, tc) == ROLE_GUEST_MERCHANT ) {
 			if ( rnd(3) ) {

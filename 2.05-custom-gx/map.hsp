@@ -12446,7 +12446,7 @@
 									break
 								}
 								gosub *mapchip_init
-								if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == MAP_CHIP_ROLE_CROP ) {
+								if ( chipm(CHIPM_ROLE, map(x, y, MAP_TILE_ID)) == MAP_CHIP_ROLE_CROP & adata(ADATA_ID, gdata(GDATA_AREA)) == AREA_CROP ) {
 									val = 1
 								}
 								else {

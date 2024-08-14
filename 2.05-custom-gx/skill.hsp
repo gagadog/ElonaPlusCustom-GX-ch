@@ -1072,9 +1072,13 @@
 	skillname(SKILL_SPACT_VANISH) = lang("退却", "Vanish")
 	skilldesc(SKILL_SPACT_VANISH) = lang("退却する", "Retreat")
 
-	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_PREGNANT) = SKILL_ATTR_PER, SKILL_TYPE_SP, 15, TARGET_TYPE_ENEMY + 1, 0
-	skillname(SKILL_SPACT_PREGNANT) = lang("妊娠", "Pregnant")
-	skilldesc(SKILL_SPACT_PREGNANT) = lang("対象妊娠", "Pregnant target")
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_PREGNANT) = SKILL_ATTR_PER, SKILL_TYPE_SP, 15, 2000 + 1, 0
+	skillname(SKILL_SPACT_PREGNANT) = lang("寄生攻撃", "Parasitize")
+	skilldesc(SKILL_SPACT_PREGNANT) = lang("対象を寄生状態にする", "Parasite target")
+
+	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_BRAIN_PARASITIZE) = SKILL_ATTR_PER, SKILL_TYPE_SP, 15, 2000 + 1, 0
+	skillname(SKILL_SPACT_BRAIN_PARASITIZE) = lang("脳髄寄生攻撃", "Brain Parasitize")
+	skilldesc(SKILL_SPACT_BRAIN_PARASITIZE) = lang("対象を脳髄寄生状態にする", "B-Parasite target")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_GRENADE) = SKILL_ATTR_MAG, SKILL_TYPE_BALL, 18, TARGET_TYPE_SELF_ONLY, 700
 	skillname(SKILL_SPACT_GRENADE) = lang("グレネード", "Grenade")
@@ -1505,8 +1509,8 @@
 	skilldesc(SKILL_SPACT_SHIELD_STRIKE) = lang("衝撃で敵を朦朧麻痺/ゲージ100％消費", "Impact that dims and paralyzes enemies/100% gauge used")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_GAUGE_RELEASE) = SKILL_ATTR_WIL, SKILL_TYPE_SP, 1, TARGET_TYPE_ENEMY + 10, 0
-	skillname(SKILL_SPACT_GAUGE_RELEASE) = lang("【力の解放】", "<Gauge Release>")
-	skilldesc(SKILL_SPACT_GAUGE_RELEASE) = lang("次の攻撃時にゲージ技で追加攻撃", "Add gauge skill to the next attack")
+	skillname(SKILL_SPACT_GAUGE_RELEASE) = lang("【力の温存/解放】", "<Gauge Save/Release>")
+	skilldesc(SKILL_SPACT_GAUGE_RELEASE) = lang("ゲージ技の使用を切替", "Enable/Disable the use of power gauge")
 
 	sdataref(SKILL_DATAREF_USE, SKILL_SPACT_ALCHEMICAL_RAIN) = SKILL_ATTR_MAG, SKILL_TYPE_SP, 35, TARGET_TYPE_SELF + SKILL_TYPE_FOV_BOLT, 0
 	skillname(SKILL_SPACT_ALCHEMICAL_RAIN) = lang("錬成雨", "Alchemical Rain")
@@ -2334,7 +2338,7 @@
 		dice1 = 1 + locvar_calcskill_rs / 9
 		dice2 = 7 + locvar_calcskill_rs / 10 + 1
 		bonus = locvar_calcskill_rs / 2
-		ele = SKILL_RES_NETHER
+		ele = SKILL_RESDMG_CONSTITUTION
 		elep = 200
 		return 1
 	}
