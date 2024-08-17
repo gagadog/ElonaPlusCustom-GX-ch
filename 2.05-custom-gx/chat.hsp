@@ -19125,7 +19125,9 @@
 				chatList 80, lang("10万goldあげる（現在" + cdata(CDATA_GOLD, tc) + "gold所持）", "<Pass 100,000gold>")
 			}
 			chatList 101, lang("【特別な気持ちいいこと】", "<<Interest in a little tail t'night>>")
-			chatList 118, lang("心の開錠", "<Heart unlock>")
+			if ( tagevochat == 0 ) {
+				chatList 118, lang("心の開錠", "<Heart unlock>")
+			}
 			if ( tagevochat == 1 ) {
 				chatList 111, lang("タッグ間でevochatさせる", "<Let them Evochat>")
             }

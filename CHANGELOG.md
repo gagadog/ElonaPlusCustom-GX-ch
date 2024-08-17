@@ -1,3 +1,15 @@
+# 2.24.1.1
+
+# Added
+- Ported all changes from Elona+ 2.24fix.
+- Tweak to revert the Ammo nerf.
+
+# Changed
+- Pet's Other AI settings being confusing.
+
+# TCG
+- Changed Aile's and Fron's effect.
+
 # 2.24.1.0
 
 # Added

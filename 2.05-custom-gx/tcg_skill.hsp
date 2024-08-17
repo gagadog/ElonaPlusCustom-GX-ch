@@ -1383,6 +1383,95 @@
 		goto *actionproc_SWEND1
 		_switch_sw@tcg++
 	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_DISCOVER_CNPC_MOB_FILL | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
+			if ( hasholdspace(aeft@tcg) ) {
+				discovercount@tcg = limit(MAX_CARD_EXTRA - cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg), 0, limit(usernpcmax, 0, 240))
+				if ( discovercount@tcg > 0 ) {
+					cntuse@tcg = 0
+					repeat usernpcmax
+						if ( userdata(5, cnt) >= 5 ) {
+							continue
+						}
+						cntuse@tcg++
+					loop
+					discovercount@tcg = limit(MAX_CARD_EXTRA - cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg), 0, limit(cntuse@tcg, 0, 240))
+					if ( discovercount@tcg > 0 ) {
+						cntuse@tcg = 0
+						repeat usernpcmax
+							if ( userdata(5, cnt) >= 5 ) {
+								continue
+							}
+							discover@tcg(cntuse@tcg) = cnt + 1
+							if ( cntuse@tcg >= discovercount@tcg ) {
+								discover@tcg(rnd(discovercount@tcg)) = cnt + 1
+							}
+							cntuse@tcg++
+						loop
+						cextrabk@tcg = cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg)
+						deckbk@tcg = cpdata@tcg(TCG_PLAYER_DECK, aeft@tcg)
+						repeat discovercount@tcg
+							cextra@tcg = aeft@tcg * MAX_CARD_DECK_TOTAL + MAX_CARD_DECK + cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg)
+							cnpc@tcg = discover@tcg(cnt)
+							create_card cextra@tcg, CREATURE_ID_NOVICE
+							card@tcg(TCG_CARD_LOCATION, cextra@tcg) = TCG_LOCATION_DISCOVER, aeft@tcg, deckix@tcg(aeft@tcg), deckiy@tcg(aeft@tcg), deckix@tcg(aeft@tcg), deckiy@tcg(aeft@tcg)
+							cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg)++
+							cpdata@tcg(TCG_PLAYER_DECK, aeft@tcg)++
+						loop
+						discover_extra_card aeft@tcg
+						repeat 5
+							cnpc@tcg = discover@tcg(discoverchoiceval@tcg)
+							create_extra_card aeft@tcg, CREATURE_ID_NOVICE
+							if ( cextra@tcg >= 0 ) {
+								gettargetcard cextra@tcg
+							}
+						loop
+					}
+				}
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
+	if ( _switch_val@tcg == TCG_SKILL_EFF_DISCOVER_CNPC_ELITE_SUMMON | _switch_sw@tcg ) {
+		_switch_sw@tcg = 0
+		if ( aeft@tcg == 0 | aeft@tcg == 1 ) {
+			if ( hasholdspace(aeft@tcg) ) {
+				discovercount@tcg = limit(MAX_CARD_EXTRA - cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg), 0, limit(usernpcmax, 0, 240))
+				if ( discovercount@tcg > 0 ) {
+					cntuse@tcg = 0
+					repeat usernpcmax
+						if ( userdata(5, cnt) < 5 ) {
+							continue
+						}
+						cntuse@tcg++
+					loop
+					discovercount@tcg = limit(MAX_CARD_EXTRA - cpdata@tcg(TCG_PLAYER_EXTRACARD, aeft@tcg), 0, limit(cntuse@tcg, 0, 240))
+					if ( discovercount@tcg > 0 ) {
+						cntuse@tcg = 0
+						repeat usernpcmax
+							if ( userdata(5, cnt) < 5 ) {
+								continue
+							}
+							discover@tcg(cntuse@tcg) = cnt + 1
+							if ( cntuse@tcg >= discovercount@tcg ) {
+								discover@tcg(rnd(discovercount@tcg)) = cnt + 1
+							}
+							cntuse@tcg++
+						loop
+						cnpc@tcg = discover@tcg(rnd(discovercount@tcg))
+						create_extra_card aeft@tcg, CREATURE_ID_NOVICE
+						if ( cextra@tcg >= 0 ) {
+							putcard cextra@tcg, card@tcg(TCG_CARD_CONTROLLER, cextra@tcg)
+						}
+					}
+				}
+			}
+		}
+		goto *actionproc_SWEND1
+		_switch_sw@tcg++
+	}
 	if ( _switch_val@tcg == TCG_SKILL_EFF_INSPIRE_JUERE | _switch_sw@tcg ) {
 		_switch_sw@tcg = 0
 		if ( aeft@tcg >= 0 & aeft@tcg < maxcard@tcg ) {

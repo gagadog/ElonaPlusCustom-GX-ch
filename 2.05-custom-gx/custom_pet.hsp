@@ -72,22 +72,22 @@
 	gosub *screen_drawMsg2
 
 	if ( CustomVal(0, tc) == 0 ) {
-		listn(0, 0) = "Eat items from your bag if you are hungry."
+		listn(0, 0) = "(Current: Do Not Eat) Eat items from your bag if you are hungry."
 	}
 	if ( CustomVal(0, tc) == 1 ) {
-		listn(0, 0) = "Don't eat items from your bag."
+		listn(0, 0) = "(Current: Do Eat) Don't eat items from your bag."
 	}
 	if ( CustomVal(1, tc) == 0 ) {
-		listn(0, 1) = "Drink potions in your bag if you are thirsty."
+		listn(0, 1) = "(Current: Do Drink) Drink potions in your bag if you are thirsty."
 	}
 	if ( CustomVal(1, tc) == 1 ) {
-		listn(0, 1) = "Don't drink potions in your bag."
+		listn(0, 1) = "(Current: Do Not Drink) Don't drink potions in your bag."
 	}
 	if ( CustomVal(2, tc) == 0 ) {
-		listn(0, 2) = "Tell me if you want to chat with me."
+		listn(0, 2) = "(Current: No Emote) Tell me if you want to chat with me."
 	}
 	if ( CustomVal(2, tc) == 1 ) {
-		listn(0, 2) = "I don't have time to chat right now."
+		listn(0, 2) = "(Current: Show Emote) I don't have time to chat right now."
 	}
 	listn(0, 3) = "Exit"
 	font lang(cfg_font1, cfg_font2), 14 - en * 2, 0

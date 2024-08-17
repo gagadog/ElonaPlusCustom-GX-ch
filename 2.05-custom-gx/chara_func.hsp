@@ -4933,7 +4933,7 @@
 		locvar_dmghp_dmg = locvar_dmghp_dmg * 1 / 6 + 1
 	}
 	if ( locvar_dmghp_dmg > 0 ) {
-		if ( gdata(GDATA_RAPID_FIRE) == 100 ) {
+		if ( gdata(GDATA_RAPID_FIRE) == 100 & TweakData(TWEAK_GAMEPLAY_REVERT_AMMO_NERF, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 			locvar_dmghp_dmg = locvar_dmghp_dmg / 2 + 1
 		}
 	}

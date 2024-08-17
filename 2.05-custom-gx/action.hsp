@@ -2537,7 +2537,9 @@
 						txt lang("植物の栽培に適していそうだ。", "This crop field seems suitable for growing plants.")
 					}
 					else {
-						txt lang("それは畑でのみ機能する。", "The crop tile only works in Crop properties you own.")
+						if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
+							txt lang("それは畑でのみ機能する。", "The crop tile only works in Crop properties you own.")
+                        }
 					}
 				}
 			}
@@ -2547,7 +2549,9 @@
 						txt lang("有機物を置いておくと肥料に変わりそうだ。", "If organic matter is placed here, it will turn into fertilizer.")
 					}
 					else {
-						txt lang("それは畑でのみ機能する。", "The composite only works in Crop properties you own.")
+						if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
+							txt lang("それは畑でのみ機能する。", "The composite only works in Crop properties you own.")
+						}
 					}
 				}
 			}
@@ -2557,7 +2561,9 @@
 						txt lang("料理素材を置いておくと乾物に変わりそうだ。", "If cooking ingredients are placed here, they will turn into dry food.")
 					}
 					else {
-						txt lang("それは畑でのみ機能する。", "The drying rack only works in Ranch properties you own.")
+						if ( mdata(MDATA_TYPE) == MAP_TYPE_HOME ) {
+							txt lang("それは畑でのみ機能する。", "The drying rack only works in Ranch properties you own.")
+						}
 					}
 				}
 			}
@@ -5785,7 +5791,7 @@
 	return
 
 *act_attackSub
-	if ( ammoproc == ENCHANT_AMMO_BURST ) {
+	if ( ammoproc == ENCHANT_AMMO_BURST & TweakData(TWEAK_GAMEPLAY_REVERT_AMMO_NERF, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 		return
 	}
 	if ( gdata(GDATA_TEMPORARY_FLAGS2) >= 100 ) {
@@ -5805,7 +5811,7 @@
 			if ( p <= 0 ) {
 				p = 1
 			}
-			if ( ammoproc == ENCHANT_AMMO_RAPID ) {
+			if ( ammoproc == ENCHANT_AMMO_RAPID & TweakData(TWEAK_GAMEPLAY_REVERT_AMMO_NERF, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 				p /= 2
 			}
 			if ( p <= 1 ) {
@@ -5829,7 +5835,7 @@
 			if ( p <= 0 ) {
 				p = 1
 			}
-			if ( ammoproc == ENCHANT_AMMO_RAPID ) {
+			if ( ammoproc == ENCHANT_AMMO_RAPID & TweakData(TWEAK_GAMEPLAY_REVERT_AMMO_NERF, TWEAK_CATEGORY_GAMEPLAY) == FALSE ) {
 				p /= 2
 			}
 			if ( p <= 0 ) {

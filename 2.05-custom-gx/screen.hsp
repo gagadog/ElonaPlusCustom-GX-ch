@@ -7561,6 +7561,9 @@
 				txtmore
 			}
 		}
+		if ( ammoproc == ENCHANT_AMMO_RAPID & TweakData(TWEAK_GAMEPLAY_REVERT_AMMO_NERF, TWEAK_CATEGORY_GAMEPLAY) != FALSE ) {
+			damage /= 2
+		}
 		if ( ammoproc == ENCHANT_AMMO_BURST ) {
 			damage /= 5
 		}

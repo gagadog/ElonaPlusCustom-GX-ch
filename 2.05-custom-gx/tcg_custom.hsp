@@ -224,7 +224,7 @@
 					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "rat" ) { continue }
 				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_RATLOWCOST ) {
-					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "rat" | card@tcg(TCG_CARD_REF_COST, cnt) > 3 ) { continue }
+					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "rat" | card@tcg(TCG_CARD_COST, cnt) > 3 ) { continue }
 				}
 				if ( effref@tcg(TCG_SKILL_FILTER, eff@tcg) == TCG_SKILL_FILTER_RATNOCOST ) {
 					if ( cardn@tcg(TCG_CARDN_REF_RACE, cnt) != "rat" | card@tcg(TCG_CARD_COST, cnt) > 0 ) { continue }
@@ -13744,9 +13744,9 @@
 		cardreflvl = 250
 		cardrefquality = FIX_QUALITY_GOOD
 		cardrefdomain = 5
-		cardrefcost = 6
-		cardrefattack = 7
-		cardrefhp = 7
+		cardrefcost = 4
+		cardrefattack = 3
+		cardrefhp = 3
 		cardrefskillid = TCG_EFF_TOURGUIDE2
 		cardrefbits = ""
 		return 1

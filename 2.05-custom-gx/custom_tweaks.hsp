@@ -779,7 +779,7 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 	listn(0, 11) = "Revert post-2.17 cooking result changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_COOKING_CHANGES)
 	listn(0, 12) = "Revert post-2.17 boss out-of-sight healing." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_217_BOSS_HEALING)
 	listn(0, 13) = "Revert post-2.08 elemental mechanics changes." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE)
-	listn(0, 14) = "" 
+	listn(0, 14) = "Revert post-2.22 ranged ammo nerf." + GetTStatus(TWEAK_CATEGORY_GAMEPLAY, TWEAK_GAMEPLAY_REVERT_AMMO_NERF)
 	listn(0, 15) = "Go back."
 	
 	listn(0, 16) = "=== EXP/Progression related changes ==="
@@ -880,6 +880,9 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 			}
 			if ( p == 13 ) {
 				s = "Revert Post-2.08 elemental related changes, this includes:\nLightning/Nerve/Mind/Sound/Chaos infliction changes. \nNether drain nerf. cResEle bit nerf. Dim Nerf.\nBreath/Touch skill element power buff. Crush damage DV resist buff. "
+			}
+			if ( p == 14 ) {
+				s = "Revert Post-2.22 ranged ammo nerf.\nThis allows burst ammo to proc weapon enchants.\nThis removes the 1/2 modifier for procs during rapid ammo.\nNow you can out-damage every other build by ~1000% with this tweak active."
 			}
 
 			if ( p == 15 ) {
@@ -1032,6 +1035,11 @@ TweakData(54, 4) = "Display Day/Night Cycle Everywhere."
 		tn = TWEAK_GAMEPLAY_REVERT_POST_208_ELEMENT_CHANGE
 		gosub *ToggleTweak
 		gosub *ApplyCGSkillTweak
+	}
+	if ( p == 14 ) {
+		tc = TWEAK_CATEGORY_GAMEPLAY
+		tn = TWEAK_GAMEPLAY_REVERT_AMMO_NERF
+		gosub *ToggleTweak
 	}
 
 	if ( p == 15 ) {
