@@ -1142,7 +1142,8 @@
 				TweakData(TWEAK_TCG_WIN_STREAK, TWEAK_CATEGORY_TCG)++
 				txtef COLOR_YELLOW
 				txt "" + TweakData(TWEAK_TCG_WIN_STREAK, TWEAK_CATEGORY_TCG) + " consecutive wins!"
-				ticketreward@tcg = limit(limit(TweakData(TWEAK_TCG_WIN_STREAK, TWEAK_CATEGORY_TCG), 1, 10) * 20, 1, cdata(CDATA_LEVEL, tc))
+				ticketreward@tcg = limit(limit(TweakData(TWEAK_TCG_WIN_STREAK, TWEAK_CATEGORY_TCG), 1, 2000) * 20, 1, cdata(CDATA_LEVEL, tc))
+				ticketreward@tcg = ticketreward@tcg * limit(TweakData(TWEAK_TCG_WIN_STREAK, TWEAK_CATEGORY_TCG) * 20 - 100, 100, 20000) / 100
 				txtef COLOR_YELLOW
 				txt "You get " + ticketreward@tcg + " music tickets!"
 				flt

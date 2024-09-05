@@ -1,3 +1,10 @@
+# Upcoming
+
+# TCG
+- Uncapped win-streak ticket earning limit. (Still capped by target level)
+- Win-streak now provides a ticket bonus of 20% per win-streak above 10.
+- You can now view graveyard in game with `g`, and deck with `f`
+
 # 2.24.1.1
 
 # Added
