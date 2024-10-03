@@ -259,7 +259,7 @@
 		cardpos 1, -1
 		tcgdraw
 		proctcg "tcg combat: attacking:" + attackingcard@tcg + "/attacked:" + attacktarget@tcg
-		if ( attacktarget@tcg != (-1) ) {
+		if ( attackingcard@tcg != (-1) & attacktarget@tcg != (-1) ) {
 			if ( card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) == TCG_LOCATION_FIELD & card@tcg(TCG_CARD_ATTACK, attacktarget@tcg) > 0 & cdbit(TCG_BIT_SPLIT, attackingcard@tcg) == TRUE ) {
 				effac@tcg = attackingcard@tcg
 				eff@tcg = card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)
@@ -268,6 +268,8 @@
 				actionproc
 				makecardlist
 			}
+		}
+		if ( attackingcard@tcg != (-1) & attacktarget@tcg != (-1) ) {
 			if ( card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) == TCG_LOCATION_FIELD & card@tcg(TCG_CARD_ATTACK, attackingcard@tcg) > 0 & cdbit(TCG_BIT_SPLIT, attacktarget@tcg) == TRUE ) {
 				effac@tcg = attacktarget@tcg
 				eff@tcg = card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)
@@ -276,18 +278,24 @@
 				actionproc
 				makecardlist
 			}
+		}
+		if ( attackingcard@tcg != (-1) & attacktarget@tcg != (-1) ) {
 			if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)) & TCG_SKILL_TYPE_AFTERCOMBAT) ) {
 				proctcg "tcg proc/aftercombat/attacking: effac:" + attackingcard@tcg + "/eff:" + card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)
 				effac@tcg = attackingcard@tcg
 				eff@tcg = card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)
 				gosub *card_action_choose_target
 			}
+		}
+		if ( attackingcard@tcg != (-1) & attacktarget@tcg != (-1) ) {
 			if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)) & TCG_SKILL_TYPE_AFTERCOMBAT) ) {
 				proctcg "tcg proc/aftercombat/attacked: effac:" + attacktarget@tcg + "/eff:" + card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)
 				effac@tcg = attacktarget@tcg
 				eff@tcg = card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)
 				gosub *card_action_choose_target
 			}
+		}
+		if ( attackingcard@tcg != (-1) & attacktarget@tcg != (-1) ) {
 			if ( card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) != TCG_LOCATION_HAND & (card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) == TCG_LOCATION_FIELD | card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) == TCG_LOCATION_HAND) ) {
 				if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)) & TCG_SKILL_TYPE_ONKILL) ) {
 					proctcg "tcg proc/onkill/attacking: effac:" + attackingcard@tcg + "/eff:" + card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)
@@ -296,6 +304,8 @@
 					gosub *card_action_choose_target
 				}
 			}
+		}
+		if ( attackingcard@tcg != (-1) & attacktarget@tcg != (-1) ) {
 			if ( card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) != TCG_LOCATION_FIELD & card@tcg(TCG_CARD_LOCATION, attackingcard@tcg) != TCG_LOCATION_HAND & (card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) == TCG_LOCATION_FIELD | card@tcg(TCG_CARD_LOCATION, attacktarget@tcg) == TCG_LOCATION_HAND) ) {
 				if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)) & TCG_SKILL_TYPE_ONKILL) ) {
 					proctcg "tcg proc/onkill/attacked: effac:" + attacktarget@tcg + "/eff:" + card@tcg(TCG_CARD_EFFECT, attacktarget@tcg)
@@ -304,7 +314,8 @@
 					gosub *card_action_choose_target
 				}
 			}
-		} else {
+		}
+		if ( attackingcard@tcg != (-1) & attacktarget@tcg == (-1) ) {
 			if ( (effref@tcg(TCG_SKILL_TYPE, card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)) & TCG_SKILL_TYPE_AFTERCOMBAT) ) {
 				proctcg "tcg proc/aftercombat/attacking: effac:" + attackingcard@tcg + "/eff:" + card@tcg(TCG_CARD_EFFECT, attackingcard@tcg)
 				effac@tcg = attackingcard@tcg
