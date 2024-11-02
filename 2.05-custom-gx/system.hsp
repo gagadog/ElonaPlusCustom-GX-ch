@@ -3378,7 +3378,7 @@
 	grotate 2, cmbg / 2 * 180, cmbg \ 2 * 300, 0, x, y
 	gmode 2
 	if ( jp ) {
-		s = "Restore an adventurer", "冒険を再開する", "Generate an adventurer", "新しい冒険者を作成する", "Incarnate an adventurer", "冒険者の引継ぎ", "View the homepage", "本家Elonaホームページ", "Configure", "設定の変更", "Exit", "終了"
+		s = "Restore an adventurer", "継続冒険", "Generate an adventurer", "創建新的冒険者", "Incarnate an adventurer", "継承冒険者", "View the homepage", "本家Elona主頁", "Configure", "設置", "Exit", "退出"
 	}
 	if ( en ) {
 		s = "Restore an Adventurer", "Generate an Adventurer", "Incarnate an Adventurer", "View the Homepage", "Options", "Exit"
